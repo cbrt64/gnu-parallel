@@ -137,6 +137,17 @@ This is then all saved in B<$PARALLEL_ENV>.
 GNU B<parallel> is called, and B<$PARALLEL_ENV> is deleted.
 
 
+=head2 parset
+
+B<parset> is a shell function. This is the reason why B<parset> can
+set variables: It runs in the shell which is calling it.
+
+It is also the reason why B<parset> does not work, when data is piped
+into it: B<... | parset ...> makes B<parset> start in a subshell, and
+any changes in environment can therefore not make it back to the
+calling shell.
+
+
 =head2 Job slots
 
 The easiest way to explain what GNU B<parallel> does is to assume that
@@ -179,13 +190,13 @@ outage.
 
 GNU B<parallel> first selects a compression program. If the user has
 not selected one, the first of these that is in $PATH is used: B<pzstd
-lbzip2 pbzip2 zstd pigz lz4 lzop plzip lzip lrz gzip pxz lzma bzip2 xz
-clzip>. They are sorted by speed on a 32 core machine.
+lbzip2 pbzip2 zstd pixz lz4 pigz lzop plzip lzip gzip lrz pxz bzip2
+lzma xz clzip>. They are sorted by speed on a 128 core machine.
 
 Schematically the setup is as follows:
 
   command started by parallel | compress > tmpfile
-  cattail tmpfile | uncompress | parallel
+  cattail tmpfile | uncompress | parallel which reads the output
 
 The setup is duplicated for both standard output (stdout) and standard
 error (stderr).
@@ -200,7 +211,7 @@ program is dead. If the compress program is dead, B<cattail> reads the
 rest of tmpfile and exits.
 
 As most compression programs write out a header when they start, the
-tmpfile in practice is unlinked after around 40 ms.
+tmpfile in practice is removed by B<cattail> after around 40 ms.
 
 
 =head2 Wrapping
@@ -441,6 +452,10 @@ To run the commands in a B<tmux> session you basically just need to
 quote the command. For simple commands that is easy, but when commands
 contain special characters, it gets much harder to get right.
 
+B<--compress> not only compresses standard output (stdout) but also
+standard error (stderr); and it does so into files, that are open but
+deleted, so a crash will not leave these files around.
+
 B<--cat> and B<--fifo> are easy to do by hand, until you want to clean
 up the tmpfile and keep the exit code of the command.
 
@@ -639,11 +654,13 @@ When run using B<exec>.
 When run as the last command using B<-c> from another shell (because
 some shells use B<exec>):
 
-  zsh% bash -c "parallel 'echo {} is not run in bash; set | grep BASH_VERSION' ::: This"
+  zsh% bash -c "parallel 'echo {} is not run in bash; \
+       set | grep BASH_VERSION' ::: This"
 
 You can work around that by appending '&& true':
 
-  zsh% bash -c "parallel 'echo {} is run in bash; set | grep BASH_VERSION' ::: This && true"
+  zsh% bash -c "parallel 'echo {} is run in bash; \
+       set | grep BASH_VERSION' ::: This && true"
 
 =item *
 
@@ -865,6 +882,49 @@ size 8193 was chosen because 8192 gave wrong result on some file
 systems, whereas 8193 did the correct thing on all tested filesystems.
 
 
+=head2 Memory usage
+
+Normally GNU B<parallel> will use around 17 MB RAM constantly - no
+matter how many jobs or how much output there is. There are a few
+things that cause the memory usage to rise:
+
+=over 3
+
+=item *
+
+Multiple input sources. GNU B<parallel> reads an input source only
+once. This is by design, as an input source can be a stream
+(e.g. FIFO, pipe, standard input (stdin)) which cannot be rewound and
+read again. When reading a single input source, the memory is freed as
+soon as the job is done - thus keeping the memory usage constant.
+
+But when reading multiple input sources GNU B<parallel> keeps the
+already read values for generating all combinations with other input
+sources.
+
+=item *
+
+Computing the number of jobs. B<--bar>, B<--eta>, and B<--halt xx%>
+use B<total_jobs()> to compute the total number of jobs. It does this
+by generating the data structures for all jobs. All these job data
+structures will be stored in memory and take up around 400 bytes/job.
+
+=item *
+
+Buffering a full line. B<--linebuffer> will read a full line per
+running job. A very long output line (say 1 GB without \n) will
+increase RAM usage temporarily: From when the beginning of the line is
+read till the line is printed.
+
+=item *
+
+Buffering the full output of a single job. This happens when using
+B<--results *.csv/*.tsv> or B<--sql*>. Here GNU B<parallel> will read
+the whole output of a single job and save it as csv/tsv or SQL.
+
+=back
+
+
 =head2 Perl replacement strings, {= =}, and --rpl
 
 The shorthands for replacement strings make a command look more
@@ -889,9 +949,8 @@ look like a matching pair. B<--parens> was made, so that the users can
 still use ,, and ,, if they like: B<--parens ,,,,>
 
 Internally, however, the {= and =} are replaced by \257< and
-\257>. This is to make it simple to make regular expressions: \257 is
-disallowed on the command line, so when that is matched in a regular
-expression, it is known that this is a replacement string.
+\257>. This is to make it simpler to make regular expressions. You
+only need to look one character ahead, and never have to look behind.
 
 
 =head2 Test suite
@@ -1001,6 +1060,31 @@ reserved word in MySQL.
 The logo is inspired by the Cafe Wall illusion. The font is DejaVu
 Sans.
 
+=head2 Citation notice
+
+Funding a free software project is hard. GNU B<parallel> is no
+exception. On top of that it seems the less visible a project is, the
+harder it is to get funding. And the nature of GNU B<parallel> is that
+it will never be seen by "the guy with the checkbook", but only by the
+people doing the actual work.
+
+This problem has been covered by others - though no solution has been
+found: https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
+https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
+
+Before implementing the citation notice it was discussed with the
+users:
+https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
+
+There is no doubt that this is not an ideal solution, but no one has
+so far come up with an ideal solution - neither for maintaining GNU
+B<parallel> nor other free software.
+
+If you believe you have the perfect solution, you should try it out,
+and if it works, you should post it on the email list. Ideas that will
+cost work and which have not been tested are, however, unlikely to be
+prioritized.
+
 
 =head1 Ideas for new design
 
@@ -1023,6 +1107,9 @@ Will that require 2x block size memory?
 
 
 =head1 Historical decisions
+
+These decisions were relevant for earlier versions of GNU B<parallel>,
+but not the current version. They are kept here as historical record.
 
 =head2 --tollef
 

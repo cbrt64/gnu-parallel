@@ -98,7 +98,7 @@ env_parallel() {
     }
 
 
-    # Bash 'which' is broken in version 3.2.25 and 4.2.39
+    # Bash is broken in version 3.2.25 and 4.2.39
     # The crazy '[ "`...`" == "" ]' is needed for the same reason
     if [ "`which parallel`" == "" ]; then
 	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
@@ -112,6 +112,8 @@ env_parallel() {
     _ignore_UNDERSCORE="`_get_ignored_VARS \"$@\"`"
 
     # --record-env
+    # Bash is broken in version 3.2.25 and 4.2.39
+    # The crazy '[ "`...`" == 0 ]' is needed for the same reason
     if [ "`perl -e 'exit grep { /^--record-env$/ } @ARGV' -- "$@"; echo $?`" == 0 ] ; then
 	true skip
     else

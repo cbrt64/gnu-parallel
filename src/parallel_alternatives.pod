@@ -1080,9 +1080,10 @@ There are certain issues that are very common on parallelizing
 tools. Here are a few stress tests. Be warned: If the tool is badly
 coded it may overload you machine.
 
-=head2 Output mixes
+=head2 A: Output mixes
 
-Output from 2 jobs should not mix.
+Output from 2 jobs should not mix. If the tool does not buffer, output
+will most likely mix.
 
   #!/bin/bash
 
@@ -1105,26 +1106,7 @@ Output from 2 jobs should not mix.
   # 'a b c' should always stay together
   # and there should only be a single line per job
 
-=head2 Speed depends on number of words
-
-Some tools become very slow if output lines have many words.
-
-  #!/bin/bash
-
-  paralleltool=parallel
-
-  cat <<-EOF > mycommand
-  #!/bin/bash
-
-  # 10 MB of lines with 1000 words
-  yes "`seq 1000`" | head -c 10M
-  EOF
-  chmod +x mycommand
-
-  # Run 30 jobs in parallel
-  seq 30 | time $paralleltool -j0 ./mycommand > /dev/null
-
-=head2 Output limited by RAM
+=head2 B: Output limited by RAM
 
 Some tools cache output in RAM. This makes them extremely slow if the
 output is bigger than physical memory and crash if the the output is
@@ -1146,9 +1128,10 @@ bigger than the virtual memory.
   # Adjust 20 to be > physical RAM and < free space on /tmp
   seq 20 | time $paralleltool -j0 ./mycommand | wc -c
 
-=head2 Leaving tmp files at unexpected death
+=head2 C: Leaving tmp files at unexpected death
 
-Some tools do not clean up tmp files if they are killed.
+Some tools do not clean up tmp files if they are killed. If the tool
+buffers on disk, they may not clean up, if they are killed.
 
   #!/bin/bash
 
@@ -1164,7 +1147,7 @@ Some tools do not clean up tmp files if they are killed.
   # Should be empty: No files should be left behind
   diff <(ls /tmp) /tmp/before
 
-=head2 Dealing badly with special file names.
+=head2 D: Dealing badly with special file names.
 
 It is not uncommon for users to create files like:
 
@@ -1179,17 +1162,36 @@ Some tools break on this.
   touch "My brother's 12\" records cost \$\$\$.txt"
   ls My*txt | $paralleltool echo
 
-=head2 Composed commands do not work
+=head2 E: Composed commands do not work
 
 Some tools require you to wrap composed commands into B<bash -c>.
 
   echo bar | $paralleltool echo foo';' echo {}
 
-=head2 Only one replacement string allowed
+=head2 F: Only one replacement string allowed
 
 Some tools can only insert the argument once.
 
   echo bar | $paralleltool echo {} foo {}
+
+=head2 G: Speed depends on number of words
+
+Some tools become very slow if output lines have many words.
+
+  #!/bin/bash
+
+  paralleltool=parallel
+
+  cat <<-EOF > mycommand
+  #!/bin/bash
+
+  # 10 MB of lines with 1000 words
+  yes "`seq 1000`" | head -c 10M
+  EOF
+  chmod +x mycommand
+
+  # Run 30 jobs in parallel
+  seq 30 | time $paralleltool -j0 ./mycommand > /dev/null
 
 
 =head1 AUTHOR

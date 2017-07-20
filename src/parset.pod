@@ -56,20 +56,33 @@ Put output into vars B<$seq, $pwd, $ls>:
   into_vars=(seq pwd ls)
   parset "${into_vars[*]}" ::: "seq 10" pwd ls
   echo "$ls"
-  
+
 The commands to run can be an array:
 
   cmd=("echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
   parset data ::: "${cmd[@]}"
   echo "${data[0]}"
   echo "${data[1]}"
-  
-You cannot pipe into B<parset>, but must use a tempfile:
+
+B<parset> can not be part of a pipe. In particular this means it
+cannot read anything from standard input (stdin) or write to a pipe:
+
+  seq 10 | parset res echo Does not work
+
+but must instead use a tempfile:
 
   seq 10 > parallel_input
   parset res echo :::: parallel_input
   echo "${res[0]}"
   echo "${res[9]}"
+
+or a FIFO:
+
+  mkfifo input_fifo
+  seq 30 > input_fifo &
+  parset res echo :::: input_fifo
+  echo "${res[0]}"
+  echo "${res[29]}"
 
 or Bash process substitution:
 

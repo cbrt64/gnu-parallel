@@ -1238,7 +1238,7 @@ B<--pipepart> has a few limitations:
 
 =over 3
 
-=item Z<>*
+=item *
 
 The file must be a normal file or a block device (technically it must
 be seekable) and must be given using B<-a> or B<::::>. The file cannot
@@ -1247,7 +1247,7 @@ be a pipe or a fifo as they are not seekable.
 If using a block device with lot of NUL bytes, remember to set
 B<--recend ''>.
 
-=item Z<>*
+=item *
 
 Record counting (B<-N>) and line counting (B<-L>/B<-l>) do not work.
 
@@ -4544,6 +4544,9 @@ you can make them by something like B<seq 1000000> > B<file> or B<yes
 
 If your example requires remote execution, see if you can use
 B<localhost> - maybe using another login.
+
+If you have access to a different system, test if the MCVE shows the
+problem on that system.
 
 =item *
 

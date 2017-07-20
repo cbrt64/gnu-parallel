@@ -1376,7 +1376,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20170706;
+    $Global::version = 20170707;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -9598,7 +9598,7 @@ sub new {
 	# Skip if undefined
 	$_ or next;
 	# Escape \257 => \257\256
-	$Global::escape_string_present = s/\257/\257\256/g;
+	$Global::escape_string_present += s/\257/\257\256/g;
 	# Needs to match rightmost left parens (Perl defaults to leftmost)
 	# to deal with: {={==} and {={==}=}
 	# Replace {= -> \257<  and  =} -> \257>

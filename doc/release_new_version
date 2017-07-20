@@ -204,8 +204,8 @@ GNU Parallel 20170622 ('Grenfell') <<[stable]>> has been released. It is availab
 
 Haiku of the month:
 
-  <<>>
-    -- Ole Tange
+I don't care
+I just need to get shit done
 
 New in this release:
 
@@ -217,6 +217,18 @@ New in this release:
 * GNU Parallel was cited in:
 
 * GNU Parallel was used in: https://libraries.io/rubygems/aai
+
+* コマンドの並列化を行える『GNU parallel』の個人的使い方まとめhttps://orebibou.com/2017/07/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AE%E4%B8%A6%E5%88%97%E5%8C%96%E3%82%92%E8%A1%8C%E3%81%88%E3%82%8B%E3%80%8Egnu-parallel%E3%80%8F%E3%81%AE%E5%80%8B%E4%BA%BA%E7%9A%84%E4%BD%BF%E3%81%84/
+
+* https://blog.archive.org/2017/07/10/how-to-play-and-play-with-78rpm-record-transfers/
+
+* https://gxnotes.com/article/130363.html
+
+* https://sgillies.net/2017/05/18/rfc-8142-geojson-text-sequences.html
+
+* https://lukas.zapletalovi.com/2017/07/git-auto-fetch-script-i-run-every-day.html
+
+* http://crazyhottommy.blogspot.de/2017/07/cores-cpus-and-threads.html
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 
