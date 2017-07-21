@@ -7,259 +7,13 @@ par__pipe_tee	bug #45479: --pipe/--pipepart --tee
 par__pipe_tee	--pipe --tee
 par__pipe_tee	3221225472
 par__pipepart_spawn	### bug #46214: Using --pipepart doesnt spawn multiple jobs in version 20150922
-par__pipepart_spawn	1:local / 2 / 999
+par__pipepart_spawn	1:local / 8 / 999
 par__pipepart_tee	bug #45479: --pipe/--pipepart --tee
 par__pipepart_tee	--pipepart --tee
 par__pipepart_tee	3221225472
 par_compress_fail	### bug #41609: --compress fails
 par_compress_fail	24812dd0f24a26d08a780f988b9d5ad2  -
 par_compress_fail	24812dd0f24a26d08a780f988b9d5ad2  -
-par_first_print_halt_on_error_1	### Test first dying print --halt-on-error 1
-par_first_print_halt_on_error_1	0
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 1
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 8 jobs to finish.
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 2
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 7 jobs to finish.
-par_first_print_halt_on_error_1	3
-par_first_print_halt_on_error_1	0
-par_first_print_halt_on_error_1	1
-par_first_print_halt_on_error_1	2
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 3
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 6 jobs to finish.
-par_first_print_halt_on_error_1	3
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 3
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 5 jobs to finish.
-par_first_print_halt_on_error_1	4
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 4
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 4 jobs to finish.
-par_first_print_halt_on_error_1	5
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 5
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
-par_first_print_halt_on_error_1	6
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 6
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_first_print_halt_on_error_1	7
-par_first_print_halt_on_error_1	0
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 7
-par_first_print_halt_on_error_1	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_first_print_halt_on_error_1	8
-par_first_print_halt_on_error_1	parallel: This job failed:
-par_first_print_halt_on_error_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 8
-par_first_print_halt_on_error_1	exit code 1
-par_first_print_halt_on_error_2	### Test last dying print --halt-on-error 2
-par_first_print_halt_on_error_2	0
-par_first_print_halt_on_error_2	parallel: This job failed:
-par_first_print_halt_on_error_2	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ shift 1
-par_first_print_halt_on_error_2	exit code 1
-par_first_print_halt_on_error_minus_1	### Test last dying print --halt-on-error -1
-par_first_print_halt_on_error_minus_1	0
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 1
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 8 jobs to finish.
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 2
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 7 jobs to finish.
-par_first_print_halt_on_error_minus_1	3
-par_first_print_halt_on_error_minus_1	0
-par_first_print_halt_on_error_minus_1	1
-par_first_print_halt_on_error_minus_1	2
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 3
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 6 jobs to finish.
-par_first_print_halt_on_error_minus_1	3
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 3
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 5 jobs to finish.
-par_first_print_halt_on_error_minus_1	4
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 4
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 4 jobs to finish.
-par_first_print_halt_on_error_minus_1	5
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 5
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
-par_first_print_halt_on_error_minus_1	6
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 6
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_first_print_halt_on_error_minus_1	7
-par_first_print_halt_on_error_minus_1	0
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 7
-par_first_print_halt_on_error_minus_1	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_first_print_halt_on_error_minus_1	8
-par_first_print_halt_on_error_minus_1	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_1	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 8
-par_first_print_halt_on_error_minus_1	exit code 0
-par_first_print_halt_on_error_minus_2	### Test last dying print --halt-on-error -2
-par_first_print_halt_on_error_minus_2	0
-par_first_print_halt_on_error_minus_2	parallel: This job succeeded:
-par_first_print_halt_on_error_minus_2	perl -e sleep\ \$ARGV\[0\]\;print\ STDERR\ @ARGV,\"\\n\"\;\ exit\ not\ shift 1
-par_first_print_halt_on_error_minus_2	exit code 0
-par_halt_on_error	-2 true true	0
-par_halt_on_error	-2 true true	0
-par_halt_on_error	-2 true true	parallel: This job succeeded:
-par_halt_on_error	-2 true true	sleep 1;true
-par_halt_on_error	-2 true true	parallel: This job succeeded:
-par_halt_on_error	-2 true true	sleep 1;true
-par_halt_on_error	-2 true false	0
-par_halt_on_error	-2 true false	0
-par_halt_on_error	-2 true false	parallel: This job succeeded:
-par_halt_on_error	-2 true false	sleep 1;true
-par_halt_on_error	-2 true false	parallel: This job succeeded:
-par_halt_on_error	-2 true false	sleep 1;true
-par_halt_on_error	-2 false true	0
-par_halt_on_error	-2 false true	0
-par_halt_on_error	-2 false true	parallel: This job succeeded:
-par_halt_on_error	-2 false true	sleep 2;true
-par_halt_on_error	-2 false true	parallel: This job succeeded:
-par_halt_on_error	-2 false true	sleep 2;true
-par_halt_on_error	-2 false false	3
-par_halt_on_error	-2 false false	4
-par_halt_on_error	-2 false false	/bin/bash: non_exist: command not found
-par_halt_on_error	-1 true true	0
-par_halt_on_error	-1 true true	0
-par_halt_on_error	-1 true true	parallel: This job succeeded:
-par_halt_on_error	-1 true true	sleep 1;true
-par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	-1 true true	parallel: This job succeeded:
-par_halt_on_error	-1 true true	sleep 2;true
-par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	-1 true true	parallel: This job succeeded:
-par_halt_on_error	-1 true true	sleep 3;true
-par_halt_on_error	-1 true true	parallel: This job succeeded:
-par_halt_on_error	-1 true true	sleep 1;true
-par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
-par_halt_on_error	-1 true true	parallel: This job succeeded:
-par_halt_on_error	-1 true true	sleep 2;true
-par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	-1 true true	parallel: This job succeeded:
-par_halt_on_error	-1 true true	sleep 3;true
-par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	-1 true true	/bin/bash: non_exist: command not found
-par_halt_on_error	-1 true false	0
-par_halt_on_error	-1 true false	0
-par_halt_on_error	-1 true false	parallel: This job succeeded:
-par_halt_on_error	-1 true false	sleep 1;true
-par_halt_on_error	-1 true false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	-1 true false	parallel: This job succeeded:
-par_halt_on_error	-1 true false	sleep 3;true
-par_halt_on_error	-1 true false	parallel: This job succeeded:
-par_halt_on_error	-1 true false	sleep 1;true
-par_halt_on_error	-1 true false	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
-par_halt_on_error	-1 true false	parallel: This job succeeded:
-par_halt_on_error	-1 true false	sleep 3;true
-par_halt_on_error	-1 true false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	-1 true false	/bin/bash: non_exist: command not found
-par_halt_on_error	-1 false true	0
-par_halt_on_error	-1 false true	0
-par_halt_on_error	-1 false true	parallel: This job succeeded:
-par_halt_on_error	-1 false true	sleep 2;true
-par_halt_on_error	-1 false true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	-1 false true	parallel: This job succeeded:
-par_halt_on_error	-1 false true	sleep 2;true
-par_halt_on_error	-1 false true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	-1 false true	/bin/bash: non_exist: command not found
-par_halt_on_error	-1 false false	3
-par_halt_on_error	-1 false false	4
-par_halt_on_error	-1 false false	/bin/bash: non_exist: command not found
-par_halt_on_error	0 true true	0
-par_halt_on_error	0 true true	1
-par_halt_on_error	0 true true	/bin/bash: non_exist: command not found
-par_halt_on_error	0 true false	1
-par_halt_on_error	0 true false	2
-par_halt_on_error	0 true false	/bin/bash: non_exist: command not found
-par_halt_on_error	0 false true	2
-par_halt_on_error	0 false true	3
-par_halt_on_error	0 false true	/bin/bash: non_exist: command not found
-par_halt_on_error	0 false false	3
-par_halt_on_error	0 false false	4
-par_halt_on_error	0 false false	/bin/bash: non_exist: command not found
-par_halt_on_error	1 true true	0
-par_halt_on_error	1 true true	127
-par_halt_on_error	1 true true	/bin/bash: non_exist: command not found
-par_halt_on_error	1 true true	parallel: This job failed:
-par_halt_on_error	1 true true	sleep 4;non_exist
-par_halt_on_error	1 true false	1
-par_halt_on_error	1 true false	1
-par_halt_on_error	1 true false	parallel: This job failed:
-par_halt_on_error	1 true false	sleep 2;false
-par_halt_on_error	1 true false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	1 true false	parallel: This job failed:
-par_halt_on_error	1 true false	sleep 2;false
-par_halt_on_error	1 true false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	1 true false	/bin/bash: non_exist: command not found
-par_halt_on_error	1 true false	parallel: This job failed:
-par_halt_on_error	1 true false	sleep 4;non_exist
-par_halt_on_error	1 false true	1
-par_halt_on_error	1 false true	1
-par_halt_on_error	1 false true	parallel: This job failed:
-par_halt_on_error	1 false true	sleep 1;false
-par_halt_on_error	1 false true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	1 false true	parallel: This job failed:
-par_halt_on_error	1 false true	sleep 3;false
-par_halt_on_error	1 false true	parallel: This job failed:
-par_halt_on_error	1 false true	sleep 1;false
-par_halt_on_error	1 false true	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
-par_halt_on_error	1 false true	parallel: This job failed:
-par_halt_on_error	1 false true	sleep 3;false
-par_halt_on_error	1 false true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	1 false true	/bin/bash: non_exist: command not found
-par_halt_on_error	1 false true	parallel: This job failed:
-par_halt_on_error	1 false true	sleep 4;non_exist
-par_halt_on_error	1 false false	1
-par_halt_on_error	1 false false	1
-par_halt_on_error	1 false false	parallel: This job failed:
-par_halt_on_error	1 false false	sleep 1;false
-par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	1 false false	parallel: This job failed:
-par_halt_on_error	1 false false	sleep 2;false
-par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	1 false false	parallel: This job failed:
-par_halt_on_error	1 false false	sleep 3;false
-par_halt_on_error	1 false false	parallel: This job failed:
-par_halt_on_error	1 false false	sleep 1;false
-par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
-par_halt_on_error	1 false false	parallel: This job failed:
-par_halt_on_error	1 false false	sleep 2;false
-par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
-par_halt_on_error	1 false false	parallel: This job failed:
-par_halt_on_error	1 false false	sleep 3;false
-par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
-par_halt_on_error	1 false false	/bin/bash: non_exist: command not found
-par_halt_on_error	1 false false	parallel: This job failed:
-par_halt_on_error	1 false false	sleep 4;non_exist
-par_halt_on_error	2 true true	0
-par_halt_on_error	2 true true	127
-par_halt_on_error	2 true true	/bin/bash: non_exist: command not found
-par_halt_on_error	2 true true	parallel: This job failed:
-par_halt_on_error	2 true true	sleep 4;non_exist
-par_halt_on_error	2 true false	1
-par_halt_on_error	2 true false	1
-par_halt_on_error	2 true false	parallel: This job failed:
-par_halt_on_error	2 true false	sleep 2;false
-par_halt_on_error	2 true false	parallel: This job failed:
-par_halt_on_error	2 true false	sleep 2;false
-par_halt_on_error	2 false true	1
-par_halt_on_error	2 false true	1
-par_halt_on_error	2 false true	parallel: This job failed:
-par_halt_on_error	2 false true	sleep 1;false
-par_halt_on_error	2 false true	parallel: This job failed:
-par_halt_on_error	2 false true	sleep 1;false
-par_halt_on_error	2 false false	1
-par_halt_on_error	2 false false	1
-par_halt_on_error	2 false false	parallel: This job failed:
-par_halt_on_error	2 false false	sleep 1;false
-par_halt_on_error	2 false false	parallel: This job failed:
-par_halt_on_error	2 false false	sleep 1;false
 par_interactive	### Test -p --interactive
 par_interactive	opt--interactive 1
 par_interactive	opt--interactive 3
@@ -273,10 +27,12 @@ par_interactive	sleep 0.1; echo opt-p 2 ?...n
 par_interactive	sleep 0.1; echo opt-p 3 ?...y
 par_interactive	spawn /tmp/parallel-script-for-expect
 par_k	### Test -k
-par_k	parallel: Warning: Only enough file handles to run 8 jobs in parallel.
-par_k	parallel: Warning: Running 'parallel -j0 -N 8 --pipe parallel -j0' or
+par_k	parallel: Warning: Only enough file handles to run 9 jobs in parallel.
+par_k	parallel: Warning: Running 'parallel -j0 -N 9 --pipe parallel -j0' or
 par_k	parallel: Warning: raising 'ulimit -n' or 'nofile' in /etc/security/limits.conf
 par_k	parallel: Warning: or /proc/sys/fs/file-max may help.
+par_k	parallel: Warning: No more file handles. 
+par_k	parallel: Warning: Raising ulimit -n or /etc/security/limits.conf may help.
 par_k	begin
 par_k	1
 par_k	2
@@ -556,10 +312,10 @@ par_results_compress	0
 par_results_compress	1
 par_results_csv	bug #: --results csv
 par_results_csv	--header : --tag --lb --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
-par_results_csv	--header : --tag --lb --files --compress	1,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag --lb --files --compress	2,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag --lb --files --compress	3,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag --lb --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --lb --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --lb --files --compress	2,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --lb --files --compress	3,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --lb --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	--header : --tag --lb --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header : --tag --lb --files 	1,:,999.999,999.999,0,6,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	--header : --tag --lb --files 	2,:,999.999,999.999,0,6,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
@@ -584,10 +340,10 @@ par_results_csv	--header : --tag --lb  	",
 par_results_csv	--header : --tag --lb  	4,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12	23 12
 par_results_csv	--header : --tag --lb  	",
 par_results_csv	--header : --tag  --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
-par_results_csv	--header : --tag  --files --compress	1,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag  --files --compress	2,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag  --files --compress	3,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag  --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag  --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag  --files --compress	2,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag  --files --compress	3,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag  --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	--header : --tag  --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header : --tag  --files 	1,:,999.999,999.999,0,6,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	--header : --tag  --files 	2,:,999.999,999.999,0,6,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
@@ -612,10 +368,10 @@ par_results_csv	--header : --tag   	",
 par_results_csv	--header : --tag   	4,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12	23 12
 par_results_csv	--header : --tag   	",
 par_results_csv	--header :  --lb --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
-par_results_csv	--header :  --lb --files --compress	1,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :  --lb --files --compress	2,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :  --lb --files --compress	3,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :  --lb --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --lb --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --lb --files --compress	2,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --lb --files --compress	3,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --lb --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	--header :  --lb --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header :  --lb --files 	1,:,999.999,999.999,0,6,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	--header :  --lb --files 	2,:,999.999,999.999,0,6,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
@@ -640,10 +396,10 @@ par_results_csv	--header :  --lb  	",
 par_results_csv	--header :  --lb  	4,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12
 par_results_csv	--header :  --lb  	",
 par_results_csv	--header :   --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
-par_results_csv	--header :   --files --compress	1,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :   --files --compress	2,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :   --files --compress	3,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :   --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :   --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :   --files --compress	2,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :   --files --compress	3,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :   --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	--header :   --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header :   --files 	1,:,999.999,999.999,0,6,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	--header :   --files 	2,:,999.999,999.999,0,6,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
@@ -668,15 +424,15 @@ par_results_csv	--header :    	",
 par_results_csv	--header :    	4,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12
 par_results_csv	--header :    	",
 par_results_csv	 --tag --lb --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
-par_results_csv	 --tag --lb --files --compress	1,:,999.999,999.999,0,31,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	2,:,999.999,999.999,0,31,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	3,:,999.999,999.999,0,31,0,0,"echo H2 12",H2,12,"H2 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 22 H1",22,H1,"22 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	5,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	6,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	7,:,999.999,999.999,0,31,0,0,"echo 23 H1",23,H1,"23 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	8,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --lb --files --compress	9,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	1,:,999.999,999.999,0,15,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	2,:,999.999,999.999,0,15,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	3,:,999.999,999.999,0,15,0,0,"echo H2 12",H2,12,"H2 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 22 H1",22,H1,"22 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	5,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	6,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	7,:,999.999,999.999,0,15,0,0,"echo 23 H1",23,H1,"23 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	8,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --lb --files --compress	9,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	 --tag --lb --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
 par_results_csv	 --tag --lb --files 	1,:,999.999,999.999,0,6,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	 --tag --lb --files 	2,:,999.999,999.999,0,6,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
@@ -726,15 +482,15 @@ par_results_csv	 --tag --lb  	",
 par_results_csv	 --tag --lb  	9,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12	23 12
 par_results_csv	 --tag --lb  	",
 par_results_csv	 --tag  --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
-par_results_csv	 --tag  --files --compress	1,:,999.999,999.999,0,31,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	2,:,999.999,999.999,0,31,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	3,:,999.999,999.999,0,31,0,0,"echo H2 12",H2,12,"H2 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 22 H1",22,H1,"22 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	5,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	6,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	7,:,999.999,999.999,0,31,0,0,"echo 23 H1",23,H1,"23 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	8,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag  --files --compress	9,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	1,:,999.999,999.999,0,15,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	2,:,999.999,999.999,0,15,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	3,:,999.999,999.999,0,15,0,0,"echo H2 12",H2,12,"H2 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 22 H1",22,H1,"22 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	5,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	6,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	7,:,999.999,999.999,0,15,0,0,"echo 23 H1",23,H1,"23 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	8,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag  --files --compress	9,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	 --tag  --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
 par_results_csv	 --tag  --files 	1,:,999.999,999.999,0,6,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	 --tag  --files 	2,:,999.999,999.999,0,6,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
@@ -784,15 +540,15 @@ par_results_csv	 --tag   	",
 par_results_csv	 --tag   	9,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12	23 12
 par_results_csv	 --tag   	",
 par_results_csv	  --lb --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
-par_results_csv	  --lb --files --compress	1,:,999.999,999.999,0,31,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	2,:,999.999,999.999,0,31,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	3,:,999.999,999.999,0,31,0,0,"echo H2 12",H2,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 22 H1",22,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	5,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	6,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	7,:,999.999,999.999,0,31,0,0,"echo 23 H1",23,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	8,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --lb --files --compress	9,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	1,:,999.999,999.999,0,15,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	2,:,999.999,999.999,0,15,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	3,:,999.999,999.999,0,15,0,0,"echo H2 12",H2,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 22 H1",22,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	5,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	6,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	7,:,999.999,999.999,0,15,0,0,"echo 23 H1",23,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	8,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --lb --files --compress	9,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	  --lb --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
 par_results_csv	  --lb --files 	1,:,999.999,999.999,0,6,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	  --lb --files 	2,:,999.999,999.999,0,6,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
@@ -842,15 +598,15 @@ par_results_csv	  --lb  	",
 par_results_csv	  --lb  	9,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12
 par_results_csv	  --lb  	",
 par_results_csv	   --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
-par_results_csv	   --files --compress	1,:,999.999,999.999,0,31,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	2,:,999.999,999.999,0,31,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	3,:,999.999,999.999,0,31,0,0,"echo H2 12",H2,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 22 H1",22,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	5,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	6,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	7,:,999.999,999.999,0,31,0,0,"echo 23 H1",23,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	8,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	   --files --compress	9,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	1,:,999.999,999.999,0,15,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	2,:,999.999,999.999,0,15,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	3,:,999.999,999.999,0,15,0,0,"echo H2 12",H2,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 22 H1",22,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	5,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	6,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	7,:,999.999,999.999,0,15,0,0,"echo 23 H1",23,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	8,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	   --files --compress	9,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	   --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
 par_results_csv	   --files 	1,:,999.999,999.999,0,6,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	   --files 	2,:,999.999,999.999,0,6,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,

@@ -275,32 +275,6 @@ bug #46016: --joblog should not log when --dryrun
 echo Only_this
 echo '**'
 **
-echo 'bug #45993: --wd ... should also work when run locally'
-bug #45993: --wd ... should also work when run locally
-  parallel --wd /bi 'pwd; echo $OLDPWD; echo' ::: fail
-parallel: Error: Cannot change into non-executable dir /bi: No such file or directory
-  parallel --wd /bin 'pwd; echo $OLDPWD; echo' ::: OK
-/bin
-~/privat/parallel/testsuite
-OK
-  parallel --wd / 'pwd; echo $OLDPWD; echo' ::: OK
-/
-~/privat/parallel/testsuite
-OK
-  parallel --wd /tmp 'pwd; echo $OLDPWD; echo' ::: OK
-/tmp
-~/privat/parallel/testsuite
-OK
-  parallel --wd ... 'pwd; echo $OLDPWD; echo' ::: OK | perl -pe 's/\d+/0/g'
-~/.parallel/tmp/hk-0-0
-~/privat/parallel/testsuite
-OK
-  parallel --wd . 'pwd; echo $OLDPWD; echo' ::: OK
-~/privat/parallel/testsuite
-~/privat/parallel/testsuite
-OK
-echo '**'
-**
 echo 'bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken'
 bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken
   parallel --bar -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
@@ -1473,17 +1447,6 @@ echo '### bug #36260: {n} expansion in --colsep files fails for empty fields if 
 AB
 echo '**'
 **
-echo '### bug #34422: parallel -X --eta crashes with div by zero'
-### bug #34422: parallel -X --eta crashes with div by zero
-  # We do not care how long it took
-  seq 2 | stdout parallel -X --eta echo | grep -E -v 'ETA:.*AVG'
-
-Computers / CPU cores / Max jobs to run
-1:local / 2 / 2
-
-Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete
-echo '**'
-**
   bash -O extglob -c '. `which env_parallel.bash`;     _longopt () {       case "$prev" in         --+([-a-z0-9_]))           echo foo;;       esac;     };     env_parallel echo ::: env_parallel 2>&1   '
 env_parallel
 echo '**'
@@ -1592,6 +1555,12 @@ echo '**'
 **
 ### 1 .par file from --files expected
 10
+par_X_eta_div_zero	### bug #34422: parallel -X --eta crashes with div by zero
+par_X_eta_div_zero	
+par_X_eta_div_zero	Computers / CPU cores / Max jobs to run
+par_X_eta_div_zero	0:local / 0 / 0
+par_X_eta_div_zero	
+par_X_eta_div_zero	Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete
 par_append_joblog	### can you append to a joblog using +
 par_append_joblog	1
 par_append_joblog	1
@@ -1683,3 +1652,20 @@ par_tee	4 -l	122853
 par_tee	4 -c	815290
 par_tee	5 -l	122853
 par_tee	5 -c	815290
+par_wd_3dot_local	bug #45993: --wd ... should also work when run locally
+par_wd_3dot_local	parallel: Error: Cannot change into non-executable dir /bi: No such file or directory
+par_wd_3dot_local	/bin
+par_wd_3dot_local	~/privat/parallel/testsuite
+par_wd_3dot_local	OK
+par_wd_3dot_local	/
+par_wd_3dot_local	~/privat/parallel/testsuite
+par_wd_3dot_local	OK
+par_wd_3dot_local	/tmp
+par_wd_3dot_local	~/privat/parallel/testsuite
+par_wd_3dot_local	OK
+par_wd_3dot_local	/home/tange/.parallel/tmp/hostname-0-0
+par_wd_3dot_local	/home/tange/privat/parallel/testsuite
+par_wd_3dot_local	OK
+par_wd_3dot_local	~/privat/parallel/testsuite
+par_wd_3dot_local	~/privat/parallel/testsuite
+par_wd_3dot_local	OK

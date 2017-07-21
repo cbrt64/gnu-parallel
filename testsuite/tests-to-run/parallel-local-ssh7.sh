@@ -945,16 +945,13 @@ par_bash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.bash`;
-    bigvar="$(yes | head -c 119k)"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
 
-    bigvar="$(yes \"| head -c 79k)"
+    bigvar="$(yes \"| head -c 76k)"
     env_parallel echo ::: OK
     env_parallel -S lo echo ::: OK
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(yes a| head -c 120k)"'"; };'
+    eval 'bigfunc() { a="'"$(yes a| head -c 115k)"'"; };'
     env_parallel echo ::: OK
     env_parallel -S lo echo ::: OK
 

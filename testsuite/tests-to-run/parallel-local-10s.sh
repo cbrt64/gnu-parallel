@@ -98,52 +98,6 @@ par_k() {
 	echo "echo end") | stdout nice parallel -k -j0
 }
 
-par_halt_on_error() {
-    mytest() {
-	HALT=$1
-	BOOL1=$2
-	BOOL2=$3
-	(echo "sleep 1;$BOOL1";
-	    echo "sleep 2;$BOOL2";
-	    echo "sleep 3;$BOOL1") |
-	parallel -j10 --halt-on-error $HALT
-	echo $?
-	(echo "sleep 1;$BOOL1";
-	    echo "sleep 2;$BOOL2";
-	    echo "sleep 3;$BOOL1";
-	    echo "sleep 4;non_exist";
-	) |
-	parallel -j10 --halt-on-error $HALT
-	echo $?
-    }
-    export -f mytest
-    parallel -j0 -k --tag mytest ::: -2 -1 0 1 2 ::: true false ::: true false
-}
-
-par_first_print_halt_on_error_1() {
-    echo '### Test first dying print --halt-on-error 1';
-    (echo 0; echo 3; seq 0 7;echo 0; echo 8) | parallel -j10 -kq --halt 1 perl -e 'sleep $ARGV[0];print STDERR @ARGV,"\n"; exit shift';
-    echo exit code $?
-}
-
-par_first_print_halt_on_error_2() {
-    echo '### Test last dying print --halt-on-error 2';
-    (echo 0; echo 3; seq 0 7;echo 0; echo 8) | parallel -j10 -kq --halt 2 perl -e 'sleep $ARGV[0];print STDERR @ARGV,"\n"; exit shift';
-    echo exit code $?
-}
-
-par_first_print_halt_on_error_minus_1() {
-    echo '### Test last dying print --halt-on-error -1';
-    (echo 0; echo 3; seq 0 7;echo 0; echo 8) | parallel -j10 -kq --halt -1 perl -e 'sleep $ARGV[0];print STDERR @ARGV,"\n"; exit not shift';
-    echo exit code $?
-}
-
-par_first_print_halt_on_error_minus_2() {
-    echo '### Test last dying print --halt-on-error -2';
-    (echo 0; echo 3; seq 0 7;echo 0; echo 8) | parallel -j10 -kq --halt -2 perl -e 'sleep $ARGV[0];print STDERR @ARGV,"\n"; exit not shift';
-    echo exit code $?
-}
-
 par_k_linebuffer() {
     echo '### bug #47750: -k --line-buffer should give current job up to now'
 

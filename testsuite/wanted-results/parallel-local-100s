@@ -1,3 +1,160 @@
+par_halt_on_error 2>&1
+par_halt_on_error	-2 true true	0
+par_halt_on_error	-2 true true	0
+par_halt_on_error	-2 true true	parallel: This job succeeded:
+par_halt_on_error	-2 true true	sleep 1;true
+par_halt_on_error	-2 true true	parallel: This job succeeded:
+par_halt_on_error	-2 true true	sleep 1;true
+par_halt_on_error	-2 true false	0
+par_halt_on_error	-2 true false	0
+par_halt_on_error	-2 true false	parallel: This job succeeded:
+par_halt_on_error	-2 true false	sleep 1;true
+par_halt_on_error	-2 true false	parallel: This job succeeded:
+par_halt_on_error	-2 true false	sleep 1;true
+par_halt_on_error	-2 false true	0
+par_halt_on_error	-2 false true	0
+par_halt_on_error	-2 false true	parallel: This job succeeded:
+par_halt_on_error	-2 false true	sleep 2;true
+par_halt_on_error	-2 false true	parallel: This job succeeded:
+par_halt_on_error	-2 false true	sleep 2;true
+par_halt_on_error	-2 false false	3
+par_halt_on_error	-2 false false	4
+par_halt_on_error	-2 false false	/bin/bash: non_exist: command not found
+par_halt_on_error	-1 true true	0
+par_halt_on_error	-1 true true	0
+par_halt_on_error	-1 true true	parallel: This job succeeded:
+par_halt_on_error	-1 true true	sleep 1;true
+par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	-1 true true	parallel: This job succeeded:
+par_halt_on_error	-1 true true	sleep 2;true
+par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	-1 true true	parallel: This job succeeded:
+par_halt_on_error	-1 true true	sleep 3;true
+par_halt_on_error	-1 true true	parallel: This job succeeded:
+par_halt_on_error	-1 true true	sleep 1;true
+par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
+par_halt_on_error	-1 true true	parallel: This job succeeded:
+par_halt_on_error	-1 true true	sleep 2;true
+par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	-1 true true	parallel: This job succeeded:
+par_halt_on_error	-1 true true	sleep 3;true
+par_halt_on_error	-1 true true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	-1 true true	/bin/bash: non_exist: command not found
+par_halt_on_error	-1 true false	0
+par_halt_on_error	-1 true false	0
+par_halt_on_error	-1 true false	parallel: This job succeeded:
+par_halt_on_error	-1 true false	sleep 1;true
+par_halt_on_error	-1 true false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	-1 true false	parallel: This job succeeded:
+par_halt_on_error	-1 true false	sleep 3;true
+par_halt_on_error	-1 true false	parallel: This job succeeded:
+par_halt_on_error	-1 true false	sleep 1;true
+par_halt_on_error	-1 true false	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
+par_halt_on_error	-1 true false	parallel: This job succeeded:
+par_halt_on_error	-1 true false	sleep 3;true
+par_halt_on_error	-1 true false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	-1 true false	/bin/bash: non_exist: command not found
+par_halt_on_error	-1 false true	0
+par_halt_on_error	-1 false true	0
+par_halt_on_error	-1 false true	parallel: This job succeeded:
+par_halt_on_error	-1 false true	sleep 2;true
+par_halt_on_error	-1 false true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	-1 false true	parallel: This job succeeded:
+par_halt_on_error	-1 false true	sleep 2;true
+par_halt_on_error	-1 false true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	-1 false true	/bin/bash: non_exist: command not found
+par_halt_on_error	-1 false false	3
+par_halt_on_error	-1 false false	4
+par_halt_on_error	-1 false false	/bin/bash: non_exist: command not found
+par_halt_on_error	0 true true	0
+par_halt_on_error	0 true true	1
+par_halt_on_error	0 true true	/bin/bash: non_exist: command not found
+par_halt_on_error	0 true false	1
+par_halt_on_error	0 true false	2
+par_halt_on_error	0 true false	/bin/bash: non_exist: command not found
+par_halt_on_error	0 false true	2
+par_halt_on_error	0 false true	3
+par_halt_on_error	0 false true	/bin/bash: non_exist: command not found
+par_halt_on_error	0 false false	3
+par_halt_on_error	0 false false	4
+par_halt_on_error	0 false false	/bin/bash: non_exist: command not found
+par_halt_on_error	1 true true	0
+par_halt_on_error	1 true true	127
+par_halt_on_error	1 true true	/bin/bash: non_exist: command not found
+par_halt_on_error	1 true true	parallel: This job failed:
+par_halt_on_error	1 true true	sleep 4;non_exist
+par_halt_on_error	1 true false	1
+par_halt_on_error	1 true false	1
+par_halt_on_error	1 true false	parallel: This job failed:
+par_halt_on_error	1 true false	sleep 2;false
+par_halt_on_error	1 true false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	1 true false	parallel: This job failed:
+par_halt_on_error	1 true false	sleep 2;false
+par_halt_on_error	1 true false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	1 true false	/bin/bash: non_exist: command not found
+par_halt_on_error	1 true false	parallel: This job failed:
+par_halt_on_error	1 true false	sleep 4;non_exist
+par_halt_on_error	1 false true	1
+par_halt_on_error	1 false true	1
+par_halt_on_error	1 false true	parallel: This job failed:
+par_halt_on_error	1 false true	sleep 1;false
+par_halt_on_error	1 false true	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	1 false true	parallel: This job failed:
+par_halt_on_error	1 false true	sleep 3;false
+par_halt_on_error	1 false true	parallel: This job failed:
+par_halt_on_error	1 false true	sleep 1;false
+par_halt_on_error	1 false true	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
+par_halt_on_error	1 false true	parallel: This job failed:
+par_halt_on_error	1 false true	sleep 3;false
+par_halt_on_error	1 false true	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	1 false true	/bin/bash: non_exist: command not found
+par_halt_on_error	1 false true	parallel: This job failed:
+par_halt_on_error	1 false true	sleep 4;non_exist
+par_halt_on_error	1 false false	1
+par_halt_on_error	1 false false	1
+par_halt_on_error	1 false false	parallel: This job failed:
+par_halt_on_error	1 false false	sleep 1;false
+par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	1 false false	parallel: This job failed:
+par_halt_on_error	1 false false	sleep 2;false
+par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	1 false false	parallel: This job failed:
+par_halt_on_error	1 false false	sleep 3;false
+par_halt_on_error	1 false false	parallel: This job failed:
+par_halt_on_error	1 false false	sleep 1;false
+par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 3 jobs to finish.
+par_halt_on_error	1 false false	parallel: This job failed:
+par_halt_on_error	1 false false	sleep 2;false
+par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 2 jobs to finish.
+par_halt_on_error	1 false false	parallel: This job failed:
+par_halt_on_error	1 false false	sleep 3;false
+par_halt_on_error	1 false false	parallel: Starting no more jobs. Waiting for 1 jobs to finish.
+par_halt_on_error	1 false false	/bin/bash: non_exist: command not found
+par_halt_on_error	1 false false	parallel: This job failed:
+par_halt_on_error	1 false false	sleep 4;non_exist
+par_halt_on_error	2 true true	0
+par_halt_on_error	2 true true	127
+par_halt_on_error	2 true true	/bin/bash: non_exist: command not found
+par_halt_on_error	2 true true	parallel: This job failed:
+par_halt_on_error	2 true true	sleep 4;non_exist
+par_halt_on_error	2 true false	1
+par_halt_on_error	2 true false	1
+par_halt_on_error	2 true false	parallel: This job failed:
+par_halt_on_error	2 true false	sleep 2;false
+par_halt_on_error	2 true false	parallel: This job failed:
+par_halt_on_error	2 true false	sleep 2;false
+par_halt_on_error	2 false true	1
+par_halt_on_error	2 false true	1
+par_halt_on_error	2 false true	parallel: This job failed:
+par_halt_on_error	2 false true	sleep 1;false
+par_halt_on_error	2 false true	parallel: This job failed:
+par_halt_on_error	2 false true	sleep 1;false
+par_halt_on_error	2 false false	1
+par_halt_on_error	2 false false	1
+par_halt_on_error	2 false false	parallel: This job failed:
+par_halt_on_error	2 false false	sleep 1;false
+par_halt_on_error	2 false false	parallel: This job failed:
+par_halt_on_error	2 false false	sleep 1;false
 par_mem_leak 2>&1
 par_mem_leak	### test for mem leak
 par_mem_leak	no mem leak detected
