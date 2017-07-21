@@ -95,7 +95,7 @@ B<Zsh, Fish, Ksh, and Pdksh functions and aliases>: Use B<env_parallel>.
 
 The command cannot contain the character \257 (macron: ¯).
 
-=item B<{}> (beta testing)
+=item B<{}>
 
 Input line. This replacement string will be replaced by a full line
 read from the input source. The input source is normally stdin
@@ -112,7 +112,7 @@ parsed by the shell. The exception is if the command starts with a
 replacement string; then the string is not quoted.
 
 
-=item B<{.}> (beta testing)
+=item B<{.}>
 
 Input line without extension. This replacement string will be replaced
 by the input with the extension removed. If the input line contains
@@ -128,7 +128,7 @@ The replacement string B<{.}> can be changed with B<--er>.
 To understand replacement strings see B<{}>.
 
 
-=item B<{/}> (beta testing)
+=item B<{/}>
 
 Basename of input line. This replacement string will be replaced by
 the input with the directory part removed.
@@ -139,7 +139,7 @@ B<--basenamereplace>.
 To understand replacement strings see B<{}>.
 
 
-=item B<{//}> (beta testing)
+=item B<{//}>
 
 Dirname of input line. This replacement string will be replaced by the
 dir of the input line. See B<dirname>(1).
@@ -150,7 +150,7 @@ B<--dirnamereplace>.
 To understand replacement strings see B<{}>.
 
 
-=item B<{/.}> (beta testing)
+=item B<{/.}>
 
 Basename of input line without extension. This replacement string will
 be replaced by the input with the directory and extension part
@@ -162,7 +162,7 @@ B<--basenameextensionreplace>.
 To understand replacement strings see B<{}>.
 
 
-=item B<{#}> (beta testing)
+=item B<{#}>
 
 Sequence number of the job to run. This replacement string will be
 replaced by the sequence number of the job being run. It contains the
@@ -173,7 +173,7 @@ The replacement string B<{#}> can be changed with B<--seqreplace>.
 To understand replacement strings see B<{}>.
 
 
-=item B<{%}> (beta testing)
+=item B<{%}>
 
 Job slot number. This replacement string will be replaced by the job's
 slot number between 1 and number of jobs to run in parallel. There
@@ -185,7 +185,7 @@ The replacement string B<{%}> can be changed with B<--slotreplace>.
 To understand replacement strings see B<{}>.
 
 
-=item B<{>I<n>B<}> (beta testing)
+=item B<{>I<n>B<}>
 
 Argument from input source I<n> or the I<n>'th argument. This
 positional replacement string will be replaced by the input from input
@@ -196,7 +196,7 @@ I<n>'th last argument.
 To understand replacement strings see B<{}>.
 
 
-=item B<{>I<n>.B<}> (beta testing)
+=item B<{>I<n>.B<}>
 
 Argument from input source I<n> or the I<n>'th argument without
 extension. It is a combination of B<{>I<n>B<}> and B<{.}>.
@@ -209,7 +209,7 @@ extension removed.
 To understand positional replacement strings see B<{>I<n>B<}>.
 
 
-=item B<{>I<n>/B<}> (beta testing)
+=item B<{>I<n>/B<}>
 
 Basename of argument from input source I<n> or the I<n>'th argument.
 It is a combination of B<{>I<n>B<}> and B<{/}>.
@@ -222,7 +222,7 @@ directory (if any) removed.
 To understand positional replacement strings see B<{>I<n>B<}>.
 
 
-=item B<{>I<n>//B<}> (beta testing)
+=item B<{>I<n>//B<}>
 
 Dirname of argument from input source I<n> or the I<n>'th argument.
 It is a combination of B<{>I<n>B<}> and B<{//}>.
@@ -234,7 +234,7 @@ the I<n>'th argument (when used with B<-N>). See B<dirname>(1).
 To understand positional replacement strings see B<{>I<n>B<}>.
 
 
-=item B<{>I<n>/.B<}> (beta testing)
+=item B<{>I<n>/.B<}>
 
 Basename of argument from input source I<n> or the I<n>'th argument
 without extension.  It is a combination of B<{>I<n>B<}>, B<{/}>, and
@@ -248,7 +248,7 @@ directory (if any) and extension removed.
 To understand positional replacement strings see B<{>I<n>B<}>.
 
 
-=item B<{=>I<perl expression>B<=}> (beta testing)
+=item B<{=>I<perl expression>B<=}>
 
 Replace with calculated I<perl expression>. B<$_> will contain the
 same as B<{}>. After evaluating I<perl expression> B<$_> will be used
@@ -294,7 +294,7 @@ Example:
 See also: B<--rpl> B<--parens>
 
 
-=item B<{=>I<n> I<perl expression>B<=}> (beta testing)
+=item B<{=>I<n> I<perl expression>B<=}>
 
 Positional equivalent to B<{=perl expression=}>. To understand
 positional replacement strings see B<{>I<n>B<}>.
@@ -1083,7 +1083,7 @@ Arguments will be recycled if one input source has more arguments than the other
 See also B<--header>, B<:::+>, B<::::+>.
 
 
-=item B<--load> I<max-load> (beta testing)
+=item B<--load> I<max-load>
 
 Do not start new jobs on a given computer unless the number of running
 processes on the computer is less than I<max-load>. I<max-load> uses
@@ -1261,7 +1261,7 @@ control on the command line (used by GNU B<parallel> internally when
 called with B<--sshlogin>).
 
 
-=item B<--plus> (beta testing)
+=item B<--plus>
 
 Activate additional replacement strings: {+/} {+.} {+..} {+...} {..}
 {...} {/..} {/...} {##}. The idea being that '{+foo}' matches the opposite of
@@ -1774,7 +1774,7 @@ impossible to track which input block corresponds to which output.
 B<--round-robin> implies B<--pipe>, except if B<--pipepart> is given.
 
 
-=item B<--rpl> 'I<tag> I<perl expression>' (beta testing)
+=item B<--rpl> 'I<tag> I<perl expression>'
 
 Use I<tag> as a replacement string for I<perl expression>. This makes
 it possible to define your own replacement strings. GNU B<parallel>'s
