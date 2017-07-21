@@ -1,5 +1,36 @@
 20170622
 
+* Vote for GNU Parallel's community ads on
+  http://meta.unix.stackexchange.com/a/4356/2972
+  http://meta.askubuntu.com/a/16750/22307
+  http://meta.serverfault.com/a/9040/45704
+
+* GNU Parallel was cited in: Hayabusa: Simple and Fast Full-Text
+  Search Engine for Massive System Log Data
+  http://dl.acm.org/citation.cfm?id=3095788
+
+* コマンドの並列化を行える『GNU parallel』の個人的使い方まとめ
+  https://orebibou.com/2017/07/%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AE%E4%B8%A6%E5%88%97%E5%8C%96%E3%82%92%E8%A1%8C%E3%81%88%E3%82%8B%E3%80%8Egnu-parallel%E3%80%8F%E3%81%AE%E5%80%8B%E4%BA%BA%E7%9A%84%E4%BD%BF%E3%81%84/
+
+* How to play and play with thousands of digitized 78rpm records
+  https://blog.archive.org/2017/07/10/how-to-play-and-play-with-78rpm-record-transfers/
+
+* 并行一个for循环 https://gxnotes.com/article/130363.html
+
+* RFC 8142: GeoJSON Text Sequences
+  https://sgillies.net/2017/05/18/rfc-8142-geojson-text-sequences.html
+
+* Git auto fetch script I run every day
+  https://lukas.zapletalovi.com/2017/07/git-auto-fetch-script-i-run-every-day.html
+
+* cores, cpus and threads
+  http://crazyhottommy.blogspot.de/2017/07/cores-cpus-and-threads.html
+
+* Bug fixes and man page updates.
+
+
+20170622
+
 * The command line can now contain \257 (Macron) or UTF characters
   containing \257.
 
