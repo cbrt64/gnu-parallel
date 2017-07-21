@@ -26,18 +26,24 @@ par_test_onall_u() {
 par_test_nonall() {
     echo '### Test --nonall'
     parallel --nonall -k -S $SSHLOGIN1,$SSHLOGIN2 pwd |
+	perl -pe 's:/mnt/4tb::g' |
 	sort
 }    
 
 par_test_nonall_u() {
     echo '### Test --nonall -u - should be interleaved x y x y'
-    parallel --nonall -S $SSHLOGIN1,$SSHLOGIN2 -u 'pwd|grep -q csh && sleep 3; pwd;sleep 12;pwd;'
+    parallel --nonall -S $SSHLOGIN1,$SSHLOGIN2 -u 'pwd|grep -q csh && sleep 3; pwd;sleep 12;pwd;' |
+	perl -pe 's:/mnt/4tb::g'
 }    
 
 par_read_sshloginfile_from_stdin() {
     echo '### Test read sshloginfile from STDIN'
-    echo $SSHLOGIN1,$SSHLOGIN2 | parallel -S - -k --nonall pwd
-    echo $SSHLOGIN1,$SSHLOGIN2 | parallel --sshloginfile - -k --onall pwd\; echo ::: foo
+    echo $SSHLOGIN1,$SSHLOGIN2 |
+	parallel -S - -k --nonall pwd |
+	perl -pe 's:/mnt/4tb::g'
+    echo $SSHLOGIN1,$SSHLOGIN2 |
+	parallel --sshloginfile - -k --onall pwd\; echo ::: foo |
+	perl -pe 's:/mnt/4tb::g'
 }
 
 par_nonall_basefile() {
@@ -77,7 +83,8 @@ par_workdir_dot() {
     ssh $SSHLOGIN1 mkdir -p mydir
     mkdir -p $HOME/mydir
     cd $HOME/mydir
-    parallel --workdir . -S $SSHLOGIN1 ::: pwd
+    parallel --workdir . -S $SSHLOGIN1 ::: pwd |
+	perl -pe 's:/mnt/4tb::g'
 }
 
 par_wd_dot() {
@@ -85,7 +92,8 @@ par_wd_dot() {
     ssh $SSHLOGIN2 mkdir -p mydir
     mkdir -p $HOME/mydir
     cd $HOME/mydir
-    parallel --workdir . -S $SSHLOGIN2 ::: pwd
+    parallel --workdir . -S $SSHLOGIN2 ::: pwd |
+	perl -pe 's:/mnt/4tb::g'
 }    
 
 par_wd_braces() {

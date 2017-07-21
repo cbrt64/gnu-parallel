@@ -174,17 +174,6 @@ echo 'bug #46016: --joblog should not log when --dryrun'
 
 echo '**'
 
-echo 'bug #45993: --wd ... should also work when run locally'
-
-  parallel --wd /bi 'pwd; echo $OLDPWD; echo' ::: fail
-  parallel --wd /bin 'pwd; echo $OLDPWD; echo' ::: OK
-  parallel --wd / 'pwd; echo $OLDPWD; echo' ::: OK
-  parallel --wd /tmp 'pwd; echo $OLDPWD; echo' ::: OK
-  parallel --wd ... 'pwd; echo $OLDPWD; echo' ::: OK | perl -pe 's/\d+/0/g'
-  parallel --wd . 'pwd; echo $OLDPWD; echo' ::: OK
-
-echo '**'
-
 echo 'bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken'
 
   parallel --bar -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
@@ -554,13 +543,6 @@ echo '### bug #36260: {n} expansion in --colsep files fails for empty fields if 
 
 echo '**'
 
-echo '### bug #34422: parallel -X --eta crashes with div by zero'
-
-  # We do not care how long it took
-  seq 2 | stdout parallel -X --eta echo | grep -E -v 'ETA:.*AVG'
-
-echo '**'
-
   bash -O extglob -c '. `which env_parallel.bash`; 
     _longopt () { 
       case "$prev" in 
@@ -722,6 +704,28 @@ par_newline_in_command() {
       echo {1
       } {2}
     " ::: O ::: K
+}
+
+par_wd_3dot_local() {
+    echo 'bug #45993: --wd ... should also work when run locally'
+
+    parallel --wd /bi 'pwd; echo $OLDPWD; echo' ::: fail
+    parallel --wd /bin 'pwd; echo $OLDPWD; echo' ::: OK
+    parallel --wd / 'pwd; echo $OLDPWD; echo' ::: OK
+    parallel --wd /tmp 'pwd; echo $OLDPWD; echo' ::: OK
+    parallel --wd ... 'pwd; echo $OLDPWD; echo' ::: OK |
+	perl -pe 's:/mnt/4tb::; s/'`hostname`'/hostname/g' | 
+	perl -pe 's/\d+/0/g'
+    parallel --wd . 'pwd; echo $OLDPWD; echo' ::: OK
+}
+
+par_X_eta_div_zero() {
+    echo '### bug #34422: parallel -X --eta crashes with div by zero'
+
+    # We do not care how long it took
+    seq 2 | stdout parallel -X --eta echo |
+	grep -E -v 'ETA:.*AVG' |
+	perl -pe 's/\d+/0/g'
 }
 
 export -f $(compgen -A function | grep par_)

@@ -2,11 +2,11 @@
 
 # Check servers up on http://www.polarhome.com/service/status/
 
-P_ALL="tru64 syllable pidora raspbian solaris openindiana aix hpux qnx debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly hpux-ia64 vax alpha ultrix minix irix hurd beaglebone cubieboard2"
+P_ALL="alpha tru64 hpux-ia64 syllable pidora raspbian solaris openindiana aix hpux qnx debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix irix hurd beaglebone cubieboard2"
 P_NOTWORKING="vax alpha openstep"
 P_NOTWORKING_YET="ultrix irix"
 
-P_WORKING="tru64 syllable pidora raspbian solaris openindiana aix hpux qnx debian-ppc suse solaris-x86 mandriva ubuntu scosysv  unixware centos miros macosx redhat netbsd openbsd freebsd debian"
+P_WORKING="tru64 syllable pidora raspbian solaris openindiana aix hpux qnx debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian"
 P_TEMPORARILY_BROKEN="minix hurd hpux-ia64 dragonfly"
 
 P="$P_WORKING"
@@ -33,8 +33,21 @@ test_empty_cmd() {
     bin/perl bin/parallel echo ::: OK_with_empty_cmd
 }
 export -f test_empty_cmd
-stdout parallel -j0 -k --retries $RETRIES --timeout $TIMEOUT --delay 0.1 --tag \
+stdout parallel -j0 -k --retries $RETRIES --timeout $TIMEOUT --delay 0.03 --tag \
   --nonall --env test_empty_cmd -S macosx.polarhome.com test_empty_cmd > /tmp/test_empty_cmd &
+
+copy() {
+    host=$1
+    src="$2"
+    dst="$3"
+    cat "$src" |
+	stdout ssh -oLogLevel=quiet $host "cat > bin/'$dst'.tmp && chmod 755 bin/'$dst'.tmp && mv bin/'$dst'.tmp bin/'$dst'"
+}
+export -f copy
+stdout parallel -j100 -r --retries $RETRIES --timeout $TIMEOUT --delay 0.1 --tag -v \
+       copy {2} {1} {1/} \
+       ::: /usr/local/bin/{parallel,env_parallel,env_parallel.*} \
+       ::: $POLAR
 
 copy_and_test() {
     H=$1
@@ -70,9 +83,9 @@ echo
 echo '### env_parallel echo :::: <(echo OK)'
 echo '(bash only)'
 echo
-parallel --retries $RETRIES --onall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'bin/env_parallel --install'
-parallel --retries $RETRIES --onall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'env_parallel echo env_parallel ::: OK'
-parallel --retries $RETRIES --onall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'env_parallel echo reading from process substitution :::: <(echo OK)'
+parallel --retries $RETRIES --nonall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'bin/env_parallel --install'
+parallel --retries $RETRIES --nonall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'env_parallel echo env_parallel ::: OK'
+parallel --retries $RETRIES --nonall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'env_parallel echo reading from process substitution :::: <(echo OK)'
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

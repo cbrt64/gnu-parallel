@@ -2,14 +2,14 @@ bug #46120: Suspend should suspend (at least local) children
 it should burn 1.9 CPU seconds, but no more than that
 The 5 second sleep will make it be killed by timeout when it fgs
 
-stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | grep --color=auto -q CPUTIME=1
+stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | grep -q CPUTIME=1
 Zero=OK 0
 
-echo 1 | stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" | grep --color=auto -q CPUTIME=1
+echo 1 | stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" | grep -q CPUTIME=1
 Zero=OK 0
 Control case: Burn for 2.9 seconds
 
-stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | grep --color=auto -q CPUTIME=1
+stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | grep -q CPUTIME=1
 1=OK 1
 par_hostgroup	### --hostgroup force ncpu
 par_hostgroup	parallel
@@ -23,7 +23,7 @@ par_hostgroup	tange
 par_hostgroup	### --hostgroup two group arg
 par_hostgroup	parallel
 par_hostgroup	parallel
-par_hostgroup	parallel
+par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tange
@@ -41,7 +41,7 @@ par_hostgroup	tange
 par_hostgroup	### --hostgroup multiple group arg + unused group
 par_hostgroup	parallel
 par_hostgroup	parallel
-par_hostgroup	parallel
+par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tange
@@ -62,21 +62,21 @@ par_hostgroup	implicit_group
 par_hostgroup	### --hostgroup -S @group
 par_hostgroup	tange
 par_hostgroup	tange
-par_hostgroup	tcsh
+par_hostgroup	tange
 par_hostgroup	tcsh
 par_hostgroup	tcsh
 par_hostgroup	tcsh
 par_hostgroup	### --hostgroup -S @group1 -Sgrp2
 par_hostgroup	parallel
 par_hostgroup	parallel
-par_hostgroup	parallel
+par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tcsh
 par_hostgroup	tcsh
 par_hostgroup	### --hostgroup -S @group1+grp2
 par_hostgroup	parallel
 par_hostgroup	parallel
-par_hostgroup	parallel
+par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tcsh
 par_hostgroup	tcsh
@@ -1196,9 +1196,6 @@ par_testhalt	soon done 0 false	echo job 2; sleep 0.9; exit 0
 par_testhalt	soon done 0 false	job 3
 par_testhalt	soon done 0 false	parallel: This job finished:
 par_testhalt	soon done 0 false	echo job 3; sleep 1.2; exit 0
-par_testhalt	soon done 0 false	job 4
-par_testhalt	soon done 0 false	parallel: This job finished:
-par_testhalt	soon done 0 false	echo job 4; sleep 1.5; exit 0
 par_testhalt	soon done 0 false	0
 par_testhalt	soon done 1 true	### testhalt --halt soon,done=1
 par_testhalt	soon done 1 true	job 1
@@ -1224,9 +1221,6 @@ par_testhalt	soon done 1 false	echo job 2; sleep 0.9; exit 0
 par_testhalt	soon done 1 false	job 3
 par_testhalt	soon done 1 false	parallel: This job finished:
 par_testhalt	soon done 1 false	echo job 3; sleep 1.2; exit 0
-par_testhalt	soon done 1 false	job 4
-par_testhalt	soon done 1 false	parallel: This job finished:
-par_testhalt	soon done 1 false	echo job 4; sleep 1.5; exit 0
 par_testhalt	soon done 1 false	0
 par_testhalt	soon done 2 true	### testhalt --halt soon,done=2
 par_testhalt	soon done 2 true	job 1

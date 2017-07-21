@@ -1376,7 +1376,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20170707;
+    $Global::version = 20170722;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -3726,7 +3726,7 @@ sub onall {
 sub __SIGNAL_HANDLING__ {}
 
 
-sub tstp {
+sub sigtstp {
     # Send TSTP signal (Ctrl-Z) to all children process groups
     # Uses:
     #   %SIG
@@ -3749,12 +3749,12 @@ sub signal_children {
     #   %SIG
     # Returns: N/A
     my $signal = shift;
+    debug("run", "Sending $signal ");
     kill $signal, map { -$_ } keys %Global::running;
     # Use default signal handler for GNU Parallel itself
     $SIG{$signal} = undef;
     kill $signal, $$;
 }
-
 
 sub save_original_signal_handler {
     # Remember the original signal handler
@@ -3773,11 +3773,11 @@ sub save_original_signal_handler {
     $SIG{TERM} = sub {}; # Dummy until jobs really start
     $SIG{ALRM} = 'IGNORE';
     # Allow Ctrl-Z to suspend and `fg` to continue
-    $SIG{TSTP} = \&tstp;
+    $SIG{TSTP} = \&sigtstp;
     $SIG{PIPE} = \&sigpipe;
     $SIG{CONT} = sub {
-	# Set $SIG{TSTP} again (it is undef'ed in tstp() )
-	$SIG{TSTP} = \&tstp;
+	# Set $SIG{TSTP} again (it is undef'ed in sigtstp() )
+	$SIG{TSTP} = \&sigtstp;
 	# Send continue signal to all children process groups
 	kill "CONT", map { -$_ } keys %Global::running;
     };
@@ -6438,7 +6438,7 @@ sub rsync_transfer_cmd {
     }
     $file = ::shell_quote_file($file);
     my $sshcmd = $self->sshcommand();
-    my $rsync_opt = "-KrlDzR -e" . ::shell_quote_scalar($sshcmd);
+    my $rsync_opt = "-rlDzR -e" . ::shell_quote_scalar($sshcmd);
     my $serverlogin = $self->serverlogin();
     # Make dir if it does not exist
     return "$sshcmd $serverlogin -- mkdir -p $rsync_destdir && " .
@@ -6980,6 +6980,10 @@ sub write {
     # syswrite may not write all in one go,
     # so make sure everything is written.
     my $written;
+
+    # If writing is to a closed pipe:
+    #   Do not call signal handler, but let nothing be written
+    local $SIG{PIPE} = undef;
     while($written = syswrite($stdin_fh,$$remaining_ref)){
 	substr($$remaining_ref,0,$written) = "";
     }
