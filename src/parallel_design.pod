@@ -1077,7 +1077,7 @@ users:
 https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
 
 There is no doubt that this is not an ideal solution, but no one has
-so far come up with an ideal solution - neither for maintaining GNU
+so far come up with an ideal solution - neither for funding GNU
 B<parallel> nor other free software.
 
 If you believe you have the perfect solution, you should try it out,

@@ -1042,6 +1042,7 @@ sub options_hash {
 	 "internal-pipe-means-argfiles" => \$opt::internal_pipe_means_argfiles,
 	 "Y" => \$opt::retired,
          "skip-first-line" => \$opt::skip_first_line,
+	 "bug" => \$opt::bug,
 	 "header=s" => \$opt::header,
 	 "cat" => \$opt::cat,
 	 "fifo" => \$opt::fifo,
@@ -1102,6 +1103,7 @@ sub parse_options {
     if($opt::nokeeporder) { $opt::keeporder = undef; }
 
     if(@opt::v) { $Global::verbose = $#opt::v+1; } # Convert -v -v to v=2
+    if($opt::bug) { ::die_bug("test-bug"); }
     $Global::debug = $opt::D;
     $Global::shell = $ENV{'PARALLEL_SHELL'} || parent_shell($$)
 	|| $ENV{'SHELL'} || "/bin/sh";
@@ -1419,7 +1421,7 @@ sub init_globals {
 	 # Bash ${a:2:3}
 	 '{:(\d+?):(\d+?)}' => '$_ = substr($_,$$1,$$2);',
 	 # Bash ${a#bc}
-	 '{#([^#][^}]*?)}' => 's/^$$1//;',
+	 '{#([^#}][^}]*?)}' => 's/^$$1//;',
 	 # Bash ${a%def}
 	 '{%([^}]+?)}' => 's/$$1$//;',
 	 # Bash ${a/def/ghi} ${a/def/}
@@ -3674,7 +3676,7 @@ sub onall {
 	     ((defined $opt::timeout) ? "--timeout ".$opt::timeout : ""),
 	     ((defined $opt::ungroup) ? "-u" : ""),
 	     ((defined $opt::tee) ? "--tee" : ""),
-	     ((defined $opt::workdir) ? "--wd ".$opt::workdir : ""),
+	     ((defined $opt::workdir) ? "--wd ".::shell_quote_scalar($opt::workdir) : ""),
 	     (@Global::transfer_files ? map { "--tf ".::shell_quote_scalar($_) }
 	      @Global::transfer_files : ""),
 	     (@Global::ret_files ? map { "--return ".::shell_quote_scalar($_) }
@@ -4089,7 +4091,10 @@ sub die_bug {
     my $bugid = shift;
     print STDERR
 	("$Global::progname: This should not happen. You have found a bug.\n",
-	 "Please contact <parallel\@gnu.org> and include:\n",
+	 "Please contact <parallel\@gnu.org> and follow\n",
+	 "https://www.gnu.org/software/parallel/man.html#REPORTING-BUGS\n",
+	 "\n",
+	 "Include this in the report:\n",
 	 "* The version number: $Global::version\n",
 	 "* The bugid: $bugid\n",
 	 "* The command line being run\n",

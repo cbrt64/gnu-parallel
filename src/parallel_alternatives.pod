@@ -866,71 +866,292 @@ opposite GNU B<parallel> B<rush> does not clean up, if the process
 dies abnormally.
 
 B<rush> has some string manipulations that can be emulated by putting
-this into ~/.parallel/config (% is used instead of ^):
+this into ~/.parallel/config (/ is used instead of %, and % is used
+instead of ^ as that is closer to bash's ${var%postfix}):
 
   --rpl '{:} s:(\.[^/]+)*$::'
   --rpl '{:%([^}]+?)} s:$$1(\.[^/]+)*$::'
   --rpl '{/:%([^}]*?)} s:.*/(.*)$$1(\.[^/]+)*$:$1:'
   --rpl '{/:} s:(.*/)?([^/.]+)(\.[^/]+)*$:$2:'
+  --rpl '{@(.*?)} /$$1/ and $_=$1;'
+
+Here are the examples from B<rush>'s website with the equivalent
+command in GNU B<parallel>.
+
+=head3 1. Simple run, quoting is not necessary
+
+  $ seq 1 3 | rush echo {}
+
+  $ seq 1 3 | parallel echo {}
+
+=head3 2. Read data from file (`-i`)
+
+  $ rush echo {} -i data1.txt -i data2.txt
+
+  $ cat data1.txt data2.txt | parallel echo {}
+
+=head3 3. Keep output order (`-k`)
+
+  $ seq 1 3 | rush 'echo {}' -k
+
+  $ seq 1 3 | parallel -k echo {}
 
 
-Here are the examples from B<rush>'s website:
+=head3 4. Timeout (`-t`)
 
-B<1> seq 1 10 | rush echo {}
+  $ time seq 1 | rush 'sleep 2; echo {}' -t 1
 
-B<1> seq 1 10 | parallel echo {}
+  $ time seq 1 | parallel --timeout 1 'sleep 2; echo {}'
 
-B<2> seq 1 10 | rush 'echo {}' -k
+=head3 5. Retry (`-r`)
 
-B<2> seq 1 10 | parallel -k 'echo {}'
+  $ seq 1 | rush 'python unexisted_script.py' -r 1
 
-B<3> seq 1 | rush 'sleep 2; echo {}' -t 1
+  $ seq 1 | parallel --retries 2 'python unexisted_script.py'
 
-B<3> seq 1 | parallel --timeout 1 'sleep 2; echo {}'
+Use B<-u> to see it is really run twice:
 
-B<4> seq 1 | rush 'python script.py' -r 3
+  $ seq 1 | parallel -u --retries 2 'python unexisted_script.py'
 
-B<4> seq 1 | parallel --retries 4 'python script.py'
+=head3 6. Dirname (`{/}`) and basename (`{%}`) and remove custom
+suffix (`{^suffix}`)
 
-B<5> echo dir/file_1.txt.gz | rush 'echo {/} {%} {^_1.txt.gz}'
+  $ echo dir/file_1.txt.gz | rush 'echo {/} {%} {^_1.txt.gz}'
 
-B<5> echo dir/file_1.txt.gz | parallel --plus 'echo {//} {/} {%_1.txt.gz}'
+  $ echo dir/file_1.txt.gz |
+      parallel --plus echo {//} {/} {%_1.txt.gz}
 
-B<6> echo dir.d/file.txt.gz | rush 'echo {.} {:} {%.} {%:}'
+=head3 7. Get basename, and remove last (`{.}`) or any (`{:}`) extension
 
-B<6> echo dir.d/file.txt.gz | parallel 'echo {.} {:} {/.} {/:}'
+  $ echo dir.d/file.txt.gz | rush 'echo {.} {:} {%.} {%:}'
 
-B<7> echo 12 file.txt dir/s_1.fq.gz | rush 'echo job {#}: {2} {2.} {3%:^_1}'
+  $ echo dir.d/file.txt.gz | parallel 'echo {.} {:} {/.} {/:}'
 
-B<7> echo 12 file.txt dir/s_1.fq.gz | parallel --colsep ' ' 'echo job {#}: {2} {2.} {3/:%_1}'
+=head3 8. Job ID, combine fields index and other replacement strings
 
-B<8> echo a=b=c | rush 'echo {1} {2} {3}' -d =
+  $ echo 12 file.txt dir/s_1.fq.gz |
+      rush 'echo job {#}: {2} {2.} {3%:^_1}'
 
-B<8> echo a=b=c | parallel --colsep = 'echo {1} {2} {3}'
+  $ echo 12 file.txt dir/s_1.fq.gz |
+      parallel --colsep ' ' 'echo job {#}: {2} {2.} {3/:%_1}'
 
-B<9> echo a=b=c | rush -D "=" -k 'echo {}'
+=head3 9. Capture submatch using regular expression (`{@regexp}`)
 
-B<9> echo -n a=b=c | parallel -d "=" -k 'echo {}'
+  $ echo read_1.fq.gz | rush 'echo {@(.+)_\d}'
 
-B<9a> echo abc | rush -D "" -k 'echo {}'
+  $ echo read_1.fq.gz | parallel 'echo {@(.+)_\d}'
 
-B<9a> echo -n abc | parallel --pipe --recend '' --block 1 -k parallel echo
+=head3 10. Custom field delimiter (`-d`)
 
-B<10> seq 1 | rush 'echo Hello, {fname} {lname}!' -v fname=Wei -v lname=Shen
+  $ echo a=b=c | rush 'echo {1} {2} {3}' -d =
 
-B<10> seq 1 | parallel -N0 'fname=Wei; lname=Shen; echo Hello, ${fname} ${lname}!'
+  $ echo a=b=c | parallel -d = echo {1} {2} {3}
 
-B<11> echo read_1.fq.gz | rush -v p={:^_1} 'echo {p} {p}_2.fq.gz'
+=head3 11. Send multi-lines to every command (`-n`)
 
-B<11> echo read_1.fq.gz | parallel 'p={:%_1}; echo ${p} ${p}_2.fq.gz'
+  $ seq 5 | rush -n 2 -k 'echo "{}"; echo'
 
-B<12> seq 1 3 | rush 'sleep {}; echo {}' -c -t 2
+  $ seq 5 |
+      parallel -n 2 -k \
+        'echo {=-1 $_=join"\n",@arg[1..$#arg] =}; echo'
 
-B<12> seq 1 3 | parallel --joblog mylog --timeout 2 'sleep {}; echo {}'
+  $ seq 5 | rush -n 2 -k 'echo "{}"; echo' -J ' '
 
-B<12> Followed by:
+  $ seq 5 | parallel -n 2 -k 'echo {}; echo'
 
-B<12> seq 1 3 | parallel --joblog mylog --retry-failed 'sleep {}; echo {}'
+
+=head3 12. Custom record delimiter (`-D`), note that empty records are not used.
+
+  $ echo a b c d | rush -D " " -k 'echo {}'
+
+  $ echo a b c d | parallel -d " " -k 'echo {}'
+
+  $ echo abcd | rush -D "" -k 'echo {}'
+
+  Cannot be done by GNU Parallel
+
+  $ cat fasta.fa
+  >seq1
+  tag
+  >seq2
+  cat
+  gat
+  >seq3
+  attac
+  a
+  cat
+
+  $ cat fasta.fa | rush -D ">" \
+      'echo FASTA record {#}: name: {1} sequence: {2}' -k -d "\n"
+  # rush fails to join the multiline sequences
+
+  $ cat fasta.fa | (read -n1 ignore_first_char;
+      parallel -d '>' --colsep '\n' echo FASTA record {#}: \
+        name: {1} sequence: '{=2 $_=join"",@arg[2..$#arg]=}'
+    )
+
+=head3 13. Assign value to variable, like `awk -v` (`-v`)
+
+  $ seq 1 |
+      rush 'echo Hello, {fname} {lname}!' -v fname=Wei -v lname=Shen
+
+  $ seq 1 |
+      parallel -N0 \
+        'fname=Wei; lname=Shen; echo Hello, ${fname} ${lname}!'
+
+  $ for var in a b; do \
+  $   seq 1 3 | rush -k -v var=$var 'echo var: {var}, data: {}'; \
+  $ done
+
+In GNU B<parallel> you would typically do:
+
+  $ seq 1 3 | parallel -k echo var: {1}, data: {2} ::: a b :::: -
+
+If you I<really> want the var:
+
+  $ seq 1 3 |
+      parallel -k var={1} ';echo var: $var, data: {}' ::: a b :::: -
+
+If you I<really> want the B<for>-loop:
+
+  $ for var in a b; do
+  >   export var;
+  >   seq 1 3 | parallel -k 'echo var: $var, data: {}';
+  > done
+
+Contrary to B<rush> this also works if the value is complex like:
+
+  My brother's 12" records
+
+
+=head3 14. B<Preset variable> (`-v`), avoid repeatedly writing verbose replacement strings
+
+  # naive way
+  $ echo read_1.fq.gz | rush 'echo {:^_1} {:^_1}_2.fq.gz'
+
+  $ echo read_1.fq.gz | parallel 'echo {:%_1} {:%_1}_2.fq.gz'
+
+  # macro + removing suffix
+  $ echo read_1.fq.gz |
+      rush -v p='{:^_1}' 'echo {p} {p}_2.fq.gz'
+
+  $ echo read_1.fq.gz |
+      parallel 'p={:%_1}; echo $p ${p}_2.fq.gz'
+
+  # macro + regular expression
+  $ echo read_1.fq.gz | rush -v p='{@(.+?)_\d}' 'echo {p} {p}_2.fq.gz'
+
+  $ echo read_1.fq.gz | parallel 'p={@(.+?)_\d}; echo $p ${p}_2.fq.gz'
+
+Contrary to B<rush> GNU B<parallel> works with complex values:
+
+  echo "My brother's 12\"read_1.fq.gz" |
+    parallel 'p={@(.+?)_\d}; echo $p ${p}_2.fq.gz'
+
+=head3 15. Interrupt jobs by `Ctrl-C`, rush will stop unfinished
+commands and exit.
+
+  $ seq 1 20 | rush 'sleep 1; echo {}'
+  ^C
+
+  $ seq 1 20 | parallel 'sleep 1; echo {}'
+  ^C
+
+=head3 16. Continue/resume jobs (`-c`). When some jobs failed (by
+execution failure, timeout, or cancelling by user with `Ctrl + C`),
+please switch flag `-c/--continue` on and run again, so that `rush`
+can save successful commands and ignore them in **NEXT** run.
+
+  $ seq 1 3 | rush 'sleep {}; echo {}' -t 3 -c
+  $ cat successful_cmds.rush
+  $ seq 1 3 | rush 'sleep {}; echo {}' -t 3 -c
+
+  $ seq 1 3 | parallel --joblog mylog --timeout 2 \
+      'sleep {}; echo {}'
+  $ cat mylog
+  $ seq 1 3 | parallel --joblog mylog --retry-failed \
+      'sleep {}; echo {}'
+
+Multi-line jobs:
+
+  $ seq 1 3 | rush 'sleep {}; echo {}; \
+    echo finish {}' -t 3 -c -C finished.rush
+  $ cat finished.rush
+  $ seq 1 3 | rush 'sleep {}; echo {}; \
+    echo finish {}' -t 3 -c -C finished.rush
+
+  $ seq 1 3 |
+      parallel --joblog mylog --timeout 2 'sleep {}; echo {}; \
+    echo finish {}'
+  $ cat mylog
+  $ seq 1 3 |
+      parallel --joblog mylog --retry-failed 'sleep {}; echo {}; \
+        echo finish {}'
+
+=head3 17. A comprehensive example: downloading 1K+ pages given by
+three URL list files using `phantomjs save_page.js` (some page
+contents are dynamicly generated by Javascript, so `wget` does not
+work). Here I set max jobs number (`-j`) as `20`, each job has a max
+running time (`-t`) of `60` seconds and `3` retry changes
+(`-r`). Continue flag `-c` is also switched on, so we can continue
+unfinished jobs. Luckily, it's accomplished in one run :)
+
+  $ for f in $(seq 2014 2016); do \
+  $    /bin/rm -rf $f; mkdir -p $f; \
+  $    cat $f.html.txt | rush -v d=$f -d = \
+         'phantomjs save_page.js "{}" > {d}/{3}.html' \
+         -j 20 -t 60 -r 3 -c; \
+  $ done
+
+GNU B<parallel> can append to an existing joblog with '+':
+
+  $ rm mylog
+  $ for f in $(seq 2014 2016); do
+      /bin/rm -rf $f; mkdir -p $f;
+      cat $f.html.txt |
+        parallel -j20 --timeout 60 --retries 4 --joblog +mylog \
+          --colsep = \
+          phantomjs save_page.js {1}={2}={3} '>' $f/{3}.html
+    done
+
+=head3 18. A bioinformatics example: mapping with `bwa`, and
+processing result with `samtools`:
+
+  $ ref=ref/xxx.fa
+  $ threads=25
+  $ ls -d raw.cluster.clean.mapping/* \
+    | rush -v ref=$ref -v j=$threads -v p='{}/{%}' \
+        'bwa mem -t {j} -M -a {ref} {p}_1.fq.gz {p}_2.fq.gz > {p}.sam; \
+        samtools view -bS {p}.sam > {p}.bam; \
+        samtools sort -T {p}.tmp -@ {j} {p}.bam -o {p}.sorted.bam; \
+        samtools index {p}.sorted.bam; \
+        samtools flagstat {p}.sorted.bam > {p}.sorted.bam.flagstat; \
+        /bin/rm {p}.bam {p}.sam;' \
+        -j 2 --verbose -c -C mapping.rush
+
+GNU B<parallel> would use a function:
+
+  $ ref=ref/xxx.fa
+  $ export ref
+  $ thr=25
+  $ export thr
+  $ bwa_sam() {
+      p="$1"
+      bam="$p".bam
+      sam="$p".sam
+      sortbam="$p".sorted.bam
+      bwa mem -t $thr -M -a $ref ${p}_1.fq.gz ${p}_2.fq.gz > "$sam"
+      samtools view -bS "$sam" > "$bam"
+      samtools sort -T ${p}.tmp -@ $thr "$bam" -o "$sortbam"
+      samtools index "$sortbam"
+      samtools flagstat "$sortbam" > "$sortbam".flagstat
+      /bin/rm "$bam" "$sam"
+    }
+  $ export -f bwa_sam
+  $ ls -d raw.cluster.clean.mapping/* |
+      parallel -j 2 --verbose --joblog mylog bwa_sam
+
+=head3 Other B<rush> features
 
 B<rush> has:
 
@@ -978,6 +1199,13 @@ With GNU B<parallel> this can be emulated by:
 
   parallel --plus echo '{%.bar.gz}' ::: foo.ext.bar.gz
 
+=item {@regexp}, capture submatch using regular expression
+
+With GNU B<parallel> this can be emulated by:
+
+  parallel --rpl '{@(.*?)} /$$1/ and $_=$1;' \
+    echo '{@\d_(.*).gz}' ::: 1_foo.gz
+
 =item {%.}, {%:}, basename without extension
 
 With GNU B<parallel> this can be emulated by:
@@ -1015,7 +1243,8 @@ double space, ' and ":
 
 =item * Commands of multi-lines
 
-To improve readibilty GNU B<parallel> encourages not to use multi-line
+While you I<can> use multi-lined commands in GNU B<parallel>, to
+improve readibilty GNU B<parallel> encourages not to use multi-line
 commands. In most cases it can be written as a function:
 
   seq 1 3 | parallel --timeout 2 --joblog my.log 'sleep {}; echo {}; \
