@@ -195,6 +195,8 @@ file:///home/tange/privat/parallel/doc/release_new_version
 
 from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
+stable-bcc: Jesse Alama <jessealama@fastmail.fm>
+
 
 Subject: GNU Parallel 20170822 ('<<>>') released <<[stable]>>
 
@@ -214,9 +216,23 @@ New in this release:
   http://meta.askubuntu.com/a/16750/22307
   http://meta.serverfault.com/a/9040/45704
 
-* GNU Parallel was cited in:
+* GNU Parallel was cited in: https://springerplus.springeropen.com/articles/10.1186/s40064-016-2022-y
+
+https://dzone.com/articles/running-bash-commands-in-parallel-1
 
 * https://medium.com/@nornagon/today-i-learned-gnu-parallel-plate-tectonics-9fcf24045e63
+
+* https://www.upf.edu/web/sct-sit/gnu-parallel-tutorial
+
+
+http://blogs.fluidinfo.com/terry/2017/08/05/do-stuff-on-things-in-parallel/
+
+http://ino.pm/outreach/presentations/2014/03/genomics-wranglers/index.html#/5
+http://www.ettemalab.org/using-for-loop-vs-gnu-parallel-for-blast/
+
+https://medium.com/@nornagon/today-i-learned-gnu-parallel-plate-tectonics-9fcf24045e63
+
+https://gxnotes.com/article/175866.html
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

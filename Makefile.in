@@ -275,7 +275,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 SUBDIRS = src
-EXTRA_DIST = CITATION CREDITS
+EXTRA_DIST = CITATION CREDITS cc-by-sa.txt fdl.txt
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 

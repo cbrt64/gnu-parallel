@@ -728,6 +728,25 @@ par_X_eta_div_zero() {
 	perl -pe 's/\d+/0/g'
 }
 
+par_parcat_args_stdin() {
+    echo 'bug #51690: parcat: read args from stdin'
+    tmp1=$(tempfile)
+    tmp2=$(tempfile)
+    echo OK1 > $tmp1
+    echo OK2 > $tmp2
+    (echo $tmp1
+     echo $tmp2) | parcat
+    rm $tmp1 $tmp2
+}
+
+par_parcat_rm() {
+    echo 'bug #51691: parcat --rm remove fifo when opened'
+    tmp1=$(tempfile)
+    echo OK1 > $tmp1
+    parcat --rm $tmp1
+    rm $tmp1 2>/dev/null || echo OK file removed
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

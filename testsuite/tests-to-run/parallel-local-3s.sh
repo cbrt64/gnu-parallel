@@ -152,5 +152,28 @@ newlines"' ::: a b c d e | sort
     ) | perl -pe 's/\0/<null>/g;s/\d+/./g'
 }
 
+par_parcat_mixing() {
+    echo 'parcat output should mix: a b a b'
+    mktmpfifo() {
+	tmp=$(tempfile)
+	rm $tmp
+	mkfifo $tmp
+	echo $tmp
+    }
+    slow_output() {
+	string=$1
+	perl -e 'print "'$string'"x9000,"start\n"'
+	sleep 1
+	perl -e 'print "'$string'"x9000,"end\n"'
+    }
+    tmp1=$(mktmpfifo)
+    tmp2=$(mktmpfifo)
+    slow_output a > $tmp1 &
+    sleep 0.5
+    slow_output b > $tmp2 &
+    parcat $tmp1 $tmp2 | tr -s ab
+}
+
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort | parallel -j6 --tag -k '{} 2>&1'

@@ -19,15 +19,20 @@ you use:
 
 =head1 EXAMPLES
 
-=head2 Do be done
+=head2 Simple line buffered output
 
-  mkfifo slot-{1..5}-digit-{0..9}
-  parallel -j5 'seq 100000 | grep {} > slot-{%}-digit-{}' ::: {0..9} &
-  parallel parcat slot-{1..5}-digit-{} '>' digit-{} ::: {0..9}
+GNU Parallel saves output to tempfiles. If the amount of data is
+bigger than the free disk space, then you can use this technique to do
+line buffering without saving to disk:
+
+  mkfifo slot-{1..5}
+  seq 10000000 | parallel -j5 --round --pipe 'cat > slot-{%}' &
+  parcat slot-{1..5} | wc
 
 =head1 REPORTING BUGS
 
-GNU B<parcat> is part of GNU B<parallel>. Report bugs to <bug-parallel@gnu.org>.
+GNU B<parcat> is part of GNU B<parallel>. Report bugs to
+<bug-parallel@gnu.org>.
 
 
 =head1 AUTHOR
