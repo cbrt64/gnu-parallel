@@ -552,7 +552,7 @@ e
   echo '### test too long args'
 ### test too long args
   perl -e 'print "z"x1000000' | parallel echo 2>&1
-parallel: Error: Command line too long (1000005 >= 65524) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+parallel: Error: Command line too long (1000005 >= 131057) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
   perl -e 'print "z"x1000000' | xargs echo 2>&1
 xargs: argument line too long
   (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
@@ -819,7 +819,7 @@ echo far
 ### Test --show-limits
   (echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
 Maximal size of command: 131049
-Maximal used size of command: 65524
+Maximal used size of command: 131057
 
 Execution of  will continue now, and it will try to read its input
 and run commands; if this is not what you wanted to happen, please
@@ -1325,236 +1325,8 @@ echo '### Test --tty'
 /dev/tty
 /dev/tty
 /dev/tty
-echo '**'
-**
-echo '### Test bugfix if no command given'
-### Test bugfix if no command given
-  (echo echo; seq 1 5; perl -e 'print "z"x1000000'; seq 12 15) | stdout parallel -j1 -km -s 10
-1 2
-/bin/bash: 3: command not found
-parallel: Error: Command line too long (1000002 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
-echo '**'
-**
-echo "bug #34958: --pipe with record size measured in lines"
-bug #34958: --pipe with record size measured in lines
-  seq 10 | parallel -k --pipe -l 4 cat\;echo bug 34958-2
-1
-2
-3
-4
-5
-6
-7
-8
-bug 34958-2
-9
-10
-bug 34958-2
-echo '**'
-**
-echo "bug #37325: Inefficiency of --pipe -L"
-bug #37325: Inefficiency of --pipe -L
-  seq 2000 | parallel -k --pipe --block 1k -L 4 wc\;echo FOO | uniq
-    276     276     996
-FOO
-    248     248     992
-FOO
-    248     248     992
-FOO
-    244     244     993
-FOO
-    200     200    1000
-FOO
-    200     200    1000
-FOO
-    200     200    1000
-FOO
-    200     200    1000
-FOO
-    184     184     920
-FOO
-echo '**'
-**
-echo "bug #34958: --pipe with record size measured in lines"
-bug #34958: --pipe with record size measured in lines
-  seq 10 | parallel -k --pipe -L 4 cat\;echo bug 34958-1
-1
-2
-3
-4
-5
-6
-7
-8
-bug 34958-1
-9
-10
-bug 34958-1
-echo '**'
-**
-echo "### bug #41482: --pipe --compress blocks at different -j/seq combinations"
-### bug #41482: --pipe --compress blocks at different -j/seq combinations
-  seq 1 | parallel -k -j2 --compress -N1 -L1 --pipe cat;   echo echo 1-4 + 1-4
-1
-echo 1-4 + 1-4
-    seq 4 | parallel -k -j3 --compress -N1 -L1 -vv echo;   echo 4 times wc to stderr to stdout
-echo 1
-1
-echo 2
-2
-echo 3
-3
-echo 4
-4
-4 times wc to stderr to stdout
-    (seq 4 | parallel -k -j3 --compress -N1 -L1 --pipe wc '>&2') 2>&1 >/dev/null
-      1       1       2
-      1       1       2
-      1       1       2
-      1       1       2
-  echo 1 2 3 4
-1 2 3 4
-    seq 4 | parallel -k -j3 --compress echo;   echo 1 2 3 4
-1
-2
-3
-4
-1 2 3 4
-    seq 4 | parallel -k -j1 --compress echo;   echo 1 2
-1
-2
-3
-4
-1 2
-    seq 2 | parallel -k -j1 --compress echo;   echo 1 2 3
-1
-2
-1 2 3
-    seq 3 | parallel -k -j2 --compress -N1 -L1 --pipe cat; echo '**'
-1
-2
-3
-**
-echo '### --pipe without command'
-### --pipe without command
-  seq -w 10 | stdout parallel --pipe
-parallel: Error: --pipe/--pipepart must have a command to pipe into (e.g. 'cat').
-echo '**'
-**
-echo '### bug #36260: {n} expansion in --colsep files fails for empty fields if all following fields are also empty'
-### bug #36260: {n} expansion in --colsep files fails for empty fields if all following fields are also empty
-  echo A,B,, | parallel --colsep , echo {1}{3}{2}
-AB
-echo '**'
-**
-  bash -O extglob -c '. `which env_parallel.bash`;     _longopt () {       case "$prev" in         --+([-a-z0-9_]))           echo foo;;       esac;     };     env_parallel echo ::: env_parallel 2>&1   '
-env_parallel
-echo '**'
-**
-echo '### bug #48745: :::+ bug'
-### bug #48745: :::+ bug
-  parallel -k echo ::: 11 22 33 ::::+ <(seq 3) <(seq 21 23) ::: a b c :::+ aa bb cc
-11 1 21 a aa
-11 1 21 b bb
-11 1 21 c cc
-22 2 22 a aa
-22 2 22 b bb
-22 2 22 c cc
-33 3 23 a aa
-33 3 23 b bb
-33 3 23 c cc
-  parallel -k echo :::: <(seq 3) <(seq 21 23) :::+ a b c ::: aa bb cc
-1 21 a aa
-1 21 a bb
-1 21 a cc
-1 22 b aa
-1 22 b bb
-1 22 b cc
-1 23 c aa
-1 23 c bb
-1 23 c cc
-2 21 a aa
-2 21 a bb
-2 21 a cc
-2 22 b aa
-2 22 b bb
-2 22 b cc
-2 23 c aa
-2 23 c bb
-2 23 c cc
-3 21 a aa
-3 21 a bb
-3 21 a cc
-3 22 b aa
-3 22 b bb
-3 22 b cc
-3 23 c aa
-3 23 c bb
-3 23 c cc
-  parallel -k echo :::: <(seq 3) :::: <(seq 21 23) :::+ a b c ::: aa bb cc
-1 21 a aa
-1 21 a bb
-1 21 a cc
-1 22 b aa
-1 22 b bb
-1 22 b cc
-1 23 c aa
-1 23 c bb
-1 23 c cc
-2 21 a aa
-2 21 a bb
-2 21 a cc
-2 22 b aa
-2 22 b bb
-2 22 b cc
-2 23 c aa
-2 23 c bb
-2 23 c cc
-3 21 a aa
-3 21 a bb
-3 21 a cc
-3 22 b aa
-3 22 b bb
-3 22 b cc
-3 23 c aa
-3 23 c bb
-3 23 c cc
-echo '**'
-**
-echo '### bug #48658: --linebuffer --files'
-### bug #48658: --linebuffer --files
-  stdout parallel --files --linebuffer 'sleep .1;seq {};sleep .1' ::: {1..10} | wc -l
-10
-echo '**'
-**
-echo 'bug #49538: --header and {= =}'
-bug #49538: --header and {= =}
-  parallel --header : echo '{=v2=}{=v1 $_=Q($_)=}' ::: v1 K ::: v2 O
-OK
-  parallel --header : echo '{2}{=1 $_=Q($_)=}' ::: v2 K ::: v1 O
-OK
-  parallel --header : echo {var/.} ::: var sub/dir/file.ext
-file
-  parallel --header : echo {var//} ::: var sub/dir/file.ext
-sub/dir
-  parallel --header : echo {var/.} ::: var sub/dir/file.ext
-file
-  parallel --header : echo {var/} ::: var sub/dir/file.ext
-file.ext
-  parallel --header : echo {var.} ::: var sub/dir/file.ext
-sub/dir/file
-echo '**'
-**
-echo 'bug --colsep 0'
-bug --colsep 0
-  parallel --colsep 0 echo {2} ::: a0OK0c
-OK
-  parallel --header : --colsep 0 echo {ok} ::: A0ok0B a0OK0b
-OK
-echo '**'
-**
 ### 1 .par file from --files expected
-10
+0
 par_X_eta_div_zero	### bug #34422: parallel -X --eta crashes with div by zero
 par_X_eta_div_zero	
 par_X_eta_div_zero	Computers / CPU cores / Max jobs to run
@@ -1572,15 +1344,50 @@ par_basic_halt	true
 par_basic_halt	parallel: Error: --halt must have 'never', 'soon', or 'now'.
 par_basic_halt	parallel: Error: --halt soon must be followed by ,success or ,fail.
 par_basic_halt	parallel: Error: --halt now must be followed by ,success or ,fail.
+par_colsep_0	bug --colsep 0
+par_colsep_0	OK
+par_colsep_0	OK
 par_empty	bug #:
 par_empty	true
 par_empty_line	### Test bug: empty line for | sh with -k
 par_empty_line	a
 par_empty_line	b
+par_expansion_in_colsep	### bug #36260: {n} expansion in --colsep files fails for empty fields if all following fields are also empty
+par_expansion_in_colsep	AB
+par_extglob	env_parallel
 par_file_ending_in_newline	### Hans found a bug giving unitialized variable
 par_file_ending_in_newline	gzip /tmp/parallel_f1
 par_file_ending_in_newline	gzip /tmp/parallel_f2'
 par_file_ending_in_newline	'
+par_header_parens	bug #49538: --header and {= =}
+par_header_parens	OK
+par_header_parens	OK
+par_header_parens	file
+par_header_parens	sub/dir
+par_header_parens	file
+par_header_parens	file.ext
+par_header_parens	sub/dir/file
+par_inefficient_L	bug #37325: Inefficiency of --pipe -L
+par_inefficient_L	    276     276     996
+par_inefficient_L	FOO
+par_inefficient_L	    248     248     992
+par_inefficient_L	FOO
+par_inefficient_L	    248     248     992
+par_inefficient_L	FOO
+par_inefficient_L	    244     244     993
+par_inefficient_L	FOO
+par_inefficient_L	    200     200    1000
+par_inefficient_L	FOO
+par_inefficient_L	    200     200    1000
+par_inefficient_L	FOO
+par_inefficient_L	    200     200    1000
+par_inefficient_L	FOO
+par_inefficient_L	    200     200    1000
+par_inefficient_L	FOO
+par_inefficient_L	    184     184     920
+par_inefficient_L	FOO
+par_linebuffer_files	### bug #48658: --linebuffer --files
+par_linebuffer_files	10
 par_link_files_as_only_arg	bug #50685: single ::::+ does not work
 par_link_files_as_only_arg	1 1 1
 par_link_files_as_only_arg	2 2 2
@@ -1609,6 +1416,76 @@ par_macron	¯<¯<¯>¯> ¯<¯<¯>¯>
 par_macron	"¯<¯<¯>¯>" ¯<¯<¯>¯>
 par_newline_in_command	Command with newline and positional replacement strings
 par_newline_in_command	O K
+par_no_command_given	### Test bugfix if no command given
+par_no_command_given	1 2
+par_no_command_given	/bin/bash: 3: command not found
+par_no_command_given	parallel: Error: Command line too long (1000002 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_parcat_args_stdin	bug #51690: parcat: read args from stdin
+par_parcat_args_stdin	OK1
+par_parcat_args_stdin	OK2
+par_parcat_rm	bug #51691: parcat --rm remove fifo when opened
+par_parcat_rm	OK1
+par_parcat_rm	OK file removed
+par_pipe_compress_blocks	### bug #41482: --pipe --compress blocks at different -j/seq combinations
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	echo 1-4 + 1-4
+par_pipe_compress_blocks	echo 1
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	echo 2
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	echo 3
+par_pipe_compress_blocks	3
+par_pipe_compress_blocks	echo 4
+par_pipe_compress_blocks	4
+par_pipe_compress_blocks	4 times wc to stderr to stdout
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	1 2 3 4
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	3
+par_pipe_compress_blocks	4
+par_pipe_compress_blocks	1 2 3 4
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	3
+par_pipe_compress_blocks	4
+par_pipe_compress_blocks	1 2
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	1 2 3
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	3
+par_pipe_no_command	### --pipe without command
+par_pipe_no_command	parallel: Error: --pipe/--pipepart must have a command to pipe into (e.g. 'cat').
+par_pipe_record_size_in_lines	bug #34958: --pipe with record size measured in lines
+par_pipe_record_size_in_lines	1
+par_pipe_record_size_in_lines	2
+par_pipe_record_size_in_lines	3
+par_pipe_record_size_in_lines	4
+par_pipe_record_size_in_lines	5
+par_pipe_record_size_in_lines	6
+par_pipe_record_size_in_lines	7
+par_pipe_record_size_in_lines	8
+par_pipe_record_size_in_lines	bug 34958-1
+par_pipe_record_size_in_lines	9
+par_pipe_record_size_in_lines	10
+par_pipe_record_size_in_lines	bug 34958-1
+par_pipe_record_size_in_lines	1
+par_pipe_record_size_in_lines	2
+par_pipe_record_size_in_lines	3
+par_pipe_record_size_in_lines	4
+par_pipe_record_size_in_lines	5
+par_pipe_record_size_in_lines	6
+par_pipe_record_size_in_lines	7
+par_pipe_record_size_in_lines	8
+par_pipe_record_size_in_lines	bug 34958-2
+par_pipe_record_size_in_lines	9
+par_pipe_record_size_in_lines	10
+par_pipe_record_size_in_lines	bug 34958-2
 par_pipepart_block_bigger_2G	### Test that --pipepart can have blocks > 2GB
 par_pipepart_block_bigger_2G	      1       1       4
 par_python_children	### bug #49970: Python child process dies if --env is used
@@ -1652,6 +1529,70 @@ par_tee	4 -l	122853
 par_tee	4 -c	815290
 par_tee	5 -l	122853
 par_tee	5 -c	815290
+par_tricolonplus	### bug #48745: :::+ bug
+par_tricolonplus	11 1 21 a aa
+par_tricolonplus	11 1 21 b bb
+par_tricolonplus	11 1 21 c cc
+par_tricolonplus	22 2 22 a aa
+par_tricolonplus	22 2 22 b bb
+par_tricolonplus	22 2 22 c cc
+par_tricolonplus	33 3 23 a aa
+par_tricolonplus	33 3 23 b bb
+par_tricolonplus	33 3 23 c cc
+par_tricolonplus	1 21 a aa
+par_tricolonplus	1 21 a bb
+par_tricolonplus	1 21 a cc
+par_tricolonplus	1 22 b aa
+par_tricolonplus	1 22 b bb
+par_tricolonplus	1 22 b cc
+par_tricolonplus	1 23 c aa
+par_tricolonplus	1 23 c bb
+par_tricolonplus	1 23 c cc
+par_tricolonplus	2 21 a aa
+par_tricolonplus	2 21 a bb
+par_tricolonplus	2 21 a cc
+par_tricolonplus	2 22 b aa
+par_tricolonplus	2 22 b bb
+par_tricolonplus	2 22 b cc
+par_tricolonplus	2 23 c aa
+par_tricolonplus	2 23 c bb
+par_tricolonplus	2 23 c cc
+par_tricolonplus	3 21 a aa
+par_tricolonplus	3 21 a bb
+par_tricolonplus	3 21 a cc
+par_tricolonplus	3 22 b aa
+par_tricolonplus	3 22 b bb
+par_tricolonplus	3 22 b cc
+par_tricolonplus	3 23 c aa
+par_tricolonplus	3 23 c bb
+par_tricolonplus	3 23 c cc
+par_tricolonplus	1 21 a aa
+par_tricolonplus	1 21 a bb
+par_tricolonplus	1 21 a cc
+par_tricolonplus	1 22 b aa
+par_tricolonplus	1 22 b bb
+par_tricolonplus	1 22 b cc
+par_tricolonplus	1 23 c aa
+par_tricolonplus	1 23 c bb
+par_tricolonplus	1 23 c cc
+par_tricolonplus	2 21 a aa
+par_tricolonplus	2 21 a bb
+par_tricolonplus	2 21 a cc
+par_tricolonplus	2 22 b aa
+par_tricolonplus	2 22 b bb
+par_tricolonplus	2 22 b cc
+par_tricolonplus	2 23 c aa
+par_tricolonplus	2 23 c bb
+par_tricolonplus	2 23 c cc
+par_tricolonplus	3 21 a aa
+par_tricolonplus	3 21 a bb
+par_tricolonplus	3 21 a cc
+par_tricolonplus	3 22 b aa
+par_tricolonplus	3 22 b bb
+par_tricolonplus	3 22 b cc
+par_tricolonplus	3 23 c aa
+par_tricolonplus	3 23 c bb
+par_tricolonplus	3 23 c cc
 par_wd_3dot_local	bug #45993: --wd ... should also work when run locally
 par_wd_3dot_local	parallel: Error: Cannot change into non-executable dir /bi: No such file or directory
 par_wd_3dot_local	/bin

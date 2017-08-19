@@ -6,7 +6,7 @@ parcat - cat files or fifos in parallel
 
 =head1 SYNOPSIS
 
-B<parcat> file(s)
+B<parcat> [--rm] [-#] file(s) [-#] file(s)
 
 =head1 DESCRIPTION
 
@@ -16,6 +16,29 @@ you use:
 
    (cat file1 & cat file2 &) | ...
 
+Arguments can be given on the command line or passed in on stdin
+(standard input).
+
+=head1 OPTIONS
+
+=over 9
+
+=item -B<#>
+
+Arguments following this will be sent to the file descriptor B<#>. E.g.
+
+  parcat -1 stdout1 stdout2 -2 stderr1 stderr2
+
+will send I<stdout1> and I<stdout2> to stdout (standard output = file
+descriptor 1), and send I<stderr1> and I<stderr2> to stderr (standard
+error = file descriptor 2).
+
+=item --rm
+
+Remove files after opening. As soon as the files are opened, unlink
+the files.
+
+=back
 
 =head1 EXAMPLES
 

@@ -1819,7 +1819,7 @@ sub find_compression_program {
     # 32-cores: pzstd lbzip2 pbzip2 zstd pigz lz4 lzop plzip lzip lrz gzip pxz lzma bzip2 xz clzip
     # 64-cores: pzstd lbzip2 pbzip2 pigz zstd pixz lz4 plzip lzop lzip lrz gzip pxz lzma bzip2 xz clzip
     # 128-core: pzstd lbzip2 pbzip2 zstd pixz lz4 pigz lzop plzip lzip gzip lrz pxz bzip2 lzma xz clzip
-    
+
     my @prg = qw(pzstd lbzip2 pbzip2 zstd pixz lz4 pigz lzop plzip lzip gzip
                  lrz pxz bzip2 lzma xz clzip);
     for my $p (@prg) {
@@ -3202,12 +3202,8 @@ sub parse_sshlogin {
 	    $Global::host{$sshlogin_string}->set_max_jobs_running(undef);
 	    next;
 	}
-	if($sshlogin_string eq ":") {
-	    $sshlogin->set_maxlength(Limits::Command::max_length());
-	} else {
-	    # If all chars needs to be quoted, every other character will be \
-	    $sshlogin->set_maxlength(int(Limits::Command::max_length()/2));
-	}
+	$sshlogin->set_maxlength(Limits::Command::max_length());
+
 	$Global::minimal_command_line_length =
 	    ::min($Global::minimal_command_line_length, $sshlogin->maxlength());
         $Global::host{$sshlogin_string} = $sshlogin;
@@ -4673,21 +4669,27 @@ sub reap_usleep {
 	if($opt::memfree) {
 	    kill_youngster_if_not_enough_mem();
 	}
-	# When a child dies, wake up from sleep (or select(,,,))
-	$SIG{CHLD} = sub { kill "ALRM", $$ };
-	usleep($ms);
-	# --compress needs $SIG{CHLD} unset
-	$SIG{CHLD} = 'DEFAULT';
+	if($ms > 0.002) {
+	    # When a child dies, wake up from sleep (or select(,,,))
+	    $SIG{CHLD} = sub { kill "ALRM", $$ };
+	    usleep($ms);
+	    # --compress needs $SIG{CHLD} unset
+	    $SIG{CHLD} = 'DEFAULT';
+	}
 	exit_if_disk_full();
 	if($opt::linebuffer) {
+	    my $something_printed = 0;
 	    if($opt::keeporder) {
 		for my $job (values %Global::running) {
-		    $job->print_earlier_jobs();
+		    $something_printed += $job->print_earlier_jobs();
 		}
 	    } else {
 		for my $job (values %Global::running) {
-		    $job->print();
+		    $something_printed += $job->print();
 		}
+	    }
+	    if($something_printed) {
+		$ms = $ms/2+0.001;
 	    }
 	}
 	# Sleep exponentially longer (1.1^n) if a job did not finish,
@@ -6652,6 +6654,7 @@ sub new {
 	'virgin' => 1,
 	# Output used for SQL and CSV-output
 	'output' => { 1 => [], 2 => [] },
+	'halfline' => [],
     }, ref($class) || $class;
 }
 
@@ -6769,7 +6772,25 @@ sub openoutputfiles {
     my $self = shift;
     my ($outfhw, $errfhw, $outname, $errname);
 
-    if($opt::results and not $Global::csv) {
+    if($opt::linebuffer and not
+       ($opt::keeporder or $opt::files or $opt::results or
+	$opt::compress or $opt::compress_program or
+	$opt::decompress_program)) {
+	# Do not save to files: Use non-blocking pipe
+	my ($outfhr, $errfhr);
+	pipe($outfhr, $outfhw) || die;
+	pipe($errfhr, $errfhw) || die;
+	$self->set_fh(1,'w',$outfhw);
+	$self->set_fh(2,'w',$errfhw);
+	$self->set_fh(1,'r',$outfhr);
+	$self->set_fh(2,'r',$errfhr);
+	# Make it possible to read non-blocking from the pipe
+	for my $fdno (1,2) {
+	    ::set_fh_non_blocking($self->fh($fdno,'r'));
+	}
+	# Return immediately because we do not need setting filenames
+	return;
+    } elsif($opt::results and not $Global::csv) {
 	my $out = $self->{'commandline'}->results_out();
 	my $seqname;
 	if($out eq $opt::results or $out =~ m:/$:) {
@@ -6849,6 +6870,7 @@ sub openoutputfiles {
     if($opt::linebuffer) {
 	# Make it possible to read non-blocking from
 	# the buffer files
+	# Used for --linebuffer with -k, --files, --res, --compress*
 	for my $fdno (1,2) {
 	    ::set_fh_non_blocking($self->fh($fdno,'r'));
 	}
@@ -8370,12 +8392,13 @@ sub should_be_retried {
 	my $job = shift;
 	$print_later{$job->seq()} = $job;
 	$job_seq_to_print ||= 1;
+	my $returnsize = 0;
 	::debug("run", "Looking for: $job_seq_to_print ",
 		"This: ", $job->seq(), "\n");
 	for(;vec($Global::job_already_run,$job_seq_to_print,1);
 	    $job_seq_to_print++) {}
 	while(my $j = $print_later{$job_seq_to_print}) {
-	    $j->print();
+	    $returnsize += $j->print();
 	    if($j->endtime()) {
 		# Job finished - look at the next
 		delete $print_later{$job_seq_to_print};
@@ -8386,6 +8409,7 @@ sub should_be_retried {
 		last;
 	    }
 	}
+	return $returnsize;
     }
 }
 
@@ -8437,6 +8461,7 @@ sub print {
 	    flush STDOUT;
 	}
     }
+    my $returnsize = $self->returnsize();
     for my $fdno (sort { $a <=> $b } keys %Global::fd) {
 	# Sort by file descriptor numerically: 1,2,3,..,9,10,11
 	$fdno == 0 and next;
@@ -8476,6 +8501,7 @@ sub print {
 	    $self->print_csv();
 	}
     }
+    return $returnsize - $self->returnsize();
 }
 
 {
@@ -8621,7 +8647,6 @@ sub print_files {
 sub print_linebuffer {
     my $self = shift;
     my ($fdno,$in_fh,$out_fd) = @_;
-    my $partial = \$self->{'partial_line',$fdno};
 
     if(defined $self->{'exitstatus'}) {
 	# If the job is dead: close printing fh. Needed for --compress
@@ -8647,38 +8672,32 @@ sub print_linebuffer {
 	}
 	# No need for reading $in_fh, as it it from "cat >/dev/null"
     } else {
-	# This seek will clear EOF
-	seek $in_fh, tell($in_fh), 0;
 	my $outputlength = 0;
-	# The read is non-blocking: The $in_fh is set to non-blocking.
-	# 32768 --tag = 5.1s
-	# 327680 --tag = 4.4s
-	# 1024000 --tag = 4.4s
-	# 3276800 --tag = 4.3s
-	# 10240000 --tag = 4.3s
-	# 32768000 --tag = 4.7s
-	while(read($in_fh,substr($$partial,length $$partial),3276800)) {
-	    # Append to $$partial
-	    # Find the last \n or \r
-	    my $i = (::rindex64($partial,"\n")+1) || (::rindex64($partial,"\r")+1);
+	my $halfline_ref = $self->{'halfline'};
+	my ($buf,$i,$rv);
+	while($rv = sysread($in_fh, $buf, 131072)) {
+	    $outputlength += $rv;
+	    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
 	    if($i) {
 		# One or more complete lines were found
-		$outputlength += $i;
 		if($opt::tag or defined $opt::tagstring) {
 		    # Replace ^ with $tag within the full line
 		    my $tag = $self->tag();
-		    substr($$partial,0,$i) =~ s/^/$tag/gm;
-		    # Length of partial line has changed: Find the last \n/\r again
-		    $i = (::rindex64($partial,"\n")+1) || (::rindex64($partial,"\r")+1);
+		    substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
+		    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+		    unshift @$halfline_ref, $tag;
 		}
-		# Print up to and including the last \n
-		print $out_fd substr($$partial,0,$i);
+		# Print the partial line (halfline) and the last half
+		print $out_fd @$halfline_ref, substr($buf,0,$i);
 		# Buffer in memory for SQL and CSV-output
 		if($Global::membuffer) {
-		    push @{$self->{'output'}{$fdno}}, substr($$partial,0,$i);
+		    push(@{$self->{'output'}{$fdno}},
+			 @$halfline_ref, substr($buf,0,$i));
 		}
-		# Remove the printed part
-		substr($$partial,0,$i) = "";
+		# Remove the printed part by keeping the unprinted part
+		@$halfline_ref = (substr($buf,$i));
+	    } else {
+		push @$halfline_ref, $buf;
 	    }
 	}
 	$self->add_returnsize($outputlength);
@@ -8689,18 +8708,22 @@ sub print_linebuffer {
 	} else {
 	    # If the job is dead: print the remaining partial line
 	    # read remaining
-	    $self->add_returnsize(length $$partial);
-	    if(length $$partial and ($opt::tag or defined $opt::tagstring)) {
-		my $tag = $self->tag();
-		$$partial =~ s/^/$tag/gm;
-	    }
-	    print $out_fd $$partial;
-	    if($Global::membuffer) {
-		push @{$self->{'output'}{$fdno}}, $$partial;
+	    my $halfline_ref = $self->{'halfline'};
+	    if(grep /./, @$halfline_ref) {
+		$self->add_returnsize(length join("",@$halfline_ref));
+		if($opt::tag or defined $opt::tagstring) {
+		    # Prepend $tag the the remaining half line
+		    unshift @$halfline_ref, $self->tag();
+		}
+		# Print the partial line (halfline)
+		print $out_fd @{$self->{'halfline'}};
+		# Buffer in memory for SQL and CSV-output
+		if($Global::membuffer) {
+		    push(@{$self->{'output'}{$fdno}}, @$halfline_ref);
+		}
+		@$halfline_ref = ();
 	    }
 	}
-	# Release the memory
-	undef $$partial;
 	if($self->fh($fdno,"rpid") and CORE::kill 0, $self->fh($fdno,"rpid")) {
 	    # decompress still running
 	} else {
@@ -9971,15 +9994,14 @@ sub max_length {
 	}
 	$Limits::Command::line_max_len = tmux_length($cached_limit);
 	if($opt::max_chars) {
-	    if($opt::max_chars * 2 <= $cached_limit) {
-		# $opt::max_chars quoting causes the length to double
-		$Limits::Command::line_max_len = $opt::max_chars * 2;
+	    if($opt::max_chars <= $cached_limit) {
+		$Limits::Command::line_max_len = $opt::max_chars;
 	    } else {
 		::warning("Value for -s option should be < $cached_limit.");
 	    }
 	}
     }
-    return int($Limits::Command::line_max_len/2);
+    return int($Limits::Command::line_max_len);
 }
 
 sub real_max_length {

@@ -146,7 +146,7 @@ par_results_csv() {
     }
     export -f doit
     parallel -k --tag doit ::: '--header :' '' \
-	::: --tag '' ::: --lb '' ::: --files '' ::: --compress '' |
+	::: --tag '' ::: --files '' ::: --compress '' |
     perl -pe 's:/par......par:/tmpfile:g;s/\d+\.\d+/999.999/g'
 }
 
@@ -256,6 +256,12 @@ par_plus_dyn_repl() {
     parallel --plus echo '{,,A}' ::: "$myvar"
     parallel --plus echo '{2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
     parallel --plus echo '{-2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
+}
+
+par_linebuffer_tag_slow_output() {
+    echo "Test output tag with mixing halflines"
+
+    parallel --delay 0.5 --tag --line-buffer ping -c 4  ::: localhost lo | field 1
 }
 
 export -f $(compgen -A function | grep par_)

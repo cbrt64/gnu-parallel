@@ -198,41 +198,50 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20170822 ('<<>>') released <<[stable]>>
+Subject: GNU Parallel 20170822 ('La Rambla') released <<[stable]>>
 
-GNU Parallel 20170822 ('<<>>') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20170822 ('La Rambla') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Haiku of the month:
 
-  <<>>
-  
+  --line-buffer
+  touches files on disk no more
+  faster than before
+    -- Ole Tange
 
 New in this release:
 
-* Vote for GNU Parallel's community ads on
-  http://meta.unix.stackexchange.com/a/4356/2972
-  http://meta.askubuntu.com/a/16750/22307
-  http://meta.serverfault.com/a/9040/45704
+* --line-buffer no longer uses tempfiles. This is faster and makes it possible for a single process to output more data than there is free disk space.
+
+* Vote for GNU Parallel's community ads on http://meta.unix.stackexchange.com/a/4356/2972 http://meta.askubuntu.com/a/16750/22307 http://meta.serverfault.com/a/9040/45704
 
 * GNU Parallel was cited in: https://springerplus.springeropen.com/articles/10.1186/s40064-016-2022-y
 
-https://dzone.com/articles/running-bash-commands-in-parallel-1
+* Edit images with GNU Parallel and ImageMagick https://fedoramagazine.org/edit-images-parallel-imagemagick/
 
-* https://medium.com/@nornagon/today-i-learned-gnu-parallel-plate-tectonics-9fcf24045e63
+* Running Bash Commands in Parallel https://dzone.com/articles/running-bash-commands-in-parallel-1
 
-* https://www.upf.edu/web/sct-sit/gnu-parallel-tutorial
+* Today I Learned: GNU parallel, plate tectonics https://medium.com/@nornagon/today-i-learned-gnu-parallel-plate-tectonics-9fcf24045e63
 
+* GNU Parallel Tutorial https://www.upf.edu/web/sct-sit/gnu-parallel-tutorial
 
-http://blogs.fluidinfo.com/terry/2017/08/05/do-stuff-on-things-in-parallel/
+* Validating half a million TIFF files http://www.dpoc.ac.uk/2017/08/17/validating-half-a-million-tiff-files-part-two/
 
-http://ino.pm/outreach/presentations/2014/03/genomics-wranglers/index.html#/5
-http://www.ettemalab.org/using-for-loop-vs-gnu-parallel-for-blast/
+* Blender and GNU Parallel https://www.blendernation.com/2017/08/16/blender-gnu-parallel/
 
-https://medium.com/@nornagon/today-i-learned-gnu-parallel-plate-tectonics-9fcf24045e63
+* Quick Introduction to GNU Parallel https://github.com/LangilleLab/microbiome_helper/wiki/Quick-Introduction-to-GNU-Parallel
 
-https://gxnotes.com/article/175866.html
+* A simple distributed animation render example using GNU Parallel https://gitlab.com/skororu/scripts
+
+* Do stuff on things, in parallel http://blogs.fluidinfo.com/terry/2017/08/05/do-stuff-on-things-in-parallel/
+
+* Bash And GNU Parallel NGS Bidniz http://ino.pm/outreach/presentations/2014/03/genomics-wranglers/index.html
+
+* Using for loop vs Gnu parallel for BLAST http://www.ettemalab.org/using-for-loop-vs-gnu-parallel-for-blast/
+
+* 并行rsync https://gxnotes.com/article/175866.html
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

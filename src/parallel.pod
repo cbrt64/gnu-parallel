@@ -1042,9 +1042,9 @@ B<-l 0> is an alias for B<-l 1>.
 Implies B<-X> unless B<-m>, B<--xargs>, or B<--pipe> is set.
 
 
-=item B<--line-buffer>
+=item B<--line-buffer> (alpha testing)
 
-=item B<--lb>
+=item B<--lb> (alpha testing)
 
 Buffer output on line basis. B<--group> will keep the output together
 for a whole job. B<--ungroup> allows output to mixup with half a line
@@ -1052,9 +1052,23 @@ coming from one job and half a line coming from another
 job. B<--line-buffer> fits between these two: GNU B<parallel> will
 print a full line, but will allow for mixing lines of different jobs.
 
-B<--line-buffer> takes more CPU power than than both B<--group> and
-B<--ungroup>, but can be faster than B<--group> if the CPU is not the
-limiting factor.
+B<--line-buffer> takes more CPU power than both B<--group> and
+B<--ungroup>, but can be much faster than B<--group> if the CPU is not
+the limiting factor.
+
+Normally B<--line-buffer> does not buffer on disk, and can thus
+process an infinite amount of data, but it will buffer on disk when
+combined with: B<--keep-order>, B<--results>, B<--compress>, and
+B<--files>. This will make it as slow as B<--group> and will limit
+output to the available disk space.
+
+With B<--keep-order> B<--line-buffer> will output lines from the first
+job while it is running, then lines from the second job while that is
+running. It will buffer full lines, but jobs will not mix. Compare:
+
+  parallel -j0 'echo {};sleep {};echo {}' ::: 1 3 2 4
+  parallel -j0 --lb 'echo {};sleep {};echo {}' ::: 1 3 2 4
+  parallel -j0 -k --lb 'echo {};sleep {};echo {}' ::: 1 3 2 4
 
 See also: B<--group> B<--ungroup>
 

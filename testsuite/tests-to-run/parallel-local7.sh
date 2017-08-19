@@ -7,7 +7,10 @@ par_tmux_filter() {
 export -f par_tmux_filter
 
 par_tmux() {
-    (stdout parallel --timeout 3 --tmux --delay 0.03 echo '{}{=$_="\\"x$_=}'; echo $?) | par_tmux_filter
+    # Read command line length on stdin
+    # The line will be a number of \'s
+    (stdout parallel --timeout 3 --tmux --delay 0.03 echo '{}{=$_="\\"x$_=}'; echo $?) |
+	par_tmux_filter
 }
 export -f par_tmux
 
@@ -34,20 +37,30 @@ echo '### tmux-1.9'
   seq 700   800 | PARALLEL_TMUX=tmux-1.9 par_tmux
   seq 800   900 | PARALLEL_TMUX=tmux-1.9 par_tmux
   seq 900  1000 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1000 1006 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1000 1100 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1100 1200 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1200 1300 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1300 1400 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1400 1500 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1500 1600 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1600 1700 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1700 1800 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1800 1900 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1900 2000 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 2000 2018 | PARALLEL_TMUX=tmux-1.9 par_tmux
 echo '### tmux-1.9 fails'
-  echo 1007 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  echo 1008 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  echo 1009 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  echo 2019 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  echo 2020 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  echo 2021 | PARALLEL_TMUX=tmux-1.9 par_tmux
 
 echo '### tmux-1.8'
-  seq   1  50 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  seq  51 100 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  seq 101 113 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq   1 100 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 101 200 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 201 231 | PARALLEL_TMUX=tmux-1.8 par_tmux
 echo '### tmux-1.8 fails'
-  echo 114 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  echo 115 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  echo 116 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  echo 232 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  echo 233 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  echo 234 | PARALLEL_TMUX=tmux-1.8 par_tmux
 
 echo '### tmux-1.8 0..255 ascii'
 perl -e 'print map { ($_, map { pack("c*",$_) } grep { $_>=1 && $_!=10 } $_-110..$_),"\n" } 0..255' | 
@@ -63,10 +76,10 @@ echo '### Test output ascii'
   sort /tmp/paralocal7-ascii* | md5sum
 
 echo '### Test critical lengths. Must not block'
-  seq 70 130  | PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux echo '{}{=$_="&"x$_=}' | par_tmux_filter
-  seq 70 130  | PARALLEL_TMUX=tmux-1.9 stdout parallel --tmux echo '{}{=$_="&"x$_=}' | par_tmux_filter
-  seq 280 425 | PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux echo '{}{=$_="a"x$_=}' | par_tmux_filter
-  seq 280 425 | PARALLEL_TMUX=tmux-1.9 stdout parallel --tmux echo '{}{=$_="a"x$_=}' | par_tmux_filter
+  seq 140 260 | PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux echo '{}{=$_="&"x$_=}' | par_tmux_filter
+  seq 140 260 | PARALLEL_TMUX=tmux-1.9 stdout parallel --tmux echo '{}{=$_="&"x$_=}' | par_tmux_filter
+  seq 560 850 | PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux echo '{}{=$_="a"x$_=}' | par_tmux_filter
+  seq 560 850 | PARALLEL_TMUX=tmux-1.9 stdout parallel --tmux echo '{}{=$_="a"x$_=}' | par_tmux_filter
 
 EOF
 

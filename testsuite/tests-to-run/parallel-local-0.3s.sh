@@ -492,101 +492,6 @@ echo '### Test --tty'
 
   seq 0.1 0.1 0.5 | parallel -j1 --tty tty\;sleep
 
-echo '**'
-
-echo '### Test bugfix if no command given'
-  (echo echo; seq 1 5; perl -e 'print "z"x1000000'; seq 12 15) | stdout parallel -j1 -km -s 10
-
-echo '**'
-
-echo "bug #34958: --pipe with record size measured in lines"
-  seq 10 | parallel -k --pipe -l 4 cat\;echo bug 34958-2
-
-echo '**'
-
-echo "bug #37325: Inefficiency of --pipe -L"
-  seq 2000 | parallel -k --pipe --block 1k -L 4 wc\;echo FOO | uniq
-
-echo '**'
-
-echo "bug #34958: --pipe with record size measured in lines"
-  seq 10 | parallel -k --pipe -L 4 cat\;echo bug 34958-1
-
-echo '**'
-
-echo "### bug #41482: --pipe --compress blocks at different -j/seq combinations"
-  seq 1 | parallel -k -j2 --compress -N1 -L1 --pipe cat;
-  echo echo 1-4 + 1-4
-    seq 4 | parallel -k -j3 --compress -N1 -L1 -vv echo;
-  echo 4 times wc to stderr to stdout
-    (seq 4 | parallel -k -j3 --compress -N1 -L1 --pipe wc '>&2') 2>&1 >/dev/null
-  echo 1 2 3 4
-    seq 4 | parallel -k -j3 --compress echo;
-  echo 1 2 3 4
-    seq 4 | parallel -k -j1 --compress echo;
-  echo 1 2
-    seq 2 | parallel -k -j1 --compress echo;
-  echo 1 2 3
-    seq 3 | parallel -k -j2 --compress -N1 -L1 --pipe cat;
-
-echo '**'
-
-echo '### --pipe without command'
-
-  seq -w 10 | stdout parallel --pipe
-
-echo '**'
-
-echo '### bug #36260: {n} expansion in --colsep files fails for empty fields if all following fields are also empty'
-
-  echo A,B,, | parallel --colsep , echo {1}{3}{2}
-
-echo '**'
-
-  bash -O extglob -c '. `which env_parallel.bash`; 
-    _longopt () { 
-      case "$prev" in 
-        --+([-a-z0-9_])) 
-          echo foo;; 
-      esac; 
-    }; 
-    env_parallel echo ::: env_parallel 2>&1 
-  '
-
-echo '**'
-
-echo '### bug #48745: :::+ bug'
-
-  parallel -k echo ::: 11 22 33 ::::+ <(seq 3) <(seq 21 23) ::: a b c :::+ aa bb cc
-  parallel -k echo :::: <(seq 3) <(seq 21 23) :::+ a b c ::: aa bb cc
-  parallel -k echo :::: <(seq 3) :::: <(seq 21 23) :::+ a b c ::: aa bb cc
-
-echo '**'
-
-echo '### bug #48658: --linebuffer --files'
-
-  stdout parallel --files --linebuffer 'sleep .1;seq {};sleep .1' ::: {1..10} | wc -l
-
-echo '**'
-
-echo 'bug #49538: --header and {= =}'
-
-  parallel --header : echo '{=v2=}{=v1 $_=Q($_)=}' ::: v1 K ::: v2 O
-  parallel --header : echo '{2}{=1 $_=Q($_)=}' ::: v2 K ::: v1 O
-  parallel --header : echo {var/.} ::: var sub/dir/file.ext
-  parallel --header : echo {var//} ::: var sub/dir/file.ext
-  parallel --header : echo {var/.} ::: var sub/dir/file.ext
-  parallel --header : echo {var/} ::: var sub/dir/file.ext
-  parallel --header : echo {var.} ::: var sub/dir/file.ext
-
-echo '**'
-
-echo 'bug --colsep 0'
-
-  parallel --colsep 0 echo {2} ::: a0OK0c
-  parallel --header : --colsep 0 echo {ok} ::: A0ok0B a0OK0b
-
-echo '**'
 
 EOF
 echo '### 1 .par file from --files expected'
@@ -594,6 +499,95 @@ find /tmp{/*,}/*.{par,tms,tmx} 2>/dev/null -mmin -10 | wc -l
 find /tmp{/*,}/*.{par,tms,tmx} 2>/dev/null -mmin -10 | parallel rm
 
 sudo umount -l /tmp/smalldisk.img
+
+par_no_command_given() {
+    echo '### Test bugfix if no command given'
+
+    (echo echo; seq 1 5; perl -e 'print "z"x1000000'; seq 12 15) |
+	stdout parallel -j1 -km -s 10
+}
+
+
+par_inefficient_L() {
+    echo "bug #37325: Inefficiency of --pipe -L"
+
+    seq 2000 | parallel -k --pipe --block 1k -L 4 wc\;echo FOO | uniq
+}
+
+par_pipe_record_size_in_lines() {
+    echo "bug #34958: --pipe with record size measured in lines"
+
+    seq 10 | parallel -k --pipe -L 4 cat\;echo bug 34958-1
+    seq 10 | parallel -k --pipe -l 4 cat\;echo bug 34958-2
+}
+
+par_pipe_compress_blocks() {
+    echo "### bug #41482: --pipe --compress blocks at different -j/seq combinations"
+    seq 1 | parallel -k -j2 --compress -N1 -L1 --pipe cat
+    echo echo 1-4 + 1-4
+    seq 4 | parallel -k -j3 --compress -N1 -L1 -vv echo
+    echo 4 times wc to stderr to stdout
+    (seq 4 | parallel -k -j3 --compress -N1 -L1 --pipe wc '>&2') 2>&1 >/dev/null
+    echo 1 2 3 4
+    seq 4 | parallel -k -j3 --compress echo
+    echo 1 2 3 4
+    seq 4 | parallel -k -j1 --compress echo
+    echo 1 2
+    seq 2 | parallel -k -j1 --compress echo
+    echo 1 2 3
+    seq 3 | parallel -k -j2 --compress -N1 -L1 --pipe cat
+}
+
+par_pipe_no_command() {
+    echo '### --pipe without command'
+
+    seq -w 10 | stdout parallel --pipe
+}
+
+par_expansion_in_colsep() {
+    echo '### bug #36260: {n} expansion in --colsep files fails for empty fields if all following fields are also empty'
+
+    echo A,B,, | parallel --colsep , echo {1}{3}{2}
+}
+
+par_extglob() {
+    bash -O extglob -c '. `which env_parallel.bash`;
+      _longopt () {
+        case "$prev" in
+          --+([-a-z0-9_]))
+            echo foo;;
+        esac;
+      };
+      env_parallel echo ::: env_parallel 2>&1
+    '
+}
+
+par_tricolonplus() {
+    echo '### bug #48745: :::+ bug'
+
+    parallel -k echo ::: 11 22 33 ::::+ <(seq 3) <(seq 21 23) ::: a b c :::+ aa bb cc
+    parallel -k echo :::: <(seq 3) <(seq 21 23) :::+ a b c ::: aa bb cc
+    parallel -k echo :::: <(seq 3) :::: <(seq 21 23) :::+ a b c ::: aa bb cc
+}
+
+par_header_parens() {
+    echo 'bug #49538: --header and {= =}'
+
+    parallel --header : echo '{=v2=}{=v1 $_=Q($_)=}' ::: v1 K ::: v2 O
+    parallel --header : echo '{2}{=1 $_=Q($_)=}' ::: v2 K ::: v1 O
+    parallel --header : echo {var/.} ::: var sub/dir/file.ext
+    parallel --header : echo {var//} ::: var sub/dir/file.ext
+    parallel --header : echo {var/.} ::: var sub/dir/file.ext
+    parallel --header : echo {var/} ::: var sub/dir/file.ext
+    parallel --header : echo {var.} ::: var sub/dir/file.ext
+}
+
+par_colsep_0() {
+    echo 'bug --colsep 0'
+
+    parallel --colsep 0 echo {2} ::: a0OK0c
+    parallel --header : --colsep 0 echo {ok} ::: A0ok0B a0OK0b
+}
 
 par_empty() {
     echo "bug #:"
@@ -684,7 +678,7 @@ par_basic_halt() {
      echo "eval{setpriority(0,0,9)}; while(1){}") > $cpuburn
     chmod 700 $cpuburn
     cp -a $cpuburn $cpuburn2
-    
+
     parallel -j4 --halt 2 ::: 'sleep 1' $cpuburn false;
     killall $(basename $cpuburn) 2>/dev/null &&
 	echo ERROR: cpuburn should already have been killed
@@ -692,7 +686,7 @@ par_basic_halt() {
     killall $(basename $cpuburn2) 2>/dev/null &&
 	echo ERROR: cpuburn2 should already have been killed
     rm $cpuburn $cpuburn2
-    
+
     parallel --halt error echo ::: should not print
     parallel --halt soon echo ::: should not print
     parallel --halt now echo ::: should not print
@@ -714,7 +708,7 @@ par_wd_3dot_local() {
     parallel --wd / 'pwd; echo $OLDPWD; echo' ::: OK
     parallel --wd /tmp 'pwd; echo $OLDPWD; echo' ::: OK
     parallel --wd ... 'pwd; echo $OLDPWD; echo' ::: OK |
-	perl -pe 's:/mnt/4tb::; s/'`hostname`'/hostname/g' | 
+	perl -pe 's:/mnt/4tb::; s/'`hostname`'/hostname/g' |
 	perl -pe 's/\d+/0/g'
     parallel --wd . 'pwd; echo $OLDPWD; echo' ::: OK
 }
@@ -745,6 +739,12 @@ par_parcat_rm() {
     echo OK1 > $tmp1
     parcat --rm $tmp1
     rm $tmp1 2>/dev/null || echo OK file removed
+}
+
+par_linebuffer_files() {
+    echo '### bug #48658: --linebuffer --files'
+
+    stdout parallel --files --linebuffer 'sleep .1;seq {};sleep .1' ::: {1..10} | wc -l
 }
 
 export -f $(compgen -A function | grep par_)

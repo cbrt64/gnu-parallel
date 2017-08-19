@@ -48,21 +48,23 @@ par_sqlandworker_results() {
   p_template --results /tmp/out--sql
 }
 
-par_sqlandworker_linebuffer() {
-  p_template --linebuffer
-}
-
 par_sqlandworker_tag() {
   p_template --tag
 }
 
-par_sqlandworker_linebuffer_tag() {
-  p_template --linebuffer --tag
-}
-
-par_sqlandworker_compress_linebuffer_tag() {
-  p_template --compress --linebuffer --tag
-}
+# --linebuffer no longer works with sql
+#
+# par_sqlandworker_linebuffer() {
+#   p_template --linebuffer
+# }
+#
+# par_sqlandworker_linebuffer_tag() {
+#   p_template --linebuffer --tag
+# }
+# 
+# par_sqlandworker_compress_linebuffer_tag() {
+#   p_template --compress --linebuffer --tag
+# }
 
 par_sqlandworker_unbuffer() {
   p_template -u

@@ -1,16 +1,16 @@
 echo "### BUG: The length for -X is not close to max (131072)";   seq 1 60000 | parallel -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
 ### BUG: The length for -X is not close to max (131072)
-      1    6861   65500
+      1   12817  131016
   seq 1 60000 | parallel -X echo a{}b{}c |head -n 1 |wc
-      1    5644   65514
+      1   10947  131046
   seq 1 60000 | parallel -X echo |head -n 1 |wc
-      1   12770   65514
+      1   23693  131052
   seq 1 60000 | parallel -X echo a{}b{}c {} |head -n 1 |wc
-      1    8098   65512
+      1   15808  131047
   seq 1 60000 | parallel -X echo {}aa{} |head -n 1 |wc
-      1    6157   65513
+      1   11789  131045
   seq 1 60000 | parallel -X echo {} aa {} |head -n 1 |wc
-      1   13547   65519
+      1   25543  131043
 echo '### Test --fifo under csh'
 ### Test --fifo under csh
   csh -c "seq 3000000 | parallel -k --pipe --fifo 'sleep .{#};cat {}|wc -c ; false; echo \$status; false'"; echo exit $?
