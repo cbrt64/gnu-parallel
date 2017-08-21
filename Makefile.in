@@ -799,7 +799,7 @@ upload:
 # This can take 7 minutes
 	pushd /tmp; \
 	rm -rf /tmp/parallel-$(YYYYMMDD)*; \
-	while ! wget http://ftp.gnu.org/gnu/parallel/parallel-$(YYYYMMDD).tar.bz2 ; do sleep 2; done; \
+	while ! wget https://ftp.gnu.org/gnu/parallel/parallel-$(YYYYMMDD).tar.bz2 ; do sleep 2; done; \
 	tar xjvf parallel-$(YYYYMMDD).tar.bz2; \
 	cd parallel-$(YYYYMMDD); \
 	./configure; \
