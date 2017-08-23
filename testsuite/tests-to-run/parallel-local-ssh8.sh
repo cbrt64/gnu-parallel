@@ -66,6 +66,26 @@ par_load_csh() {
     parallel --load 100% -S csh@lo echo ::: a
 }
 
+par_PARALLEL_RSYNC_OPTS() {
+    echo '### test rsync opts'
+    touch parallel_rsync_opts.test
+    parallel --rsync-opts -rlDzRRRR -vv -S parallel@lo --trc {}.out touch {}.out ::: parallel_rsync_opts.test |
+	perl -ne 's/(rsync .*?RRRR)/print $1/ge'
+    export PARALLEL_RSYNC_OPTS=-zzrrllddRRRR
+    parallel -vv -S parallel@lo --trc {}.out touch {}.out ::: parallel_rsync_opts.test |
+	perl -ne 's/(rsync .*?RRRR)/print $1/ge'
+    rm parallel_rsync_opts.test parallel_rsync_opts.test.out
+    echo
+}
+
+par_bar_m() {
+    echo '### test --bar -m'
+    stdout parallel --bar -P 2 -m sleep ::: 1 1 2 2 3 3 |
+	perl -pe 's/\r/\n/g'|
+	grep -E '^[0-9]+ *$' |
+	uniq
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 compgen -A function | grep par_ | sort |

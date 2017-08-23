@@ -1042,9 +1042,9 @@ B<-l 0> is an alias for B<-l 1>.
 Implies B<-X> unless B<-m>, B<--xargs>, or B<--pipe> is set.
 
 
-=item B<--line-buffer> (alpha testing)
+=item B<--line-buffer> (beta testing)
 
-=item B<--lb> (alpha testing)
+=item B<--lb> (beta testing)
 
 Buffer output on line basis. B<--group> will keep the output together
 for a whole job. B<--ungroup> allows output to mixup with half a line
@@ -1865,6 +1865,12 @@ You can even use multiple matches:
     echo {swap/these} ::: -middle-
 
 See also: B<{= perl expression =}> B<--parens>
+
+
+=item B<--rsync-opts> I<options> (alpha testing)
+
+Options to pass on to B<rsync>. Setting B<--rsync-opts> takes
+precedence over setting the environment variable $PARALLEL_RSYNC_OPTS.
 
 
 =item B<--max-chars>=I<max-chars>
@@ -4248,6 +4254,11 @@ B<Example:> If each of the jobs tests a solution and one of jobs finds
 the solution the job can tell GNU B<parallel> not to start more jobs
 by: B<kill -TERM $PARALLEL_PID>. This only works on the local
 computer.
+
+
+=item $PARALLEL_RSYNC_OPTS
+
+Options to pass on to B<rsync>. Defaults to: -rlDzR.
 
 
 =item $PARALLEL_SHELL

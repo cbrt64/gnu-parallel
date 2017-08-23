@@ -969,8 +969,8 @@ sub options_hash {
 	 "noctrlc|no-ctrlc|no-ctrl-c" => \$opt::retired,
 	 "workdir|work-dir|wd=s" => \$opt::workdir,
 	 "W=s" => \$opt::retired,
-	 "tmpdir=s" => \$opt::tmpdir,
-	 "tempdir=s" => \$opt::tmpdir,
+	 "rsync-opts|rsyncopts=s" => \$opt::rsync_opts,
+	 "tmpdir|tempdir=s" => \$opt::tmpdir,
 	 "use-compress-program|compress-program=s" => \$opt::compress_program,
 	 "use-decompress-program|decompress-program=s" => \$opt::decompress_program,
 	 "compress" => \$opt::compress,
@@ -1128,6 +1128,8 @@ sub parse_options {
 	$Global::timeoutq = TimeoutQueue->new($opt::timeout);
     }
     if(defined $opt::tmpdir) { $ENV{'TMPDIR'} = $opt::tmpdir; }
+    $ENV{'PARALLEL_RSYNC_OPTS'} = $opt::rsync_opts ||
+	$ENV{'PARALLEL_RSYNC_OPTS'} || '-rlDzR';
     $opt::nice ||= 0;
     if(defined $opt::help) { usage(); exit(0); }
     if(defined $opt::sqlandworker) {
@@ -6445,11 +6447,12 @@ sub rsync_transfer_cmd {
     }
     $file = ::shell_quote_file($file);
     my $sshcmd = $self->sshcommand();
-    my $rsync_opt = "-rlDzR -e" . ::shell_quote_scalar($sshcmd);
+    my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}.
+	" -e".::shell_quote_scalar($sshcmd);
     my $serverlogin = $self->serverlogin();
     # Make dir if it does not exist
     return "$sshcmd $serverlogin -- mkdir -p $rsync_destdir && " .
-	rsync()." $rsync_opt $file $serverlogin:$rsync_destdir";
+	rsync()." $rsync_opts $file $serverlogin:$rsync_destdir";
 }
 
 sub cleanup_cmd {
@@ -6611,6 +6614,12 @@ sub total_jobs {
 	}
     }
     return $self->{'total_jobs'};
+}
+
+sub flush_total_jobs {
+    # Unset total_jobs to force recomputing
+    my $self = shift;
+    $self->{'total_jobs'} = undef;
 }
 
 sub next_seq {
@@ -7878,7 +7887,8 @@ sub sshreturn {
     my $sshlogin = $self->sshlogin();
     my $sshcmd = $sshlogin->sshcommand();
     my $serverlogin = $sshlogin->serverlogin();
-    my $rsync_opt = "-rlDzR -e".::shell_quote_scalar($sshcmd);
+    my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}.
+	" -e".::shell_quote_scalar($sshcmd);
     my $pre = "";
     for my $file ($self->return()) {
 	$file =~ s:^\./::g; # Remove ./ if any
@@ -7908,7 +7918,7 @@ sub sshreturn {
 	#     --rsync-path="cd /home/tange/dir/subdir/; rsync"
         #     server:file.gz /home/tange/dir/subdir/
 	$pre .= "mkdir -p $basedir$cd && ". $sshlogin->rsync().
-	    " $rsync_cd $rsync_opt $serverlogin:".
+	    " $rsync_cd $rsync_opts $serverlogin:".
 	     $basename . " ".$basedir.$cd.";";
     }
     return $pre;
@@ -9026,89 +9036,93 @@ sub slot {
     return $self->{'slot'};
 }
 
-sub populate {
-    # Add arguments from arg_queue until the number of arguments or
-    # max line length is reached
-    # Uses:
-    #   $Global::minimal_command_line_length
-    #   $opt::cat
-    #   $opt::fifo
-    #   $Global::JobQueue
-    #   $opt::m
-    #   $opt::X
-    #   $CommandLine::already_spread
-    #   $Global::max_jobs_running
-    # Returns: N/A
-    my $self = shift;
-    my $next_arg;
-    my $max_len = $Global::minimal_command_line_length
-	|| Limits::Command::max_length();
+{
+    my $already_spread;
 
-    if($opt::cat or $opt::fifo) {
-	# Get the empty arg added by --pipepart (if any)
-	$Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->get();
-	# $PARALLEL_TMP will point to a tempfile that will be used as {}
-	$Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->
-	    unget([Arg->new('$PARALLEL_TMP')]);
-    }
-    while (not $self->{'arg_queue'}->empty()) {
-	$next_arg = $self->{'arg_queue'}->get();
-	if(not defined $next_arg) {
-	    next;
+    sub populate {
+	# Add arguments from arg_queue until the number of arguments or
+	# max line length is reached
+	# Uses:
+	#   $Global::minimal_command_line_length
+	#   $opt::cat
+	#   $opt::fifo
+	#   $Global::JobQueue
+	#   $opt::m
+	#   $opt::X
+	#   $Global::max_jobs_running
+	# Returns: N/A
+	my $self = shift;
+	my $next_arg;
+	my $max_len = $Global::minimal_command_line_length
+	    || Limits::Command::max_length();
+
+	if($opt::cat or $opt::fifo) {
+	    # Get the empty arg added by --pipepart (if any)
+	    $Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->get();
+	    # $PARALLEL_TMP will point to a tempfile that will be used as {}
+	    $Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->
+		unget([Arg->new('$PARALLEL_TMP')]);
 	}
-	$self->push($next_arg);
-	if($self->len() >= $max_len) {
-	    # Command length is now > max_length
-	    # If there are arguments: remove the last
-	    # If there are no arguments: Error
-	    # TODO stuff about -x opt_x
+	while (not $self->{'arg_queue'}->empty()) {
+	    $next_arg = $self->{'arg_queue'}->get();
+	    if(not defined $next_arg) {
+		next;
+	    }
+	    $self->push($next_arg);
+	    if($self->len() >= $max_len) {
+		# Command length is now > max_length
+		# If there are arguments: remove the last
+		# If there are no arguments: Error
+		# TODO stuff about -x opt_x
+		if($self->number_of_args() > 1) {
+		    # There is something to work on
+		    $self->{'arg_queue'}->unget($self->pop());
+		    last;
+		} else {
+		    my $args = join(" ", map { $_->orig() } @$next_arg);
+		    ::error("Command line too long (".
+			    $self->len(). " >= ".
+			    $max_len.
+			    ") at input ".
+			    $self->{'arg_queue'}->arg_number().
+			    ": ".
+			    ((length $args > 50) ?
+			     (substr($args,0,50))."..." :
+			     $args));
+		    $self->{'arg_queue'}->unget($self->pop());
+		    ::wait_and_exit(255);
+		}
+	    }
+
+	    if(defined $self->{'max_number_of_args'}) {
+		if($self->number_of_args() >= $self->{'max_number_of_args'}) {
+		    last;
+		}
+	    }
+	}
+	if(($opt::m or $opt::X) and not $already_spread
+	   and $self->{'arg_queue'}->empty() and $Global::max_jobs_running) {
+	    # -m or -X and EOF => Spread the arguments over all jobslots
+	    # (unless they are already spread)
+	    $already_spread ||= 1;
 	    if($self->number_of_args() > 1) {
-		# There is something to work on
-		$self->{'arg_queue'}->unget($self->pop());
-		last;
-	    } else {
-		my $args = join(" ", map { $_->orig() } @$next_arg);
-		::error("Command line too long (".
-			$self->len(). " >= ".
-			$max_len.
-			") at input ".
-			$self->{'arg_queue'}->arg_number().
-			": ".
-			((length $args > 50) ?
-			 (substr($args,0,50))."..." :
-			 $args));
-		$self->{'arg_queue'}->unget($self->pop());
-		::wait_and_exit(255);
+		$self->{'max_number_of_args'} =
+		    ::ceil($self->number_of_args()/$Global::max_jobs_running);
+		$Global::JobQueue->{'commandlinequeue'}->{'max_number_of_args'} =
+		    $self->{'max_number_of_args'};
+		$self->{'arg_queue'}->unget($self->pop_all());
+		while($self->number_of_args() < $self->{'max_number_of_args'}) {
+		    $self->push($self->{'arg_queue'}->get());
+		}
 	    }
+	    $Global::JobQueue->flush_total_jobs();
 	}
 
-	if(defined $self->{'max_number_of_args'}) {
-	    if($self->number_of_args() >= $self->{'max_number_of_args'}) {
-		last;
-	    }
+	if($opt::sqlmaster) {
+	    # Insert the V1..Vn for this $seq in SQL table instead of generating one
+	    $Global::sql->insert_records($self->seq(), $self->{'command'},
+					 $self->{'arg_list_flat_orig'});
 	}
-    }
-    if(($opt::m or $opt::X) and not $CommandLine::already_spread
-       and $self->{'arg_queue'}->empty() and $Global::max_jobs_running) {
-	# -m or -X and EOF => Spread the arguments over all jobslots
-	# (unless they are already spread)
-	$CommandLine::already_spread ||= 1;
-	if($self->number_of_args() > 1) {
-	    $self->{'max_number_of_args'} =
-		::ceil($self->number_of_args()/$Global::max_jobs_running);
-	    $Global::JobQueue->{'commandlinequeue'}->{'max_number_of_args'} =
-		$self->{'max_number_of_args'};
-	    $self->{'arg_queue'}->unget($self->pop_all());
-	    while($self->number_of_args() < $self->{'max_number_of_args'}) {
-		$self->push($self->{'arg_queue'}->get());
-	    }
-	}
-    }
-
-    if($opt::sqlmaster) {
-	# Insert the V1..Vn for this $seq in SQL table instead of generating one
-	$Global::sql->insert_records($self->seq(), $self->{'command'},
-				     $self->{'arg_list_flat_orig'});
     }
 }
 
