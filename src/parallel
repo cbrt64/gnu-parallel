@@ -1005,6 +1005,7 @@ sub options_hash {
 	 "wc|willcite|will-cite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
 	 "halt-on-error|halt=s" => \$opt::halt,
+	 "limit=s" => \$opt::limit,
 	 "memfree=s" => \$opt::memfree,
 	 "retries=s" => \$opt::retries,
 	 "timeout=s" => \$opt::timeout,
@@ -2498,6 +2499,10 @@ sub init_run_jobs {
 		    }
 		    if($opt::noswap and $sshlogin->swapping()) {
 			# The server is swapping
+			next;
+		    }
+		    if($opt::limit and $sshlogin->limit()) {
+			# Over limit
 			next;
 		    }
 		    if($opt::memfree and $sshlogin->memfree() < $opt::memfree) {
@@ -4671,6 +4676,9 @@ sub reap_usleep {
 	if($opt::memfree) {
 	    kill_youngster_if_not_enough_mem();
 	}
+	if($opt::limit) {
+	    kill_youngest_if_over_limit();
+	}
 	if($ms > 0.002) {
 	    # When a child dies, wake up from sleep (or select(,,,))
 	    $SIG{CHLD} = sub { kill "ALRM", $$ };
@@ -4697,6 +4705,31 @@ sub reap_usleep {
 	# Sleep exponentially longer (1.1^n) if a job did not finish,
 	# though at most 1000 ms.
 	return (($ms < 1000) ? ($ms * 1.1) : ($ms));
+    }
+}
+
+sub kill_youngest_if_over_limit {
+    # Check each $sshlogin we are over limit
+    # If over limit: kill off the youngest child
+    # Put the child back in the queue.
+    # Uses:
+    #   %Global::running
+    my %jobs_of;
+    my @sshlogins;
+
+    for my $job (values %Global::running) {
+	if(not $jobs_of{$job->sshlogin()}) {
+	    push @sshlogins, $job->sshlogin();
+	}
+	push @{$jobs_of{$job->sshlogin()}}, $job;
+    }
+    for my $sshlogin (@sshlogins) {
+	for my $job (sort { $b->seq() <=> $a->seq() } @{$jobs_of{$sshlogin}}) {
+	    if($sshlogin->limit() == 2) {
+		$job->kill();
+		last;
+	    }
+	}
     }
 }
 
@@ -5061,9 +5094,79 @@ sub memfree_recompute {
 	    $perlscript =~ s/[\t\n ]+/ /g;
 	    $script = "perl -e " . ::shell_quote_scalar($perlscript);
 	}
-	return $script
+	return $script;
     }
 }
+
+sub limit {
+    # Returns:
+    #  0 = Below limit. Start another job.
+    #  1 = Over limit. Start no jobs.
+    #  2 = Kill youngest job
+    my $self = shift;
+
+    if(not defined $self->{'limitscript'}) {
+	my %limitscripts =
+	    ("io" => q!
+	     io() {
+	         limit=$1;
+                 io_file=$2;
+	         # Do the measurement in the background
+	         (tmp=$(tempfile);
+	         LANG=C iostat -x 1 2 > $tmp;
+	         mv $tmp $io_file) &
+	         perl -e '-e $ARGV[0] or exit(1);
+                   for(reverse <>) {
+                     /Device:/ and last;
+                     /(\S+)$/ and $max = $max > $1 ? $max : $1; }
+                   exit ($max < '$limit')' $io_file;
+	     };
+             export -f io;
+             io %s %s
+             !,
+	     "mem" => q!
+             mem() {
+		 limit=$1;
+		 awk '/^((Swap)?Cached|MemFree|Buffers):/{ sum += $2}
+                      END {
+                         if (sum*1024 < '$limit'/2) { exit 2; }
+                         else { exit (sum*1024 < '$limit') }
+                      }' /proc/meminfo;
+             };
+             export -f mem;
+	     mem %s;
+             !,
+     	     "load" => q!
+	     load() {
+	     	 limit=$1;
+	     	 ps ax -o state,command |
+	     	     grep -E '^[DOR].[^[]' |
+	     	     wc -l |
+	     	 perl -ne 'exit ('$limit' < $_)';
+	     };
+	     export -f load;
+	     load %s;
+	     !,
+	    );
+	my ($cmd,@args) = split /\s+/,$opt::limit;
+	if($limitscripts{$cmd}) {
+	    my $tmpfile = ::tmpname("parlmt");
+	    $Global::unlink{$tmpfile};
+	    $self->{'limitscript'} =
+	    ::spacefree(1, sprintf($limitscripts{$cmd},@args,$tmpfile));
+	} else {
+	    $self->{'limitscript'} = $opt::limit;
+	}
+    }
+
+    my %env = %ENV;
+    local %ENV = %env;
+    $ENV{'SSHLOGIN'} = $self->string();
+    system($Global::shell,"-c",$self->{'limitscript'});
+    ::debug("limit","limit `".$self->{'limitscript'}."` result ".($?>>8)."\n");
+    return $?>>8;
+}
+
 
 sub swapping {
     my $self = shift;

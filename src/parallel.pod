@@ -2590,6 +2590,10 @@ as many arguments that will fit on the line:
 
   ls | grep -E '\.log$' | parallel -m mv {} destdir
 
+In many shells you can also use B<printf>:
+
+  printf '%s\0' *.log | parallel -m mv {} destdir
+
 
 =head1 EXAMPLE: Context replace
 
