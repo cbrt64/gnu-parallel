@@ -1611,6 +1611,7 @@ sub parse_semaphore {
         if(defined $opt::semaphorename) {
             $Semaphore::name = $opt::semaphorename;
         } else {
+            local $/ = "\n";
             $Semaphore::name = `tty`;
             chomp $Semaphore::name;
         }
@@ -1676,7 +1677,7 @@ sub open_joblog {
 		    $joblog_regexp='^(\d+)(?:\t[^\t]+){5}\t0\t0\t';
 		    my @group;
 		    {
-			local $/="\n";
+			local $/ = "\n";
 			while(<$joblog_fh>) {
 			    if(/$joblog_regexp/o) {
 				# This is 30% faster than set_job_already_run($1);
@@ -1919,6 +1920,7 @@ sub read_options {
 	}
 	for my $profile (@profiles) {
 	    if(-r $profile) {
+                local $/ = "\n";
 		open (my $in_fh, "<", $profile) ||
 		    ::die_bug("read-profile: $profile");
 		while(<$in_fh>) {
@@ -2775,7 +2777,7 @@ sub progress {
     }
     my $termcols = terminal_columns();
     my @workers = sort keys %Global::host;
-    my %sshlogin = map { $_ eq ":" ? ($_=>"local") : ($_=>$_) } @workers;
+    my %sshlogin = map { $_ eq ":" ? ($_ => "local") : ($_ => $_) } @workers;
     my $workerno = 1;
     my %workerno = map { ($_=>$workerno++) } @workers;
     my $workerlist = "";
@@ -3135,6 +3137,7 @@ sub read_sshloginfile {
     # Uses:
     #   @Global::sshlogin
     # Returns: N/A
+    local $/ = "\n";
     my $file = shift;
     my $close = 1;
     my $in_fh;
@@ -3427,6 +3430,7 @@ sub parse_host_filtering {
     #   \%maxlen = max command len on {host}
     #   \%echo = echo received from {host}
     #   \@down_hosts = list of hosts with no answer
+    local $/ = "\n";
     my (%ncores, %ncpus, %time_to_login, %maxlen, %echo, @down_hosts);
     for (@_) {
 	::debug("init",$_);
@@ -4295,7 +4299,7 @@ sub qqx {
     # tmux needs LC_CTYPE
     my @keep = qw(PATH SSH_AUTH_SOCK SSH_AGENT_PID KRB5CCNAME LC_CTYPE);
     @env{@keep} = @ENV{@keep};
-    local(%ENV);
+    local %ENV;
     %ENV = %env;
     if($Global::debug) {
 	return qx{ @_ && true };
@@ -4375,43 +4379,42 @@ sub multiply_binary_prefix {
     #   $s = string with prefixes
     # Returns:
     #   $value = int with prefixes multiplied
-    my $s = shift;
-    if(not $s) {
-	return $s;
+    my @v = @_;
+    for(@v) {
+	defined $_ or next;
+	s/ki/*1024/gi;
+	s/mi/*1024*1024/gi;
+	s/gi/*1024*1024*1024/gi;
+	s/ti/*1024*1024*1024*1024/gi;
+	s/pi/*1024*1024*1024*1024*1024/gi;
+	s/ei/*1024*1024*1024*1024*1024*1024/gi;
+	s/zi/*1024*1024*1024*1024*1024*1024*1024/gi;
+	s/yi/*1024*1024*1024*1024*1024*1024*1024*1024/gi;
+	s/xi/*1024*1024*1024*1024*1024*1024*1024*1024*1024/gi;
+
+	s/K/*1024/g;
+	s/M/*1024*1024/g;
+	s/G/*1024*1024*1024/g;
+	s/T/*1024*1024*1024*1024/g;
+	s/P/*1024*1024*1024*1024*1024/g;
+	s/E/*1024*1024*1024*1024*1024*1024/g;
+	s/Z/*1024*1024*1024*1024*1024*1024*1024/g;
+	s/Y/*1024*1024*1024*1024*1024*1024*1024*1024/g;
+	s/X/*1024*1024*1024*1024*1024*1024*1024*1024*1024/g;
+
+	s/k/*1000/g;
+	s/m/*1000*1000/g;
+	s/g/*1000*1000*1000/g;
+	s/t/*1000*1000*1000*1000/g;
+	s/p/*1000*1000*1000*1000*1000/g;
+	s/e/*1000*1000*1000*1000*1000*1000/g;
+	s/z/*1000*1000*1000*1000*1000*1000*1000/g;
+	s/y/*1000*1000*1000*1000*1000*1000*1000*1000/g;
+	s/x/*1000*1000*1000*1000*1000*1000*1000*1000*1000/g;
+
+	$_ = eval $_;
     }
-    $s =~ s/ki/*1024/gi;
-    $s =~ s/mi/*1024*1024/gi;
-    $s =~ s/gi/*1024*1024*1024/gi;
-    $s =~ s/ti/*1024*1024*1024*1024/gi;
-    $s =~ s/pi/*1024*1024*1024*1024*1024/gi;
-    $s =~ s/ei/*1024*1024*1024*1024*1024*1024/gi;
-    $s =~ s/zi/*1024*1024*1024*1024*1024*1024*1024/gi;
-    $s =~ s/yi/*1024*1024*1024*1024*1024*1024*1024*1024/gi;
-    $s =~ s/xi/*1024*1024*1024*1024*1024*1024*1024*1024*1024/gi;
-
-    $s =~ s/K/*1024/g;
-    $s =~ s/M/*1024*1024/g;
-    $s =~ s/G/*1024*1024*1024/g;
-    $s =~ s/T/*1024*1024*1024*1024/g;
-    $s =~ s/P/*1024*1024*1024*1024*1024/g;
-    $s =~ s/E/*1024*1024*1024*1024*1024*1024/g;
-    $s =~ s/Z/*1024*1024*1024*1024*1024*1024*1024/g;
-    $s =~ s/Y/*1024*1024*1024*1024*1024*1024*1024*1024/g;
-    $s =~ s/X/*1024*1024*1024*1024*1024*1024*1024*1024*1024/g;
-
-    $s =~ s/k/*1000/g;
-    $s =~ s/m/*1000*1000/g;
-    $s =~ s/g/*1000*1000*1000/g;
-    $s =~ s/t/*1000*1000*1000*1000/g;
-    $s =~ s/p/*1000*1000*1000*1000*1000/g;
-    $s =~ s/e/*1000*1000*1000*1000*1000*1000/g;
-    $s =~ s/z/*1000*1000*1000*1000*1000*1000*1000/g;
-    $s =~ s/y/*1000*1000*1000*1000*1000*1000*1000*1000/g;
-    $s =~ s/x/*1000*1000*1000*1000*1000*1000*1000*1000*1000/g;
-
-    $s = eval $s;
-    ::debug($s);
-    return $s;
+    return wantarray ? @v : $v[0];
 }
 
 {
@@ -4479,6 +4482,7 @@ sub spacefree {
 {
     my $hostname;
     sub hostname {
+	local $/ = "\n";
 	if(not $hostname) {
 	    $hostname = `hostname`;
 	    chomp($hostname);
@@ -4796,6 +4800,7 @@ sub my_memory_usage {
     use strict;
     use FileHandle;
 
+    local $/ = "\n";
     my $pid = $$;
     if(-e "/proc/$pid/stat") {
         my $fh = FileHandle->new("</proc/$pid/stat");
@@ -5153,7 +5158,8 @@ sub limit {
 	    my $tmpfile = ::tmpname("parlmt");
 	    $Global::unlink{$tmpfile};
 	    $self->{'limitscript'} =
-	    ::spacefree(1, sprintf($limitscripts{$cmd},@args,$tmpfile));
+	    ::spacefree(1, sprintf($limitscripts{$cmd},
+				   ::multiply_binary_prefix(@args),$tmpfile));
 	} else {
 	    $self->{'limitscript'} = $opt::limit;
 	}
@@ -5874,6 +5880,7 @@ sub simultaneous_sshlogin {
     # (ssh host echo simultaneouslogin & ssh host echo simultaneouslogin & ...)|grep simul|wc -l
     # Returns:
     #   Number of succesful logins
+    local $/ = "\n";
     my $self = shift;
     my $wanted_processes = shift;
     my $sshcmd = $self->sshcommand();
@@ -5944,6 +5951,7 @@ sub user_requested_processes {
 }
 
 sub ncpus {
+    local $/ = "\n";
     my $self = shift;
     if(not defined $self->{'ncpus'}) {
         my $sshcmd = $self->sshcommand();
@@ -6168,6 +6176,7 @@ sub no_of_cpus_freebsd {
     # Returns:
     #   Number of physical CPUs on FreeBSD
     #   undef if not FreeBSD
+    local $/ = "\n";
     my $no_of_cpus =
 	(::qqx(qq{ sysctl -a dev.cpu | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }' })
 	 or
@@ -6180,6 +6189,7 @@ sub no_of_cores_freebsd {
     # Returns:
     #   Number of CPU cores on FreeBSD
     #   undef if not FreeBSD
+    local $/ = "\n";
     my $no_of_cores =
 	(::qqx(qq{ sysctl hw.ncpu | awk '{ print \$2 }' })
 	 or
@@ -6192,6 +6202,7 @@ sub no_of_cpus_netbsd {
     # Returns:
     #   Number of physical CPUs on NetBSD
     #   undef if not NetBSD
+    local $/ = "\n";
     my $no_of_cpus = ::qqx("sysctl -n hw.ncpu");
     chomp $no_of_cpus;
     return $no_of_cpus;
@@ -6201,6 +6212,7 @@ sub no_of_cores_netbsd {
     # Returns:
     #   Number of CPU cores on NetBSD
     #   undef if not NetBSD
+    local $/ = "\n";
     my $no_of_cores = ::qqx("sysctl -n hw.ncpu");
     chomp $no_of_cores;
     return $no_of_cores;
@@ -6210,6 +6222,7 @@ sub no_of_cpus_openbsd {
     # Returns:
     #   Number of physical CPUs on OpenBSD
     #   undef if not OpenBSD
+    local $/ = "\n";
     my $no_of_cpus = ::qqx('sysctl -n hw.ncpu');
     chomp $no_of_cpus;
     return $no_of_cpus;
@@ -6219,6 +6232,7 @@ sub no_of_cores_openbsd {
     # Returns:
     #   Number of CPU cores on OpenBSD
     #   undef if not OpenBSD
+    local $/ = "\n";
     my $no_of_cores = ::qqx('sysctl -n hw.ncpu');
     chomp $no_of_cores;
     return $no_of_cores;
@@ -6228,6 +6242,7 @@ sub no_of_cpus_hurd {
     # Returns:
     #   Number of physical CPUs on HURD
     #   undef if not HURD
+    local $/ = "\n";
     my $no_of_cpus = ::qqx("nproc");
     chomp $no_of_cpus;
     return $no_of_cpus;
@@ -6237,6 +6252,7 @@ sub no_of_cores_hurd {
     # Returns:
     #   Number of physical CPUs on HURD
     #   undef if not HURD
+    local $/ = "\n";
     my $no_of_cores = ::qqx("nproc");
     chomp $no_of_cores;
     return $no_of_cores;
@@ -6312,6 +6328,7 @@ sub no_of_cpus_aix {
     # Returns:
     #   Number of physical CPUs on AIX
     #   undef if not AIX
+    local $/ = "\n";
     my $no_of_cpus = 0;
     if(-x "/usr/sbin/lscfg") {
 	open(my $in_fh, "-|", "/usr/sbin/lscfg -vs |grep proc | wc -l|tr -d ' '")
@@ -7741,6 +7758,7 @@ sub sshlogin_wrap {
 	    }
 	}
 	if(grep { /^_$/ } @vars) {
+	    local $/ = "\n";
 	    # --env _
 	    # Include all vars that are not in a clean environment
 	    if(open(my $vars_fh, "<", $ENV{'PARALLEL_HOME'} . "/ignored_vars")) {
@@ -10177,6 +10195,7 @@ sub tmux_length {
     #   $len = maximal command line length
     # Returns:
     #   $tmux_len = maximal length runable in tmux
+    local $/ = "\n";
     my $len = shift;
     if($opt::tmux) {
 	$ENV{'PARALLEL_TMUX'} ||= "tmux";
@@ -10568,7 +10587,7 @@ sub read_arg_from_fh {
 	    }
 	}
 	# Remove delimiter
-	$arg =~ s:$/$::;
+	chomp $arg;
 	if($Global::end_of_file_string and
 	   $arg eq $Global::end_of_file_string) {
 	    # Ignore the rest of input file

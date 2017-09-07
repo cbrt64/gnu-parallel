@@ -72,7 +72,7 @@ change GNU B<parallel>.
 
 =head1 OPTIONS
 
-=over 9
+=over 4
 
 =item I<command>
 
@@ -1040,6 +1040,49 @@ standard specifies B<-L> instead.
 B<-l 0> is an alias for B<-l 1>.
 
 Implies B<-X> unless B<-m>, B<--xargs>, or B<--pipe> is set.
+
+
+=item B<--limit> "I<command> I<args>" (alpha testing)
+
+Dynamic job limit. Before starting a new job run I<command> with
+I<args>. The exit value of I<command> determines what GNU B<parallel>
+will do:
+
+=over 4
+
+=item Z<>0
+
+Below limit. Start another job.
+
+=item Z<>1
+
+Over limit. Start no jobs.
+
+=item Z<>2
+
+Way over limit. Kill the youngest job.
+
+=back
+
+You can use any shell command. There are 3 predefined commands:
+
+=over 10
+
+=item "io I<n>"
+
+Limit for I/O. The amount of disk I/O will be computed as a value
+0-100, where 0 is no I/O and 100 is at least one disk is 100%
+saturated.
+
+=item "load I<n>"
+
+Similar to B<--load>.
+
+=item "mem I<n>"
+
+Similar to B<--memfree>.
+
+=back
 
 
 =item B<--line-buffer> (beta testing)
@@ -3198,10 +3241,10 @@ Check the uptime of the servers in I<~/.parallel/sshloginfile>:
 =head1 EXAMPLE: Colorize output
 
 Give each job a new color. Most terminals support ANSI colors with the
-escape code "\033[30;XXm" where 30 <= XX <= 37:
+escape code "\033[30;3Xm" where 0 <= X <= 7:
 
-    parallel --tagstring '\033[30;{=$_=++$::color%8+30=}m' seq {} ::: {1..10}    
-    parallel --rpl '{color} $_="\033[30;".++$::color%8+30."=}m"' \
+    parallel --tagstring '\033[30;3{=$_=++$::color%8=}m' seq {} ::: {1..10}
+    parallel --rpl '{color} $_="\033[30;3".(++$::color%8)."m"' \
       --tagstring {color} seq {} ::: {1..10}
 
 To get rid of the initial \t (which comes from B<--tagstring>):
