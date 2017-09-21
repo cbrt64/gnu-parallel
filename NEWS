@@ -1,3 +1,15 @@
+20170922
+
+* Use '--limit myprog' to make a dynamic job limit. Just return 0 to
+  spawn another job, 1 to not spawn another job, and 2 to kill the
+  youngest job.
+
+* PARALLEL_RSYNC_OPTS and --rsync-opts sets the options for rsync (Default: -rlDzR).
+
+* Download all of humble bundle books in parallel
+  https://til.hashrocket.com/posts/ggt1jaes4y-download-all-of-humble-bundle-books-in-parallel
+
+
 20170822
 
 * --line-buffer no longer uses tempfiles. This is faster and makes it
