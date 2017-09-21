@@ -24,7 +24,8 @@ par_read_sshloginfile_from_stdin	foo
 par_read_sshloginfile_from_stdin	/home/parallel
 par_read_sshloginfile_from_stdin	foo
 par_remote_symlink_dir	bug #51293: parallel does not preserve symlinked directory structure on remote
-par_remote_symlink_dir	OK: wd is still a symlink
+par_remote_symlink_dir	OK: wd is still a symlink with --rsync-opts
+par_remote_symlink_dir	OK: wd is still a symlink with PARALLEL_RSYNC_OPTS
 par_test_nonall	### Test --nonall
 par_test_nonall	/home/csh
 par_test_nonall	/home/parallel

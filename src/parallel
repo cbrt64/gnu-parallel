@@ -1381,7 +1381,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20170822;
+    $Global::version = 20170922;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -1415,6 +1415,7 @@ sub init_globals {
 	 '{...}' => 's:\.[^/.]+$::; s:\.[^/.]+$::; s:\.[^/.]+$::',
 	 '{/..}' => 's:.*/::; s:\.[^/.]+$::; s:\.[^/.]+$::',
 	 '{/...}' => 's:.*/::; s:\.[^/.]+$::; s:\.[^/.]+$::; s:\.[^/.]+$::',
+	 '{choose_k}' => 'for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } }',
 	 # {##} = number of jobs
 	 '{##}' => '$_=total_jobs()',
 	 # Bash ${a:-myval}
@@ -2925,7 +2926,7 @@ sub progress {
 	#   $pctcomplete = percent of jobs completed
 	#   $avgtime = averaged time
 	#   $eta = smoothed eta
-	$total ||= $Global::JobQueue->total_jobs();
+	$total = $Global::JobQueue->total_jobs();
 	my $completed = $Global::total_completed;
 	my $left = $total - $completed;
 	if(not $completed) {
@@ -5156,7 +5157,7 @@ sub limit {
 	my ($cmd,@args) = split /\s+/,$opt::limit;
 	if($limitscripts{$cmd}) {
 	    my $tmpfile = ::tmpname("parlmt");
-	    $Global::unlink{$tmpfile};
+	    ++$Global::unlink{$tmpfile};
 	    $self->{'limitscript'} =
 	    ::spacefree(1, sprintf($limitscripts{$cmd},
 				   ::multiply_binary_prefix(@args),$tmpfile));
@@ -9832,7 +9833,8 @@ sub new {
 	    if($posrpl =~ s/^\{//) {
 		# Only do this if the shorthand start with {
 		$prefix=~s/^\{//;
-		while(s{( (?: ^|\257> ) (?: (?! \257[<>]). )*? ) # Don't replace after \257 unless \257>
+		# Don't replace after \257 unless \257>
+		while(s{( (?: ^|\257> ) (?: (?! \257[<>]). )*? )
 		  \{(-?\d+) \s* \Q$prefix\E $grp_regexp \Q$postfix\E}
 		      {
 		      # The start remains the same

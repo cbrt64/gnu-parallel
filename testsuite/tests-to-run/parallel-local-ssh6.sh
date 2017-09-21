@@ -124,8 +124,15 @@ par_remote_symlink_dir() {
     ssh parallel@lo 'mkdir -p tmp; rm -rf wd; ln -s tmp wd'
     mkdir -p wd
     touch wd/testfile
+    parallel --nonall --rsync-opts '--keep-dirlinks -rlDzR' -S parallel@lo --basefile wd/testfile
+    ssh parallel@lo rm wd && echo OK: wd is still a symlink with --rsync-opts
+
+    ssh parallel@lo 'mkdir -p tmp; rm -rf wd; ln -s tmp wd'
+    mkdir -p wd
+    touch wd/testfile
+    export PARALLEL_RSYNC_OPTS='--keep-dirlinks -rlDzR'
     parallel --nonall -S parallel@lo --basefile wd/testfile
-    ssh parallel@lo rm wd && echo OK: wd is still a symlink
+    ssh parallel@lo rm wd && echo OK: wd is still a symlink with PARALLEL_RSYNC_OPTS
 }
 
 export -f $(compgen -A function | grep par_)

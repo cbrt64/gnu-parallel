@@ -1328,6 +1328,11 @@ Activate additional replacement strings: {+/} {+.} {+..} {+...} {..}
 B<{##}> is the number of jobs to be run. It is incompatible with
 B<-X>/B<-m>/B<--xargs>.
 
+B<{choose_k}> is inspired by n choose k: Given a list of n elements,
+choose k. k is the number of input sources and n is the number of
+arguments in an input source.  The content of the input sources must
+be the same and the arguments must be unique.
+
 The following dynamic replacement strings are also activated. They are
 inspired by bash's parameter expansion:
 
@@ -3096,6 +3101,24 @@ This also works if the input file is a file with columns:
 
   cat addressbook.tsv | \
     parallel --colsep '\t' --header : echo {Name} {E-mail address}
+
+
+=head1 EXAMPLE: All combinations in a list
+
+GNU B<parallel> makes all combinations when given two lists.
+
+To make all combinations in a single list with unique values, you
+repeat the list and use replacement string with a Perl expression that
+skips the job if the value from input source 1 is greater than or
+equal to the value from input source 2:
+
+  parallel echo {= 'if($arg[1] ge $arg[2]) { skip() }' =} ::: A B C D ::: A B C D
+
+Or more generally:
+
+  parallel echo \
+    '{= for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } } =}' \
+    ::: A B C D ::: A B C D ::: A B C D
 
 
 =head1 EXAMPLE: From a to b and b to c

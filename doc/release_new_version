@@ -198,20 +198,26 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20170922 ('Harvey/Peter Madsen') released <<[stable]>>
+Subject: GNU Parallel 20170922 ('Mexico City') released <<[stable]>>
 
-GNU Parallel 20170922 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20170922 ('Mexico City') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Haiku of the month:
 
-  <<>>
-    -- Ole Tange
+  --limit can
+  limit jobs dynamic'ly
+  given a command
+    --ole-tange
 
 New in this release:
 
-https://til.hashrocket.com/posts/ggt1jaes4y-download-all-of-humble-bundle-books-in-parallel
+* Use '--limit myprog' to make a dynamic job limit. Just return 0 to spawn another job, 1 to not spawn another job, and 2 to kill the youngest job.
+
+* PARALLEL_RSYNC_OPTS and --rsync-opts sets the options for rsync (Default: -rlDzR).
+
+* Download all of humble bundle books in parallel https://til.hashrocket.com/posts/ggt1jaes4y-download-all-of-humble-bundle-books-in-parallel
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

@@ -1269,20 +1269,6 @@ The failed commands can be resumed with:
 =back
 
 
-=head2 DIFFERENCES BETWEEN k-bx/par AND GNU Parallel
-
-kbx requires Haskell to work. This limits the number of platforms this
-can work on.
-
-Todo https://github.com/k-bx/par
-
-
-
-=head2 DIFFERENCES BETWEEN machma AND GNU Parallel
-
-Todo. Requires Go >= 1.7.
-
-
 =head2 DIFFERENCES BETWEEN ClusterSSH AND GNU Parallel
 
 ClusterSSH solves a different problem than GNU B<parallel>.
@@ -1301,6 +1287,24 @@ computer has 8 cores).
 GNU B<parallel> can be used as a poor-man's version of ClusterSSH:
 
 B<parallel --nonall -S server-a,server-b do_stuff foo bar>
+
+
+=head2 Todo
+
+machma. Requires Go >= 1.7.
+
+https://github.com/k-bx/par requires Haskell to work. This limits the
+number of platforms this can work on.
+
+https://github.com/otonvm/Parallel
+
+https://github.com/flesler/parallel
+
+https://github.com/kou1okada/lesser-parallel
+
+https://github.com/Julian/Verge
+
+https://github.com/amattn/paral
 
 
 =head1 TESTING OTHER TOOLS
