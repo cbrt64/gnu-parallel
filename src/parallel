@@ -1381,7 +1381,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20170922;
+    $Global::version = 20170923;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -1458,7 +1458,30 @@ sub init_globals {
 	::warning("\$HOME not set. Using /tmp.");
 	$ENV{HOME} = "/tmp";
     }
-    $ENV{'PARALLEL_HOME'} ||= $ENV{'HOME'} . "/.parallel";
+    # no warnings to allow for undefined $XDG_*
+    no warnings 'uninitialized';
+    # $xdg_config_home is needed to make env_parallel.fish stop complaining
+    my $xdg_config_home = $ENV{'XDG_CONFIG_HOME'};
+    # config_dirs = $PARALLEL_HOME, $XDG_CONFIG_HOME/parallel,
+    #   $(each XDG_CONFIG_DIRS)/parallel, $HOME/.parallel
+    # Keep only dirs that exist
+    @Global::config_dirs =
+	(grep { -d $_ }
+	 $ENV{'PARALLEL_HOME'},
+	 (map { "$_/parallel" }
+	  $xdg_config_home,
+	  split /:/, $ENV{'XDG_CONFIG_DIRS'}),
+	 $ENV{'HOME'} . "/.parallel");
+    # Use first dir as config dir
+    $Global::config_dir = $Global::config_dirs[0] ||
+	$ENV{'HOME'} . "/.parallel";
+    # cache_dirs = $PARALLEL_HOME, $XDG_CACHE_HOME/parallel,
+    # Keep only dirs that exist
+    @Global::cache_dirs =
+	(grep { -d $_ }
+	 $ENV{'PARALLEL_HOME'}, $ENV{'XDG_CACHE_HOME'}."/parallel");
+    $Global::cache_dir = $Global::cache_dirs[0] ||
+	$ENV{'HOME'} . "/.parallel";
 }
 
 sub parse_halt {
@@ -1633,7 +1656,7 @@ sub parse_semaphore {
 sub record_env {
     # Record current %ENV-keys in $PARALLEL_HOME/ignored_vars
     # Returns: N/A
-    my $ignore_filename = $ENV{'PARALLEL_HOME'} . "/ignored_vars";
+    my $ignore_filename = $Global::config_dir . "/ignored_vars";
     if(open(my $vars_fh, ">", $ignore_filename)) {
 	print $vars_fh map { $_,"\n" } keys %ENV;
     } else {
@@ -1905,18 +1928,16 @@ sub read_options {
 	# Add options from $PARALLEL_HOME/config and other profiles
 	my @config_profiles = (
 	    "/etc/parallel/config",
-	    $ENV{'PARALLEL_HOME'}."/config",
+	    (map { "$_/config" } @Global::config_dirs),
 	    $ENV{'HOME'}."/.parallelrc");
 	my @profiles = @config_profiles;
 	if(@opt::profile) {
 	    # --profile overrides default profiles
 	    @profiles = ();
 	    for my $profile (@opt::profile) {
-		if(-r $profile) {
-		    push @profiles, $profile;
-		} else {
-		    push @profiles, $ENV{'PARALLEL_HOME'}."/".$profile;
-		}
+		# Look for the $profile in . and @Global::config_dirs
+		push @profiles, grep { -r $_ }
+		    map { "$_/$profile" } ".", @Global::config_dirs;
 	    }
 	}
 	for my $profile (@profiles) {
@@ -3116,16 +3137,19 @@ sub expand_slf_shorthand {
     if($file eq "-") {
 	# skip: It is stdin
     } elsif($file eq "..") {
-        $file = $ENV{'PARALLEL_HOME'}."/sshloginfile";
+        $file = $Global::config_dir."/sshloginfile";
     } elsif($file eq ".") {
         $file = "/etc/parallel/sshloginfile";
     } elsif(not -r $file) {
-	if(not -r $ENV{'PARALLEL_HOME'}."/".$file) {
+	for(@Global::config_dirs) {
+	    if(not -r $_."/".$file) {
 		# Try prepending $PARALLEL_HOME
 		::error("Cannot open $file.");
 		::wait_and_exit(255);
-	} else {
-	    $file = $ENV{'PARALLEL_HOME'}."/".$file;
+	    } else {
+		$file = $_."/".$file;
+		last;
+	    }
 	}
     }
     return $file;
@@ -4049,7 +4073,7 @@ sub citation_notice {
        or
        not -t $Global::original_stderr
        or
-       -e $ENV{'PARALLEL_HOME'}."/will-cite") {
+       grep { -e "$_/will-cite" } @Global::config_dirs) {
 	# skip
     } else {
 	::status
@@ -4158,15 +4182,15 @@ sub citation {
 	  "mentioned in the release notes of next version of GNU Parallel.",
 	  ""
         );
-    while(not -e $ENV{'PARALLEL_HOME'}."/will-cite") {
+    while(not grep { -e "$_/will-cite" } @Global::config_dirs) {
 	print "\nType: 'will cite' and press enter.\n> ";
 	my $input = <STDIN>;
 	if(not defined $input) {
 	    exit(255);
 	}
 	if($input =~ /will cite/i) {
-	    mkdir $ENV{'PARALLEL_HOME'};
-	    if(open (my $fh, ">", $ENV{'PARALLEL_HOME'}."/will-cite")) {
+	    mkdir $Global::config_dir;
+	    if(open (my $fh, ">", $Global::config_dir."/will-cite")) {
 		close $fh;
 		::status(
 		    "",
@@ -4917,11 +4941,11 @@ sub new {
         'control_path' => undef,
 	'time_to_login' => undef,
 	'last_login_at' => undef,
-        'loadavg_file' => $ENV{'PARALLEL_HOME'} . "/tmp/sshlogin/" .
+        'loadavg_file' => $Global::cache_dir . "/tmp/sshlogin/" .
 	    $no_slash_string . "/loadavg",
         'loadavg' => undef,
 	'last_loadavg_update' => 0,
-        'swap_activity_file' => $ENV{'PARALLEL_HOME'}  . "/tmp/sshlogin/" .
+        'swap_activity_file' => $Global::cache_dir . "/tmp/sshlogin/" .
             $no_slash_string . "/swap_activity",
         'swap_activity' => undef,
     }, ref($class) || $class;
@@ -7762,7 +7786,7 @@ sub sshlogin_wrap {
 	    local $/ = "\n";
 	    # --env _
 	    # Include all vars that are not in a clean environment
-	    if(open(my $vars_fh, "<", $ENV{'PARALLEL_HOME'} . "/ignored_vars")) {
+	    if(open(my $vars_fh, "<", $Global::config_dir . "/ignored_vars")) {
 		my @ignore = <$vars_fh>;
 		chomp @ignore;
 		my %ignore;
@@ -10113,7 +10137,7 @@ sub max_length {
     #   number of chars on the longest command line allowed
     if(not $Limits::Command::line_max_len) {
 	# Disk cache of max command line length
-	my $len_cache = $ENV{'PARALLEL_HOME'} . "/tmp/sshlogin/" . ::hostname() .
+	my $len_cache = $Global::cache_dir . "/tmp/sshlogin/" . ::hostname() .
 	    "/linelen";
 	my $cached_limit;
 	if(-e $len_cache) {
@@ -11348,7 +11372,7 @@ sub new {
     my $count = shift;
     $id =~ s/([^-_a-z0-9])/unpack("H*",$1)/ige; # Convert non-word chars to hex
     $id = "id-".$id; # To distinguish it from a process id
-    my $parallel_locks = $ENV{'PARALLEL_HOME'}."/semaphores";
+    my $parallel_locks = $Global::cache_dir . "/semaphores";
     -d $parallel_locks or ::mkdir_or_die($parallel_locks);
     my $lockdir = "$parallel_locks/$id";
 

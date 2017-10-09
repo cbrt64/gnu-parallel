@@ -62,9 +62,9 @@ par_linebuffer_matters_compress_tag() {
 
     testfunc() {
 	linebuffer="$1"
-	# Sleep 2 sec to give time to linebuffer-print the first part
+	# Sleep 3 sec to give time to linebuffer-print the first part
 	parallel -j0 $linebuffer --compress --tag \
-		 "shuf $randomfile; sleep 2; shuf $randomfile; true" ::: {0..10} |
+		 "shuf $randomfile; sleep 3; shuf $randomfile; true" ::: {0..10} |
 	    perl -ne '/^(\S+)\t/ and print "$1\n"' | uniq | sort
     }
 

@@ -1288,6 +1288,18 @@ GNU B<parallel> can be used as a poor-man's version of ClusterSSH:
 
 B<parallel --nonall -S server-a,server-b do_stuff foo bar>
 
+=head2 coshell
+
+B<coshell> only accepts full commands on standard input. Any quoting
+needs to be done by the user.
+
+Commands are run in B<sh> so any B<bash>/B<tcsh>/B<zsh> specific
+syntax will not work.
+
+Output can be buffered by using B<-d>. Output is buffered in memory,
+so big output can cause swapping and therefore be terrible slow or
+even cause out of memory.
+
 
 =head2 Todo
 

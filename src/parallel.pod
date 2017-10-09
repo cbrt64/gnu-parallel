@@ -1042,7 +1042,7 @@ B<-l 0> is an alias for B<-l 1>.
 Implies B<-X> unless B<-m>, B<--xargs>, or B<--pipe> is set.
 
 
-=item B<--limit> "I<command> I<args>" (alpha testing)
+=item B<--limit> "I<command> I<args>" (beta testing)
 
 Dynamic job limit. Before starting a new job run I<command> with
 I<args>. The exit value of I<command> determines what GNU B<parallel>
@@ -1085,9 +1085,9 @@ Similar to B<--memfree>.
 =back
 
 
-=item B<--line-buffer> (beta testing)
+=item B<--line-buffer>
 
-=item B<--lb> (beta testing)
+=item B<--lb>
 
 Buffer output on line basis. B<--group> will keep the output together
 for a whole job. B<--ungroup> allows output to mixup with half a line
@@ -1915,7 +1915,7 @@ You can even use multiple matches:
 See also: B<{= perl expression =}> B<--parens>
 
 
-=item B<--rsync-opts> I<options> (alpha testing)
+=item B<--rsync-opts> I<options> (beta testing)
 
 Options to pass on to B<rsync>. Setting B<--rsync-opts> takes
 precedence over setting the environment variable $PARALLEL_RSYNC_OPTS.
@@ -2188,7 +2188,8 @@ B<ssh-copy-id>, and B<sshpass> may help with that).
 The sshlogin ':' is special, it means 'no ssh' and will therefore run
 on the local computer.
 
-The sshlogin '..' is special, it read sshlogins from ~/.parallel/sshloginfile
+The sshlogin '..' is special, it read sshlogins from ~/.parallel/sshloginfile or
+$XDG_CONFIG_HOME/parallel/sshloginfile
 
 The sshlogin '-' is special, too, it read sshlogins from stdin
 (standard input).

@@ -168,6 +168,7 @@ function env_parallel
           s/\n/\001/g'
     end;
     )
+  # If --record-env: exit
   perl -e 'exit grep { /^--record-env$/ } @ARGV' -- $argv; and parallel $argv;
   set _parallel_exit_CODE $status
   set -e PARALLEL_ENV
