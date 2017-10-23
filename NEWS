@@ -1,13 +1,39 @@
+20171022
+
+* Initial support for XDG Base Directory $XDG_* environment variables.
+
+* Validating half a million TIFF files. Part
+  Two
+  https://www.dpoc.ac.uk/2017/08/17/validating-half-a-million-tiff-files-part-two/
+
+* Turing data science class: Cluster computing
+  https://www.turing.ac.uk/events/masterclass-cluster-computing/
+
+* Butlin:Unix for Bioinformatics - advanced tutorial
+  https://openwetware.org/wiki/Butlin:Unix_for_Bioinformatics_-_advanced_tutorial
+
+* พยายามใช้ CPU ให้ครบทุก CORE
+  https://veer66.wordpress.com/2017/09/02/use-multi-core/
+
+* Examples on using GNU Parallel
+  https://gist.github.com/drmalex07/de8ff1379a560f6d84a0d863e60ae378
+
+* Bug fixes and man page updates.
+
+
 20170922
 
 * Use '--limit myprog' to make a dynamic job limit. Just return 0 to
   spawn another job, 1 to not spawn another job, and 2 to kill the
   youngest job.
 
-* PARALLEL_RSYNC_OPTS and --rsync-opts sets the options for rsync (Default: -rlDzR).
+* PARALLEL_RSYNC_OPTS and --rsync-opts sets the options for rsync
+  (Default: -rlDzR).
 
 * Download all of humble bundle books in parallel
   https://til.hashrocket.com/posts/ggt1jaes4y-download-all-of-humble-bundle-books-in-parallel
+
+* Bug fixes and man page updates.
 
 
 20170822
