@@ -40,6 +40,7 @@ while test $# -gt 0; do
   case $key in
       -i|--install)
 	  installer . env_parallel.bash  $HOME/.bashrc
+	  installer . env_parallel.sh  $HOME/.shrc
 	  installer . env_parallel.zsh   $HOME/.zshenv
 	  installer source env_parallel.ksh $HOME/.kshrc
 	  echo $SHELL | grepq /pdksh &&
@@ -55,6 +56,7 @@ while test $# -gt 0; do
   	    echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
   	  echo 'Installed env_parallel in: '
   	  echo "    " $HOME/.bashrc
+  	  echo "    " $HOME/.shrc
   	  echo "    " $HOME/.zshenv
   	  echo "    " $HOME/.config/fish/config.fish
   	  echo "    " $HOME/.kshrc

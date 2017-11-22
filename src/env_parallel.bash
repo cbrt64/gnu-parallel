@@ -206,12 +206,13 @@ parset() {
     if [ "$_parset_name" == "" ] ; then
 	echo parset: Error: No destination variable given. >&2
 	echo parset: Error: Try: >&2
-	echo parset: Error: ' ' parset myvar echo ::: foo >&2
+	echo parset: Error: ' ' parset myarray echo ::: foo bar >&2
 	return 255
     fi
     echo "$_parset_name" |
 	perl -ne 'chomp;for (split /[, ]/) {
-	    if(not /^[a-zA-Z_][a-zA-Z_0-9]*$/) {
+            # Allow: var_32 var[3]
+	    if(not /^[a-zA-Z_][a-zA-Z_0-9]*(\[\d+\])?$/) {
                 print STDERR "parset: Error: $_ is an invalid variable name.\n";
                 print STDERR "parset: Error: Variable names must be letter followed by letters or digits.\n";
                 $exitval = 255;
