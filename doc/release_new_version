@@ -199,30 +199,29 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20171022 ('Catalonia') released <<[stable]>>
+Subject: GNU Parallel 20171122 ('Mugabe') released <<[stable]>>
 
-GNU Parallel 20171022 ('Catalonia') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20171122 ('Mugabe') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
-Haiku of the month:
+Poem of the month:
 
-  Cores should never sit
-  idle - you have work to do!
-  Use GNU Parallel.
-    -- Ole Tange
+  An ode to GNU parallel
+  An ode to GNU parallel
+  An ode to GNU parallel
+  An ode to GNU parallel
+  An ode to GNU parallel
+  An ode to GNU parallel
+    -- Adam Stuckert PoisonEcology@twitter
 
 New in this release:
 
-* Validating half a million TIFF files. Part Two. https://www.dpoc.ac.uk/2017/08/17/validating-half-a-million-tiff-files-part-two/
+* Using GNU Parallel to speed up Google Cloud Infrastructure management https://medium.com/@pczarkowski/using-gnu-parallel-to-speed-up-google-cloud-infrastructure-management-53e5c555ec05
 
-* Turing data science class: Cluster computing https://www.turing.ac.uk/events/masterclass-cluster-computing/
+* What is gnu parallel http://wiki.chpc.ac.za/howto:bioinformatics:gnu-parallel
 
-* Butlin:Unix for Bioinformatics - advanced tutorial https://openwetware.org/wiki/Butlin:Unix_for_Bioinformatics_-_advanced_tutorial
-
-* พยายามใช้ CPU ให้ครบทุก CORE https://veer66.wordpress.com/2017/09/02/use-multi-core/
-
-* Examples on using GNU Parallel https://gist.github.com/drmalex07/de8ff1379a560f6d84a0d863e60ae378
+* Parallel, Scripts, Clusters, & Easy Use https://chiefio.wordpress.com/2017/11/10/parallel-scripts-clusters-easy-use/
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

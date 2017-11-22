@@ -1,3 +1,18 @@
+20171122
+
+* Using GNU Parallel to speed up Google Cloud Infrastructure
+  management
+  https://medium.com/@pczarkowski/using-gnu-parallel-to-speed-up-google-cloud-infrastructure-management-53e5c555ec05
+
+* What is gnu parallel
+  http://wiki.chpc.ac.za/howto:bioinformatics:gnu-parallel
+
+* Parallel, Scripts, Clusters, & Easy Use
+  https://chiefio.wordpress.com/2017/11/10/parallel-scripts-clusters-easy-use/
+
+* Bug fixes and man page updates.
+
+
 20171022
 
 * Initial support for XDG Base Directory $XDG_* environment variables.

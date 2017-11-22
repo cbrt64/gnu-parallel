@@ -1,427 +1,286 @@
 ### Tests on polarhome machines
 Setup on polarhome machines
-copy hpux-ia64.polarhome.com /usr/local/bin/parallel parallel
-copy raspbian.polarhome.com /usr/local/bin/parallel parallel
-copy pidora.polarhome.com /usr/local/bin/parallel parallel
-copy openindiana.polarhome.com /usr/local/bin/parallel parallel
-copy hpux.polarhome.com /usr/local/bin/parallel parallel
-copy debian-ppc.polarhome.com /usr/local/bin/parallel parallel
-copy suse.polarhome.com /usr/local/bin/parallel parallel
-copy mandriva.polarhome.com /usr/local/bin/parallel parallel
-copy aix.polarhome.com /usr/local/bin/parallel parallel
-copy qnx.polarhome.com /usr/local/bin/parallel parallel
-copy ubuntu.polarhome.com /usr/local/bin/parallel parallel
-copy centos.polarhome.com /usr/local/bin/parallel parallel
-copy solaris.polarhome.com /usr/local/bin/parallel parallel
-copy scosysv.polarhome.com /usr/local/bin/parallel parallel
 copy macosx.polarhome.com /usr/local/bin/parallel parallel
-copy unixware.polarhome.com /usr/local/bin/parallel parallel
-copy solaris-x86.polarhome.com /usr/local/bin/parallel parallel
-copy vax.polarhome.com /usr/local/bin/parallel parallel
-copy miros.polarhome.com /usr/local/bin/parallel parallel
 copy freebsd.polarhome.com /usr/local/bin/parallel parallel
-copy netbsd.polarhome.com /usr/local/bin/parallel parallel
 copy openbsd.polarhome.com /usr/local/bin/parallel parallel
-copy minix.polarhome.com /usr/local/bin/parallel parallel
-copy alpha.polarhome.com /usr/local/bin/parallel parallel
-copy ultrix.polarhome.com /usr/local/bin/parallel parallel
-copy tru64.polarhome.com /usr/local/bin/parallel parallel
-copy beaglebone.polarhome.com /usr/local/bin/parallel parallel
-copy irix.polarhome.com /usr/local/bin/parallel parallel
-copy cubieboard2.polarhome.com /usr/local/bin/parallel parallel
-copy dragonfly.polarhome.com /usr/local/bin/parallel parallel
-/usr/local/bin/parallel dragonfly.polarhome.com	cannot create bin/parallel.tmp: No space left on device
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy centos.polarhome.com /usr/local/bin/parallel parallel
 copy redhat.polarhome.com /usr/local/bin/parallel parallel
+copy netbsd.polarhome.com /usr/local/bin/parallel parallel
+copy unixware.polarhome.com /usr/local/bin/parallel parallel
+copy pidora.polarhome.com /usr/local/bin/parallel parallel
+copy ubuntu.polarhome.com /usr/local/bin/parallel parallel
+copy mandriva.polarhome.com /usr/local/bin/parallel parallel
+copy raspbian.polarhome.com /usr/local/bin/parallel parallel
+copy solaris-x86.polarhome.com /usr/local/bin/parallel parallel
+copy miros.polarhome.com /usr/local/bin/parallel parallel
+copy scosysv.polarhome.com /usr/local/bin/parallel parallel
+copy suse.polarhome.com /usr/local/bin/parallel parallel
+copy debian-ppc.polarhome.com /usr/local/bin/parallel parallel
+copy aix.polarhome.com /usr/local/bin/parallel parallel
+copy hpux.polarhome.com /usr/local/bin/parallel parallel
+copy hpux-ia64.polarhome.com /usr/local/bin/parallel parallel
+copy openindiana.polarhome.com /usr/local/bin/parallel parallel
+copy openbsd.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy freebsd.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy macosx.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy debian.polarhome.com /usr/local/bin/parallel parallel
+copy netbsd.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy debian.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy solaris.polarhome.com /usr/local/bin/parallel parallel
+copy unixware.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy redhat.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy centos.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy miros.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy scosysv.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel env_parallel
 copy raspbian.polarhome.com /usr/local/bin/env_parallel env_parallel
 copy pidora.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy aix.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy hpux.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy openindiana.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy qnx.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy alpha.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy suse.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy mandriva.polarhome.com /usr/local/bin/env_parallel env_parallel
 copy solaris-x86.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy unixware.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy mandriva.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy suse.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy aix.polarhome.com /usr/local/bin/env_parallel env_parallel
 copy debian-ppc.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy solaris.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy scosysv.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy macosx.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy miros.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy centos.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy netbsd.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy vax.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy freebsd.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy openbsd.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy minix.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy tru64.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy ultrix.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy irix.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy syllable.polarhome.com /usr/local/bin/parallel parallel
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel env_parallel
-/usr/local/bin/env_parallel dragonfly.polarhome.com	cannot create bin/env_parallel.tmp: No space left on device
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy redhat.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy raspbian.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy pidora.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy aix.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy hpux.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy alpha.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy suse.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy qnx.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy mandriva.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy solaris.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy scosysv.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy unixware.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy vax.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy centos.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy macosx.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy miros.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy minix.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy hpux.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy openindiana.polarhome.com /usr/local/bin/env_parallel env_parallel
 copy openbsd.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
 copy freebsd.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy syllable.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy tru64.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy irix.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-/usr/local/bin/env_parallel.ash dragonfly.polarhome.com	cannot create bin/env_parallel.ash.tmp: No space left on device
-copy raspbian.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy pidora.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy aix.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy hpux.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy alpha.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy qnx.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy solaris.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy suse.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy macosx.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy solaris.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
 copy redhat.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy mandriva.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy scosysv.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy unixware.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy vax.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy centos.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy macosx.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy minix.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy syllable.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy miros.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy debian.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy centos.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy unixware.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy miros.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy scosysv.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy pidora.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy raspbian.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy mandriva.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy suse.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy aix.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy hpux.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy debian.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
 copy openbsd.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
 copy freebsd.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy irix.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy tru64.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy raspbian.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy pidora.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-/usr/local/bin/env_parallel.bash dragonfly.polarhome.com	cannot create bin/env_parallel.bash.tmp: No space left on device
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy aix.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy hpux.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy alpha.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy solaris.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy qnx.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy suse.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy macosx.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy solaris.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy unixware.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
 copy redhat.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy mandriva.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy centos.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy miros.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy tru64.polarhome.com /usr/local/bin/parallel parallel
+copy scosysv.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy pidora.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy raspbian.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy mandriva.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy suse.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy aix.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy hpux.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy debian.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy openbsd.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy freebsd.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy macosx.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy solaris.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy centos.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy redhat.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy miros.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
 copy scosysv.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
 copy ubuntu.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
 copy unixware.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy macosx.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy centos.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy vax.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy miros.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy syllable.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy openbsd.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy freebsd.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy minix.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy tru64.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy irix.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-/usr/local/bin/env_parallel.csh dragonfly.polarhome.com	cannot create bin/env_parallel.csh.tmp: No space left on device
-copy redhat.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy pidora.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy mandriva.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy raspbian.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy suse.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy aix.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy hpux.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy debian.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy openbsd.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy freebsd.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy macosx.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy solaris.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy redhat.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy unixware.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy centos.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy miros.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy scosysv.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
 copy raspbian.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
 copy pidora.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy aix.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy hpux.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy suse.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy qnx.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy alpha.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
 copy mandriva.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
 copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy suse.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy aix.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy hpux.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy debian.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy openbsd.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy tru64.polarhome.com /usr/local/bin/env_parallel env_parallel
+copy freebsd.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy macosx.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
 copy solaris.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy unixware.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy scosysv.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy centos.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy macosx.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy syllable.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy miros.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy vax.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy freebsd.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy openbsd.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy minix.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy tru64.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy irix.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy redhat.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-/usr/local/bin/env_parallel.dash dragonfly.polarhome.com	cannot create bin/env_parallel.dash.tmp: No space left on device
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy raspbian.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy pidora.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy hpux.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy aix.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy suse.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy qnx.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy mandriva.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy alpha.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy solaris.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy redhat.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy centos.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
 copy unixware.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy miros.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
 copy scosysv.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
 copy ubuntu.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy centos.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy macosx.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy miros.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy vax.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy freebsd.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy openbsd.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy minix.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy tru64.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy irix.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy syllable.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy redhat.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-/usr/local/bin/env_parallel.fish dragonfly.polarhome.com	cannot create bin/env_parallel.fish.tmp: No space left on device
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy raspbian.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy pidora.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy hpux.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy aix.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy alpha.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy qnx.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy solaris.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy suse.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy mandriva.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy vax.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy scosysv.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy unixware.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy centos.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy macosx.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy minix.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy miros.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy pidora.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy mandriva.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy raspbian.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy suse.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy aix.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy hpux.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy debian.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
 copy openbsd.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
 copy freebsd.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy syllable.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy irix.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy tru64.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy debian.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy debian.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy debian.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy debian.polarhome.com /usr/local/bin/parallel parallel
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy macosx.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy solaris.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy unixware.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy centos.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy redhat.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy miros.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy scosysv.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy raspbian.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy pidora.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy mandriva.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy suse.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy aix.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy hpux.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy debian.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy openbsd.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy freebsd.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy macosx.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy solaris.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy redhat.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy centos.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy miros.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy scosysv.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy tru64.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
+copy unixware.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
 copy raspbian.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
 copy pidora.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-/usr/local/bin/env_parallel.ksh dragonfly.polarhome.com	cannot create bin/env_parallel.ksh.tmp: No space left on device
-copy redhat.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy hpux.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy aix.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy qnx.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy suse.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy alpha.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy solaris.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy mandriva.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
 copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy scosysv.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy unixware.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy centos.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy macosx.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy miros.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy vax.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy freebsd.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy openbsd.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy syllable.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy minix.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy tru64.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy irix.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-/usr/local/bin/env_parallel.pdksh dragonfly.polarhome.com	cannot create bin/env_parallel.pdksh.tmp: No space left on device
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy redhat.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy pidora.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy raspbian.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy aix.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy hpux.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy solaris.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy qnx.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy suse.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy alpha.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy mandriva.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy mandriva.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy suse.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy aix.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy hpux.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy debian.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy openbsd.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy freebsd.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy macosx.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy solaris.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy redhat.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
 copy unixware.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy centos.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy miros.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
 copy scosysv.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
 copy ubuntu.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy centos.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy macosx.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy miros.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy vax.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy syllable.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy freebsd.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy openbsd.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy tru64.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy minix.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy irix.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-/usr/local/bin/env_parallel.sh dragonfly.polarhome.com	cannot create bin/env_parallel.sh.tmp: No space left on device
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy mandriva.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy raspbian.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy pidora.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy suse.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy aix.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy hpux.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy openbsd.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy debian.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy freebsd.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy macosx.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy solaris.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy unixware.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy centos.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy redhat.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy miros.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy scosysv.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
 copy raspbian.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy redhat.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
 copy pidora.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy hpux.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy aix.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy suse.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy qnx.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
 copy mandriva.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
 copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy scosysv.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy suse.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy aix.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy hpux.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
+copy debian.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy openbsd.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy freebsd.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy macosx.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
 copy solaris.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy unixware.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy alpha.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy centos.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy macosx.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy syllable.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy miros.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy vax.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy freebsd.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy openbsd.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy minix.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy tru64.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy irix.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-/usr/local/bin/env_parallel.tcsh dragonfly.polarhome.com	cannot create bin/env_parallel.tcsh.tmp: No space left on device
-copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy redhat.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy raspbian.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy netbsd.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy redhat.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy unixware.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy centos.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy miros.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy scosysv.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy ubuntu.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
 copy pidora.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy openindiana.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy hpux.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy aix.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy suse.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy qnx.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy raspbian.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
 copy mandriva.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
 copy solaris-x86.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy scosysv.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy alpha.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy unixware.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy ubuntu.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy suse.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy debian-ppc.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy aix.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy hpux.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy hpux-ia64.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy openindiana.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy tru64.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
 copy solaris.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy centos.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy macosx.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy miros.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy netbsd.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy vax.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy freebsd.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy openbsd.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy minix.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
+copy tru64.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
+copy tru64.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
+copy tru64.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
+copy tru64.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
+copy tru64.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
+copy tru64.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
+copy tru64.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
 copy tru64.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy ultrix.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy irix.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy beaglebone.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy syllable.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy cubieboard2.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy dragonfly.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-/usr/local/bin/env_parallel.zsh dragonfly.polarhome.com	cannot create bin/env_parallel.zsh.tmp: No space left on device
-copy redhat.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy debian.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy debian.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy debian.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy debian.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy syllable.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy debian.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy debian.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy debian.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy debian.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy hurd.polarhome.com /usr/local/bin/parallel parallel
-copy hurd.polarhome.com /usr/local/bin/env_parallel env_parallel
-copy hurd.polarhome.com /usr/local/bin/env_parallel.ash env_parallel.ash
-copy hurd.polarhome.com /usr/local/bin/env_parallel.bash env_parallel.bash
-copy hurd.polarhome.com /usr/local/bin/env_parallel.csh env_parallel.csh
-copy hurd.polarhome.com /usr/local/bin/env_parallel.dash env_parallel.dash
-copy hurd.polarhome.com /usr/local/bin/env_parallel.fish env_parallel.fish
-copy hurd.polarhome.com /usr/local/bin/env_parallel.ksh env_parallel.ksh
-copy hurd.polarhome.com /usr/local/bin/env_parallel.pdksh env_parallel.pdksh
-copy hurd.polarhome.com /usr/local/bin/env_parallel.sh env_parallel.sh
-copy hurd.polarhome.com /usr/local/bin/env_parallel.tcsh env_parallel.tcsh
-copy hurd.polarhome.com /usr/local/bin/env_parallel.zsh env_parallel.zsh
-copy_and_test alpha.polarhome.com
-alpha.polarhome.com	### Run the test on alpha.polarhome.com
+copy_and_test openbsd.polarhome.com
+openbsd.polarhome.com	### Run the test on openbsd.polarhome.com
+openbsd.polarhome.com	Works on openbsd.polarhome.com
+openbsd.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at bin/parallel line 0000
+openbsd.polarhome.com	OK
 copy_and_test tru64.polarhome.com
 tru64.polarhome.com	### Run the test on tru64.polarhome.com
 tru64.polarhome.com	Works on tru64.polarhome.com
@@ -583,10 +442,8 @@ aix7
 centos.polarhome.com
 debian-ppc
 debian
-dragonfly.polarhome.com
 freebsd.polarhome.com
 hpux-ia64
-hpux64
 macosx
 mandriva.polarhome.com
 miros.polarhome.com
@@ -594,7 +451,6 @@ netbsd.polarhome.com
 openbsd.polarhome.com
 openindiana
 pidora
-qnx
 raspbian
 redhat.polarhome.com
 scosysv.polarhome.com
@@ -611,12 +467,8 @@ aix.polarhome.com	bash only A
 centos.polarhome.com	bash only A
 debian-ppc.polarhome.com	bash only A
 debian.polarhome.com	bash only A
-dragonfly.polarhome.com	Syntax error: "(" unexpected
 freebsd.polarhome.com	Syntax error: "(" unexpected (expecting word)
 hpux-ia64.polarhome.com	bash only A
-hpux.polarhome.com	bash only A
-irix.polarhome.com	Undefined subroutine &main::decode_base64 called at -e line 1.
-irix.polarhome.com	open3: exec of bzip2 -dc failed at -e line 1
 macosx.polarhome.com	bash only A
 mandriva.polarhome.com	bash only A
 miros.polarhome.com	bash only A
@@ -624,14 +476,12 @@ netbsd.polarhome.com	Missing name for redirect.
 openbsd.polarhome.com	bash only A
 openindiana.polarhome.com	bash only A
 pidora.polarhome.com	bash only A
-qnx.polarhome.com	/bin/sh: syntax error: `(' unexpected
 raspbian.polarhome.com	bash only A
 redhat.polarhome.com	bash only A
 scosysv.polarhome.com	bash only A
 solaris-x86.polarhome.com	bash only A
 solaris.polarhome.com	bash only A
 suse.polarhome.com	bash only A
-syllable.polarhome.com	Connection to gate.polarhome.com closed by remote host.
 tru64.polarhome.com	bash only A
 ubuntu.polarhome.com	bash only A
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `(' unexpected
@@ -643,8 +493,6 @@ centos.polarhome.com	bash only B
 debian-ppc.polarhome.com	bash only B
 debian.polarhome.com	bash only B
 freebsd.polarhome.com	bash only B
-irix.polarhome.com	Undefined subroutine &main::decode_base64 called at -e line 1.
-irix.polarhome.com	open3: exec of bzip2 -dc failed at -e line 1
 macosx.polarhome.com	bash only B
 mandriva.polarhome.com	bash only B
 miros.polarhome.com	bash only B
@@ -658,7 +506,6 @@ scosysv.polarhome.com	bash only B
 solaris-x86.polarhome.com	bash only B
 solaris.polarhome.com	bash only B
 suse.polarhome.com	bash only B
-syllable.polarhome.com	Connection to gate.polarhome.com closed by remote host.
 ubuntu.polarhome.com	bash only B
 
 ### env_parallel echo :::: <(echo OK)
@@ -666,6 +513,7 @@ ubuntu.polarhome.com	bash only B
 
 aix.polarhome.com	Installed env_parallel in: 
 aix.polarhome.com	     /home/t/tange/.bashrc
+aix.polarhome.com	     /home/t/tange/.shrc
 aix.polarhome.com	     /home/t/tange/.zshenv
 aix.polarhome.com	     /home/t/tange/.config/fish/config.fish
 aix.polarhome.com	     /home/t/tange/.kshrc
@@ -674,6 +522,7 @@ aix.polarhome.com	     /home/t/tange/.cshrc
 aix.polarhome.com	     /home/t/tange/.tcshrc
 centos.polarhome.com	Installed env_parallel in: 
 centos.polarhome.com	     /home/t/tange/.bashrc
+centos.polarhome.com	     /home/t/tange/.shrc
 centos.polarhome.com	     /home/t/tange/.zshenv
 centos.polarhome.com	     /home/t/tange/.config/fish/config.fish
 centos.polarhome.com	     /home/t/tange/.kshrc
@@ -682,6 +531,7 @@ centos.polarhome.com	     /home/t/tange/.cshrc
 centos.polarhome.com	     /home/t/tange/.tcshrc
 debian-ppc.polarhome.com	Installed env_parallel in: 
 debian-ppc.polarhome.com	     /home/t/tange/.bashrc
+debian-ppc.polarhome.com	     /home/t/tange/.shrc
 debian-ppc.polarhome.com	     /home/t/tange/.zshenv
 debian-ppc.polarhome.com	     /home/t/tange/.config/fish/config.fish
 debian-ppc.polarhome.com	     /home/t/tange/.kshrc
@@ -690,6 +540,7 @@ debian-ppc.polarhome.com	     /home/t/tange/.cshrc
 debian-ppc.polarhome.com	     /home/t/tange/.tcshrc
 debian.polarhome.com	Installed env_parallel in: 
 debian.polarhome.com	     /home/t/tange/.bashrc
+debian.polarhome.com	     /home/t/tange/.shrc
 debian.polarhome.com	     /home/t/tange/.zshenv
 debian.polarhome.com	     /home/t/tange/.config/fish/config.fish
 debian.polarhome.com	     /home/t/tange/.kshrc
@@ -698,6 +549,7 @@ debian.polarhome.com	     /home/t/tange/.cshrc
 debian.polarhome.com	     /home/t/tange/.tcshrc
 freebsd.polarhome.com	Installed env_parallel in: 
 freebsd.polarhome.com	     /home/t/tange/.bashrc
+freebsd.polarhome.com	     /home/t/tange/.shrc
 freebsd.polarhome.com	     /home/t/tange/.zshenv
 freebsd.polarhome.com	     /home/t/tange/.config/fish/config.fish
 freebsd.polarhome.com	     /home/t/tange/.kshrc
@@ -706,6 +558,7 @@ freebsd.polarhome.com	     /home/t/tange/.cshrc
 freebsd.polarhome.com	     /home/t/tange/.tcshrc
 macosx.polarhome.com	Installed env_parallel in: 
 macosx.polarhome.com	     /Users/tange/.bashrc
+macosx.polarhome.com	     /Users/tange/.shrc
 macosx.polarhome.com	     /Users/tange/.zshenv
 macosx.polarhome.com	     /Users/tange/.config/fish/config.fish
 macosx.polarhome.com	     /Users/tange/.kshrc
@@ -714,6 +567,7 @@ macosx.polarhome.com	     /Users/tange/.cshrc
 macosx.polarhome.com	     /Users/tange/.tcshrc
 mandriva.polarhome.com	Installed env_parallel in: 
 mandriva.polarhome.com	     /home/t/tange/.bashrc
+mandriva.polarhome.com	     /home/t/tange/.shrc
 mandriva.polarhome.com	     /home/t/tange/.zshenv
 mandriva.polarhome.com	     /home/t/tange/.config/fish/config.fish
 mandriva.polarhome.com	     /home/t/tange/.kshrc
@@ -722,6 +576,7 @@ mandriva.polarhome.com	     /home/t/tange/.cshrc
 mandriva.polarhome.com	     /home/t/tange/.tcshrc
 miros.polarhome.com	Installed env_parallel in: 
 miros.polarhome.com	     /home/t/tange/.bashrc
+miros.polarhome.com	     /home/t/tange/.shrc
 miros.polarhome.com	     /home/t/tange/.zshenv
 miros.polarhome.com	     /home/t/tange/.config/fish/config.fish
 miros.polarhome.com	     /home/t/tange/.kshrc
@@ -730,6 +585,7 @@ miros.polarhome.com	     /home/t/tange/.cshrc
 miros.polarhome.com	     /home/t/tange/.tcshrc
 netbsd.polarhome.com	Installed env_parallel in: 
 netbsd.polarhome.com	     /home/t/tange/.bashrc
+netbsd.polarhome.com	     /home/t/tange/.shrc
 netbsd.polarhome.com	     /home/t/tange/.zshenv
 netbsd.polarhome.com	     /home/t/tange/.config/fish/config.fish
 netbsd.polarhome.com	     /home/t/tange/.kshrc
@@ -738,6 +594,7 @@ netbsd.polarhome.com	     /home/t/tange/.cshrc
 netbsd.polarhome.com	     /home/t/tange/.tcshrc
 openbsd.polarhome.com	Installed env_parallel in: 
 openbsd.polarhome.com	     /home/t/tange/.bashrc
+openbsd.polarhome.com	     /home/t/tange/.shrc
 openbsd.polarhome.com	     /home/t/tange/.zshenv
 openbsd.polarhome.com	     /home/t/tange/.config/fish/config.fish
 openbsd.polarhome.com	     /home/t/tange/.kshrc
@@ -746,6 +603,7 @@ openbsd.polarhome.com	     /home/t/tange/.cshrc
 openbsd.polarhome.com	     /home/t/tange/.tcshrc
 openindiana.polarhome.com	Installed env_parallel in: 
 openindiana.polarhome.com	     /u/t/tange/.bashrc
+openindiana.polarhome.com	     /u/t/tange/.shrc
 openindiana.polarhome.com	     /u/t/tange/.zshenv
 openindiana.polarhome.com	     /u/t/tange/.config/fish/config.fish
 openindiana.polarhome.com	     /u/t/tange/.kshrc
@@ -754,6 +612,7 @@ openindiana.polarhome.com	     /u/t/tange/.cshrc
 openindiana.polarhome.com	     /u/t/tange/.tcshrc
 pidora.polarhome.com	Installed env_parallel in: 
 pidora.polarhome.com	     /home/t/tange/.bashrc
+pidora.polarhome.com	     /home/t/tange/.shrc
 pidora.polarhome.com	     /home/t/tange/.zshenv
 pidora.polarhome.com	     /home/t/tange/.config/fish/config.fish
 pidora.polarhome.com	     /home/t/tange/.kshrc
@@ -762,14 +621,25 @@ pidora.polarhome.com	     /home/t/tange/.cshrc
 pidora.polarhome.com	     /home/t/tange/.tcshrc
 raspbian.polarhome.com	Installed env_parallel in: 
 raspbian.polarhome.com	     /home/t/tange/.bashrc
+raspbian.polarhome.com	     /home/t/tange/.shrc
 raspbian.polarhome.com	     /home/t/tange/.zshenv
 raspbian.polarhome.com	     /home/t/tange/.config/fish/config.fish
 raspbian.polarhome.com	     /home/t/tange/.kshrc
 raspbian.polarhome.com	     /home/t/tange/.profile
 raspbian.polarhome.com	     /home/t/tange/.cshrc
 raspbian.polarhome.com	     /home/t/tange/.tcshrc
+redhat.polarhome.com	Installed env_parallel in: 
+redhat.polarhome.com	     /home/t/tange/.bashrc
+redhat.polarhome.com	     /home/t/tange/.shrc
+redhat.polarhome.com	     /home/t/tange/.zshenv
+redhat.polarhome.com	     /home/t/tange/.config/fish/config.fish
+redhat.polarhome.com	     /home/t/tange/.kshrc
+redhat.polarhome.com	     /home/t/tange/.profile
+redhat.polarhome.com	     /home/t/tange/.cshrc
+redhat.polarhome.com	     /home/t/tange/.tcshrc
 scosysv.polarhome.com	Installed env_parallel in: 
 scosysv.polarhome.com	     /home/t/tange/.bashrc
+scosysv.polarhome.com	     /home/t/tange/.shrc
 scosysv.polarhome.com	     /home/t/tange/.zshenv
 scosysv.polarhome.com	     /home/t/tange/.config/fish/config.fish
 scosysv.polarhome.com	     /home/t/tange/.kshrc
@@ -778,6 +648,7 @@ scosysv.polarhome.com	     /home/t/tange/.cshrc
 scosysv.polarhome.com	     /home/t/tange/.tcshrc
 solaris-x86.polarhome.com	Installed env_parallel in: 
 solaris-x86.polarhome.com	     /home/tange/.bashrc
+solaris-x86.polarhome.com	     /home/tange/.shrc
 solaris-x86.polarhome.com	     /home/tange/.zshenv
 solaris-x86.polarhome.com	     /home/tange/.config/fish/config.fish
 solaris-x86.polarhome.com	     /home/tange/.kshrc
@@ -786,6 +657,7 @@ solaris-x86.polarhome.com	     /home/tange/.cshrc
 solaris-x86.polarhome.com	     /home/tange/.tcshrc
 solaris.polarhome.com	Installed env_parallel in: 
 solaris.polarhome.com	     /home/t/tange/.bashrc
+solaris.polarhome.com	     /home/t/tange/.shrc
 solaris.polarhome.com	     /home/t/tange/.zshenv
 solaris.polarhome.com	     /home/t/tange/.config/fish/config.fish
 solaris.polarhome.com	     /home/t/tange/.kshrc
@@ -794,6 +666,7 @@ solaris.polarhome.com	     /home/t/tange/.cshrc
 solaris.polarhome.com	     /home/t/tange/.tcshrc
 suse.polarhome.com	Installed env_parallel in: 
 suse.polarhome.com	     /home/t/tange/.bashrc
+suse.polarhome.com	     /home/t/tange/.shrc
 suse.polarhome.com	     /home/t/tange/.zshenv
 suse.polarhome.com	     /home/t/tange/.config/fish/config.fish
 suse.polarhome.com	     /home/t/tange/.kshrc
@@ -802,6 +675,7 @@ suse.polarhome.com	     /home/t/tange/.cshrc
 suse.polarhome.com	     /home/t/tange/.tcshrc
 ubuntu.polarhome.com	Installed env_parallel in: 
 ubuntu.polarhome.com	     /home/t/tange/.bashrc
+ubuntu.polarhome.com	     /home/t/tange/.shrc
 ubuntu.polarhome.com	     /home/t/tange/.zshenv
 ubuntu.polarhome.com	     /home/t/tange/.config/fish/config.fish
 ubuntu.polarhome.com	     /home/t/tange/.kshrc

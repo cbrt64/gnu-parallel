@@ -70,6 +70,12 @@ pod2man --release='00000000' --center='parallel' \
 /bin/bash: pod2man: command not found
 Warning: pod2man not found. Using old parallel_tutorial.7
 pod2man --release='00000000' --center='parallel' \
+	--section=7 ./parallel_book.pod > ./parallel_book.7n \
+&& mv ./parallel_book.7n ./parallel_book.7 \
+|| echo "Warning: pod2man not found. Using old parallel_book.7"
+/bin/bash: pod2man: command not found
+Warning: pod2man not found. Using old parallel_book.7
+pod2man --release='00000000' --center='parallel' \
 	--section=7 ./parallel_design.pod > ./parallel_design.7n \
 && mv ./parallel_design.7n ./parallel_design.7 \
 || echo "Warning: pod2man not found. Using old parallel_design.7"
@@ -110,6 +116,12 @@ pod2html --title "GNU Parallel tutorial" ./parallel_tutorial.pod > ./parallel_tu
 || echo "Warning: pod2html not found. Using old parallel_tutorial.html"
 /bin/bash: pod2html: command not found
 Warning: pod2html not found. Using old parallel_tutorial.html
+rm -f ./pod2htm*
+pod2html --title "GNU Parallel book" ./parallel_book.pod > ./parallel_book.htmln \
+&& mv ./parallel_book.htmln ./parallel_book.html \
+|| echo "Warning: pod2html not found. Using old parallel_book.html"
+/bin/bash: pod2html: command not found
+Warning: pod2html not found. Using old parallel_book.html
 rm -f ./pod2htm*
 pod2html --title "GNU Parallel design" ./parallel_design.pod > ./parallel_design.htmln \
 && mv ./parallel_design.htmln ./parallel_design.html \
@@ -177,6 +189,10 @@ pod2texi --output=./parallel_tutorial.texi ./parallel_tutorial.pod \
 || echo "Warning: pod2texi not found. Using old parallel_tutorial.texi"
 /bin/bash: pod2texi: command not found
 Warning: pod2texi not found. Using old parallel_tutorial.texi
+pod2texi --output=./parallel_book.texi ./parallel_book.pod \
+|| echo "Warning: pod2texi not found. Using old parallel_book.texi"
+/bin/bash: pod2texi: command not found
+Warning: pod2texi not found. Using old parallel_book.texi
 pod2texi --output=./parallel_design.texi ./parallel_design.pod \
 || echo "Warning: pod2texi not found. Using old parallel_design.texi"
 /bin/bash: pod2texi: command not found
@@ -217,6 +233,10 @@ pod2pdf --output-file ./parallel_tutorial.pdf ./parallel_tutorial.pod --title "G
 || echo "Warning: pod2pdf not found. Using old parallel_tutorial.pdf"
 /bin/bash: pod2pdf: command not found
 Warning: pod2pdf not found. Using old parallel_tutorial.pdf
+pod2pdf --output-file ./parallel_book.pdf ./parallel_book.pod --title "GNU Parallel Book" \
+|| echo "Warning: pod2pdf not found. Using old parallel_book.pdf"
+/bin/bash: pod2pdf: command not found
+Warning: pod2pdf not found. Using old parallel_book.pdf
 pod2pdf --output-file ./parallel_design.pdf ./parallel_design.pod --title "GNU Parallel Design" \
 || echo "Warning: pod2pdf not found. Using old parallel_design.pdf"
 /bin/bash: pod2pdf: command not found
@@ -259,6 +279,12 @@ pod2html --title "GNU Parallel tutorial" ./parallel_tutorial.pod > ./parallel_tu
 /bin/bash: pod2html: command not found
 Warning: pod2html not found. Using old parallel_tutorial.html
 rm -f ./pod2htm*
+pod2html --title "GNU Parallel book" ./parallel_book.pod > ./parallel_book.htmln \
+&& mv ./parallel_book.htmln ./parallel_book.html \
+|| echo "Warning: pod2html not found. Using old parallel_book.html"
+/bin/bash: pod2html: command not found
+Warning: pod2html not found. Using old parallel_book.html
+rm -f ./pod2htm*
 pod2html --title "GNU Parallel design" ./parallel_design.pod > ./parallel_design.htmln \
 && mv ./parallel_design.htmln ./parallel_design.html \
 || echo "Warning: pod2html not found. Using old parallel_design.html"
@@ -325,6 +351,10 @@ pod2texi --output=./parallel_tutorial.texi ./parallel_tutorial.pod \
 || echo "Warning: pod2texi not found. Using old parallel_tutorial.texi"
 /bin/bash: pod2texi: command not found
 Warning: pod2texi not found. Using old parallel_tutorial.texi
+pod2texi --output=./parallel_book.texi ./parallel_book.pod \
+|| echo "Warning: pod2texi not found. Using old parallel_book.texi"
+/bin/bash: pod2texi: command not found
+Warning: pod2texi not found. Using old parallel_book.texi
 pod2texi --output=./parallel_design.texi ./parallel_design.pod \
 || echo "Warning: pod2texi not found. Using old parallel_design.texi"
 /bin/bash: pod2texi: command not found
@@ -365,6 +395,10 @@ pod2pdf --output-file ./parallel_tutorial.pdf ./parallel_tutorial.pod --title "G
 || echo "Warning: pod2pdf not found. Using old parallel_tutorial.pdf"
 /bin/bash: pod2pdf: command not found
 Warning: pod2pdf not found. Using old parallel_tutorial.pdf
+pod2pdf --output-file ./parallel_book.pdf ./parallel_book.pod --title "GNU Parallel Book" \
+|| echo "Warning: pod2pdf not found. Using old parallel_book.pdf"
+/bin/bash: pod2pdf: command not found
+Warning: pod2pdf not found. Using old parallel_book.pdf
 pod2pdf --output-file ./parallel_design.pdf ./parallel_design.pod --title "GNU Parallel Design" \
 || echo "Warning: pod2pdf not found. Using old parallel_design.pdf"
 /bin/bash: pod2pdf: command not found
@@ -382,7 +416,7 @@ pod2pdf --output-file ./parset.pdf ./parset.pod --title "GNU parset" \
 /bin/bash: pod2pdf: command not found
 Warning: pod2pdf not found. Using old parset.pdf
  /bin/mkdir -p '/usr/local/share/doc/parallel'
- /usr/bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_design.html parallel_alternatives.html parcat.html parset.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf '/usr/local/share/doc/parallel'
+ /usr/bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_book.html parallel_design.html parallel_alternatives.html parcat.html parset.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_book.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf '/usr/local/share/doc/parallel'
 pod2man --release='00000000' --center='parallel' \
 	--section=1 ./parallel.pod > ./parallel.1n \
 && mv ./parallel.1n ./parallel.1 \
@@ -420,6 +454,12 @@ pod2man --release='00000000' --center='parallel' \
 /bin/bash: pod2man: command not found
 Warning: pod2man not found. Using old parallel_tutorial.7
 pod2man --release='00000000' --center='parallel' \
+	--section=7 ./parallel_book.pod > ./parallel_book.7n \
+&& mv ./parallel_book.7n ./parallel_book.7 \
+|| echo "Warning: pod2man not found. Using old parallel_book.7"
+/bin/bash: pod2man: command not found
+Warning: pod2man not found. Using old parallel_book.7
+pod2man --release='00000000' --center='parallel' \
 	--section=7 ./parallel_design.pod > ./parallel_design.7n \
 && mv ./parallel_design.7n ./parallel_design.7 \
 || echo "Warning: pod2man not found. Using old parallel_design.7"
@@ -446,7 +486,7 @@ Warning: pod2man not found. Using old parset.1
  /bin/mkdir -p '/usr/local/share/man/man1'
  /usr/bin/install -c -m 644 parallel.1 env_parallel.1 sem.1 sql.1 niceload.1 parcat.1 parset.1 '/usr/local/share/man/man1'
  /bin/mkdir -p '/usr/local/share/man/man7'
- /usr/bin/install -c -m 644 parallel_tutorial.7 parallel_design.7 parallel_alternatives.7 '/usr/local/share/man/man7'
+ /usr/bin/install -c -m 644 parallel_tutorial.7 parallel_book.7 parallel_design.7 parallel_alternatives.7 '/usr/local/share/man/man7'
 make[0]: Leaving directory '/tmp/parallel-00000000/src'
 make[0]: Leaving directory '/tmp/parallel-00000000/src'
 make[0]: Entering directory '/tmp/parallel-00000000'

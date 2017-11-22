@@ -373,10 +373,12 @@ sub find_split_positions {
 		    }
 		} else {
 		    # If match $recend$recstart => Record position
+		    # TODO optimize to only look at the appended $dd_block_size + len $recendrecstart
+		    # TODO increase $dd_block_size to optimize for longer records
 		    my $i = index64(\$buf,$recendrecstart);
 		    if($i != -1) {
 			# Start looking for next record _after_ this match
-			$pos += $i + length($recendrecstart);
+			$pos += $i + length($recend);
 			push(@pos,$pos);
 			last;
 		    }
@@ -1381,7 +1383,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20171022;
+    $Global::version = 20171122;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -9099,7 +9101,8 @@ sub set_exitsignal {
 		    }
 		}
 		::debug("halt","Pct: ",$Global::halt_pct,
-			" count: ",$Global::halt_count,"\n");
+			" count: ",$Global::halt_count,
+			" status: ",$Global::halt_exitstatus,"\n");
 	    } elsif($Global::halt_success) {
 		$Global::halt_exitstatus = 0;
 	    }

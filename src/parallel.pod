@@ -2641,7 +2641,7 @@ as many arguments that will fit on the line:
 
 In many shells you can also use B<printf>:
 
-  printf '%s\0' *.log | parallel -m mv {} destdir
+  printf '%s\0' *.log | parallel -0 -m mv {} destdir
 
 
 =head1 EXAMPLE: Context replace

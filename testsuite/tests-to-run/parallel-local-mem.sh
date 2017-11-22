@@ -3,49 +3,59 @@
 make stopvm
 mkdir -p $TMPDIR
 # Jobs that eat more than 2 GB RAM
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj1 -k --joblog /tmp/jl-`basename $0` -L1
-echo '### bug #44358: 2 GB records cause problems for -N'
-echo '5 GB version: Eats 12.5 GB'
-  PATH=input-files/perl-v5.14.2:$PATH; 
-  (yes "`seq 3000`" | head -c 5000000000; echo FOO; 
-   yes "`seq 3000`" | head -c 3000000000; echo FOO; 
-   yes "`seq 3000`" | head -c 1000000000;) | 
-   PERL5LIB=input-files/perl-v5.14.2/lib input-files/perl-v5.14.2/perl 
-   `which parallel` --pipe --recend FOO -N2 --block 1g -k LANG=c wc -c
 
-echo '2 GB version: eats 10 GB'
-  PATH=input-files/perl-v5.14.2:$PATH; 
-  (yes "`seq 3000`" | head -c 2300M; echo FOO; 
-   yes "`seq 3000`" | head -c 2300M; echo FOO; 
-   yes "`seq 3000`" | head -c 1000M;) | 
-   PERL5LIB=input-files/perl-v5.14.2/lib input-files/perl-v5.14.2/perl 
-   `which parallel` --pipe --recend FOO -N2 --block 1g -k LANG=c wc -c
+gendata() {
+    # Generate a lot of text data fast
+    yes "`seq 3000`" | head -c $1
+}
+export -f gendata
 
-echo '### -L >4GB';
-echo 'Eats 12.5 GB';
-  (head -c 5000000000 /dev/zero; echo FOO; 
-   head -c 3000000000 /dev/zero; echo FOO; 
-   head -c 1000000000 /dev/zero;) | 
-   parallel --pipe  -L2 --block 1g -k LANG=c wc -c
+perl5.14parallel() {
+    # Run GNU Parallel under perl 5.14 which does not support 64-bit very well
+    PATH=input-files/perl-v5.14.2:$PATH
+    PERL5LIB=input-files/perl-v5.14.2/lib input-files/perl-v5.14.2/perl `which parallel` "$@"
+}
+export -f perl5.14parallel
 
-echo '**'
+par_2gb_records_N() {
+    echo '### bug #44358: 2 GB records cause problems for -N'
+    echo '5 GB version: Eats 12.5 GB'
+    (gendata 5000MB; echo FOO; 
+     gendata 3000MB; echo FOO; 
+     gendata 1000MB;) | 
+	perl5.14parallel --pipe --recend FOO -N2 --block 1g -k LANG=c wc -c
 
-echo '### Trouble reading a record > 2 GB for certain versions of Perl (substr($a,0,2G+1)="fails")'
-echo '### perl -e $buf=("x"x(2**31))."x"; substr($buf,0,2**31+1)=""; print length $buf'
-echo 'Eats 4 GB'
-perl -e '$buf=("x"x(2**31))."x"; substr($buf,0,2**31+1)=""; print ((length $buf)."\n")'
+    echo '2 GB version: eats 10 GB'
+    (gendata 2300MB; echo FOO; 
+     gendata 2300MB; echo FOO; 
+     gendata 1000MB;) |
+	perl5.14parallel --pipe --recend FOO -N2 --block 1g -k LANG=c wc -c
 
-echo 'Eats 4.7 GB'
-  PATH=input-files/perl-v5.14.2:$PATH; 
-  (yes "`seq 3000`" | head -c 2300M; echo ged) | 
-  PERL5LIB=input-files/perl-v5.14.2/lib input-files/perl-v5.14.2/perl `which parallel` -k --block 2G --pipe --recend ged md5sum
-echo 'Eats 4.7 GB'
-  PATH=input-files/perl-v5.14.2:$PATH; 
-  (yes "`seq 3000`" | head -c 2300M; echo ged) | 
-  PERL5LIB=input-files/perl-v5.14.2/lib input-files/perl-v5.14.2/perl `which parallel` -k --block 2G --pipe --recend ged cat | wc -c
+    echo '### -L >4GB';
+    echo 'Eats 12.5 GB';
+    (head -c 5000MB /dev/zero; echo FOO; 
+     head -c 3000MB /dev/zero; echo FOO; 
+     head -c 1000MB /dev/zero;) | 
+	parallel --pipe  -L2 --block 1g -k LANG=c wc -c
+}
 
-echo '**'
+par_2gb_record_reading() {
+    echo '### Trouble reading a record > 2 GB for certain versions of Perl (substr($a,0,2G+1)="fails")'
+    echo '### perl -e $buf=("x"x(2**31))."x"; substr($buf,0,2**31+1)=""; print length $buf'
+    echo 'Eats 4 GB'
+    perl -e '$buf=("x"x(2**31))."x"; substr($buf,0,2**31+1)=""; print ((length $buf)."\n")'
+    
+    echo 'Eats 4.7 GB'
+    (gendata 2300MB; echo ged) |
+	perl5.14parallel -k --block 2G --pipe --recend ged md5sum
+    echo 'Eats 4.7 GB'
+    (gendata 2300MB; echo ged) | 
+	perl5.14parallel -k --block 2G --pipe --recend ged cat | wc -c
+}
 
-EOF
+export -f $(compgen -A function | grep par_)
+compgen -A function | grep par_ | sort |
+    parallel -j1 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'
+
 
 make startvm

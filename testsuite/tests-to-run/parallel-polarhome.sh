@@ -6,18 +6,18 @@ P_ALL="alpha tru64 hpux-ia64 syllable pidora raspbian solaris openindiana aix hp
 P_NOTWORKING="vax alpha openstep"
 P_NOTWORKING_YET="ultrix irix"
 
-P_WORKING="tru64 syllable pidora raspbian solaris openindiana aix hpux qnx debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian"
-P_TEMPORARILY_BROKEN="minix hurd hpux-ia64 dragonfly"
+P_WORKING="openbsd tru64 debian freebsd redhat netbsd macosx miros centos unixware pidora ubuntu scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux openindiana hpux-ia64"
+P_TEMPORARILY_BROKEN="minix hurd dragonfly"
 
 P="$P_WORKING"
-P="$P_ALL"
 POLAR=`parallel -k echo {}.polarhome.com ::: $P`
 S_POLAR=`parallel -k echo -S 1/{}.polarhome.com ::: $P`
 
 # 20150414 --timeout 80 -> 40
 # 20151219 --retries 5 -> 2
 # 20160821 --timeout 10 -> 100 (DNS problems)
-TIMEOUT=130
+# 20171122 --timeout 100 -> 20 (Raising it did not get more successes)
+TIMEOUT=20
 RETRIES=4
 
 echo '### Tests on polarhome machines'
@@ -44,7 +44,7 @@ copy() {
 	stdout ssh -oLogLevel=quiet $host "cat > bin/'$dst'.tmp && chmod 755 bin/'$dst'.tmp && mv bin/'$dst'.tmp bin/'$dst'"
 }
 export -f copy
-stdout parallel -j100 -r --retries $RETRIES --timeout $TIMEOUT --delay 0.1 --tag -v \
+stdout parallel -kj100 -r --retries $RETRIES --timeout $TIMEOUT --delay 0.1 --tag -v \
        copy {2} {1} {1/} \
        ::: /usr/local/bin/{parallel,env_parallel,env_parallel.*} \
        ::: $POLAR

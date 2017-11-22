@@ -747,6 +747,32 @@ par_linebuffer_files() {
     stdout parallel --files --linebuffer 'sleep .1;seq {};sleep .1' ::: {1..10} | wc -l
 }
 
+par_parset() {
+    . `which env_parallel.bash`
+    echo '### parset into array'
+    parset arr1 echo ::: foo bar baz
+    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+    echo '### parset into indexed array vars'
+    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+    echo ${myarray[*]}
+    echo ${myarray[4]} ${myarray[5]} ${myarray[5]}
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

@@ -1302,6 +1302,20 @@ Output can be buffered by using B<-d>. Output is buffered in memory,
 so big output can cause swapping and therefore be terrible slow or
 even cause out of memory.
 
+=head2 DIFFERENCES BETWEEN spread AND GNU Parallel
+
+B<spread> runs commands on all directories.
+
+It can be emulated with GNU B<parallel> using this Bash function:
+
+  spread() {
+    _cmds() {
+      perl -e '$"=" && ";print "@ARGV"' "cd {}" "$@"
+    }
+    parallel $(_cmds "$@")'|| echo exit status $?' ::: */
+  }
+
+This works execpt for the B<--exclude> option.
 
 =head2 Todo
 

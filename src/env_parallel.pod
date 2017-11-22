@@ -726,8 +726,8 @@ B<env_parallel> uses GNU B<parallel>.
 
 B<parallel>(1), 
 
-B<bash>(1), B<csh>(1), B<fish>(1), B<ksh>(1), B<pdksh>(1) B<tcsh>(1),
-B<zsh>(1).
+B<ash>(1), B<bash>(1), B<csh>(1), B<dash>(1), B<fish>(1), B<ksh>(1),
+B<pdksh>(1) B<tcsh>(1), B<zsh>(1).
 
 
 =cut

@@ -1426,6 +1426,22 @@ par_parcat_args_stdin	OK2
 par_parcat_rm	bug #51691: parcat --rm remove fifo when opened
 par_parcat_rm	OK1
 par_parcat_rm	OK file removed
+par_parset	### parset into array
+par_parset	foo bar baz
+par_parset	### parset into vars with comma
+par_parset	foo bar baz
+par_parset	### parset into vars with space
+par_parset	foo bar baz
+par_parset	### parset with newlines
+par_parset	1
+par_parset	1
+par_parset	2
+par_parset	1
+par_parset	2
+par_parset	3
+par_parset	### parset into indexed array vars
+par_parset	foo bar baz
+par_parset	foo bar bar
 par_pipe_compress_blocks	### bug #41482: --pipe --compress blocks at different -j/seq combinations
 par_pipe_compress_blocks	1
 par_pipe_compress_blocks	echo 1-4 + 1-4
