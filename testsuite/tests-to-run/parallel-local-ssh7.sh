@@ -946,27 +946,44 @@ par_bash_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.bash`;
 
-    bigvar="$(yes \"| head -c 76k)"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    bigvar="$(perl -e 'print "x"x121000')"
+    env_parallel echo ::: OK_bigvar
+    env_parallel -S lo echo ::: OK_bigvar_remote
+
+    bigvar="$(perl -e 'print "\""x61000')"
+    env_parallel echo ::: OK_bigvar_quote
+    env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(yes a| head -c 115k)"'"; };'
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+    env_parallel echo ::: OK_bigfunc
+    env_parallel -S lo echo ::: OK_bigfunc_remote
 
-    bigvar="$(yes | head -c 120k)"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+    env_parallel echo ::: OK_bigfunc_quote
+    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
+    bigfunc() { true; }
 
-    bigvar="$(yes \"| head -c 80k)"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    echo Rest should fail
+
+    bigvar="$(perl -e 'print "x"x123000')"
+    env_parallel echo ::: fail_bigvar
+    env_parallel -S lo echo ::: fail_bigvar_remote
+
+    bigvar="$(perl -e 'print "\""x62000')"
+    env_parallel echo ::: fail_bigvar_quote
+    env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(yes a| head -c 121k)"'"; };'
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
+    env_parallel echo ::: fail_bigfunc
+    env_parallel -S lo echo ::: fail_bigfunc_remote
+
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
+    env_parallel echo ::: fail_bigfunc_quote
+    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
+
+    bigfunc() { true; }
 _EOF
   )
   ssh bash@lo "$myscript"
@@ -976,33 +993,47 @@ par_dash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.dash`;
+
     bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    env_parallel echo ::: OK_bigvar
+    env_parallel -S lo echo ::: OK_bigvar_remote
 
     bigvar="$(perl -e 'print "\""x65000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    env_parallel echo ::: OK_bigvar_quote
+    env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
-#    Functions not supported om ash
+#    Functions not supported in dash
 #    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x126000')"'"; };'
-#    env_parallel echo ::: OK
-#    env_parallel -S lo echo ::: OK
+#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+#    env_parallel echo ::: OK_bigfunc
+#    env_parallel -S lo echo ::: OK_bigfunc_remote
+#
+#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+#    env_parallel echo ::: OK_bigfunc_quote
+#    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
+#    bigfunc() { true; }
+
+    echo Rest should fail
 
     bigvar="$(perl -e 'print "x"x131000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    env_parallel echo ::: fail_bigvar
+    env_parallel -S lo echo ::: fail_bigvar_remote
 
     bigvar="$(perl -e 'print "\""x66000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    env_parallel echo ::: fail_bigvar_quote
+    env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
-#    Functions not supported om ash
+#    Functions not supported in dash
 #    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x126000')"'"; };'
-#    env_parallel echo ::: OK
-#    env_parallel -S lo echo ::: OK
+#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
+#    env_parallel echo ::: fail_bigfunc
+#    env_parallel -S lo echo ::: fail_bigfunc_remote
+#
+#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
+#    env_parallel echo ::: fail_bigfunc_quote
+#    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
+#
+#    bigfunc() { true; }
 _EOF
   )
   ssh dash@lo "$myscript"
@@ -1012,33 +1043,47 @@ par_ash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.ash`;
+
     bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    env_parallel echo ::: OK_bigvar
+    env_parallel -S lo echo ::: OK_bigvar_remote
 
     bigvar="$(perl -e 'print "\""x65000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    env_parallel echo ::: OK_bigvar_quote
+    env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
 #    Functions not supported in ash
 #    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x126000')"'"; };'
-#    env_parallel echo ::: OK
-#    env_parallel -S lo echo ::: OK
+#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+#    env_parallel echo ::: OK_bigfunc
+#    env_parallel -S lo echo ::: OK_bigfunc_remote
+#
+#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+#    env_parallel echo ::: OK_bigfunc_quote
+#    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
+#    bigfunc() { true; }
+
+    echo Rest should fail
 
     bigvar="$(perl -e 'print "x"x131000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    env_parallel echo ::: fail_bigvar
+    env_parallel -S lo echo ::: fail_bigvar_remote
 
     bigvar="$(perl -e 'print "\""x66000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    env_parallel echo ::: fail_bigvar_quote
+    env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
 #    Functions not supported in ash
 #    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x126000')"'"; };'
-#    env_parallel echo ::: OK
-#    env_parallel -S lo echo ::: OK
+#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
+#    env_parallel echo ::: fail_bigfunc
+#    env_parallel -S lo echo ::: fail_bigfunc_remote
+#
+#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
+#    env_parallel echo ::: fail_bigfunc_quote
+#    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
+#
+#    bigfunc() { true; }
 _EOF
   )
   ssh ash@lo "$myscript"
@@ -1048,33 +1093,47 @@ par_sh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.sh`;
+
     bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    env_parallel echo ::: OK_bigvar
+    env_parallel -S lo echo ::: OK_bigvar_remote
 
     bigvar="$(perl -e 'print "\""x65000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    env_parallel echo ::: OK_bigvar_quote
+    env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
-#    Functions not supported on GNU/Linux
+#    Functions not supported in sh
 #    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\\\""x133000')"'"; };'
-#    env_parallel echo ::: OK
-#    env_parallel -S lo echo ::: OK
+#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+#    env_parallel echo ::: OK_bigfunc
+#    env_parallel -S lo echo ::: OK_bigfunc_remote
+#
+#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+#    env_parallel echo ::: OK_bigfunc_quote
+#    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
+#    bigfunc() { true; }
+
+    echo Rest should fail
 
     bigvar="$(perl -e 'print "x"x131000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    env_parallel echo ::: fail_bigvar
+    env_parallel -S lo echo ::: fail_bigvar_remote
 
     bigvar="$(perl -e 'print "\""x66000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    env_parallel echo ::: fail_bigvar_quote
+    env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
-#    Functions not supported on GNU/Linux
+#    Functions not supported in sh
 #    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x132000')"'"; };'
-#    env_parallel echo ::: fail
-#    env_parallel -S lo echo ::: fail
+#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
+#    env_parallel echo ::: fail_bigfunc
+#    env_parallel -S lo echo ::: fail_bigfunc_remote
+#
+#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
+#    env_parallel echo ::: fail_bigfunc_quote
+#    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
+#
+#    bigfunc() { true; }
 _EOF
   )
   ssh sh@lo "$myscript"
@@ -1084,31 +1143,45 @@ par_zsh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.zsh`;
-    bigvar="$(perl -e 'print "x"x122000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
 
-    bigvar="$(perl -e 'print "\""x122000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    bigvar="$(perl -e 'print "x"x120000')"
+    env_parallel echo ::: OK_bigvar
+    env_parallel -S lo echo ::: OK_bigvar_remote
+
+    bigvar="$(perl -e 'print "\""x120000')"
+    env_parallel echo ::: OK_bigvar_quote
+    env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x120000')"'"; };'
+    env_parallel echo ::: OK_bigfunc
+    env_parallel -S lo echo ::: OK_bigfunc_remote
 
-    bigvar="$(perl -e 'print "x"x123000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x120000')"'"; };'
+    env_parallel echo ::: OK_bigfunc_quote
+    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
+    bigfunc() { true; }
+
+    echo Rest should fail
+
+    bigvar="$(perl -e 'print "x"x121000')"
+    env_parallel echo ::: fail_bigvar
+    env_parallel -S lo echo ::: fail_bigvar_remote
 
     bigvar="$(perl -e 'print "\""x123000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    env_parallel echo ::: fail_bigvar_quote
+    env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x123000')"'"; };'
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1210000')"'"; };'
+    env_parallel echo ::: fail_bigfunc
+    env_parallel -S lo echo ::: fail_bigfunc_remote
+
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x121000')"'"; };'
+    env_parallel echo ::: fail_bigfunc_quote
+    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
+
+    bigfunc() { true; }
 _EOF
   )
   ssh zsh@lo "$myscript"
@@ -1118,32 +1191,45 @@ par_ksh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.ksh`;
-    bigvar="$(perl -e 'print "x"x125000')"
-    env_parallel echo ::: OK
-    bigvar="$(perl -e 'print "x"x124000')"
-    env_parallel -S lo echo ::: OK
 
-    bigvar="$(perl -e 'print "\""x124000')"
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
+    bigvar="$(perl -e 'print "x"x122000')"
+    env_parallel echo ::: OK_bigvar
+    env_parallel -S lo echo ::: OK_bigvar_remote
 
-    bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x124000')"'"; };'
-    env_parallel echo ::: OK
-    env_parallel -S lo echo ::: OK
-
-    bigvar="$(perl -e 'print "x"x126000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
-
-    bigvar="$(perl -e 'print "\""x125000')"
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    bigvar="$(perl -e 'print "\""x122000')"
+    env_parallel echo ::: OK_bigvar_quote
+    env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x125000')"'"; };'
-    env_parallel echo ::: fail
-    env_parallel -S lo echo ::: fail
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+    env_parallel echo ::: OK_bigfunc
+    env_parallel -S lo echo ::: OK_bigfunc_remote
+
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+    env_parallel echo ::: OK_bigfunc_quote
+    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
+    bigfunc() { true; }
+
+    echo Rest should fail
+
+    bigvar="$(perl -e 'print "x"x123000')"
+    env_parallel echo ::: fail_bigvar
+    env_parallel -S lo echo ::: fail_bigvar_remote
+
+    bigvar="$(perl -e 'print "\""x123000')"
+    env_parallel echo ::: fail_bigvar_quote
+    env_parallel -S lo echo ::: fail_bigvar_quote_remote
+
+    bigvar=u
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
+    env_parallel echo ::: fail_bigfunc
+    env_parallel -S lo echo ::: fail_bigfunc_remote
+
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
+    env_parallel echo ::: fail_bigfunc_quote
+    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
+
+    bigfunc() { true; }
 _EOF
   )
   ssh ksh@lo "$myscript"
@@ -1161,7 +1247,391 @@ par_tcsh_environment_too_big() {
     echo Not implemented
 }
 
+par_bash_parset() {
+  myscript=$(cat <<'_EOF'
+    echo 'parset'
+    . `which env_parallel.bash`
+
+    echo '### parset into array'
+    parset arr1 echo ::: foo bar baz
+    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+    echo '### parset into indexed array vars'
+    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+    echo ${myarray[*]}
+    echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
+
+    echo '### env_parset'
+    myfun() {
+        myecho myfun "$@";
+    }
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
+    myvar="myvar"
+    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+    env_parset arr1 myfun ::: foo bar baz
+    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myfun ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myfum ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
+    echo "${myarray[*]}"
+    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
+_EOF
+  )
+  ssh bash@lo "$myscript"
+}
+
+par_dash_parset() {
+  myscript=$(cat <<'_EOF'
+    echo 'parset'
+    . `which env_parallel.dash`
+
+#    Arrays not supported in dash
+#    echo '### parset into array'
+#    parset arr1 echo ::: foo bar baz
+#    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+#    Arrays not supported in dash
+#    echo '### parset into indexed array vars'
+#    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+#    echo ${myarray[*]}
+#    echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
+
+    echo '### env_parset'
+    myfun() {
+        myecho myfun "$@";
+    }
+    alias myecho='echo myecho "$myvar"'
+    myvar="myvar"
+#    Arrays not supported in dash
+#    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+#    Arrays not supported in dash
+#    env_parset arr1 myfun ::: foo bar baz
+#    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myecho ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myecho ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+#    Arrays not supported in dash
+#    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
+#    echo "${myarray[*]}"
+#    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
+_EOF
+  )
+  ssh dash@lo "$myscript"
+}
+
+par_ash_parset() {
+  myscript=$(cat <<'_EOF'
+    echo 'parset'
+    . `which env_parallel.ash`
+
+#    Arrays not supported in ash
+#    echo '### parset into array'
+#    parset arr1 echo ::: foo bar baz
+#    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+#    Arrays not supported in ash
+#    echo '### parset into indexed array vars'
+#    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+#    echo ${myarray[*]}
+#    echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
+
+    echo '### env_parset'
+    myfun() {
+        myecho myfun "$@";
+    }
+    alias myecho='echo myecho "$myvar"'
+    myvar="myvar"
+#    Arrays not supported in ash
+#    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+#    Arrays not supported in ash
+#    env_parset arr1 myfun ::: foo bar baz
+#    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myecho ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myecho ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+#    Arrays not supported in ash
+#    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
+#    echo "${myarray[*]}"
+#    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
+_EOF
+  )
+  ssh ash@lo "$myscript"
+}
+
+par_sh_parset() {
+  myscript=$(cat <<'_EOF'
+    echo 'parset'
+    . `which env_parallel.sh`
+
+#    echo '### parset into array'
+#    echo "Arrays not supported in all sh's"
+#    parset arr1 echo ::: foo bar baz
+#    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+#    echo '### parset into indexed array vars'
+#    echo "Arrays not supported in all sh's"
+#    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+#    echo ${myarray[*]}
+#    echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
+
+    echo '### env_parset'
+    echo '# alias'
+    alias myalias='echo myalias'
+    env_parset alias3,alias2,alias1 myalias ::: baz bar foo
+    echo "$alias1"
+    echo "$alias2"
+    echo "$alias3"
+
+#    echo '# function'
+#    echo "Arrays not supported in all sh's"
+#    myfun() {
+#        echo myfun "$@";
+#    }
+#    env_parset fun3,fun2,fun1 myfun ::: baz bar foo
+#    echo "$fun1"
+#    echo "$fun2"
+#    echo "$fun3"
+
+    echo '# variable with newline'
+    myvar="`echo newline1;echo newline2;`"
+    env_parset var3,var2,var1 'echo "$myvar"' ::: baz bar foo
+    echo "$var1"
+    echo "$var2"
+    echo "$var3"
+
+#    Arrays not supported in sh
+#    myarr=("myarr  0" "myarr  1" "myarr  2")
+#    Arrays not supported in sh
+#    env_parset arr1 myfun ::: foo bar baz
+#    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+
+    echo '### parset into vars with comma'
+    env_parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    echo '### parset into vars with space'
+    env_parset 'space3 space2 space1' echo ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    echo '### parset with newlines'
+    mynewline="`echo newline1;echo newline2;`"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+#    Arrays not supported in sh
+#    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
+#    echo "${myarray[*]}"
+#    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
+_EOF
+  )
+  ssh sh@lo "$myscript"
+}
+
+par_zsh_parset() {
+  myscript=$(cat <<'_EOF'
+    echo 'parset'
+    . `which env_parallel.zsh`
+    eval "`cat <<"_EOS";
+
+    echo '### parset into array'
+    parset arr1 echo ::: foo bar baz
+    echo ${arr1[1]} ${arr1[2]} ${arr1[3]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+    echo '### parset into indexed array vars'
+    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+    echo ${myarray[*]}
+    echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
+
+    echo '### env_parset'
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"';
+    # eval is needed because zsh does not see alias in function otherwise
+    eval "myfun() {
+        myecho myfun \"\$\@\"
+    }"
+    myvar="myvar"
+    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="$(echo newline1;echo newline2;)"
+    env_parset arr1 myfun {} ::: foo bar baz
+    echo "${arr1[1]}"
+    echo "${arr1[2]}"
+    echo "${arr1[3]}"
+    env_parset comma3,comma2,comma1 myfun ::: baz bar foo
+    echo "$comma1"
+    echo "$comma2"
+    echo "$comma3"
+    env_parset 'space3 space2 space1' myfun ::: baz bar foo
+    echo "$space1"
+    echo "$space2"
+    echo "$space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
+    echo "${myarray[*]}"
+    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
+_EOS`"
+_EOF
+  )
+  ssh zsh@lo "$myscript"
+}
+
+par_ksh_parset() {
+  myscript=$(cat <<'_EOF'
+    echo 'parset'
+    . `which env_parallel.ksh`
+
+    echo '### parset into array'
+    parset arr1 echo ::: foo bar baz
+    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+    echo '### parset into indexed array vars'
+    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+    echo ${myarray[*]}
+    echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
+
+    echo '### env_parset'
+    myfun() {
+        myecho myfun "$@";
+    }
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
+    myvar="myvar"
+    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+    env_parset arr1 myfun ::: foo bar baz
+    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myfun ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myfum ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
+    echo "${myarray[*]}"
+    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
+_EOF
+  )
+  ssh ksh@lo "$myscript"
+}
+
+par_fish_parset() {
+    echo Not implemented
+}
+
+par_csh_parset() {
+    echo Not implemented
+}
+
+par_tcsh_parset() {
+    echo Not implemented
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
-compgen -A function | grep par_ | sort |
+#compgen -A function | grep par_ | sort |
+compgen -A function | grep par_ | sort -r | 
     parallel --joblog /tmp/jl-`basename $0` -j200% --tag -k '{} 2>&1'

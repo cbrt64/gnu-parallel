@@ -729,7 +729,7 @@ par_parcat_args_stdin() {
     echo OK1 > $tmp1
     echo OK2 > $tmp2
     (echo $tmp1
-     echo $tmp2) | parcat
+     echo $tmp2) | parcat | sort
     rm $tmp1 $tmp2
 }
 
@@ -771,6 +771,25 @@ par_parset() {
     parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
     echo ${myarray[*]}
     echo ${myarray[4]} ${myarray[5]} ${myarray[5]}
+
+    echo '### env_parset'
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
+    myvar="myvar"
+    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+    env_parset arr1 myecho ::: foo bar baz
+    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myecho ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myecho ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+    env_parset 'myarray[6],myarray[5],myarray[4]' myecho ::: baz bar foo
+    echo "${myarray[*]}"
+    echo "${myarray[4]} ${myarray[5]} ${myarray[5]}"
 }
 
 export -f $(compgen -A function | grep par_)

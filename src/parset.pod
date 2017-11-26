@@ -11,23 +11,24 @@ parset - set shell variables in parallel
 
 B<parset> I<variablename> [options for GNU Parallel]
 
+B<env_parset> I<variablename> [options for GNU Parallel] (alpha testing)
 
 =head1 DESCRIPTION
 
 B<parset> is a shell function that puts the output from GNU
 B<parallel> into shell variables.
 
-The B<parset> function is defined as part of B<env_parallel>.
+B<env_parset> is a shell function that puts the output from
+B<env_parallel> into shell variables.
+
+The B<parset> and B<env_parset> functions are defined as part of
+B<env_parallel>.
 
 If I<variablename> is a single variable name, this will be treated as
 the destination variable and made into an array.
 
 If I<variablename> contains multiple names separated by ',' or space,
 the names will be the destination variables.
-
-The last bug in B<parset> was discovered 2017-06-29, so the code is
-ready for being tested widely. Please use it for everyday use and
-report bugs.
 
 
 =head1 OPTIONS
@@ -38,7 +39,7 @@ variable.
 
 =head1 SUPPORTED SHELLS
 
-=head2 Bash
+=head2 Bash/Zsh/Ksh
 
 =head3 Examples
 
@@ -60,10 +61,10 @@ Put output into vars B<$seq, $pwd, $ls>:
 
 The commands to run can be an array:
 
-  cmd=("echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
+  cmd=("echo first" "echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
   parset data ::: "${cmd[@]}"
-  echo "${data[0]}"
   echo "${data[1]}"
+  echo "${data[2]}"
 
 B<parset> can not be part of a pipe. In particular this means it
 cannot read anything from standard input (stdin) or write to a pipe:
@@ -74,7 +75,7 @@ but must instead use a tempfile:
 
   seq 10 > parallel_input
   parset res echo :::: parallel_input
-  echo "${res[0]}"
+  echo "${res[1]}"
   echo "${res[9]}"
 
 or a FIFO:
@@ -82,24 +83,82 @@ or a FIFO:
   mkfifo input_fifo
   seq 30 > input_fifo &
   parset res echo :::: input_fifo
-  echo "${res[0]}"
+  echo "${res[1]}"
   echo "${res[29]}"
 
-or Bash process substitution:
+or Bash/Zsh/Ksh process substitution:
 
   parset res echo :::: <(seq 100)
-  echo "${res[0]}"
+  echo "${res[1]}"
   echo "${res[99]}"
 
 =head3 Installation
 
-Put this in B<$HOME/.bashrc>:
+Put this in the relevant B<$HOME/.bashrc> or B<$HOME/.zshenv> or B<$HOME/.kshrc>:
 
   . `which env_parallel.bash`
+  . `which env_parallel.zsh`
+  source `which env_parallel.ksh` 
 
 E.g. by doing:
 
   echo '. `which env_parallel.bash`' >> $HOME/.bashrc
+  echo '. `which env_parallel.zsh`' >> $HOME/.zshenv
+  echo 'source `which env_parallel.ksh`' >> $HOME/.kshrc
+
+or by doing:
+
+  env_parallel --install
+
+
+=head2 ash/dash (FreeBSD's /bin/sh)
+
+=head3 Examples
+
+ash does not support arrays.
+
+Put output into vars B<$seq, $pwd, $ls>:
+
+  parset "seq pwd ls" ::: "seq 10" pwd ls
+  echo "$ls"
+
+B<parset> can not be part of a pipe. In particular this means it
+cannot read anything from standard input (stdin) or write to a pipe:
+
+  seq 3 | parset res1,res2,res3 echo Does not work
+
+but must instead use a tempfile:
+
+  seq 3 > parallel_input
+  parset res1,res2,res3 echo :::: parallel_input
+  echo "res1"
+  echo "res2"
+  echo "res3"
+
+or a FIFO:
+
+  mkfifo input_fifo
+  seq 3 > input_fifo &
+  parset res1,res2,res3 echo :::: input_fifo
+  echo "res1"
+  echo "res2"
+  echo "res3"
+
+=head3 Installation
+
+Put the relevant one of these into B<$HOME/.profile>:
+
+  . `which env_parallel.sh`
+  . `which env_parallel.ash`
+  . `which env_parallel.dash`
+
+E.g. by doing:
+
+  echo '. `which env_parallel.ash`' >> $HOME/.bashrc
+
+or by doing:
+
+  env_parallel --install
 
 
 =head1 EXIT STATUS

@@ -157,6 +157,8 @@ env_parallel() {
     unset _list_alias_BODIES
     unset _list_variable_VALUES
     unset _list_function_BODIES
+    unset _grep_REGEXP
+    unset _ignore_UNDERSCORE
     # Test if environment is too big
     if `which true` >/dev/null ; then
 	`which parallel` "$@";
@@ -172,5 +174,77 @@ env_parallel() {
 	echo "env_parallel: Error: For details see: man env_parallel" >&2
 
 	return 255
+    fi
+}
+
+parset() {
+    _parset_parallel_prg=parallel
+    _parset_main "$@"
+}
+
+env_parset() {
+    _parset_parallel_prg=env_parallel
+    _parset_main "$@"
+}
+
+_parset_main() {
+    # If $1 contains ',' or space:
+    #   Split on , to get the destination variable names
+    # If $1 is a single destination variable name:
+    #   Treat it as the name of an array
+    #
+    #   # Create array named myvar
+    #   parset myvar echo ::: {1..10}
+    #   echo ${myvar[5]}
+    #
+    #   # Put output into $var_a $var_b $var_c
+    #   varnames=(var_a var_b var_c)
+    #   parset "${varnames[*]}" echo ::: {1..3}
+    #   echo $var_c
+    #
+    #   # Put output into $var_a4 $var_b4 $var_c4
+    #   parset "var_a4 var_b4 var_c4" echo ::: {1..3}
+    #   echo $var_c4
+
+    _parset_name="$1"
+    if [ "$_parset_name" = "" ] ; then
+	echo parset: Error: No destination variable given. >&2
+	echo parset: Error: Try: >&2
+	echo parset: Error: ' ' parset myarray echo ::: foo bar >&2
+	return 255
+    fi
+    shift
+    echo "$_parset_name" |
+	perl -ne 'chomp;for (split /[, ]/) {
+            # Allow: var_32 var[3]
+	    if(not /^[a-zA-Z_][a-zA-Z_0-9]*(\[\d+\])?$/) {
+                print STDERR "parset: Error: $_ is an invalid variable name.\n";
+                print STDERR "parset: Error: Variable names must be letter followed by letters or digits.\n";
+                $exitval = 255;
+            }
+        }
+        exit $exitval;
+        ' || return 255
+    # Internal grep gives wrong exit code in Ksh
+    if echo "$_parset_name" | \grep -E ',| ' >/dev/null ; then
+	# $1 contains , or space
+	# Split on , or space to get the names
+	eval "$(
+	    # Compute results into files
+	    $_parset_parallel_prg --files -k "$@" |
+		# var1=`cat tmpfile1; rm tmpfile1`
+		# var2=`cat tmpfile2; rm tmpfile2`
+		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
+		    echo "$_parset_name" |
+			perl -pe 's/,/ /g'
+			 )
+	    )"
+    else
+	# $1 contains no space or ,
+	# => $1 is the name of the array to put data into
+	# Supported in: bash
+	# Arrays do not work in: ash dash
+	eval $_parset_name="( $( $_parset_parallel_prg --files -k "$@" |
+              perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"
     fi
 }

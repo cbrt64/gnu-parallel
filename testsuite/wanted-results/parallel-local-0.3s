@@ -1442,6 +1442,24 @@ par_parset	3
 par_parset	### parset into indexed array vars
 par_parset	foo bar baz
 par_parset	foo bar bar
+par_parset	### env_parset
+par_parset	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset	newline1
+par_parset	newline2
+par_parset	1
+par_parset	newline1
+par_parset	newline2
+par_parset	1
+par_parset	2
+par_parset	newline1
+par_parset	newline2
+par_parset	1
+par_parset	2
+par_parset	3
+par_parset	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 bar
 par_pipe_compress_blocks	### bug #41482: --pipe --compress blocks at different -j/seq combinations
 par_pipe_compress_blocks	1
 par_pipe_compress_blocks	echo 1-4 + 1-4

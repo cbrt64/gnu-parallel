@@ -164,6 +164,8 @@ env_parallel() {
     unset _list_alias_BODIES
     unset _list_variable_VALUES
     unset _list_function_BODIES
+    unset _grep_REGEXP
+    unset _ignore_UNDERSCORE
     # Test if environment is too big
     if [ "`which true`" == "$_which_true" ] ; then
 	`which parallel` "$@";
@@ -183,6 +185,16 @@ env_parallel() {
 }
 
 parset() {
+    _parset_parallel_prg=parallel
+    _parset_main "$@"
+}
+
+env_parset() {
+    _parset_parallel_prg=env_parallel
+    _parset_main "$@"
+}
+
+_parset_main() {
     # If $1 contains ',' or space:
     #   Split on , to get the destination variable names
     # If $1 is a single destination variable name:
@@ -202,13 +214,13 @@ parset() {
     #   echo $var_c4
 
     _parset_name="$1"
-    shift
-    if [ "$_parset_name" == "" ] ; then
+    if [ "$_parset_name" = "" ] ; then
 	echo parset: Error: No destination variable given. >&2
 	echo parset: Error: Try: >&2
 	echo parset: Error: ' ' parset myarray echo ::: foo bar >&2
 	return 255
     fi
+    shift
     echo "$_parset_name" |
 	perl -ne 'chomp;for (split /[, ]/) {
             # Allow: var_32 var[3]
@@ -225,7 +237,7 @@ parset() {
 	# Split on , or space to get the names
 	eval "$(
 	    # Compute results into files
-	    parallel --files -k "$@" |
+	    $_parset_parallel_prg --files -k "$@" |
 		# var1=`cat tmpfile1; rm tmpfile1`
 		# var2=`cat tmpfile2; rm tmpfile2`
 		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
@@ -236,7 +248,9 @@ parset() {
     else
 	# $1 contains no space or ,
 	# => $1 is the name of the array to put data into
-	eval $_parset_name="( $( parallel --files -k "$@" |
+	# Supported in: bash
+	# Arrays do not work in: ash dash
+	eval $_parset_name="( $( $_parset_parallel_prg --files -k "$@" |
               perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"
     fi
 }
