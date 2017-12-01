@@ -35,7 +35,7 @@ env_parallel() {
 	alias "$@" | perl -pe 's/^(alias )?/alias /'
     }
     _names_of_maybe_FUNCTIONS() {
-	set | perl -ne '/^(\S+)\(\)\{$/ and print "$1\n"'
+	set | perl -ne '/^([A-Z_0-9]+)\s*\(\)\s*\{?$/i and print "$1\n"'
     }
     _names_of_FUNCTIONS() {
 	# myfunc is a function
@@ -132,7 +132,7 @@ env_parallel() {
     fi
 
     # Grep alias names
-    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES`"
+    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES | xargs echo`"
     _list_alias_BODIES="_bodies_of_ALIASES $_alias_NAMES"
     if [ "$_alias_NAMES" = "" ] ; then
 	# no aliases selected
@@ -141,7 +141,7 @@ env_parallel() {
     unset _alias_NAMES
 
     # Grep function names
-    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES`"
+    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES | xargs echo`"
     _list_function_BODIES="_bodies_of_FUNCTIONS $_function_NAMES"
     if [ "$_function_NAMES" = "" ] ; then
 	# no functions selected
@@ -150,7 +150,7 @@ env_parallel() {
     unset _function_NAMES
 
     # Grep variable names
-    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES`"
+    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES | xargs echo`"
     _list_variable_VALUES="_bodies_of_VARIABLES $_variable_NAMES"
     if [ "$_variable_NAMES" = "" ] ; then
 	# no variables selected

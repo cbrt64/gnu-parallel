@@ -16,29 +16,41 @@ par_bash_man() {
 
     . `which env_parallel.bash`;
 
-    alias myecho="echo aliases";
-    env_parallel myecho ::: work;
-    env_parallel -S server myecho ::: work;
-    env_parallel --env myecho myecho ::: work;
+    alias myecho='echo aliases'
+    env_parallel myecho ::: work
+    env_parallel -S server myecho ::: work
+    env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
-
-    myfunc() { echo functions $*; };
-    env_parallel myfunc ::: work;
-    env_parallel -S server myfunc ::: work;
-    env_parallel --env myfunc myfunc ::: work;
+  
+    alias multiline='echo multiline
+      echo aliases'
+    env_parallel 'multiline {};
+      echo but only when followed by a newline' ::: work
+    env_parallel -S server 'multiline {};
+      echo but only when followed by a newline' ::: work
+    env_parallel --env multiline 'multiline {};
+      echo but only when followed by a newline' ::: work
+    env_parallel --env multiline -S server 'multiline {};
+      echo but only when followed by a newline' ::: work
+    alias multiline="dummy"
+  
+    myfunc() { echo functions $*; }
+    env_parallel myfunc ::: work
+    env_parallel -S server myfunc ::: work
+    env_parallel --env myfunc myfunc ::: work
     env_parallel --env myfunc -S server myfunc ::: work
-
-    myvar=variables;
-    env_parallel echo "\$myvar" ::: work;
-    env_parallel -S server echo "\$myvar" ::: work;
-    env_parallel --env myvar echo "\$myvar" ::: work;
-    env_parallel --env myvar -S server echo "\$myvar" ::: work
-
-    myarray=(arrays work, too);
-    env_parallel -k echo "\${myarray[{}]}" ::: 0 1 2;
-    env_parallel -k -S server echo "\${myarray[{}]}" ::: 0 1 2;
-    env_parallel -k --env myarray echo "\${myarray[{}]}" ::: 0 1 2;
-    env_parallel -k --env myarray -S server echo "\${myarray[{}]}" ::: 0 1 2
+  
+    myvar=variables
+    env_parallel echo '$myvar' ::: work
+    env_parallel -S server echo '$myvar' ::: work
+    env_parallel --env myvar echo '$myvar' ::: work
+    env_parallel --env myvar -S server echo '$myvar' ::: work
+  
+    myarray=(arrays work, too)
+    env_parallel -k echo '${myarray[{}]}' ::: 0 1 2
+    env_parallel -k -S server echo '${myarray[{}]}' ::: 0 1 2
+    env_parallel -k --env myarray echo '${myarray[{}]}' ::: 0 1 2
+    env_parallel -k --env myarray -S server echo '${myarray[{}]}' ::: 0 1 2
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -57,29 +69,36 @@ par_zsh_man() {
 
     . `which env_parallel.zsh`;
 
-    alias myecho="echo aliases";
-    env_parallel myecho ::: work;
-    env_parallel -S server myecho ::: work;
-    env_parallel --env myecho myecho ::: work;
+    alias myecho='echo aliases'
+    env_parallel myecho ::: work
+    env_parallel -S server myecho ::: work
+    env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
-
-    myfunc() { echo functions $*; };
-    env_parallel myfunc ::: work;
-    env_parallel -S server myfunc ::: work;
-    env_parallel --env myfunc myfunc ::: work;
+  
+    alias multiline='echo multiline
+      echo aliases'
+    env_parallel multiline ::: work
+    env_parallel -S server multiline ::: work
+    env_parallel --env multiline multiline ::: work
+    env_parallel --env multiline -S server multiline ::: work
+  
+    myfunc() { echo functions $*; }
+    env_parallel myfunc ::: work
+    env_parallel -S server myfunc ::: work
+    env_parallel --env myfunc myfunc ::: work
     env_parallel --env myfunc -S server myfunc ::: work
-
-    myvar=variables;
-    env_parallel echo "\$myvar" ::: work;
-    env_parallel -S server echo "\$myvar" ::: work;
-    env_parallel --env myvar echo "\$myvar" ::: work;
-    env_parallel --env myvar -S server echo "\$myvar" ::: work
-
-    myarray=(arrays work, too);
-    env_parallel -k echo "\${myarray[{}]}" ::: 1 2 3;
-    env_parallel -k -S server echo "\${myarray[{}]}" ::: 1 2 3;
-    env_parallel -k --env myarray echo "\${myarray[{}]}" ::: 1 2 3;
-    env_parallel -k --env myarray -S server echo "\${myarray[{}]}" ::: 1 2 3
+  
+    myvar=variables
+    env_parallel echo '$myvar' ::: work
+    env_parallel -S server echo '$myvar' ::: work
+    env_parallel --env myvar echo '$myvar' ::: work
+    env_parallel --env myvar -S server echo '$myvar' ::: work
+  
+    myarray=(arrays work, too)
+    env_parallel -k echo '${myarray[{}]}' ::: 1 2 3
+    env_parallel -k -S server echo '${myarray[{}]}' ::: 1 2 3
+    env_parallel -k --env myarray echo '${myarray[{}]}' ::: 1 2 3
+    env_parallel -k --env myarray -S server echo '${myarray[{}]}' ::: 1 2 3
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -97,32 +116,37 @@ par_ksh_man() {
     echo "### From man env_parallel"
 
     . `which env_parallel.ksh`;
-    alias myecho="echo aliases";
-    env_parallel myecho ::: work;
-    env_parallel -S server myecho ::: work;
-    env_parallel --env myecho myecho ::: work;
+
+    alias myecho='echo aliases'
+    env_parallel myecho ::: work
+    env_parallel -S server myecho ::: work
+    env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
-
-    . `which env_parallel.ksh`;
-    myfunc() { echo functions $*; };
-    env_parallel myfunc ::: work;
-    env_parallel -S server myfunc ::: work;
-    env_parallel --env myfunc myfunc ::: work;
+  
+    alias multiline='echo multiline
+      echo aliases'
+    env_parallel multiline ::: work
+    env_parallel -S server multiline ::: work
+    env_parallel --env multiline multiline ::: work
+    env_parallel --env multiline -S server multiline ::: work
+  
+    myfunc() { echo functions $*; }
+    env_parallel myfunc ::: work
+    env_parallel -S server myfunc ::: work
+    env_parallel --env myfunc myfunc ::: work
     env_parallel --env myfunc -S server myfunc ::: work
-
-    . `which env_parallel.ksh`;
-    myvar=variables;
-    env_parallel echo "\$myvar" ::: work;
-    env_parallel -S server echo "\$myvar" ::: work;
-    env_parallel --env myvar echo "\$myvar" ::: work;
-    env_parallel --env myvar -S server echo "\$myvar" ::: work
-
-    . `which env_parallel.ksh`;
-    myarray=(arrays work, too);
-    env_parallel -k echo "\${myarray[{}]}" ::: 0 1 2;
-    env_parallel -k -S server echo "\${myarray[{}]}" ::: 0 1 2;
-    env_parallel -k --env myarray echo "\${myarray[{}]}" ::: 0 1 2;
-    env_parallel -k --env myarray -S server echo "\${myarray[{}]}" ::: 0 1 2
+  
+    myvar=variables
+    env_parallel echo '$myvar' ::: work
+    env_parallel -S server echo '$myvar' ::: work
+    env_parallel --env myvar echo '$myvar' ::: work
+    env_parallel --env myvar -S server echo '$myvar' ::: work
+  
+    myarray=(arrays work, too)
+    env_parallel -k echo '${myarray[{}]}' ::: 0 1 2
+    env_parallel -k -S server echo '${myarray[{}]}' ::: 0 1 2
+    env_parallel -k --env myarray echo '${myarray[{}]}' ::: 0 1 2
+    env_parallel -k --env myarray -S server echo '${myarray[{}]}' ::: 0 1 2
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -863,7 +887,7 @@ _EOF
   ssh tcsh@lo "$myscript" 2>&1 | sort
 }
 
-par_bash_env_parallel_fifo() {
+par_bash_env_parallel() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
@@ -871,26 +895,48 @@ par_bash_env_parallel_fifo() {
     OK=OK
     echo data from stdin | env_parallel --pipe -S lo --fifo 'cat {} && echo $OK'
     echo data from stdin | env_parallel --pipe -S lo --cat 'cat {} && echo $OK'
+
+    echo 'bug #52534: Tail of multiline alias is ignored'
+    alias myalias='echo alias line 1
+      echo alias line 2
+      echo alias line 3
+    '
+    alias myalias2='echo alias2 line 1
+      echo alias2 line 2
+    '
+    env_parallel myalias ::: myalias2
+    env_parallel -S lo myalias ::: myalias2
 _EOF
   )
   # Order is often different. Dunno why. So sort
   ssh bash@lo "$myscript" 2>&1 | sort
 }
 
-par_zsh_env_parallel_fifo() {
+par_zsh_env_parallel() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
     OK=OK
     echo data from stdin | env_parallel --pipe -S lo --fifo 'cat {} && echo $OK'
     echo data from stdin | env_parallel --pipe -S lo --cat 'cat {} && echo $OK'
+
+    echo 'bug #52534: Tail of multiline alias is ignored'
+    alias myalias='echo alias line 1
+      echo alias line 2
+      echo alias line 3
+    '
+    alias myalias2='echo alias2 line 1
+      echo alias2 line 2
+    '
+    env_parallel myalias ::: myalias2
+    env_parallel -S lo myalias ::: myalias2
 _EOF
   )
   # Order is often different. Dunno why. So sort
   ssh zsh@lo "$myscript" 2>&1 | sort
 }
 
-par_ksh_env_parallel_fifo() {
+par_ksh_env_parallel() {
   myscript=$(cat <<'_EOF'
     . `which env_parallel.ksh`;
     echo 'bug #50435: Remote fifo broke in 20150522'
@@ -898,13 +944,24 @@ par_ksh_env_parallel_fifo() {
     OK=OK
     echo data from stdin | env_parallel --pipe -S lo --fifo 'cat {} && echo $OK'
     echo data from stdin | env_parallel --pipe -S lo --cat 'cat {} && echo $OK'
+
+    echo 'bug #52534: Tail of multiline alias is ignored'
+    alias myalias='echo alias line 1
+      echo alias line 2
+      echo alias line 3
+    '
+    alias myalias2='echo alias2 line 1
+      echo alias2 line 2
+    '
+    env_parallel myalias ::: myalias2
+    env_parallel -S lo myalias ::: myalias2
 _EOF
   )
   # Order is often different. Dunno why. So sort
   ssh ksh@lo "$myscript" 2>&1 | sort
 }
 
-par_fish_env_parallel_fifo() {
+par_fish_env_parallel() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
@@ -916,7 +973,7 @@ _EOF
   ssh fish@lo "$myscript"
 }
 
-par_csh_env_parallel_fifo() {
+par_csh_env_parallel() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
@@ -928,7 +985,7 @@ _EOF
   ssh csh@lo "$myscript"
 }
 
-par_tcsh_env_parallel_fifo() {
+par_tcsh_env_parallel() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
@@ -950,16 +1007,16 @@ par_bash_environment_too_big() {
     env_parallel echo ::: OK_bigvar
     env_parallel -S lo echo ::: OK_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x61000')"
+    bigvar="$(perl -e 'print "\""x60000')"
     env_parallel echo ::: OK_bigvar_quote
     env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x121000')"'"; };'
     env_parallel echo ::: OK_bigfunc
     env_parallel -S lo echo ::: OK_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x121000')"'"; };'
     env_parallel echo ::: OK_bigfunc_quote
     env_parallel -S lo echo ::: OK_bigfunc_quote_remote
     bigfunc() { true; }
@@ -970,16 +1027,16 @@ par_bash_environment_too_big() {
     env_parallel echo ::: fail_bigvar
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x62000')"
+    bigvar="$(perl -e 'print "\""x61000')"
     env_parallel echo ::: fail_bigvar_quote
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1220000')"'"; };'
     env_parallel echo ::: fail_bigfunc
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 

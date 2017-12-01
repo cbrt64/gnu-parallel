@@ -29,10 +29,12 @@ env_parallel() {
     # based on env_parallel.sh
 
     _names_of_ALIASES() {
-	alias | perl -pe 's/^alias //;s/=.*//'
+	alias | perl -ne 's/^alias //;s/^(\S+)=.*/$1/ and print'
     }
     _bodies_of_ALIASES() {
-	alias "$@" | perl -pe 's/^(alias )?/alias /'
+	for _i in "$@"; do
+		echo 'alias '"`alias $_i`"
+	done
     }
     _names_of_maybe_FUNCTIONS() {
 	set | perl -ne '/^(\S+)\(\)\{$/ and print "$1\n"'

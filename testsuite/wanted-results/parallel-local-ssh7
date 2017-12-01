@@ -72,6 +72,14 @@ par_zsh_man	aliases work
 par_zsh_man	aliases work
 par_zsh_man	aliases work
 par_zsh_man	aliases work
+par_zsh_man	multiline
+par_zsh_man	aliases work
+par_zsh_man	multiline
+par_zsh_man	aliases work
+par_zsh_man	multiline
+par_zsh_man	aliases work
+par_zsh_man	multiline
+par_zsh_man	aliases work
 par_zsh_man	functions work
 par_zsh_man	functions work
 par_zsh_man	functions work
@@ -124,19 +132,30 @@ par_zsh_environment_too_big	OK_bigfunc_remote
 par_zsh_environment_too_big	OK_bigfunc_quote
 par_zsh_environment_too_big	OK_bigfunc_quote_remote
 par_zsh_environment_too_big	Rest should fail
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:132: argument list too long: /usr/local/bin/parallel
-par_zsh_env_parallel_fifo	OK
-par_zsh_env_parallel_fifo	OK
-par_zsh_env_parallel_fifo	bug #50435: Remote fifo broke in 20150522
-par_zsh_env_parallel_fifo	data from stdin
-par_zsh_env_parallel_fifo	data from stdin
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_env_parallel	OK
+par_zsh_env_parallel	OK
+par_zsh_env_parallel	alias line 1
+par_zsh_env_parallel	alias line 1
+par_zsh_env_parallel	alias line 2
+par_zsh_env_parallel	alias line 2
+par_zsh_env_parallel	alias line 3
+par_zsh_env_parallel	alias line 3
+par_zsh_env_parallel	alias2 line 1
+par_zsh_env_parallel	alias2 line 1
+par_zsh_env_parallel	alias2 line 2
+par_zsh_env_parallel	alias2 line 2
+par_zsh_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_zsh_env_parallel	bug #52534: Tail of multiline alias is ignored
+par_zsh_env_parallel	data from stdin
+par_zsh_env_parallel	data from stdin
 par_tcsh_underscore	### tcsh
 par_tcsh_underscore	### Testing of --env _
 par_tcsh_underscore	#: Command not found.
@@ -236,11 +255,11 @@ par_tcsh_funky	myvar  works
 par_tcsh_funky	space special chars problem
 par_tcsh_funky	space special chars problem
 par_tcsh_environment_too_big	Not implemented
-par_tcsh_env_parallel_fifo	OK
-par_tcsh_env_parallel_fifo	OK
-par_tcsh_env_parallel_fifo	bug #50435: Remote fifo broke in 20150522
-par_tcsh_env_parallel_fifo	data from stdin
-par_tcsh_env_parallel_fifo	data from stdin
+par_tcsh_env_parallel	OK
+par_tcsh_env_parallel	OK
+par_tcsh_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_tcsh_env_parallel	data from stdin
+par_tcsh_env_parallel	data from stdin
 par_sh_parset	parset
 par_sh_parset	### parset into vars with comma
 par_sh_parset	foo bar baz
@@ -377,6 +396,14 @@ par_ksh_man	aliases work
 par_ksh_man	aliases work
 par_ksh_man	aliases work
 par_ksh_man	aliases work
+par_ksh_man	multiline
+par_ksh_man	aliases work
+par_ksh_man	multiline
+par_ksh_man	aliases work
+par_ksh_man	multiline
+par_ksh_man	aliases work
+par_ksh_man	multiline
+par_ksh_man	aliases work
 par_ksh_man	functions work
 par_ksh_man	functions work
 par_ksh_man	functions work
@@ -475,11 +502,22 @@ par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean env
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_env_parallel_fifo	OK
-par_ksh_env_parallel_fifo	OK
-par_ksh_env_parallel_fifo	bug #50435: Remote fifo broke in 20150522
-par_ksh_env_parallel_fifo	data from stdin
-par_ksh_env_parallel_fifo	data from stdin
+par_ksh_env_parallel	OK
+par_ksh_env_parallel	OK
+par_ksh_env_parallel	alias line 1
+par_ksh_env_parallel	alias line 1
+par_ksh_env_parallel	alias line 2
+par_ksh_env_parallel	alias line 2
+par_ksh_env_parallel	alias line 3
+par_ksh_env_parallel	alias line 3
+par_ksh_env_parallel	alias2 line 1
+par_ksh_env_parallel	alias2 line 1
+par_ksh_env_parallel	alias2 line 2
+par_ksh_env_parallel	alias2 line 2
+par_ksh_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_ksh_env_parallel	bug #52534: Tail of multiline alias is ignored
+par_ksh_env_parallel	data from stdin
+par_ksh_env_parallel	data from stdin
 par_fish_underscore	### fish
 par_fish_underscore	### Testing of --env _
 par_fish_underscore	variables in aliases and arrays in functions work
@@ -575,14 +613,14 @@ par_fish_funky
 par_fish_funky	
 par_fish_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~ÄÅ\Ç\É\Ñ\Ö\Ü\á\à\â\ä\ã\å\ç\é\è\ê\ë\í\ì\î\ï\ñ\ó\ò\ô\ö\õ\ú\ù\û\ü\†\°\¢\£\§\•\¶\ß\®\©\™\´\¨\≠\Æ\Ø\∞\±\≤\≥\¥\µ\∂\∑\∏\π\∫\ª\º\Ω\æ\ø\¿\¡\¬\√\ƒ\≈\∆\«\»\…\ \À\Ã\Õ\Œ\œ\–\—\“\”\‘\’\÷\◊\ÿ\Ÿ\⁄\€\‹\›\ﬁ\ﬂ\‡\·\‚\„\‰\Â\Ê\Á\Ë\È\Í\Î\Ï\Ì\Ó\Ô\\Ò\Ú\Û\Ù\ı\ˆ\˜\¯\˘\˙\˚\¸\˝\˛\ˇ
 par_fish_environment_too_big	Not implemented
-par_fish_env_parallel_fifo	bug #50435: Remote fifo broke in 20150522
-par_fish_env_parallel_fifo	data from stdin
-par_fish_env_parallel_fifo	OK
-par_fish_env_parallel_fifo	data from stdin
-par_fish_env_parallel_fifo	OK
-par_fish_env_parallel_fifo	$? is not the exit status. In fish, please use $status.
-par_fish_env_parallel_fifo	fish: cat $PARALLEL_TMP; and echo $OK;perl -e '$bash=shift;$csh=shift;for(@ARGV){unlink;rmdir;}if($bash=~s/h//){exit$bash;}exit$csh;' "$?h" "$status" $PARALLEL_TMP
-par_fish_env_parallel_fifo	                                                                                                                                        ^
+par_fish_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_fish_env_parallel	data from stdin
+par_fish_env_parallel	OK
+par_fish_env_parallel	data from stdin
+par_fish_env_parallel	OK
+par_fish_env_parallel	$? is not the exit status. In fish, please use $status.
+par_fish_env_parallel	fish: cat $PARALLEL_TMP; and echo $OK;perl -e '$bash=shift;$csh=shift;for(@ARGV){unlink;rmdir;}if($bash=~s/h//){exit$bash;}exit$csh;' "$?h" "$status" $PARALLEL_TMP
+par_fish_env_parallel	                                                                                                                                        ^
 par_dash_parset	parset
 par_dash_parset	### parset into vars with comma
 par_dash_parset	foo bar baz
@@ -733,11 +771,11 @@ par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=
 par_csh_funky	func_echo: Command not found.
 par_csh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~ÄÅ\Ç\É\Ñ\Ö\Ü\á\à\â\ä\ã\å\ç\é\è\ê\ë\í\ì\î\ï\ñ\ó\ò\ô\ö\õ\ú\ù\û\ü\†\°\¢\£\§\•\¶\ß\®\©\™\´\¨\≠\Æ\Ø\∞\±\≤\≥\¥\µ\∂\∑\∏\π\∫\ª\º\Ω\æ\ø\¿\¡\¬\√\ƒ\≈\∆\«\»\…\ \À\Ã\Õ\Œ\œ\–\—\“\”\‘\’\÷\◊\ÿ\Ÿ\⁄\€\‹\›\ﬁ\ﬂ\‡\·\‚\„\‰\Â\Ê\Á\Ë\È\Í\Î\Ï\Ì\Ó\Ô\\Ò\Ú\Û\Ù\ı\ˆ\˜\¯\˘\˙\˚\¸\˝\˛\ˇ
 par_csh_environment_too_big	Not implemented
-par_csh_env_parallel_fifo	bug #50435: Remote fifo broke in 20150522
-par_csh_env_parallel_fifo	data from stdin
-par_csh_env_parallel_fifo	OK
-par_csh_env_parallel_fifo	data from stdin
-par_csh_env_parallel_fifo	OK
+par_csh_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_csh_env_parallel	data from stdin
+par_csh_env_parallel	OK
+par_csh_env_parallel	data from stdin
+par_csh_env_parallel	OK
 par_bash_underscore	### bash
 par_bash_underscore	### Testing of --env _
 par_bash_underscore	variables in aliases in and arrays in functions work
@@ -803,6 +841,30 @@ par_bash_man	aliases work
 par_bash_man	aliases work
 par_bash_man	aliases work
 par_bash_man	aliases work
+par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
+par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
+par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_bash_man	multiline
+par_bash_man	aliases work
+par_bash_man	but only when followed by a newline
+par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
+par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
+par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_bash_man	multiline
+par_bash_man	aliases work
+par_bash_man	but only when followed by a newline
+par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
+par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
+par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_bash_man	multiline
+par_bash_man	aliases work
+par_bash_man	but only when followed by a newline
+par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
+par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
+par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_bash_man	multiline
+par_bash_man	aliases work
+par_bash_man	but only when followed by a newline
 par_bash_man	functions work
 par_bash_man	functions work
 par_bash_man	functions work
@@ -862,59 +924,74 @@ par_bash_environment_too_big	OK_bigfunc_remote
 par_bash_environment_too_big	OK_bigfunc_quote
 par_bash_environment_too_big	OK_bigfunc_quote_remote
 par_bash_environment_too_big	Rest should fail
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 170: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_env_parallel_fifo	OK
-par_bash_env_parallel_fifo	OK
-par_bash_env_parallel_fifo	bug #50435: Remote fifo broke in 20150522
-par_bash_env_parallel_fifo	data from stdin
-par_bash_env_parallel_fifo	data from stdin
+par_bash_env_parallel	OK
+par_bash_env_parallel	OK
+par_bash_env_parallel	alias line 1
+par_bash_env_parallel	alias line 1
+par_bash_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_bash_env_parallel	bug #52534: Tail of multiline alias is ignored
+par_bash_env_parallel	data from stdin
+par_bash_env_parallel	data from stdin
+par_bash_env_parallel	env_parallel: Warning: Alias 'myalias' contains newline.
+par_bash_env_parallel	env_parallel: Warning: Alias 'myalias' contains newline.
+par_bash_env_parallel	env_parallel: Warning: Alias 'myalias2' contains newline.
+par_bash_env_parallel	env_parallel: Warning: Alias 'myalias2' contains newline.
+par_bash_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after 'myalias'.
+par_bash_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after 'myalias'.
+par_bash_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after 'myalias2'.
+par_bash_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after 'myalias2'.
+par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_ash_parset	parset
 par_ash_parset	### parset into vars with comma
 par_ash_parset	foo bar baz

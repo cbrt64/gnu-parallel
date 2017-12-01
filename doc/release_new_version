@@ -205,23 +205,15 @@ GNU Parallel 20171122 ('Mugabe') <<[stable]>> has been released. It is available
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
-Poem of the month:
-
-  An ode to GNU parallel
-  An ode to GNU parallel
-  An ode to GNU parallel
-  An ode to GNU parallel
-  An ode to GNU parallel
-  An ode to GNU parallel
-    -- Adam Stuckert PoisonEcology@twitter
+Haiku of the month:
+  <<>>
 
 New in this release:
 
-* Using GNU Parallel to speed up Google Cloud Infrastructure management https://medium.com/@pczarkowski/using-gnu-parallel-to-speed-up-google-cloud-infrastructure-management-53e5c555ec05
+parset for ksh, zsh,
+https://docs.computecanada.ca/wiki/GNU_Parallel
+https://qiita.com/inouet/items/bfc208668c86caf8ff74
 
-* What is gnu parallel http://wiki.chpc.ac.za/howto:bioinformatics:gnu-parallel
-
-* Parallel, Scripts, Clusters, & Easy Use https://chiefio.wordpress.com/2017/11/10/parallel-scripts-clusters-easy-use/
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

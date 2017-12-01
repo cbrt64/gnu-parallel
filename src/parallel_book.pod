@@ -154,12 +154,21 @@ function is exported using B<export -f>:
   export -f my_func
   parallel my_func ::: 1 2 3
 
+=head2 Copying environment
+
+env_parallel
+
 =head3 The replacement strings
 
 GNU B<parallel> has some replacement strings to make it easier
 
 
 =head2 Controlling the output
+
+parset
+sql
+cvs
+
 
 =head2 Controlling the execution
 
@@ -170,6 +179,49 @@ GNU B<parallel> has some replacement strings to make it easier
 
 =head1 Advanced usage
 
+
 env_parallel, parset, env_parset
+
+Interfacing with R.
+
+Interfacing with JSON/jq
+
+4dl() {
+  board="$(printf -- '%s' "${1}" | cut -d '/' -f4)"
+  thread="$(printf -- '%s' "${1}" | cut -d '/' -f6)"
+  wget -qO- "https://a.4cdn.org/${board}/thread/${thread}.json" |
+    jq -r '
+      .posts
+      | map(select(.tim != null))
+      | map((.tim | tostring) + .ext)
+      | map("https://i.4cdn.org/'"${board}"'/"+.)[]
+    ' |
+      parallel --gnu -j 0 wget -nv
+}
+
+Interfacing with XML/?
+
+Interfacing with HTML/?
+
+=head2 Controlling the execution
+
+--termseq
+
+
+=head3 Remote execution
+
+seq 10 | parallel --sshlogin 'ssh -i "key.pem" a@b.com' echo 
+
+seq 10 | PARALLLEL_SSH='ssh -i "key.pem"' parallel --sshlogin a@b.com echo 
+
+seq 10 | parallel --ssh 'ssh -i "key.pem"' --sshlogin a@b.com echo 
+
+ssh-agent
+
+The sshlogin file format
+
+Check if servers are up
+
+
 
 =cut

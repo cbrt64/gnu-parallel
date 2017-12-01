@@ -7484,6 +7484,10 @@ sub wrapped {
     my $self = shift;
     if(not defined $self->{'wrapped'}) {
 	my $command = $self->replaced();
+	# Bug in Bash and Ksh when running multiline aliases
+	# This will force them to run correctly, but will fail in
+	# tcsh so we do not do it.
+	# $command .= "\n\n";
 	if($opt::shellquote) {
 	    # Prepend /bin/echo (echo no-/bin is wrong in csh)
 	    # and quote twice

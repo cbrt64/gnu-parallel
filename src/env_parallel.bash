@@ -32,6 +32,16 @@ env_parallel() {
 	compgen -a
     }
     _bodies_of_ALIASES() {
+	local _i
+	for _i in $@; do
+	    if [ $(alias $_i | wc -l) == 1 ] ; then
+		true Alias is a single line. Good.
+	    else
+		_warning "Alias '$_i' contains newline."
+		_warning "Make sure the command has at least one newline after '$_i'."
+		_warning "See BUGS in 'man env_parallel'."
+	    fi
+	done
 	alias "$@"
     }
     _names_of_FUNCTIONS() {
@@ -96,7 +106,9 @@ env_parallel() {
             print $vars ? "($vars)" : "(.*)";
             ' -- "$@"
     }
-
+    _warning() {
+	echo "env_parallel: Warning: $@" >&2
+    }
 
     # Bash is broken in version 3.2.25 and 4.2.39
     # The crazy '[ "`...`" == "" ]' is needed for the same reason

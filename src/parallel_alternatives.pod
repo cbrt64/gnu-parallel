@@ -173,6 +173,16 @@ this. To see this in action try:
   ls -l out*
   md5sum out*
 
+Or try this:
+
+  slow_seq() {
+    seq "$@" |
+      perl -ne '$|=1; for(split//){ print; select($a,$a,$a,0.100);}'
+  }
+  export -f slow_seq
+  seq 5 | xargs -n1 -P0 -I {} bash -c 'slow_seq {}'
+  seq 5 | parallel -P0 slow_seq {}
+
 B<xargs> has no support for keeping the order of the output, therefore
 if running jobs in parallel using B<xargs> the output of the second
 job cannot be postponed till the first job is done.

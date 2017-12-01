@@ -32,19 +32,22 @@ env_parallel() {
 	print -l ${(k)aliases}
     }
     _bodies_of_ALIASES() {
-	echo "alias "$(echo "$@"|xargs)" | perl -pe 's/^/alias /'"
+	local _i
+	for _i ($@); do
+		echo 'alias '"$(alias $_i)"
+	done
     }
     _names_of_FUNCTIONS() {
 	print -l ${(k)functions}
     }
     _bodies_of_FUNCTIONS() {
-	echo "typeset -f "$(echo "$@"|xargs)
+	typeset -f "$@"
     }
     _names_of_VARIABLES() {
 	print -l ${(k)parameters}
     }
     _bodies_of_VARIABLES() {
-	echo typeset -p "$(echo $@|xargs)" '| grep -aFvf <(typeset -pr)'
+	typeset -p "$@"
     }
     _remove_bad_NAMES() {
 	# Do not transfer vars and funcs from env_parallel
@@ -53,7 +56,8 @@ env_parallel() {
 	    grep -E "^$_grep_REGEXP"\$ | grep -vE "^$_ignore_UNDERSCORE"\$ |
 	    grep -v '=' |
             grep -Ev '^([-?#!$*@_0]|zsh_eval_context|ZSH_EVAL_CONTEXT|LINENO|IFS|commands|functions|options|aliases|EUID|EGID|UID|GID)$' |
-            grep -Ev '^(dis_patchars|patchars|terminfo|funcstack|galiases|keymaps|parameters|jobdirs|dirstack|functrace|funcsourcetrace|zsh_scheduled_events|dis_aliases|dis_reswords|dis_saliases|modules|reswords|saliases|widgets|userdirs|historywords|nameddirs|termcap|dis_builtins|dis_functions|jobtexts|funcfiletrace|dis_galiases|builtins|history|jobstates)$'
+            grep -Ev '^(dis_patchars|patchars|terminfo|funcstack|galiases|keymaps|parameters|jobdirs|dirstack|functrace|funcsourcetrace|zsh_scheduled_events|dis_aliases|dis_reswords|dis_saliases|modules|reswords|saliases|widgets|userdirs|historywords|nameddirs|termcap|dis_builtins|dis_functions|jobtexts|funcfiletrace|dis_galiases|builtins|history|jobstates)$' |
+	    grep -aFvf <(typeset -pr)
     }
 
     _get_ignored_VARS() {
@@ -93,13 +97,13 @@ env_parallel() {
 
     if which parallel | grep 'no parallel in' >/dev/null; then
 	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
-	return 1
+	return 255
     fi
     if which parallel >/dev/null; then
 	true which on linux
     else
 	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
-	return 1
+	return 255
     fi
 
     # Grep regexp for vars given by --env
@@ -118,10 +122,10 @@ env_parallel() {
 	    cat > $HOME/.parallel/ignored_vars
 	return 0
     fi
-    
+
     # Grep alias names
-    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES`"
-    _list_alias_BODIES="alias "$(echo $_alias_NAMES|xargs)" | perl -pe 's/^/alias /'"
+    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES | xargs echo`"
+    _list_alias_BODIES="_bodies_of_ALIASES $_alias_NAMES"
     if [ "$_alias_NAMES" = "" ] ; then
 	# no aliases selected
 	_list_alias_BODIES="true"
@@ -129,8 +133,8 @@ env_parallel() {
     unset _alias_NAMES
 
     # Grep function names
-    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES`"
-    _list_function_BODIES="typeset -f "$(echo $_function_NAMES|xargs)
+    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES | xargs echo`"
+    _list_function_BODIES="_bodies_of_FUNCTIONS $_function_NAMES"
     if [ "$_function_NAMES" = "" ] ; then
 	# no functions selected
 	_list_function_BODIES="true"
@@ -138,10 +142,8 @@ env_parallel() {
     unset _function_NAMES
 
     # Grep variable names
-    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES`"
-    _list_variable_VALUES="typeset -p "$(echo $_variable_NAMES|xargs)" |
-        grep -aFvf <(typeset -pr)
-    "
+    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES | xargs echo`"
+    _list_variable_VALUES="_bodies_of_VARIABLES $_variable_NAMES"
     if [ "$_variable_NAMES" = "" ] ; then
 	# no variables selected
 	_list_variable_VALUES="true"
@@ -233,4 +235,3 @@ _parset_main() {
               perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"
     fi
 }
-

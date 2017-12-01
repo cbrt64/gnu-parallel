@@ -225,7 +225,8 @@ _parset_main() {
         }
         exit $exitval;
         ' || return 255
-    # Internal grep gives wrong exit code in Ksh
+    # Built-in grep gives wrong exit code in Ksh
+    # Use \grep to force using non-built-in
     if echo "$_parset_name" | \grep -E ',| ' >/dev/null ; then
 	# $1 contains , or space
 	# Split on , or space to get the names
