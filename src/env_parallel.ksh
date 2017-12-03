@@ -32,7 +32,14 @@ env_parallel() {
 	alias | perl -pe 's/=.*//'
     }
     _bodies_of_ALIASES() {
-	alias "$@" | perl -pe 's/^/alias /'
+	alias "$@" | perl -pe 's/^/alias /;
+                     sub warning { print STDERR "env_parallel: Warning: @_\n"; }
+                     if(/^alias (\S+)=\$.*\\n/) {
+ 		         warning("Alias \"$1\" contains newline.");
+		         warning("Make sure the command has at least one newline after \"$1\".");
+		         warning("See BUGS in \"man env_parallel\".");
+                     }'
+
     }
     _names_of_maybe_FUNCTIONS() {
 	true not used
@@ -122,7 +129,7 @@ env_parallel() {
     fi
 
     # Grep alias names
-    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES`"
+    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES | xargs echo`"
     _list_alias_BODIES="_bodies_of_ALIASES $_alias_NAMES"
     if [ "$_alias_NAMES" = "" ] ; then
 	# no aliases selected
@@ -131,7 +138,7 @@ env_parallel() {
     unset _alias_NAMES
 
     # Grep function names
-    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES`"
+    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES | xargs echo`"
     _list_function_BODIES="_bodies_of_FUNCTIONS $_function_NAMES"
     if [ "$_function_NAMES" = "" ] ; then
 	# no functions selected
@@ -140,7 +147,7 @@ env_parallel() {
     unset _function_NAMES
 
     # Grep variable names
-    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES`"
+    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES | xargs echo`"
     _list_variable_VALUES="_bodies_of_VARIABLES $_variable_NAMES"
     if [ "$_variable_NAMES" = "" ] ; then
 	# no variables selected
@@ -160,7 +167,7 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if `which true` >/dev/null ; then
+    if `which true` >/dev/null 2>/dev/null ; then
 	`which parallel` "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;

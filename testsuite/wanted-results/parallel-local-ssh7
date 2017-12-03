@@ -132,14 +132,46 @@ par_zsh_environment_too_big	OK_bigfunc_remote
 par_zsh_environment_too_big	OK_bigfunc_quote
 par_zsh_environment_too_big	OK_bigfunc_quote_remote
 par_zsh_environment_too_big	Rest should fail
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
-par_zsh_environment_too_big	env_parallel:135: argument list too long: /usr/local/bin/parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_zsh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
+par_zsh_environment_too_big	env_parallel: Error:   env_parallel --record-env
+par_zsh_environment_too_big	env_parallel: Error: And the use '--env _'
+par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_zsh_env_parallel	OK
 par_zsh_env_parallel	OK
 par_zsh_env_parallel	alias line 1
@@ -260,6 +292,20 @@ par_tcsh_env_parallel	OK
 par_tcsh_env_parallel	bug #50435: Remote fifo broke in 20150522
 par_tcsh_env_parallel	data from stdin
 par_tcsh_env_parallel	data from stdin
+par_sh_underscore	### sh
+par_sh_underscore	### Testing of --env _
+par_sh_underscore	variables in aliases work
+par_sh_underscore	variables in aliases work
+par_sh_underscore	variables in aliases work
+par_sh_underscore	variables in aliases work
+par_sh_underscore	/bin/sh: 4: not_copied_alias: not found
+par_sh_underscore	error=OK
+par_sh_underscore	aliases work
+par_sh_underscore	aliases work
+par_sh_underscore	/bin/sh: 2: myecho: not found
+par_sh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
+par_sh_underscore	/bin/sh: 2: myecho: not found
+par_sh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_sh_parset	parset
 par_sh_parset	### parset into vars with comma
 par_sh_parset	foo bar baz
@@ -301,6 +347,40 @@ par_sh_parset	newline2
 par_sh_parset	1
 par_sh_parset	2
 par_sh_parset	3
+par_sh_man	### sh
+par_sh_man	### From man env_parallel
+par_sh_man	aliases work
+par_sh_man	aliases work
+par_sh_man	aliases work
+par_sh_man	aliases work
+par_sh_man	multiline
+par_sh_man	aliases work
+par_sh_man	multiline
+par_sh_man	aliases work
+par_sh_man	multiline
+par_sh_man	aliases work
+par_sh_man	multiline
+par_sh_man	aliases work
+par_sh_man	variables work
+par_sh_man	variables work
+par_sh_man	variables work
+par_sh_man	variables work
+par_sh_man	multiline
+par_sh_man	    variables work
+par_sh_man	multiline
+par_sh_man	    variables work
+par_sh_man	multiline
+par_sh_man	    variables work
+par_sh_man	multiline
+par_sh_man	    variables work
+par_sh_man	exit value 2 should be 2
+par_sh_man	Unknown option: no-such-option
+par_sh_man	exit value 255 should be 255
+par_sh_funky	
+par_sh_funky	3 arg alias_works
+par_sh_funky	3 arg alias_works_over_ssh
+par_sh_funky	\\\\\\\\	
+par_sh_funky	\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~ÄÅ\Ç\É\Ñ\Ö\Ü\á\à\â\ä\ã\å\ç\é\è\ê\ë\í\ì\î\ï\ñ\ó\ò\ô\ö\õ\ú\ù\û\ü\†\°\¢\£\§\•\¶\ß\®\©\™\´\¨\≠\Æ\Ø\∞\±\≤\≥\¥\µ\∂\∑\∏\π\∫\ª\º\Ω\æ\ø\¿\¡\¬\√\ƒ\≈\∆\«\»\…\ \À\Ã\Õ\Œ\œ\–\—\“\”\‘\’\÷\◊\ÿ\Ÿ\⁄\€\‹\›\ﬁ\ﬂ\‡\·\‚\„\‰\Â\Ê\Á\Ë\È\Í\Î\Ï\Ì\Ó\Ô\\Ò\Ú\Û\Ù\ı\ˆ\˜\¯\˘\˙\˚\¸\˝\˛\ˇ
 par_sh_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
 par_sh_environment_too_big	OK_bigvar
 par_sh_environment_too_big	OK_bigvar_remote
@@ -331,6 +411,22 @@ par_sh_environment_too_big	env_parallel: Error: Try running this in a clean envi
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_sh_env_parallel	OK
+par_sh_env_parallel	OK
+par_sh_env_parallel	alias line 1
+par_sh_env_parallel	alias line 1
+par_sh_env_parallel	alias line 2
+par_sh_env_parallel	alias line 2
+par_sh_env_parallel	alias line 3
+par_sh_env_parallel	alias line 3
+par_sh_env_parallel	alias2 line 1
+par_sh_env_parallel	alias2 line 1
+par_sh_env_parallel	alias2 line 2
+par_sh_env_parallel	alias2 line 2
+par_sh_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_sh_env_parallel	bug #52534: Tail of multiline alias is ignored
+par_sh_env_parallel	data from stdin
+par_sh_env_parallel	data from stdin
 par_ksh_underscore	### ksh
 par_ksh_underscore	### Testing of --env _
 par_ksh_underscore	variables in aliases in and arrays in functions work
@@ -396,12 +492,24 @@ par_ksh_man	aliases work
 par_ksh_man	aliases work
 par_ksh_man	aliases work
 par_ksh_man	aliases work
+par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
 par_ksh_man	aliases work
+par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
 par_ksh_man	aliases work
+par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
 par_ksh_man	aliases work
+par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
 par_ksh_man	aliases work
 par_ksh_man	functions work
@@ -454,49 +562,49 @@ par_ksh_environment_too_big	OK_bigfunc_remote
 par_ksh_environment_too_big	OK_bigfunc_quote
 par_ksh_environment_too_big	OK_bigfunc_quote_remote
 par_ksh_environment_too_big	Rest should fail
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[163]: which: /usr/bin/which: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[170]: which: /usr/bin/which: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ksh_environment_too_big	env_parallel: Error:   env_parallel --record-env
@@ -512,12 +620,22 @@ par_ksh_env_parallel	alias line 3
 par_ksh_env_parallel	alias line 3
 par_ksh_env_parallel	alias2 line 1
 par_ksh_env_parallel	alias2 line 1
-par_ksh_env_parallel	alias2 line 2
-par_ksh_env_parallel	alias2 line 2
 par_ksh_env_parallel	bug #50435: Remote fifo broke in 20150522
 par_ksh_env_parallel	bug #52534: Tail of multiline alias is ignored
 par_ksh_env_parallel	data from stdin
 par_ksh_env_parallel	data from stdin
+par_ksh_env_parallel	env_parallel: Warning: Alias "myalias" contains newline.
+par_ksh_env_parallel	env_parallel: Warning: Alias "myalias" contains newline.
+par_ksh_env_parallel	env_parallel: Warning: Alias "myalias2" contains newline.
+par_ksh_env_parallel	env_parallel: Warning: Alias "myalias2" contains newline.
+par_ksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias".
+par_ksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias".
+par_ksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias2".
+par_ksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias2".
+par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
+par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
+par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
+par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
 par_fish_underscore	### fish
 par_fish_underscore	### Testing of --env _
 par_fish_underscore	variables in aliases and arrays in functions work
@@ -621,6 +739,20 @@ par_fish_env_parallel	OK
 par_fish_env_parallel	$? is not the exit status. In fish, please use $status.
 par_fish_env_parallel	fish: cat $PARALLEL_TMP; and echo $OK;perl -e '$bash=shift;$csh=shift;for(@ARGV){unlink;rmdir;}if($bash=~s/h//){exit$bash;}exit$csh;' "$?h" "$status" $PARALLEL_TMP
 par_fish_env_parallel	                                                                                                                                        ^
+par_dash_underscore	### dash
+par_dash_underscore	### Testing of --env _
+par_dash_underscore	variables in aliases work
+par_dash_underscore	variables in aliases work
+par_dash_underscore	variables in aliases work
+par_dash_underscore	variables in aliases work
+par_dash_underscore	/bin/dash: 4: not_copied_alias: not found
+par_dash_underscore	error=OK
+par_dash_underscore	aliases work
+par_dash_underscore	aliases work
+par_dash_underscore	/bin/dash: 2: myecho: not found
+par_dash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
+par_dash_underscore	/bin/dash: 2: myecho: not found
+par_dash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_dash_parset	parset
 par_dash_parset	### parset into vars with comma
 par_dash_parset	foo bar baz
@@ -648,6 +780,40 @@ par_dash_parset	newline2
 par_dash_parset	1
 par_dash_parset	2
 par_dash_parset	3
+par_dash_man	### dash
+par_dash_man	### From man env_parallel
+par_dash_man	aliases work
+par_dash_man	aliases work
+par_dash_man	aliases work
+par_dash_man	aliases work
+par_dash_man	multiline
+par_dash_man	aliases work
+par_dash_man	multiline
+par_dash_man	aliases work
+par_dash_man	multiline
+par_dash_man	aliases work
+par_dash_man	multiline
+par_dash_man	aliases work
+par_dash_man	variables work
+par_dash_man	variables work
+par_dash_man	variables work
+par_dash_man	variables work
+par_dash_man	multiline
+par_dash_man	    variables work
+par_dash_man	multiline
+par_dash_man	    variables work
+par_dash_man	multiline
+par_dash_man	    variables work
+par_dash_man	multiline
+par_dash_man	    variables work
+par_dash_man	exit value 2 should be 2
+par_dash_man	Unknown option: no-such-option
+par_dash_man	exit value 255 should be 255
+par_dash_funky	
+par_dash_funky	3 arg alias_works
+par_dash_funky	3 arg alias_works_over_ssh
+par_dash_funky	\\\\\\\\	
+par_dash_funky	\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~ÄÅ\Ç\É\Ñ\Ö\Ü\á\à\â\ä\ã\å\ç\é\è\ê\ë\í\ì\î\ï\ñ\ó\ò\ô\ö\õ\ú\ù\û\ü\†\°\¢\£\§\•\¶\ß\®\©\™\´\¨\≠\Æ\Ø\∞\±\≤\≥\¥\µ\∂\∑\∏\π\∫\ª\º\Ω\æ\ø\¿\¡\¬\√\ƒ\≈\∆\«\»\…\ \À\Ã\Õ\Œ\œ\–\—\“\”\‘\’\÷\◊\ÿ\Ÿ\⁄\€\‹\›\ﬁ\ﬂ\‡\·\‚\„\‰\Â\Ê\Á\Ë\È\Í\Î\Ï\Ì\Ó\Ô\\Ò\Ú\Û\Ù\ı\ˆ\˜\¯\˘\˙\˚\¸\˝\˛\ˇ
 par_dash_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
 par_dash_environment_too_big	OK_bigvar
 par_dash_environment_too_big	OK_bigvar_remote
@@ -678,6 +844,22 @@ par_dash_environment_too_big	env_parallel: Error: Try running this in a clean en
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_dash_env_parallel	OK
+par_dash_env_parallel	OK
+par_dash_env_parallel	alias line 1
+par_dash_env_parallel	alias line 1
+par_dash_env_parallel	alias line 2
+par_dash_env_parallel	alias line 2
+par_dash_env_parallel	alias line 3
+par_dash_env_parallel	alias line 3
+par_dash_env_parallel	alias2 line 1
+par_dash_env_parallel	alias2 line 1
+par_dash_env_parallel	alias2 line 2
+par_dash_env_parallel	alias2 line 2
+par_dash_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_dash_env_parallel	bug #52534: Tail of multiline alias is ignored
+par_dash_env_parallel	data from stdin
+par_dash_env_parallel	data from stdin
 par_csh_underscore	### csh
 par_csh_underscore	### Testing of --env _
 par_csh_underscore	#: Command not found.
@@ -873,6 +1055,14 @@ par_bash_man	variables work
 par_bash_man	variables work
 par_bash_man	variables work
 par_bash_man	variables work
+par_bash_man	multiline
+par_bash_man	    variables work
+par_bash_man	multiline
+par_bash_man	    variables work
+par_bash_man	multiline
+par_bash_man	    variables work
+par_bash_man	multiline
+par_bash_man	    variables work
 par_bash_man	arrays
 par_bash_man	work,
 par_bash_man	too
@@ -992,6 +1182,20 @@ par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_bash_env_parallel	env_parallel: Warning: See BUGS in 'man env_parallel'.
+par_ash_underscore	### ash
+par_ash_underscore	### Testing of --env _
+par_ash_underscore	variables in aliases work
+par_ash_underscore	variables in aliases work
+par_ash_underscore	variables in aliases work
+par_ash_underscore	variables in aliases work
+par_ash_underscore	/bin/ash: 4: not_copied_alias: not found
+par_ash_underscore	error=OK
+par_ash_underscore	aliases work
+par_ash_underscore	aliases work
+par_ash_underscore	/bin/ash: 2: myecho: not found
+par_ash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
+par_ash_underscore	/bin/ash: 2: myecho: not found
+par_ash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_ash_parset	parset
 par_ash_parset	### parset into vars with comma
 par_ash_parset	foo bar baz
@@ -1019,6 +1223,40 @@ par_ash_parset	newline2
 par_ash_parset	1
 par_ash_parset	2
 par_ash_parset	3
+par_ash_man	### ash
+par_ash_man	### From man env_parallel
+par_ash_man	aliases work
+par_ash_man	aliases work
+par_ash_man	aliases work
+par_ash_man	aliases work
+par_ash_man	multiline
+par_ash_man	aliases work
+par_ash_man	multiline
+par_ash_man	aliases work
+par_ash_man	multiline
+par_ash_man	aliases work
+par_ash_man	multiline
+par_ash_man	aliases work
+par_ash_man	variables work
+par_ash_man	variables work
+par_ash_man	variables work
+par_ash_man	variables work
+par_ash_man	multiline
+par_ash_man	    variables work
+par_ash_man	multiline
+par_ash_man	    variables work
+par_ash_man	multiline
+par_ash_man	    variables work
+par_ash_man	multiline
+par_ash_man	    variables work
+par_ash_man	exit value 2 should be 2
+par_ash_man	Unknown option: no-such-option
+par_ash_man	exit value 255 should be 255
+par_ash_funky	
+par_ash_funky	3 arg alias_works
+par_ash_funky	3 arg alias_works_over_ssh
+par_ash_funky	\\\\\\\\	
+par_ash_funky	\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~ÄÅ\Ç\É\Ñ\Ö\Ü\á\à\â\ä\ã\å\ç\é\è\ê\ë\í\ì\î\ï\ñ\ó\ò\ô\ö\õ\ú\ù\û\ü\†\°\¢\£\§\•\¶\ß\®\©\™\´\¨\≠\Æ\Ø\∞\±\≤\≥\¥\µ\∂\∑\∏\π\∫\ª\º\Ω\æ\ø\¿\¡\¬\√\ƒ\≈\∆\«\»\…\ \À\Ã\Õ\Œ\œ\–\—\“\”\‘\’\÷\◊\ÿ\Ÿ\⁄\€\‹\›\ﬁ\ﬂ\‡\·\‚\„\‰\Â\Ê\Á\Ë\È\Í\Î\Ï\Ì\Ó\Ô\\Ò\Ú\Û\Ù\ı\ˆ\˜\¯\˘\˙\˚\¸\˝\˛\ˇ
 par_ash_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
 par_ash_environment_too_big	OK_bigvar
 par_ash_environment_too_big	OK_bigvar_remote
@@ -1049,3 +1287,19 @@ par_ash_environment_too_big	env_parallel: Error: Try running this in a clean env
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ash_env_parallel	OK
+par_ash_env_parallel	OK
+par_ash_env_parallel	alias line 1
+par_ash_env_parallel	alias line 1
+par_ash_env_parallel	alias line 2
+par_ash_env_parallel	alias line 2
+par_ash_env_parallel	alias line 3
+par_ash_env_parallel	alias line 3
+par_ash_env_parallel	alias2 line 1
+par_ash_env_parallel	alias2 line 1
+par_ash_env_parallel	alias2 line 2
+par_ash_env_parallel	alias2 line 2
+par_ash_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_ash_env_parallel	bug #52534: Tail of multiline alias is ignored
+par_ash_env_parallel	data from stdin
+par_ash_env_parallel	data from stdin

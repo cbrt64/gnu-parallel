@@ -29,15 +29,25 @@ env_parallel() {
     # based on env_parallel.sh
 
     _names_of_ALIASES() {
-	alias | perl -ne 's/^alias //;s/^(\S+)=.*/$1/ and print'
+	for _i in `alias | perl -ne 's/^alias //;s/^(\S+)=.*/$1/ && print' 2>/dev/null`; do
+	    # Check if this name really is an alias
+	    # or just part of a multiline alias definition
+	    if alias $_i >/dev/null 2>/dev/null; then
+		echo $_i
+	    fi
+	done
     }
     _bodies_of_ALIASES() {
+	# alias may return:
+	#   myalias='definition' (GNU/Linux ash)
+	#   alias myalias='definition' (FreeBSD ash)
+	# so remove 'alias ' from first line
 	for _i in "$@"; do
-		echo 'alias '"`alias $_i`"
+		echo 'alias '"`alias $_i | perl -pe '1..1 and s/^alias //'`"
 	done
     }
     _names_of_maybe_FUNCTIONS() {
-	set | perl -ne '/^(\S+)\(\)\{$/ and print "$1\n"'
+	set | perl -ne '/^([A-Z_0-9]+)\s*\(\)\s*\{?$/i and print "$1\n"'
     }
     _names_of_FUNCTIONS() {
 	# myfunc is a function
@@ -134,7 +144,7 @@ env_parallel() {
     fi
 
     # Grep alias names
-    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES`"
+    _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES | xargs echo`"
     _list_alias_BODIES="_bodies_of_ALIASES $_alias_NAMES"
     if [ "$_alias_NAMES" = "" ] ; then
 	# no aliases selected
@@ -143,7 +153,7 @@ env_parallel() {
     unset _alias_NAMES
 
     # Grep function names
-    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES`"
+    _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES | xargs echo`"
     _list_function_BODIES="_bodies_of_FUNCTIONS $_function_NAMES"
     if [ "$_function_NAMES" = "" ] ; then
 	# no functions selected
@@ -152,7 +162,7 @@ env_parallel() {
     unset _function_NAMES
 
     # Grep variable names
-    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES`"
+    _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES | xargs echo`"
     _list_variable_VALUES="_bodies_of_VARIABLES $_variable_NAMES"
     if [ "$_variable_NAMES" = "" ] ; then
 	# no variables selected
@@ -172,7 +182,7 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if `which true` >/dev/null ; then
+    if `which true` >/dev/null 2>/dev/null ; then
 	`which parallel` "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;

@@ -37,6 +37,7 @@ par_path_remote_csh() {
   setenv A "`seq 1000`"
   setenv PATH ${PATH}:/tmp
   cp /usr/local/bin/env_parallel* /tmp
+  rehash
   if ("`alias env_parallel`" == '') then
     source `which env_parallel.csh`
   endif

@@ -29,10 +29,22 @@ env_parallel() {
     # env_parallel.sh
 
     _names_of_ALIASES() {
-	alias | perl -pe 's/^alias //;s/=.*//'
+	for _i in `alias | perl -ne 's/^alias //;s/^(\S+)=.*/$1/ && print' 2>/dev/null`; do
+	    # Check if this name really is an alias
+	    # or just part of a multiline alias definition
+	    if alias $_i >/dev/null 2>/dev/null; then
+		echo $_i
+	    fi
+	done
     }
     _bodies_of_ALIASES() {
-	alias "$@" | perl -pe 's/^(alias )?/alias /'
+	# alias may return:
+	#   myalias='definition' (GNU/Linux ash)
+	#   alias myalias='definition' (FreeBSD ash)
+	# so remove 'alias ' from first line
+	for _i in "$@"; do
+		echo 'alias '"`alias $_i | perl -pe '1..1 and s/^alias //'`"
+	done
     }
     _names_of_maybe_FUNCTIONS() {
 	set | perl -ne '/^([A-Z_0-9]+)\s*\(\)\s*\{?$/i and print "$1\n"'
@@ -170,7 +182,7 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if `which true` >/dev/null ; then
+    if `which true` >/dev/null 2>/dev/null ; then
 	`which parallel` "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;

@@ -159,10 +159,24 @@ env_parallel() {
     unset _list_alias_BODIES
     unset _list_variable_VALUES
     unset _list_function_BODIES
-    `which parallel` "$@";
-    _parallel_exit_CODE=$?
-    unset PARALLEL_ENV;
-    return $_parallel_exit_CODE
+    unset _grep_REGEXP
+    unset _ignore_UNDERSCORE
+    # Test if environment is too big
+    if `which /bin/true` >/dev/null 2>/dev/null ; then
+	`which parallel` "$@";
+	_parallel_exit_CODE=$?
+	unset PARALLEL_ENV;
+	return $_parallel_exit_CODE
+    else
+	unset PARALLEL_ENV;
+	echo "env_parallel: Error: Your environment is too big." >&2
+	echo "env_parallel: Error: Try running this in a clean environment once:" >&2
+	echo "env_parallel: Error:   env_parallel --record-env" >&2
+	echo "env_parallel: Error: And the use '--env _'" >&2
+	echo "env_parallel: Error: For details see: man env_parallel" >&2
+
+	return 255
+    fi
 }
 
 parset() {
