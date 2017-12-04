@@ -54,7 +54,7 @@ while test $# -gt 0; do
 	  mkdir -p $HOME/.config/fish
 	  grepq env_parallel.fish $HOME/.config/fish/config.fish ||
   	    echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
-  	  echo 'Installed env_parallel in: '
+  	  echo 'Installed env_parallel in:'
   	  echo "    " $HOME/.bashrc
   	  echo "    " $HOME/.shrc
   	  echo "    " $HOME/.zshenv

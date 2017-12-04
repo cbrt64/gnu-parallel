@@ -7,6 +7,7 @@ P_NOTWORKING="vax alpha openstep"
 P_NOTWORKING_YET="ultrix irix"
 
 P_WORKING="openbsd tru64 debian freebsd redhat netbsd macosx miros centos unixware pidora ubuntu scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux openindiana hpux-ia64"
+P_WORKING="openbsd tru64 debian freebsd redhat netbsd macosx miros centos unixware pidora ubuntu scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux openindiana hpux-ia64"
 P_TEMPORARILY_BROKEN="minix hurd dragonfly"
 
 P="$P_WORKING"
@@ -21,9 +22,19 @@ TIMEOUT=20
 RETRIES=4
 
 echo '### Tests on polarhome machines'
+# On each remote machine:
+#   $HOME/setupenv is a sourcable script that sets path+activates env_parallel
+#     It is platform dependant
+
 echo 'Setup on polarhome machines'
 # Avoid the stupid /etc/issue.net banner at Polarhome: -oLogLevel=quiet
-#stdout parallel -kj0 ssh -oLogLevel=quiet {} mkdir -p bin ::: $POLAR &
+stdout parallel -kj0 --delay 0.2 ssh -oLogLevel=quiet {} mkdir -p bin ::: $POLAR &
+
+par_onall() {
+    stdout parallel -j0 -k --retries $RETRIES --timeout $TIMEOUT --delay 0.1 --tag \
+	   --onall $S_POLAR "$@"
+}
+export -f par_onall
 
 test_empty_cmd() {
     echo
@@ -44,7 +55,7 @@ copy() {
 	stdout ssh -oLogLevel=quiet $host "cat > bin/'$dst'.tmp && chmod 755 bin/'$dst'.tmp && mv bin/'$dst'.tmp bin/'$dst'"
 }
 export -f copy
-stdout parallel -kj100 -r --retries $RETRIES --timeout $TIMEOUT --delay 0.1 --tag -v \
+stdout parallel -kj30 -r --retries $RETRIES --timeout $TIMEOUT --delay 0.13 --tag -v \
        copy {2} {1} {1/} \
        ::: /usr/local/bin/{parallel,env_parallel,env_parallel.*} \
        ::: $POLAR
@@ -72,20 +83,22 @@ echo
 echo '### Does exporting a bash function kill parallel'
 echo
 # http://zmwangx.github.io/blog/2015-11-25-bash-function-exporting-fiasco.html
-parallel --onall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'func() { cat <(echo bash only A); };export -f func; bin/parallel func ::: ' ::: 1 2>&1 | sort
+par_onall 'func() { cat <(echo bash only A); };export -f func; bin/parallel func ::: ' ::: 1
 
 echo
 echo '### Does PARALLEL_SHELL help exporting a bash function not kill parallel'
 echo
-PARALLEL_SHELL=/bin/bash parallel --retries $RETRIES --onall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'func() { cat <(echo bash only B); };export -f func; bin/parallel func ::: ' ::: 1 2>&1 | sort
+PARALLEL_SHELL=/bin/bash par_onall 'func() { cat <(echo bash only B); };export -f func; bin/parallel func ::: ' ::: 1
 
 echo
 echo '### env_parallel echo :::: <(echo OK)'
 echo '(bash only)'
 echo
-parallel --retries $RETRIES --nonall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'bin/env_parallel --install'
-parallel --retries $RETRIES --nonall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'env_parallel echo env_parallel ::: OK'
-parallel --retries $RETRIES --nonall -j0 -k --tag --timeout $TIMEOUT $S_POLAR 'env_parallel echo reading from process substitution :::: <(echo OK)'
+par_onall 'bin/env_parallel --install && echo {}' ::: install-OK
+par_onall 'source setupenv || . `pwd`/setupenv; env_parallel echo env_parallel :::' ::: run-OK
+par_onall 'source setupenv || . `pwd`/setupenv; env_parallel echo reading from process substitution :::: <(echo {})' ::: OK |
+    # csh on NetBSD does not support process substitution
+    grep -v ': /tmp/.*: No such file or directory'
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

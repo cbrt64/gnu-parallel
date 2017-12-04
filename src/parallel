@@ -4525,6 +4525,7 @@ sub which {
     # Returns:
     #   @full_path = full paths to @programs. Nothing if not found
     my @which;
+	::debug("which", "@_ in $ENV{'PATH'}");
     for my $prg (@_) {
 	push(@which, grep { not -d $_ and -x $_ }
 	     map { $_."/".$prg } split(":",$ENV{'PATH'}));
@@ -4556,7 +4557,7 @@ sub which {
 	    #   /bin/sh /sbin/sh /opt/csw/sh
 	    # But not: foo.sh sshd crash flush pdflush scosh fsflush ssh
 	    my $shell = "(?:".join("|",map { "\Q$_\E" } @shells).")";
-	    $regexp = '^((\[)('. $shell. ')(\])|(|\S+/|busybox )('. $shell. '))($| [^(])';
+	    $regexp = '^((\[)('. $shell. ')(\])|(|\S+/|busybox )('. $shell. '))( *$| [^(])';
 	    %fakename = (
 		# sh disguises itself as -sh (sh) on FreeBSD
 		"-sh (sh)" => ["sh"],

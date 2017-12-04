@@ -73,11 +73,16 @@ env_parallel() {
     }
     _remove_bad_NAMES() {
 	# Do not transfer vars and funcs from env_parallel
-	grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV|_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
+	# Some versions of grep do not support -E: Use perl
+	# grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV|_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
+
+	perl -ne '/^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV|_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$/ and next;
 	    # Filter names matching --env
-	    grep -E "^$_grep_REGEXP"\$ | grep -vE "^$_ignore_UNDERSCORE"\$ |
+	    /^'"$_grep_REGEXP"'$/ or next;
+            /^'"$_ignore_UNDERSCORE"'$/ and next;
 	    # Vars set by /bin/sh
-            grep -Ev '^(_)$'
+            /^(_|TIMEOUT)$/ and next;
+            print;'
     }
 
     _get_ignored_VARS() {
@@ -114,13 +119,24 @@ env_parallel() {
             print $vars ? "($vars)" : "(.*)";
             ' -- "$@"
     }
-
-    if which parallel | grep 'no parallel in' >/dev/null; then
-	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
-	return 255
-    fi
-    if which parallel >/dev/null; then
-	true which on linux
+    _which() {
+	# type returns:
+	#   bash is a tracked alias for /bin/bash
+	#   true is a shell builtin
+	#   which is /usr/bin/which
+	#   which is hashed (/usr/bin/which)
+	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+	# Return 0 if found, 1 otherwise
+	type "$@" |
+	    perl -pe '$exit += (s/ is aliased to .*// ||
+                                s/ is a shell builtin// ||
+                                s/.* is hashed .(\S+).$/$1/ ||
+                                s/.* is (a tracked alias for )?//);
+                      END { exit not $exit }'
+    }
+    
+    if _which parallel >/dev/null; then
+	true parallel found in path
     else
 	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
 	return 255
@@ -175,6 +191,7 @@ env_parallel() {
         $_list_function_BODIES;
         $_list_variable_VALUES;
     `"
+
     export PARALLEL_ENV
     unset _list_alias_BODIES
     unset _list_variable_VALUES
@@ -182,8 +199,8 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if `which true` >/dev/null 2>/dev/null ; then
-	`which parallel` "$@";
+    if `_which true` >/dev/null 2>/dev/null ; then
+	`_which parallel` "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;
 	return $_parallel_exit_CODE

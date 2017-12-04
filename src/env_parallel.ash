@@ -114,13 +114,22 @@ env_parallel() {
             print $vars ? "($vars)" : "(.*)";
             ' -- "$@"
     }
-
-    if which parallel | grep 'no parallel in' >/dev/null; then
-	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
-	return 255
-    fi
-    if which parallel >/dev/null; then
-	true which on linux
+    _which() {
+	# type returns:
+	#   bash is a tracked alias for /bin/bash
+	#   true is a shell builtin
+	#   which is /usr/bin/which
+	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+	# Return 0 if found, 1 otherwise
+	type "$@" |
+	    perl -pe '$exit += (s/ aliased to .*// ||
+                                s/ is a shell builtin// ||
+                                s/.* is (a tracked alias for )?//);
+                      END { exit not $exit }'
+    }
+    
+    if _which parallel >/dev/null; then
+	true parallel found in path
     else
 	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
 	return 255
@@ -182,8 +191,8 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if `which true` >/dev/null 2>/dev/null ; then
-	`which parallel` "$@";
+    if `_which true` >/dev/null 2>/dev/null ; then
+	`_which parallel` "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;
 	return $_parallel_exit_CODE

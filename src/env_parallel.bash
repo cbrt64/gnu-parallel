@@ -58,11 +58,38 @@ env_parallel() {
     }
     _remove_bad_NAMES() {
 	# Do not transfer vars and funcs from env_parallel
-	grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV|_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
+	# MacOS-grep does not like long patterns
+	# Old Solaris grep does not support -E
+
+	# Perl version of:
+	#   grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV)$' |
+	#   grep -Ev '^(_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
+	perl -ne '/^(_names_of_ALIASES|
+			   _bodies_of_ALIASES|
+			   _names_of_maybe_FUNCTIONS|
+			   _names_of_FUNCTIONS|
+			   _bodies_of_FUNCTIONS|
+			   _names_of_VARIABLES|
+			   _bodies_of_VARIABLES|
+			   _remove_bad_NAMES|
+			   _prefix_PARALLEL_ENV|
+			   _get_ignored_VARS|
+			   _make_grep_REGEXP|
+			   _ignore_UNDERSCORE|
+			   _alias_NAMES|
+			   _list_alias_BODIES|
+			   _function_NAMES|
+			   _list_function_BODIES|
+			   _variable_NAMES|
+			   _list_variable_VALUES|
+			   _prefix_PARALLEL_ENV|
+			   PARALLEL_TMP)$/x or print' |
 	    # Filter names matching --env
-	    grep -E "^$_grep_REGEXP"\$ | grep -vE "^$_ignore_UNDERSCORE"\$ |
+	    # perl version of: grep -E "^$_grep_REGEXP"\$ | grep -vE "^"\$ |
+	    perl -ne "/^$_grep_REGEXP"'$/ and not /^'"$_ignore_UNDERSCORE"'$/ and print' |
             grep -vFf <(readonly) |
-            grep -Ev '^(BASHOPTS|BASHPID|EUID|GROUPS|FUNCNAME|DIRSTACK|_|PIPESTATUS|PPID|SHELLOPTS|UID|USERNAME|BASH_[A-Z_]+)$'
+	    # perl version of: grep -Ev '^(BASHOPTS|BASHPID|EUID|GROUPS|FUNCNAME|DIRSTACK|_|PIPESTATUS|PPID|SHELLOPTS|UID|USERNAME|BASH_[A-Z_]+)$'
+	    perl -ne 'not /^(BASHOPTS|BASHPID|EUID|GROUPS|FUNCNAME|DIRSTACK|_|PIPESTATUS|PPID|SHELLOPTS|UID|USERNAME|BASH_[A-Z_]+)$/ and print'
     }
     _prefix_PARALLEL_ENV() {
         shopt 2>/dev/null |
@@ -244,8 +271,8 @@ _parset_main() {
         }
         exit $exitval;
         ' || return 255
-    if echo "$_parset_name" | grep -E ',| ' >/dev/null ; then
-	# $1 contains , or space
+    if perl -e 'exit not grep /,| /, @ARGV' "$_parset_name" ; then
+	# $_parset_name contains , or space
 	# Split on , or space to get the names
 	eval "$(
 	    # Compute results into files
@@ -258,8 +285,8 @@ _parset_main() {
 			 )
 	    )"
     else
-	# $1 contains no space or ,
-	# => $1 is the name of the array to put data into
+	# $_parset_name does not contain , or space
+	# => $_parset_name is the name of the array to put data into
 	# Supported in: bash
 	# Arrays do not work in: ash dash
 	eval $_parset_name="( $( $_parset_parallel_prg --files -k "$@" |

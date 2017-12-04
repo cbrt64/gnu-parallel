@@ -387,25 +387,25 @@ par_sh_environment_too_big	OK_bigvar_remote
 par_sh_environment_too_big	OK_bigvar_quote
 par_sh_environment_too_big	OK_bigvar_quote_remote
 par_sh_environment_too_big	Rest should fail
-par_sh_environment_too_big	sh: 1: which: Argument list too long
+par_sh_environment_too_big	sh: 131: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 1: which: Argument list too long
+par_sh_environment_too_big	sh: 131: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 1: which: Argument list too long
+par_sh_environment_too_big	sh: 131: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 1: which: Argument list too long
+par_sh_environment_too_big	sh: 131: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
@@ -820,25 +820,25 @@ par_dash_environment_too_big	OK_bigvar_remote
 par_dash_environment_too_big	OK_bigvar_quote
 par_dash_environment_too_big	OK_bigvar_quote_remote
 par_dash_environment_too_big	Rest should fail
-par_dash_environment_too_big	dash: 1: which: Argument list too long
+par_dash_environment_too_big	dash: 125: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 1: which: Argument list too long
+par_dash_environment_too_big	dash: 125: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 1: which: Argument list too long
+par_dash_environment_too_big	dash: 125: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 1: which: Argument list too long
+par_dash_environment_too_big	dash: 125: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
@@ -1114,49 +1114,49 @@ par_bash_environment_too_big	OK_bigfunc_remote
 par_bash_environment_too_big	OK_bigfunc_quote
 par_bash_environment_too_big	OK_bigfunc_quote_remote
 par_bash_environment_too_big	Rest should fail
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 182: /usr/bin/which: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line 209: /usr/bin/which: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_bash_environment_too_big	env_parallel: Error:   env_parallel --record-env
@@ -1263,25 +1263,25 @@ par_ash_environment_too_big	OK_bigvar_remote
 par_ash_environment_too_big	OK_bigvar_quote
 par_ash_environment_too_big	OK_bigvar_quote_remote
 par_ash_environment_too_big	Rest should fail
-par_ash_environment_too_big	ash: 1: which: Argument list too long
+par_ash_environment_too_big	ash: 125: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 1: which: Argument list too long
+par_ash_environment_too_big	ash: 125: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 1: which: Argument list too long
+par_ash_environment_too_big	ash: 125: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 1: which: Argument list too long
+par_ash_environment_too_big	ash: 125: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env

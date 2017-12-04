@@ -26,7 +26,7 @@
 # Fifth Floor, Boston, MA 02110-1301 USA
 
 set _parallel_exit_CODE=0
-if ("`alias env_parallel`" == '') then
+if ("`alias env_parallel`" == '' || ! $?PARALLEL) then
   # Activate alias
   alias env_parallel '(setenv PARALLEL "\!*"; source `which env_parallel.csh`)'
 else
@@ -34,7 +34,11 @@ else
   # --env _ should be ignored
   # and convert  a b c  to (a|b|c)
   # If --env not set: Match everything (.*)
-  set _tMpscRIpt=`tempfile`
+
+  # simple 'tempfile': Return nonexisting filename: /tmp/parXXXXX
+  alias _tempfile 'perl -e do\{\$t\=\"/tmp/par\".join\"\",map\{\(0..9,\"a\"..\"z\",\"A\"..\"Z\"\)\[rand\(62\)\]\}\(1..5\)\;\}while\(-e\$t\)\;print\"\$t\\n\"'
+  set _tMpscRIpt=`_tempfile`
+
   cat <<'EOF' > $_tMpscRIpt
             #!/usr/bin/perl
 
@@ -71,13 +75,13 @@ else
   rm $_tMpscRIpt
 
   # Get the scalar and array variable names
-  set _vARnAmES=(`set | awk -e '{print $1}' |grep -vE '^(#|_|killring|prompt2|command)$' | grep -Ev '^(PARALLEL_TMP)$' | grep -E "^$_grep_REGEXP"\$ | grep -vE "^$_ignore_UNDERSCORE"\$`)
+  set _vARnAmES=(`set | perl -ne 's/\s.*//; /^(#|_|killring|prompt2|command|PARALLEL_TMP)$/ and next; /^'"$_grep_REGEXP"'$/ or next; /^'"$_ignore_UNDERSCORE"'$/ and next; print'`)
 
   # Make a tmpfile for the variable definitions
-  set _tMpvARfILe=`tempfile`
-  
+  set _tMpvARfILe=`_tempfile`
+  touch $_tMpvARfILe
   # Make a tmpfile for the variable definitions + alias
-  set _tMpaLLfILe=`tempfile`
+  set _tMpaLLfILe=`_tempfile`
   foreach _vARnAmE ($_vARnAmES);
     # if not defined: next
     eval if'(! $?'$_vARnAmE') continue'
@@ -120,8 +124,7 @@ else
 #   s/^/\001alias /;
 #   Quoted: s/\^/\\001alias\ /\;
   alias | \
-    grep -E "^$_grep_REGEXP" | \
-    grep -vE "^$_ignore_UNDERSCORE""[^_a-zA-Z]" | \
+    perl -ne '/^'"$_grep_REGEXP"'/ or next; /^'"$_ignore_UNDERSCORE"'[^_a-zA-Z]/ and next; print' | \
     perl -pe s/\\047/\\047\\042\\047\\042\\047/g\;s/\^\(\\S+\)\(\\s+\)\\\(\(.\*\)\\\)/\\1\\2\\3/\;s/\^\(\\S+\)\(\\s+\)\(.\*\)/\\1\\2\\047\\3\\047/\;s/\^/\\001alias\ /\;s/\\\!/\\\\\\\!/g >> $_tMpaLLfILe 
   
   setenv PARALLEL_ENV "`cat $_tMpaLLfILe; rm $_tMpaLLfILe`";
