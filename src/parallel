@@ -9112,7 +9112,10 @@ sub set_exitsignal {
 		$Global::halt_exitstatus = 0;
 	    }
 	    if($Global::halt_when eq "soon"
-	       and scalar(keys %Global::running) > 0) {
+	       and
+	       (scalar(keys %Global::running) > 0
+		or
+		$Global::max_jobs_running == 1)) {
 		::status
 		    ("$Global::progname: Starting no more jobs. ".
 		     "Waiting for ". (keys %Global::running).

@@ -1359,6 +1359,27 @@ par_file_ending_in_newline	### Hans found a bug giving unitialized variable
 par_file_ending_in_newline	gzip /tmp/parallel_f1
 par_file_ending_in_newline	gzip /tmp/parallel_f2'
 par_file_ending_in_newline	'
+par_halt_one_job	# Halt soon if there is a single job
+par_halt_one_job	should run 0 1 = job 1 2
+par_halt_one_job	1
+par_halt_one_job	2
+par_halt_one_job	parallel: This job failed:
+par_halt_one_job	echo 2;exit 1
+par_halt_one_job	should run 1 = job 1
+par_halt_one_job	1
+par_halt_one_job	parallel: This job failed:
+par_halt_one_job	echo 1;exit 1
+par_halt_one_job	should run 0 1 = job 1 2
+par_halt_one_job	1
+par_halt_one_job	2
+par_halt_one_job	parallel: This job failed:
+par_halt_one_job	echo 2;exit 1
+par_halt_one_job	parallel: Starting no more jobs. Waiting for 0 jobs to finish.
+par_halt_one_job	should run 1 = job 1
+par_halt_one_job	1
+par_halt_one_job	parallel: This job failed:
+par_halt_one_job	echo 1;exit 1
+par_halt_one_job	parallel: Starting no more jobs. Waiting for 0 jobs to finish.
 par_header_parens	bug #49538: --header and {= =}
 par_header_parens	OK
 par_header_parens	OK

@@ -792,6 +792,18 @@ par_parset() {
     echo "${myarray[4]} ${myarray[5]} ${myarray[5]}"
 }
 
+par_halt_one_job() {
+    echo '# Halt soon if there is a single job'
+    echo should run 0 1 = job 1 2
+    parallel -j1 --halt now,fail=1 'echo {#};exit {}' ::: 0 1 0
+    echo should run 1 = job 1
+    parallel -j1 --halt now,fail=1 'echo {#};exit {}' ::: 1 0 1
+    echo should run 0 1 = job 1 2
+    parallel -j1 --halt soon,fail=1 'echo {#};exit {}' ::: 0 1 0
+    echo should run 1 = job 1
+    parallel -j1 --halt soon,fail=1 'echo {#};exit {}' ::: 1 0 1
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'
