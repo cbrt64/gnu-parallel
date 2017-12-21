@@ -91,6 +91,11 @@ par_quoting_for_onall() {
     echo foo: /bin/ls | parallel --colsep ' ' -S lo --onall ls {2}
 }
 
+par_hostgroup_only_on_args() {
+    echo '### Auto add hostgroup if given on on argument'
+    parallel --hostgroup ::: whoami@sh@lo
+}
+
 export -f $(compgen -A function | grep par_)
 # Tested with -j1..8
 # -j6 was fastest

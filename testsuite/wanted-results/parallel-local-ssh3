@@ -39,6 +39,9 @@ echo '### bug #49404: "Max jobs to run" does not equal the number of jobs specif
 should give 10 running jobs
   stdout parallel -S 16/lo --progress true ::: {1..10} | grep /.10
 1:lo / 16 / 10
+par_hostgroup_only_on_args	### Auto add hostgroup if given on on argument
+par_hostgroup_only_on_args	parallel: Warning: Adding hostgroups: sh@lo
+par_hostgroup_only_on_args	sh
 par_quoting_for_onall	### bug #35427: quoting of {2} broken for --onall
 par_quoting_for_onall	/bin/ls
 par_return_with_fixedstring	### Test --return with fixed string (Gave undef warnings)

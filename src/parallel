@@ -1021,7 +1021,7 @@ sub options_hash {
 	 "replace|i:s" => \$opt::i,
 	 "E=s" => \$opt::eof,
 	 "eof|e:s" => \$opt::eof,
-	 "max-args|n=i" => \$opt::max_args,
+	 "max-args|maxargs|n=i" => \$opt::max_args,
 	 "max-replace-args|N=i" => \$opt::max_replace_args,
 	 "colsep|col-sep|C=s" => \$opt::colsep,
 	 "help|h" => \$opt::help,
@@ -4918,6 +4918,8 @@ sub new {
         # Look for SSHLogin hostgroups
         %hostgroups = map { $_ => 1 } split(/\+/, $1);
     }
+    # An SSHLogin is always in the hostgroup of its "numcpu/host"
+    $hostgroups{$sshlogin_string} = 1;
     if ($sshlogin_string =~ s:^(\d+)/::) {
         # Override default autodetected ncpus unless missing
         $ncpus = $1;
@@ -10302,25 +10304,23 @@ sub get {
 	return $ret;
     }
     my $ret = $self->{'arg_sub_queue'}->get();
-    if($ret and
-       grep { index($_->orig(),"\0") > 0 } @$ret) {
-	# Allow for \0 in position 0 because GNU Parallel uses "\0"
-	# to mean no-string
-	::warning("a NUL character occurred in the input.",
-		  "It cannot be passed through in the argument list.",
-		  "Did you mean to use the --null option?");
-    }
-    if(defined $Global::max_number_of_args
-       and $Global::max_number_of_args == 0) {
-	::debug("run", "Read 1 but return 0 args\n");
-	# \0 => nothing (not the empty string)
-	$ret = [Arg->new("\0")];
-    } else {
+    if($ret) {
+	if(grep { index($_->orig(),"\0") > 0 } @$ret) {
+	    # Allow for \0 in position 0 because GNU Parallel uses "\0"
+	    # to mean no-string
+	    ::warning("a NUL character occurred in the input.",
+		      "It cannot be passed through in the argument list.",
+		      "Did you mean to use the --null option?");
+	}
+	if(defined $Global::max_number_of_args
+	   and $Global::max_number_of_args == 0) {
+	    ::debug("run", "Read 1 but return 0 args\n");
+	    # \0 => nothing (not the empty string)
+	    map { $_->set_orig("\0"); } @$ret;
+	}
 	# Flush cached computed replacements in Arg-objects
 	# To fix: parallel --bar echo {%} ::: a b c ::: d e f
-	if($ret) {
-	    map { $_->flush_cache() } @$ret;
-	}
+    	map { $_->flush_cache() } @$ret;
     }
     return $ret;
 }
@@ -10703,10 +10703,19 @@ sub new {
 	    # We found hostgroups on the arg
 	    @hostgroups = split(/\+/, $1);
 	    if(not grep { defined $Global::hostgroups{$_} } @hostgroups) {
-		::warning("No such hostgroup (@hostgroups).");
-		@hostgroups = (keys %Global::hostgroups);
+		# This hostgroup is not defined using -S
+		# Add it
+		::warning("Adding hostgroups: @hostgroups");
+		# Add sshlogin
+		for(grep { not defined $Global::hostgroups{$_} } @hostgroups) {
+		    my $sshlogin = SSHLogin->new($_);
+		    my $sshlogin_string = $sshlogin->string();
+		    $Global::host{$sshlogin_string} = $sshlogin;
+		    $Global::hostgroups{$sshlogin_string} = 1;
+		}
 	    }
         } else {
+	    # No hostgroup on the arg => any hostgroup
 	    @hostgroups = (keys %Global::hostgroups);
 	}
     }
@@ -10804,6 +10813,11 @@ sub flush_cache {
 sub orig {
     my $self = shift;
     return $self->{'orig'};
+}
+
+sub set_orig {
+    my $self = shift;
+    $self->{'orig'} = shift;
 }
 
 sub trim_of {
