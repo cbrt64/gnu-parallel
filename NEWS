@@ -1,3 +1,25 @@
+20171222
+
+* env_parset for ash, dash, ksh, sh, zsh
+
+* Automatically create hostgroups if argument ends in @sshlogin
+
+* Tips for running jobs on your VM
+  https://support.ehelp.edu.au/support/solutions/articles/6000089713-tips-for-running-jobs-on-your-vm#parallel
+
+* Node-local scheduling
+  https://mogonwiki.zdv.uni-mainz.de/dokuwiki/node_local_scheduling
+
+* GNU Parallel https://docs.computecanada.ca/wiki/GNU_Parallel
+
+* GNU Parallel のエラー処理 https://qiita.com/inouet/items/bfc208668c86caf8ff74
+
+* Using GNU Parallel
+  https://wiki.ncsa.illinois.edu/display/ROGER/Using+GNU+Parallel
+
+* Bug fixes and man page updates.
+
+
 20171122
 
 * Using GNU Parallel to speed up Google Cloud Infrastructure
