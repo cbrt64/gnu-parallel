@@ -1110,6 +1110,10 @@ sub parse_options {
     $Global::debug = $opt::D;
     $Global::shell = $ENV{'PARALLEL_SHELL'} || parent_shell($$)
 	|| $ENV{'SHELL'} || "/bin/sh";
+    if(not which($Global::shell)) {
+	::error("Shell '$Global::shell' not found.");
+	wait_and_exit(255);
+    }
     $Global::cshell = $Global::shell =~ m:/csh:;
     if(defined $opt::X) { $Global::ContextReplace = 1; }
     if(defined $opt::silent) { $Global::verbose = 0; }
@@ -4525,10 +4529,14 @@ sub which {
     # Returns:
     #   @full_path = full paths to @programs. Nothing if not found
     my @which;
-	::debug("which", "@_ in $ENV{'PATH'}");
+    ::debug("which", "@_ in $ENV{'PATH'}\n");
     for my $prg (@_) {
 	push(@which, grep { not -d $_ and -x $_ }
 	     map { $_."/".$prg } split(":",$ENV{'PATH'}));
+	if($prg =~ m:/:) {
+	    # Including path
+	    push(@which, grep { not -d $_ and -x $_ } $prg);
+	}
     }
     return @which;
 }

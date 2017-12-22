@@ -104,8 +104,8 @@ splits on \n (newline) and passes a block of around 1 MB to each job.
 You have now learned the basic use of GNU B<parallel>. This will
 probably cover most cases of your use of GNU B<parallel>.
 
-The rest of this document is simply to go into more details on each of
-the sections and cover special use cases.
+The rest of this document will go into more details on each of the
+sections and cover special use cases.
 
 
 =head1 Learn GNU Parallel in an hour
@@ -129,7 +129,7 @@ after B<-a> or B<::::>. So these all do the same:
   parallel -a seq6 -a seq-6 echo Dice1={1} Dice2={2}
   parallel -a seq6 echo Dice1={1} Dice2={2} :::: seq-6
   parallel echo Dice1={1} Dice2={2} ::: 1 2 3 4 5 6 :::: seq-6
-  cat seq-6 | parallel echo Dice1={1} Dice2={2} :::: seq-6 -
+  cat seq-6 | parallel echo Dice1={1} Dice2={2} :::: seq6 -
 
 If stdin (standard input) is the only input source, you do not need the '-':
 
@@ -165,22 +165,106 @@ GNU B<parallel> has some replacement strings to make it easier
 
 =head2 Controlling the output
 
-parset
+=head3 parset
+
+B<parset> is a shell function to get the output from GNU B<parallel>
+into shell variables.
+
+B<parset> is fully supported for B<Bash/Zsh/Ksh> and partially supported
+for B<ash/dash>. I will assume you run B<Bash>.
+
+To activate B<parset> you have to run:
+
+  . `which env_parallel.bash`
+
+(replace B<bash> with your shell's name).
+
+Then you can run:
+
+  parset a,b,c seq ::: 4 5 6
+  echo "$c"
+
+or:
+
+  parset 'a b c' seq ::: 4 5 6
+  echo "$c"
+
+If you give a single variable, this will become an array:
+
+  parset arr seq ::: 4 5 6
+  echo "${arr[1]}"
+
+B<parset> has one limitation: If it reads from a pipe, the output will
+be lost.
+
+  echo This will not work | parset myarr echo
+  echo Nothing: "${myarr[*]}"
+
+Instead you can do this:
+
+  echo This will work > tempfile
+  parset myarr echo < tempfile
+  echo ${myarr[*]}
+
 sql
 cvs
 
 
 =head2 Controlling the execution
 
-=head3 Remote execution
+--dryrun -v
+
+=head2 Remote execution
+
+For this section you must have B<ssh> access with no password to 2
+servers: B<$server1> and B<$server2>.
+
+  server1=server.example.com
+  server2=server2.example.net
+
+So you must be able to do this:
+
+  ssh $server1 echo works
+  ssh $server2 echo works
+
+It can be setup by running 'ssh-keygen -t dsa; ssh-copy-id $server1'
+and using an empty passphrase. Or you can use B<ssh-agent>.
+
+=head3 Workers
+
+=head3 --transferfile
+
+B<--transferfile> I<filename> will transfer I<filename> to the
+worker. I<filename> can contain a replacement string:
+
+  parallel -S $server1,$server2 --transferfile {} wc ::: example.*
+  parallel -S $server1,$server2 --transferfile {2} \
+     echo count {1} in {2}';' wc {1} {2} ::: -l -c ::: example.*
+
+A shorthand for B<--transferfile {}> is B<--transfer>.
+
+=head3 --return
+
+
+
+=head3 --cleanup
+
+A shorthand for B<--transfer --return {} --cleanup> is B<--trc {}>.
+
 
 =head2 Pipe mode
+
+--pipepart
+
+
 =head2 That's it
 
 =head1 Advanced usage
 
+parset fifo, cmd substtition, arrayelements, array with var names and cmds, env_parset
 
-env_parallel, parset, env_parset
+
+env_parallel
 
 Interfacing with R.
 
@@ -208,7 +292,7 @@ Interfacing with HTML/?
 --termseq
 
 
-=head3 Remote execution
+=head2 Remote execution
 
 seq 10 | parallel --sshlogin 'ssh -i "key.pem" a@b.com' echo 
 

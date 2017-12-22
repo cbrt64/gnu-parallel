@@ -28,6 +28,8 @@ echo '### Tests on polarhome machines'
 
 echo 'Setup on polarhome machines'
 # Avoid the stupid /etc/issue.net banner at Polarhome: -oLogLevel=quiet
+PARALLEL_SSH="ssh -oLogLevel=quiet"
+export PARALLEL_SSH
 stdout parallel -kj0 --delay 0.2 ssh -oLogLevel=quiet {} mkdir -p bin ::: $POLAR &
 
 par_onall() {
@@ -88,17 +90,42 @@ par_onall 'func() { cat <(echo bash only A); };export -f func; bin/parallel func
 echo
 echo '### Does PARALLEL_SHELL help exporting a bash function not kill parallel'
 echo
-PARALLEL_SHELL=/bin/bash par_onall 'func() { cat <(echo bash only B); };export -f func; bin/parallel func ::: ' ::: 1
-
+(
+    mkdir -p tmp/bin;
+    cp /bin/bash tmp/bin
+    cd tmp
+    PARALLEL_SHELL=bin/bash par_onall 'func() { cat <(echo bash only B); };export -f func; bin/parallel func ::: ' ::: 1
+)
 echo
 echo '### env_parallel echo :::: <(echo OK)'
-echo '(bash only)'
+echo '(bash ksh zsh only)'
 echo
 par_onall 'bin/env_parallel --install && echo {}' ::: install-OK
-par_onall 'source setupenv || . `pwd`/setupenv; env_parallel echo env_parallel :::' ::: run-OK
-par_onall 'source setupenv || . `pwd`/setupenv; env_parallel echo reading from process substitution :::: <(echo {})' ::: OK |
+par_onall 'source setupenv || . `pwd`/setupenv; '\
+	  'env_parallel echo env_parallel :::' ::: run-OK
+par_onall 'source setupenv || . `pwd`/setupenv; '\
+	  'env_parallel echo reading from process substitution :::: <(echo {})' ::: OK |
     # csh on NetBSD does not support process substitution
     grep -v ': /tmp/.*: No such file or directory'
+
+echo
+echo '### (env_)parset arr seq ::: 2 3 4'
+echo '(bash ksh zsh only)'
+echo
+par_onall 'source setupenv || . `pwd`/setupenv; '\
+	  'parset arr seq ::: 2 3 4; echo ${arr[*]}' ::: parset-arr-OK
+par_onall 'source setupenv || . `pwd`/setupenv; start=2; '\
+	  'env_parset arr seq \$start ::: 2 3 4; echo ${arr[*]}' ::: env_parset-arr-OK
+
+echo
+echo '### (env_)parset var1,var2,var3 seq ::: 2 3 4'
+echo '(bash ksh zsh only)'
+echo
+par_onall 'source setupenv || . `pwd`/setupenv; '\
+	  'parset var1,var2,var3 seq ::: 2 3 4; echo $var1,$var2,$var3' ::: parset-var-OK
+par_onall 'source setupenv || . `pwd`/setupenv; start=2; '\
+	  'env_parset var1,var2,var3 seq \$start ::: 2 3 4; echo $var1,$var2,$var3' ::: env_parset-var-OK
+
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

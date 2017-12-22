@@ -452,6 +452,7 @@ centos.polarhome.com	bash only B
 debian-ppc.polarhome.com	bash only B
 debian.polarhome.com	bash only B
 freebsd.polarhome.com	bash only B
+hpux-ia64.polarhome.com	bash only B
 macosx.polarhome.com	bash only B
 mandriva.polarhome.com	bash only B
 miros.polarhome.com	bash only B
@@ -465,10 +466,12 @@ scosysv.polarhome.com	bash only B
 solaris-x86.polarhome.com	bash only B
 solaris.polarhome.com	bash only B
 suse.polarhome.com	bash only B
+tru64.polarhome.com	bash only B
 ubuntu.polarhome.com	bash only B
+unixware.polarhome.com	
 
 ### env_parallel echo :::: <(echo OK)
-(bash only)
+(bash ksh zsh only)
 
 aix.polarhome.com	Installed env_parallel in: 
 aix.polarhome.com	     /home/t/tange/.bashrc
@@ -521,6 +524,7 @@ freebsd.polarhome.com	     /home/t/tange/.cshrc
 freebsd.polarhome.com	     /home/t/tange/.tcshrc
 freebsd.polarhome.com	install-OK
 hpux-ia64.polarhome.com	No such file or directory: bash
+hpux.polarhome.com	exec request failed on channel 0
 macosx.polarhome.com	Installed env_parallel in:
 macosx.polarhome.com	     /Users/tange/.bashrc
 macosx.polarhome.com	     /Users/tange/.shrc
@@ -719,6 +723,124 @@ suse.polarhome.com	reading from process substitution OK
 tru64.polarhome.com	reading from process substitution OK
 ubuntu.polarhome.com	reading from process substitution OK
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `(' unexpected
+
+### (env_)parset arr seq ::: 2 3 4
+(bash ksh zsh only)
+
+centos.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+debian-ppc.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+debian.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+freebsd.polarhome.com	source: not found
+freebsd.polarhome.com	eval: 1: Syntax error: word unexpected (expecting ")")
+hpux-ia64.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+macosx.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+mandriva.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+miros.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+netbsd.polarhome.com	parset: Command not found.
+netbsd.polarhome.com	arr: Undefined variable.
+openbsd.polarhome.com	parset-arr-OK
+openindiana.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+pidora.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+raspbian.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+redhat.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+scosysv.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+solaris-x86.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+solaris.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+suse.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+tru64.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+ubuntu.polarhome.com	1 2 1 2 3 1 2 3 4 parset-arr-OK
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
+centos.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+debian-ppc.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+debian.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+freebsd.polarhome.com	source: not found
+freebsd.polarhome.com	eval: 1: Syntax error: word unexpected (expecting ")")
+hpux-ia64.polarhome.com	1 2 1 2 1 2 env_parset-arr-OK
+macosx.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+mandriva.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+miros.polarhome.com	1 2 1 2 1 2 env_parset-arr-OK
+netbsd.polarhome.com	start=2: Command not found.
+netbsd.polarhome.com	env_parset: Command not found.
+netbsd.polarhome.com	arr: Undefined variable.
+openbsd.polarhome.com	env_parset-arr-OK
+openindiana.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+pidora.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+raspbian.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+redhat.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+scosysv.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+solaris-x86.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+solaris.polarhome.com	1 2 1 2 1 2 env_parset-arr-OK
+suse.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+tru64.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+ubuntu.polarhome.com	2 2 3 2 3 4 env_parset-arr-OK
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
+
+### (env_)parset var1,var2,var3 seq ::: 2 3 4
+(bash ksh zsh only)
+
+centos.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+debian-ppc.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+debian.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+freebsd.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+freebsd.polarhome.com	source: not found
+hpux-ia64.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+macosx.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+mandriva.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+miros.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+netbsd.polarhome.com	parset: Command not found.
+netbsd.polarhome.com	var1: Undefined variable.
+openbsd.polarhome.com	,, parset-var-OK
+openindiana.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+pidora.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+raspbian.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+redhat.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+scosysv.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+solaris-x86.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+solaris.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+suse.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+tru64.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+ubuntu.polarhome.com	1 2,1 2 3,1 2 3 4 parset-var-OK
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
+unixware.polarhome.com	UX:cat: ERROR: Cannot open tmpfile1: No such file or directory
+unixware.polarhome.com	UX:rm: ERROR: Cannot access tmpfile1: No such file or directory
+unixware.polarhome.com	UX:cat: ERROR: Cannot open tmpfile2: No such file or directory
+unixware.polarhome.com	UX:rm: ERROR: Cannot access tmpfile2: No such file or directory
+unixware.polarhome.com	UX:cat: ERROR: Cannot open {1}: No such file or directory
+unixware.polarhome.com	UX:rm: ERROR: Cannot access {1}: No such file or directory
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 2: `$' unexpected
+centos.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+debian-ppc.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+debian.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+freebsd.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+freebsd.polarhome.com	source: not found
+hpux-ia64.polarhome.com	1 2,1 2,1 2 env_parset-var-OK
+macosx.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+mandriva.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+miros.polarhome.com	1 2,1 2,1 2 env_parset-var-OK
+netbsd.polarhome.com	start=2: Command not found.
+netbsd.polarhome.com	env_parset: Command not found.
+netbsd.polarhome.com	var1: Undefined variable.
+openbsd.polarhome.com	,, env_parset-var-OK
+openindiana.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+pidora.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+raspbian.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+redhat.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+scosysv.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+solaris-x86.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+solaris.polarhome.com	1 2,1 2,1 2 env_parset-var-OK
+suse.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+tru64.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+ubuntu.polarhome.com	2,2 3,2 3 4 env_parset-var-OK
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
+unixware.polarhome.com	UX:cat: ERROR: Cannot open tmpfile1: No such file or directory
+unixware.polarhome.com	UX:rm: ERROR: Cannot access tmpfile1: No such file or directory
+unixware.polarhome.com	UX:cat: ERROR: Cannot open tmpfile2: No such file or directory
+unixware.polarhome.com	UX:rm: ERROR: Cannot access tmpfile2: No such file or directory
+unixware.polarhome.com	UX:cat: ERROR: Cannot open {1}: No such file or directory
+unixware.polarhome.com	UX:rm: ERROR: Cannot access {1}: No such file or directory
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 2: `$' unexpected
 macosx.polarhome.com	
 macosx.polarhome.com	### Test if empty command in process list causes problems
 macosx.polarhome.com	

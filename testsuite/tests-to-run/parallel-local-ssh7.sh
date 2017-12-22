@@ -1391,7 +1391,7 @@ par_bash_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.bash`;
 
-    bigvar="$(perl -e 'print "x"x121000')"
+    bigvar="$(perl -e 'print "x"x120000')"
     env_parallel echo ::: OK_bigvar
     env_parallel -S lo echo ::: OK_bigvar_remote
 
@@ -1400,11 +1400,11 @@ par_bash_environment_too_big() {
     env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x121000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x120000')"'"; };'
     env_parallel echo ::: OK_bigfunc
     env_parallel -S lo echo ::: OK_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x121000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x120000')"'"; };'
     env_parallel echo ::: OK_bigfunc_quote
     env_parallel -S lo echo ::: OK_bigfunc_quote_remote
     bigfunc() { true; }
@@ -2029,4 +2029,6 @@ export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |
 compgen -A function | grep par_ | sort -r |
-    parallel --joblog /tmp/jl-`basename $0` -j200% --tag -k '{} 2>&1'
+#    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
+    parallel --joblog /tmp/jl-`basename $0` -j200% --tag -k '{} 2>&1' |
+    perl -pe 's/line \d\d\d:/line XXX:/'

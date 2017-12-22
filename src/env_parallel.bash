@@ -58,10 +58,17 @@ env_parallel() {
     }
     _remove_bad_NAMES() {
 	# Do not transfer vars and funcs from env_parallel
-	# MacOS-grep does not like long patterns
+	_remove_readonly() {
+	   _list_readonly() {
+	       readonly | perl -pe 's/^\S+\s+\S+\s+(\S[^=]*)=.*/$1/'
+	   }
+	   perl -e '$r=join("|",@ARGV); while(<STDIN>) {/$r/o or print}' `_list_readonly`
+	}
+	# Macos-grep does not like long patterns
 	# Old Solaris grep does not support -E
+	# so 'grep' is converted to 'perl'
 
-	# Perl version of:
+	# Perl Version of:
 	#   grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV)$' |
 	#   grep -Ev '^(_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
 	perl -ne '/^(_names_of_ALIASES|
@@ -72,6 +79,7 @@ env_parallel() {
 			   _names_of_VARIABLES|
 			   _bodies_of_VARIABLES|
 			   _remove_bad_NAMES|
+			   _remove_readonly|
 			   _prefix_PARALLEL_ENV|
 			   _get_ignored_VARS|
 			   _make_grep_REGEXP|
@@ -87,7 +95,7 @@ env_parallel() {
 	    # Filter names matching --env
 	    # perl version of: grep -E "^$_grep_REGEXP"\$ | grep -vE "^"\$ |
 	    perl -ne "/^$_grep_REGEXP"'$/ and not /^'"$_ignore_UNDERSCORE"'$/ and print' |
-            grep -vFf <(readonly) |
+            _remove_readonly |
 	    # perl version of: grep -Ev '^(BASHOPTS|BASHPID|EUID|GROUPS|FUNCNAME|DIRSTACK|_|PIPESTATUS|PPID|SHELLOPTS|UID|USERNAME|BASH_[A-Z_]+)$'
 	    perl -ne 'not /^(BASHOPTS|BASHPID|EUID|GROUPS|FUNCNAME|DIRSTACK|_|PIPESTATUS|PPID|SHELLOPTS|UID|USERNAME|BASH_[A-Z_]+)$/ and print'
     }
@@ -133,13 +141,28 @@ env_parallel() {
             print $vars ? "($vars)" : "(.*)";
             ' -- "$@"
     }
+    _which() {
+	# type returns:
+	#   bash is a tracked alias for /bin/bash
+	#   true is a shell builtin
+	#   which is /usr/bin/which
+	#   which is hashed (/usr/bin/which)
+	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+	# Return 0 if found, 1 otherwise
+	type "$@" |
+	    perl -pe '$exit += (s/ is aliased to .*// ||
+                                s/ is a shell builtin// ||
+                                s/.* is hashed .(\S+).$/$1/ ||
+                                s/.* is (a tracked alias for )?//);
+                      END { exit not $exit }'
+    }
     _warning() {
 	echo "env_parallel: Warning: $@" >&2
     }
 
     # Bash is broken in version 3.2.25 and 4.2.39
     # The crazy '[ "`...`" == "" ]' is needed for the same reason
-    if [ "`which parallel`" == "" ]; then
+    if [ "`_which parallel`" == "" ]; then
 	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
 	return 255
     fi
@@ -190,7 +213,7 @@ env_parallel() {
     fi
     unset _variable_NAMES
 
-    _which_true="`which true`"
+    _which_true="`_which true`"
     # Copy shopt (so e.g. extended globbing works)
     # But force expand_aliases as aliases otherwise do not work
     PARALLEL_ENV="`
@@ -206,8 +229,8 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if [ "`which true`" == "$_which_true" ] ; then
-	`which parallel` "$@";
+    if [ "`_which true`" == "$_which_true" ] ; then
+	`_which parallel` "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;
 	return $_parallel_exit_CODE
@@ -287,9 +310,9 @@ _parset_main() {
     else
 	# $_parset_name does not contain , or space
 	# => $_parset_name is the name of the array to put data into
-	# Supported in: bash
+	# Supported in: bash zsh ksh
 	# Arrays do not work in: ash dash
-	eval $_parset_name="( $( $_parset_parallel_prg --files -k "$@" |
+	eval "$_parset_name=( $( $_parset_parallel_prg --files -k "$@" |
               perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"
     fi
 }

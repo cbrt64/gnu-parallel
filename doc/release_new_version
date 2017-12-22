@@ -199,9 +199,9 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20171122 ('Mugabe') released <<[stable]>>
+Subject: GNU Parallel 20171222 ('Jerusalem/Agung/Bir al-Abed') released <<[stable]>>
 
-GNU Parallel 20171122 ('Mugabe') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20171222 ('Jerusalem/Agung/Bir al-Abed') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -211,8 +211,14 @@ Haiku of the month:
 New in this release:
 
 parset for ksh, zsh,
+auto hostgroups with arg@sshlogin
+https://support.ehelp.edu.au/support/solutions/articles/6000089713-tips-for-running-jobs-on-your-vm#parallel
+https://mogonwiki.zdv.uni-mainz.de/dokuwiki/node_local_scheduling
 https://docs.computecanada.ca/wiki/GNU_Parallel
 https://qiita.com/inouet/items/bfc208668c86caf8ff74
+https://wiki.ncsa.illinois.edu/display/ROGER/Using+GNU+Parallel
+https://github.com/LangilleLab/microbiome_helper/wiki/Quick-Introduction-to-GNU-Parallel
+https://docs.computecanada.ca/wiki/GNU_Parallel
 
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>

@@ -110,7 +110,7 @@ So you must be able to do this:
   ssh $SERVER2 echo works
 
 It can be setup by running 'ssh-keygen -t dsa; ssh-copy-id $SERVER1'
-and using an empty pass phrase.
+and using an empty passphrase.
 
 =back
 

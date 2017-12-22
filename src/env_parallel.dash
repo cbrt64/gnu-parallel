@@ -274,7 +274,7 @@ _parset_main() {
 	# => $1 is the name of the array to put data into
 	# Supported in: bash
 	# Arrays do not work in: ash dash
-	eval $_parset_name="( $( $_parset_parallel_prg --files -k "$@" |
+	eval "$_parset_name=( $( $_parset_parallel_prg --files -k "$@" |
               perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"
     fi
 }
