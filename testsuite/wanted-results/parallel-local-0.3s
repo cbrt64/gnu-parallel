@@ -1344,6 +1344,17 @@ par_basic_halt	true
 par_basic_halt	parallel: Error: --halt must have 'never', 'soon', or 'now'.
 par_basic_halt	parallel: Error: --halt soon must be followed by ,success or ,fail.
 par_basic_halt	parallel: Error: --halt now must be followed by ,success or ,fail.
+par_blocking_redir	      0       0       0
+par_blocking_redir	      0       0       0
+par_blocking_redir	      1       9      54
+par_blocking_redir	      3       3       6
+par_blocking_redir	Test stderr
+par_blocking_redir	Test stdout
+par_blocking_redir	bug #52740: Bash redirection with process substitution blocks
+par_blocking_redir	stderr
+par_blocking_redir	stderr
+par_blocking_redir	stdout
+par_blocking_redir	stdout
 par_colsep_0	bug --colsep 0
 par_colsep_0	OK
 par_colsep_0	OK

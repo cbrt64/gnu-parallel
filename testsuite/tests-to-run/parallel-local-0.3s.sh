@@ -804,6 +804,17 @@ par_halt_one_job() {
     parallel -j1 --halt soon,fail=1 'echo {#};exit {}' ::: 1 0 1
 }
 
+par_blocking_redir() {
+    (
+    echo 'bug #52740: Bash redirection with process substitution blocks'
+    echo Test stdout
+    echo 3 | parallel seq > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
+    echo Test stderr
+    echo nOfilE | parallel ls > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
+    ) 2>&1 | sort
+}
+
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

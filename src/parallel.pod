@@ -470,8 +470,8 @@ Implies B<--semaphore>.
 
 =item B<--citation>
 
-Print the BibTeX entry for GNU B<parallel> and silence citation
-notice.
+Print the BibTeX entry for GNU B<parallel>, silence citation
+notice and exit. It will not run any commands.
 
 If it is impossible for you to run B<--bibtex> you can use
 B<--will-cite>.

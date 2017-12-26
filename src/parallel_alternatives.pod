@@ -1327,6 +1327,47 @@ It can be emulated with GNU B<parallel> using this Bash function:
 
 This works execpt for the B<--exclude> option.
 
+=head2 DIFFERENCES BETWEEN pyargs AND GNU Parallel
+
+B<pyargs> deals badly with input containing spaces. It buffers stdout,
+but not stderr. It buffers in RAM. {} does not work as replacement
+string. It does not support running functions.
+
+B<pyargs> does not support composed commands if run with B<--lines>,
+and fails on B<pyargs traceroute pi.dk fi.dk>.
+
+=head3 Examples
+
+  seq 5 | pyargs -P50 -L seq
+  seq 5 | parallel -P50 --lb seq
+
+  seq 5 | pyargs -P50 --mark -L seq
+  seq 5 | parallel -P50 --lb \
+    --tagstring OUTPUT'[{= $_=$job->replaced()=}]' seq
+  # Similar, but not precisely the same
+  seq 5 | parallel -P50 --lb --tag seq
+
+  seq 5 | pyargs -P50  --mark command
+  # Somewhat longer with GNU Parallel due to the special
+  #   --mark formatting
+  cmd="$(echo "command" | parallel --shellquote)"
+  wrap_cmd() {
+     echo "MARK $cmd $@================================" >&3
+     echo "OUTPUT START[$cmd $@]:"
+     eval $cmd "$@"
+     echo "OUTPUT END[$cmd $@]"
+  }
+  (seq 5 | env_parallel -P2 wrap_cmd) 3>&1
+  # Similar, but not exactly the same
+  seq 5 | parallel -t --tag command
+
+  (echo '1  2  3';echo 4 5 6) | pyargs  --stream seq
+  (echo '1  2  3';echo 4 5 6) | perl -pe 's/\n/ /' |
+    parallel -r -d' ' seq
+  # Similar, but not exactly the same
+  parallel seq ::: 1 2 3 4 5 6
+
+
 =head2 Todo
 
 machma. Requires Go >= 1.7.
@@ -1343,6 +1384,8 @@ https://github.com/kou1okada/lesser-parallel
 https://github.com/Julian/Verge
 
 https://github.com/amattn/paral
+
+pyargs
 
 
 =head1 TESTING OTHER TOOLS
@@ -1363,18 +1406,22 @@ will most likely mix.
   cat <<-EOF > mycommand
   #!/bin/bash
 
-  # If 'a', 'b' and 'c' mix: Very bad
-  perl -e 'print "a"x3000_000," "'
-  perl -e 'print "b"x3000_000," "'
-  perl -e 'print "c"x3000_000," "'
+  # If a, b, c, d, e, and f mix: Very bad
+  perl -e 'print STDOUT "a"x3000_000," "'
+  perl -e 'print STDERR "b"x3000_000," "'
+  perl -e 'print STDOUT "c"x3000_000," "'
+  perl -e 'print STDERR "d"x3000_000," "'
+  perl -e 'print STDOUT "e"x3000_000," "'
+  perl -e 'print STDERR "f"x3000_000," "'
   echo
+  echo >&2
   EOF
   chmod +x mycommand
 
   # Run 30 jobs in parallel
-  seq 30 | $paralleltool -j0 ./mycommand | tr -s abc
+  seq 30 | $paralleltool -j0 ./mycommand > >(tr -s abcdef) 2> >(tr -s abcdef >&2)
 
-  # 'a b c' should always stay together
+  # 'a c e' and 'b d f' should always stay together
   # and there should only be a single line per job
 
 =head2 B: Output limited by RAM

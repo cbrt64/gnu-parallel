@@ -1100,8 +1100,13 @@ sub get_options_from_array {
 sub parse_options {
     # Returns: N/A
     init_globals();
+    my @argv_before = @ARGV;
     @ARGV = read_options();
 
+    if(defined $opt::citation) {
+	citation(\@argv_before,\@ARGV);
+	wait_and_exit(0);
+    }
     # no-* overrides *
     if($opt::nokeeporder) { $opt::keeporder = undef; }
 
@@ -1162,7 +1167,6 @@ sub parse_options {
         print Limits::Command::real_max_length(),"\n"; wait_and_exit(0);
     }
     if(defined $opt::version) { version(); wait_and_exit(0); }
-    if(defined $opt::citation) { citation(); wait_and_exit(0); }
     if(defined $opt::record_env) { record_env(); wait_and_exit(0); }
     if(defined $opt::show_limits) { show_limits(); }
     if(@opt::sshlogin) { @Global::sshlogin = @opt::sshlogin; }
@@ -1387,7 +1391,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20171222;
+    $Global::version = 20171224;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -2750,8 +2754,8 @@ sub drain_job_queue {
 	    if($Global::start_sqlworker) {
 		# Start an SQL worker as we are now sure there is work to do
 		$Global::start_sqlworker = 0;
-		if(fork()) {
-		    # skip
+		if(my $pid = fork()) {
+		    $Global::unkilled_sqlworker = $pid;
 		} else {
 		    # Replace --sql/--sqlandworker with --sqlworker
 		    my @ARGV = map { s/^--sql(andworker)?$/--sqlworker/; $_ } @Global::options_in_argv;
@@ -4010,11 +4014,13 @@ sub wait_and_exit {
     }
     for (keys %Global::unkilled_children) {
 	# Kill any (non-jobs) children
-        kill 9, $_;
+	kill 9, $_;
         waitpid($_,0);
         delete $Global::unkilled_children{$_};
     }
-    wait();
+    if($Global::unkilled_sqlworker) {
+	waitpid($Global::unkilled_sqlworker,0);
+    }
     exit($error);
 }
 
@@ -4160,6 +4166,15 @@ sub version {
 
 sub citation {
     # Returns: N/A
+    my ($all_argv_ref,$argv_options_removed_ref) = @_;
+    my $all_argv = "@$all_argv_ref";
+    my $no_opts = "@$argv_options_removed_ref";
+    $all_argv=~s/--citation//;
+    if($all_argv ne $no_opts) {
+	::warning("--citation ignores all other options and arguments.");
+	::status("");
+    }
+
     ::status(
 	  "Academic tradition requires you to cite works you base your article on.",
 	  "If you use programs that use GNU Parallel to process data for an article in a",
