@@ -17,7 +17,8 @@ par_sigterm() {
 par_race_condition1() {
     echo '### Test race condition on 8 CPU (my laptop)'
     seq 1 5000000 > /tmp/parallel_race_cond
-    seq 1 10 | parallel -k "cat /tmp/parallel_race_cond | parallel --pipe --recend '' -k gzip >/dev/null; echo {}"
+    seq 1 10 |
+	parallel -k "cat /tmp/parallel_race_cond | parallel --pipe --recend '' -k gzip >/dev/null; echo {}"
     rm /tmp/parallel_race_cond
 }
 
@@ -46,26 +47,40 @@ par_memory_leak() {
     if [ $small_max -lt $big ] ; then
 	echo "Bad: Memleak likely."
     else
-	echo "Good: No memleak detected."	
+	echo "Good: No memleak detected."
     fi
 }
 
-par_linebuffer_matters_compress_tag() {
-    echo "### (--linebuffer) --compress --tag should give different output"
+linebuffer_matters() {
+    echo "### (--linebuffer) --compress $TAG should give different output"
     nolbfile=$(mktemp)
     lbfile=$(mktemp)
     controlfile=$(mktemp)
     randomfile=$(mktemp)
     # Random data because it does not compress well
     # forcing the compress tool to spit out compressed blocks
-    head -c 10000000 /dev/urandom > $randomfile 
+    perl -pe 'y/[A-Za-z]//cd; $t++ % 1000 or print "\n"' < /dev/urandom |
+	head -c 10000000 > $randomfile
+    export randomfile
 
     testfunc() {
 	linebuffer="$1"
-	# Sleep 3 sec to give time to linebuffer-print the first part
-	parallel -j0 $linebuffer --compress --tag \
-		 "shuf $randomfile; sleep 3; shuf $randomfile; true" ::: {0..10} |
-	    perl -ne '/^(\S+)\t/ and print "$1\n"' | uniq | sort
+
+	incompressible_ascii() {
+	    # generate some incompressible ascii
+	    # with lines starting with the same string
+	    id=$1
+	    shuf $randomfile | perl -pe 's/^/'$id' /'
+	    # Sleep 3 sec to give time to linebuffer-print the first part
+	    sleep 3
+	    shuf $randomfile | perl -pe 's/^/'$id' /'
+	    echo
+	}
+	export -f incompressible_ascii
+
+	parallel -j0 $linebuffer --compress $TAG \
+		 incompressible_ascii ::: {0..10} |
+	    perl -ne '/^(\d+)\s/ and print "$1\n"' | uniq | sort
     }
 
     testfunc > $nolbfile &
@@ -88,26 +103,15 @@ par_linebuffer_matters_compress_tag() {
 	echo "BAD: control and nolb are not the same"
     fi
 }
+export -f linebuffer_matters
+
+par_linebuffer_matters_compress_tag() {
+    export TAG=--tag
+    linebuffer_matters
+}
 
 par_linebuffer_matters_compress() {
-    echo "### (--linebuffer) --compress should give different output"
-    random_data_with_id_prepended() {
-	perl -pe 's/^/'$1'/' /dev/urandom |
-	  pv -qL 300000 | head -c 1000000
-    }
-    export -f random_data_with_id_prepended
-
-    nolb=$(seq 10 |
-      parallel -j0 --compress random_data_with_id_prepended {#} |
-      field 1 | uniq)
-    lb=$(seq 10 |
-      parallel -j0 --linebuffer --compress random_data_with_id_prepended {#} |
-      field 1 | uniq)
-    if [ "$lb" == "$nolb" ] ; then
-	echo "BAD: --linebuffer makes no difference"
-    else
-	echo "OK: --linebuffer makes a difference"
-    fi
+    linebuffer_matters
 }
 
 par_memfree() {

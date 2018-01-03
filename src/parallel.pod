@@ -93,8 +93,6 @@ B<Bash, Csh, or Tcsh aliases>: Use B<env_parallel>.
 
 B<Zsh, Fish, Ksh, and Pdksh functions and aliases>: Use B<env_parallel>.
 
-The command cannot contain the character \257 (macron: ¯).
-
 =item B<{}>
 
 Input line. This replacement string will be replaced by a full line
@@ -470,18 +468,21 @@ Implies B<--semaphore>.
 
 =item B<--citation>
 
-Print the BibTeX entry for GNU B<parallel>, silence citation
-notice and exit. It will not run any commands.
+Print the citation notice and BibTeX entry for GNU B<parallel>,
+silence citation notice for all future runs, and exit. It will not run
+any commands.
 
-If it is impossible for you to run B<--bibtex> you can use
-B<--will-cite>.
+If it is impossible for you to run B<--citation> you can instead use
+B<--will-cite>, which will run commands, but which will only silence
+the citation notice for this single run.
 
 If you use B<--will-cite> in scripts to be run by others you are
 making it harder for others to see the citation notice.  The
 development of GNU B<parallel> is indirectly financed through
 citations, so if your users do not know they should cite then you are
 making it harder to finance development. However, if you pay 10000
-EUR, you should feel free to use B<--will-cite> in scripts.
+EUR, you have done your part to finance future development and should
+feel free to use B<--will-cite> in scripts.
 
 
 =item B<--block> I<size>

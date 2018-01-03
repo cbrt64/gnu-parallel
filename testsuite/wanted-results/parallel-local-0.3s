@@ -552,7 +552,7 @@ e
   echo '### test too long args'
 ### test too long args
   perl -e 'print "z"x1000000' | parallel echo 2>&1
-parallel: Error: Command line too long (1000005 >= 131057) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+parallel: Error: Command line too long (1000005 >= 131049) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
   perl -e 'print "z"x1000000' | xargs echo 2>&1
 xargs: argument line too long
   (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
@@ -819,7 +819,7 @@ echo far
 ### Test --show-limits
   (echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
 Maximal size of command: 131049
-Maximal used size of command: 131057
+Maximal used size of command: 131049
 
 Execution of  will continue now, and it will try to read its input
 and run commands; if this is not what you wanted to happen, please
@@ -1358,6 +1358,15 @@ par_blocking_redir	stdout
 par_colsep_0	bug --colsep 0
 par_colsep_0	OK
 par_colsep_0	OK
+par_dryrun_append_joblog	--dry-run should not append to joblog
+par_dryrun_append_joblog	1
+par_dryrun_append_joblog	2
+par_dryrun_append_joblog	3
+par_dryrun_append_joblog	echo 1
+par_dryrun_append_joblog	echo 2
+par_dryrun_append_joblog	echo 3
+par_dryrun_append_joblog	echo 4
+par_dryrun_append_joblog	4
 par_empty	bug #:
 par_empty	true
 par_empty_line	### Test bug: empty line for | sh with -k
@@ -1492,6 +1501,11 @@ par_parset	2
 par_parset	3
 par_parset	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
 par_parset	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 bar
+par_parset_v	bug #52507: parset arr1 -v echo ::: fails
+par_parset_v	seq 3
+par_parset_v	1
+par_parset_v	2
+par_parset_v	3
 par_pipe_compress_blocks	### bug #41482: --pipe --compress blocks at different -j/seq combinations
 par_pipe_compress_blocks	1
 par_pipe_compress_blocks	echo 1-4 + 1-4
@@ -1552,8 +1566,43 @@ par_pipe_record_size_in_lines	bug 34958-2
 par_pipe_record_size_in_lines	9
 par_pipe_record_size_in_lines	10
 par_pipe_record_size_in_lines	bug 34958-2
+par_pipe_tag_v	pipe with --tag -v
+par_pipe_tag_v	foo	cat
+par_pipe_tag_v	foo	1
+par_pipe_tag_v	foo	2
+par_pipe_tag_v	foo	3
+par_pipe_tag_v	foo	/tmp/tmpfile.par
 par_pipepart_block_bigger_2G	### Test that --pipepart can have blocks > 2GB
 par_pipepart_block_bigger_2G	      1       1       4
+par_pipepart_recend_recstart	bug #52343: --recend/--recstart does wrong thing with --pipepart
+par_pipepart_recend_recstart	a
+par_pipepart_recend_recstart	1
+par_pipepart_recend_recstart	2
+par_pipepart_recend_recstart	3
+par_pipepart_recend_recstart	4
+par_pipepart_recend_recstart	5
+par_pipepart_recend_recstart	a
+par_pipepart_recend_recstart	6
+par_pipepart_recend_recstart	7
+par_pipepart_recend_recstart	8
+par_pipepart_recend_recstart	9
+par_pipepart_recend_recstart	10
+par_pipepart_recend_recstart	parallel: Warning: A record was longer than 1. Increasing to --blocksize 3.
+par_pipepart_recend_recstart	parallel: Warning: A record was longer than 3. Increasing to --blocksize 5.
+par_pipepart_recend_recstart	parallel: Warning: A record was longer than 5. Increasing to --blocksize 8.
+par_pipepart_recend_recstart	parallel: Warning: A record was longer than 8. Increasing to --blocksize 12.
+par_pipepart_recend_recstart	a
+par_pipepart_recend_recstart	1
+par_pipepart_recend_recstart	2
+par_pipepart_recend_recstart	3
+par_pipepart_recend_recstart	4
+par_pipepart_recend_recstart	5
+par_pipepart_recend_recstart	a
+par_pipepart_recend_recstart	6
+par_pipepart_recend_recstart	7
+par_pipepart_recend_recstart	8
+par_pipepart_recend_recstart	9
+par_pipepart_recend_recstart	10
 par_python_children	### bug #49970: Python child process dies if --env is used
 par_retries_replacement_string	11
 par_retries_replacement_string	22
@@ -1670,8 +1719,8 @@ par_wd_3dot_local	OK
 par_wd_3dot_local	/tmp
 par_wd_3dot_local	~/privat/parallel/testsuite
 par_wd_3dot_local	OK
-par_wd_3dot_local	/home/tange/.parallel/tmp/hostname-0-0
-par_wd_3dot_local	/home/tange/privat/parallel/testsuite
+par_wd_3dot_local	~/.parallel/tmp/hostname-0-0
+par_wd_3dot_local	~/privat/parallel/testsuite
 par_wd_3dot_local	OK
 par_wd_3dot_local	~/privat/parallel/testsuite
 par_wd_3dot_local	~/privat/parallel/testsuite

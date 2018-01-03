@@ -108,7 +108,8 @@ par_bash_man() {
     echo exit value $? should be 2
 
     env_parallel --no-such-option >/dev/null
-    echo exit value $? should be 255
+    # Sleep 1 to delay output to stderr to avoid race
+    echo exit value $? should be 255 `sleep 1`
 _EOF
   )
   ssh bash@lo "$myscript"
@@ -512,7 +513,9 @@ par_bash_underscore() {
     echo "OK if no myfunc      ^^^^^^^^^^^^^^^^^^^^^^^^^" >&2;
 _EOF
   )
-  ssh bash@lo "$myscript"
+  stdout ssh bash@lo "$myscript" |
+      perl -pe 's/line ..:/line XX:/;
+                s@environment:@/bin/bash:@;'
 }
 
 par_csh_underscore() {

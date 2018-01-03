@@ -3,55 +3,56 @@
 # Simple jobs that never fails
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj+0 -k --joblog /tmp/jl-`basename $0` -L1
-echo "### BUG: The length for -X is not close to max (131072)"; 
 
-  seq 1 60000 | parallel -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
-  seq 1 60000 | parallel -X echo a{}b{}c |head -n 1 |wc
-  seq 1 60000 | parallel -X echo |head -n 1 |wc
-  seq 1 60000 | parallel -X echo a{}b{}c {} |head -n 1 |wc
-  seq 1 60000 | parallel -X echo {}aa{} |head -n 1 |wc
-  seq 1 60000 | parallel -X echo {} aa {} |head -n 1 |wc
+par_max_length_len_128k() {
+    echo "### BUG: The length for -X is not close to max (131072)"
 
-echo '### Test --fifo under csh'
+    seq 1 60000 | parallel -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
+    seq 1 60000 | parallel -X echo a{}b{}c |head -n 1 |wc
+    seq 1 60000 | parallel -X echo |head -n 1 |wc
+    seq 1 60000 | parallel -X echo a{}b{}c {} |head -n 1 |wc
+    seq 1 60000 | parallel -X echo {}aa{} |head -n 1 |wc
+    seq 1 60000 | parallel -X echo {} aa {} |head -n 1 |wc
+}
 
-  csh -c "seq 3000000 | parallel -k --pipe --fifo 'sleep .{#};cat {}|wc -c ; false; echo \$status; false'"; echo exit $?
+par_fifo_under_csh() {
+    echo '### Test --fifo under csh'
 
-echo '**'
+    csh -c "seq 3000000 | parallel -k --pipe --fifo 'sleep .{#};cat {}|wc -c ; false; echo \$status; false'"
+    echo exit $?
+}
 
-echo '### bug #44546: If --compress-program fails: fail'
+par_compress_prg_fails() {
+    echo '### bug #44546: If --compress-program fails: fail'
+    doit() {
+	(parallel $* --compress-program false \
+		  echo \; sleep 1\; ls ::: /no-existing
+	echo $?) | tail -n1
+    }
+    export -f doit
+    parallel --tag -k doit ::: '' --line-buffer ::: '' --tag ::: '' --files
+}
 
-  parallel --line-buffer --compress-program false echo \;ls ::: /no-existing; echo $?
-  parallel --tag --line-buffer --compress-program false echo \;ls ::: /no-existing; echo $?
-  (parallel --files --tag --line-buffer --compress-program false echo \;sleep 1\;ls ::: /no-existing; echo $?) | tail -n1
-  parallel --tag --compress-program false echo \;ls ::: /no-existing; echo $?
-  parallel --line-buffer --compress-program false echo \;ls ::: /no-existing; echo $?
-  parallel --compress-program false echo \;ls ::: /no-existing; echo $?
+par_pxz_complains() {
+    echo 'bug #44250: pxz complains File format not recognized but decompresses anyway'
 
-echo 'bug #44250: pxz complains File format not recognized but decompresses anyway'
+    # The first line dumps core if run from make file. Why?!
+    stdout parallel --compress --compress-program pxz ls /{} ::: OK-if-missing-file
+    stdout parallel --compress --compress-program pixz --decompress-program 'pixz -d' ls /{}  ::: OK-if-missing-file
+    stdout parallel --compress --compress-program pixz --decompress-program 'pixz -d' true ::: OK-if-no-output
+    stdout parallel --compress --compress-program pxz true ::: OK-if-no-output
+}
 
-  # The first line dumps core if run from make file. Why?!
-  stdout parallel --compress --compress-program pxz ls /{} ::: OK-if-missing-file
-  stdout parallel --compress --compress-program pixz --decompress-program 'pixz -d' ls /{}  ::: OK-if-missing-file
-  stdout parallel --compress --compress-program pixz --decompress-program 'pixz -d' true ::: OK-if-no-output
-  stdout parallel --compress --compress-program pxz true ::: OK-if-no-output
+par_test_XI_mI() {
+    echo "### Test -I"
+    seq 1 10 | parallel -k 'seq 1 {} | parallel -k -I :: echo {} ::'
 
-echo '**'
+    echo "### Test -X -I"
+    seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -X -k -I :: echo a{} b::'
 
-echo "### Test -I"; 
-
-  seq 1 10 | parallel -k 'seq 1 {} | parallel -k -I :: echo {} ::'
-
-echo "### Test -X -I"; 
-
-  seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -X -k -I :: echo a{} b::'
-
-echo "### Test -m -I"; 
-
-  seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -m -k -I :: echo a{} b::'
-
-
-EOF
+    echo "### Test -m -I"
+    seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -m -k -I :: echo a{} b::'
+}
 
 par_linebuffer_files() {
     echo 'bug #48658: --linebuffer --files'
@@ -97,7 +98,6 @@ par_no_newline_compress() {
 	     ::: tagstring '--tagstring {#}' -k \
 	     ::: compress --compress -k \
 	     ::: pipe pipe nopipe
-    
 }
 
 par_failing_compressor() {
@@ -105,7 +105,6 @@ par_failing_compressor() {
     echo 'Test --tag/--line-buffer/--files in all combinations'
     echo 'Test working/failing compressor/decompressor in all combinations'
     echo '(-k is used as a dummy argument)'
-    
     stdout parallel -vk --header : --argsep ,,, \
 	     parallel -k {tag} {lb} {files} --compress --compress-program {comp} --decompress-program {decomp} echo ::: C={comp},D={decomp} \
 	     ,,, tag --tag -k \

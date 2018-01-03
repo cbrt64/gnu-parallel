@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# must be other servers than localhost
 SERVER1=parallel-server1
 SERVER2=parallel-server2
 SSHLOGIN1=parallel@$SERVER1
 SSHLOGIN2=parallel@$SERVER2
-
+export SSHLOGIN1
+export SSHLOGIN2
 # Minimal version of test17
 
 export PARALLEL=-j8
@@ -26,7 +28,8 @@ cat /tmp/test17 | parallel -k /bin/echo tmp/parallel.file{}.file >/tmp/test17rel
 echo '### --transfer - abspath'
 stdout ssh $SSHLOGIN1 'rm -rf /tmp/parallel.file*'
 stdout ssh $SSHLOGIN2 'rm -rf /tmp/parallel.file*'
-cat /tmp/test17abs | parallel -k --transfer --sshlogin $SSHLOGIN1,$SSHLOGIN2 cat {}";"rm {}
+cat /tmp/test17abs |
+    parallel -k --transfer --sshlogin $SSHLOGIN1,$SSHLOGIN2 cat {}";"rm {}
 # One of these should give the empty dir /tmp/parallel.file
 echo good if no file
 stdout ssh $SSHLOGIN1 ls '/tmp/parallel.file*'
@@ -134,7 +137,6 @@ stdout ssh $SSHLOGIN1 ls '/tmp/parallel.file*' || echo OK
 # Should give: No such file or directory
 stdout ssh $SSHLOGIN2 ls '/tmp/parallel.file*' || echo OK
 
-
 echo '### --transfer --return --cleanup - relpath'
 stdout ssh $SSHLOGIN1 'rm -rf tmp/parallel.file*'
 stdout ssh $SSHLOGIN2 'rm -rf tmp/parallel.file*'
@@ -198,4 +200,3 @@ echo '### --transfer --cleanup - multiple argument files'
 parallel --xapply -kv --transferfile {1} --transferfile {2} --cleanup -S$SSHLOGIN2 cat {2} {1} :::: /tmp/test17rel <(sort -r /tmp/test17abs)
 # Should give: No such file or directory
 stdout ssh $SSHLOGIN2 ls '/tmp/parallel.file*' || echo OK
-

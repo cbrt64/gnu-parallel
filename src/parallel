@@ -1692,6 +1692,7 @@ sub open_joblog {
 	::wait_and_exit(255);
     }
     if(defined $opt::joblog and $opt::joblog =~ s/^\+//) {
+	# --joblog +filename = append to filename
 	$append = 1;
     }
     if($opt::joblog
@@ -1699,6 +1700,7 @@ sub open_joblog {
        ($opt::sqlmaster
 	or
 	not $opt::sqlworker)) {
+	# Do not log if --sqlworker
 	if($opt::resume || $opt::resume_failed || $opt::retry_failed) {
 	    if(open(my $joblog_fh, "<", $opt::joblog)) {
 		# Read the joblog
@@ -1771,20 +1773,20 @@ sub open_joblog {
 		close $joblog_fh;
 	    }
 	}
-	if($append) {
+	if($opt::dryrun) {
+	    # Do not write to joblog in a dry-run
+	    if(not open($Global::joblog, ">", "/dev/null")) {
+		::error("Cannot write to --joblog $opt::joblog.");
+		::wait_and_exit(255);
+	    }
+	} elsif($append) {
 	    # Append to joblog
 	    if(not open($Global::joblog, ">>", $opt::joblog)) {
 		::error("Cannot append to --joblog $opt::joblog.");
 		::wait_and_exit(255);
 	    }
 	} else {
-	    if($opt::dryrun) {
-		# Do not write to joblog in a dry-run
-		if(not open($Global::joblog, ">", "/dev/null")) {
-		    ::error("Cannot write to --joblog $opt::joblog.");
-		    ::wait_and_exit(255);
-		}
-	    } elsif($opt::joblog eq "-") {
+	    if($opt::joblog eq "-") {
 		# Use STDOUT as joblog
 		$Global::joblog = $Global::fd{1};
 	    } elsif(not open($Global::joblog, ">", $opt::joblog)) {
@@ -5496,7 +5498,7 @@ sub loadavg_too_high {
 		    'linux' => $bsd2,
 		    'minix' => "ps el|awk '{print \$1,\$11}'",
 		    'mirbsd' => $bsd,
-		    'msys' => $sysv,
+		    'msys' => $cygwin,
 	            'MSWin32' => $sysv,
 		    'netbsd' => $bsd,
 		    'nto' => $dummy,
@@ -5574,7 +5576,8 @@ sub loadavg {
         # save it to a tmp file before moving it to the correct file
         ::debug("load", "Cmd: ", $cmd,"\n");
         my $file = $self->{'loadavg_file'};
-        my ($dummy_fh, $tmpfile) = ::tmpfile(SUFFIX => ".loa");
+	# tmpfile on same filesystem as $file
+        my $tmpfile = $file.$$;
         ::qqx("($cmd > $tmpfile && mv $tmpfile $file || rm $tmpfile & )");
     }
     return $self->{'loadavg'};
@@ -5723,7 +5726,7 @@ sub compute_number_of_processes {
 	    # The child takes one process slot
 	    # It will be killed later
 	    $SIG{'TERM'} = $Global::original_sig{'TERM'};
-	    if($^O eq "cygwin") {
+	    if($^O eq "cygwin" or $^O eq "msys") {
 		# The exec does not work on Cygwin
 		sleep 10101010;
 	    } else {
@@ -6836,7 +6839,7 @@ sub new {
 	'virgin' => 1,
 	# Output used for SQL and CSV-output
 	'output' => { 1 => [], 2 => [] },
-	'halfline' => [],
+	'halfline' => { 1 => [], 2 => [] },
     }, ref($class) || $class;
 }
 
@@ -7056,6 +7059,25 @@ sub openoutputfiles {
 	for my $fdno (1,2) {
 	    ::set_fh_non_blocking($self->fh($fdno,'r'));
 	}
+    }
+}
+
+sub print_verbose_dryrun {
+    # If -v set: print command to stdout (possibly buffered)
+    # This must be done before starting the command
+    my $self = shift;
+    if($Global::verbose or $opt::dryrun) {
+	my $fh = $self->fh(1,"w");
+	if($Global::verbose <= 1) {
+	    print $fh $self->replaced(),"\n";
+	} else {
+	    # Verbose level > 1: Print the rsync and stuff
+	    print $fh $self->wrapped(),"\n";
+	}
+    }
+    if($opt::sqlworker) {
+	$Global::sql->update("SET Command = ? WHERE Seq = ".$self->seq(),
+			     $self->replaced());
     }
 }
 
@@ -8320,12 +8342,10 @@ sub start {
 	$command = "true";
     }
     $job->openoutputfiles();
+    $job->print_verbose_dryrun();
     # Call slot to store the slot value
     $job->slot();
     my($stdout_fh,$stderr_fh) = ($job->fh(1,"w"),$job->fh(2,"w"));
-    if($opt::ungroup or $opt::sqlworker) {
-	print_dryrun_and_verbose($stdout_fh,$job,$command);
-    }
     if($opt::dryrun or $opt::sqlmaster) { $command = "true"; }
     $ENV{'PARALLEL_SEQ'} = $job->seq();
     $ENV{'PARALLEL_PID'} = $$;
@@ -8341,6 +8361,7 @@ sub start {
 	    ::set_fh_non_blocking($stdin_fh);
 	}
 	$job->set_fh(0,"w",$stdin_fh);
+	if($opt::tee) { $job->set_virgin(0); }
     } elsif ($opt::tty and not $Global::tty_taken and -c "/dev/tty" and
 	     open(my $devtty_fh, "<", "/dev/tty")) {
 	# Give /dev/tty to the command if no one else is using it
@@ -8360,8 +8381,10 @@ sub start {
 	};
 	$Global::tty_taken = $pid;
 	close $devtty_fh;
+	$job->set_virgin(0);
     } else {
 	$pid = open3_setpgrp(::gensym(),$stdout_fh,$stderr_fh,$command);
+	$job->set_virgin(0);
     }
     if($pid) {
 	# A job was started
@@ -8397,26 +8420,6 @@ sub interactive_start {
 	}
     } else {
 	print $Global::original_stderr "$command\n";
-    }
-}
-
-sub print_dryrun_and_verbose {
-    # For $opt::ungroup we print these ASAP
-    # For $opt::group they are part of print()
-    my $stdout_fh = shift;
-    my $job = shift;
-    my $command = shift;
-    if($opt::dryrun or $Global::verbose) {
-	if($Global::verbose <= 1) {
-	    print $stdout_fh $job->replaced(),"\n";
-	} else {
-	    # Verbose level > 1: Print the rsync and stuff
-	    print $stdout_fh $command,"\n";
-	}
-    }
-    if($opt::sqlworker) {
-	$Global::sql->update("SET Command = ? WHERE Seq = ".$job->seq(),
-			     $job->replaced());
     }
 }
 
@@ -8628,27 +8631,8 @@ sub print {
 
 	# Check for disk full
 	::exit_if_disk_full();
-
-	if(($opt::dryrun or $Global::verbose)
-	   and
-	   not $self->{'verbose_printed'}
-	   and
-	   not $opt::sqlmaster
-	   and
-	   not $opt::sqlworker) {
-	    $self->{'verbose_printed'}++;
-	    if($Global::verbose <= 1) {
-		print STDOUT $self->replaced(),"\n";
-	    } else {
-		# Verbose level > 1: Print the rsync and stuff
-		print STDOUT $self->wrapped(),"\n";
-	    }
-	    # If STDOUT and STDERR are merged,
-	    # we want the command to be printed first
-	    # so flush to avoid STDOUT being buffered
-	    flush STDOUT;
-	}
     }
+
     my $returnsize = $self->returnsize();
     for my $fdno (sort { $a <=> $b } keys %Global::fd) {
 	# Sort by file descriptor numerically: 1,2,3,..,9,10,11
@@ -8816,7 +8800,7 @@ sub print_files {
 
     if($opt::pipe and $self->virgin()) {
 	# Nothing was printed to this job:
-	# cleanup unused tmp files if --files was set
+	# cleanup unused tmp files because --files was set
 	for my $fdno (1,2) {
 	    ::rm($self->fh($fdno,"name"));
 	    ::rm($self->fh($fdno,"unlink"));
@@ -8824,7 +8808,8 @@ sub print_files {
     } elsif($fdno == 1 and $self->fh($fdno,"name")) {
 	print $out_fd $self->tag(),$self->fh($fdno,"name"),"\n";
 	if($Global::membuffer) {
-	    push @{$self->{'output'}{$fdno}}, $self->tag(), $self->fh($fdno,"name");
+	    push @{$self->{'output'}{$fdno}},
+		$self->tag(), $self->fh($fdno,"name");
 	}
 	$self->add_returnsize(-s $self->fh($fdno,"name"));
 	# Mark as printed - do not print again
@@ -8835,7 +8820,6 @@ sub print_files {
 sub print_linebuffer {
     my $self = shift;
     my ($fdno,$in_fh,$out_fd) = @_;
-
     if(defined $self->{'exitstatus'}) {
 	# If the job is dead: close printing fh. Needed for --compress
 	close $self->fh($fdno,"w");
@@ -8850,111 +8834,92 @@ sub print_linebuffer {
 	    }
 	}
     }
-    if($opt::files or ($opt::results and not $Global::csv)) {
-	if($fdno == 1 and not $self->fh($fdno,"printed")) {
-	    print $out_fd $self->tag(),$self->fh($fdno,"name"),"\n";
-	    if($Global::membuffer) {
-		push @{$self->{'output'}{$fdno}}, $self->tag(), $self->fh($fdno,"name");
-	    }
-	    $self->set_fh($fdno,"printed",1);
-	}
-	# No need for reading $in_fh, as it it from "cat >/dev/null"
-    } else {
-	my $outputlength = 0;
-	my $halfline_ref = $self->{'halfline'};
-	my ($buf,$i,$rv);
-	while($rv = sysread($in_fh, $buf, 131072)) {
-	    $outputlength += $rv;
-	    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
-	    if($i) {
-		# One or more complete lines were found
-		if($opt::tag or defined $opt::tagstring) {
-		    # Replace ^ with $tag within the full line
-		    my $tag = $self->tag();
-		    substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
-		    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
-		    unshift @$halfline_ref, $tag;
-		}
-		# Print the partial line (halfline) and the last half
-		print $out_fd @$halfline_ref, substr($buf,0,$i);
-		# Buffer in memory for SQL and CSV-output
-		if($Global::membuffer) {
-		    push(@{$self->{'output'}{$fdno}},
-			 @$halfline_ref, substr($buf,0,$i));
-		}
-		# Remove the printed part by keeping the unprinted part
-		@$halfline_ref = (substr($buf,$i));
-	    } else {
-		push @$halfline_ref, $buf;
-	    }
-	}
-	$self->add_returnsize($outputlength);
-    }
-    if(defined $self->{'exitstatus'}) {
+    if(not $self->virgin()) {
 	if($opt::files or ($opt::results and not $Global::csv)) {
-	    $self->add_returnsize(-s $self->fh($fdno,"name"));
-	} else {
-	    # If the job is dead: print the remaining partial line
-	    # read remaining
-	    my $halfline_ref = $self->{'halfline'};
-	    if(grep /./, @$halfline_ref) {
-		$self->add_returnsize(length join("",@$halfline_ref));
-		if($opt::tag or defined $opt::tagstring) {
-		    # Prepend $tag the the remaining half line
-		    unshift @$halfline_ref, $self->tag();
-		}
-		# Print the partial line (halfline)
-		print $out_fd @{$self->{'halfline'}};
-		# Buffer in memory for SQL and CSV-output
+	    # Print filename
+	    if($fdno == 1 and not $self->fh($fdno,"printed")) {
+		print $out_fd $self->tag(),$self->fh($fdno,"name"),"\n";
 		if($Global::membuffer) {
-		    push(@{$self->{'output'}{$fdno}}, @$halfline_ref);
+		    push(@{$self->{'output'}{$fdno}}, $self->tag(),
+			 $self->fh($fdno,"name"));
 		}
-		@$halfline_ref = ();
+		$self->set_fh($fdno,"printed",1);
 	    }
-	}
-	if($self->fh($fdno,"rpid") and CORE::kill 0, $self->fh($fdno,"rpid")) {
-	    # decompress still running
+	    # No need for reading $in_fh, as it is from "cat >/dev/null"
 	} else {
-	    # decompress done: close fh
-	    close $in_fh;
-	    if($? and $opt::compress) {
-		::error($opt::decompress_program." failed.");
-		$self->set_exitstatus(255);
+	    # Read halflines and print full lines
+	    my $outputlength = 0;
+	    my $halfline_ref = $self->{'halfline'}{$fdno};
+	    my ($buf,$i,$rv);
+	    while($rv = sysread($in_fh, $buf, 131072)) {
+		$outputlength += $rv;
+		# Treat both \n and \r as line end
+		$i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+		if($i) {
+		    # One or more complete lines were found
+		    if($opt::tag or defined $opt::tagstring) {
+			# Replace ^ with $tag within the full line
+			my $tag = $self->tag();
+			substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
+			# The length changed, so find the new ending pos
+			$i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+			unshift @$halfline_ref, $tag;
+		    }
+		    # Print the partial line (halfline) and the last half
+		    print $out_fd @$halfline_ref, substr($buf,0,$i);
+		    # Buffer in memory for SQL and CSV-output
+		    if($Global::membuffer) {
+			push(@{$self->{'output'}{$fdno}},
+			     @$halfline_ref, substr($buf,0,$i));
+		    }
+		    # Remove the printed part by keeping the unprinted part
+		    @$halfline_ref = (substr($buf,$i));
+		} else {
+		    # No newline, so append to the halfline
+		    push @$halfline_ref, $buf;
+		}
+	    }
+	    $self->add_returnsize($outputlength);
+	}
+	if(defined $self->{'exitstatus'}) {
+	    if($opt::files or ($opt::results and not $Global::csv)) {
+		$self->add_returnsize(-s $self->fh($fdno,"name"));
+	    } else {
+		# If the job is dead: print the remaining partial line
+		# read remaining
+		my $halfline_ref = $self->{'halfline'}{$fdno};
+		if(grep /./, @$halfline_ref) {
+		    $self->add_returnsize(length join("",@$halfline_ref));
+		    if($opt::tag or defined $opt::tagstring) {
+			# Prepend $tag the the remaining half line
+			unshift @$halfline_ref, $self->tag();
+		    }
+		    # Print the partial line (halfline)
+		    print $out_fd @{$self->{'halfline'}{$fdno}};
+		    # Buffer in memory for SQL and CSV-output
+		    if($Global::membuffer) {
+			push(@{$self->{'output'}{$fdno}}, @$halfline_ref);
+		    }
+		    @$halfline_ref = ();
+		}
+	    }
+	    if($self->fh($fdno,"rpid") and
+	       CORE::kill 0, $self->fh($fdno,"rpid")) {
+		# decompress still running
+	    } else {
+		# decompress done: close fh
+		close $in_fh;
+		if($? and $opt::compress) {
+		    ::error($opt::decompress_program." failed.");
+		    $self->set_exitstatus(255);
+		}
 	    }
 	}
     }
 }
 
 sub print_tag {
-    my $self = shift;
-    my ($fdno,$in_fh,$out_fd) = @_;
-    my $buf;
-    local $/ = "\n";
-    close $self->fh($fdno,"w");
-    if($? and $opt::compress) {
-	::error($opt::compress_program." failed.");
-	$self->set_exitstatus(255);
-    }
-    seek $in_fh, 0, 0;
-    # $in_fh is now ready for reading at position 0
-    my $tag = $self->tag();
-    my $outputlength = 0;
-    my @output;
-    while(<$in_fh>) {
-	print $out_fd $tag,$_;
-	$outputlength += length $_;
-	if($Global::membuffer) {
-	    push @{$self->{'output'}{$fdno}}, $tag, $_;
-	}
-    }
-    if($fdno == 1) {
-	$self->add_returnsize($outputlength);
-    }
-    close $in_fh;
-    if($? and $opt::compress) {
-	::error($opt::decompress_program." failed.");
-	$self->set_exitstatus(255);
-    }
+    return print_normal(@_);
 }
 
 sub print_normal {
@@ -8966,24 +8931,40 @@ sub print_normal {
 	::error($opt::compress_program." failed.");
 	$self->set_exitstatus(255);
     }
-    seek $in_fh, 0, 0;
-    # $in_fh is now ready for reading at position 0
-    my $outputlength = 0;
-    my @output;
-    while(sysread($in_fh,$buf,131072)) {
-	print $out_fd $buf;
-	$outputlength += length $buf;
-	if($Global::membuffer) {
-	    push @{$self->{'output'}{$fdno}}, $buf;
+    if(not $self->virgin()) {
+	seek $in_fh, 0, 0;
+	# $in_fh is now ready for reading at position 0
+	my $outputlength = 0;
+	my @output;
+
+	if($opt::tag or $opt::tagstring) {
+	    # Read line by line
+	    local $/ = "\n";
+	    my $tag = $self->tag();
+	    while(<$in_fh>) {
+		print $out_fd $tag,$_;
+		$outputlength += length $_;
+		if($Global::membuffer) {
+		    push @{$self->{'output'}{$fdno}}, $tag, $_;
+		}
+	    }
+	} else {
+	    while(sysread($in_fh,$buf,131072)) {
+		print $out_fd $buf;
+		$outputlength += length $buf;
+		if($Global::membuffer) {
+		    push @{$self->{'output'}{$fdno}}, $buf;
+		}
+	    }
 	}
-    }
-    if($fdno == 1) {
-	$self->add_returnsize($outputlength);
-    }
-    close $in_fh;
-    if($? and $opt::compress) {
-	::error($opt::decompress_program." failed.");
-	$self->set_exitstatus(255);
+	if($fdno == 1) {
+	    $self->add_returnsize($outputlength);
+	}
+	close $in_fh;
+	if($? and $opt::compress) {
+	    ::error($opt::decompress_program." failed.");
+	    $self->set_exitstatus(255);
+	}
     }
 }
 
@@ -9024,7 +9005,8 @@ sub tag {
 sub hostgroups {
     my $self = shift;
     if(not defined $self->{'hostgroups'}) {
-	$self->{'hostgroups'} = $self->{'commandline'}->{'arg_list'}[0][0]->{'hostgroups'};
+	$self->{'hostgroups'} =
+	    $self->{'commandline'}->{'arg_list'}[0][0]->{'hostgroups'};
     }
     return @{$self->{'hostgroups'}};
 }

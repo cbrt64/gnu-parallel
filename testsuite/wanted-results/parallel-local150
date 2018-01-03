@@ -11,22 +11,22 @@ echo '300 ms jobs:'
 echo '### Test --tagstring'
 ### Test --tagstring
   nice parallel -j1 -X -v --tagstring a{}b echo  ::: 3 4
-echo 3 4
+a3b a4b	echo 3 4
 a3b a4b	3 4
   nice parallel -j1 -k -v --tagstring a{}b echo  ::: 3 4
-echo 3
+a3b	echo 3
 a3b	3
-echo 4
+a4b	echo 4
 a4b	4
   nice parallel -j1 -k -v --tagstring a{}b echo job{#} ::: 3 4
-echo job1
+a3b	echo job1
 a3b	job1
-echo job2
+a4b	echo job2
 a4b	job2
   nice parallel -j1 -k -v --tagstring ajob{#}b echo job{#} ::: 3 4
-echo job1
+ajob1b	echo job1
 ajob1b	job1
-echo job2
+ajob2b	echo job2
 ajob2b	job2
 echo '### Bug in --load';   nice parallel -k --load 30 sleep 0.1\;echo ::: 1 2 3
 ### Bug in --load
@@ -146,8 +146,8 @@ echo '### Test make .deb package';   cd ~/privat/parallel/packager/debian;   std
 To install the GNU Parallel Debian package, run:
 echo '### Test of segfaulting issue'
 ### Test of segfaulting issue
-  echo 'This gave /home/tange/bin/stdout: line 3: 20374 Segmentation fault      "$@" 2>&1';   echo 'before adding wait() before exit';   seq 1 300 | stdout parallel ./trysegfault
-This gave /home/tange/bin/stdout: line 3: 20374 Segmentation fault      "$@" 2>&1
+  echo 'This gave ~/bin/stdout: line 3: 20374 Segmentation fault      "$@" 2>&1';   echo 'before adding wait() before exit';   seq 1 300 | stdout parallel ./trysegfault
+This gave ~/bin/stdout: line 3: 20374 Segmentation fault      "$@" 2>&1
 before adding wait() before exit
 echo '### Test basic --arg-sep'
 ### Test basic --arg-sep

@@ -708,8 +708,8 @@ par_wd_3dot_local() {
     parallel --wd / 'pwd; echo $OLDPWD; echo' ::: OK
     parallel --wd /tmp 'pwd; echo $OLDPWD; echo' ::: OK
     parallel --wd ... 'pwd; echo $OLDPWD; echo' ::: OK |
-	perl -pe 's:/mnt/4tb::; s/'`hostname`'/hostname/g' |
-	perl -pe 's/\d+/0/g'
+	perl -pe 's:/mnt/4tb::; s:/home/tange:~:;' |
+	perl -pe 's/'`hostname`'/hostname/g; s/\d+/0/g'
     parallel --wd . 'pwd; echo $OLDPWD; echo' ::: OK
 }
 
@@ -814,6 +814,38 @@ par_blocking_redir() {
     ) 2>&1 | sort
 }
 
+par_pipepart_recend_recstart() {
+    echo 'bug #52343: --recend/--recstart does wrong thing with --pipepart'
+    tmp1=$(tempfile)
+    seq 10 > $tmp1
+    parallel -k --pipepart -a $tmp1 --recend '\n' --recstart '6' --block 1 'echo a; cat'
+    parallel -k --pipe < $tmp1 --recend '\n' --recstart '6' --block 1 'echo a; cat'
+    rm $tmp1 2>/dev/null
+}
+
+par_parset_v() {
+    echo 'bug #52507: parset arr1 -v echo ::: fails'
+    . `which env_parallel.bash`
+    parset arr1 -v seq ::: 1 2 3
+    echo "${arr1[2]}"
+}
+
+par_pipe_tag_v() {
+    echo 'pipe with --tag -v'
+    seq 3 | parallel -v --pipe --tagstring foo cat
+    # This should only give the filename
+    seq 3 | parallel -v --pipe --tagstring foo --files cat |
+	perl -pe 's:/tmp/par.*.par:/tmp/tmpfile.par:'
+}
+
+par_dryrun_append_joblog() {
+    echo '--dry-run should not append to joblog'
+    rm -f /tmp/jl.$$
+    parallel --jl /tmp/jl.$$ echo ::: 1 2 3
+    parallel --dryrun --jl +/tmp/jl.$$ echo ::: 1 2 3 4
+    # Job 4 should not show up: 3 lines + header = 4
+    wc -l < /tmp/jl.$$
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

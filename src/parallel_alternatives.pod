@@ -1334,7 +1334,7 @@ but not stderr. It buffers in RAM. {} does not work as replacement
 string. It does not support running functions.
 
 B<pyargs> does not support composed commands if run with B<--lines>,
-and fails on B<pyargs traceroute pi.dk fi.dk>.
+and fails on B<pyargs traceroute gnu.org fsf.org>.
 
 =head3 Examples
 

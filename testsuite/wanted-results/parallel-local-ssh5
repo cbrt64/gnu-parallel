@@ -1,103 +1,89 @@
-echo '### --ssh autossh - add commands that fail here'
-### --ssh autossh - add commands that fail here
-  export PARALLEL_SSH=autossh; export AUTOSSH_PORT=0;   parallel -S lo echo ::: OK;   echo OK | parallel --pipe -S lo cat;   parallel -S lo false ::: a || echo OK should fail;   touch foo_autossh; stdout parallel -S csh@lo --trc {}.out touch {}.out ::: foo_autossh; rm foo_autossh*;
-OK
-OK
-/usr/lib/autossh/autossh: invalid option -- '-'
-usage: autossh [-V] [-M monitor_port[:echo_port]] [-f] [SSH_OPTIONS]
-
-    -M specifies monitor port. Overrides the environment
-       variable AUTOSSH_PORT. 0 turns monitoring loop off.
-       Alternatively, a port for an echo service on the remote
-       machine may be specified. (Normally port 7.)
-    -f run in background (autossh handles this, and does not
-       pass it to ssh.)
-    -V print autossh version and exit.
-
-Environment variables are:
-    AUTOSSH_GATETIME    - how long must an ssh session be established
-                          before we decide it really was established
-                          (in seconds). Default is 30 seconds; use of -f
-                          flag sets this to 0.
-    AUTOSSH_LOGFILE     - file to log to (default is to use the syslog
-                          facility)
-    AUTOSSH_LOGLEVEL    - level of log verbosity
-    AUTOSSH_MAXLIFETIME - set the maximum time to live (seconds)
-    AUTOSSH_MAXSTART    - max times to restart (default is no limit)
-    AUTOSSH_MESSAGE     - message to append to echo string (max 64 bytes)
-    AUTOSSH_PATH        - path to ssh if not default
-    AUTOSSH_PIDFILE     - write pid to this file
-    AUTOSSH_POLL        - how often to check the connection (seconds)
-    AUTOSSH_FIRST_POLL  - time before first connection check (seconds)
-    AUTOSSH_PORT        - port to use for monitor connection
-    AUTOSSH_DEBUG       - turn logging to maximum verbosity and log to
-                          stderr
-
-rsync: connection unexpectedly closed (0 bytes received so far) [sender]
-rsync error: error in rsync protocol data stream (code 12) at io.c(226) [sender=3.1.1]
-/usr/lib/autossh/autossh: invalid option -- '-'
-usage: autossh [-V] [-M monitor_port[:echo_port]] [-f] [SSH_OPTIONS]
-
-    -M specifies monitor port. Overrides the environment
-       variable AUTOSSH_PORT. 0 turns monitoring loop off.
-       Alternatively, a port for an echo service on the remote
-       machine may be specified. (Normally port 7.)
-    -f run in background (autossh handles this, and does not
-       pass it to ssh.)
-    -V print autossh version and exit.
-
-Environment variables are:
-    AUTOSSH_GATETIME    - how long must an ssh session be established
-                          before we decide it really was established
-                          (in seconds). Default is 30 seconds; use of -f
-                          flag sets this to 0.
-    AUTOSSH_LOGFILE     - file to log to (default is to use the syslog
-                          facility)
-    AUTOSSH_LOGLEVEL    - level of log verbosity
-    AUTOSSH_MAXLIFETIME - set the maximum time to live (seconds)
-    AUTOSSH_MAXSTART    - max times to restart (default is no limit)
-    AUTOSSH_MESSAGE     - message to append to echo string (max 64 bytes)
-    AUTOSSH_PATH        - path to ssh if not default
-    AUTOSSH_PIDFILE     - write pid to this file
-    AUTOSSH_POLL        - how often to check the connection (seconds)
-    AUTOSSH_FIRST_POLL  - time before first connection check (seconds)
-    AUTOSSH_PORT        - port to use for monitor connection
-    AUTOSSH_DEBUG       - turn logging to maximum verbosity and log to
-                          stderr
-
-rsync: connection unexpectedly closed (0 bytes received so far) [Receiver]
-rsync error: error in rsync protocol data stream (code 12) at io.c(226) [Receiver=3.1.1]
-echo '### bug #46520: --basefile cleans up without --cleanup'
-### bug #46520: --basefile cleans up without --cleanup
-  touch bug_46520;   parallel -S parallel@lo --bf bug_46520 ls ::: bug_46520;   ssh parallel@lo ls bug_46520;   parallel -S parallel@lo --cleanup --bf bug_46520 ls ::: bug_46520;   stdout ssh parallel@lo ls bug_46520 # should not exist
-bug_46520
-bug_46520
-bug_46520
-ls: cannot access 'bug_46520': No such file or directory
-echo '### bug #36595: silent loss of input with --pipe and --sshlogin'
-### bug #36595: silent loss of input with --pipe and --sshlogin
-  seq 10000 | xargs | parallel --pipe -S 8/localhost cat 2>/dev/null | wc
-      1   10000   48894
-echo 'bug #36707: --controlmaster eats jobs'
-bug #36707: --controlmaster eats jobs
-  seq 2 | parallel -k --controlmaster --sshlogin localhost echo OK{}
-OK1
-OK2
-echo '### --ssh lsh'
-### --ssh lsh
-  parallel --ssh 'lsh -c aes256-ctr' -S lo echo ::: OK
-OK
-  echo OK | parallel --ssh 'lsh -c aes256-ctr' --pipe -S csh@lo cat
-OK
-  # Todo rsync/trc csh@lo
-  # Test gl. parallel med --ssh lsh: Hvilke fejler? brug dem. Også hvis de fejler
-echo '### bug #45025: --pipe --retries does not reschedule on other host'
-### bug #45025: --pipe --retries does not reschedule on other host
-  seq 1 300030| stdout parallel -k --retries 2 -S a.a,: --pipe 'wc;hostname' | perl -pe 's/'`hostname`'/localhost-:/'
-parallel: Warning: Could not figure out number of cpus on a.a (). Using 1.
- 165668  165668 1048571
-localhost-:
- 134362  134362  940534
-localhost-:
-  stdout parallel --retries 2 --roundrobin echo ::: should fail
-parallel: Error: --retries cannot be combined with --roundrobin.
+par_pipe_retries	### bug #45025: --pipe --retries does not reschedule on other host
+par_pipe_retries	parallel: Warning: Could not figure out number of cpus on a.a (). Using 1.
+par_pipe_retries	 165668  165668 1048571
+par_pipe_retries	localhost-:
+par_pipe_retries	 134362  134362  940534
+par_pipe_retries	localhost-:
+par_pipe_retries	parallel: Error: --retries cannot be combined with --roundrobin.
+par_lsh	### --ssh lsh
+par_lsh	parallel: Warning: Could not figure out number of cpus on lo (). Using 1.
+par_lsh	OK
+par_lsh	parallel: Warning: Could not figure out number of cpus on lo (). Using 1.
+par_lsh	OK
+par_input_loss_pipe	### bug #36595: silent loss of input with --pipe and --sshlogin
+par_input_loss_pipe	      1   10000   48894
+par_controlmaster_eats	bug #36707: --controlmaster eats jobs
+par_controlmaster_eats	OK1
+par_controlmaster_eats	OK2
+par_basefile_cleanup	### bug #46520: --basefile cleans up without --cleanup
+par_basefile_cleanup	bug_46520
+par_basefile_cleanup	bug_46520
+par_basefile_cleanup	bug_46520
+par_basefile_cleanup	ls: cannot access 'bug_46520': No such file or directory
+par_autossh	### --ssh	 autossh - add commands that fail here
+par_autossh	OK
+par_autossh	OK
+par_autossh	/usr/lib/autossh/autossh: invalid option -- '-'
+par_autossh	usage: autossh [-V] [-M monitor_port[:echo_port]] [-f] [SSH_OPTIONS]
+par_autossh	
+par_autossh	    -M specifies monitor port. Overrides the environment
+par_autossh	       variable AUTOSSH_PORT. 0 turns monitoring loop off.
+par_autossh	       Alternatively, a port for an echo service on the remote
+par_autossh	       machine may be specified. (Normally port 7.)
+par_autossh	    -f run in background (autossh handles this, and does not
+par_autossh	       pass it to ssh.)
+par_autossh	    -V print autossh version and exit.
+par_autossh	
+par_autossh	Environment variables are:
+par_autossh	    AUTOSSH_GATETIME    - how long must an ssh session be established
+par_autossh	                          before we decide it really was established
+par_autossh	                          (in seconds). Default is 30 seconds; use of -f
+par_autossh	                          flag sets this to 0.
+par_autossh	    AUTOSSH_LOGFILE     - file to log to (default is to use the syslog
+par_autossh	                          facility)
+par_autossh	    AUTOSSH_LOGLEVEL    - level of log verbosity
+par_autossh	    AUTOSSH_MAXLIFETIME - set the maximum time to live (seconds)
+par_autossh	    AUTOSSH_MAXSTART    - max times to restart (default is no limit)
+par_autossh	    AUTOSSH_MESSAGE     - message to append to echo string (max 64 bytes)
+par_autossh	    AUTOSSH_PATH        - path to ssh if not default
+par_autossh	    AUTOSSH_PIDFILE     - write pid to this file
+par_autossh	    AUTOSSH_POLL        - how often to check the connection (seconds)
+par_autossh	    AUTOSSH_FIRST_POLL  - time before first connection check (seconds)
+par_autossh	    AUTOSSH_PORT        - port to use for monitor connection
+par_autossh	    AUTOSSH_DEBUG       - turn logging to maximum verbosity and log to
+par_autossh	                          stderr
+par_autossh	
+par_autossh	rsync: connection unexpectedly closed (0 bytes received so far) [sender]
+par_autossh	rsync error: error in rsync protocol data stream (code 12) at io.c(235) [sender=3.1.2]
+par_autossh	/usr/lib/autossh/autossh: invalid option -- '-'
+par_autossh	usage: autossh [-V] [-M monitor_port[:echo_port]] [-f] [SSH_OPTIONS]
+par_autossh	
+par_autossh	    -M specifies monitor port. Overrides the environment
+par_autossh	       variable AUTOSSH_PORT. 0 turns monitoring loop off.
+par_autossh	       Alternatively, a port for an echo service on the remote
+par_autossh	       machine may be specified. (Normally port 7.)
+par_autossh	    -f run in background (autossh handles this, and does not
+par_autossh	       pass it to ssh.)
+par_autossh	    -V print autossh version and exit.
+par_autossh	
+par_autossh	Environment variables are:
+par_autossh	    AUTOSSH_GATETIME    - how long must an ssh session be established
+par_autossh	                          before we decide it really was established
+par_autossh	                          (in seconds). Default is 30 seconds; use of -f
+par_autossh	                          flag sets this to 0.
+par_autossh	    AUTOSSH_LOGFILE     - file to log to (default is to use the syslog
+par_autossh	                          facility)
+par_autossh	    AUTOSSH_LOGLEVEL    - level of log verbosity
+par_autossh	    AUTOSSH_MAXLIFETIME - set the maximum time to live (seconds)
+par_autossh	    AUTOSSH_MAXSTART    - max times to restart (default is no limit)
+par_autossh	    AUTOSSH_MESSAGE     - message to append to echo string (max 64 bytes)
+par_autossh	    AUTOSSH_PATH        - path to ssh if not default
+par_autossh	    AUTOSSH_PIDFILE     - write pid to this file
+par_autossh	    AUTOSSH_POLL        - how often to check the connection (seconds)
+par_autossh	    AUTOSSH_FIRST_POLL  - time before first connection check (seconds)
+par_autossh	    AUTOSSH_PORT        - port to use for monitor connection
+par_autossh	    AUTOSSH_DEBUG       - turn logging to maximum verbosity and log to
+par_autossh	                          stderr
+par_autossh	
+par_autossh	rsync: connection unexpectedly closed (0 bytes received so far) [Receiver]
+par_autossh	rsync error: error in rsync protocol data stream (code 12) at io.c(235) [Receiver=3.1.2]

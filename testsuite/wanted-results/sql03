@@ -1,109 +1,111 @@
-### Test reading sql from url command line
-Test reading SQL from command line
-Yes it works
-### Test reading sql from url command line %-quoting
-Test %-quoting SQL from command line
-Yes it works
-### Test .sql/aliases with url on commandline
-Test if .sql/aliases with %-quoting works
-Yes it works
-### Test cyclic alias .sql/aliases
-:cyclic3 is a cyclic alias
-### Test alias with statement .sql/aliases
-Test statement in alias
-It works
-Test statement in alias
-It works
-Test statement in alias
-It works
-### Test alias followed by SQL as arg
-Test statement in alias
-It works
-'Arg on cmdline'
-Arg on cmdline
-### Test alias with query followed by SQL as arg
-Test statement in alias
-It works
-Query added to alias
-'Arg on cmdline'
-Arg on cmdline
-### Test alias with statement .sql/aliases
-Test statement in alias
-It works
-Query added to alias
-'Query from stdin'
-Query from stdin
-Test statement in alias
-It works
-Query added to alias
-Query added to alias
-Query from stdin
-Query from stdin
-### Test empty dburl
-Error:
- is not a valid DBURL
-
-sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
-### Test dburl :
-Error:
-: is not defined in ~/.sql/aliases ~/.dburl.aliases /etc/sql/aliases /usr/local/bin/dburl.aliases /usr/local/bin/dburl.aliases.dist
-
-sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
-### Test oracle with multiple arguments on the command line
-
-'ARG
-----
-arg2
-
-
-'ARG
-----
-arg3
-
-### Test oracle with \n arguments on the command line
-
-	 1
-----------
-	 1
-
-
-	 2
-----------
-	 2
-
-
-	 3
-----------
-	 3
-
-### Test --show-tables
-
-
-
---------------------------------------------------------------------------------------------------------------------------------
-7 rows selected.
-COUNTRIES
-DEPARTMENTS
-EMPLOYEES
-JOBS
-JOB_HISTORY
-LOCATIONS
-OBJECT_NAME
-REGIONS
-### Test --show-databases
-
-TABLESPACE_NAME 	       BLOCK_SIZE INITIAL_EXTENT NEXT_EXTENT MIN_EXTENTS MAX_EXTENTS   MAX_SIZE PCT_INCREASE MIN_EXTLEN STATUS	  CONTENTS  LOGGING   FOR EXTENT_MAN ALLOCATIO SEGMEN DEF_TAB_ RETENTION   BIG PREDICA ENC COMPRESS_FOR
------------------------------- ---------- -------------- ----------- ----------- ----------- ---------- ------------ ---------- --------- --------- --------- --- ---------- --------- ------ -------- ----------- --- ------- --- ------------
-SYSTEM				     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  PERMANENT LOGGING   NO  LOCAL      SYSTEM    MANUAL DISABLED NOT APPLY   NO  HOST    NO
-SYSAUX				     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  PERMANENT LOGGING   NO  LOCAL      SYSTEM    AUTO   DISABLED NOT APPLY   NO  HOST    NO
-UNDOTBS1			     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  UNDO	    LOGGING   NO  LOCAL      SYSTEM    MANUAL DISABLED NOGUARANTEE NO  HOST    NO
-TEMP				     8192	 1048576     1048576	       1	     2147483645 	   0	1048576 ONLINE	  TEMPORARY NOLOGGING NO  LOCAL      UNIFORM   MANUAL DISABLED NOT APPLY   NO  HOST    NO
-USERS				     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  PERMANENT LOGGING   NO  LOCAL      SYSTEM    AUTO   DISABLED NOT APPLY   NO  HOST    NO
-
-### Test --listproc
-SELECT	   CPU_TIME/100000, SYS.V_$SQL.SQL_TEXT, USERNAME FROM	   SYS.V_$SQL, SYS.V_$SESSION WHERE	SYS.V_$SQL.SQL_ID = SYS.V_$SESSION.SQL_ID(+) AND username IS NOT NULL ORDER BY CPU_TIME DESC
-                                                                                   *
-ERROR at line 1:
-ORA-00942: table or view does not exist
-
-
+par_listproc	### Test --listproc
+par_listproc	SELECT	   CPU_TIME/100000, SYS.V_$SQL.SQL_TEXT, USERNAME FROM	   SYS.V_$SQL, SYS.V_$SESSION WHERE	SYS.V_$SQL.SQL_ID = SYS.V_$SESSION.SQL_ID(+) AND username IS NOT NULL ORDER BY CPU_TIME DESC
+par_listproc	                                                                                   *
+par_listproc	ERROR at line 1:
+par_listproc	ORA-00942: table or view does not exist
+par_listproc	
+par_listproc	
+par_listproc	Id	User	Host	db	Command	Time	State	Info
+par_listproc	XXX	sqlunittest	localhost	sqlunittest	Query	0	starting	show processlist
+par_multiarg_on_command_line	### Test oracle with multiple arguments on the command line
+par_multiarg_on_command_line	
+par_multiarg_on_command_line	'ARG
+par_multiarg_on_command_line	----
+par_multiarg_on_command_line	arg2
+par_multiarg_on_command_line	
+par_multiarg_on_command_line	
+par_multiarg_on_command_line	'ARG
+par_multiarg_on_command_line	----
+par_multiarg_on_command_line	arg3
+par_multiarg_on_command_line	
+par_newline_on_commandline	### Test oracle with \n arguments on the command line
+par_newline_on_commandline	
+par_newline_on_commandline		 1
+par_newline_on_commandline	----------
+par_newline_on_commandline		 1
+par_newline_on_commandline	
+par_newline_on_commandline	
+par_newline_on_commandline		 2
+par_newline_on_commandline	----------
+par_newline_on_commandline		 2
+par_newline_on_commandline	
+par_newline_on_commandline	
+par_newline_on_commandline		 3
+par_newline_on_commandline	----------
+par_newline_on_commandline		 3
+par_newline_on_commandline	
+par_showdatabases	### Test --show-databases
+par_showdatabases	
+par_showdatabases	TABLESPACE_NAME 	       BLOCK_SIZE INITIAL_EXTENT NEXT_EXTENT MIN_EXTENTS MAX_EXTENTS   MAX_SIZE PCT_INCREASE MIN_EXTLEN STATUS	  CONTENTS  LOGGING   FOR EXTENT_MAN ALLOCATIO SEGMEN DEF_TAB_ RETENTION   BIG PREDICA ENC COMPRESS_FOR
+par_showdatabases	------------------------------ ---------- -------------- ----------- ----------- ----------- ---------- ------------ ---------- --------- --------- --------- --- ---------- --------- ------ -------- ----------- --- ------- --- ------------
+par_showdatabases	SYSTEM				     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  PERMANENT LOGGING   NO  LOCAL      SYSTEM    MANUAL DISABLED NOT APPLY   NO  HOST    NO
+par_showdatabases	SYSAUX				     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  PERMANENT LOGGING   NO  LOCAL      SYSTEM    AUTO   DISABLED NOT APPLY   NO  HOST    NO
+par_showdatabases	UNDOTBS1			     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  UNDO	    LOGGING   NO  LOCAL      SYSTEM    MANUAL DISABLED NOGUARANTEE NO  HOST    NO
+par_showdatabases	TEMP				     8192	 1048576     1048576	       1	     2147483645 	   0	1048576 ONLINE	  TEMPORARY NOLOGGING NO  LOCAL      UNIFORM   MANUAL DISABLED NOT APPLY   NO  HOST    NO
+par_showdatabases	USERS				     8192	   65536		       1  2147483645 2147483645 		  65536 ONLINE	  PERMANENT LOGGING   NO  LOCAL      SYSTEM    AUTO   DISABLED NOT APPLY   NO  HOST    NO
+par_showdatabases	
+par_showtables	### Test --show-tables
+par_showtables	
+par_showtables	
+par_showtables	
+par_showtables	--------------------------------------------------------------------------------------------------------------------------------
+par_showtables	7 rows selected.
+par_showtables	COUNTRIES
+par_showtables	DEPARTMENTS
+par_showtables	EMPLOYEES
+par_showtables	JOBS
+par_showtables	JOB_HISTORY
+par_showtables	LOCATIONS
+par_showtables	OBJECT_NAME
+par_showtables	REGIONS
+par_sql_from_url	### Test reading sql from url command line
+par_sql_from_url	Test reading SQL from command line
+par_sql_from_url	Yes it works
+par_sql_from_url	### Test reading sql from url command line %-quoting
+par_sql_from_url	Test %-quoting SQL from command line
+par_sql_from_url	Yes it works
+par_sql_from_url	### Test .sql/aliases with url on commandline
+par_sql_from_url	Test if .sql/aliases with %-quoting works
+par_sql_from_url	Yes it works
+par_test_alias_with_statement	### Test alias with statement .sql/aliases
+par_test_alias_with_statement	Test statement in alias
+par_test_alias_with_statement	It works
+par_test_alias_with_statement	Test statement in alias
+par_test_alias_with_statement	It works
+par_test_alias_with_statement	Test statement in alias
+par_test_alias_with_statement	It works
+par_test_alias_with_statement	### Test alias followed by SQL as arg
+par_test_alias_with_statement	Test statement in alias
+par_test_alias_with_statement	It works
+par_test_alias_with_statement	'Arg on cmdline'
+par_test_alias_with_statement	Arg on cmdline
+par_test_alias_with_statement	### Test alias with query followed by SQL as arg
+par_test_alias_with_statement	Test statement in alias
+par_test_alias_with_statement	It works
+par_test_alias_with_statement	Query added to alias
+par_test_alias_with_statement	'Arg on cmdline'
+par_test_alias_with_statement	Arg on cmdline
+par_test_alias_with_statement	### Test alias with statement .sql/aliases
+par_test_alias_with_statement	Test statement in alias
+par_test_alias_with_statement	It works
+par_test_alias_with_statement	Query added to alias
+par_test_alias_with_statement	'Query from stdin'
+par_test_alias_with_statement	Query from stdin
+par_test_alias_with_statement	Test statement in alias
+par_test_alias_with_statement	It works
+par_test_alias_with_statement	Query added to alias
+par_test_alias_with_statement	Query added to alias
+par_test_alias_with_statement	Query from stdin
+par_test_alias_with_statement	Query from stdin
+par_test_cyclic	### Test cyclic alias .sql/aliases
+par_test_cyclic	:cyclic3 is a cyclic alias
+par_test_dburl_colon	### Test dburl :
+par_test_dburl_colon	Error:
+par_test_dburl_colon	: is not defined in ~/.sql/aliases ~/.dburl.aliases /etc/sql/aliases /usr/local/bin/dburl.aliases /usr/local/bin/dburl.aliases.dist
+par_test_dburl_colon	
+par_test_dburl_colon	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
+par_test_empty_dburl	### Test empty dburl
+par_test_empty_dburl	Error:
+par_test_empty_dburl	 is not a valid DBURL
+par_test_empty_dburl	
+par_test_empty_dburl	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]

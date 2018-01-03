@@ -107,10 +107,12 @@ par_keeporder_roundrobin() {
 
 par_multiline_commands() {
     echo 'bug #50781: joblog format with multiline commands'
-    seq 1 3 | parallel --jl jl --timeout 2 'sleep {}; echo {};
+    rm -f /tmp/jl.$$
+    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 2 'sleep {}; echo {};
 echo finish {}'
-    seq 1 3 | parallel --jl jl --timeout 4 --retry-failed 'sleep {}; echo {};
+    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 4 --retry-failed 'sleep {}; echo {};
 echo finish {}'
+    rm -f /tmp/jl.$$
 }
 
 par_dryrun_timeout_ungroup() {
@@ -120,10 +122,12 @@ par_dryrun_timeout_ungroup() {
 
 par_sqlworker_hostname() {
     echo 'bug #50901: --sqlworker should use hostname in the joblog instead of :'
-    parallel --sqlmaster :my/hostname echo  ::: 1 2 3
-    parallel -k --sqlworker :my/hostname
+
+    MY=:mysqlunittest
+    parallel --sqlmaster $MY/hostname echo ::: 1 2 3
+    parallel -k --sqlworker $MY/hostname
     hostname=`hostname`
-    sql :my 'select host from hostname;' |
+    sql $MY 'select host from hostname;' |
 	perl -pe "s/$hostname/<hostname>/g"
 }
 
@@ -163,13 +167,13 @@ par_parcat_mixing() {
     slow_output() {
 	string=$1
 	perl -e 'print "'$string'"x9000,"start\n"'
-	sleep 1
+	sleep 3
 	perl -e 'print "'$string'"x9000,"end\n"'
     }
     tmp1=$(mktmpfifo)
     tmp2=$(mktmpfifo)
     slow_output a > $tmp1 &
-    sleep 0.5
+    sleep 2
     slow_output b > $tmp2 &
     parcat $tmp1 $tmp2 | tr -s ab
 }

@@ -6,26 +6,26 @@
     echo 'bug #46120: Suspend should suspend (at least local) children'
     echo 'it should burn 1.9 CPU seconds, but no more than that'
     echo 'The 5 second sleep will make it be killed by timeout when it fgs'
-    stdout bash -i -c 'stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | grep -q CPUTIME=1 &
-      sleep 1.9; 
-      kill -TSTP -$!; 
-      sleep 5; 
-      fg; 
+    stdout bash -i -c 'stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | \grep -q CPUTIME=1 &
+      sleep 1.9;
+      kill -TSTP -$!;
+      sleep 5;
+      fg;
       echo Zero=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
-    
-    stdout bash -i -c 'echo 1 | stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" | grep -q CPUTIME=1 & 
-      sleep 1.9; 
-      kill -TSTP -$!; 
-      sleep 5; 
-      fg; 
+
+    stdout bash -i -c 'echo 1 | stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" | \grep -q CPUTIME=1 &
+      sleep 1.9;
+      kill -TSTP -$!;
+      sleep 5;
+      fg;
       echo Zero=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
-    
+
     echo Control case: Burn for 2.9 seconds
-    stdout bash -i -c 'stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | grep -q CPUTIME=1 &
-      sleep 2.9; 
-      kill -TSTP -$!; 
-      sleep 5; 
-      fg; 
+    stdout bash -i -c 'stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | \grep -q CPUTIME=1 &
+      sleep 2.9;
+      kill -TSTP -$!;
+      sleep 5;
+      fg;
       echo 1=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
 #}
 
@@ -33,7 +33,7 @@ par_testhalt() {
     testhalt_false() {
 	echo '### testhalt --halt '$1;
 	(yes 0 | head -n 10; seq 10) |
-	    stdout parallel -kj4 --delay 0.23 --halt $1 \
+	    stdout parallel -kj4 --delay 0.27 --halt $1 \
 		   'echo job {#}; sleep {= $_=0.3*($_+1+seq()) =}; exit {}'; echo $?;
     }
     testhalt_true() {
@@ -57,7 +57,7 @@ par_hostgroup() {
 
     echo '### --hostgroup two group arg'
     parallel -k --sshdelay 0.1 --hgrp -S @g1/1/parallel@lo -S @g2/3/lo whoami\;sleep 0.3{} ::: {1..8}@g1+g2 | sort
-    
+
     echo '### --hostgroup one group arg'
     parallel --delay 0.2 --hgrp -S @g1/1/parallel@lo -S @g2/3/lo whoami\;sleep 0.4{} ::: {1..8}@g2
 

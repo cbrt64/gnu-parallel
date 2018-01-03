@@ -2,6 +2,23 @@
 
 =encoding utf8
 
+=head1 Why should you read this book?
+
+If you write shell scripts to do the same processing for different
+input, then GNU B<parallel> will make your life easier and make your
+scripts run faster.
+
+The book is written so you get the juicy parts first: The goal is that
+you read just enough to get you going. GNU B<parallel> has an
+overwhelming amount of special features to help in different
+situations, and to avoid overloading you with information, the most
+used features are presented first.
+
+All the examples are tested in Bash, and most will work in other
+shells, too, but there are a few exceptions. So you are recommened to
+use Bash while testing out the examples.
+
+
 =head1 Learn GNU Parallel in 5 minutes
 
 You just need to run commands in parallel. You do not care about fine
@@ -9,11 +26,8 @@ tuning.
 
 To get going please run this to make some example files:
 
-  # If your system does not have 'seq', we will use 'jot' instead
-  if ! seq 1 2>/dev/null; then alias seq=jot; fi
-
-  seq 5 | parallel 'seq {} > example.{}'
-
+  # If your system does not have 'seq', replace 'seq' with 'jot'
+  seq 5 | parallel seq {} '>' example.{}
 
 =head2 Input sources
 
@@ -26,7 +40,8 @@ This makes it easy to run the same program on some files:
 
   parallel wc ::: example.*
 
-If you give multiple B<:::>s, GNU B<parallel> will make all combinations:
+If you give multiple B<:::>s, GNU B<parallel> will generate all
+combinations:
 
   parallel wc ::: -l -c ::: example.*
 
@@ -53,10 +68,16 @@ anywhere by using the replacement string B<{}>:
   parallel echo counting {}';' wc -l {} ::: example.*
 
 When using multiple input sources you use the positional replacement
-strings:
+strings B<{1}> and B<{2}>:
 
   parallel echo count {1} in {2}';' wc {1} {2} ::: -l -c ::: example.*
 
+You can check what will be run with B<--dry-run>:
+
+  parallel --dry-run echo count {1} in {2}';' wc {1} {2} ::: -l -c ::: example.*
+
+This is a good idea to do for every command until you are comfortable
+with GNU B<parallel>.
 
 =head2 Controlling the output
 
@@ -124,8 +145,9 @@ input or '-'), files and fifos and they can be mixed. Files are given
 after B<-a> or B<::::>. So these all do the same:
 
   parallel echo Dice1={1} Dice2={2} ::: 1 2 3 4 5 6 ::: 6 5 4 3 2 1
-  parallel echo Dice1={1} Dice2={2} ::: <(seq 6) ::: <(seq 6 -1 1)
+  parallel echo Dice1={1} Dice2={2} :::: <(seq 6) :::: <(seq 6 -1 1)
   parallel echo Dice1={1} Dice2={2} :::: seq6 seq-6
+  parallel echo Dice1={1} Dice2={2} :::: seq6 :::: seq-6
   parallel -a seq6 -a seq-6 echo Dice1={1} Dice2={2}
   parallel -a seq6 echo Dice1={1} Dice2={2} :::: seq-6
   parallel echo Dice1={1} Dice2={2} ::: 1 2 3 4 5 6 :::: seq-6
@@ -135,10 +157,24 @@ If stdin (standard input) is the only input source, you do not need the '-':
 
   cat seq6 | parallel echo Dice1={1}
 
+=head3 Linking input sources
+
 You can link multiple input sources with B<:::+> and B<::::+>:
 
   parallel echo {1}={2} ::: I II III IV V VI :::+ 1 2 3 4 5 6
   parallel echo {1}={2} ::: I II III IV V VI ::::+ seq6
+
+The B<:::+> (and B<::::+>) will link each value to the corresponding
+value in the previous input source, so value number 3 from the first
+input source will be linked to value number 3 from the second input
+source.
+
+You can combine B<:::+> and B<:::>, so you link 2 input sources, but
+generate all combinations with other input sources:
+
+  parallel echo Dice1={1}={2} Dice2={3}={4} ::: I II III IV V VI ::::+ seq6 \
+    ::: VI V IV III II I ::::+ seq-6
+
 
 =head2 Building the command line
 
@@ -154,14 +190,66 @@ function is exported using B<export -f>:
   export -f my_func
   parallel my_func ::: 1 2 3
 
-=head2 Copying environment
+If the command is complex, it often improves readability to make it
+into a function.
 
-env_parallel
 
 =head3 The replacement strings
 
-GNU B<parallel> has some replacement strings to make it easier
+GNU B<parallel> has some replacement strings to make it easier to
+refer to the input read from the input sources.
 
+If the input is B<mydir/mysubdir/myfile.myext> then:
+
+  {} = mydir/mysubdir/myfile.myext
+  {.} = mydir/mysubdir/myfile
+  {/} = myfile.myext
+  {//} = mydir/mysubdir
+  {/.} = myfile
+  {#} = the sequence number of the job
+  {%} = the job slot number
+
+When a job is started it gets sequence number that starts at 1 and
+increases with 1 for each new job. The job also gets assigned a slot
+number. This number is from 1 to the number of jobs running in
+parallel. It is unique between the running jobs, but is re-used as
+soon as a job finishes.
+
+=head4 The positional replacement strings
+
+The replacement strings have corresponding positional replacement
+strings. If the value from the 3rd input source is
+B<mydir/mysubdir/myfile.myext>:
+
+  {3} = mydir/mysubdir/myfile.myext
+  {3.} = mydir/mysubdir/myfile
+  {3/} = myfile.myext
+  {3//} = mydir/mysubdir
+  {3/.} = myfile
+
+So the number of the input source is simply prepended inside the {}'s.
+
+
+=head1 Replacement strings
+
+--plus replacement strings
+
+change the replacement string (-I --extensionreplace --basenamereplace --basenamereplace --dirnamereplace --basenameextensionreplace --seqreplace --slotreplace
+
+--header with named replacement string
+
+{= =}
+
+Dynamic replacement strings
+
+=head2 Defining replacement strings
+
+
+
+
+=head2 Copying environment
+
+env_parallel
 
 =head2 Controlling the output
 

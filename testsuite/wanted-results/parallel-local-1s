@@ -1,185 +1,28 @@
-echo "### BUG: The length for -X is not close to max (131072)";   seq 1 60000 | parallel -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
-### BUG: The length for -X is not close to max (131072)
-      1   12817  131016
-  seq 1 60000 | parallel -X echo a{}b{}c |head -n 1 |wc
-      1   10947  131046
-  seq 1 60000 | parallel -X echo |head -n 1 |wc
-      1   23693  131052
-  seq 1 60000 | parallel -X echo a{}b{}c {} |head -n 1 |wc
-      1   15808  131047
-  seq 1 60000 | parallel -X echo {}aa{} |head -n 1 |wc
-      1   11789  131045
-  seq 1 60000 | parallel -X echo {} aa {} |head -n 1 |wc
-      1   25543  131043
-echo '### Test --fifo under csh'
-### Test --fifo under csh
-  csh -c "seq 3000000 | parallel -k --pipe --fifo 'sleep .{#};cat {}|wc -c ; false; echo \$status; false'"; echo exit $?
-1048571
-1
-1048572
-1
-1048572
-1
-1048572
-1
-1048572
-1
-1048572
-1
-1048569
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-1048576
-1
-868832
-1
-exit 22
-echo '**'
-**
-echo '### bug #44546: If --compress-program fails: fail'
-### bug #44546: If --compress-program fails: fail
-  parallel --line-buffer --compress-program false echo \;ls ::: /no-existing; echo $?
-1
-parallel: Error: false failed.
-parallel: Error: false failed.
-  parallel --tag --line-buffer --compress-program false echo \;ls ::: /no-existing; echo $?
-1
-parallel: Error: false failed.
-parallel: Error: false failed.
-  (parallel --files --tag --line-buffer --compress-program false echo \;sleep 1\;ls ::: /no-existing; echo $?) | tail -n1
-1
-parallel: Error: false failed.
-parallel: Error: false failed.
-  parallel --tag --compress-program false echo \;ls ::: /no-existing; echo $?
-1
-parallel: Error: false failed.
-parallel: Error: false failed.
-  parallel --line-buffer --compress-program false echo \;ls ::: /no-existing; echo $?
-1
-parallel: Error: false failed.
-parallel: Error: false failed.
-  parallel --compress-program false echo \;ls ::: /no-existing; echo $?
-1
-parallel: Error: false failed.
-parallel: Error: false failed.
-echo 'bug #44250: pxz complains File format not recognized but decompresses anyway'
-bug #44250: pxz complains File format not recognized but decompresses anyway
-  # The first line dumps core if run from make file. Why?!
-  stdout parallel --compress --compress-program pxz ls /{} ::: OK-if-missing-file
-ls: cannot access '/OK-if-missing-file': No such file or directory
-  stdout parallel --compress --compress-program pixz --decompress-program 'pixz -d' ls /{}  ::: OK-if-missing-file
-can not seek in input: Illegal seek
-ls: cannot access '/OK-if-missing-file': No such file or directory
-  stdout parallel --compress --compress-program pixz --decompress-program 'pixz -d' true ::: OK-if-no-output
-  stdout parallel --compress --compress-program pxz true ::: OK-if-no-output
-echo '**'
-**
-echo "### Test -I";   seq 1 10 | parallel -k 'seq 1 {} | parallel -k -I :: echo {} ::'
-### Test -I
-1 1
-2 1
-2 2
-3 1
-3 2
-3 3
-4 1
-4 2
-4 3
-4 4
-5 1
-5 2
-5 3
-5 4
-5 5
-6 1
-6 2
-6 3
-6 4
-6 5
-6 6
-7 1
-7 2
-7 3
-7 4
-7 5
-7 6
-7 7
-8 1
-8 2
-8 3
-8 4
-8 5
-8 6
-8 7
-8 8
-9 1
-9 2
-9 3
-9 4
-9 5
-9 6
-9 7
-9 8
-9 9
-10 1
-10 2
-10 3
-10 4
-10 5
-10 6
-10 7
-10 8
-10 9
-10 10
-echo "### Test -X -I";   seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -X -k -I :: echo a{} b::'
-### Test -X -I
-a1 b1
-a2 b1 b2
-a3 b1 b2 b3
-a4 b1 b2 b3 b4
-a5 b1 b2 b3 b4 b5
-a6 b1 b2 b3 b4 b5 b6
-a7 b1 b2 b3 b4 b5 b6 b7
-a8 b1 b2 b3 b4 b5 b6 b7 b8
-a9 b1 b2 b3 b4 b5 b6 b7 b8 b9
-a10 b1 b2 b3 b4 b5 b6 b7 b8 b9 b10
-echo "### Test -m -I";   seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -m -k -I :: echo a{} b::'
-### Test -m -I
-a1 b1
-a2 b1 2
-a3 b1 2 3
-a4 b1 2 3 4
-a5 b1 2 3 4 5
-a6 b1 2 3 4 5 6
-a7 b1 2 3 4 5 6 7
-a8 b1 2 3 4 5 6 7 8
-a9 b1 2 3 4 5 6 7 8 9
-a10 b1 2 3 4 5 6 7 8 9 10
+par_compress_prg_fails	### bug #44546: If --compress-program fails: fail
+par_compress_prg_fails	  	1
+par_compress_prg_fails	  	parallel: Error: false failed.
+par_compress_prg_fails	  	parallel: Error: false failed.
+par_compress_prg_fails	  --files	1
+par_compress_prg_fails	  --files	parallel: Error: false failed.
+par_compress_prg_fails	  --files	parallel: Error: false failed.
+par_compress_prg_fails	 --tag 	1
+par_compress_prg_fails	 --tag 	parallel: Error: false failed.
+par_compress_prg_fails	 --tag 	parallel: Error: false failed.
+par_compress_prg_fails	 --tag --files	1
+par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  	1
+par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  --files	1
+par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag 	1
+par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag --files	1
+par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
 par_failing_compressor	Compress with failing (de)compressor
 par_failing_compressor	Test --tag/--line-buffer/--files in all combinations
 par_failing_compressor	Test working/failing compressor/decompressor in all combinations
@@ -264,6 +107,52 @@ par_failing_compressor	parallel: Error: cat;false failed.
 par_failing_compressor	parallel -k -k -k -k --compress --compress-program cat\;false --decompress-program cat\;false echo ::: C=cat\;false,D=cat\;false
 par_failing_compressor	C=cat;false,D=cat;false
 par_failing_compressor	parallel: Error: cat;false failed.
+par_fifo_under_csh	### Test --fifo under csh
+par_fifo_under_csh	1048571
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048569
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	868832
+par_fifo_under_csh	1
+par_fifo_under_csh	exit 22
 par_incomplete_linebuffer	bug #51337: --lb does not kill jobs at sigpipe
 par_incomplete_linebuffer	1
 par_incomplete_linebuffer	2
@@ -372,6 +261,13 @@ par_linebuffer_files	lrz	--files
 par_linebuffer_files	lrz	1
 par_linebuffer_files	lrz	--results
 par_linebuffer_files	lrz	1
+par_max_length_len_128k	### BUG: The length for -X is not close to max (131072)
+par_max_length_len_128k	      1   12817  131016
+par_max_length_len_128k	      1   10946  131032
+par_max_length_len_128k	      1   23691  131040
+par_max_length_len_128k	      1   15806  131030
+par_max_length_len_128k	      1   11788  131032
+par_max_length_len_128k	      1   25543  131043
 par_no_newline_compress	bug #41613: --compress --line-buffer - no newline
 par_no_newline_compress	tagstring=--tagstring {#} compress=--compress
 par_no_newline_compress	1	OK
@@ -426,6 +322,10 @@ par_parset	9
 par_parset	Commands with newline require -0
 par_parset	line1
 par_parset	line2
+par_pxz_complains	bug #44250: pxz complains File format not recognized but decompresses anyway
+par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
+par_pxz_complains	can not seek in input: Illegal seek
+par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_result	### Test --results
 par_result	I III
 par_result	I IIII
@@ -682,3 +582,81 @@ par_result_replace	/tmp/par__49983-baz C
 par_result_replace	/tmp/par__49983-baz C/seq
 par_result_replace	/tmp/par__49983-baz C/stderr
 par_result_replace	/tmp/par__49983-baz C/stdout
+par_test_XI_mI	### Test -I
+par_test_XI_mI	1 1
+par_test_XI_mI	2 1
+par_test_XI_mI	2 2
+par_test_XI_mI	3 1
+par_test_XI_mI	3 2
+par_test_XI_mI	3 3
+par_test_XI_mI	4 1
+par_test_XI_mI	4 2
+par_test_XI_mI	4 3
+par_test_XI_mI	4 4
+par_test_XI_mI	5 1
+par_test_XI_mI	5 2
+par_test_XI_mI	5 3
+par_test_XI_mI	5 4
+par_test_XI_mI	5 5
+par_test_XI_mI	6 1
+par_test_XI_mI	6 2
+par_test_XI_mI	6 3
+par_test_XI_mI	6 4
+par_test_XI_mI	6 5
+par_test_XI_mI	6 6
+par_test_XI_mI	7 1
+par_test_XI_mI	7 2
+par_test_XI_mI	7 3
+par_test_XI_mI	7 4
+par_test_XI_mI	7 5
+par_test_XI_mI	7 6
+par_test_XI_mI	7 7
+par_test_XI_mI	8 1
+par_test_XI_mI	8 2
+par_test_XI_mI	8 3
+par_test_XI_mI	8 4
+par_test_XI_mI	8 5
+par_test_XI_mI	8 6
+par_test_XI_mI	8 7
+par_test_XI_mI	8 8
+par_test_XI_mI	9 1
+par_test_XI_mI	9 2
+par_test_XI_mI	9 3
+par_test_XI_mI	9 4
+par_test_XI_mI	9 5
+par_test_XI_mI	9 6
+par_test_XI_mI	9 7
+par_test_XI_mI	9 8
+par_test_XI_mI	9 9
+par_test_XI_mI	10 1
+par_test_XI_mI	10 2
+par_test_XI_mI	10 3
+par_test_XI_mI	10 4
+par_test_XI_mI	10 5
+par_test_XI_mI	10 6
+par_test_XI_mI	10 7
+par_test_XI_mI	10 8
+par_test_XI_mI	10 9
+par_test_XI_mI	10 10
+par_test_XI_mI	### Test -X -I
+par_test_XI_mI	a1 b1
+par_test_XI_mI	a2 b1 b2
+par_test_XI_mI	a3 b1 b2 b3
+par_test_XI_mI	a4 b1 b2 b3 b4
+par_test_XI_mI	a5 b1 b2 b3 b4 b5
+par_test_XI_mI	a6 b1 b2 b3 b4 b5 b6
+par_test_XI_mI	a7 b1 b2 b3 b4 b5 b6 b7
+par_test_XI_mI	a8 b1 b2 b3 b4 b5 b6 b7 b8
+par_test_XI_mI	a9 b1 b2 b3 b4 b5 b6 b7 b8 b9
+par_test_XI_mI	a10 b1 b2 b3 b4 b5 b6 b7 b8 b9 b10
+par_test_XI_mI	### Test -m -I
+par_test_XI_mI	a1 b1
+par_test_XI_mI	a2 b1 2
+par_test_XI_mI	a3 b1 2 3
+par_test_XI_mI	a4 b1 2 3 4
+par_test_XI_mI	a5 b1 2 3 4 5
+par_test_XI_mI	a6 b1 2 3 4 5 6
+par_test_XI_mI	a7 b1 2 3 4 5 6 7
+par_test_XI_mI	a8 b1 2 3 4 5 6 7 8
+par_test_XI_mI	a9 b1 2 3 4 5 6 7 8 9
+par_test_XI_mI	a10 b1 2 3 4 5 6 7 8 9 10

@@ -21,7 +21,6 @@ par_path_remote_bash	^^^^^^^^ Not found is OK
 par_path_remote_bash	/bin:/usr/bin:/tmp OK
 par_path_remote_bash	
 par_path_remote_csh	bug #47695: How to set $PATH on remote? csh
-par_path_remote_csh	
 par_path_remote_csh	Warning: no access to tty (Bad file descriptor).
 par_path_remote_csh	Thus no job control in this shell.
 par_path_remote_csh	CSH Path before: /bin:/usr/bin with no parallel
