@@ -4,6 +4,37 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_line_buffer() {
+    echo "### --line-buffer"
+    tmp1=$(tempfile)
+    tmp2=$(tempfile)
+
+    seq 10 | parallel -j20 --line-buffer  'seq {} 10 | pv -qL 10' > $tmp1
+    seq 10 | parallel -j20                'seq {} 10 | pv -qL 10' > $tmp2
+    cat $tmp1 | wc
+    diff $tmp1 $tmp2 >/dev/null
+    echo These must diff: $?
+    rm $tmp1 $tmp2
+}
+
+par_pipe_line_buffer() {
+    echo "### --pipe --line-buffer"
+    tmp1=$(tempfile)
+    tmp2=$(tempfile)
+
+    seq 200| parallel -N10 -L1 --pipe  -j20 --line-buffer --tagstring {#} pv -qL 10 > $tmp1
+    seq 200| parallel -N10 -L1 --pipe  -j20               --tagstring {#} pv -qL 10 > $tmp2
+    cat $tmp1 | wc
+    diff $tmp1 $tmp2 >/dev/null
+    echo These must diff: $?
+    rm $tmp1 $tmp2
+}
+
+par_pipe_line_buffer_compress() {
+    echo "### --pipe --line-buffer --compress"
+    seq 200| parallel -N10 -L1 --pipe  -j20 --line-buffer --compress --tagstring {#} pv -qL 10 | wc
+}
+
 par__pipepart_spawn() {
     echo '### bug #46214: Using --pipepart doesnt spawn multiple jobs in version 20150922'
     seq 1000000 > /tmp/num1000000;
@@ -49,7 +80,7 @@ par__memleak() {
 
 par_slow_total_jobs() {
     echo 'bug #51006: Slow total_jobs() eats job'
-    (echo a; sleep 10; echo b; sleep 10; seq 2) |
+    (echo a; sleep 15; echo b; sleep 15; seq 2) |
 	parallel -k echo '{=total_jobs()=}'
 }
 
@@ -95,7 +126,8 @@ par_k() {
     ulimit -n 50
     (echo "sleep 3; echo begin"; seq 1 30 |
 	parallel -kq echo "sleep 1; echo {}";
-	echo "echo end") | stdout nice parallel -k -j0
+     echo "echo end") | stdout nice parallel -k -j0 |
+	grep -Ev 'No more file handles.|Raising ulimit -n'
 }
 
 par_k_linebuffer() {
@@ -157,7 +189,7 @@ par_results_compress() {
 
 par_kill_children_timeout() {
     echo '### Test killing children with --timeout and exit value (failed if timed out)'
-    pstree $$ | grep sleep | grep -v anacron | grep -v screensave | wc; 
+    pstree $$ | grep sleep | grep -v anacron | grep -v screensave | wc
     doit() {
 	for i in `seq 100 120`; do
 	    bash -c "(sleep $i)" &
@@ -167,7 +199,7 @@ par_kill_children_timeout() {
 	echo No good;
     }
     export -f doit
-    parallel --timeout 3 doit ::: 1000000000 1000000001; 
+    parallel --timeout 3 doit ::: 1000000000 1000000001
     echo $?;
     sleep 2;
     pstree $$ | grep sleep | grep -v anacron | grep -v screensave | wc

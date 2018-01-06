@@ -10,6 +10,48 @@ export TMP5G
 
 rm -f /tmp/*.{tmx,pac,arg,all,log,swp,loa,ssh,df,pip,tmb,chr,tms,par}
 
+par_exit_code() {
+    echo 'bug #52207: Exit status 0 when child job is killed, even with "now,fail=1"'
+    in_shell_run_command() {
+	# Runs command in given shell via Perl's open3
+	shell="$1"
+	prg="$2"
+	perl -MIPC::Open3 -e 'open3($a,$b,$c,"'$shell'","-c","'"$prg"'"); wait; print $?>>8,"\n"'
+    }
+    export -f in_shell_run_command
+
+    runit() {
+	OK="ash bash csh dash fish mksh posh rc sash sh static-sh tcsh"
+	BAD="fdsh fizsh ksh ksh93 yash zsh"
+	s=100
+	cp /bin/sleep /tmp/mysleep
+	
+	echo '# Ideally the command should return the same'
+	echo '#   with or without parallel'
+	parallel -kj500% --argsep ,, --tag in_shell_run_command {1} '{=2 $_=Q($_) =}' \
+		 ,, $OK $BAD ,, \
+	'/tmp/mysleep '$s \
+	'parallel --halt-on-error now,fail=1 /tmp/mysleep ::: '$s \
+	'parallel --halt-on-error now,done=1 /tmp/mysleep ::: '$s \
+	'parallel --halt-on-error now,done=1 true ::: '$s \
+	'parallel --halt-on-error now,done=1 exit ::: '$s \
+	'true;/tmp/mysleep '$s \
+	'parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: '$s \
+	'parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: '$s \
+	'parallel --halt-on-error now,done=1 "true;true" ::: '$s \
+	'parallel --halt-on-error now,done=1 "true;exit" ::: '$s
+    }
+    export -f runit
+
+    killsleep() {
+	sleep 5
+	while true; do killall -9 mysleep 2>/dev/null; sleep 1; done
+    }
+    export -f killsleep
+
+    parallel -uj0 --halt now,done=1 ::: runit killsleep
+}
+
 par_retries_unreachable() {
   echo '### Test of --retries on unreachable host'
   seq 2 | stdout parallel -k --retries 2 -v -S 4.3.2.1,: echo

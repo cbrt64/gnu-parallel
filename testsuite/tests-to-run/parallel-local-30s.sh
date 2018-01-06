@@ -71,8 +71,8 @@ linebuffer_matters() {
 	    # with lines starting with the same string
 	    id=$1
 	    shuf $randomfile | perl -pe 's/^/'$id' /'
-	    # Sleep 3 sec to give time to linebuffer-print the first part
-	    sleep 3
+	    # Sleep to give time to linebuffer-print the first part
+	    sleep 10
 	    shuf $randomfile | perl -pe 's/^/'$id' /'
 	    echo
 	}
@@ -83,9 +83,10 @@ linebuffer_matters() {
 	    perl -ne '/^(\d+)\s/ and print "$1\n"' | uniq | sort
     }
 
-    testfunc > $nolbfile &
-    testfunc > $controlfile &
-    testfunc --linebuffer > $lbfile &
+    # These can run in parallel if there are enough ressources
+    testfunc > $nolbfile
+    testfunc > $controlfile
+    testfunc --linebuffer > $lbfile
     wait
 
     nolb="$(cat $nolbfile)"

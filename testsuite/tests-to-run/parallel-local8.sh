@@ -35,8 +35,9 @@ par_load_blocks() {
 
 par_load_from_PARALLEL() {
     echo "### Test reading load from PARALLEL"
+    # Ignore stderr due to 'Starting processes took > 2 sec'
     seq 1 1000000 |
-	parallel -kj200 --recend "\n" --spreadstdin gzip -1 |
+	parallel -kj200 --recend "\n" --spreadstdin gzip -1 2>/dev/null |
 	zcat | sort -n | md5sum
     seq 1 1000000 |
 	parallel -kj20 --recend "\n" --spreadstdin gzip -1 |

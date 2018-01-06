@@ -841,8 +841,8 @@ par_pipe_tag_v() {
 par_dryrun_append_joblog() {
     echo '--dry-run should not append to joblog'
     rm -f /tmp/jl.$$
-    parallel --jl /tmp/jl.$$ echo ::: 1 2 3
-    parallel --dryrun --jl +/tmp/jl.$$ echo ::: 1 2 3 4
+    parallel -k --jl /tmp/jl.$$ echo ::: 1 2 3
+    parallel --dryrun -k --jl +/tmp/jl.$$ echo ::: 1 2 3 4
     # Job 4 should not show up: 3 lines + header = 4
     wc -l < /tmp/jl.$$
 }

@@ -9104,12 +9104,17 @@ sub set_exitsignal {
 		    } elsif($Global::halt_count) {
 			# --halt now,fail=X or soon,fail=X
 			# --halt now,done=X or soon,done=X
-			$Global::halt_exitstatus = ::min($Global::total_failed,101);
+			$Global::halt_exitstatus =
+			    ::min($Global::total_failed,101);
 		    }
 		    if($Global::halt_count and $Global::halt_count == 1) {
 			# --halt now,fail=1 or soon,fail=1
 			# --halt now,done=1 or soon,done=1
-			$Global::halt_exitstatus = $job->exitstatus();
+			# Emulate Bash's +128 if there is a signal
+			$Global::halt_exitstatus =
+			    ($job->exitstatus()
+			     or
+			     $job->exitsignal() ? $job->exitsignal() + 128 : 0);
 		    }
 		}
 		::debug("halt","Pct: ",$Global::halt_pct,
