@@ -1391,7 +1391,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20171224;
+    $Global::version = 20180107;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -2240,7 +2240,7 @@ sub perl_quote_scalar {
     # Inputs:
     #   $string = string to be quoted
     # Returns:
-    #   $shell_quoted = string quoted with \ as needed by perl's eval
+    #   $perl_quoted = string quoted with \ as needed by perl's eval
     my $a = $_[0];
     if(defined $a) {
 	$a =~ s/[\\\"\$\@]/\\$&/go;
@@ -4101,7 +4101,7 @@ sub citation_notice {
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	     "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	     "",
-	     "To silence this citation notice: run 'parallel --citation'.",
+	     "To silence this citation notice: run 'parallel --citation' once.",
 	     ""
 	    );
     }
@@ -9072,7 +9072,7 @@ sub set_exitsignal {
 	} elsif($Global::halt_success) {
 	    ::status("$Global::progname: This job succeeded:",
 		     $job->replaced());
-	    $limit = $Global::total_completed-$Global::total_failed;
+	    $limit = $Global::total_completed - $Global::total_failed;
 	}
 	if($Global::halt_done) {
 	    ::status("$Global::progname: This job finished:",

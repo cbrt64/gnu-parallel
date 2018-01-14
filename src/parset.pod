@@ -131,18 +131,18 @@ but must instead use a tempfile:
 
   seq 3 > parallel_input
   parset res1,res2,res3 echo :::: parallel_input
-  echo "res1"
-  echo "res2"
-  echo "res3"
+  echo "$res1"
+  echo "$res2"
+  echo "$res3"
 
 or a FIFO:
 
   mkfifo input_fifo
   seq 3 > input_fifo &
   parset res1,res2,res3 echo :::: input_fifo
-  echo "res1"
-  echo "res2"
-  echo "res3"
+  echo "$res1"
+  echo "$res2"
+  echo "$res3"
 
 =head3 Installation
 

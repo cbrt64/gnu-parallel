@@ -555,7 +555,7 @@ B<--return>.
 =item B<-C> I<regexp>
 
 Column separator. The input will be treated as a table with I<regexp>
-separating the columns. The n'th column can be access using
+separating the columns. The n'th column can be accessed using
 B<{>I<n>B<}> or B<{>I<n>.B<}>. E.g. B<{3}> is the 3rd column.
 
 If there are more input sources, each input source will be separated,
@@ -3974,7 +3974,7 @@ A mutex is a counting semaphore allowing only one job to run. This
 will edit the file I<myfile> and prepends the file with lines with the
 numbers 1 to 3.
 
-  seq 3 | parallel sem sed -i -e 'i{}' myfile
+  seq 3 | parallel sem sed -i -e '1i{}' myfile
 
 As I<myfile> can be very big it is important only one process edits
 the file at the same time.
@@ -4552,7 +4552,7 @@ host in serial, so if your B<--sshloginfile> contains many hosts it may
 be slow.
 
 If your jobs are short you may see that there are fewer jobs running
-on the remove systems than expected. This is due to time spent logging
+on the remote systems than expected. This is due to time spent logging
 in and out. B<-M> may help here.
 
 =head3 Disk access
@@ -4583,7 +4583,7 @@ of the jobs will be stuck waiting for disk access.
 The current implementation of B<--nice> is too pessimistic in the max
 allowed command length. It only uses a little more than half of what
 it could. This affects B<-X> and B<-m>. If this becomes a real problem for
-you file a bug-report.
+you, file a bug-report.
 
 =head2 Aliases and functions do not work
 
@@ -4595,10 +4595,14 @@ or:
 
   open3: exec of by command failed
 
+or:
+
+  /bin/bash: command: command not found
+
 it may be because I<command> is not known, but it could also be
 because I<command> is an alias or a function. If it is a function you
-need to B<export -f> the function first. An alias will only work if
-you use B<env_parallel>.
+need to B<export -f> the function first or use B<env_parallel>. An
+alias will only work if you use B<env_parallel>.
 
 
 =head1 REPORTING BUGS
