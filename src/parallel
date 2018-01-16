@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
-# Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017
-# Ole Tange and Free Software Foundation, Inc.
+# Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,
+# 2017,2018 Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -4154,7 +4154,7 @@ sub version {
     # Returns: N/A
     print join("\n",
                "GNU $Global::progname $Global::version",
-               "Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017",
+               "Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018",
 	       "Ole Tange and Free Software Foundation, Inc.",
                "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>",
                "This is free software: you are free to change and redistribute it.",
@@ -8433,7 +8433,7 @@ sub interactive_start {
 	my $self = shift;
 	my $actual_command = shift;
 	# Temporary file name. Used for fifo to communicate exit val
-	my $tmpfifo=::tmpname("tmx");
+	my $tmpfifo = ::tmpname("tmx");
 	$self->add_rm($tmpfifo);
 
 	if(length($tmpfifo) >=100) {
@@ -10266,7 +10266,7 @@ sub tmux_length {
 	# The arguments is given 3 times on the command line
 	# and the wrapping is around 30 chars
 	# (29 for tmux1.9, 33 for tmux1.8)
-	my $tmux_len = (::max(@out));
+	my $tmux_len = ::max(@out);
 	$len = ::min($len,int($tmux_len/4-33));
 	::debug("tmux","tmux-length ",$len);
     }
