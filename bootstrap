@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# I always forget how to make ./configure
+
+autoreconf --install -W gnu

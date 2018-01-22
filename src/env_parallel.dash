@@ -59,7 +59,7 @@ env_parallel() {
     }
     _names_of_VARIABLES() {
 	# This may screw up if variables contain \n and =
-	set | perl -ne 's/^(\S+)=.*/$1/ and print;'
+	set | perl -ne 's/^(\S+?)=.*/$1/ and print;'
     }
     _bodies_of_VARIABLES() {
 	# Crappy typeset -p
@@ -73,11 +73,16 @@ env_parallel() {
     }
     _remove_bad_NAMES() {
 	# Do not transfer vars and funcs from env_parallel
-	grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV|_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
+	# Some versions of grep do not support -E: Use perl
+	# grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV|_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
+
+	perl -ne '/^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV|_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$/ and next;
 	    # Filter names matching --env
-	    grep -E "^$_grep_REGEXP"\$ | grep -vE "^$_ignore_UNDERSCORE"\$ |
+	    /^'"$_grep_REGEXP"'$/ or next;
+            /^'"$_ignore_UNDERSCORE"'$/ and next;
 	    # Vars set by /bin/sh
-            grep -Ev '^(_)$'
+            /^(_|TIMEOUT)$/ and next;
+            print;'
     }
 
     _get_ignored_VARS() {
@@ -116,14 +121,18 @@ env_parallel() {
     }
     _which() {
 	# type returns:
+	#   ll is an alias for ls -l (in ash)
 	#   bash is a tracked alias for /bin/bash
 	#   true is a shell builtin
 	#   which is /usr/bin/which
+	#   which is hashed (/usr/bin/which)
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 	# Return 0 if found, 1 otherwise
 	type "$@" |
-	    perl -pe '$exit += (s/ aliased to .*// ||
+	    perl -pe '$exit += (s/ is an alias for .*// ||
+	                        s/ is aliased to .*// ||
                                 s/ is a shell builtin// ||
+                                s/.* is hashed .(\S+).$/$1/ ||
                                 s/.* is (a tracked alias for )?//);
                       END { exit not $exit }'
     }
@@ -184,6 +193,7 @@ env_parallel() {
         $_list_function_BODIES;
         $_list_variable_VALUES;
     `"
+
     export PARALLEL_ENV
     unset _list_alias_BODIES
     unset _list_variable_VALUES
@@ -256,8 +266,8 @@ _parset_main() {
         }
         exit $exitval;
         ' || return 255
-    if echo "$_parset_name" | grep -E ',| ' >/dev/null ; then
-	# $1 contains , or space
+    if perl -e 'exit not grep /,| /, @ARGV' "$_parset_name" ; then
+	# $_parset_name contains , or space
 	# Split on , or space to get the names
 	eval "$(
 	    # Compute results into files
@@ -270,9 +280,9 @@ _parset_main() {
 			 )
 	    )"
     else
-	# $1 contains no space or ,
-	# => $1 is the name of the array to put data into
-	# Supported in: bash
+	# $_parset_name does not contain , or space
+	# => $_parset_name is the name of the array to put data into
+	# Supported in: bash zsh ksh
 	# Arrays do not work in: ash dash
 	eval "$_parset_name=( $( $_parset_parallel_prg --files -k "$@" |
               perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"

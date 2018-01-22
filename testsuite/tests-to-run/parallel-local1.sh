@@ -108,9 +108,6 @@ echo '### Test of --trim n'
 echo '### Test of bug: If input is empty string'
   (echo ; echo abcbdbebf;echo abc) | parallel -k --colsep b -v echo {1}{2}
 
-echo '### Test bug #34241: --pipe should not spawn unneeded processes'
-  seq 3 | parallel -j30 --pipe --block-size 10 cat\;echo o
-
 echo '### Test :::: mixed with :::'
 echo '### Test :::: < ::: :::'
   parallel -k echo {1} {2} {3} :::: <(seq 6 7) ::: 4 5 ::: 1 2 3

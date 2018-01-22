@@ -59,7 +59,7 @@ env_parallel() {
     }
     _names_of_VARIABLES() {
 	# This may screw up if variables contain \n and =
-	set | perl -ne 's/^(\S+)=.*/$1/ and print;'
+	set | perl -ne 's/^(\S+?)=.*/$1/ and print;'
     }
     _bodies_of_VARIABLES() {
 	# Crappy typeset -p
@@ -121,6 +121,7 @@ env_parallel() {
     }
     _which() {
 	# type returns:
+	#   ll is an alias for ls -l (in ash)
 	#   bash is a tracked alias for /bin/bash
 	#   true is a shell builtin
 	#   which is /usr/bin/which
@@ -128,7 +129,8 @@ env_parallel() {
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 	# Return 0 if found, 1 otherwise
 	type "$@" |
-	    perl -pe '$exit += (s/ is aliased to .*// ||
+	    perl -pe '$exit += (s/ is an alias for .*// ||
+	                        s/ is aliased to .*// ||
                                 s/ is a shell builtin// ||
                                 s/.* is hashed .(\S+).$/$1/ ||
                                 s/.* is (a tracked alias for )?//);

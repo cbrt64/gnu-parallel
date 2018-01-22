@@ -96,9 +96,6 @@ if($opt::nonall or $opt::onall) {
     wait_and_exit(min(undef_as_zero($Global::exitstatus),254));
 }
 
-# TODO --transfer foo/./bar --cleanup
-# multiple --transfer and --basefile with different /./
-
 $Global::JobQueue = JobQueue->new(
     \@command,\@input_source_fh,$Global::ContextReplace,
     $number_of_args,\@Global::transfer_files,\@Global::ret_files);
@@ -1391,7 +1388,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180107;
+    $Global::version = 20180122;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;

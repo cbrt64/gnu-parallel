@@ -68,36 +68,40 @@ par_zsh_parset	   myecho myvar myarr  0 myfun foo myecho myvar myarr  0 myfun ba
 par_zsh_parset	myecho myvar myarr  0 myfun foo myecho myvar myarr  0 myfun bar myecho myvar myarr  0 myfun baz
 par_zsh_man	### zsh
 par_zsh_man	### From man env_parallel
-par_zsh_man	aliases work
-par_zsh_man	aliases work
-par_zsh_man	aliases work
-par_zsh_man	aliases work
+par_zsh_man	aliases with = & " work
+par_zsh_man	aliases with = & " work
+par_zsh_man	aliases with = & " work
+par_zsh_man	aliases with = & " work
 par_zsh_man	multiline
-par_zsh_man	aliases work
+par_zsh_man	aliases with = & " work
 par_zsh_man	multiline
-par_zsh_man	aliases work
+par_zsh_man	aliases with = & " work
 par_zsh_man	multiline
-par_zsh_man	aliases work
+par_zsh_man	aliases with = & " work
 par_zsh_man	multiline
-par_zsh_man	aliases work
-par_zsh_man	functions work
-par_zsh_man	functions work
-par_zsh_man	functions work
-par_zsh_man	functions work
-par_zsh_man	variables work
-par_zsh_man	variables work
-par_zsh_man	variables work
-par_zsh_man	variables work
+par_zsh_man	aliases with = & " work
+par_zsh_man	functions with = & " work
+par_zsh_man	functions with = & " work
+par_zsh_man	functions with = & " work
+par_zsh_man	functions with = & " work
+par_zsh_man	variables with = & " work
+par_zsh_man	variables with = & " work
+par_zsh_man	variables with = & " work
+par_zsh_man	variables with = & " work
 par_zsh_man	arrays
+par_zsh_man	with = & "
 par_zsh_man	work,
 par_zsh_man	too
 par_zsh_man	arrays
+par_zsh_man	with = & "
 par_zsh_man	work,
 par_zsh_man	too
 par_zsh_man	arrays
+par_zsh_man	with = & "
 par_zsh_man	work,
 par_zsh_man	too
 par_zsh_man	arrays
+par_zsh_man	with = & "
 par_zsh_man	work,
 par_zsh_man	too
 par_zsh_man	exit value 2 should be 2
@@ -210,27 +214,28 @@ par_tcsh_parset	Not implemented
 par_tcsh_man	### tcsh
 par_tcsh_man	### From man env_parallel
 par_tcsh_man	#: Command not found.
-par_tcsh_man	aliases work
-par_tcsh_man	aliases work
-par_tcsh_man	aliases work
-par_tcsh_man	aliases work
+par_tcsh_man	aliases with = & " work
+par_tcsh_man	aliases with = & " work
+par_tcsh_man	aliases with = & " work
+par_tcsh_man	aliases with = & " work
 par_tcsh_man	Functions not supported
-par_tcsh_man	variables work
-par_tcsh_man	variables work
-par_tcsh_man	variables work
-par_tcsh_man	variables work
+par_tcsh_man	variables with = & " work
+par_tcsh_man	variables with = & " work
+par_tcsh_man	variables with = & " work
+par_tcsh_man	variables with = & " work
+par_tcsh_man	#: Command not found.
 par_tcsh_man	arrays
-par_tcsh_man	work,
-par_tcsh_man	too
+par_tcsh_man	with
+par_tcsh_man	=
 par_tcsh_man	arrays
-par_tcsh_man	work,
-par_tcsh_man	too
+par_tcsh_man	with
+par_tcsh_man	=
 par_tcsh_man	arrays
-par_tcsh_man	work,
-par_tcsh_man	too
+par_tcsh_man	with
+par_tcsh_man	=
 par_tcsh_man	arrays
-par_tcsh_man	work,
-par_tcsh_man	too
+par_tcsh_man	with
+par_tcsh_man	=
 par_tcsh_man	exit value 2 should be 2
 par_tcsh_man	Unknown option: no-such-option
 par_tcsh_man	Usage:
@@ -349,30 +354,30 @@ par_sh_parset	2
 par_sh_parset	3
 par_sh_man	### sh
 par_sh_man	### From man env_parallel
-par_sh_man	aliases work
-par_sh_man	aliases work
-par_sh_man	aliases work
-par_sh_man	aliases work
+par_sh_man	aliases with = & " work
+par_sh_man	aliases with = & " work
+par_sh_man	aliases with = & " work
+par_sh_man	aliases with = & " work
 par_sh_man	multiline
-par_sh_man	aliases work
+par_sh_man	aliases with = & " work
 par_sh_man	multiline
-par_sh_man	aliases work
+par_sh_man	aliases with = & " work
 par_sh_man	multiline
-par_sh_man	aliases work
+par_sh_man	aliases with = & " work
 par_sh_man	multiline
-par_sh_man	aliases work
-par_sh_man	variables work
-par_sh_man	variables work
-par_sh_man	variables work
-par_sh_man	variables work
+par_sh_man	aliases with = & " work
+par_sh_man	variables with = & " work
+par_sh_man	variables with = & " work
+par_sh_man	variables with = & " work
+par_sh_man	variables with = & " work
 par_sh_man	multiline
-par_sh_man	    variables work
+par_sh_man	    variables with = & " work
 par_sh_man	multiline
-par_sh_man	    variables work
+par_sh_man	    variables with = & " work
 par_sh_man	multiline
-par_sh_man	    variables work
+par_sh_man	    variables with = & " work
 par_sh_man	multiline
-par_sh_man	    variables work
+par_sh_man	    variables with = & " work
 par_sh_man	exit value 2 should be 2
 par_sh_man	Unknown option: no-such-option
 par_sh_man	exit value 255 should be 255
@@ -387,25 +392,25 @@ par_sh_environment_too_big	OK_bigvar_remote
 par_sh_environment_too_big	OK_bigvar_quote
 par_sh_environment_too_big	OK_bigvar_quote_remote
 par_sh_environment_too_big	Rest should fail
-par_sh_environment_too_big	sh: 131: perl: Argument list too long
+par_sh_environment_too_big	sh: 132: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 131: perl: Argument list too long
+par_sh_environment_too_big	sh: 132: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 131: perl: Argument list too long
+par_sh_environment_too_big	sh: 132: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error: And the use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 131: perl: Argument list too long
+par_sh_environment_too_big	sh: 132: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_sh_environment_too_big	env_parallel: Error:   env_parallel --record-env
@@ -488,50 +493,50 @@ par_ksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar m
 par_ksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_ksh_man	### ksh
 par_ksh_man	### From man env_parallel
-par_ksh_man	aliases work
-par_ksh_man	aliases work
-par_ksh_man	aliases work
-par_ksh_man	aliases work
+par_ksh_man	aliases with = & " work
+par_ksh_man	aliases with = & " work
+par_ksh_man	aliases with = & " work
+par_ksh_man	aliases with = & " work
 par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
 par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
 par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
-par_ksh_man	aliases work
+par_ksh_man	aliases with = & " work
 par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
 par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
 par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
-par_ksh_man	aliases work
+par_ksh_man	aliases with = & " work
 par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
 par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
 par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
-par_ksh_man	aliases work
+par_ksh_man	aliases with = & " work
 par_ksh_man	env_parallel: Warning: Alias "multiline" contains newline.
 par_ksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
 par_ksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_man	multiline
-par_ksh_man	aliases work
-par_ksh_man	functions work
-par_ksh_man	functions work
-par_ksh_man	functions work
-par_ksh_man	functions work
-par_ksh_man	variables work
-par_ksh_man	variables work
-par_ksh_man	variables work
-par_ksh_man	variables work
+par_ksh_man	aliases with = & " work
+par_ksh_man	functions with = & " work
+par_ksh_man	functions with = & " work
+par_ksh_man	functions with = & " work
+par_ksh_man	functions with = & " work
+par_ksh_man	variables with = & " work
+par_ksh_man	variables with = & " work
+par_ksh_man	variables with = & " work
+par_ksh_man	variables with = & " work
 par_ksh_man	arrays
+par_ksh_man	with = & "
 par_ksh_man	work,
-par_ksh_man	too
 par_ksh_man	arrays
+par_ksh_man	with = & "
 par_ksh_man	work,
-par_ksh_man	too
 par_ksh_man	arrays
+par_ksh_man	with = & "
 par_ksh_man	work,
-par_ksh_man	too
 par_ksh_man	arrays
+par_ksh_man	with = & "
 par_ksh_man	work,
-par_ksh_man	too
 par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255
@@ -671,28 +676,32 @@ par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myfunc
 par_fish_parset	Not implemented
 par_fish_man	### fish
 par_fish_man	### From man env_parallel
-par_fish_man	aliases work
-par_fish_man	aliases work
-par_fish_man	aliases work
-par_fish_man	aliases work
-par_fish_man	functions work
-par_fish_man	functions work
-par_fish_man	functions work
-par_fish_man	functions work
-par_fish_man	variables work
-par_fish_man	variables work
-par_fish_man	variables work
-par_fish_man	variables work
+par_fish_man	aliases with = & " work
+par_fish_man	aliases with = & " work
+par_fish_man	aliases with = & " work
+par_fish_man	aliases with = & " work
+par_fish_man	functions with = & " work
+par_fish_man	functions with = & " work
+par_fish_man	functions with = & " work
+par_fish_man	functions with = & " work
+par_fish_man	variables = & " work
+par_fish_man	variables = & " work
+par_fish_man	variables = & " work
+par_fish_man	variables = & " work
 par_fish_man	arrays
+par_fish_man	with = & "
 par_fish_man	work,
 par_fish_man	too
 par_fish_man	arrays
+par_fish_man	with = & "
 par_fish_man	work,
 par_fish_man	too
 par_fish_man	arrays
+par_fish_man	with = & "
 par_fish_man	work,
 par_fish_man	too
 par_fish_man	arrays
+par_fish_man	with = & "
 par_fish_man	work,
 par_fish_man	too
 par_fish_man	exit value 2 should be 2
@@ -782,30 +791,30 @@ par_dash_parset	2
 par_dash_parset	3
 par_dash_man	### dash
 par_dash_man	### From man env_parallel
-par_dash_man	aliases work
-par_dash_man	aliases work
-par_dash_man	aliases work
-par_dash_man	aliases work
+par_dash_man	aliases with = & " work
+par_dash_man	aliases with = & " work
+par_dash_man	aliases with = & " work
+par_dash_man	aliases with = & " work
 par_dash_man	multiline
-par_dash_man	aliases work
+par_dash_man	aliases with = & " work
 par_dash_man	multiline
-par_dash_man	aliases work
+par_dash_man	aliases with = & " work
 par_dash_man	multiline
-par_dash_man	aliases work
+par_dash_man	aliases with = & " work
 par_dash_man	multiline
-par_dash_man	aliases work
-par_dash_man	variables work
-par_dash_man	variables work
-par_dash_man	variables work
-par_dash_man	variables work
+par_dash_man	aliases with = & " work
+par_dash_man	variables with = & " work
+par_dash_man	variables with = & " work
+par_dash_man	variables with = & " work
+par_dash_man	variables with = & " work
 par_dash_man	multiline
-par_dash_man	    variables work
+par_dash_man	    variables with = & " work
 par_dash_man	multiline
-par_dash_man	    variables work
+par_dash_man	    variables with = & " work
 par_dash_man	multiline
-par_dash_man	    variables work
+par_dash_man	    variables with = & " work
 par_dash_man	multiline
-par_dash_man	    variables work
+par_dash_man	    variables with = & " work
 par_dash_man	exit value 2 should be 2
 par_dash_man	Unknown option: no-such-option
 par_dash_man	exit value 255 should be 255
@@ -820,25 +829,25 @@ par_dash_environment_too_big	OK_bigvar_remote
 par_dash_environment_too_big	OK_bigvar_quote
 par_dash_environment_too_big	OK_bigvar_quote_remote
 par_dash_environment_too_big	Rest should fail
-par_dash_environment_too_big	dash: 125: perl: Argument list too long
+par_dash_environment_too_big	dash: 132: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 125: perl: Argument list too long
+par_dash_environment_too_big	dash: 132: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 125: perl: Argument list too long
+par_dash_environment_too_big	dash: 132: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 125: perl: Argument list too long
+par_dash_environment_too_big	dash: 132: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_dash_environment_too_big	env_parallel: Error:   env_parallel --record-env
@@ -893,6 +902,10 @@ par_csh_man	                {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
 par_csh_man	  ;login: The USENIX Magazine, February 2011:42-47.
 par_csh_man	  O. Tange (2011): GNU Parallel - The Command-Line Power Tool,
 par_csh_man	### From man env_parallel
+par_csh_man	&
+par_csh_man	&
+par_csh_man	&
+par_csh_man	&
 par_csh_man	--colsep regexp Split input on regexp for positional replacements
 par_csh_man	--nonall        Run the given command with no arguments on all sshlogins
 par_csh_man	--onall         Run the given command with argument on all sshlogins
@@ -905,6 +918,10 @@ par_csh_man	-S sshlogin     Example: foo@server.example.com
 par_csh_man	-X              Multiple arguments with context replace
 par_csh_man	-j n            Run n jobs in parallel
 par_csh_man	-k              Keep same order
+par_csh_man	=
+par_csh_man	=
+par_csh_man	=
+par_csh_man	=
 par_csh_man	Academic tradition requires you to cite works you base your article on.
 par_csh_man	If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 par_csh_man	If you use programs that use GNU Parallel to process data for an article in a
@@ -913,10 +930,10 @@ par_csh_man	This helps funding further development; AND IT WON'T COST YOU A CENT
 par_csh_man	Unknown option: no-such-option
 par_csh_man	Usage:
 par_csh_man	With --plus:    {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =
-par_csh_man	aliases work
-par_csh_man	aliases work
-par_csh_man	aliases work
-par_csh_man	aliases work
+par_csh_man	aliases with = & " work
+par_csh_man	aliases with = & " work
+par_csh_man	aliases with = & " work
+par_csh_man	aliases with = & " work
 par_csh_man	arrays
 par_csh_man	arrays
 par_csh_man	arrays
@@ -927,18 +944,14 @@ par_csh_man	exit value 2 should be 2
 par_csh_man	parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...
 par_csh_man	parallel [options] [command [arguments]] < list_of_arguments
 par_csh_man	scientific publication, please cite:
-par_csh_man	too
-par_csh_man	too
-par_csh_man	too
-par_csh_man	too
-par_csh_man	variables work
-par_csh_man	variables work
-par_csh_man	variables work
-par_csh_man	variables work
-par_csh_man	work,
-par_csh_man	work,
-par_csh_man	work,
-par_csh_man	work,
+par_csh_man	variables with = & " work
+par_csh_man	variables with = & " work
+par_csh_man	variables with = & " work
+par_csh_man	variables with = & " work
+par_csh_man	with
+par_csh_man	with
+par_csh_man	with
+par_csh_man	with
 par_csh_man	{3} {3.} {3/} {3/.} {=3 perl code =}    Positional replacement strings
 par_csh_man	{} {.} {/} {/.} {#} {%} {= perl code =} Replacement strings
 par_csh_funky	3 arg alias_works
@@ -1019,60 +1032,64 @@ par_bash_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar 
 par_bash_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_bash_man	### bash
 par_bash_man	### From man env_parallel
-par_bash_man	aliases work
-par_bash_man	aliases work
-par_bash_man	aliases work
-par_bash_man	aliases work
+par_bash_man	aliases with = & " work
+par_bash_man	aliases with = & " work
+par_bash_man	aliases with = & " work
+par_bash_man	aliases with = & " work
 par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
 par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
 par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_bash_man	multiline
-par_bash_man	aliases work
+par_bash_man	aliases with = & " work
 par_bash_man	but only when followed by a newline
 par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
 par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
 par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_bash_man	multiline
-par_bash_man	aliases work
+par_bash_man	aliases with = & " work
 par_bash_man	but only when followed by a newline
 par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
 par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
 par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_bash_man	multiline
-par_bash_man	aliases work
+par_bash_man	aliases with = & " work
 par_bash_man	but only when followed by a newline
 par_bash_man	env_parallel: Warning: Alias 'multiline' contains newline.
 par_bash_man	env_parallel: Warning: Make sure the command has at least one newline after 'multiline'.
 par_bash_man	env_parallel: Warning: See BUGS in 'man env_parallel'.
 par_bash_man	multiline
-par_bash_man	aliases work
+par_bash_man	aliases with = & " work
 par_bash_man	but only when followed by a newline
-par_bash_man	functions work
-par_bash_man	functions work
-par_bash_man	functions work
-par_bash_man	functions work
-par_bash_man	variables work
-par_bash_man	variables work
-par_bash_man	variables work
-par_bash_man	variables work
+par_bash_man	functions with = & " work
+par_bash_man	functions with = & " work
+par_bash_man	functions with = & " work
+par_bash_man	functions with = & " work
+par_bash_man	variables with = & " work
+par_bash_man	variables with = & " work
+par_bash_man	variables with = & " work
+par_bash_man	variables with = & " work
 par_bash_man	multiline
-par_bash_man	    variables work
+par_bash_man	    variables with = & " work
 par_bash_man	multiline
-par_bash_man	    variables work
+par_bash_man	    variables with = & " work
 par_bash_man	multiline
-par_bash_man	    variables work
+par_bash_man	    variables with = & " work
 par_bash_man	multiline
-par_bash_man	    variables work
+par_bash_man	    variables with = & " work
 par_bash_man	arrays
+par_bash_man	with = & "
 par_bash_man	work,
 par_bash_man	too
 par_bash_man	arrays
+par_bash_man	with = & "
 par_bash_man	work,
 par_bash_man	too
 par_bash_man	arrays
+par_bash_man	with = & "
 par_bash_man	work,
 par_bash_man	too
 par_bash_man	arrays
+par_bash_man	with = & "
 par_bash_man	work,
 par_bash_man	too
 par_bash_man	exit value 2 should be 2
@@ -1221,30 +1238,30 @@ par_ash_parset	2
 par_ash_parset	3
 par_ash_man	### ash
 par_ash_man	### From man env_parallel
-par_ash_man	aliases work
-par_ash_man	aliases work
-par_ash_man	aliases work
-par_ash_man	aliases work
+par_ash_man	aliases with = & " work
+par_ash_man	aliases with = & " work
+par_ash_man	aliases with = & " work
+par_ash_man	aliases with = & " work
 par_ash_man	multiline
-par_ash_man	aliases work
+par_ash_man	aliases with = & " work
 par_ash_man	multiline
-par_ash_man	aliases work
+par_ash_man	aliases with = & " work
 par_ash_man	multiline
-par_ash_man	aliases work
+par_ash_man	aliases with = & " work
 par_ash_man	multiline
-par_ash_man	aliases work
-par_ash_man	variables work
-par_ash_man	variables work
-par_ash_man	variables work
-par_ash_man	variables work
+par_ash_man	aliases with = & " work
+par_ash_man	variables with = & " work
+par_ash_man	variables with = & " work
+par_ash_man	variables with = & " work
+par_ash_man	variables with = & " work
 par_ash_man	multiline
-par_ash_man	    variables work
+par_ash_man	    variables with = & " work
 par_ash_man	multiline
-par_ash_man	    variables work
+par_ash_man	    variables with = & " work
 par_ash_man	multiline
-par_ash_man	    variables work
+par_ash_man	    variables with = & " work
 par_ash_man	multiline
-par_ash_man	    variables work
+par_ash_man	    variables with = & " work
 par_ash_man	exit value 2 should be 2
 par_ash_man	Unknown option: no-such-option
 par_ash_man	exit value 255 should be 255
@@ -1259,25 +1276,25 @@ par_ash_environment_too_big	OK_bigvar_remote
 par_ash_environment_too_big	OK_bigvar_quote
 par_ash_environment_too_big	OK_bigvar_quote_remote
 par_ash_environment_too_big	Rest should fail
-par_ash_environment_too_big	ash: 125: perl: Argument list too long
+par_ash_environment_too_big	ash: 132: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 125: perl: Argument list too long
+par_ash_environment_too_big	ash: 132: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 125: perl: Argument list too long
+par_ash_environment_too_big	ash: 132: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error: And the use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 125: perl: Argument list too long
+par_ash_environment_too_big	ash: 132: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: Try running this in a clean environment once:
 par_ash_environment_too_big	env_parallel: Error:   env_parallel --record-env

@@ -81,7 +81,7 @@ par__memleak() {
 par_slow_total_jobs() {
     echo 'bug #51006: Slow total_jobs() eats job'
     (echo a; sleep 15; echo b; sleep 15; seq 2) |
-	parallel -k echo '{=total_jobs()=}'
+	parallel -k echo '{=total_jobs()=}' 2> >(perl -pe 's/\d/X/g')
 }
 
 par_interactive() {

@@ -14,26 +14,6 @@ seq 9 | /usr/bin/time -f %e  parallel -j3 --delay 0.57 true {} 2>&1 |
 echo '### test --sshdelay'
   stdout /usr/bin/time -f %e parallel -j0 --sshdelay 0.5 -S localhost true ::: 1 2 3 | perl -ne 'print($_ > 1.30 ? "OK\n" : "Not OK\n")'
 
-echo '### bug #38299: --resume-failed -k'
-  rm -f /tmp/joblog-38299; 
-  parallel -k --resume-failed --joblog /tmp/joblog-38299 echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1; 
-  echo try 2. Gives failing - not 0; 
-  parallel -k --resume-failed --joblog /tmp/joblog-38299 echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1; 
-  echo with exit 0; 
-  parallel -k --resume-failed --joblog /tmp/joblog-38299 echo job{#} val {}\;exit 0  ::: 0 1 2 3 0 1; 
-  echo try 2 again. Gives empty; 
-  parallel -k --resume-failed --joblog /tmp/joblog-38299 echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1; 
-  rm /tmp/joblog-38299
-
-echo '### --resume -k'
-  rm -f /tmp/joblog-resume; 
-  parallel -k --resume --joblog /tmp/joblog-resume echo job{}id\;exit {} ::: 0 1 2 3 0 5; 
-  echo try 2 = nothing; 
-  parallel -k --resume --joblog /tmp/joblog-resume echo job{}id\;exit {} ::: 0 1 2 3 0 5; 
-  echo two extra; 
-  parallel -k --resume --joblog /tmp/joblog-resume echo job{}id\;exit 0 ::: 0 1 2 3 0 5 6 7; 
-  rm -f /tmp/joblog-resume
-
 echo "bug #37694: Empty string argument skipped when using --quote"
   parallel -q --nonall perl -le 'print scalar @ARGV' 'a' 'b' ''
 

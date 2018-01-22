@@ -431,9 +431,9 @@ It is compatible with B<zenity>:
 
 =item B<--bf> I<file>
 
-I<file> will be transferred to each sshlogin before a jobs is
+I<file> will be transferred to each sshlogin before a job is
 started. It will be removed if B<--cleanup> is active. The file may be
-a script to run or some common base data needed for the jobs.
+a script to run or some common base data needed for the job.
 Multiple B<--bf> can be specified to transfer more basefiles. The
 I<file> will be transferred the same way as B<--transferfile>.
 
@@ -732,7 +732,7 @@ may not be used. B<--gnu> is kept for compatibility.
 
 =item B<--group>
 
-Group output. Output from each jobs is grouped together and is only
+Group output. Output from each job is grouped together and is only
 printed when the command is finished.  stdout (standard output) first
 followed by stderr (standard error).
 
@@ -3606,7 +3606,7 @@ To run the command B<uptime> on remote computers you can do:
   parallel --tag --nonall -S server1,server2 uptime
 
 B<--nonall> reads no arguments. If you have a list of jobs you want
-run on each computer you can do:
+to run on each computer you can do:
 
   parallel --tag --onall -S server1,server2 echo ::: 1 2 3
 

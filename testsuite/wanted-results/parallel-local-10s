@@ -511,11 +511,11 @@ par_results_csv	   	",
 par_round_robin_blocks	bug #49664: --round-robin does not complete
 par_round_robin_blocks	8
 par_slow_total_jobs	bug #51006: Slow total_jobs() eats job
-par_slow_total_jobs	parallel: Warning: Reading 2 arguments took longer than 10 seconds.
 par_slow_total_jobs	a
 par_slow_total_jobs	b
 par_slow_total_jobs	1
 par_slow_total_jobs	2
+par_slow_total_jobs	parallel: Warning: Reading X arguments took longer than XX seconds.
 par_tmux_fg	bug #50107: --tmux --fg should also write how to access it
 par_tmux_fg	See output with: tmux -S tmp attach
 par_tmux_fg	open terminal failed: not a terminal

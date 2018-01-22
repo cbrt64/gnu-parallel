@@ -199,19 +199,24 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20171222 ('Jerusalem/Agung/Bir al-Abed') released <<[stable]>>
+Subject: GNU Parallel 20180122 ('Mayon') released <<[stable]>>
 
-GNU Parallel 20171222 ('Jerusalem/Agung/Bir al-Abed') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180122 ('Mayon') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
-Haiku of the month:
-  <<>>
+Quote of the month:
+
+  GNU Parallel is making me pretty happy this morning
+    -- satanpenguin
 
 New in this release:
 
+* bash / 병렬 https://code.i-harness.com/ko/docs/bash/2a1a
+
 * 15分钟神器gnu parallel 入门观止 http://www.ezilin.com/2018/01/15gnu-parallel.html
 
+* How To Run Multiple Commands In Parallel on Linux https://www.slashroot.in/how-run-multiple-commands-parallel-linux
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

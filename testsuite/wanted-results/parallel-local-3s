@@ -57,6 +57,11 @@ par_parcat_mixing	astart
 par_parcat_mixing	bstart
 par_parcat_mixing	aend
 par_parcat_mixing	bend
+par_pipe_unneeded_procs	### Test bug #34241: --pipe should not spawn unneeded processes
+par_pipe_unneeded_procs	1
+par_pipe_unneeded_procs	2
+par_pipe_unneeded_procs	3
+par_pipe_unneeded_procs	o
 par_pipepart_block	### --pipepart --block -# (# < 0)
 par_pipepart_block	1
 par_pipepart_block	2
@@ -107,6 +112,35 @@ par_pipepart_block	20-20
 par_results_arg_256	### bug #42089: --results with arg > 256 chars (should be 1 char shorter)
 par_results_arg_256	1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
 par_results_arg_256	123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345
+par_resume_failed_k	### bug #38299: --resume-failed -k
+par_resume_failed_k	job1 val 0
+par_resume_failed_k	job2 val 1
+par_resume_failed_k	job3 val 2
+par_resume_failed_k	job4 val 3
+par_resume_failed_k	job5 val 0
+par_resume_failed_k	job6 val 1
+par_resume_failed_k	try 2. Gives failing - not 0
+par_resume_failed_k	job2 val 1
+par_resume_failed_k	job3 val 2
+par_resume_failed_k	job4 val 3
+par_resume_failed_k	job6 val 1
+par_resume_failed_k	with exit 0
+par_resume_failed_k	job2 val 1
+par_resume_failed_k	job3 val 2
+par_resume_failed_k	job4 val 3
+par_resume_failed_k	job6 val 1
+par_resume_failed_k	try 2 again. Gives empty
+par_resume_k	### --resume -k
+par_resume_k	job0id
+par_resume_k	job1id
+par_resume_k	job2id
+par_resume_k	job3id
+par_resume_k	job0id
+par_resume_k	job5id
+par_resume_k	try 2 = nothing
+par_resume_k	two extra
+par_resume_k	job6id
+par_resume_k	job7id
 par_slow_args_generation	### Test slow arguments generation - https://savannah.gnu.org/bugs/?32834
 par_slow_args_generation	1
 par_slow_args_generation	2

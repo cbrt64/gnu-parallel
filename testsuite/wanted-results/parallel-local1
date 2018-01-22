@@ -209,13 +209,6 @@ echo ac
 ac
 echo ac
 ac
-echo '### Test bug #34241: --pipe should not spawn unneeded processes'
-### Test bug #34241: --pipe should not spawn unneeded processes
-  seq 3 | parallel -j30 --pipe --block-size 10 cat\;echo o
-1
-2
-3
-o
 echo '### Test :::: mixed with :::'
 ### Test :::: mixed with :::
 echo '### Test :::: < ::: :::'

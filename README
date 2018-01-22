@@ -44,9 +44,9 @@ document.
 
 Full installation of GNU Parallel is as simple as:
 
-    wget http://ftpmirror.gnu.org/parallel/parallel-20171222.tar.bz2
-    bzip2 -dc parallel-20171222.tar.bz2 | tar xvf -
-    cd parallel-20171222
+    wget https://ftpmirror.gnu.org/parallel/parallel-20180122.tar.bz2
+    bzip2 -dc parallel-20180122.tar.bz2 | tar xvf -
+    cd parallel-20180122
     ./configure && make && sudo make install
 
 
@@ -55,9 +55,9 @@ Full installation of GNU Parallel is as simple as:
 If you are not root you can add ~/bin to your path and install in
 ~/bin and ~/share:
 
-    wget http://ftpmirror.gnu.org/parallel/parallel-20171222.tar.bz2
-    bzip2 -dc parallel-20171222.tar.bz2 | tar xvf -
-    cd parallel-20171222
+    wget https://ftpmirror.gnu.org/parallel/parallel-20180122.tar.bz2
+    bzip2 -dc parallel-20180122.tar.bz2 | tar xvf -
+    cd parallel-20180122
     ./configure --prefix=$HOME && make && make install
 
 Or if your system lacks 'make' you can simply copy src/parallel
@@ -69,7 +69,7 @@ src/sem src/niceload src/sql to a dir in your path.
 If you just need parallel and do not have 'make' installed (maybe the
 system is old or Microsoft Windows):
 
-    wget http://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
+    wget https://git.savannah.gnu.org/cgit/parallel.git/plain/src/parallel
     chmod 755 parallel
     cp parallel sem
     mv parallel sem dir-in-your-$PATH/bin/

@@ -4,6 +4,36 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_resume_failed_k() {
+    echo '### bug #38299: --resume-failed -k'
+    tmp=$(tempfile)
+    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
+    echo try 2. Gives failing - not 0
+    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
+    echo with exit 0
+    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit 0  ::: 0 1 2 3 0 1
+    echo try 2 again. Gives empty
+    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
+    rm $tmp
+}
+
+par_resume_k() {
+    echo '### --resume -k'
+    tmp=$(tempfile)
+    parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
+    echo try 2 = nothing
+    parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
+    echo two extra
+    parallel -k --resume --joblog $tmp echo job{}id\;exit 0 ::: 0 1 2 3 0 5 6 7
+    rm -f $tmp
+}
+
+
+par_pipe_unneeded_procs() {
+    echo '### Test bug #34241: --pipe should not spawn unneeded processes'
+    seq 3 | parallel -j30 --pipe --block-size 10 cat\;echo o 2> >(grep -Ev 'Warning: Starting|Warning: Consider')
+}
+
 par_results_arg_256() {
     echo '### bug #42089: --results with arg > 256 chars (should be 1 char shorter)'
     parallel --results parallel_test_dir echo ::: 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456;
@@ -167,7 +197,7 @@ par_parcat_mixing() {
     slow_output() {
 	string=$1
 	perl -e 'print "'$string'"x9000,"start\n"'
-	sleep 3
+	sleep 4
 	perl -e 'print "'$string'"x9000,"end\n"'
     }
     tmp1=$(mktmpfifo)

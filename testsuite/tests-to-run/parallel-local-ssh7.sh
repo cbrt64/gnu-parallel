@@ -16,28 +16,28 @@ par_ash_man() {
 
     . `which env_parallel.ash`;
 
-    alias myecho='echo aliases'
+    alias myecho='echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
     
     alias multiline='echo multiline
-      echo aliases'
+      echo aliases with \= \& \"'
     env_parallel multiline ::: work
     env_parallel -S server multiline ::: work
     env_parallel --env multiline multiline ::: work
     env_parallel --env multiline -S server multiline ::: work
     alias multiline="dummy"
   
-    myvar=variables
+    myvar='variables with = & "'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
 
     multivar='multiline
-    variables'
+    variables with = & "'
     env_parallel echo '"$multivar"' ::: work
     env_parallel -S server echo '"$multivar"' ::: work
     env_parallel --env multivar echo '"$multivar"' ::: work
@@ -61,14 +61,14 @@ par_bash_man() {
 
     . `which env_parallel.bash`;
 
-    alias myecho='echo aliases'
+    alias myecho='echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
   
     alias multiline='echo multiline
-      echo aliases'
+      echo aliases with \= \& \"'
     env_parallel 'multiline {};
       echo but only when followed by a newline' ::: work
     env_parallel -S server 'multiline {};
@@ -79,30 +79,30 @@ par_bash_man() {
       echo but only when followed by a newline' ::: work
     alias multiline="dummy"
   
-    myfunc() { echo functions $*; }
+    myfunc() { echo functions 'with = & "' $*; }
     env_parallel myfunc ::: work
     env_parallel -S server myfunc ::: work
     env_parallel --env myfunc myfunc ::: work
     env_parallel --env myfunc -S server myfunc ::: work
   
-    myvar=variables
+    myvar='variables with = & "'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
   
     multivar='multiline
-    variables'
+    variables with = & "'
     env_parallel echo '"$multivar"' ::: work
     env_parallel -S server echo '"$multivar"' ::: work
     env_parallel --env multivar echo '"$multivar"' ::: work
     env_parallel --env multivar -S server echo '"$multivar"' ::: work
 
-    myarray=(arrays work, too)
-    env_parallel -k echo '${myarray[{}]}' ::: 0 1 2
-    env_parallel -k -S server echo '${myarray[{}]}' ::: 0 1 2
-    env_parallel -k --env myarray echo '${myarray[{}]}' ::: 0 1 2
-    env_parallel -k --env myarray -S server echo '${myarray[{}]}' ::: 0 1 2
+    myarray=(arrays 'with = & "' work, too)
+    env_parallel -k echo '${myarray[{}]}' ::: 0 1 2 3
+    env_parallel -k -S server echo '${myarray[{}]}' ::: 0 1 2 3
+    env_parallel -k --env myarray echo '${myarray[{}]}' ::: 0 1 2 3
+    env_parallel -k --env myarray -S server echo '${myarray[{}]}' ::: 0 1 2 3
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -122,7 +122,7 @@ par_csh_man() {
 
 #    source `which env_parallel.csh`;
 
-    alias myecho 'echo aliases'
+    alias myecho 'echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
@@ -130,17 +130,18 @@ par_csh_man() {
 
     # Functions not supported
 
-    set myvar=variables
+    set myvar='variables with \= \& \"'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
 
-    set myarray=(arrays work, too)
-    env_parallel -k echo \$'{myarray[{}]}' ::: 1 2 3
-    env_parallel -k -S server echo \$'{myarray[{}]}' ::: 1 2 3
-    env_parallel -k --env myarray echo \$'{myarray[{}]}' ::: 1 2 3
-    env_parallel -k --env myarray -S server echo \$'{myarray[{}]}' ::: 1 2 3
+    # TODO this is not fixed
+    set myarray=(arrays with\ \=\ \&\ \" work, too)
+    env_parallel -k echo \$'{myarray[{}]}' ::: 1 2 3 4
+    env_parallel -k -S server echo \$'{myarray[{}]}' ::: 1 2 3 4
+    env_parallel -k --env myarray echo \$'{myarray[{}]}' ::: 1 2 3 4
+    env_parallel -k --env myarray -S server echo \$'{myarray[{}]}' ::: 1 2 3 4
 
     env_parallel ::: true false true false
     echo exit value $status should be 2
@@ -161,28 +162,28 @@ par_dash_man() {
 
     . `which env_parallel.dash`;
 
-    alias myecho='echo aliases'
+    alias myecho='echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
     
     alias multiline='echo multiline
-      echo aliases'
+      echo aliases with \= \& \"'
     env_parallel multiline ::: work
     env_parallel -S server multiline ::: work
     env_parallel --env multiline multiline ::: work
     env_parallel --env multiline -S server multiline ::: work
     alias multiline="dummy"
   
-    myvar=variables
+    myvar='variables with = & "'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
 
     multivar='multiline
-    variables'
+    variables with = & "'
     env_parallel echo '"$multivar"' ::: work
     env_parallel -S server echo '"$multivar"' ::: work
     env_parallel --env multivar echo '"$multivar"' ::: work
@@ -203,31 +204,31 @@ par_fish_man() {
   myscript=$(cat <<'_EOF'
     echo "### From man env_parallel"
 
-    alias myecho 'echo aliases'
+    alias myecho='echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
 
     function myfunc
-      echo functions $argv
+      echo functions with \= \& \" $argv
     end
     env_parallel myfunc ::: work
     env_parallel -S server myfunc ::: work
     env_parallel --env myfunc myfunc ::: work
     env_parallel --env myfunc -S server myfunc ::: work
 
-    set myvar variables
+    set myvar 'variables = & "'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
 
-    set myarray arrays work, too
-    env_parallel -k echo '$myarray[{}]' ::: 1 2 3
-    env_parallel -k -S server echo '$myarray[{}]' ::: 1 2 3
-    env_parallel -k --env myarray echo '$myarray[{}]' ::: 1 2 3
-    env_parallel -k --env myarray -S server echo '$myarray[{}]' ::: 1 2 3
+    set myarray arrays 'with = & "' work, too
+    env_parallel -k echo '$myarray[{}]' ::: 1 2 3 4
+    env_parallel -k -S server echo '$myarray[{}]' ::: 1 2 3 4
+    env_parallel -k --env myarray echo '$myarray[{}]' ::: 1 2 3 4
+    env_parallel -k --env myarray -S server echo '$myarray[{}]' ::: 1 2 3 4
 
     env_parallel ::: true false true false
     echo exit value $status should be 2
@@ -246,33 +247,33 @@ par_ksh_man() {
 
     . `which env_parallel.ksh`;
 
-    alias myecho='echo aliases'
+    alias myecho='echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
   
     alias multiline='echo multiline
-      echo aliases'
+      echo aliases with \= \& \"'
     env_parallel multiline ::: work
     env_parallel -S server multiline ::: work
     env_parallel --env multiline multiline ::: work
     env_parallel --env multiline -S server multiline ::: work
     alias multiline='dummy'
   
-    myfunc() { echo functions $*; }
+    myfunc() { echo functions 'with = & "' $*; }
     env_parallel myfunc ::: work
     env_parallel -S server myfunc ::: work
     env_parallel --env myfunc myfunc ::: work
     env_parallel --env myfunc -S server myfunc ::: work
   
-    myvar=variables
+    myvar='variables with = & "'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
   
-    myarray=(arrays work, too)
+    myarray=(arrays 'with = & "' work, too)
     env_parallel -k echo '${myarray[{}]}' ::: 0 1 2
     env_parallel -k -S server echo '${myarray[{}]}' ::: 0 1 2
     env_parallel -k --env myarray echo '${myarray[{}]}' ::: 0 1 2
@@ -296,28 +297,28 @@ par_sh_man() {
 
     . `which env_parallel.sh`;
 
-    alias myecho='echo aliases'
+    alias myecho='echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
     
     alias multiline='echo multiline
-      echo aliases'
+      echo aliases with \= \& \"'
     env_parallel multiline ::: work
     env_parallel -S server multiline ::: work
     env_parallel --env multiline multiline ::: work
     env_parallel --env multiline -S server multiline ::: work
     alias multiline="dummy"
   
-    myvar=variables
+    myvar='variables with = & "'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
 
     multivar='multiline
-    variables'
+    variables with = & "'
     env_parallel echo '"$multivar"' ::: work
     env_parallel -S server echo '"$multivar"' ::: work
     env_parallel --env multivar echo '"$multivar"' ::: work
@@ -340,7 +341,7 @@ par_tcsh_man() {
 
 #    source `which env_parallel.tcsh`
 
-    alias myecho 'echo aliases'
+    alias myecho 'echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
@@ -348,13 +349,14 @@ par_tcsh_man() {
 
     echo Functions not supported
 
-    set myvar=variables
+    set myvar='variables with \= \& \"'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
 
-    set myarray=(arrays work, too)
+    # TODO this is not fixed
+    set myarray=(arrays with\ \=\ \&\ \" work, too)
     env_parallel -k echo \$'{myarray[{}]}' ::: 1 2 3
     env_parallel -k -S server echo \$'{myarray[{}]}' ::: 1 2 3
     env_parallel -k --env myarray echo \$'{myarray[{}]}' ::: 1 2 3
@@ -377,36 +379,36 @@ par_zsh_man() {
 
     . `which env_parallel.zsh`;
 
-    alias myecho='echo aliases'
+    alias myecho='echo aliases with \= \& \"'
     env_parallel myecho ::: work
     env_parallel -S server myecho ::: work
     env_parallel --env myecho myecho ::: work
     env_parallel --env myecho -S server myecho ::: work
   
     alias multiline='echo multiline
-      echo aliases'
+      echo aliases with \= \& \"'
     env_parallel multiline ::: work
     env_parallel -S server multiline ::: work
     env_parallel --env multiline multiline ::: work
     env_parallel --env multiline -S server multiline ::: work
   
-    myfunc() { echo functions $*; }
+    myfunc() { echo functions 'with = & "' $*; }
     env_parallel myfunc ::: work
     env_parallel -S server myfunc ::: work
     env_parallel --env myfunc myfunc ::: work
     env_parallel --env myfunc -S server myfunc ::: work
   
-    myvar=variables
+    myvar='variables with = & "'
     env_parallel echo '$myvar' ::: work
     env_parallel -S server echo '$myvar' ::: work
     env_parallel --env myvar echo '$myvar' ::: work
     env_parallel --env myvar -S server echo '$myvar' ::: work
   
-    myarray=(arrays work, too)
-    env_parallel -k echo '${myarray[{}]}' ::: 1 2 3
-    env_parallel -k -S server echo '${myarray[{}]}' ::: 1 2 3
-    env_parallel -k --env myarray echo '${myarray[{}]}' ::: 1 2 3
-    env_parallel -k --env myarray -S server echo '${myarray[{}]}' ::: 1 2 3
+    myarray=(arrays 'with = & "' work, too)
+    env_parallel -k echo '${myarray[{}]}' ::: 1 2 3 4
+    env_parallel -k -S server echo '${myarray[{}]}' ::: 1 2 3 4
+    env_parallel -k --env myarray echo '${myarray[{}]}' ::: 1 2 3 4
+    env_parallel -k --env myarray -S server echo '${myarray[{}]}' ::: 1 2 3 4
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
