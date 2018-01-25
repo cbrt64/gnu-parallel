@@ -11,7 +11,7 @@ parset - set shell variables in parallel
 
 B<parset> I<variablename> [options for GNU Parallel]
 
-B<env_parset> I<variablename> [options for GNU Parallel] (alpha testing)
+B<env_parset> I<variablename> [options for GNU Parallel] (beta testing)
 
 =head1 DESCRIPTION
 

@@ -124,6 +124,7 @@ env_parallel() {
 	#   ll is an alias for ls -l (in ash)
 	#   bash is a tracked alias for /bin/bash
 	#   true is a shell builtin
+	#   myfunc is a function
 	#   which is /usr/bin/which
 	#   which is hashed (/usr/bin/which)
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
@@ -131,6 +132,7 @@ env_parallel() {
 	type "$@" |
 	    perl -pe '$exit += (s/ is an alias for .*// ||
 	                        s/ is aliased to .*// ||
+                                s/ is a function// ||
                                 s/ is a shell builtin// ||
                                 s/.* is hashed .(\S+).$/$1/ ||
                                 s/.* is (a tracked alias for )?//);
@@ -193,7 +195,6 @@ env_parallel() {
         $_list_function_BODIES;
         $_list_variable_VALUES;
     `"
-
     export PARALLEL_ENV
     unset _list_alias_BODIES
     unset _list_variable_VALUES
@@ -202,7 +203,7 @@ env_parallel() {
     unset _ignore_UNDERSCORE
     # Test if environment is too big
     if `_which true` >/dev/null 2>/dev/null ; then
-	`_which parallel` "$@";
+	parallel "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;
 	return $_parallel_exit_CODE

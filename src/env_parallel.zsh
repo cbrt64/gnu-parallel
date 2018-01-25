@@ -94,6 +94,30 @@ env_parallel() {
             print $vars ? "($vars)" : "(.*)";
             ' -- "$@"
     }
+    _which() {
+	# type returns:
+	#   ll is an alias for ls -l (in ash)
+	#   bash is a tracked alias for /bin/bash
+	#   true is a shell builtin
+	#   myfunc is a function (in bash)
+	#   myfunc is a shell function (in zsh)
+	#   which is /usr/bin/which
+	#   which is hashed (/usr/bin/which)
+	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+	# Return 0 if found, 1 otherwise
+	type "$@" |
+	    perl -pe '$exit += (s/ is an alias for .*// ||
+	                        s/ is aliased to .*// ||
+                                s/ is a function// ||
+                                s/ is a shell function// ||
+                                s/ is a shell builtin// ||
+                                s/.* is hashed .(\S+).$/$1/ ||
+                                s/.* is (a tracked alias for )?//);
+                      END { exit not $exit }'
+    }
+    _warning() {
+	echo "env_parallel: Warning: $@" >&2
+    }
 
     if which parallel | grep 'no parallel in' >/dev/null; then
 	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
@@ -162,8 +186,8 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if `which /bin/true` >/dev/null 2>/dev/null ; then
-	`which parallel` "$@";
+    if `_which /bin/true` >/dev/null 2>/dev/null ; then
+	parallel "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;
 	return $_parallel_exit_CODE
@@ -227,8 +251,8 @@ _parset_main() {
         }
         exit $exitval;
         ' || return 255
-    if echo "$_parset_name" | grep -E ',| ' >/dev/null ; then
-	# $1 contains , or space
+    if perl -e 'exit not grep /,| /, @ARGV' "$_parset_name" ; then
+	# $_parset_name contains , or space
 	# Split on , or space to get the names
 	eval "$(
 	    # Compute results into files
@@ -241,9 +265,9 @@ _parset_main() {
 			 )
 	    )"
     else
-	# $1 contains no space or ,
-	# => $1 is the name of the array to put data into
-	# Supported in: bash
+	# $_parset_name does not contain , or space
+	# => $_parset_name is the name of the array to put data into
+	# Supported in: bash zsh ksh
 	# Arrays do not work in: ash dash
 	eval "$_parset_name=( $( $_parset_parallel_prg --files -k "$@" |
               perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"

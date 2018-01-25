@@ -2,6 +2,8 @@
 
 rm -f ~/.parallel/will-cite
 
+resize=`resize`
+
 # Disabled 2015-06-01
 # 
 # echo '### Test stdin goes to first command only ("-" as argument)'
@@ -39,4 +41,7 @@ rm /tmp/parallel-script-for-script3
 stdout parallel --citation < /dev/null
 
 touch ~/.parallel/will-cite
+# Clear screen
+eval `resize`
+seq $LINES | parallel -N0 echo > /dev/tty
 reset

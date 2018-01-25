@@ -646,6 +646,20 @@ If I<eof-str> is omitted, there is no end of file string.  If neither
 B<-E> nor B<-e> is used, no end of file string is used.
 
 
+=item B<--embed> (alpha testing)
+
+Embed GNU B<parallel> in a shell script. If you need to distribute your
+script to someone who does not want to install GNU B<parallel> you can
+embed GNU B<parallel> in your own shell script:
+
+  parallel --embed > new_script
+
+After which you add your code at the end of B<new_script>. This is tested
+on B<ash>, B<bash>, B<dash>, B<ksh>, B<sh>, and B<zsh>.
+
+It is not compatible with B<env_parallel>, B<parset>, and B<env_parset>.
+
+
 =item B<--env> I<var>
 
 Copy environment variable I<var>. This will copy I<var> to the
@@ -2091,7 +2105,6 @@ contain the same information as B<--joblog>, the values from the input
 sources (stored in columns V1 .. Vn), and the output (stored in
 columns Stdout and Stderr).
 
-
 If I<DBURL> is prepended with '+' GNU B<parallel> assumes the table is
 already made with the correct columns and appends the jobs to it.
 
@@ -2354,13 +2367,13 @@ different dir for the files. Setting B<--tmpdir> is equivalent to
 setting $TMPDIR.
 
 
-=item B<--tmux>
+=item B<--tmux> (Long beta testing)
 
 Use B<tmux> for output. Start a B<tmux> session and run each job in a
 window in that session. No other output will be produced.
 
 
-=item B<--tmuxpane>
+=item B<--tmuxpane> (Long beta testing)
 
 Use B<tmux> for output but put output into panes in the first window.
 Useful if you want to monitor the progress of less than 100 concurrent
@@ -4603,6 +4616,11 @@ it may be because I<command> is not known, but it could also be
 because I<command> is an alias or a function. If it is a function you
 need to B<export -f> the function first or use B<env_parallel>. An
 alias will only work if you use B<env_parallel>.
+
+=head2 Database with MySQL fails randomly
+
+The B<--sql*> options may fail randomly with MySQL. This problem does
+not exist with PostgreSQL.
 
 
 =head1 REPORTING BUGS

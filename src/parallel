@@ -134,7 +134,6 @@ drain_job_queue();
 ::debug("init", "Done draining\n");
 reaper();
 ::debug("init", "Done reaping\n");
-::debug("init", "Cleaning\n");
 if($Global::semaphore) {
     $sem->release();
 }
@@ -183,8 +182,12 @@ sub set_input_source_header {
 }
 
 sub max_jobs_running {
+    # Compute $Global::max_jobs_running as the max number of jobs
+    # running on each sshlogin.
+    # Returns:
+    #   $Global::max_jobs_running
     if(not $Global::max_jobs_running) {
-	# Compute $Global::max_jobs_running
+
 	for my $sshlogin (values %Global::host) {
 	    $sshlogin->max_jobs_running();
 	}
@@ -193,6 +196,9 @@ sub max_jobs_running {
 }
 
 sub halt {
+    # Compute exit value,
+    # wait for children to complete
+    # and exit
     if($opt::halt and $Global::halt_when ne "never") {
 	if(not defined $Global::halt_exitstatus) {
 	    if($Global::halt_pct) {
@@ -212,6 +218,12 @@ sub halt {
 sub __PIPE_MODE__ {}
 
 sub pipepart_setup {
+    # Compute the blocksize
+    # Generate the commands to extract the blocks
+    # Push the commands on queue
+    # Changes:
+    #   @Global::cat_prepends
+    #   $Global::JobQueue
     if($opt::tee) {
 	# Prepend each command with
 	#   cat file
@@ -256,31 +268,39 @@ sub pipepart_setup {
 }
 
 sub pipe_tee_setup {
-    # mkfifo t1..5
+    # Create temporary fifos
+    # Run 'tee fifo1 fifo2 fifo3 ... fifoN' in the background
+    # This will spread the input to fifos
+    # Generate commands that reads from fifo1..N:
+    #   cat fifo | user_command
+    # Changes:
+    #   @Global::cat_prepends
     my @fifos;
     for(1..$Global::JobQueue->total_jobs()) {
 	push @fifos, tmpfifo();
     }
-    # cat foo | tee t1 t2 t3 t4 t5 > /dev/null
+    # cat foo | tee fifo1 fifo2 fifo3 fifo4 fifo5 > /dev/null
     if(not fork()){
 	# Let tee inherit our stdin
 	# and redirect stdout to null
 	open STDOUT, ">","/dev/null";
 	exec "tee",@fifos;
     }
-
     # Make cats for each fifo
-    #   cat t1 | grep 1
-    #   cat t2 | grep 2
-    #   cat t3 | grep 3
-    #   cat t4 | grep 4
-    #   cat t5 | grep 5
+    #   cat fifo1 | grep 1
+    #   cat fifo2 | grep 2
+    #   cat fifo3 | grep 3
+    #   cat fifo4 | grep 4
+    #   cat fifo5 | grep 5
     # Remove the tmpfifo as soon as it is open
     # 'exec' saves a process
     @Global::cat_prepends = map { "(rm $_; exec cat) < $_" } @fifos;
 }
 
 sub pipe_part_files {
+    # Given the bigfile
+    # find header and split positions
+    # make commands that 'cat's the partial file
     # Input:
     #   $file = the file to read
     # Returns:
@@ -304,6 +324,7 @@ sub pipe_part_files {
 }
 
 sub find_header {
+    # Compute the header based on $opt::header
     # Input:
     #   $buf_ref = reference to read-in buffer
     #   $fh = filehandle to read from
@@ -329,6 +350,7 @@ sub find_header {
 }
 
 sub find_split_positions {
+    # Find positions in bigfile where recend is followed by recstart
     # Input:
     #   $file = the file to read
     #   $block = (minimal) --block-size of each chunk
@@ -356,8 +378,10 @@ sub find_split_positions {
     for(my $pos = $block+$headerlen; $pos < $size; $pos += $block) {
 	my $buf;
 	if($recendrecstart eq "") {
+	    # records ends anywhere
 	    push(@pos,$pos);
 	} else {
+	    # Seek the the block start
 	    seek($fh, $pos, 0) || die;
 	    while(read($fh,substr($buf,length $buf,0),$dd_block_size)) {
 		if($opt::regexp) {
@@ -389,6 +413,7 @@ sub find_split_positions {
 }
 
 sub cat_partial {
+    # Efficient command to copy from byte X to byte Y
     # Input:
     #   $file = the file to read
     #   ($start, $end, [$start2, $end2, ...]) = start byte, end byte
@@ -396,7 +421,7 @@ sub cat_partial {
     #   Efficient command to copy $start..$end, $start2..$end2, ... to stdout
     my($file, @start_end) = @_;
     my($start, $i);
-    # Convert start_end to start_len
+    # Convert (start,end) to (start,len)
     my @start_len = map {
 	if(++$i % 2) { $start = $_; } else { $_-$start }
     } @start_end;
@@ -1049,6 +1074,7 @@ sub options_hash {
 	 "pipepart|pipe-part" => \$opt::pipepart,
 	 "tee" => \$opt::tee,
 	 "hgrp|hostgrp|hostgroup|hostgroups" => \$opt::hostgroups,
+	 "embed" => \$opt::embed,
 	);
 }
 
@@ -1117,6 +1143,7 @@ sub parse_options {
 	wait_and_exit(255);
     }
     $Global::cshell = $Global::shell =~ m:/csh:;
+
     if(defined $opt::X) { $Global::ContextReplace = 1; }
     if(defined $opt::silent) { $Global::verbose = 0; }
     if(defined $opt::null) { $/ = "\0"; }
@@ -1141,6 +1168,7 @@ sub parse_options {
 	$ENV{'PARALLEL_RSYNC_OPTS'} || '-rlDzR';
     $opt::nice ||= 0;
     if(defined $opt::help) { usage(); exit(0); }
+    if(defined $opt::embed) { embed(); exit(0); }
     if(defined $opt::sqlandworker) {
 	$opt::sqlmaster = $opt::sqlworker = $opt::sqlandworker;
     }
@@ -1388,7 +1416,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180122;
+    $Global::version = 20180123;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -4246,6 +4274,79 @@ sub show_limits {
           "press CTRL-D or CTRL-C\n");
 }
 
+sub embed {
+    # Give an embeddable version of GNU Parallel
+    # Tested with: bash, zsh, ksh, ash, dash, sh
+    my $randomstring = "cut-here-".join"",
+	map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..30);
+    if(not -f $0 or not -r $0) {
+	::error("--embed only works if parallel is a readable file");
+	exit(255);
+    }
+    if(open(my $fh, "<", $0)) {
+	# Read the source from $0
+	# Remove comments and indention to save space
+	my @source = map { s/^\s+//;$_ } grep {!/^\s*#[^!]/} <$fh>;
+	my $user = $ENV{LOGNAME} || $ENV{USERNAME} || $ENV{USER};
+	print "#!$Global::shell
+
+# Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,
+# 2017,2018 $user, Ole Tange and Free Software Foundation, Inc.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>
+# or write to the Free Software Foundation, Inc., 51 Franklin St,
+# Fifth Floor, Boston, MA 02110-1301 USA
+";
+	if($Global::shell =~ m:/bash|/ksh|/zsh:) {
+	    print"
+# Embedded GNU Parallel created with --embed
+# Define parallel function
+parallel() {
+perl <(cat <<'$randomstring'
+",@source,"
+$randomstring
+) \"\$@\"
+}
+
+# This will call the function above
+parallel -k echo ::: Put your code here
+";
+	} elsif($Global::shell =~ m:/ash|/dash|/sh:) {
+	    print "
+# Embedded GNU Parallel created with --embed
+# Make temporary file with the source code
+parallel_program=\`tempfile\`
+cat <<'$randomstring' > \$parallel_program
+",@source,"
+$randomstring
+chmod +x \$parallel_program
+alias parallel=\$parallel_program
+
+# This will call the alias above
+parallel -k echo ::: Put your code here
+
+# Cleanup
+rm \$parallel_program
+"
+	}
+    } else {
+	::error("Cannot open $0");
+	exit(255);
+    }
+    ::status("Redirect the output to a file and add your changes at the end:",
+	"  $0 --embed > new_script");
+}
 
 sub __GENERIC_COMMON_FUNCTION__ {}
 
@@ -4516,8 +4617,12 @@ sub spacefree {
     my $spaces = shift;
     my $s = shift;
     $s =~ s/#.*//mg;
-    if($spaces) {
+    if(1 == $spaces) {
 	$s =~ s/\s+/ /mg;
+    } elsif(2 == $spaces) {
+	# Keep newlines
+	$s =~ s/\n\n+/\n/sg;
+	$s =~ s/[ \t]+/ /mg;
     } else {
 	$s =~ s/\s//mg;
     }

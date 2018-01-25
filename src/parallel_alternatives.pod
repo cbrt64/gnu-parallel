@@ -1367,6 +1367,27 @@ and fails on B<pyargs traceroute gnu.org fsf.org>.
   parallel seq ::: 1 2 3 4 5 6
 
 
+=head2 DIFFERENCES BETWEEN concurrently AND GNU Parallel
+
+B<concurrently> runs jobs in parallel.
+
+The output is prepended with the job number, and may be incomplete:
+
+  $ concurrently 'seq 100000' | (sleep 3;wc -l)
+  7165
+
+When pretty printing it caches output in memory. Output mixes by using
+test A below wether or not output is cached.
+
+There seems to be no way of making a template command and have
+B<concurrently> fill that with different args. The full commands must
+be given on the command line.
+
+There is also no way of controlling how many jobs should be run in
+parallel at a time - i.e. "number of jobslots". Instead all jobs are
+simply started in parallel.
+
+
 =head2 Todo
 
 machma. Requires Go >= 1.7.
