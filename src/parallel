@@ -8352,7 +8352,8 @@ sub start {
 	eval {
 	    if(not $pid = ::open3($stdin_fh, ">&OUT", ">&ERR", "-")) {
 		# Each child gets its own process group to make it safe to killall
-		eval{setpgrp(0,0)};
+		eval{ setpgrp(0,0) };
+		eval{ setpriority(0,0,$opt::nice) };
 		exec($Global::shell,"-c",$command)
 		    || ::die_bug("open3-$stdin_fh $command");
 	    }

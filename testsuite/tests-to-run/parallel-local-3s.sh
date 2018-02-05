@@ -208,6 +208,13 @@ par_parcat_mixing() {
     parcat $tmp1 $tmp2 | tr -s ab
 }
 
+par_nice() {
+    echo 'Check that --nice works'
+    # parallel-20160422 OK
+    parallel --timeout 3 --nice 18 bzip2 '<' ::: /dev/zero /dev/zero &
+    sleep 1
+    ps -eo "%c %n" | grep 18 | grep bzip2
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort | parallel -j6 --tag -k '{} 2>&1'

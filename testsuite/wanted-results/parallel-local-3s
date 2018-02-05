@@ -52,6 +52,9 @@ par_multiline_commands	finish 2
 par_multiline_commands	parallel: Warning: Command lines contain newline. Forcing --null.
 par_multiline_commands	3
 par_multiline_commands	finish 3
+par_nice	Check that --nice works
+par_nice	bzip2            18
+par_nice	bzip2            18
 par_parcat_mixing	parcat output should mix: a b a b
 par_parcat_mixing	astart
 par_parcat_mixing	bstart
