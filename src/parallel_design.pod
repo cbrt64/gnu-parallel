@@ -16,7 +16,7 @@ GNU B<parallel> is a Perl script in a single file. It is object
 oriented, but contrary to normal Perl scripts each class is not in its
 own file. This is due to user experience: The goal is that in a pinch
 the user will be able to get GNU B<parallel> working simply by copying
-a single file: No need messing around with environment variables like
+a single file: No need to mess around with environment variables like
 PERL5LIB.
 
 
@@ -25,6 +25,13 @@ PERL5LIB.
 GNU B<parallel> uses some old, deprecated constructs. This is due to a
 goal of being able to run on old installations. Currently the target
 is CentOS 3.9 and Perl 5.8.0.
+
+
+=head2 Scalability up and down
+
+The smallest system GNU B<parallel> is tested on is a 32 MB ASUS
+WL500gP. The largest is a 2 TB 128-core machine. It scales up to
+around 100 machines - depending on the duration of each job.
 
 
 =head2 Exponentially back off

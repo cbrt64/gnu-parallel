@@ -1,4 +1,4 @@
-bin_SCRIPTS = parallel sql niceload parcat env_parallel		\
+bin_SCRIPTS = parallel sql niceload parcat parset env_parallel	\
 	env_parallel.ash env_parallel.bash env_parallel.csh	\
 	env_parallel.dash env_parallel.fish env_parallel.ksh	\
 	env_parallel.pdksh env_parallel.sh env_parallel.tcsh	\

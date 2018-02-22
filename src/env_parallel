@@ -73,7 +73,7 @@ while test $# -gt 0; do
 done
 
 
-cat <<_EOS
+cat <<'_EOS'
 env_parallel only works if it is a function. Do the below and restart your shell.
 
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`

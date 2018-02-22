@@ -831,7 +831,7 @@ exit when 3% of the jobs have finished. Kill running jobs.
 
 For backwards compability these also work:
 
-=over 7
+=over 12
 
 =item Z<>0
 

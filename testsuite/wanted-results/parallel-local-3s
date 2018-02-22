@@ -27,8 +27,17 @@ par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<n
 par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" d
 par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" e
 par_commandline_with_newline	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
-par_dryrun_timeout_ungroup	bug #51039: --dry-run --timeout 3600 -u breaks
+par_delay_human_readable	a
+par_delay_human_readable	b
+par_delay_human_readable	c
+par_delay_human_readable	a
+par_delay_human_readable	b
+par_delay_human_readable	c
+par_dryrun_timeout_ungroup	bug #51039: --dry-run --timeout 1.4m -u breaks
 par_dryrun_timeout_ungroup	   1000    2000    8893
+par_exitval_signal	### Test --joblog with exitval and Test --joblog with signal -- timing dependent
+par_exitval_signal	exitval=128+6 OK
+par_exitval_signal	signal OK
 par_keeporder_roundrobin	bug #50081: --keep-order --round-robin should give predictable results
 par_keeporder_roundrobin	OK
 par_kill_int_twice	### Are children killed if GNU Parallel receives INT twice? There should be no sleep at the end

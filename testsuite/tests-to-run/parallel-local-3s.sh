@@ -81,10 +81,10 @@ par_children_receive_sig() {
     }
     export -f show_signals
     echo | stdout parallel --termseq TERM,200,TERM,100,TERM,50,KILL,25 -u \
-	--timeout 1 show_signals
+	--timeout 1s show_signals
 
     echo | stdout parallel --termseq INT,200,TERM,100,KILL,25 -u \
-	--timeout 1 show_signals
+	--timeout 1s show_signals
     sleep 3
 }
 
@@ -138,16 +138,16 @@ par_keeporder_roundrobin() {
 par_multiline_commands() {
     echo 'bug #50781: joblog format with multiline commands'
     rm -f /tmp/jl.$$
-    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 2 'sleep {}; echo {};
+    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 2s 'sleep {}; echo {};
 echo finish {}'
-    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 4 --retry-failed 'sleep {}; echo {};
+    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 4s --retry-failed 'sleep {}; echo {};
 echo finish {}'
     rm -f /tmp/jl.$$
 }
 
 par_dryrun_timeout_ungroup() {
-    echo 'bug #51039: --dry-run --timeout 3600 -u breaks'
-    seq 1000 | stdout parallel --dry-run --timeout 100 -u --jobs 10 echo | wc
+    echo 'bug #51039: --dry-run --timeout 1.4m -u breaks'
+    seq 1000 | stdout parallel --dry-run --timeout 1.4m -u --jobs 10 echo | wc
 }
 
 par_sqlworker_hostname() {
@@ -213,7 +213,35 @@ par_nice() {
     # parallel-20160422 OK
     parallel --timeout 3 --nice 18 bzip2 '<' ::: /dev/zero /dev/zero &
     sleep 1
+    # Should find 2 lines
     ps -eo "%c %n" | grep 18 | grep bzip2
+}
+
+par_delay_human_readable() {
+    # Test that you can use d h m s in --delay
+    parallel --delay 0.1s echo ::: a b c
+    parallel --delay 0.01m echo ::: a b c
+}
+
+par_exitval_signal() {
+    echo '### Test --joblog with exitval and Test --joblog with signal -- timing dependent'
+    rm -f /tmp/parallel_sleep
+    cp /bin/sleep mysleep
+    chmod +x mysleep
+    parallel --joblog /tmp/parallel_joblog_signal \
+	     './mysleep {}' ::: 30 2>/dev/null &
+    parallel --joblog /tmp/parallel_joblog_exitval \
+	     'echo foo >/tmp/parallel_sleep; ./mysleep {} && echo sleep was not killed=BAD' ::: 30 2>/dev/null &
+    while [ ! -e /tmp/parallel_sleep ] ; do
+	sleep 1
+    done
+    sleep 1
+    killall -6 mysleep
+    wait
+    grep -q 134 /tmp/parallel_joblog_exitval && echo exitval=128+6 OK
+    grep -q '[^0-9]6[^0-9]' /tmp/parallel_joblog_signal && echo signal OK
+    
+    rm -f /tmp/parallel_joblog_exitval /tmp/parallel_joblog_signal
 }
 
 export -f $(compgen -A function | grep par_)

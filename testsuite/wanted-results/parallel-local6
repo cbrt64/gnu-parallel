@@ -1,3 +1,0 @@
-### Test --joblog with exitval and Test --joblog with signal -- timing dependent
-exitval=128+6 OK
-signal OK

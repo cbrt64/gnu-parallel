@@ -6,6 +6,7 @@ par_zsh_embed	your
 par_zsh_embed	code
 par_zsh_embed	here
 par_zsh_embed	parallel_OK
+par_zsh_embed	/home/zsh/.zshenv:.:3: no such file or directory: env_parallel.zsh
 par_zsh_embed	_which:12: argument list too long: perl
 par_zsh_embed	env_parallel: Error: Your environment is too big.
 par_zsh_embed	env_parallel: Error: Try running this in a clean environment once:

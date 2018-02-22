@@ -292,8 +292,11 @@ par_plus_dyn_repl() {
 
 par_linebuffer_tag_slow_output() {
     echo "Test output tag with mixing halflines"
-
-    parallel --delay 0.5 --tag --line-buffer ping -c 4  ::: localhost lo | field 1
+    halfline() {
+	perl -e '$| = 1; map { print $ARGV[0]; sleep(2); print "$_\n" } split //, "Half\n"' $1
+    }
+    export -f halfline
+    parallel --delay 1 -j0 --tag --line-buffer halfline ::: a b
 }
 
 export -f $(compgen -A function | grep par_)

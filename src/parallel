@@ -433,7 +433,7 @@ sub cat_partial {
 		 sysseek(STDIN,shift,0) || die;
 		 $left = shift;
 		 while($read =
-		       sysread(STDIN,$buf, $left > 131072 ? 131072 : $left)){
+		       sysread(STDIN,$buf, $left > 1048524 ? 1048524 : $left)){
 		     $left -= $read;
 		     syswrite(STDOUT,$buf);
 		 }
@@ -962,7 +962,7 @@ sub options_hash {
 	 "seqreplace=s" => \$opt::seqreplace,
 	 "slotreplace=s" => \$opt::slotreplace,
 	 "jobs|j=s" => \$opt::jobs,
-	 "delay=f" => \$opt::delay,
+	 "delay=s" => \$opt::delay,
 	 "sshdelay=f" => \$opt::sshdelay,
 	 "load=s" => \$opt::load,
 	 "noswap" => \$opt::noswap,
@@ -1231,6 +1231,7 @@ sub parse_options {
 	# Set --delay to --sshdelay if not set
 	$opt::delay = $opt::sshdelay;
     }
+    $opt::delay = multiply_time_units($opt::delay);
     if($opt::compress_program) {
 	$opt::compress = 1;
 	$opt::decompress_program ||= $opt::compress_program." -dc";
@@ -1416,7 +1417,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180123;
+    $Global::version = 20180222;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -4559,6 +4560,27 @@ sub multiply_binary_prefix {
 	s/x/*1000*1000*1000*1000*1000*1000*1000*1000*1000/g;
 
 	$_ = eval $_;
+    }
+    return wantarray ? @v : $v[0];
+}
+
+sub multiply_time_units {
+    # Evalualte numbers with time units
+    # s=1, m=60, h=3600, d=86400
+    # Input:
+    #   $s = string time units
+    # Returns:
+    #   $value = int in seconds
+    my @v = @_;
+    for(@v) {
+	defined $_ or next;
+	if(/[dhms]/i) {
+	    s/s/*1+/gi;
+	    s/m/*60+/gi;
+	    s/h/*3600+/gi;
+	    s/d/*86400+/gi;
+	    $_ = eval $_."0";
+	}
     }
     return wantarray ? @v : $v[0];
 }
@@ -10970,13 +10992,8 @@ sub new {
 	$pct = $1/100;
 	$delta_time = 1_000_000;
     }
-    if($delta_time =~ /[dhms]/i) {
-	$delta_time =~ s/s/*1+/gi;
-	$delta_time =~ s/m/*60+/gi;
-	$delta_time =~ s/h/*3600+/gi;
-	$delta_time =~ s/d/*86400+/gi;
-	$delta_time = eval $delta_time."0";
-    }
+    $delta_time = ::multiply_time_units($delta_time);
+
     return bless {
 	'queue' => [],
 	'delta_time' => $delta_time,

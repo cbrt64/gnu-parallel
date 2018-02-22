@@ -3,8 +3,10 @@
 =head1 GNU Parallel Tutorial
 
 This tutorial shows off much of GNU B<parallel>'s functionality. The
-tutorial is meant to learn the options in GNU B<parallel>.  The tutorial
-is not to show realistic examples from the real world.
+tutorial is meant to learn the options in and syntax of GNU
+B<parallel>.  The tutorial is B<not> to show realistic examples from the
+real world. For realistic examples see B<man parallel> in the EXAMPLE
+section.
 
 Spend an hour walking through the tutorial. Your command line will
 love you for it.
