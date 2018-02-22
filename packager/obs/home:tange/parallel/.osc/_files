@@ -1,6 +1,10 @@
-<directory name="parallel" rev="216" srcmd5="8f7a185b24d9bbf7d205810dc0400fc3" vrev="2">
+<directory name="parallel" rev="218" srcmd5="af198e4bea2e9de4d6f472745c6eff11" vrev="2">
+  <entry md5="8b44ef3f5aac2302f976cb58cf61fe87" mtime="1513986752" name="parallel-20171222.tar.bz2" size="1690096" />
   <entry md5="dc3c49472f24afa64146433955e3c60c" mtime="1516637654" name="parallel-20180122.tar.bz2" size="1717898" />
-  <entry md5="09b2f07b64cc64aef10f459b57fe8e25" mtime="1516624602" name="parallel.spec" size="4693" />
-  <entry md5="e429add03e21bbe237a9cd03249acb13" mtime="1516637656" name="parallel_20180122.dsc" size="556" />
+  <entry md5="f7fc58abc8157639a03fbab6f2fbdecb" mtime="1519335400" name="parallel-20180222.tar.bz2" size="1721015" />
+  <entry md5="b985be62051b5e1c35ccf0f9a9f54ed0" mtime="1519335400" name="parallel.spec" size="4666" />
+  <entry md5="21420e5e8a3c415584438286cb2cdcaf" mtime="1513986753" name="parallel_20171222.tar.gz" size="1894418" />
   <entry md5="cd809eb297ee7fb8821786b6a814090c" mtime="1516637670" name="parallel_20180122.tar.gz" size="1904981" />
+  <entry md5="577f63e016ab75cd653129c801a53fc5" mtime="1519335400" name="parallel_20180222.dsc" size="556" />
+  <entry md5="73d175bc25fbbef5459d2a9d2246c8f4" mtime="1519335400" name="parallel_20180222.tar.gz" size="1924236" />
 </directory>

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 make stopvm
+TMPDIR=${TMPDIR:-/tmp}
 mkdir -p $TMPDIR
 # Jobs that eat more than 2 GB RAM
 

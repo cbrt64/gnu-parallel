@@ -1,5 +1,32 @@
 20180122
 
+* --embed makes it possible to embed GNU parallel in a shell
+  script. This is useful if you need to distribute your script to
+  someone who does not want to install GNU parallel.
+
+* Parallelize Your Large Batches of Small Jobs
+  https://amito.me/2018/02/Parallelize-Your-Large-Batches-of-Small-Jobs/
+
+* Klaatu expounds upon xargs and talks GNU parallel in episode 12x6
+  http://gnuworldorder.info/
+
+* How to use parallel to speed up your work
+  https://mike42.me/blog/how-to-use-parallel-to-speed-up-your-work
+
+* Transient compute clustering with GNU Parallel and sshfs
+  https://dennismungai.wordpress.com/2018/02/06/transient-compute-clustering-with-gnu-parallel-and-sshfs/
+ 
+* Useful Examples of ffmpeg and GNU parallel on the command-line
+  https://dennismungai.wordpress.com/2018/02/06/useful-examples-of-ffmpeg-and-gnu-parallel-on-the-command-line/
+
+* Data Science at the Command Line (Chapter 8.3)
+  https://www.datascienceatthecommandline.com/
+
+* Bug fixes and man page updates.
+
+
+20180122
+
 * bash / 병렬 https://code.i-harness.com/ko/docs/bash/2a1a
 
 * 15分钟神器gnu parallel 入门观止

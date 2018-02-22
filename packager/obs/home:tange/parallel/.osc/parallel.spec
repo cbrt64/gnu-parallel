@@ -1,13 +1,12 @@
 Summary:	Shell tool for executing jobs in parallel
 Name: 		parallel
-Version: 	20180122
+Version: 	20180222
 Release: 	1.2
 License: 	GPL
 Group: 		Productivity/File utilities
 URL: 		ftp://ftp.gnu.org/gnu/parallel
 Source0: 	%{name}_%{version}.tar.gz
 BuildArch:	noarch
-BuildArchitectures: noarch
 BuildRoot: 	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
