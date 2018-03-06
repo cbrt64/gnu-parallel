@@ -199,9 +199,9 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180222 ('Henrik') released <<[stable]>>
+Subject: GNU Parallel 20180322 ('') released <<[stable]>>
 
-GNU Parallel 20180222 ('Henrik') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180322 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -210,19 +210,12 @@ Quote of the month:
 
 New in this release:
 
-* --embed makes it possible to embed GNU parallel in a shell script. This is useful if you need to distribute your script to someone who does not want to install GNU parallel.
+https://github.com/inpacdb/POAP
 
-* Parallelize Your Large Batches of Small Jobs https://amito.me/2018/02/Parallelize-Your-Large-Batches-of-Small-Jobs/
+https://chiefio.wordpress.com/2018/02/23/pi-cluster-parallel-script-first-fire/
 
-* Klaatu expounds upon xargs and talks GNU parallel in episode 12x6 http://gnuworldorder.info/
+https://www.percona.com/blog/2018/02/22/restore-mysql-logical-backup-maximum-speed/
 
-* How to use parallel to speed up your work https://mike42.me/blog/how-to-use-parallel-to-speed-up-your-work
-
-* Transient compute clustering with GNU Parallel and sshfs https://dennismungai.wordpress.com/2018/02/06/transient-compute-clustering-with-gnu-parallel-and-sshfs/
- 
-* Useful Examples of ffmpeg and GNU parallel on the command-line https://dennismungai.wordpress.com/2018/02/06/useful-examples-of-ffmpeg-and-gnu-parallel-on-the-command-line/
-
-* Data Science at the Command Line (Chapter 8.3) https://www.datascienceatthecommandline.com/
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

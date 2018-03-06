@@ -619,11 +619,13 @@ occurs as a line of input, the rest of the input is not read.  If
 neither B<-E> nor B<-e> is used, no end of file string is used.
 
 
-=item B<--delay> I<secs>
+=item B<--delay> I<mytime>
 
-Delay starting next job I<secs> seconds. GNU B<parallel> will pause
-I<secs> seconds after starting each job. I<secs> can be less than 1
-second.
+Delay starting next job by I<mytime>. GNU B<parallel> will pause
+I<mytime> after starting each job. I<mytime> is normally in seconds,
+but can be floats postfixed with B<s>, B<m>, B<h>, or B<d> which would
+multiply the float by 1, 60, 3600, or 86400. Thus these are
+equivalent: B<--delay 100000> and B<--delay 1d3.5h16.6m4s>.
 
 
 =item B<--dry-run>
@@ -656,8 +658,6 @@ embed GNU B<parallel> in your own shell script:
 
 After which you add your code at the end of B<new_script>. This is tested
 on B<ash>, B<bash>, B<dash>, B<ksh>, B<sh>, and B<zsh>.
-
-It is not compatible with B<env_parallel>, B<parset>, and B<env_parset>.
 
 
 =item B<--env> I<var>

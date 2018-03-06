@@ -8,6 +8,8 @@ par_ash_embed() {
 echo \$b
 parset a,b,c echo ::: ParsetOK ParsetOK ParsetOK
 env_parallel echo ::: env_parallel_OK
+env_parallel --env myvar echo {} --env \\\$myvar ::: env_parallel
+myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
@@ -16,7 +18,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
     ' | tac > parallel-embed
     chmod +x parallel-embed
     ./parallel-embed
-#    rm parallel-embed
+    rm parallel-embed
 _EOF
   )
   ssh ash@lo "$myscript"
@@ -30,6 +32,8 @@ par_bash_embed() {
 echo \${a[1]}
 parset a echo ::: ParsetOK ParsetOK ParsetOK
 env_parallel echo ::: env_parallel_OK
+env_parallel --env myvar echo {} --env \\\$myvar ::: env_parallel
+myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
@@ -60,6 +64,8 @@ par_ksh_embed() {
 echo \${a[1]}
 parset a echo ::: ParsetOK ParsetOK ParsetOK
 env_parallel echo ::: env_parallel_OK
+env_parallel --env myvar echo {} --env \\\$myvar ::: env_parallel
+myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
@@ -68,7 +74,7 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
     ' | tac > parallel-embed
     chmod +x parallel-embed
     ./parallel-embed
-    rm parallel-embed
+#    rm parallel-embed
 _EOF
   )
   ssh ksh@lo "$myscript"
@@ -82,6 +88,8 @@ par_sh_embed() {
 echo \$b
 parset a,b,c echo ::: ParsetOK ParsetOK ParsetOK
 env_parallel echo ::: env_parallel_OK
+env_parallel --env myvar echo {} --env \\\$myvar ::: env_parallel
+myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
@@ -108,6 +116,8 @@ par_zsh_embed() {
 echo \${a[1]}
 parset a echo ::: ParsetOK ParsetOK ParsetOK
 env_parallel echo ::: env_parallel_OK
+env_parallel --env myvar echo {} --env \\\$myvar ::: env_parallel
+myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin

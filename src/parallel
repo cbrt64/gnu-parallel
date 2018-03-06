@@ -1417,7 +1417,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180222;
+    $Global::version = 20180223;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -4279,15 +4279,14 @@ sub embed {
     # Give an embeddable version of GNU Parallel
     # Tested with: bash, zsh, ksh, ash, dash, sh
     my $randomstring = "cut-here-".join"",
-	map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..30);
+	map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..20);
     if(not -f $0 or not -r $0) {
 	::error("--embed only works if parallel is a readable file");
 	exit(255);
     }
     if(open(my $fh, "<", $0)) {
 	# Read the source from $0
-	# Remove comments and indention to save space
-	my @source = map { s/^\s+//;$_ } grep {!/^\s*#[^!]/} <$fh>;
+	my @source = <$fh>;
 	my $user = $ENV{LOGNAME} || $ENV{USERNAME} || $ENV{USER};
 	print "#!$Global::shell
 
@@ -4309,38 +4308,49 @@ sub embed {
 # or write to the Free Software Foundation, Inc., 51 Franklin St,
 # Fifth Floor, Boston, MA 02110-1301 USA
 ";
-	if($Global::shell =~ m:/bash|/ksh|/zsh:) {
-	    print"
+
+	print q!
 # Embedded GNU Parallel created with --embed
-# Define parallel function
 parallel() {
-perl <(cat <<'$randomstring'
-",@source,"
-$randomstring
-) \"\$@\"
+    # Start GNU Parallel without leaving temporary files
+    #
+    # Not all shells support 'perl <(cat ...)'
+    # This is a complex way of doing:
+    #   perl <(cat <<'cut-here'
+    #     [...]
+    #     ) "$@"
+    # and also avoiding:
+    #   [1]+  Done   cat
+
+    # Make a temporary fifo that perl can read from
+    _fifo_with_parallel_source=`perl -e 'use POSIX qw(mkfifo);
+      do {
+        $f = "/tmp/parallel-".join"",
+          map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
+      } while(-e $f);
+      mkfifo($f,0600);
+      print $f;'`
+    # Put source code into temporary file
+    # so it is easy to copy to the fifo
+    _file_with_parallel_source=`mktemp`;
+!,
+	"cat <<'$randomstring' > \$_file_with_parallel_source\n",
+	@source,
+	$randomstring,"\n",
+	q!
+    # Copy the source code from the file to the fifo
+    # and remove the file and fifo ASAP
+    # 'sh -c' is needed to avoid
+    #   [1]+  Done   cat
+    sh -c "(rm $_file_with_parallel_source; cat >$_fifo_with_parallel_source; rm $_fifo_with_parallel_source) < $_file_with_parallel_source &"
+
+    # Read the source from the fifo
+    perl $_fifo_with_parallel_source "$@"
 }
 
 # This will call the function above
 parallel -k echo ::: Put your code here
-";
-	} elsif($Global::shell =~ m:/ash|/dash|/sh:) {
-	    print "
-# Embedded GNU Parallel created with --embed
-# Make temporary file with the source code
-parallel_program=\`tempfile\`
-cat <<'$randomstring' > \$parallel_program
-",@source,"
-$randomstring
-chmod +x \$parallel_program
-alias parallel=\$parallel_program
-
-# This will call the alias above
-parallel -k echo ::: Put your code here
-
-# Cleanup
-rm \$parallel_program
-"
-	}
+!;
     } else {
 	::error("Cannot open $0");
 	exit(255);

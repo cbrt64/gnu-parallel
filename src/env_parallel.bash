@@ -165,11 +165,14 @@ env_parallel() {
     _warning() {
 	echo "env_parallel: Warning: $@" >&2
     }
+    _error() {
+	echo "env_parallel: Error: $@" >&2
+    }
 
     # Bash is broken in version 3.2.25 and 4.2.39
     # The crazy '[ "`...`" == "" ]' is needed for the same reason
     if [ "`_which parallel`" == "" ]; then
-	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
+	_error 'parallel must be in $PATH.'
 	return 255
     fi
 
@@ -242,12 +245,13 @@ env_parallel() {
 	return $_parallel_exit_CODE
     else
 	unset PARALLEL_ENV;
-	echo "env_parallel: Error: Your environment is too big." >&2
-	echo "env_parallel: Error: Try running this in a clean environment once:" >&2
-	echo "env_parallel: Error:   env_parallel --record-env" >&2
-	echo "env_parallel: Error: And the use '--env _'" >&2
-	echo "env_parallel: Error: For details see: man env_parallel" >&2
-
+	_error "Your environment is too big."
+	_error "You can try 2 different approaches:"
+	_error "1. Use --env and only mention the names to copy."
+	_error "2. Try running this in a clean environment once:"
+	_error "     env_parallel --record-env"
+	_error "   And then use '--env _'"
+	_error "For details see: man env_parallel"
 	return 255
     fi
 }

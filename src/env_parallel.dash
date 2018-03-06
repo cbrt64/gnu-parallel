@@ -124,25 +124,34 @@ env_parallel() {
 	#   ll is an alias for ls -l (in ash)
 	#   bash is a tracked alias for /bin/bash
 	#   true is a shell builtin
-	#   myfunc is a function
+	#   myfunc is a function (in bash)
+	#   myfunc is a shell function (in zsh)
 	#   which is /usr/bin/which
 	#   which is hashed (/usr/bin/which)
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+	#   parallel is a tracked alias for /usr/local/bin/parallel (ksh)
 	# Return 0 if found, 1 otherwise
 	type "$@" |
 	    perl -pe '$exit += (s/ is an alias for .*// ||
 	                        s/ is aliased to .*// ||
                                 s/ is a function// ||
+                                s/ is a shell function// ||
                                 s/ is a shell builtin// ||
                                 s/.* is hashed .(\S+).$/$1/ ||
                                 s/.* is (a tracked alias for )?//);
                       END { exit not $exit }'
     }
+    _warning() {
+	echo "env_parallel: Warning: $@" >&2
+    }
+    _error() {
+	echo "env_parallel: Error: $@" >&2
+    }
     
     if _which parallel >/dev/null; then
 	true parallel found in path
     else
-	echo 'env_parallel: Error: parallel must be in $PATH.' >&2
+	_error 'parallel must be in $PATH.'
 	return 255
     fi
 
@@ -209,12 +218,13 @@ env_parallel() {
 	return $_parallel_exit_CODE
     else
 	unset PARALLEL_ENV;
-	echo "env_parallel: Error: Your environment is too big." >&2
-	echo "env_parallel: Error: Try running this in a clean environment once:" >&2
-	echo "env_parallel: Error:   env_parallel --record-env" >&2
-	echo "env_parallel: Error: And the use '--env _'" >&2
-	echo "env_parallel: Error: For details see: man env_parallel" >&2
-
+	_error "Your environment is too big."
+	_error "You can try 2 different approaches:"
+	_error "1. Use --env and only mention the names to copy."
+	_error "2. Try running this in a clean environment once:"
+	_error "     env_parallel --record-env"
+	_error "   And then use '--env _'"
+	_error "For details see: man env_parallel"
 	return 255
     fi
 }

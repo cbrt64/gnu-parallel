@@ -54,8 +54,9 @@ par_ash_man() {
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
-    env_parallel --no-such-option >/dev/null
-    echo exit value $? should be 255
+    env_parallel --no-such-option 2>&1 >/dev/null
+    # Sleep 1 to delay output to stderr to avoid race
+    echo exit value $? should be 255 `sleep 1`
 _EOF
   )
   ssh ash@lo "$myscript"
@@ -123,7 +124,7 @@ par_bash_man() {
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
-    env_parallel --no-such-option >/dev/null
+    env_parallel --no-such-option 2>&1 >/dev/null
     # Sleep 1 to delay output to stderr to avoid race
     echo exit value $? should be 255 `sleep 1`
 _EOF
@@ -166,7 +167,7 @@ par_csh_man() {
     echo exit value $status should be 2
 
     env_parallel --no-such-option >/dev/null
-    echo exit value $status should be 255
+    echo exit value $status should be 255 `sleep 1`
 _EOF
   )
   # Sometimes the order f*cks up
@@ -219,8 +220,9 @@ par_dash_man() {
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
-    env_parallel --no-such-option >/dev/null
-    echo exit value $? should be 255
+    env_parallel --no-such-option 2>&1 >/dev/null
+    # Sleep 1 to delay output to stderr to avoid race
+    echo exit value $? should be 255 `sleep 1`
 _EOF
   )
   ssh dash@lo "$myscript"
@@ -274,8 +276,8 @@ par_fish_man() {
     env_parallel ::: true false true false
     echo exit value $status should be 2
 
-    env_parallel --no-such-option 2>&1 >/dev/null
-    echo exit value $status should be 255
+    env_parallel --no-such-option >/dev/null
+    echo exit value $status should be 255 `sleep 1`
 _EOF
   )
   ssh fish@lo "$myscript"
@@ -336,8 +338,9 @@ par_ksh_man() {
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
-    env_parallel --no-such-option >/dev/null
-    echo exit value $? should be 255
+    env_parallel --no-such-option 2>&1 >/dev/null
+    # Sleep 1 to delay output to stderr to avoid race
+    echo exit value $? should be 255 `sleep 1`
 _EOF
   )
   ssh ksh@lo "$myscript"
@@ -389,8 +392,9 @@ par_sh_man() {
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
-    env_parallel --no-such-option >/dev/null
-    echo exit value $? should be 255
+    env_parallel --no-such-option 2>&1 >/dev/null
+    # Sleep 1 to delay output to stderr to avoid race
+    echo exit value $? should be 255 `sleep 1`
 _EOF
   )
   ssh sh@lo "$myscript"
@@ -431,7 +435,7 @@ par_tcsh_man() {
     echo exit value $status should be 2
 
     env_parallel --no-such-option >/dev/null
-    echo exit value $status should be 255
+    echo exit value $status should be 255 `sleep 1`
 _EOF
   )
   ssh -tt tcsh@lo "$myscript"
@@ -496,8 +500,9 @@ par_zsh_man() {
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
-    env_parallel --no-such-option >/dev/null
-    echo exit value $? should be 255
+    env_parallel --no-such-option 2>&1 >/dev/null
+    # Sleep 1 to delay output to stderr to avoid race
+    echo exit value $? should be 255 `sleep 1`
 _EOF
   )
   ssh zsh@lo "$myscript"
@@ -1585,40 +1590,40 @@ par_ksh_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.ksh`;
 
-    bigvar="$(perl -e 'print "x"x122000')"
+    bigvar="$(perl -e 'print "x"x119000')"
     env_parallel echo ::: OK_bigvar
     env_parallel -S lo echo ::: OK_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x122000')"
+    bigvar="$(perl -e 'print "\""x119000')"
     env_parallel echo ::: OK_bigvar_quote
     env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x119000')"'"; };'
     env_parallel echo ::: OK_bigfunc
     env_parallel -S lo echo ::: OK_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x119000')"'"; };'
     env_parallel echo ::: OK_bigfunc_quote
     env_parallel -S lo echo ::: OK_bigfunc_quote_remote
     bigfunc() { true; }
 
     echo Rest should fail
 
-    bigvar="$(perl -e 'print "x"x123000')"
+    bigvar="$(perl -e 'print "x"x122000')"
     env_parallel echo ::: fail_bigvar
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x123000')"
+    bigvar="$(perl -e 'print "\""x122000')"
     env_parallel echo ::: fail_bigvar_quote
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
     env_parallel echo ::: fail_bigfunc
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
