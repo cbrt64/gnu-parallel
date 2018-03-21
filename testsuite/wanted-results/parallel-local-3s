@@ -1,7 +1,11 @@
 par_children_receive_sig	### Do children receive --termseq signals
+par_children_receive_sig	parallel: Warning: This job was killed because it timed out:
+par_children_receive_sig	parallel: Warning: show_signals ''
 par_children_receive_sig	Got TERM
 par_children_receive_sig	Got TERM
 par_children_receive_sig	Got TERM
+par_children_receive_sig	parallel: Warning: This job was killed because it timed out:
+par_children_receive_sig	parallel: Warning: show_signals ''
 par_children_receive_sig	Got INT
 par_children_receive_sig	Got TERM
 par_commandline_with_newline	bug #51299: --retry-failed with command with newline
@@ -58,12 +62,19 @@ par_multiline_commands	1
 par_multiline_commands	finish 1
 par_multiline_commands	2
 par_multiline_commands	finish 2
+par_multiline_commands	parallel: Warning: This job was killed because it timed out:
+par_multiline_commands	parallel: Warning: sleep 4; echo 4;
+par_multiline_commands	echo finish 4
 par_multiline_commands	parallel: Warning: Command lines contain newline. Forcing --null.
-par_multiline_commands	3
-par_multiline_commands	finish 3
+par_multiline_commands	4
+par_multiline_commands	finish 4
 par_nice	Check that --nice works
 par_nice	bzip2            18
 par_nice	bzip2            18
+par_nice	parallel: Warning: This job was killed because it timed out:
+par_nice	parallel: Warning: bzip2 < /dev/zero
+par_nice	parallel: Warning: This job was killed because it timed out:
+par_nice	parallel: Warning: bzip2 < /dev/zero
 par_parcat_mixing	parcat output should mix: a b a b
 par_parcat_mixing	astart
 par_parcat_mixing	bstart

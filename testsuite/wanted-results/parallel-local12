@@ -37,21 +37,17 @@ To silence this citation notice: run 'parallel --citation' once.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
 
-@article{Tange2011a,
-  title = {GNU Parallel - The Command-Line Power Tool},
-  author = {O. Tange},
-  address = {Frederiksberg, Denmark},
-  journal = {;login: The USENIX Magazine},
-  month = {Feb},
-  number = {1},
-  volume = {36},
-  url = {http://www.gnu.org/s/parallel},
-  year = {2011},
-  pages = {42-47},
-  doi = {http://dx.doi.org/10.5281/zenodo.16303}
+@book{tange_ole_2018_1146014,
+      author       = {Tange, Ole},
+      title        = {GNU Parallel 2018},
+      publisher    = {Ole Tange},
+      year         = 2018,
+      month        = apr,
+      doi          = {10.5281/zenodo.1146014},
+      url          = {https://doi.org/10.5281/zenodo.1146014}
 }
 
-(Feel free to use \nocite{Tange2011a})
+(Feel free to use \nocite{tange_ole_2018_1146014})
 
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.

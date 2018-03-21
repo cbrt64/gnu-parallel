@@ -107,7 +107,7 @@ a1.gif 2.gif 3.gif 4.gif 5.gif 6.gifb1 2 3 4 5 6c1 2 3 4 5 6
 a1.gifb1c1 a2.gifb2c2 a3.gifb3c3 a4.gifb4c4 a5.gifb5c5 a6.gifb6c6
 echo '### Test -m with 60000 args';   seq 1 60000 | perl -pe 's/$/.gif/' |   parallel -j1 -km echo a{}b{.}c{.} |   tee >(wc; sleep 1) >(md5sum; sleep 1) >/dev/null;   wait;   sleep 1
 ### Test -m with 60000 args
-d025d2d552a9ff809216d17d408de0b4  -
+f5e1ea298b25c5516d63061df5c56f79  -
      10  179980 1286692
 echo '### Test -X with 60000 args';   seq 1 60000 | perl -pe 's/$/.gif/' |   parallel -j1 -kX echo a{}b{.}c{.} |   tee >(wc; sleep 1) >(md5sum; sleep 1) >/dev/null;   wait;   sleep 1
 ### Test -X with 60000 args

@@ -226,11 +226,54 @@ tmpfile in practice is removed by B<cattail> after around 40 ms.
 The command given by the user can be wrapped in multiple
 templates. Templates can be wrapped in other templates.
 
+
+
 =over 15
+
+=item B<$COMMAND>
+
+the command to run.
+
+
+=item B<$INPUT>
+
+the input to run.
+
+
+=item B<$SHELL>
+
+the shell that started GNU Parallel.
+
+
+=item B<$SSHLOGIN>
+
+the sshlogin.
+
+
+=item B<$WORKDIR>
+
+the working dir.
+
+
+=item B<$FILE>
+
+the file to read parts from.
+
+
+=item B<$STARTPOS>
+
+the first byte position to read from B<$FILE>.
+
+
+=item B<$LENGTH>
+
+the number of bytes to read from B<$FILE>.
+
 
 =item --shellquote
 
-echo I<shell double quoted input>
+echo I<Double quoted $INPUT>
+
 
 =item --nice I<pri>
 
@@ -240,7 +283,7 @@ Local: B<setpriority(0,0,$nice)>
 
 =item --cat
 
-  cat > {}; <<command>> {};
+  cat > {}; $COMMAND {};
   perl -e '$bash = shift;
     $csh = shift;
     for(@ARGV) { unlink;rmdir; }
@@ -269,38 +312,38 @@ B<*csh>/B<fish> (using $status).
     waitpid $pid,0;
     # Cleanup
     unlink $f;
-    exit $?/256;' <<shell>> -c <<command>> $PARALLEL_TMP
+    exit $?/256;' $SHELL -c $COMMAND $PARALLEL_TMP
 
-This is an elaborate way of: mkfifo {}; run I<<<command>>> in the
-background using I<<<shell>>>; copying STDIN to {}; waiting for background
-to complete; remove {} and exit with the exit code from I<<<command>>>.
+This is an elaborate way of: mkfifo {}; run B<$COMMAND> in the
+background using B<$SHELL>; copying STDIN to {}; waiting for background
+to complete; remove {} and exit with the exit code from B<$COMMAND>.
 
 It is made this way to be compatible with B<*csh>/B<fish>.
 
 =item --pipepart
 
-  < <<file>> perl -e 'while(@ARGV) {
+
+  < $FILE perl -e 'while(@ARGV) {
       sysseek(STDIN,shift,0) || die;
       $left = shift;
       while($read = sysread(STDIN,$buf, ($left > 131072 ? 131072 : $left))){
         $left -= $read;
         syswrite(STDOUT,$buf);
       }
-    }' <<startposition>> <<length>>
+    }' $STARTPOS $LENGTH
 
-This will read I<<<length>>> bytes from I<<<file>>> starting at
-I<<<startposition>>> and send it to STDOUT.
+This will read B<$LENGTH> bytes from B<$FILE> starting at B<$STARTPOS>
+and send it to STDOUT.
 
-=item --sshlogin I<sln>
+=item --sshlogin $SSHLOGIN
 
-ssh I<sln> I<shell quoted command>
-
-Where I<sln> is the sshlogin and I<shell quoted command> is the
-command quoted so it will be passed to the server.
+  ssh $SSHLOGIN "$COMMAND"
 
 =item --transfer
 
-( ssh I<sln> mkdir -p ./I<workdir>;rsync --protocol 30 -rlDzR -essh ./{} I<sln>:./I<workdir> ); I<<<command>>>
+  ssh $SSHLOGIN mkdir -p ./$WORKDIR;
+  rsync --protocol 30 -rlDzR -essh ./{} $SSHLOGIN:./$WORKDIR;
+  ssh $SSHLOGIN "$COMMAND"
 
 Read about B<--protocol 30> in the section B<Rsync protocol version>.
 
@@ -314,7 +357,9 @@ Read about B<--protocol 30> in the section B<Rsync protocol version>.
 
 =item --return I<file>
 
-I<<<command>>>; _EXIT_status=$?; mkdir -p I<<<workdir>>>; rsync --protocol 30 --rsync-path=cd\ ./I<<<workdir>>>\;\ rsync -rlDzR -essh I<<<sln>>>:./I<<<file>>> ./I<<<workdir>>>; exit $_EXIT_status;
+  $COMMAND; _EXIT_status=$?; mkdir -p $WORKDIR;
+  rsync --protocol 30 --rsync-path=cd\ ./$WORKDIR\;\ rsync \
+    -rlDzR -essh $SSHLOGIN:./$FILE ./$WORKDIR; exit $_EXIT_status;
 
 The B<--rsync-path=cd ...> is needed because old versions of B<rsync>
 do not support B<--no-implied-dirs>.
@@ -325,9 +370,11 @@ wrapping 'sh -c' is enough?
 
 =item --cleanup
 
-I<<<command>>> _EXIT_status=$?; <<return>>; 
+$RETURN is the wrapper from B<--return>
 
-ssh I<sln> \(rm\ -f\ ./I<workdir>/{}\;\ rmdir\ ./I<workdir>\ \>\&/dev/null\;\); exit $_EXIT_status;
+  $COMMAND; _EXIT_status=$?; $RETURN; 
+  ssh $SSHLOGIN \(rm\ -f\ ./$WORKDIR/{}\;\ rmdir\ ./$WORKDIR\ \>\&/dev/null\;\);
+  exit $_EXIT_status;
 
 B<$_EXIT_status>: see B<--return> above.
 
@@ -346,9 +393,9 @@ B<$_EXIT_status>: see B<--return> above.
 	}
 	close $fh;
 	exit ($?&127 ? 128+($?&127) : 1+$?>>8)
-    }' I<shell> -c I<input>
+    }' $SHELL -c $COMMAND
 
-This small wrapper makes sure that I<input> will never be run if
+This small wrapper makes sure that B<$COMMAND> will never be run if
 there is no data.
 
 =item --tmux

@@ -199,16 +199,22 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180322 ('') released <<[stable]>>
+Subject: GNU Parallel 20180322 ('Hawking') released <<[stable]>>
 
-GNU Parallel 20180322 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180322 ('Hawking') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
+If you aren’t nesting
+gnu parallel calls in gnu parallel calls
+I don’t know how you have fun.
+  -- Ernest W. Durbin III EWDurbin@twitter
 
 New in this release:
+
+https://medium.com/@alonisser/parallel-straight-from-your-command-line-feb6db8b6cee
 
 https://github.com/inpacdb/POAP
 

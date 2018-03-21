@@ -5,12 +5,12 @@ Chars per line: 116300
       6  119994  697800
 echo '### Test of xargs -X command lines > 130k';   seq 1 60000 | parallel -X -j1 echo a{}b{}c | tee >(wc >/tmp/bwc$$) >(sort | (sleep 1; md5sum)) >/tmp/b$$;   wait;   CHAR=$(cat /tmp/b$$ | wc -c);   LINES=$(cat /tmp/b$$ | wc -l);   echo "Chars per line:" $(echo "$CHAR/$LINES" | bc);   cat /tmp/bwc$$;   rm /tmp/b$$ /tmp/bwc$$
 ### Test of xargs -X command lines > 130k
-201ecb8ca789cecf39ee914a6d75611b  -
+3cfc69ee81b0fe7fdbe8eb059ad2da61  -
 Chars per line: 116826
       7   60000  817788
 echo '### Test of xargs -m command lines > 130k';   seq 1 60000 | parallel -k -j1 -m echo | md5sum
 ### Test of xargs -m command lines > 130k
-590091fd85dcb98f91c5e89cdddf21ef  -
+00b8aed2c1bc28368381273aa2ae104e  -
 echo '### This causes problems if we kill child processes'; # 2>/dev/null to avoid parallel: Warning: Starting 45 processes took > 2 sec.
 ### This causes problems if we kill child processes
   seq 2 40 | parallel -j 0 seq 1 10 2>/dev/null | sort | md5sum

@@ -18,6 +18,12 @@ bug #41412: --timeout + --delay causes deadlock
   parallel -j10 --timeout 2.2 --delay 3 "sleep {}; echo {}" ::: 1 2 7 8 9
 1
 2
+parallel: Warning: This job was killed because it timed out:
+parallel: Warning: sleep 7; echo 7
+parallel: Warning: This job was killed because it timed out:
+parallel: Warning: sleep 8; echo 8
+parallel: Warning: This job was killed because it timed out:
+parallel: Warning: sleep 9; echo 9
 echo '### Test --spreadstdin - more procs than args';   rm -f /tmp/parallel.ss.*;   seq 1 5 | stdout $NICEPAR -j 10 --spreadstdin 'cat >/tmp/parallel.ss.$PARALLEL_SEQ' >/dev/null;   cat /tmp/parallel.ss.*;   rm -f /tmp/parallel.ss.*
 ### Test --spreadstdin - more procs than args
 1
@@ -400,7 +406,7 @@ echo "### BUG: empty lines with --show-limit"
 ### BUG: empty lines with --show-limit
 echo | $NICEPAR --show-limits
 Maximal size of command: 131049
-Maximal used size of command: 131057
+Maximal used size of command: 131049
 
 Execution of  will continue now, and it will try to read its input
 and run commands; if this is not what you wanted to happen, please

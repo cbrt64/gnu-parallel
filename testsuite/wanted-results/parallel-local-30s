@@ -4,6 +4,8 @@ par_linebuffer_matters_compress_tag	### (--linebuffer) --compress --tag should g
 par_linebuffer_matters_compress_tag	OK: --linebuffer makes a difference
 par_memfree	### test memfree
 par_memfree	Free mem: 1k
+par_memfree	parallel: Warning: This job was killed because it timed out:
+par_memfree	parallel: Warning: parallel --memfree 1t echo Free mem: ::: 1t
 par_memfree	parallel: SIGTERM received. No new jobs will be started.
 par_memfree	parallel: Waiting for these 0 jobs to finish. Send SIGTERM again to stop now.
 par_memory_leak	### Test for memory leaks
@@ -39,6 +41,8 @@ par_sigterm	parallel: sleep 15; echo 7
 par_sigterm	parallel: sleep 15; echo 8
 par_sigterm	parallel: sleep 15; echo 9
 par_tmp_full	### Test --tmpdir running full. bug #40733 was caused by this
-par_tmp_full	parallel: Error: Output is incomplete. Cannot append to buffer file in /tmp/shm/parallel. Is the disk full?
+par_tmp_full	parallel: Error: Output is incomplete.
+par_tmp_full	parallel: Error: Cannot append to buffer file in /tmp/shm/parallel.
+par_tmp_full	parallel: Error: Is the disk full?
 par_tmp_full	parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
 par_tmp_full	Warning: unable to close filehandle properly: No space left on device during global destruction.

@@ -234,6 +234,10 @@ par_k_linebuffer	stderr in the middle
 par_k_linebuffer	stdout end
 par_kill_children_timeout	### Test killing children with --timeout and exit value (failed if timed out)
 par_kill_children_timeout	      0       0       0
+par_kill_children_timeout	parallel: Warning: This job was killed because it timed out:
+par_kill_children_timeout	parallel: Warning: doit 1000000000
+par_kill_children_timeout	parallel: Warning: This job was killed because it timed out:
+par_kill_children_timeout	parallel: Warning: doit 1000000001
 par_kill_children_timeout	2
 par_kill_children_timeout	      0       0       0
 par_line_buffer	### --line-buffer
@@ -253,7 +257,7 @@ par_linebuffer_tag_slow_output	a
 par_linebuffer_tag_slow_output	b	b
 par_linebuffer_tag_slow_output	b	
 par_maxlinelen_X_I	### Test max line length -X -I
-par_maxlinelen_X_I	201ecb8ca789cecf39ee914a6d75611b  -
+par_maxlinelen_X_I	3cfc69ee81b0fe7fdbe8eb059ad2da61  -
 par_maxlinelen_X_I	Chars per line (817788/7): 116826
 par_maxlinelen_m_I	### Test max line length -m -I
 par_maxlinelen_m_I	c78bd0799bc23d8946732f8b3ae3c94e  -

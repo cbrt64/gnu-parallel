@@ -74,8 +74,8 @@ please cite as described in 'parallel --citation'.
 echo '### bug #39787: --xargs broken'
 ### bug #39787: --xargs broken
   nice perl -e 'for(1..30000){print "$_\n"}' | $NICEPAR --xargs -k echo  | perl -ne 'print length $_,"\n"'
-131052
-37842
+131040
+37854
 echo '### --delay should grow by 3 sec per arg'
 ### --delay should grow by 3 sec per arg
   stdout /usr/bin/time -f %e parallel --delay 3 true ::: 1 2 | perl -ne '$_ >= 3 and $_ <= 8 and print "OK\n"'
@@ -88,6 +88,8 @@ echo '### Exit value should not be affected if an earlier job times out'
 Exitval
 -1
 255
+parallel: Warning: This job was killed because it timed out:
+parallel: Warning: sleep 10
 echo '### --header regexp'
 ### --header regexp
   (echo %head1; echo %head2; seq 5) | $NICEPAR -kj2 --pipe -N2 --header '(%.*\n)*' echo JOB{#}\;cat

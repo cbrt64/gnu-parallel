@@ -4475,7 +4475,7 @@ remote computers:
 
 =head1 EXIT STATUS
 
-Exit status depends on B<--halt-on-error> if one of these are used:
+Exit status depends on B<--halt-on-error> if one of these is used:
 success=X, success=Y%, fail=Y%.
 
 =over 6

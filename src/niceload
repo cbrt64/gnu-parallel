@@ -106,6 +106,8 @@ if(@opt::prg) {
     $::resume_process = $process;
     $SIG{TERM} = $SIG{INT} = \&resume;
 } elsif(@opt::pid) {
+    # Support --pid 3567,25678
+    @opt::pid = map { split /,/, $_ } @opt::pid;
     $process->set_pid(@opt::pid);
     $::resume_process = $process;
     $SIG{TERM} = $SIG{INT} = \&resume;

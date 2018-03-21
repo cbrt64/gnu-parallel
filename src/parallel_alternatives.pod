@@ -206,6 +206,8 @@ becomes (assuming you have 8 cores)
   ls | xargs -d "\n" -P8 -I {} bash -c "wc {} >{}.wc"
   ls | xargs -d "\n" -P8 -I {} bash -c "echo {}; ls {}|wc"
 
+https://www.gnu.org/software/findutils/
+
 
 =head2 DIFFERENCES BETWEEN find -exec AND GNU Parallel
 
@@ -214,6 +216,8 @@ B<find -exec> offer some of the same possibilities as GNU B<parallel>.
 B<find -exec> only works on files. So processing other input (such as
 hosts or URLs) will require creating these inputs as files. B<find
 -exec> has no support for running commands in parallel.
+
+https://www.gnu.org/software/findutils/
 
 
 =head2 DIFFERENCES BETWEEN make -j AND GNU Parallel
@@ -227,6 +231,8 @@ by GNU B<parallel> does not depend on eachother.
 
 (Very early versions of GNU B<parallel> were coincidently implemented
 using B<make -j>).
+
+https://www.gnu.org/software/make/
 
 
 =head2 DIFFERENCES BETWEEN ppss AND GNU Parallel
@@ -302,6 +308,8 @@ B<9> ./ppss.sh status -C config.cfg
 
 B<9> killall -SIGUSR2 parallel
 
+https://github.com/louwrentius/PPSS
+
 
 =head2 DIFFERENCES BETWEEN pexec AND GNU Parallel
 
@@ -362,6 +370,8 @@ faster as only one process will be either reading or writing:
 B<8> ls *jpg | parallel -j8 'sem --id diskio cat {} | jpegtopnm |' \
   'pnmscale 0.5 | pnmtojpeg | sem --id diskio cat > th_{}'
 
+https://www.gnu.org/software/pexec/
+
 
 =head2 DIFFERENCES BETWEEN xjobs AND GNU Parallel
 
@@ -404,6 +414,8 @@ cat /var/run/my_named_pipe | parallel &
 echo unzip 1.zip >> /var/run/my_named_pipe;
 echo tar cf /backup/myhome.tar /home/me >> /var/run/my_named_pipe
 
+http://www.maier-komor.de/xjobs.html
+
 
 =head2 DIFFERENCES BETWEEN prll AND GNU Parallel
 
@@ -424,6 +436,8 @@ using GNU B<parallel>:
   prll -s 'mogrify -flip $1' *.jpg
   parallel mogrify -flip ::: *.jpg
 
+https://github.com/exzombie/prll
+
 
 =head2 DIFFERENCES BETWEEN dxargs AND GNU Parallel
 
@@ -432,6 +446,8 @@ B<dxargs> is also a tool for running jobs in parallel.
 B<dxargs> does not deal well with more simultaneous jobs than SSHD's
 MaxStartups. B<dxargs> is only built for remote run jobs, but does not
 support transferring of files.
+
+http://www.semicomplete.com/blog/geekery/distributed-xargs.html
 
 
 =head2 DIFFERENCES BETWEEN mdm/middleman AND GNU Parallel
@@ -444,6 +460,8 @@ to GNU B<parallel>:
   seq 19 | parallel buffon -o - | sort -n > result
   cat files | parallel cmd
   find dir -execdir sem cmd {} \;
+
+https://github.com/cklin/mdm
 
 
 =head2 DIFFERENCES BETWEEN xapply AND GNU Parallel
@@ -501,6 +519,8 @@ B<11> xapply -f '[ -f %1 ] && echo %1' List | ...
 
 B<11> parallel '[ -f {} ] && echo {}' < List | ...
 
+http://carrera.databits.net/~ksb/msrc/local/bin/xapply/xapply.html
+
 
 =head2 DIFFERENCES BETWEEN AIX apply AND GNU Parallel
 
@@ -533,6 +553,8 @@ B</usr/joe>, enter:
 
   apply 'ln %1 /usr/joe' *
   parallel ln {} /usr/joe ::: *
+
+https://www.ibm.com/support/knowledgecenter/en/ssw_aix_61/com.ibm.aix.cmds1/apply.htm
 
 
 =head2 DIFFERENCES BETWEEN paexec AND GNU Parallel
@@ -580,8 +602,10 @@ using GNU B<parallel>:
 
 =back
 
+https://github.com/cheusov/paexec
 
-=head2 DIFFERENCES BETWEEN map AND GNU Parallel
+
+=head2 DIFFERENCES BETWEEN map(sitaramc) AND GNU Parallel
 
 B<map> sees it as a feature to have less features and in doing so it
 also handles corner cases incorrectly. A lot of GNU B<parallel>'s code
@@ -670,6 +694,8 @@ delimiter (only field delimiter), logging of jobs run with possibility
 to resume, keeping the output in the same order as input, --pipe
 processing, and dynamically timeouts.
 
+https://github.com/sitaramc/map
+
 
 =head2 DIFFERENCES BETWEEN ladon AND GNU Parallel
 
@@ -715,6 +741,8 @@ B<4> ladon "~/Music/*.wav" -- lame -V 2 FULLPATH DIRNAME/BASENAME.mp3
 
 B<4> parallel lame -V 2 FULLPATH DIRNAME/BASENAME.mp3 ::: ~/Music/*.wav
 
+https://github.com/danielgtaylor/ladon
+
 
 =head2 DIFFERENCES BETWEEN jobflow AND GNU Parallel
 
@@ -729,7 +757,7 @@ it can cause the system to run out of memory.
 B<jobflow> gives no error if the command is unknown, and like B<xargs>
 redirection requires wrapping with B<bash -c>.
 
-B<jobflow> makes it possible to set ressource limits on the running
+B<jobflow> makes it possible to set resource limits on the running
 jobs. This can be emulated by GNU B<parallel> using B<bash>'s B<ulimit>:
 
 
@@ -756,6 +784,8 @@ B<4> find . -name '*.bmp' | jobflow -threads=8 -exec bmp2jpeg {.}.bmp {.}.jpg
 
 B<4> find . -name '*.bmp' | parallel -j8 bmp2jpeg {.}.bmp {.}.jpg
 
+https://github.com/rofl0r/jobflow
+
 
 =head2 DIFFERENCES BETWEEN gargs AND GNU Parallel
 
@@ -779,6 +809,8 @@ B<1> seq 12 -1 1 | parallel -P 4 -n 3 "sleep {1}; echo {2} {3}"
 B<2> cat t.txt | gargs --sep "\s+" -p 2 "echo '{0}:{1}-{2}' full-line: \'{}\'"
 
 B<2> cat t.txt | parallel --colsep "\\s+" -P 2 "echo '{1}:{2}-{3}' full-line: \'{}\'"
+
+https://github.com/brentp/gargs
 
 
 =head2 DIFFERENCES BETWEEN orgalorg AND GNU Parallel
@@ -816,6 +848,8 @@ If the above is set up you can then do:
 
 B<orgalorg> has a progress indicator for the transferring of a
 file. GNU B<parallel> does not.
+
+https://github.com/reconquest/orgalorg
 
 
 =head2 DIFFERENCES BETWEEN Rust parallel AND GNU Parallel
@@ -864,6 +898,8 @@ user uses Rust parallel it will overwrite this file.
 
 If /tmp/parallel runs full during the run, Rust parallel does not
 report this, but finishes with success - thereby risking data loss.
+
+https://github.com/mmstick/parallel
 
 
 =head2 DIFFERENCES BETWEEN Rush AND GNU Parallel
@@ -1279,6 +1315,9 @@ The failed commands can be resumed with:
 
 =back
 
+https://github.com/shenwei356/rush
+
+
 =head2 DIFFERENCES BETWEEN ClusterSSH AND GNU Parallel
 
 ClusterSSH solves a different problem than GNU B<parallel>.
@@ -1298,6 +1337,8 @@ GNU B<parallel> can be used as a poor-man's version of ClusterSSH:
 
 B<parallel --nonall -S server-a,server-b do_stuff foo bar>
 
+https://github.com/duncs/clusterssh
+
 
 =head2 DIFFERENCES BETWEEN coshell AND GNU Parallel
 
@@ -1310,6 +1351,9 @@ syntax will not work.
 Output can be buffered by using B<-d>. Output is buffered in memory,
 so big output can cause swapping and therefore be terrible slow or
 even cause out of memory.
+
+https://github.com/gdm85/coshell
+
 
 =head2 DIFFERENCES BETWEEN spread AND GNU Parallel
 
@@ -1325,6 +1369,7 @@ It can be emulated with GNU B<parallel> using this Bash function:
   }
 
 This works execpt for the B<--exclude> option.
+
 
 =head2 DIFFERENCES BETWEEN pyargs AND GNU Parallel
 
@@ -1366,6 +1411,8 @@ and fails on B<pyargs traceroute gnu.org fsf.org>.
   # Similar, but not exactly the same
   parallel seq ::: 1 2 3 4 5 6
 
+https://github.com/robertblackwell/pyargs
+
 
 =head2 DIFFERENCES BETWEEN concurrently AND GNU Parallel
 
@@ -1377,7 +1424,7 @@ The output is prepended with the job number, and may be incomplete:
   7165
 
 When pretty printing it caches output in memory. Output mixes by using
-test A below wether or not output is cached.
+test MIX below wether or not output is cached.
 
 There seems to be no way of making a template command and have
 B<concurrently> fill that with different args. The full commands must
@@ -1387,8 +1434,66 @@ There is also no way of controlling how many jobs should be run in
 parallel at a time - i.e. "number of jobslots". Instead all jobs are
 simply started in parallel.
 
+https://github.com/kimmobrunfeldt/concurrently
+
+
+=head2 DIFFERENCES BETWEEN map(soveran) AND GNU Parallel
+
+B<map> does not run jobs in parallel by default. The README suggests using:
+
+  ... | map t 'sleep $t && say done &'
+
+But this fails if more jobs are run in parallel than the number of
+available processes. Since there is no support for parallelization in
+B<map> itself, the output also mixes:
+
+  seq 10 | map i 'echo start-$i && sleep 0.$i && echo end-$i &'
+
+The major difference is that GNU B<parallel> is build for parallelization
+and map is not. So GNU B<parallel> has lots of ways of dealing with the
+issues that parallelization raises:
+
+=over 4
+
+=item *
+
+Keep the number of processes manageable
+
+=item *
+
+Make sure output does not mix
+
+=item *
+
+Make Ctrl-C kill all running processes
+
+=back
+
+Here are the 5 examples converted to GNU Parallel:
+
+  1$ ls *.c | map f 'foo $f'
+  1$ ls *.c | parallel foo
+
+  2$ ls *.c | map f 'foo $f; bar $f'
+  2$ ls *.c | parallel 'foo {}; bar {}'
+
+  3$ cat urls | map u 'curl -O $u'
+  3$ cat urls | parallel curl -O
+
+  4$ printf "1\n1\n1\n" | map t 'sleep $t && say done'
+  4$ printf "1\n1\n1\n" | parallel 'sleep {} && say done'
+  4$ paralllel 'sleep {} && say done' ::: 1 1 1
+
+  5$ printf "1\n1\n1\n" | map t 'sleep $t && say done &'
+  5$ printf "1\n1\n1\n" | parallel -j0 'sleep {} && say done'
+  5$ parallel -j0 'sleep {} && say done' ::: 1 1 1
+
+https://github.com/soveran/map
+
 
 =head2 Todo
+
+Url for map, spread
 
 machma. Requires Go >= 1.7.
 
@@ -1414,14 +1519,21 @@ There are certain issues that are very common on parallelizing
 tools. Here are a few stress tests. Be warned: If the tool is badly
 coded it may overload you machine.
 
-=head2 A: Output mixes
 
-Output from 2 jobs should not mix. If the tool does not buffer, output
-will most likely mix.
+=head2 MIX: Output mixes
+
+Output from 2 jobs should not mix. If the output is not used, this
+does not matter; but if the output I<is> used then it is important
+that you do not get half a line from one job followed by half a line
+from another job.
+
+If the tool does not buffer, output will most likely mix now and then.
+
+This test stresses whether output mixes.
 
   #!/bin/bash
 
-  paralleltool=parallel
+  paralleltool="parallel -j0"
 
   cat <<-EOF > mycommand
   #!/bin/bash
@@ -1439,12 +1551,13 @@ will most likely mix.
   chmod +x mycommand
 
   # Run 30 jobs in parallel
-  seq 30 | $paralleltool -j0 ./mycommand > >(tr -s abcdef) 2> >(tr -s abcdef >&2)
+  seq 30 | $paralleltool ./mycommand > >(tr -s abcdef) 2> >(tr -s abcdef >&2)
 
   # 'a c e' and 'b d f' should always stay together
   # and there should only be a single line per job
 
-=head2 B: Output limited by RAM
+
+=head2 RAM: Output limited by RAM
 
 Some tools cache output in RAM. This makes them extremely slow if the
 output is bigger than physical memory and crash if the the output is
@@ -1452,7 +1565,7 @@ bigger than the virtual memory.
 
   #!/bin/bash
 
-  paralleltool=parallel
+  paralleltool="parallel -j0"
 
   cat <<'EOF' > mycommand
   #!/bin/bash
@@ -1464,9 +1577,45 @@ bigger than the virtual memory.
 
   # Run 20 jobs in parallel
   # Adjust 20 to be > physical RAM and < free space on /tmp
-  seq 20 | time $paralleltool -j0 ./mycommand | wc -c
+  seq 20 | time $paralleltool ./mycommand | wc -c
 
-=head2 C: Leaving tmp files at unexpected death
+
+=head2 DISKFULL: Incomplete data if /tmp runs full
+
+If caching is done on disk, the disk can run full during the run. Not
+all programs discover this. GNU Parallel discovers it, if it stays
+full for at least 2 seconds.
+
+  #!/bin/bash
+
+  paralleltool="parallel -j0"
+
+  # This should be a dir with less than 100 GB free space
+  smalldisk=/tmp/shm/parallel
+  
+  TMPDIR="$smalldisk"
+  export TMPDIR
+  
+  max_output() {
+      # Force worst case scenario:
+      # Make GNU Parallel only check once per second
+      sleep 10
+      # Generate 100 GB to fill $TMPDIR
+      # Adjust if /tmp is bigger than 100 GB
+      yes | head -c 100G >$TMPDIR/$$
+      # Generate 10 MB output that will not be buffered due to full disk
+      perl -e 'print "X"x10_000_000' | head -c 10M
+      echo This part is missing from incomplete output
+      sleep 2
+      rm $TMPDIR/$$
+      echo Final output
+  }
+  
+  export -f max_output
+  seq 10 | $paralleltool max_output | tr -s X
+
+
+=head2 CLEANUP: Leaving tmp files at unexpected death
 
 Some tools do not clean up tmp files if they are killed. If the tool
 buffers on disk, they may not clean up, if they are killed.
@@ -1485,11 +1634,12 @@ buffers on disk, they may not clean up, if they are killed.
   # Should be empty: No files should be left behind
   diff <(ls /tmp) /tmp/before
 
-=head2 D: Dealing badly with special file names.
+
+=head2 SPCCHAR: Dealing badly with special file names.
 
 It is not uncommon for users to create files like:
 
-  My brother's 12" records cost $$$.txt
+  My brother's 12" *** record  (costs $$$).jpg
 
 Some tools break on this.
 
@@ -1497,22 +1647,25 @@ Some tools break on this.
 
   paralleltool=parallel
 
-  touch "My brother's 12\" records cost \$\$\$.txt"
-  ls My*txt | $paralleltool echo
+  touch "My brother's 12\" *** record  (costs \$\$\$).jpg"
+  ls My*jpg | $paralleltool ls -l
 
-=head2 E: Composed commands do not work
+
+=head2 COMPOSED: Composed commands do not work
 
 Some tools require you to wrap composed commands into B<bash -c>.
 
   echo bar | $paralleltool echo foo';' echo {}
 
-=head2 F: Only one replacement string allowed
+
+=head2 ONEREP: Only one replacement string allowed
 
 Some tools can only insert the argument once.
 
   echo bar | $paralleltool echo {} foo {}
 
-=head2 G: Speed depends on number of words
+
+=head2 NUMWORDS: Speed depends on number of words
 
 Some tools become very slow if output lines have many words.
 

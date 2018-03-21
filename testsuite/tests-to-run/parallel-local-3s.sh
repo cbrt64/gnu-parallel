@@ -138,10 +138,10 @@ par_keeporder_roundrobin() {
 par_multiline_commands() {
     echo 'bug #50781: joblog format with multiline commands'
     rm -f /tmp/jl.$$
-    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 2s 'sleep {}; echo {};
-echo finish {}'
-    seq 1 3 | parallel --jl /tmp/jl.$$ --timeout 4s --retry-failed 'sleep {}; echo {};
-echo finish {}'
+    parallel --jl /tmp/jl.$$ --timeout 2s 'sleep {}; echo {};
+echo finish {}' ::: 1 2 4
+    parallel --jl /tmp/jl.$$ --timeout 5s --retry-failed 'sleep {}; echo {};
+echo finish {}' ::: 1 2 4
     rm -f /tmp/jl.$$
 }
 

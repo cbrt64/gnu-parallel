@@ -113,7 +113,9 @@ echo '### Disk full'
 ### Disk full
 cat /dev/zero >$SMALLDISK/out;   parallel --tmpdir $SMALLDISK echo ::: OK;   rm $SMALLDISK/out
 cat: write error: No space left on device
-parallel: Error: Output is incomplete. Cannot append to buffer file in /mnt/ram. Is the disk full?
+parallel: Error: Output is incomplete.
+parallel: Error: Cannot append to buffer file in /mnt/ram.
+parallel: Error: Is the disk full?
 parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
 Warning: unable to close filehandle properly: No space left on device during global destruction.
 echo '**'
@@ -552,7 +554,7 @@ e
   echo '### test too long args'
 ### test too long args
   perl -e 'print "z"x1000000' | parallel echo 2>&1
-parallel: Error: Command line too long (1000005 >= 131057) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+parallel: Error: Command line too long (1000005 >= 131049) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
   perl -e 'print "z"x1000000' | xargs echo 2>&1
 xargs: argument line too long
   (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
@@ -819,7 +821,7 @@ echo far
 ### Test --show-limits
   (echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
 Maximal size of command: 131049
-Maximal used size of command: 131057
+Maximal used size of command: 131049
 
 Execution of  will continue now, and it will try to read its input
 and run commands; if this is not what you wanted to happen, please

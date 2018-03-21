@@ -12,6 +12,18 @@ par_env_parallel	myvar_line  2
 par_env_parallel	myalias2 foo
 par_load	par_load 2>&1
 par_load	### Test --load (must give 1=true)
+par_load	parallel: Warning: This job was killed because it timed out:
+par_load	parallel: Warning: bzip2 < /dev/zero >/dev/null 
+par_load	parallel: Warning: This job was killed because it timed out:
+par_load	parallel: Warning: bzip2 < /dev/zero >/dev/null 
+par_load	parallel: Warning: This job was killed because it timed out:
+par_load	parallel: Warning: bzip2 < /dev/zero >/dev/null 
+par_load	parallel: Warning: This job was killed because it timed out:
+par_load	parallel: Warning: bzip2 < /dev/zero >/dev/null 
+par_load	parallel: Warning: This job was killed because it timed out:
+par_load	parallel: Warning: bzip2 < /dev/zero >/dev/null 
+par_load	parallel: Warning: This job was killed because it timed out:
+par_load	parallel: Warning: bzip2 < /dev/zero >/dev/null 
 par_load	
 par_load	1
 par_no_more_procs	par_no_more_procs 2>&1
