@@ -4,7 +4,6 @@
 
 Check that documentation is updated (compare to web):
 
-Fixet for 20170622
 git diff last-release-commit
 Unmodified beta since last version => production
 Unmodified alpha since last version => beta
@@ -214,13 +213,21 @@ I don’t know how you have fun.
 
 New in this release:
 
-https://medium.com/@alonisser/parallel-straight-from-your-command-line-feb6db8b6cee
+* niceload -p can now take multiple pids separated by comma
 
-https://github.com/inpacdb/POAP
+* --timeout gives a warning when killing processes
 
-https://chiefio.wordpress.com/2018/02/23/pi-cluster-parallel-script-first-fire/
+* --embed now uses the same code for all supported shells
 
-https://www.percona.com/blog/2018/02/22/restore-mysql-logical-backup-maximum-speed/
+* --delay can now take arguments like 1h12m07s
+
+* Parallel. Straight from your command line https://medium.com/@alonisser/parallel-straight-from-your-command-line-feb6db8b6cee
+
+* GNU Parallel was used in POAP-Parallelized Open Babel & Autodock suite Pipeline https://github.com/inpacdb/POAP
+
+* Pi Cluster Parallel Script First Fire https://chiefio.wordpress.com/2018/02/23/pi-cluster-parallel-script-first-fire/
+
+* How to Restore MySQL Logical Backup at Maximum Speed https://www.percona.com/blog/2018/02/22/restore-mysql-logical-backup-maximum-speed/
 
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>

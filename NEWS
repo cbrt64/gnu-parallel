@@ -1,4 +1,29 @@
-20180122
+20180322
+
+* niceload -p can now take multiple pids separated by comma
+
+* --timeout gives a warning when killing processes
+
+* --embed now uses the same code for all supported shells
+
+* --delay can now take arguments like 1h12m07s
+
+* Parallel. Straight from your command line
+  https://medium.com/@alonisser/parallel-straight-from-your-command-line-feb6db8b6cee
+
+* GNU Parallel was used in POAP-Parallelized Open Babel & Autodock
+  suite Pipeline https://github.com/inpacdb/POAP
+
+* Pi Cluster Parallel Script First Fire
+  https://chiefio.wordpress.com/2018/02/23/pi-cluster-parallel-script-first-fire/
+
+* How to Restore MySQL Logical Backup at Maximum Speed
+  https://www.percona.com/blog/2018/02/22/restore-mysql-logical-backup-maximum-speed/
+
+* Bug fixes and man page updates.
+
+
+20180222
 
 * --embed makes it possible to embed GNU parallel in a shell
   script. This is useful if you need to distribute your script to
