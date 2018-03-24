@@ -1417,7 +1417,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180322;
+    $Global::version = 20180323;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -3025,9 +3025,10 @@ sub progress {
 	    replace_placeholders(["\257<\257>"],0,0) : "";
 	# These chars mess up display in the terminal
 	$arg =~ tr/[\011-\016\033\302-\365]//d;
+	my $eta_dhms = ::seconds_to_time_units($eta);
 	my $bar_text =
-	    sprintf("%d%% %d:%d=%ds %s",
-		    $pctcomplete*100, $completed, $left, $eta, $arg);
+	    sprintf("%d%% %d:%d=%s %s",
+		    $pctcomplete*100, $completed, $left, $eta_dhms, $arg);
 	my $terminal_width = terminal_columns();
 	my $s = sprintf("%-${terminal_width}s",
 			substr($bar_text." "x$terminal_width,
@@ -4592,6 +4593,33 @@ sub multiply_time_units {
 	}
     }
     return wantarray ? @v : $v[0];
+}
+
+sub seconds_to_time_units {
+    # Convert seconds into ??d??h??m??s
+    # s=1, m=60, h=3600, d=86400
+    # Input:
+    #   $s = int in seconds
+    # Returns:
+    #   $str = string time units
+    my $s = shift;
+    my $str;
+    my $d = int($s/86400);
+    $s -= $d * 86400;
+    my $h = int($s/3600);
+    $s -= $h * 3600;
+    my $m = int($s/60);
+    $s -= $m * 60;
+    if($d) {
+	$str = sprintf("%dd%02dh%02dm%02ds",$d,$h,$m,$s);
+    } elsif($h) {
+	$str = sprintf("%dh%02dm%02ds",$h,$m,$s);
+    } elsif($m) {
+	$str = sprintf("%dm%02ds",$m,$s);
+    } else {
+	$str = sprintf("%ds",$s);
+    }
+    return $str;
 }
 
 {

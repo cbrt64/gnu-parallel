@@ -4,6 +4,7 @@
 
 Check that documentation is updated (compare to web):
 
+git grep -E '(alpha|beta) testing' | cat
 git diff last-release-commit
 Unmodified beta since last version => production
 Unmodified alpha since last version => beta
@@ -198,36 +199,18 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180322 ('Hawking') released <<[stable]>>
+Subject: GNU Parallel 20180422 ('Trèbes') released <<[stable]>>
 
-GNU Parallel 20180322 ('Hawking') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180422 ('Trèbes') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-If you aren’t nesting
-gnu parallel calls in gnu parallel calls
-I don’t know how you have fun.
-  -- Ernest W. Durbin III EWDurbin@twitter
+<<>>
+  -- 
 
 New in this release:
-
-* niceload -p can now take multiple pids separated by comma
-
-* --timeout gives a warning when killing processes
-
-* --embed now uses the same code for all supported shells
-
-* --delay can now take arguments like 1h12m07s
-
-* Parallel. Straight from your command line https://medium.com/@alonisser/parallel-straight-from-your-command-line-feb6db8b6cee
-
-* GNU Parallel was used in POAP-Parallelized Open Babel & Autodock suite Pipeline https://github.com/inpacdb/POAP
-
-* Pi Cluster Parallel Script First Fire https://chiefio.wordpress.com/2018/02/23/pi-cluster-parallel-script-first-fire/
-
-* How to Restore MySQL Logical Backup at Maximum Speed https://www.percona.com/blog/2018/02/22/restore-mysql-logical-backup-maximum-speed/
 
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
@@ -301,13 +284,13 @@ Walk through the tutorial (man parallel_tutorial). Your commandline will love yo
 
 When using programs that use GNU Parallel to process data for publication please cite:
 
-O. Tange (2011): GNU Parallel - The Command-Line Power Tool, ;login: The USENIX Magazine, February 2011:42-47.
+O. Tange (2018): GNU Parallel 2018, April 2018, https://doi.org/10.5281/zenodo.1146014.
 
 If you like GNU Parallel:
 
 * Give a demo at your local user group/team/colleagues
 * Post the intro videos on Reddit/Diaspora*/forums/blogs/ Identi.ca/Google+/Twitter/Facebook/Linkedin/mailing lists
-* Get the merchandise https://www.gnu.org/s/parallel/merchandise.html
+* Get the merchandise https://gnuparallel.threadless.com/designs/gnu-parallel
 * Request or write a review for your favourite blog or magazine
 * Request or build a package for your favourite distribution (if it is not already there)
 * Invite me for your next conference

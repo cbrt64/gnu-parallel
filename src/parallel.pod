@@ -648,7 +648,7 @@ If I<eof-str> is omitted, there is no end of file string.  If neither
 B<-E> nor B<-e> is used, no end of file string is used.
 
 
-=item B<--embed> (alpha testing)
+=item B<--embed> (beta testing)
 
 Embed GNU B<parallel> in a shell script. If you need to distribute your
 script to someone who does not want to install GNU B<parallel> you can
@@ -2899,6 +2899,24 @@ B<$(date -d "today -$1 days" +%Y%m%d)> will give the dates in
 YYYYMMDD with B<$1> days subtracted.
 
 
+=head1 EXAMPLE: Download world map from NASA
+
+NASA provides tiles to download on earthdata.nasa.gov. Download tiles
+for Blue Marble world map and create a 10240x20480 map.
+
+  base=https://map1a.vis.earthdata.nasa.gov/wmts-geo/wmts.cgi
+  service="SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0"
+  layer="LAYER=BlueMarble_ShadedRelief_Bathymetry"
+  set="STYLE=&TILEMATRIXSET=EPSG4326_500m&TILEMATRIX=5"
+  tile="TILEROW={1}&TILECOL={2}"
+  format="FORMAT=image%2Fjpeg"
+  url="$base?$service&$layer&$set&$tile&$format"
+
+  parallel -j0 -q wget "$url" -O {1}_{2}.jpg ::: {0..19} ::: {0..39}
+  parallel eval convert +append {}_{0..39}.jpg line{}.jpg ::: {0..19}
+  convert -append line{0..19}.jpg world.jpg
+
+
 =head1 EXAMPLE: Copy files as last modified date (ISO8601) with added random digits
 
   find . | parallel cp {} '../destdir/{= $a=int(10000*rand); $_=pQ($_);
@@ -3995,7 +4013,7 @@ the file at the same time.
 Name the semaphore to have multiple different semaphores active at the
 same time:
 
-  seq 3 | parallel sem --id mymutex sed -i -e 'i{}' myfile
+  seq 3 | parallel sem --id mymutex sed -i -e '1i{}' myfile
 
 
 =head1 EXAMPLE: Mutex for a script
