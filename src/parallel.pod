@@ -2485,7 +2485,7 @@ a bc " -> "a bc". This is the default if B<--colsep> is used.
 
 =item B<-u>
 
-Ungroup output.  Output is printed as soon as possible and by passes
+Ungroup output.  Output is printed as soon as possible and bypasses
 GNU B<parallel> internal processing. This may cause output from
 different commands to be mixed thus should only be used if you do not
 care about the output. Compare these:
@@ -2917,7 +2917,35 @@ for Blue Marble world map and create a 10240x20480 map.
   convert -append line{0..19}.jpg world.jpg
 
 
-=head1 EXAMPLE: Copy files as last modified date (ISO8601) with added random digits
+=head1 EXAMPLE: Download Apollo-11 images from NASA using jq
+
+Search NASA using their API to get JSON for images related to 'apollo
+11' and has 'moon landing' in the description.
+
+The search query returns JSON containing URLs to JSON containing
+collections of pictures. One of the pictures in each of these
+collection is I<large>.
+
+B<wget> is used to get the JSON for the search query. B<jq> is then
+used to extract the URLs of the collections. B<parallel> then calls
+B<wget> to get each collection, which is passed to B<jq> to extract
+the URLs of all images. B<grep> filters out the I<large> images, and
+B<parallel> finally uses B<wget> to fetch the images.
+
+  base="https://images-api.nasa.gov/search"
+  q="q=apollo 11"
+  description="description=moon landing"
+  media_type="media_type=image"
+  wget -O - "$base?$q&$description&$media_type" |
+    jq -r .collection.items[].href |
+    parallel wget -O - |
+    jq -r .[] |
+    grep large |
+    parallel wget
+
+
+=head1 EXAMPLE: Copy files as last modified date (ISO8601) with added
+random digits
 
   find . | parallel cp {} '../destdir/{= $a=int(10000*rand); $_=pQ($_);
     $_=`date -r "$_" +%FT%T"$a"`; chomp; =}'
@@ -3205,7 +3233,8 @@ significant. Compare the speed of these:
 If your program cannot take multiple arguments, then you can use GNU
 B<parallel> to spawn multiple GNU B<parallel>s:
 
-  seq -w 0 999999 | parallel -j10 --pipe parallel -j0 touch pict{}.jpg
+  seq -w 0 9999999 |
+    parallel -j10 -q -I,, --pipe parallel -j0 touch pict{}.jpg
 
 If B<-j0> normally spawns 252 jobs, then the above will try to spawn
 2520 jobs. On a normal GNU/Linux system you can spawn 32000 jobs using

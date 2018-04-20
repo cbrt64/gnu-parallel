@@ -51,11 +51,11 @@ env_parallel() {
     }
     _names_of_FUNCTIONS() {
 	# myfunc is a function
-	type `_names_of_maybe_FUNCTIONS` |
+	LANG=C type `_names_of_maybe_FUNCTIONS` |
 	    perl -ne '/^(\S+) is a function$/ and not $seen{$1}++ and print "$1\n"'
     }
     _bodies_of_FUNCTIONS() {
-	type "$@" | perl -ne '/^(\S+) is a function$/ or print'
+	LANG=C type "$@" | perl -ne '/^(\S+) is a function$/ or print'
     }
     _names_of_VARIABLES() {
 	# This may screw up if variables contain \n and =
@@ -131,7 +131,7 @@ env_parallel() {
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 	#   parallel is a tracked alias for /usr/local/bin/parallel (ksh)
 	# Return 0 if found, 1 otherwise
-	type "$@" |
+	LANG=C type "$@" |
 	    perl -pe '$exit += (s/ is an alias for .*// ||
 	                        s/ is aliased to .*// ||
                                 s/ is a function// ||

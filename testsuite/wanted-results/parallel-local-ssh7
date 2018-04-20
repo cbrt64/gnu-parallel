@@ -315,8 +315,8 @@ par_tcsh_man	Academic tradition requires you to cite works you base your article
 par_tcsh_man	If you use programs that use GNU Parallel to process data for an article in a
 par_tcsh_man	scientific publication, please cite:
 par_tcsh_man	
-par_tcsh_man	  O. Tange (2011): GNU Parallel - The Command-Line Power Tool,
-par_tcsh_man	  ;login: The USENIX Magazine, February 2011:42-47.
+par_tcsh_man	  O. Tange (2018): GNU Parallel 2018, Apr 2018, ISBN 9781387509881,
+par_tcsh_man	  DOI https://doi.org/10.5281/zenodo.1146014
 par_tcsh_man	
 par_tcsh_man	This helps funding further development; AND IT WON'T COST YOU A CENT.
 par_tcsh_man	If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
@@ -1019,8 +1019,8 @@ par_csh_man
 par_csh_man	
 par_csh_man	
 par_csh_man	                {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
-par_csh_man	  ;login: The USENIX Magazine, February 2011:42-47.
-par_csh_man	  O. Tange (2011): GNU Parallel - The Command-Line Power Tool,
+par_csh_man	  DOI https://doi.org/10.5281/zenodo.1146014
+par_csh_man	  O. Tange (2018): GNU Parallel 2018, Apr 2018, ISBN 9781387509881,
 par_csh_man	### From man env_parallel
 par_csh_man	--colsep regexp Split input on regexp for positional replacements
 par_csh_man	--nonall        Run the given command with no arguments on all sshlogins

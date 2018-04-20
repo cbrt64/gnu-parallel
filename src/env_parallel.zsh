@@ -105,7 +105,7 @@ env_parallel() {
 	#   which is hashed (/usr/bin/which)
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 	# Return 0 if found, 1 otherwise
-	type "$@" |
+	LANG=C type "$@" |
 	    perl -pe '$exit += (s/ is an alias for .*// ||
 	                        s/ is aliased to .*// ||
                                 s/ is a function// ||

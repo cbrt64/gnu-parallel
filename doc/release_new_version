@@ -199,7 +199,7 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180422 ('Trèbes') released <<[stable]>>
+Subject: GNU Parallel 20180422 ('Trèbes/Tiangong-1/Winnie Mandela/ASIM/Algeria') released <<[stable]>>
 
 GNU Parallel 20180422 ('Trèbes') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -212,6 +212,13 @@ Quote of the month:
 
 New in this release:
 
+Launch at DIKU
+
+https://userinfo.surfsara.nl/documentation/running-many-serial-jobs-efficiently
+
+http://fliplinux.com/gnu-parallel-6.html
+
+https://www.youtube.com/watch?v=sHpTywpb4_4
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 
