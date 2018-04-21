@@ -1329,6 +1329,8 @@ echo '### Test --tty'
 /dev/tty
 ### 1 .par file from --files expected
 0
+par_0_no_newline	A single zero without \n should not be ignored
+par_0_no_newline	0
 par_X_eta_div_zero	### bug #34422: parallel -X --eta crashes with div by zero
 par_X_eta_div_zero	
 par_X_eta_div_zero	Computers / CPU cores / Max jobs to run
@@ -1360,6 +1362,10 @@ par_blocking_redir	stdout
 par_colsep_0	bug --colsep 0
 par_colsep_0	OK
 par_colsep_0	OK
+par_csv	col1"x3"-new
+par_csv	line col2-new2
+par_csv	line col3-col 4
+par_csv	2"x3" board-Value with ,-Column 3
 par_dryrun_append_joblog	--dry-run should not append to joblog
 par_dryrun_append_joblog	1
 par_dryrun_append_joblog	2

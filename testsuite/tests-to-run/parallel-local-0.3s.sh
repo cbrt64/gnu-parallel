@@ -847,6 +847,20 @@ par_dryrun_append_joblog() {
     wc -l < /tmp/jl.$$
 }
 
+par_0_no_newline() {
+    echo 'A single zero without \n should not be ignored'
+    echo -n 0 | parallel echo 
+}
+
+par_csv() {
+    (echo '"col1""x3""","new'
+     echo 'line col2","new2'
+     echo 'line col3",col 4') |
+	parallel --csv echo {1}-{2}-{3}-{4}
+    echo '"2""x3"" board","Value with ,",Column 3' |
+	parallel --csv echo {1}-{2}-{3}
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

@@ -1047,6 +1047,7 @@ sub options_hash {
 	 "max-args|maxargs|n=i" => \$opt::max_args,
 	 "max-replace-args|N=i" => \$opt::max_replace_args,
 	 "colsep|col-sep|C=s" => \$opt::colsep,
+	 "csv"=> \$opt::csv,
 	 "help|h" => \$opt::help,
 	 "L=f" => \$opt::L,
 	 "max-lines|l:f" => \$opt::max_lines,
@@ -1175,6 +1176,14 @@ sub parse_options {
     }
     if(defined $opt::tmuxpane) { $opt::tmux = $opt::tmuxpane; }
     if(defined $opt::colsep) { $Global::trim = 'lr'; }
+    if(defined $opt::csv) {
+	$Global::use{"Text::CSV"} ||= eval "use Text::CSV; 1;";
+	$opt::colsep = defined $opt::colsep ? $opt::colsep : ",";
+	my $csv_setting = { binary => 1, sep_char => $opt::colsep };
+	my $sep = $csv_setting->{sep_char};
+	$Global::csv = Text::CSV->new($csv_setting)
+	    or die "Cannot use CSV: ".Text::CSV->error_diag ();
+    }
     if(defined $opt::header) {
 	$opt::colsep = defined $opt::colsep ? $opt::colsep : "\t";
     }
@@ -1242,11 +1251,11 @@ sub parse_options {
 	# Is the output a dir or CSV-file?
 	if($opt::results =~ /\.csv$/i) {
 	    # CSV with , as separator
-	    $Global::csv = ",";
+	    $Global::csvsep = ",";
 	    $Global::membuffer ||= 1;
 	} elsif($opt::results =~ /\.tsv$/i) {
 	    # CSV with TAB as separator
-	    $Global::csv = "\t";
+	    $Global::csvsep = "\t";
 	    $Global::membuffer ||= 1;
 	}
     }
@@ -1254,7 +1263,7 @@ sub parse_options {
 	my ($compress, $decompress) = find_compression_program();
 	$opt::compress_program ||= $compress;
 	$opt::decompress_program ||= $decompress;
-	if(($opt::results and not $Global::csv) or $opt::files) {
+	if(($opt::results and not $Global::csvsep) or $opt::files) {
 	    # No need for decompressing
 	    $opt::decompress_program = "cat >/dev/null";
 	}
@@ -4098,7 +4107,7 @@ sub usage {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-	 "  O. Tange (2018): GNU Parallel 2018, Apr 2018, ISBN 9781387509881,",
+	 "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
 	 "  DOI https://doi.org/10.5281/zenodo.1146014",
 	 "",
 	 "This helps funding further development; AND IT WON'T COST YOU A CENT.",
@@ -4126,7 +4135,7 @@ sub citation_notice {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  O. Tange (2018): GNU Parallel 2018, Apr 2018, ISBN 9781387509881,",
+	     "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
 	     "  DOI https://doi.org/10.5281/zenodo.1146014",
 	     "",
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
@@ -4220,7 +4229,7 @@ sub citation {
 	"      author       = {Tange, Ole},",
 	"      title        = {GNU Parallel 2018},",
 	"      publisher    = {Ole Tange},",
-	"      month        = Apr,",
+	"      month        = Mar,",
 	"      year         = 2018,",
 	"      ISBN         = {9781387509881},",
 	"      doi          = {10.5281/zenodo.1146014},",
@@ -7146,7 +7155,7 @@ sub openoutputfiles {
 	}
 	# Return immediately because we do not need setting filenames
 	return;
-    } elsif($opt::results and not $Global::csv) {
+    } elsif($opt::results and not $Global::csvsep) {
 	my $out = $self->{'commandline'}->results_out();
 	my $seqname;
 	if($out eq $opt::results or $out =~ m:/$:) {
@@ -8841,7 +8850,7 @@ sub print {
 	if($opt::sqlworker and not $opt::results) {
 	    $Global::sql->output($self);
 	}
-	if($Global::csv) {
+	if($Global::csvsep) {
 	    # Add output to CSV when finished
 	    $self->print_csv();
 	}
@@ -8905,7 +8914,7 @@ sub print {
 sub combine_ref {
     # Inspired by Text::CSV_PP::_combine (by Makamaka Hannyaharamitu)
     my @part = @_;
-    my $sep = $Global::csv;
+    my $sep = $Global::csvsep;
     my $quot = '"';
     my @out = ();
 
@@ -9008,7 +9017,7 @@ sub print_linebuffer {
 	}
     }
     if(not $self->virgin()) {
-	if($opt::files or ($opt::results and not $Global::csv)) {
+	if($opt::files or ($opt::results and not $Global::csvsep)) {
 	    # Print filename
 	    if($fdno == 1 and not $self->fh($fdno,"printed")) {
 		print $out_fd $self->tag(),$self->fh($fdno,"name"),"\n";
@@ -9055,7 +9064,7 @@ sub print_linebuffer {
 	    $self->add_returnsize($outputlength);
 	}
 	if(defined $self->{'exitstatus'}) {
-	    if($opt::files or ($opt::results and not $Global::csv)) {
+	    if($opt::files or ($opt::results and not $Global::csvsep)) {
 		$self->add_returnsize(-s $self->fh($fdno,"name"));
 	    } else {
 		# If the job is dead: print the remaining partial line
@@ -10459,7 +10468,7 @@ sub new {
 	# Open SQL table
 	$arg_sub_queue = SQLRecordQueue->new();
     } elsif(defined $colsep) {
-	# Open one file with colsep
+	# Open one file with colsep or CSV
 	$arg_sub_queue = RecordColQueue->new($fhs);
     } else {
 	# Open one or more files if multiple -a
@@ -10561,8 +10570,19 @@ sub get {
 	    my $line = $arg->orig();
 	    ::debug("run", "line='$line'\n");
 	    if($line ne "") {
-		for my $s (split /$opt::colsep/o, $line, -1) {
-		    push @out_record, Arg->new($s);
+		if($opt::csv) {
+		    # Parse CSV
+		    chomp $line;
+		    if(not $Global::csv->parse($line)) {
+			die "CSV has unexpected format: ^$line^";
+		    }
+		    for($Global::csv->fields()) {
+			push @out_record, Arg->new($_);
+		    }
+		} else {
+		    for my $s (split /$opt::colsep/o, $line, -1) {
+			push @out_record, Arg->new($s);
+		    }
 		}
 	    } else {
 		push @out_record, Arg->new("");
@@ -10797,13 +10817,28 @@ sub read_arg_from_fh {
     my $fh = shift;
     my $prepend;
     my $arg;
+    my $double_quotes = 0;
     do {{
 	# This makes 10% faster
-	if(not ($arg = <$fh>)) {
+	if(not defined ($arg = <$fh>)) {
 	    if(defined $prepend) {
 		return Arg->new($prepend);
 	    } else {
 		return undef;
+	    }
+	}
+	if($opt::csv) {
+	    # We need to read a full CSV line.
+	    $double_quotes += ($arg =~ y/"/"/);
+	    if($double_quotes % 2) {
+		# CSV halflines with quoting:
+		#   col1,"col2 2""x3"" board newline  <-this one
+		#   cont",col3
+		$prepend .= $arg;
+		redo;
+	    } else {
+		# Now we have a full CSV line
+		$double_quotes = 0;
 	    }
 	}
 	# Remove delimiter

@@ -592,6 +592,21 @@ Use I<prg> for (de)compressing temporary files. It is assumed that I<prg
 output) unless B<--decompress-program> is given.
 
 
+=item B<--csv> (alpha testing)
+
+Treat input as CSV-format. B<--colsep> sets the field delimiter. It
+works very much like B<--colsep> except it deals correctly with
+quoting:
+
+   echo '"1 big, 2 small","2""x4"" plank",12.34' |
+     parallel --csv echo {1} of {2} at {3}
+
+Even quoted newlines are parsed correctly:
+
+   (echo '"Start of field 1 with newline'
+    echo 'Line 2 in field 1";value 2') |
+     parallel --csv --colsep ';' echo Field 1: {1} Field 2: {2}
+
 =item B<--delimiter> I<delim>
 
 =item B<-d> I<delim>
