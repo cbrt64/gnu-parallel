@@ -29,7 +29,8 @@ env_parallel() {
     # env_parallel.sh
 
     _names_of_ALIASES() {
-	for _i in `alias | perl -ne 's/^alias //;s/^(\S+)=.*/$1/ && print' 2>/dev/null`; do
+	# alias fails on Unixware 5
+	for _i in `alias 2>/dev/null | perl -ne 's/^alias //;s/^(\S+)=.*/$1/ && print' 2>/dev/null`; do
 	    # Check if this name really is an alias
 	    # or just part of a multiline alias definition
 	    if alias $_i >/dev/null 2>/dev/null; then
@@ -280,16 +281,16 @@ _parset_main() {
     if perl -e 'exit not grep /,| /, @ARGV' "$_parset_name" ; then
 	# $_parset_name contains , or space
 	# Split on , or space to get the names
-	eval "$(
+	eval "`
 	    # Compute results into files
 	    $_parset_parallel_prg --files -k "$@" |
-		# var1=`cat tmpfile1; rm tmpfile1`
-		# var2=`cat tmpfile2; rm tmpfile2`
-		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
+		# var1= cat tmpfile1; rm tmpfile1
+		# var2= cat tmpfile2; rm tmpfile2
+		parallel -q echo {2}='\`cat {1}; rm {1}\`' :::: - :::+ \`
 		    echo "$_parset_name" |
 			perl -pe 's/,/ /g'
-			 )
-	    )"
+			 \`
+	    `"
     else
 	# $_parset_name does not contain , or space
 	# => $_parset_name is the name of the array to put data into

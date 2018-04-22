@@ -1,3 +1,33 @@
+20180422
+
+* --csv makes GNU Parallel parse the input sources as CSV. When used
+  with --pipe it only passes full CSV-records.
+
+* Time in --bar is printed as 1d02h03m04s.
+
+* Optimization of --tee: It spawns a process less per value.
+
+* The GNU Parallel 2018 book is now available:
+  http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
+
+* Modern pentest tricks for faster, wider, greater engagement (15)
+  https://conference.hitb.org/hitbsecconf2018ams/materials/D1%20COMMSEC%20-%20Thomas%20Debize%20-%20Modern%20Pentest%20Tricks%20for%20Faster,%20Wider,%20Greater%20Engagements.pdf
+
+* Running many serial jobs efficiently
+  https://userinfo.surfsara.nl/documentation/running-many-serial-jobs-efficiently
+
+* GNU Parallel: как сохранить результаты нескольких команд для
+  переменной? http://fliplinux.com/gnu-parallel-6.html
+
+* Running Multiple Commands in Parallel on a GNU Linux
+  https://www.youtube.com/watch?v=sHpTywpb4_4
+
+* Klaatu covers the documentation of GNU parallel in episode 12x15
+  http://gnuworldorder.info/
+
+* Bug fixes and man page updates.
+
+
 20180322
 
 * niceload -p can now take multiple pids separated by comma
