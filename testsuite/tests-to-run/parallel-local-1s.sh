@@ -237,6 +237,99 @@ _EOF
     ps aux | grep parallel[-]-lb-test
 }
 
+par_macron() {
+    print_it() {
+	parallel ::: "echo $1"
+	parallel echo ::: "$1"
+	parallel echo "$1" ::: "$1"
+	parallel echo \""$1"\" ::: "$1"
+	parallel -q echo ::: "$1"
+	parallel -q echo "$1" ::: "$1"
+	parallel -q echo \""$1"\" ::: "$1"
+    }
+    print_it "$(perl -e 'print "\257"')"
+    print_it "$(perl -e 'print "\257\256"')"
+    print_it "$(perl -e 'print "\257<\257<\257>\257>"')"
+}
+
+par_header_parens() {
+    echo 'bug #49538: --header and {= =}'
+
+    parallel --header : echo '{=v2=}{=v1 $_=Q($_)=}' ::: v1 K ::: v2 O
+    parallel --header : echo '{2}{=1 $_=Q($_)=}' ::: v2 K ::: v1 O
+    parallel --header : echo {var/.} ::: var sub/dir/file.ext
+    parallel --header : echo {var//} ::: var sub/dir/file.ext
+    parallel --header : echo {var/.} ::: var sub/dir/file.ext
+    parallel --header : echo {var/} ::: var sub/dir/file.ext
+    parallel --header : echo {var.} ::: var sub/dir/file.ext
+}
+
+par_parset2() {
+    . `which env_parallel.bash`
+    echo '### parset into array'
+    parset arr1 echo ::: foo bar baz
+    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+    echo '### parset into indexed array vars'
+    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+    echo ${myarray[*]}
+    echo ${myarray[4]} ${myarray[5]} ${myarray[5]}
+
+    echo '### env_parset'
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
+    myvar="myvar"
+    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+    env_parset arr1 myecho ::: foo bar baz
+    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myecho ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myecho ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+    env_parset 'myarray[6],myarray[5],myarray[4]' myecho ::: baz bar foo
+    echo "${myarray[*]}"
+    echo "${myarray[4]} ${myarray[5]} ${myarray[5]}"
+
+    echo 'bug #52507: parset arr1 -v echo ::: fails'
+    parset arr1 -v seq ::: 1 2 3
+    echo "${arr1[2]}"
+}
+
+par_pipe_compress_blocks() {
+    echo "### bug #41482: --pipe --compress blocks at different -j/seq combinations"
+    seq 1 | parallel -k -j2 --compress -N1 -L1 --pipe cat
+    echo echo 1-4 + 1-4
+    seq 4 | parallel -k -j3 --compress -N1 -L1 -vv echo
+    echo 4 times wc to stderr to stdout
+    (seq 4 | parallel -k -j3 --compress -N1 -L1 --pipe wc '>&2') 2>&1 >/dev/null
+    echo 1 2 3 4
+    seq 4 | parallel -k -j3 --compress echo
+    echo 1 2 3 4
+    seq 4 | parallel -k -j1 --compress echo
+    echo 1 2
+    seq 2 | parallel -k -j1 --compress echo
+    echo 1 2 3
+    seq 3 | parallel -k -j2 --compress -N1 -L1 --pipe cat
+}
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

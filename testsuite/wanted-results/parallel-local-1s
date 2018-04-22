@@ -153,6 +153,14 @@ par_fifo_under_csh	1
 par_fifo_under_csh	868832
 par_fifo_under_csh	1
 par_fifo_under_csh	exit 22
+par_header_parens	bug #49538: --header and {= =}
+par_header_parens	OK
+par_header_parens	OK
+par_header_parens	file
+par_header_parens	sub/dir
+par_header_parens	file
+par_header_parens	file.ext
+par_header_parens	sub/dir/file
 par_incomplete_linebuffer	bug #51337: --lb does not kill jobs at sigpipe
 par_incomplete_linebuffer	1
 par_incomplete_linebuffer	2
@@ -261,6 +269,28 @@ par_linebuffer_files	lrz	--files
 par_linebuffer_files	lrz	1
 par_linebuffer_files	lrz	--results
 par_linebuffer_files	lrz	1
+par_macron	п
+par_macron	п
+par_macron	п п
+par_macron	п п
+par_macron	п
+par_macron	п п
+par_macron	"п" п
+par_macron	по
+par_macron	по
+par_macron	по по
+par_macron	по по
+par_macron	по
+par_macron	по п
+par_macron	"по" п
+par_macron	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
+par_macron	/bin/bash: -c: line 0: `echo п<п<п>п>'
+par_macron	п<п<п>п>
+par_macron	/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п>
+par_macron	п<п<п>п> п<п<п>п>
+par_macron	"п<п<п>п>" п<п<п>п>
 par_max_length_len_128k	### BUG: The length for -X is not close to max (131072)
 par_max_length_len_128k	      1   12817  131016
 par_max_length_len_128k	      1   10946  131032
@@ -322,6 +352,78 @@ par_parset	9
 par_parset	Commands with newline require -0
 par_parset	line1
 par_parset	line2
+par_parset2	### parset into array
+par_parset2	foo bar baz
+par_parset2	### parset into vars with comma
+par_parset2	foo bar baz
+par_parset2	### parset into vars with space
+par_parset2	foo bar baz
+par_parset2	### parset with newlines
+par_parset2	1
+par_parset2	1
+par_parset2	2
+par_parset2	1
+par_parset2	2
+par_parset2	3
+par_parset2	### parset into indexed array vars
+par_parset2	foo bar baz
+par_parset2	foo bar bar
+par_parset2	### env_parset
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	newline1
+par_parset2	newline2
+par_parset2	1
+par_parset2	newline1
+par_parset2	newline2
+par_parset2	1
+par_parset2	2
+par_parset2	newline1
+par_parset2	newline2
+par_parset2	1
+par_parset2	2
+par_parset2	3
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 bar
+par_parset2	bug #52507: parset arr1 -v echo ::: fails
+par_parset2	seq 3
+par_parset2	1
+par_parset2	2
+par_parset2	3
+par_pipe_compress_blocks	### bug #41482: --pipe --compress blocks at different -j/seq combinations
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	echo 1-4 + 1-4
+par_pipe_compress_blocks	echo 1
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	echo 2
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	echo 3
+par_pipe_compress_blocks	3
+par_pipe_compress_blocks	echo 4
+par_pipe_compress_blocks	4
+par_pipe_compress_blocks	4 times wc to stderr to stdout
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	      1       1       2
+par_pipe_compress_blocks	1 2 3 4
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	3
+par_pipe_compress_blocks	4
+par_pipe_compress_blocks	1 2 3 4
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	3
+par_pipe_compress_blocks	4
+par_pipe_compress_blocks	1 2
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	1 2 3
+par_pipe_compress_blocks	1
+par_pipe_compress_blocks	2
+par_pipe_compress_blocks	3
 par_pxz_complains	bug #44250: pxz complains File format not recognized but decompresses anyway
 par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_pxz_complains	can not seek in input: Illegal seek

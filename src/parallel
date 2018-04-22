@@ -392,7 +392,8 @@ sub find_split_positions {
 		    }
 		} else {
 		    # If match $recend$recstart => Record position
-		    # TODO optimize to only look at the appended $dd_block_size + len $recendrecstart
+		    # TODO optimize to only look at the appended
+		    #   $dd_block_size + len $recendrecstart
 		    # TODO increase $dd_block_size to optimize for longer records
 		    my $i = index64(\$buf,$recendrecstart);
 		    if($i != -1) {
@@ -434,7 +435,7 @@ sub cat_partial {
 		 sysseek(STDIN,shift,0) || die;
 		 $left = shift;
 		 while($read =
-		       sysread(STDIN,$buf, $left > 1048524 ? 1048524 : $left)){
+		       sysread(STDIN,$buf, $left > 131072 ? 131072 : $left)){
 		     $left -= $read;
 		     syswrite(STDOUT,$buf);
 		 }
@@ -500,6 +501,7 @@ sub spreadstdin {
 	  # Read n-line records
 	  my $n_lines = $buf =~ tr/\n/\n/;
 	  my $last_newline_pos = rindex64(\$buf,"\n");
+	  # Go backwards until there are full n-line records
 	  while($n_lines % $Global::max_lines) {
 	      $n_lines--;
 	      $last_newline_pos = rindex64(\$buf,"\n",$last_newline_pos-1);
@@ -533,6 +535,21 @@ sub spreadstdin {
 					   $recstart,$recend,length $1);
 	      }
 	  }
+      } elsif($opt::csv) {
+	  # Read a full CSV record
+	  # even number of " + end of line
+	  my $last_newline_pos = length $buf;
+	  do {
+	      # find last EOL
+	      $last_newline_pos = rindex64(\$buf,"\n",$last_newline_pos-1);
+	      # While uneven "
+	  } while((substr($buf,0,$last_newline_pos) =~ y/"/"/)%2
+	      and $last_newline_pos >= 0);
+	  # Chop at $last_newline_pos as that is where CSV record ends
+	  $anything_written +=
+	      write_record_to_pipe($chunk_number++,\$header,\$buf,
+				   $recstart,$recend,$last_newline_pos+1);
+	  shorten(\$buf,$last_newline_pos+1);
       } else {
 	  if($Global::max_number_of_args) {
 	      # -N => (start..*?end){n}
@@ -1427,7 +1444,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180323;
+    $Global::version = 20180422;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -10817,7 +10834,7 @@ sub read_arg_from_fh {
     my $fh = shift;
     my $prepend;
     my $arg;
-    my $double_quotes = 0;
+    my $half_record = 0;
     do {{
 	# This makes 10% faster
 	if(not defined ($arg = <$fh>)) {
@@ -10829,16 +10846,20 @@ sub read_arg_from_fh {
 	}
 	if($opt::csv) {
 	    # We need to read a full CSV line.
-	    $double_quotes += ($arg =~ y/"/"/);
-	    if($double_quotes % 2) {
-		# CSV halflines with quoting:
+	    if(($arg =~ y/"/"/) % 2 ) {
+		# The number of " on the line is uneven:
+		# If we were in a half_record => we have a full record now
+		# If we were ouside a half_record => we are in a half record now
+		$half_record = not $half_record;
+	    }
+	    if($half_record) {
+		# CSV half-record with quoting:
 		#   col1,"col2 2""x3"" board newline  <-this one
 		#   cont",col3
 		$prepend .= $arg;
 		redo;
 	    } else {
-		# Now we have a full CSV line
-		$double_quotes = 0;
+		# Now we have a full CSV record
 	    }
 	}
 	# Remove delimiter

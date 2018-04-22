@@ -607,6 +607,8 @@ Even quoted newlines are parsed correctly:
     echo 'Line 2 in field 1";value 2') |
      parallel --csv --colsep ';' echo Field 1: {1} Field 2: {2}
 
+When used with B<--pipe> only pass full CSV-records.
+
 =item B<--delimiter> I<delim>
 
 =item B<-d> I<delim>
