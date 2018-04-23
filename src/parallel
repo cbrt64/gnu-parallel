@@ -515,24 +515,29 @@ sub spreadstdin {
 	  if($Global::max_number_of_args) {
 	      # -N => (start..*?end){n}
 	      # -L -N => (start..*?end){n*l}
-	      my $read_n_lines =
+	      my $read_n_lines = -1+
 		  $Global::max_number_of_args * ($Global::max_lines || 1);
-	      while($buf =~ s/((?:$recstart.*?$recend){$read_n_lines})($recstart.*)$/$2/os) {
-		  # Copy to modifiable variable
-		  my $b = $1;
+	      # (?!negative lookahead) is needed to avoid backtracking
+	      # See: https://unix.stackexchange.com/questions/439356/
+	      while($buf =~ /# From start up till recend
+                             ^((?:(?!$recend$recstart).)*?$recend
+                             # Then n-1 times recstart.*recend
+                             (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines})
+                             # Followed by recstart
+                             (?=$recstart)/osx) {
 		  $anything_written +=
-		      write_record_to_pipe($chunk_number++,\$header,\$b,
+		      write_record_to_pipe($chunk_number++,\$header,\$buf,
 					   $recstart,$recend,length $1);
+		  shorten(\$buf,length $1);
 	      }
 	  } else {
 	      eof($in) and last;
 	      # Find the last recend-recstart in $buf
-	      if($buf =~ s/(.*$recend)($recstart.*?)$/$2/os) {
-		  # Copy to modifiable variable
-		  my $b = $1;
+	      if($buf =~ /^(.*$recend)$recstart.*?$/os) {
 		  $anything_written +=
-		      write_record_to_pipe($chunk_number++,\$header,\$b,
+		      write_record_to_pipe($chunk_number++,\$header,\$buf,
 					   $recstart,$recend,length $1);
+		  shorten(\$buf,length $1);
 	      }
 	  }
       } elsif($opt::csv) {
@@ -1444,7 +1449,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180422;
+    $Global::version = 20180423;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;

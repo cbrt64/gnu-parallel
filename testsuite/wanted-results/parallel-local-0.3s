@@ -1533,6 +1533,10 @@ par_retries_replacement_string	22
 par_retries_replacement_string	33
 par_retries_replacement_string	33
 par_retries_replacement_string	33
+par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
+par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
+par_slow_pipe_regexp	    979     980    5875
+par_slow_pipe_regexp	  25022   25022  150131
 par_tagstring_pipe	bug #50228: --pipe --tagstring broken
 par_tagstring_pipe	1	   1000    1000    3893
 par_tagstring_pipe	2	   1000    1000    5000

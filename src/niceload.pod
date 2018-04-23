@@ -132,9 +132,9 @@ useful to keep the connection alive.
 Sets niceness. See B<nice>(1).
 
 
-=item B<-p> I<PID>[,I<PID>] (beta testing)
+=item B<-p> I<PID>[,I<PID>]
 
-=item B<--pid> I<PID>[,I<PID>] (beta testing)
+=item B<--pid> I<PID>[,I<PID>]
 
 Process IDs of processes to suspend. You can specify multiple process
 IDs with multiple B<-p> I<PID> or by separating the PIDs with comma.

@@ -781,7 +781,14 @@ par_csv_pipe() {
          }' |
 	stdout parallel --pipe --csv -k --block 100k tail -n1
 }
-    
+
+par_slow_pipe_regexp() {
+    echo "### bug #53718: --pipe --regexp -N blocks"
+    echo This should take a few ms, but took more than 2 hours
+    seq 54000 80000 |
+	timeout -k 1 60 parallel -N1000 --regexp --pipe --recstart 4 --recend 5 -k wc
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

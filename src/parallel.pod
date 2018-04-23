@@ -592,7 +592,7 @@ Use I<prg> for (de)compressing temporary files. It is assumed that I<prg
 output) unless B<--decompress-program> is given.
 
 
-=item B<--csv> (alpha testing)
+=item B<--csv> (beta testing)
 
 Treat input as CSV-format. B<--colsep> sets the field delimiter. It
 works very much like B<--colsep> except it deals correctly with
@@ -665,7 +665,7 @@ If I<eof-str> is omitted, there is no end of file string.  If neither
 B<-E> nor B<-e> is used, no end of file string is used.
 
 
-=item B<--embed> (beta testing)
+=item B<--embed>
 
 Embed GNU B<parallel> in a shell script. If you need to distribute your
 script to someone who does not want to install GNU B<parallel> you can
