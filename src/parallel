@@ -2729,6 +2729,7 @@ sub init_run_jobs {
 	    $no_more_file_handles_warned++ or
 		::warning("No more file handles. ",
 			  "Raising ulimit -n or /etc/security/limits.conf may help.");
+	    debug("start", "No more file handles. ");
 	    return 0;
 	}
     }
@@ -3973,7 +3974,9 @@ sub reaper {
         }
         my $sshlogin = $job->sshlogin();
         $sshlogin->dec_jobs_running();
-        if(not $job->should_be_retried()) {
+        if($job->should_be_retried()) {
+	    $job->free_ressources();
+	} else {
 	    # The job is done
 	    $sshlogin->inc_jobs_completed();
 	    # Free the jobslot
@@ -9124,6 +9127,14 @@ sub print_linebuffer {
 
 sub print_tag {
     return print_normal(@_);
+}
+
+sub free_ressources() {
+    my $self = shift;
+    for my $fdno (sort { $a <=> $b } keys %Global::fd) {
+	close $self->fh($fdno,"w");
+	close $self->fh($fdno,"r");
+    }
 }
 
 sub print_normal {

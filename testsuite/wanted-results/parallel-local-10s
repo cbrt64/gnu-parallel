@@ -506,6 +506,15 @@ par_results_csv	   	8,:,999.999,999.999,0,6,0,0,"echo 23 11",23,11,"23 11
 par_results_csv	   	",
 par_results_csv	   	9,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12
 par_results_csv	   	",
+par_retries_all_fail	bug #53748: -k --retries 10 + out of filehandles = blocking
+par_retries_all_fail	1
+par_retries_all_fail	2
+par_retries_all_fail	3
+par_retries_all_fail	4
+par_retries_all_fail	5
+par_retries_all_fail	6
+par_retries_all_fail	7
+par_retries_all_fail	8
 par_round_robin_blocks	bug #49664: --round-robin does not complete
 par_round_robin_blocks	8
 par_slow_total_jobs	bug #51006: Slow total_jobs() eats job

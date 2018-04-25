@@ -299,6 +299,13 @@ par_linebuffer_tag_slow_output() {
     parallel --delay 1 -j0 --tag --line-buffer halfline ::: a b
 }
 
+par_retries_all_fail() {
+    echo "bug #53748: -k --retries 10 + out of filehandles = blocking"
+    ulimit -n 30
+    seq 8 |
+	parallel -k -j0 --retries 2 --timeout 0.1 'echo {}; sleep {}; false' 2>/dev/null
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1'
