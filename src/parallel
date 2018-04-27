@@ -1034,6 +1034,7 @@ sub options_hash {
 	 "trim=s" => \$opt::trim,
 	 "env=s" => \@opt::env,
 	 "recordenv|record-env" => \$opt::record_env,
+	 "session" => \$opt::session,
 	 "plain" => \$opt::plain,
 	 "profile|J=s" => \@opt::profile,
 	 "pipe|spreadstdin" => \$opt::pipe,
@@ -9131,9 +9132,11 @@ sub print_tag {
 
 sub free_ressources() {
     my $self = shift;
-    for my $fdno (sort { $a <=> $b } keys %Global::fd) {
-	close $self->fh($fdno,"w");
-	close $self->fh($fdno,"r");
+    if(not $opt::ungroup) {
+	for my $fdno (sort { $a <=> $b } keys %Global::fd) {
+	    close $self->fh($fdno,"w");
+	    close $self->fh($fdno,"r");
+	}
     }
 }
 
@@ -11857,4 +11860,4 @@ sub unlock {
 
 $opt::x = $Semaphore::timeout = $Semaphore::wait =
 $Job::file_descriptor_warning_printed = $Global::envdef = @Arg::arg =
-$Global::max_slot_number;
+$Global::max_slot_number = $opt::session;

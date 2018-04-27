@@ -30,3 +30,24 @@ par_path_remote_csh	parallel: Warning: Removed lo.
 par_path_remote_csh	parallel: Error: There are no hosts left to run on.
 par_path_remote_csh	Right now it seems csh does not respect /bin:/usr/bin:/tmp if set from Perl
 par_path_remote_csh	Done
+par_retries_1	### Test of --retries - it should run 13 jobs in total
+par_retries_1	13
+par_retries_2	### Test of --retries - it should run 25 jobs in total
+par_retries_2	25
+par_retries_4	### Test of --retries - it should run 49 jobs in total
+par_retries_4	49
+par_retries_bug_from_2010	### Bug with --retries
+par_retries_bug_from_2010	8
+par_retries_bug_from_2010	8
+par_retries_bug_from_2010	2
+par_retries_bug_from_2010	1
+par_retries_bug_from_2010	1
+par_retries_bug_from_2010	1
+par_retries_bug_from_2010	### These were not affected by the bug
+par_retries_bug_from_2010	8
+par_retries_bug_from_2010	8
+par_retries_bug_from_2010	1
+par_retries_bug_from_2010	4
+par_retries_bug_from_2010	4
+par_retries_bug_from_2010	4
+par_retries_bug_from_2010	2

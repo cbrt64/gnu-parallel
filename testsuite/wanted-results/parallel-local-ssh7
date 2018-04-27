@@ -216,6 +216,23 @@ par_zsh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_zsh_env_parallel_session	### Test env_parallel --session
+par_zsh_env_parallel_session	(eval):1: command not found: aliasbefore
+par_zsh_env_parallel_session	(eval):1: command not found: aliasbefore
+par_zsh_env_parallel_session	(eval):1: command not found: funcbefore
+par_zsh_env_parallel_session	(eval):1: command not found: funcbefore
+par_zsh_env_parallel_session	no_before
+par_zsh_env_parallel_session	no_before
+par_zsh_env_parallel_session	no_before
+par_zsh_env_parallel_session	no_before
+par_zsh_env_parallel_session	after aliasafter_OK
+par_zsh_env_parallel_session	after aliasafter_OK
+par_zsh_env_parallel_session	after funcafter_OK
+par_zsh_env_parallel_session	after funcafter_OK
+par_zsh_env_parallel_session	after varafter_OK
+par_zsh_env_parallel_session	after varafter_OK
+par_zsh_env_parallel_session	array after arrayafter_OK
+par_zsh_env_parallel_session	array after arrayafter_OK
 par_zsh_env_parallel	OK
 par_zsh_env_parallel	OK
 par_zsh_env_parallel	alias line 1
@@ -338,6 +355,7 @@ par_tcsh_funky	myvar  works
 par_tcsh_funky	space special chars problem
 par_tcsh_funky	space special chars problem
 par_tcsh_environment_too_big	Not implemented
+par_tcsh_env_parallel_session	Not implemented
 par_tcsh_env_parallel	OK
 par_tcsh_env_parallel	OK
 par_tcsh_env_parallel	bug #50435: Remote fifo broke in 20150522
@@ -444,7 +462,7 @@ par_sh_environment_too_big	OK_bigvar_remote
 par_sh_environment_too_big	OK_bigvar_quote
 par_sh_environment_too_big	OK_bigvar_quote_remote
 par_sh_environment_too_big	Rest should fail
-par_sh_environment_too_big	sh: 136: perl: Argument list too long
+par_sh_environment_too_big	sh: XXX: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_sh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -452,7 +470,7 @@ par_sh_environment_too_big	env_parallel: Error: 2. Try running this in a clean e
 par_sh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 136: perl: Argument list too long
+par_sh_environment_too_big	sh: XXX: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_sh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -460,7 +478,7 @@ par_sh_environment_too_big	env_parallel: Error: 2. Try running this in a clean e
 par_sh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 136: perl: Argument list too long
+par_sh_environment_too_big	sh: XXX: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_sh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -468,7 +486,7 @@ par_sh_environment_too_big	env_parallel: Error: 2. Try running this in a clean e
 par_sh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_sh_environment_too_big	sh: 136: perl: Argument list too long
+par_sh_environment_too_big	sh: XXX: perl: Argument list too long
 par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_sh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_sh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -476,6 +494,15 @@ par_sh_environment_too_big	env_parallel: Error: 2. Try running this in a clean e
 par_sh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_sh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_sh_env_parallel_session	### Test env_parallel --session
+par_sh_env_parallel_session	/bin/sh: XXX: aliasbefore: not found
+par_sh_env_parallel_session	/bin/sh: XXX: aliasbefore: not found
+par_sh_env_parallel_session	no_before
+par_sh_env_parallel_session	no_before
+par_sh_env_parallel_session	after aliasafter_OK
+par_sh_env_parallel_session	after aliasafter_OK
+par_sh_env_parallel_session	after varafter_OK
+par_sh_env_parallel_session	after varafter_OK
 par_sh_env_parallel	OK
 par_sh_env_parallel	OK
 par_sh_env_parallel	alias line 1
@@ -647,7 +674,7 @@ par_ksh_environment_too_big	OK_bigfunc_remote
 par_ksh_environment_too_big	OK_bigfunc_quote
 par_ksh_environment_too_big	OK_bigfunc_quote_remote
 par_ksh_environment_too_big	Rest should fail
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -655,7 +682,7 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -663,7 +690,7 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -671,7 +698,7 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -679,7 +706,7 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -687,7 +714,7 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -695,7 +722,7 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -703,7 +730,7 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -711,6 +738,23 @@ par_ksh_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ksh_env_parallel_session	### Test env_parallel --session
+par_ksh_env_parallel_session	/usr/bin/ksh: line 4: aliasbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 5: aliasbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 5: funcbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 5: funcbefore: not found
+par_ksh_env_parallel_session	no_before
+par_ksh_env_parallel_session	no_before
+par_ksh_env_parallel_session	no_before
+par_ksh_env_parallel_session	no_before
+par_ksh_env_parallel_session	after aliasafter_OK
+par_ksh_env_parallel_session	after aliasafter_OK
+par_ksh_env_parallel_session	after funcafter_OK
+par_ksh_env_parallel_session	after funcafter_OK
+par_ksh_env_parallel_session	after varafter_OK
+par_ksh_env_parallel_session	after varafter_OK
+par_ksh_env_parallel_session	array after arrayafter_OK
+par_ksh_env_parallel_session	array after arrayafter_OK
 par_ksh_env_parallel	OK
 par_ksh_env_parallel	OK
 par_ksh_env_parallel	alias line 1
@@ -846,6 +890,7 @@ par_fish_funky
 par_fish_funky	
 par_fish_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~ÄÅ\Ç\É\Ñ\Ö\Ü\á\à\â\ä\ã\å\ç\é\è\ê\ë\í\ì\î\ï\ñ\ó\ò\ô\ö\õ\ú\ù\û\ü\†\°\¢\£\§\•\¶\ß\®\©\™\´\¨\≠\Æ\Ø\∞\±\≤\≥\¥\µ\∂\∑\∏\π\∫\ª\º\Ω\æ\ø\¿\¡\¬\√\ƒ\≈\∆\«\»\…\ \À\Ã\Õ\Œ\œ\–\—\“\”\‘\’\÷\◊\ÿ\Ÿ\⁄\€\‹\›\ﬁ\ﬂ\‡\·\‚\„\‰\Â\Ê\Á\Ë\È\Í\Î\Ï\Ì\Ó\Ô\\Ò\Ú\Û\Ù\ı\ˆ\˜\¯\˘\˙\˚\¸\˝\˛\ˇ
 par_fish_environment_too_big	Not implemented
+par_fish_env_parallel_session	Not implemented
 par_fish_env_parallel	bug #50435: Remote fifo broke in 20150522
 par_fish_env_parallel	data from stdin
 par_fish_env_parallel	OK
@@ -941,7 +986,7 @@ par_dash_environment_too_big	OK_bigvar_remote
 par_dash_environment_too_big	OK_bigvar_quote
 par_dash_environment_too_big	OK_bigvar_quote_remote
 par_dash_environment_too_big	Rest should fail
-par_dash_environment_too_big	dash: 135: perl: Argument list too long
+par_dash_environment_too_big	dash: XXX: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_dash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -949,7 +994,7 @@ par_dash_environment_too_big	env_parallel: Error: 2. Try running this in a clean
 par_dash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 135: perl: Argument list too long
+par_dash_environment_too_big	dash: XXX: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_dash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -957,7 +1002,7 @@ par_dash_environment_too_big	env_parallel: Error: 2. Try running this in a clean
 par_dash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 135: perl: Argument list too long
+par_dash_environment_too_big	dash: XXX: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_dash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -965,7 +1010,7 @@ par_dash_environment_too_big	env_parallel: Error: 2. Try running this in a clean
 par_dash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_dash_environment_too_big	dash: 135: perl: Argument list too long
+par_dash_environment_too_big	dash: XXX: perl: Argument list too long
 par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_dash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_dash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -973,6 +1018,15 @@ par_dash_environment_too_big	env_parallel: Error: 2. Try running this in a clean
 par_dash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_dash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_dash_env_parallel_session	### Test env_parallel --session
+par_dash_env_parallel_session	/bin/dash: XXX: aliasbefore: not found
+par_dash_env_parallel_session	/bin/dash: XXX: aliasbefore: not found
+par_dash_env_parallel_session	no_before
+par_dash_env_parallel_session	no_before
+par_dash_env_parallel_session	after aliasafter_OK
+par_dash_env_parallel_session	after aliasafter_OK
+par_dash_env_parallel_session	after varafter_OK
+par_dash_env_parallel_session	after varafter_OK
 par_dash_env_parallel	OK
 par_dash_env_parallel	OK
 par_dash_env_parallel	alias line 1
@@ -1086,6 +1140,7 @@ par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=
 par_csh_funky	func_echo: Command not found.
 par_csh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~ÄÅ\Ç\É\Ñ\Ö\Ü\á\à\â\ä\ã\å\ç\é\è\ê\ë\í\ì\î\ï\ñ\ó\ò\ô\ö\õ\ú\ù\û\ü\†\°\¢\£\§\•\¶\ß\®\©\™\´\¨\≠\Æ\Ø\∞\±\≤\≥\¥\µ\∂\∑\∏\π\∫\ª\º\Ω\æ\ø\¿\¡\¬\√\ƒ\≈\∆\«\»\…\ \À\Ã\Õ\Œ\œ\–\—\“\”\‘\’\÷\◊\ÿ\Ÿ\⁄\€\‹\›\ﬁ\ﬂ\‡\·\‚\„\‰\Â\Ê\Á\Ë\È\Í\Î\Ï\Ì\Ó\Ô\\Ò\Ú\Û\Ù\ı\ˆ\˜\¯\˘\˙\˚\¸\˝\˛\ˇ
 par_csh_environment_too_big	Not implemented
+par_csh_env_parallel_session	Not implemented
 par_csh_env_parallel	bug #50435: Remote fifo broke in 20150522
 par_csh_env_parallel	data from stdin
 par_csh_env_parallel	OK
@@ -1323,6 +1378,23 @@ par_bash_environment_too_big	env_parallel: Error: 2. Try running this in a clean
 par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_bash_env_parallel_session	### Test env_parallel --session
+par_bash_env_parallel_session	/bin/bash: line XXX: aliasbefore: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: aliasbefore: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: funcbefore: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: funcbefore: command not found
+par_bash_env_parallel_session	no_before
+par_bash_env_parallel_session	no_before
+par_bash_env_parallel_session	no_before
+par_bash_env_parallel_session	no_before
+par_bash_env_parallel_session	after aliasafter_OK
+par_bash_env_parallel_session	after aliasafter_OK
+par_bash_env_parallel_session	after funcafter_OK
+par_bash_env_parallel_session	after funcafter_OK
+par_bash_env_parallel_session	after varafter_OK
+par_bash_env_parallel_session	after varafter_OK
+par_bash_env_parallel_session	array after arrayafter_OK
+par_bash_env_parallel_session	array after arrayafter_OK
 par_bash_env_parallel	OK
 par_bash_env_parallel	OK
 par_bash_env_parallel	alias line 1
@@ -1430,7 +1502,7 @@ par_ash_environment_too_big	OK_bigvar_remote
 par_ash_environment_too_big	OK_bigvar_quote
 par_ash_environment_too_big	OK_bigvar_quote_remote
 par_ash_environment_too_big	Rest should fail
-par_ash_environment_too_big	ash: 135: perl: Argument list too long
+par_ash_environment_too_big	ash: XXX: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -1438,7 +1510,7 @@ par_ash_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 135: perl: Argument list too long
+par_ash_environment_too_big	ash: XXX: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -1446,7 +1518,7 @@ par_ash_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 135: perl: Argument list too long
+par_ash_environment_too_big	ash: XXX: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -1454,7 +1526,7 @@ par_ash_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ash_environment_too_big	ash: 135: perl: Argument list too long
+par_ash_environment_too_big	ash: XXX: perl: Argument list too long
 par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ash_environment_too_big	env_parallel: Error: You can try 2 different approaches:
 par_ash_environment_too_big	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -1462,6 +1534,15 @@ par_ash_environment_too_big	env_parallel: Error: 2. Try running this in a clean 
 par_ash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ash_env_parallel_session	### Test env_parallel --session
+par_ash_env_parallel_session	/bin/ash: XXX: aliasbefore: not found
+par_ash_env_parallel_session	/bin/ash: XXX: aliasbefore: not found
+par_ash_env_parallel_session	no_before
+par_ash_env_parallel_session	no_before
+par_ash_env_parallel_session	after aliasafter_OK
+par_ash_env_parallel_session	after aliasafter_OK
+par_ash_env_parallel_session	after varafter_OK
+par_ash_env_parallel_session	after varafter_OK
 par_ash_env_parallel	OK
 par_ash_env_parallel	OK
 par_ash_env_parallel	alias line 1

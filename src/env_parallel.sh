@@ -7,7 +7,7 @@
 # after which 'env_parallel' works
 #
 #
-# Copyright (C) 2017,2018
+# Copyright (C) 2016,2017,2018
 # Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -98,10 +98,14 @@ env_parallel() {
             	    "Run \"parallel --record-env\" in a clean environment first.\n";
                 } else {
             	    chomp(@ignored_vars = <IN>);
-            	    $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
-		    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
                 }
             }
+            if($ENV{PARALLEL_IGNORED_NAMES}) {
+                push @ignored_vars, split/\s+/, $ENV{PARALLEL_IGNORED_NAMES};
+                chomp @ignored_vars;
+            }
+            $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+	    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
             ' -- "$@"
     }
 
@@ -130,7 +134,6 @@ env_parallel() {
 	#   which is /usr/bin/which
 	#   which is hashed (/usr/bin/which)
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
-	#   parallel is a tracked alias for /usr/local/bin/parallel (ksh)
 	# Return 0 if found, 1 otherwise
 	LANG=C type "$@" |
 	    perl -pe '$exit += (s/ is an alias for .*// ||
@@ -170,6 +173,17 @@ env_parallel() {
 	 _names_of_FUNCTIONS;
 	 _names_of_VARIABLES) |
 	    cat > $HOME/.parallel/ignored_vars
+	return 0
+    fi
+
+    # --session
+    if perl -e 'exit grep { /^--session$/ } @ARGV' -- "$@"; then
+	true skip
+    else
+	PARALLEL_IGNORED_NAMES="`_names_of_ALIASES;
+	 _names_of_FUNCTIONS;
+	 _names_of_VARIABLES`"
+	export PARALLEL_IGNORED_NAMES
 	return 0
     fi
 

@@ -119,10 +119,14 @@ env_parallel() {
             	    "Run \"parallel --record-env\" in a clean environment first.\n";
                 } else {
             	    chomp(@ignored_vars = <IN>);
-            	    $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
-		    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
                 }
             }
+            if($ENV{PARALLEL_IGNORED_NAMES}) {
+                push @ignored_vars, split/\s+/, $ENV{PARALLEL_IGNORED_NAMES};
+                chomp @ignored_vars;
+            }
+            $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+	    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
             ' -- "$@"
     }
 
@@ -192,6 +196,19 @@ env_parallel() {
 	 _names_of_FUNCTIONS;
 	 _names_of_VARIABLES) |
 	    cat > $HOME/.parallel/ignored_vars
+	return 0
+    fi
+
+    # --session
+    # Bash is broken in version 3.2.25 and 4.2.39
+    # The crazy '[ "`...`" == 0 ]' is needed for the same reason
+    if [ "`perl -e 'exit grep { /^--session$/ } @ARGV' -- "$@"; echo $?`" == 0 ] ; then
+	true skip
+    else
+	PARALLEL_IGNORED_NAMES="`_names_of_ALIASES;
+	 _names_of_FUNCTIONS;
+	 _names_of_VARIABLES`"
+	export PARALLEL_IGNORED_NAMES
 	return 0
     fi
 

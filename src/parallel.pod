@@ -692,7 +692,7 @@ variables except for the ones mentioned in ~/.parallel/ignored_vars.
 To copy the full environment (both exported and not exported
 variables, arrays, and functions) use B<env_parallel>.
 
-See also: B<--record-env>.
+See also: B<--record-env>, B<--session>.
 
 
 =item B<--eta>
@@ -1548,7 +1548,7 @@ B<--memfree> may give better results, so try using that first.
 Record current environment variables in ~/.parallel/ignored_vars. This
 is useful before using B<--env _>.
 
-See also B<--env>.
+See also B<--env>, B<--session>.
 
 
 =item B<--recstart> I<startstring>
@@ -2028,6 +2028,15 @@ See also B<man sem>.
 
 Use the replacement string I<replace-str> instead of B<{#}> for
 job sequence number.
+
+
+=item B<--session> (alpha testing)
+
+Record names in current environment in B<$PARALLEL_IGNORED_NAMES> and
+exit. Only used with B<env_parallel>. Aliases, functions, and
+variables with names in B<$PARALLEL_IGNORED_NAMES> will not be copied.
+
+See also B<--env>, B<--record-env>.
 
 
 =item B<--shebang>

@@ -72,10 +72,14 @@ env_parallel() {
             	    "Run \"parallel --record-env\" in a clean environment first.\n";
                 } else {
             	    chomp(@ignored_vars = <IN>);
-            	    $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
-		    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
                 }
             }
+            if($ENV{PARALLEL_IGNORED_NAMES}) {
+                push @ignored_vars, split/\s+/, $ENV{PARALLEL_IGNORED_NAMES};
+                chomp @ignored_vars;
+            }
+            $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+	    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
             ' -- "$@"
     }
 
@@ -147,6 +151,17 @@ env_parallel() {
 	 _names_of_FUNCTIONS;
 	 _names_of_VARIABLES) |
 	    cat > $HOME/.parallel/ignored_vars
+	return 0
+    fi
+
+    # --session
+    if perl -e 'exit grep { /^--session$/ } @ARGV' -- "$@"; then
+	true skip
+    else
+	PARALLEL_IGNORED_NAMES="`_names_of_ALIASES;
+	 _names_of_FUNCTIONS;
+	 _names_of_VARIABLES`"
+	export PARALLEL_IGNORED_NAMES
 	return 0
     fi
 
@@ -258,16 +273,16 @@ _parset_main() {
     if perl -e 'exit not grep /,| /, @ARGV' "$_parset_name" ; then
 	# $_parset_name contains , or space
 	# Split on , or space to get the names
-	eval "$(
+	eval "`
 	    # Compute results into files
 	    $_parset_parallel_prg --files -k "$@" |
-		# var1=`cat tmpfile1; rm tmpfile1`
-		# var2=`cat tmpfile2; rm tmpfile2`
-		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
+		# var1= cat tmpfile1; rm tmpfile1
+		# var2= cat tmpfile2; rm tmpfile2
+		parallel -q echo {2}='\`cat {1}; rm {1}\`' :::: - :::+ \`
 		    echo "$_parset_name" |
 			perl -pe 's/,/ /g'
-			 )
-	    )"
+			 \`
+	    `"
     else
 	# $_parset_name does not contain , or space
 	# => $_parset_name is the name of the array to put data into

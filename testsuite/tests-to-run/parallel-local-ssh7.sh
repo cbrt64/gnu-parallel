@@ -387,7 +387,7 @@ par_sh_man() {
     env_parallel --env multivar echo '"$multivar"' ::: work
     env_parallel --env multivar -S server echo '"$multivar"' ::: work
 
-    # Arrays are not supported by sh
+    # Arrays are not supported
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -1504,11 +1504,11 @@ par_bash_environment_too_big() {
 
     echo Rest should fail
 
-    bigvar="$(perl -e 'print "x"x123000')"
+    bigvar="$(perl -e 'print "x"x127000')"
     env_parallel echo ::: fail_bigvar
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x61000')"
+    bigvar="$(perl -e 'print "\""x64000')"
     env_parallel echo ::: fail_bigvar_quote
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
@@ -1517,7 +1517,7 @@ par_bash_environment_too_big() {
     env_parallel echo ::: fail_bigfunc
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x127000')"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
@@ -1544,7 +1544,7 @@ par_dash_environment_too_big() {
     env_parallel echo ::: OK_bigvar_quote
     env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
-#    Functions not supported in dash
+#    Functions not supported
 #    bigvar=u
 #    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
 #    env_parallel echo ::: OK_bigfunc
@@ -1565,7 +1565,7 @@ par_dash_environment_too_big() {
     env_parallel echo ::: fail_bigvar_quote
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
-#    Functions not supported in dash
+#    Functions not supported
 #    bigvar=u
 #    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
 #    env_parallel echo ::: fail_bigfunc
@@ -1610,20 +1610,20 @@ par_ksh_environment_too_big() {
 
     echo Rest should fail
 
-    bigvar="$(perl -e 'print "x"x122000')"
+    bigvar="$(perl -e 'print "x"x127000')"
     env_parallel echo ::: fail_bigvar
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x122000')"
+    bigvar="$(perl -e 'print "\""x128000')"
     env_parallel echo ::: fail_bigvar_quote
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x129000')"'"; };'
     env_parallel echo ::: fail_bigfunc
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x130000')"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
@@ -1646,7 +1646,7 @@ par_sh_environment_too_big() {
     env_parallel echo ::: OK_bigvar_quote
     env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
-#    Functions not supported in sh
+#    Functions not supported
 #    bigvar=u
 #    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
 #    env_parallel echo ::: OK_bigfunc
@@ -1667,7 +1667,7 @@ par_sh_environment_too_big() {
     env_parallel echo ::: fail_bigvar_quote
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
-#    Functions not supported in sh
+#    Functions not supported
 #    bigvar=u
 #    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
 #    env_parallel echo ::: fail_bigfunc
@@ -1712,20 +1712,20 @@ par_zsh_environment_too_big() {
 
     echo Rest should fail
 
-    bigvar="$(perl -e 'print "x"x121000')"
+    bigvar="$(perl -e 'print "x"x126000')"
     env_parallel echo ::: fail_bigvar
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x121000')"
+    bigvar="$(perl -e 'print "\""x127000')"
     env_parallel echo ::: fail_bigvar_quote
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x121000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x128000')"'"; };'
     env_parallel echo ::: fail_bigfunc
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x121000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x129000')"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
@@ -1740,7 +1740,7 @@ par_ash_parset() {
     echo 'parset'
     . `which env_parallel.ash`
 
-#    Arrays not supported in ash
+#    Arrays not supported
 #    echo '### parset into array'
 #    parset arr1 echo ::: foo bar baz
 #    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
@@ -1759,7 +1759,7 @@ par_ash_parset() {
     echo "$newline2"
     echo "$newline3"
 
-#    Arrays not supported in ash
+#    Arrays not supported
 #    echo '### parset into indexed array vars'
 #    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
 #    echo ${myarray[*]}
@@ -1771,10 +1771,10 @@ par_ash_parset() {
     }
     alias myecho='echo myecho "$myvar"'
     myvar="myvar"
-#    Arrays not supported in ash
+#    Arrays not supported
 #    myarr=("myarr  0" "myarr  1" "myarr  2")
     mynewline="`echo newline1;echo newline2;`"
-#    Arrays not supported in ash
+#    Arrays not supported
 #    env_parset arr1 myfun ::: foo bar baz
 #    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
     env_parset comma3,comma2,comma1 myecho ::: baz bar foo
@@ -1785,7 +1785,7 @@ par_ash_parset() {
     echo "$newline1"
     echo "$newline2"
     echo "$newline3"
-#    Arrays not supported in ash
+#    Arrays not supported
 #    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
 #    echo "${myarray[*]}"
 #    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
@@ -1857,7 +1857,7 @@ par_dash_parset() {
     echo 'parset'
     . `which env_parallel.dash`
 
-#    Arrays not supported in dash
+#    Arrays not supported
 #    echo '### parset into array'
 #    parset arr1 echo ::: foo bar baz
 #    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
@@ -1876,7 +1876,7 @@ par_dash_parset() {
     echo "$newline2"
     echo "$newline3"
 
-#    Arrays not supported in dash
+#    Arrays not supported
 #    echo '### parset into indexed array vars'
 #    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
 #    echo ${myarray[*]}
@@ -1888,10 +1888,10 @@ par_dash_parset() {
     }
     alias myecho='echo myecho "$myvar"'
     myvar="myvar"
-#    Arrays not supported in dash
+#    Arrays not supported
 #    myarr=("myarr  0" "myarr  1" "myarr  2")
     mynewline="`echo newline1;echo newline2;`"
-#    Arrays not supported in dash
+#    Arrays not supported
 #    env_parset arr1 myfun ::: foo bar baz
 #    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
     env_parset comma3,comma2,comma1 myecho ::: baz bar foo
@@ -1902,7 +1902,7 @@ par_dash_parset() {
     echo "$newline1"
     echo "$newline2"
     echo "$newline3"
-#    Arrays not supported in dash
+#    Arrays not supported
 #    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
 #    echo "${myarray[*]}"
 #    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
@@ -2024,9 +2024,9 @@ par_sh_parset() {
     echo "$var2"
     echo "$var3"
 
-#    Arrays not supported in sh
+#    Arrays not supported
 #    myarr=("myarr  0" "myarr  1" "myarr  2")
-#    Arrays not supported in sh
+#    Arrays not supported
 #    env_parset arr1 myfun ::: foo bar baz
 #    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
 
@@ -2042,7 +2042,7 @@ par_sh_parset() {
     echo "$newline1"
     echo "$newline2"
     echo "$newline3"
-#    Arrays not supported in sh
+#    Arrays not supported
 #    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
 #    echo "${myarray[*]}"
 #    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
@@ -2118,10 +2118,273 @@ _EOF
   ssh zsh@lo "$myscript"
 }
 
+### env_parallel_session
+
+par_ash_env_parallel_session() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.ash`
+    echo '### Test env_parallel --session'
+
+    alias aliasbefore='echo before'
+# Functions not supported
+#    varbefore='before'
+#    funcbefore() { echo 'before' "$@"; }
+# Arrays not supported
+#    arraybefore=(array before)
+    env_parallel --session
+    # stuff defined 
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+# Functions not supported
+#    env_parallel funcbefore ::: must_fail
+#    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+# Arrays not supported
+#    env_parallel echo '${arraybefore[*]}' ::: no_before
+#    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
+    alias aliasafter='echo after'
+    varafter='after'
+# Functions not supported
+#    funcafter() { echo 'after' "$@"; }
+# Arrays not supported
+#    arrayafter=(array after)
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+# Functions not supported
+#    env_parallel funcafter ::: funcafter_OK
+#    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+# Arrays not supported
+#    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
+#    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    unset PARALLEL_IGNORED_NAMES
+_EOF
+  )
+  ssh ash@lo "$myscript"
+}
+
+par_bash_env_parallel_session() {
+  myscript=$(cat <<'_EOF'
+    echo '### Test env_parallel --session'
+    . `which env_parallel.bash`
+
+    alias aliasbefore='echo before'
+    varbefore='before'
+    funcbefore() { echo 'before' "$@"; }
+    arraybefore=(array before)
+    env_parallel --session
+    # stuff defined 
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+    env_parallel funcbefore ::: must_fail
+    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+    env_parallel echo '${arraybefore[*]}' ::: no_before
+    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
+    alias aliasafter='echo after'
+    varafter='after'
+    funcafter() { echo 'after' "$@"; }
+    arrayafter=(array after)
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+    env_parallel funcafter ::: funcafter_OK
+    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
+    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    unset PARALLEL_IGNORED_NAMES
+_EOF
+  )
+  ssh bash@lo "$myscript"
+}
+
+par_csh_env_parallel_session() {
+    echo Not implemented
+}
+
+par_dash_env_parallel_session() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.dash`
+    echo '### Test env_parallel --session'
+
+    alias aliasbefore='echo before'
+    varbefore='before'
+# Functions not supported
+#    funcbefore() { echo 'before' "$@"; }
+# Arrays not supported
+#    arraybefore=(array before)
+    env_parallel --session
+    # stuff defined 
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+# Functions not supported
+#    env_parallel funcbefore ::: must_fail
+#    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+# Arrays not supported
+#    env_parallel echo '${arraybefore[*]}' ::: no_before
+#    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
+    alias aliasafter='echo after'
+    varafter='after'
+# Functions not supported
+#    funcafter() { echo 'after' "$@"; }
+# Arrays not supported
+#    arrayafter=(array after)
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+# Functions not supported
+#    env_parallel funcafter ::: funcafter_OK
+#    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+# Arrays not supported
+#    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
+#    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    unset PARALLEL_IGNORED_NAMES
+_EOF
+  )
+  ssh dash@lo "$myscript"
+}
+
+par_fish_env_parallel_session() {
+    echo Not implemented
+}
+
+par_ksh_env_parallel_session() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.ksh`
+    echo '### Test env_parallel --session'
+
+    alias aliasbefore='echo before'
+    varbefore='before'
+    funcbefore() { echo 'before' "$@"; }
+    arraybefore=(array before)
+    env_parallel --session
+    # stuff defined 
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+    env_parallel funcbefore ::: must_fail
+    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+    env_parallel echo '${arraybefore[*]}' ::: no_before
+    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
+    alias aliasafter='echo after'
+    varafter='after'
+    funcafter() { echo 'after' "$@"; }
+    arrayafter=(array after)
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+    env_parallel funcafter ::: funcafter_OK
+    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
+    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    unset PARALLEL_IGNORED_NAMES
+_EOF
+  )
+  ssh ksh@lo "$myscript"
+}
+
+par_sh_env_parallel_session() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.sh`
+    echo '### Test env_parallel --session'
+
+    alias aliasbefore='echo before'
+    varbefore='before'
+# Functions not supported
+#    funcbefore() { echo 'before' "$@"; }
+#    Arrays not supported
+#    arraybefore=(array before)
+    env_parallel --session
+    # stuff defined 
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+# Functions not supported
+#    env_parallel funcbefore ::: must_fail
+#    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+#    Arrays not supported
+#    env_parallel echo '${arraybefore[*]}' ::: no_before
+#    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
+    alias aliasafter='echo after'
+    varafter='after'
+    funcafter() { echo 'after' "$@"; }
+#    Arrays not supported
+#    arrayafter=(array after)
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+# Functions not supported
+#    env_parallel funcafter ::: funcafter_OK
+#    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+#    Arrays not supported
+#    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
+#    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    unset PARALLEL_IGNORED_NAMES
+_EOF
+  )
+  ssh sh@lo "$myscript"
+}
+
+par_tcsh_env_parallel_session() {
+    echo Not implemented
+}
+
+par_zsh_env_parallel_session() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.zsh`
+    eval "`cat <<"_EOS";
+    echo '### Test env_parallel --session'
+
+    alias aliasbefore='echo before'
+    varbefore='before'
+    funcbefore() { echo 'before' "$@"; }
+    arraybefore=(array before)
+    env_parallel --session
+    # stuff defined 
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+    env_parallel funcbefore ::: must_fail
+    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+    env_parallel echo '${arraybefore[*]}' ::: no_before
+    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
+    alias aliasafter='echo after'
+    varafter='after'
+    funcafter() { echo 'after' "$@"; }
+    arrayafter=(array after)
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+    env_parallel funcafter ::: funcafter_OK
+    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
+    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    unset PARALLEL_IGNORED_NAMES
+_EOS`"
+_EOF
+  )
+  ssh zsh@lo "$myscript"
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |
 compgen -A function | grep par_ | sort -r |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
     parallel --joblog /tmp/jl-`basename $0` -j200% --tag -k '{} 2>&1' |
-    perl -pe 's/line \d\d\d:/line XXX:/'
+    perl -pe 's/line \d\d\d:/line XXX:/;
+              s/sh:? \d?\d\d:/sh: XXX:/;
+              s/sh\[\d+\]/sh[XXX]/;'

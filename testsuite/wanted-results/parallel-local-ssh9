@@ -40,7 +40,7 @@ par_ksh_embed	code
 par_ksh_embed	here
 par_ksh_embed	parallel_OK
 par_ksh_embed	env_parallel --env OK
-par_ksh_embed	./parallel-embed[115]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_embed	./parallel-embed[118]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_embed	env_parallel: Error: Your environment is too big.
 par_ksh_embed	env_parallel: Error: You can try 2 different approaches:
 par_ksh_embed	env_parallel: Error: 1. Use --env and only mention the names to copy.

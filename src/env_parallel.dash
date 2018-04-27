@@ -7,7 +7,7 @@
 # after which 'env_parallel' works
 #
 #
-# Copyright (C) 2017,2018
+# Copyright (C) 2016,2017,2018
 # Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@ env_parallel() {
 	    perl -ne '/^(\S+) is a function$/ and not $seen{$1}++ and print "$1\n"'
     }
     _bodies_of_FUNCTIONS() {
-	LANC=C type "$@" | perl -ne '/^(\S+) is a function$/ or print'
+	LANG=C type "$@" | perl -ne '/^(\S+) is a function$/ or print'
     }
     _names_of_VARIABLES() {
 	# This may screw up if variables contain \n and =
@@ -97,10 +97,14 @@ env_parallel() {
             	    "Run \"parallel --record-env\" in a clean environment first.\n";
                 } else {
             	    chomp(@ignored_vars = <IN>);
-            	    $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
-		    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
                 }
             }
+            if($ENV{PARALLEL_IGNORED_NAMES}) {
+                push @ignored_vars, split/\s+/, $ENV{PARALLEL_IGNORED_NAMES};
+                chomp @ignored_vars;
+            }
+            $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+	    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
             ' -- "$@"
     }
 
@@ -129,7 +133,6 @@ env_parallel() {
 	#   which is /usr/bin/which
 	#   which is hashed (/usr/bin/which)
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
-	#   parallel is a tracked alias for /usr/local/bin/parallel (ksh)
 	# Return 0 if found, 1 otherwise
 	LANG=C type "$@" |
 	    perl -pe '$exit += (s/ is an alias for .*// ||
@@ -169,6 +172,17 @@ env_parallel() {
 	 _names_of_FUNCTIONS;
 	 _names_of_VARIABLES) |
 	    cat > $HOME/.parallel/ignored_vars
+	return 0
+    fi
+
+    # --session
+    if perl -e 'exit grep { /^--session$/ } @ARGV' -- "$@"; then
+	true skip
+    else
+	PARALLEL_IGNORED_NAMES="`_names_of_ALIASES;
+	 _names_of_FUNCTIONS;
+	 _names_of_VARIABLES`"
+	export PARALLEL_IGNORED_NAMES
 	return 0
     fi
 
@@ -280,16 +294,16 @@ _parset_main() {
     if perl -e 'exit not grep /,| /, @ARGV' "$_parset_name" ; then
 	# $_parset_name contains , or space
 	# Split on , or space to get the names
-	eval "$(
+	eval "`
 	    # Compute results into files
 	    $_parset_parallel_prg --files -k "$@" |
-		# var1=`cat tmpfile1; rm tmpfile1`
-		# var2=`cat tmpfile2; rm tmpfile2`
-		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
+		# var1= cat tmpfile1; rm tmpfile1
+		# var2= cat tmpfile2; rm tmpfile2
+		parallel -q echo {2}='\`cat {1}; rm {1}\`' :::: - :::+ \`
 		    echo "$_parset_name" |
 			perl -pe 's/,/ /g'
-			 )
-	    )"
+			 \`
+	    `"
     else
 	# $_parset_name does not contain , or space
 	# => $_parset_name is the name of the array to put data into
