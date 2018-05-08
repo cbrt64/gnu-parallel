@@ -72,41 +72,46 @@ par_over_4GB() {
 	nice md5sum
 }
 
-
-
 par_mem_leak() {
     echo "### test for mem leak"
 
+    export parallel=parallel
     no_mem_leak() {
-	measure() {
-	    # Input:
-	    #   $1 = iterations
-	    #   $2 = sleep 1 sec for every $2
-	    seq $1 | ramusage parallel -u sleep '{= $_=$_%'$2'?0:1 =}'
+	run_measurements() {
+	    from=$1
+	    to=$2
+	    pause_every=$3
+	    measure() {
+		# Input:
+		#   $1 = iterations
+		#   $2 = sleep 1 sec for every $2
+		seq $1 | ramusage $parallel -u sleep '{= $_=$_%'$2'?0:1 =}'
+	    }
+	    export -f measure
+
+	    seq $from $to | $parallel measure {} $pause_every |
+    		sort -n
 	}
-	export -f measure
-	
+
 	# Return false if leaking
-	max1000=$(parallel measure {} 100000 ::: 1000 1000 1000 1000 1000 1000 1000 1000 |
-    			 sort -n | tail -n 1)
-	min30000=$(parallel measure {} 100000 ::: 3000 3000 3000 |
-    			  sort -n | head -n 1)
+	# Normal: 16940-17320
+	max1000=$(run_measurements 1000 1007 100000 | tail -n1)
+	min30000=$(run_measurements 15000 15004 100000 | head -n1)
 	if [ $max1000 -gt $min30000 ] ; then
+	    echo Probably no leak $max1000 -gt $min30000
+	    return 0
+	else
+	    echo Probably leaks $max1000 not -gt $min30000
 	    # Make sure there are a few sleeps
-	    max1000=$(parallel measure {} 100 ::: 1000 1000 1000 1000 1000 1000 1000 1000 |
-			     sort -n | tail -n 1)
-	    min30000=$(parallel measure {} 100 ::: 3000 3000 3000 |
-			      sort -n | head -n 1)
+	    max1000=$(run_measurements 1001 1007 100 | tail -n1)
+	    min30000=$(run_measurements 30000 30004 100 | head -n1)
 	    if [ $max1000 -gt $min30000 ] ; then
-		echo $max1000 -gt $min30000 = no leak
+		echo $max1000 -gt $min30000 = very likely no leak
 		return 0
 	    else
-		echo not $max1000 -gt $min30000 = possible leak
+		echo not $max1000 -gt $min30000 = very likely leak
 		return 1
 	    fi
-	else
-	    echo not $max1000 -gt $min30000 = possible leak
-	    return 1
 	fi
     }
 

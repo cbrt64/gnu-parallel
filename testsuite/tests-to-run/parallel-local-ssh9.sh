@@ -13,7 +13,7 @@ myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
-. \`which env_parallel.ash\`
+#. \`which env_parallel.ash\`
 }
     ' | tac > parallel-embed
     chmod +x parallel-embed
@@ -37,7 +37,7 @@ myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
-. \`which env_parallel.bash\`
+#. \`which env_parallel.bash\`
 }
     ' | tac > parallel-embed
     chmod +x parallel-embed
@@ -69,12 +69,12 @@ myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
-. \`which env_parallel.ksh\`
+#. \`which env_parallel.ksh\`
 }
     ' | tac > parallel-embed
     chmod +x parallel-embed
     ./parallel-embed
-#    rm parallel-embed
+    rm parallel-embed
 _EOF
   )
   ssh ksh@lo "$myscript"
@@ -93,12 +93,12 @@ myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
-. \`which env_parallel.sh\`
+#. \`which env_parallel.sh\`
 }
     ' | tac > parallel-embed
     chmod +x parallel-embed
     ./parallel-embed
-#    rm parallel-embed
+    rm parallel-embed
 _EOF
   )
   ssh sh@lo "$myscript"
@@ -121,7 +121,6 @@ myvar=OK
 parallel echo ::: parallel_OK
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Do not look for parallel in /usr/local/bin
-. \`which env_parallel.zsh\`
 }
     ' | tac > parallel-embed
     chmod +x parallel-embed
@@ -138,4 +137,5 @@ export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort -r |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
     parallel --joblog /tmp/jl-`basename $0` -j200% --tag -k '{} 2>&1' |
-    perl -pe 's/line \d\d\d:/line XXX:/'
+    perl -pe 's/line \d\d\d+:/line XXX:/' |
+    perl -pe 's/\[\d\d\d+\]:/[XXX]:/'

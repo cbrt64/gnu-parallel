@@ -162,26 +162,30 @@ the last half of the line is from another process. The example
 B<Parallel grep> cannot be done reliably with B<xargs> because of
 this. To see this in action try:
 
-  parallel perl -e '\$a=\"1{}\"x10000000\;print\ \$a,\"\\n\"' '>' {} \
-    ::: a b c d e f
-  ls -l a b c d e f
-  parallel -kP4 -n1 grep 1 > out.par ::: a b c d e f
-  echo a b c d e f | xargs -P4 -n1 grep 1 > out.xargs-unbuf
-  echo a b c d e f | \
-    xargs -P4 -n1 grep --line-buffered 1 > out.xargs-linebuf
-  echo a b c d e f | xargs -n1 grep 1 > out.xargs-serial
-  ls -l out*
-  md5sum out*
+  parallel perl -e '\$a=\"1\".\"{}\"x10000000\;print\ \$a,\"\\n\"' \
+    '>' {} ::: a b c d e f g h
+  # Serial = no mixing = the wanted result
+  # 'tr -s a-z' squeezes repeating letters into a single letter
+  echo a b c d e f g h | xargs -P1 -n1 grep 1 | tr -s a-z
+  # Compare to 8 jobs in parallel
+  parallel -kP8 -n1 grep 1 ::: a b c d e f g h | tr -s a-z
+  echo a b c d e f g h | xargs -P8 -n1 grep 1 | tr -s a-z
+  echo a b c d e f g h | xargs -P8 -n1 grep --line-buffered 1 | \
+    tr -s a-z
 
 Or try this:
 
   slow_seq() {
+    echo Count to "$@"
     seq "$@" |
       perl -ne '$|=1; for(split//){ print; select($a,$a,$a,0.100);}'
   }
   export -f slow_seq
-  seq 5 | xargs -n1 -P0 -I {} bash -c 'slow_seq {}'
-  seq 5 | parallel -P0 slow_seq {}
+  # Serial = no mixing = the wanted result
+  seq 8 | xargs -n1 -P1 -I {} bash -c 'slow_seq {}'
+  # Compare to 8 jobs in parallel
+  seq 8 | parallel -P8 slow_seq {}
+  seq 8 | xargs -n1 -P8 -I {} bash -c 'slow_seq {}'
 
 B<xargs> has no support for keeping the order of the output, therefore
 if running jobs in parallel using B<xargs> the output of the second
@@ -201,7 +205,8 @@ composed commands and redirection require using B<bash -c>.
   ls | parallel "wc {} >{}.wc"
   ls | parallel "echo {}; ls {}|wc"
 
-becomes (assuming you have 8 cores)
+becomes (assuming you have 8 cores and that none of the file names
+contain space, " or ').
 
   ls | xargs -d "\n" -P8 -I {} bash -c "wc {} >{}.wc"
   ls | xargs -d "\n" -P8 -I {} bash -c "echo {}; ls {}|wc"
@@ -791,12 +796,14 @@ https://github.com/rofl0r/jobflow
 
 B<gargs> can run multiple jobs in parallel.
 
-It caches output in memory. This causes it to be extremely slow when
-the output is larger than the physical RAM, and can cause the system
-to run out of memory.
+Older versions cache output in memory. This causes it to be extremely
+slow when the output is larger than the physical RAM, and can cause
+the system to run out of memory.
 
 See more details on this in B<man parallel_design>.
 
+Newer versions cache output in files, but leave files in $TMPDIR if it
+is killed.
 
 Output to stderr (standard error) is changed if the command fails.
 

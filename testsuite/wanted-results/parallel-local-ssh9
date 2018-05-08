@@ -6,10 +6,7 @@ par_zsh_embed	your
 par_zsh_embed	code
 par_zsh_embed	here
 par_zsh_embed	parallel_OK
-par_zsh_embed	/home/zsh/.zshenv:.:3: no such file or directory: env_parallel.zsh
 par_zsh_embed	env_parallel --env OK
-par_zsh_embed	/home/zsh/.zshenv:.:3: no such file or directory: env_parallel.zsh
-par_zsh_embed	/home/zsh/.zshenv:.:3: no such file or directory: env_parallel.zsh
 par_zsh_embed	_which:12: argument list too long: perl
 par_zsh_embed	env_parallel: Error: Your environment is too big.
 par_zsh_embed	env_parallel: Error: You can try 2 different approaches:
@@ -19,6 +16,11 @@ par_zsh_embed	env_parallel: Error:      env_parallel --record-env
 par_zsh_embed	env_parallel: Error:    And then use '--env _'
 par_zsh_embed	env_parallel: Error: For details see: man env_parallel
 par_zsh_embed	ParsetOK
+par_zsh_embed	Put
+par_zsh_embed	your
+par_zsh_embed	code
+par_zsh_embed	here
+par_zsh_embed	Put your code here
 par_tcsh_embed	Not implemented
 par_sh_embed	--embed
 par_sh_embed	Redirect the output to a file and add your changes at the end:
@@ -31,6 +33,11 @@ par_sh_embed	parallel_OK
 par_sh_embed	env_parallel --env OK
 par_sh_embed	env_parallel_OK
 par_sh_embed	ParsetOK
+par_sh_embed	Put
+par_sh_embed	your
+par_sh_embed	code
+par_sh_embed	here
+par_sh_embed	Put your code here
 par_ksh_embed	--embed
 par_ksh_embed	Redirect the output to a file and add your changes at the end:
 par_ksh_embed	  /usr/local/bin/parallel --embed > new_script
@@ -40,7 +47,7 @@ par_ksh_embed	code
 par_ksh_embed	here
 par_ksh_embed	parallel_OK
 par_ksh_embed	env_parallel --env OK
-par_ksh_embed	./parallel-embed[118]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_embed	./parallel-embed[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_embed	env_parallel: Error: Your environment is too big.
 par_ksh_embed	env_parallel: Error: You can try 2 different approaches:
 par_ksh_embed	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -49,6 +56,11 @@ par_ksh_embed	env_parallel: Error:      env_parallel --record-env
 par_ksh_embed	env_parallel: Error:    And then use '--env _'
 par_ksh_embed	env_parallel: Error: For details see: man env_parallel
 par_ksh_embed	ParsetOK
+par_ksh_embed	Put
+par_ksh_embed	your
+par_ksh_embed	code
+par_ksh_embed	here
+par_ksh_embed	Put your code here
 par_fish_embed	Not implemented
 par_csh_embed	Not implemented
 par_bash_embed	--embed
@@ -60,7 +72,7 @@ par_bash_embed	code
 par_bash_embed	here
 par_bash_embed	parallel_OK
 par_bash_embed	env_parallel --env OK
-par_bash_embed	/usr/local/bin/env_parallel.bash: line XXX: /usr/bin/perl: Argument list too long
+par_bash_embed	./parallel-embed: line XXX: /usr/bin/perl: Argument list too long
 par_bash_embed	env_parallel: Error: Your environment is too big.
 par_bash_embed	env_parallel: Error: You can try 2 different approaches:
 par_bash_embed	env_parallel: Error: 1. Use --env and only mention the names to copy.
@@ -69,6 +81,11 @@ par_bash_embed	env_parallel: Error:      env_parallel --record-env
 par_bash_embed	env_parallel: Error:    And then use '--env _'
 par_bash_embed	env_parallel: Error: For details see: man env_parallel
 par_bash_embed	ParsetOK
+par_bash_embed	Put
+par_bash_embed	your
+par_bash_embed	code
+par_bash_embed	here
+par_bash_embed	Put your code here
 par_ash_embed	--embed
 par_ash_embed	Redirect the output to a file and add your changes at the end:
 par_ash_embed	  /usr/local/bin/parallel --embed > new_script
@@ -80,3 +97,8 @@ par_ash_embed	parallel_OK
 par_ash_embed	env_parallel --env OK
 par_ash_embed	env_parallel_OK
 par_ash_embed	ParsetOK
+par_ash_embed	Put
+par_ash_embed	your
+par_ash_embed	code
+par_ash_embed	here
+par_ash_embed	Put your code here
