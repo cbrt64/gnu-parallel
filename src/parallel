@@ -1876,7 +1876,7 @@ sub open_csv {
 		::die_bug("Can't >/dev/null in csv: $!");
 	    $Global::fd{1} = $fd;
 	    $Global::fd{2} = $fd;
-	} elsif($Global::csv) {
+	} elsif($Global::csvsep) {
 	    if(not open($Global::csv_fh,">",$opt::results)) {
 		::error("Cannot open results file `$opt::results': ".
 			"$!.");

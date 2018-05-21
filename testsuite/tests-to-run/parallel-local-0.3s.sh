@@ -772,14 +772,16 @@ par_csv_pipe() {
            print join",", map {"\"$_\n$_\""} $b*1000..$b*1000+1000;
            print "\n"
          }' |
-	stdout parallel --pipe --csv -k --block 10k tail -n1
+	stdout parallel --pipe --csv -k --block 10k tail -n1 |
+	sort -n
 
     echo 'More records in single block'
     perl -e 'for $b(1..10) {
            print join",", map {"\"$_\n$_\""} $b*1000..$b*1000+1000;
            print "\n"
          }' |
-	stdout parallel --pipe --csv -k --block 100k tail -n1
+	stdout parallel --pipe --csv -k --block 100k tail -n1 |
+	sort -n
 }
 
 par_slow_pipe_regexp() {
@@ -787,6 +789,12 @@ par_slow_pipe_regexp() {
     echo This should take a few ms, but took more than 2 hours
     seq 54000 80000 |
 	timeout -k 1 60 parallel -N1000 --regexp --pipe --recstart 4 --recend 5 -k wc
+}
+
+par_results() {
+    echo "### --results test.csv"
+    parallel -k --results /tmp/$$.csv echo ::: a b c
+    rm /tmp/$$.csv
 }
 
 export -f $(compgen -A function | grep par_)

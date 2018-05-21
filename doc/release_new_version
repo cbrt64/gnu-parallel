@@ -199,7 +199,7 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180522 ('Korea') released <<[stable]>>
+Subject: GNU Parallel 20180522 ('Korea/The Great March of Return') released <<[stable]>>
 
 GNU Parallel 20180522 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -210,6 +210,13 @@ Quote of the month:
 <<>>
 
 New in this release:
+https://comquest.in/training
+https://bash-prompt.net/guides/parallell-bash/
+https://blog.uta.edu/xus/2017/09/29/an-easy-way-to-run-parallel-jobs-on-stampede2/
+
+https://opensource.com/article/18/5/gnu-parallel
+https://blog.desdelinux.net/gnu-parallel-haz-mas-cosas-simultaneamente-en-el-terminal/
+https://www.sans.org/summit-archives/file/summit-archive-1524582079.pdf
 
 「今日から使い切る」ための GNU Parallelによる並列処理入門
 

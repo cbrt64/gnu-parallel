@@ -7,6 +7,12 @@ test -d "parallel-00000000" || mkdir "parallel-00000000"
  (cd src && make  top_distdir=../parallel-00000000 distdir=../parallel-00000000/src \
      am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)
 make[0]: Entering directory '~/privat/parallel/src'
+pod2man --release='00000000' --center='parallel' \
+	--section=7 ./parallel_design.pod > ./parallel_design.7n \
+&& mv ./parallel_design.7n ./parallel_design.7 \
+|| echo "Warning: pod2man not found. Using old parallel_design.7"
+/bin/bash: pod2man: command not found
+Warning: pod2man not found. Using old parallel_design.7
 make[0]: Leaving directory '~/privat/parallel/src'
 test -n "" \
 || find "parallel-00000000" -type d ! -perm -755 \

@@ -1369,6 +1369,7 @@ par_csv	2"x3" board-Value with ,-Column 3
 par_csv_pipe	Only pass full records to tail
 par_csv_pipe	Too small block size
 par_csv_pipe	parallel: Warning: A record was longer than 10000. Increasing to --blocksize 13001.
+par_csv_pipe	parallel: Warning: A record was longer than 13001. Increasing to --blocksize 16903.
 par_csv_pipe	2000"
 par_csv_pipe	3000"
 par_csv_pipe	4000"
@@ -1377,7 +1378,6 @@ par_csv_pipe	6000"
 par_csv_pipe	7000"
 par_csv_pipe	8000"
 par_csv_pipe	9000"
-par_csv_pipe	parallel: Warning: A record was longer than 13001. Increasing to --blocksize 16903.
 par_csv_pipe	10000"
 par_csv_pipe	11000"
 par_csv_pipe	More records in single block
@@ -1527,6 +1527,10 @@ par_pipepart_recend_recstart	8
 par_pipepart_recend_recstart	9
 par_pipepart_recend_recstart	10
 par_python_children	### bug #49970: Python child process dies if --env is used
+par_results	### --results test.csv
+par_results	a
+par_results	b
+par_results	c
 par_retries_replacement_string	11
 par_retries_replacement_string	22
 par_retries_replacement_string	22

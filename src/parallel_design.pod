@@ -840,6 +840,25 @@ B<--sqlmaster> be the part that shuffles the jobs. The B<--sqlworker>s
 simply executes according to Seq number.
 
 
+=head --csv
+
+B<--pipepart> is incompatible with B<--csv> because you can have
+records like:
+
+  a,b,c
+  a,"
+  a,b,c
+  a,b,c
+  a,b,c
+  ",c 
+  a,b,c
+
+Here the second record contains a multi-line field that looks like
+records. Since B<--pipepart> does not read then whole file when
+searching for record endings, it may start reading in this multi-line
+field, which would be wrong.
+
+
 =head2 Buffering on disk
 
 GNU B<parallel> buffers output, because if output is not buffered you
