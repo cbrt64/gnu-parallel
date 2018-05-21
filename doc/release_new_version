@@ -210,6 +210,11 @@ Quote of the month:
 <<>>
 
 New in this release:
+
+* --tty allows for more programs accessing /dev/tty in parallel. Some programs require tty access without using it.
+
+* env_parallel --session will record names in current environment in $PARALLEL_IGNORED_NAMES and exit. It is only used with env_parallel, and can work like --record-env but in a single session.
+
 https://comquest.in/training
 https://bash-prompt.net/guides/parallell-bash/
 https://blog.uta.edu/xus/2017/09/29/an-easy-way-to-run-parallel-jobs-on-stampede2/

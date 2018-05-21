@@ -2041,6 +2041,8 @@ Record names in current environment in B<$PARALLEL_IGNORED_NAMES> and
 exit. Only used with B<env_parallel>. Aliases, functions, and
 variables with names in B<$PARALLEL_IGNORED_NAMES> will not be copied.
 
+Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
+
 See also B<--env>, B<--record-env>.
 
 
@@ -2328,13 +2330,13 @@ Silent.  The job to be run will not be printed. This is the default.
 Can be reversed with B<-v>.
 
 
-=item B<--tty>
+=item B<--tty> (alpha testing)
 
-Open terminal tty. If GNU B<parallel> is used for starting an
-interactive program then this option may be needed. It will start only
-one job at a time (i.e. B<-j1>), not buffer the output (i.e. B<-u>),
-and it will open a tty for the job. When the job is done, the next job
-will get the tty.
+Open terminal tty. If GNU B<parallel> is used for starting a program
+that accesses the tty (such as an interactive program) then this
+option may be needed. It will default to starting only one job at a
+time (i.e. B<-j1>), not buffer the output (i.e. B<-u>), and it will
+open a tty for the job.
 
 You can of course override B<-j1> and B<-u>.
 

@@ -2449,7 +2449,6 @@ sub __RUNNING_THE_JOBS_AND_PRINTING_PROGRESS__ {}
 #    $Global::host{$sshlogin} = Pointer to SSHLogin-object
 #    $Global::total_running = total number of running jobs
 #    $Global::total_started = total jobs started
-#    $Global::tty_taken = is the tty in use by a running job?
 #    $Global::max_procs_file = filename if --jobs is given a filename
 #    $Global::JobQueue = JobQueue object for the queue of jobs
 #    $Global::timeoutq = queue of times where jobs timeout
@@ -2471,7 +2470,6 @@ sub init_run_jobs {
     # Returns: N/A
     $Global::total_running = 0;
     $Global::total_started = 0;
-    $Global::tty_taken = 0;
     $SIG{USR1} = \&list_running_jobs;
     $SIG{USR2} = \&toggle_progress;
     if(@opt::basefile) { setup_basefile(); }
@@ -3927,7 +3925,6 @@ sub reaper {
     # Uses:
     #   %Global::sshmaster
     #   %Global::running
-    #   $Global::tty_taken
     #   $opt::timeout
     #   $Global::timeoutq
     #   $opt::halt
@@ -3969,10 +3966,6 @@ sub reaper {
 
         debug("run", "seq ",$job->seq()," died (", $job->exitstatus(), ")");
         $job->set_endtime(::now());
-        if($stiff == $Global::tty_taken) {
-            # The process that died had the tty => release it
-            $Global::tty_taken = 0;
-        }
         my $sshlogin = $job->sshlogin();
         $sshlogin->dec_jobs_running();
         if($job->should_be_retried()) {
@@ -8588,7 +8581,7 @@ sub start {
 	}
 	$job->set_fh(0,"w",$stdin_fh);
 	if($opt::tee) { $job->set_virgin(0); }
-    } elsif ($opt::tty and not $Global::tty_taken and -c "/dev/tty" and
+    } elsif ($opt::tty and -c "/dev/tty" and
 	     open(my $devtty_fh, "<", "/dev/tty")) {
 	# Give /dev/tty to the command if no one else is using it
 	# The eval is needed to catch exception from open3
@@ -8605,7 +8598,6 @@ sub start {
 		|| ::die_bug("open3-/dev/tty");
 	    1;
 	};
-	$Global::tty_taken = $pid;
 	close $devtty_fh;
 	$job->set_virgin(0);
     } else {

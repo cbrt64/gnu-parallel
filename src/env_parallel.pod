@@ -27,7 +27,20 @@ B<env_parallel> is 100 ms slower at startup than pure GNU
 B<parallel>, and takes up to 30% longer to start a job (typically 15 ms).
 
 Due to the problem with environment space (see below) the recommended
-usage is:
+usage is either:
+
+  # Do --record-env into $PARALLEL_IGNORED_NAMES
+  env_parallel --session
+
+  # Define whatever you want to use
+  alias myalias=echo
+  myvar=it
+  myfunc() { myalias $1 $myvar works.; }
+
+  # env_parallel will not export names in $PARALLEL_IGNORED_NAMES
+  env_parallel -S localhost myfunc ::: Yay,
+
+Or:
 
   # Record the "clean" environment (this only needs to be run once)
   env_parallel --record-env
@@ -42,7 +55,7 @@ usage is:
   # Use --env _ to only transfer the names not in the "empty" environment
   env_parallel --env _ -S localhost myfunc ::: Yay,
 
-In B<csh>:
+In B<csh> B<--session> is not supported:
 
   # Record the "clean" environment (this only needs to be run once)
   env_parallel --record-env
