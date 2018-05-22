@@ -1,3 +1,4 @@
+TIMEOUT=25 RETRIES=4
 ### Copy commands to servers
 Done copying
 aix.polarhome.com	### Test if empty command in process list causes problems
@@ -34,6 +35,8 @@ suse.polarhome.com	### Test if empty command in process list causes problems
 suse.polarhome.com	OK_with_empty_cmd
 tru64.polarhome.com	### Test if empty command in process list causes problems
 tru64.polarhome.com	OK_with_empty_cmd
+ubuntu.polarhome.com	### Test if empty command in process list causes problems
+ubuntu.polarhome.com	OK_with_empty_cmd
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: -f: is not an identifier
 aix.polarhome.com	Works on aix7
 centos.polarhome.com	Works on centos.polarhome.com
@@ -53,6 +56,7 @@ solaris-x86.polarhome.com	Works on solaris-x86
 solaris.polarhome.com	Works on solaris
 suse.polarhome.com	Works on suse
 tru64.polarhome.com	Works on tru64.polarhome.com
+ubuntu.polarhome.com	Works on ubuntu
 unixware.polarhome.com	Works on unixware.polarhome.com
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 aix.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: The file access permissions do not allow the specified action. at /home/t/tange/bin/parallel line 0000
@@ -94,6 +98,8 @@ suse.polarhome.com	OK
 tru64.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 tru64.polarhome.com	 at /home/t/tange/bin/parallel line 0000
 tru64.polarhome.com	OK
+ubuntu.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+ubuntu.polarhome.com	OK
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 unixware.polarhome.com	UX:env: ERROR: No such file or directory: bash
 
@@ -117,6 +123,7 @@ solaris-x86.polarhome.com	bash only A
 solaris.polarhome.com	bash only A
 suse.polarhome.com	/home/t/tange/bin/bash: func: command not found
 tru64.polarhome.com	bash only A
+ubuntu.polarhome.com	bash only A
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `(' unexpected
 
 ### Does PARALLEL_SHELL help exporting a bash function not kill parallel
@@ -138,6 +145,7 @@ solaris-x86.polarhome.com	bash only B
 solaris.polarhome.com	bash only B
 suse.polarhome.com	bash only B
 tru64.polarhome.com	bash only B
+ubuntu.polarhome.com	bash only B
 unixware.polarhome.com	bash only B
 
 ### env_parallel echo :::: <(echo OK)
@@ -314,6 +322,16 @@ tru64.polarhome.com	     /home/t/tange/.profile
 tru64.polarhome.com	     /home/t/tange/.cshrc
 tru64.polarhome.com	     /home/t/tange/.tcshrc
 tru64.polarhome.com	install-OK
+ubuntu.polarhome.com	Installed env_parallel in:
+ubuntu.polarhome.com	     /home/t/tange/.bashrc
+ubuntu.polarhome.com	     /home/t/tange/.shrc
+ubuntu.polarhome.com	     /home/t/tange/.zshenv
+ubuntu.polarhome.com	     /home/t/tange/.config/fish/config.fish
+ubuntu.polarhome.com	     /home/t/tange/.kshrc
+ubuntu.polarhome.com	     /home/t/tange/.profile
+ubuntu.polarhome.com	     /home/t/tange/.cshrc
+ubuntu.polarhome.com	     /home/t/tange/.tcshrc
+ubuntu.polarhome.com	install-OK
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 unixware.polarhome.com	UX:env: ERROR: No such file or directory: bash
 aix.polarhome.com	env_parallel run-OK
@@ -334,6 +352,7 @@ solaris-x86.polarhome.com	env_parallel run-OK
 solaris.polarhome.com	env_parallel run-OK
 suse.polarhome.com	env_parallel run-OK
 tru64.polarhome.com	env_parallel run-OK
+ubuntu.polarhome.com	env_parallel run-OK
 unixware.polarhome.com	env_parallel run-OK
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 aix.polarhome.com	reading from process substitution OK
@@ -352,6 +371,7 @@ solaris-x86.polarhome.com	reading from process substitution OK
 solaris.polarhome.com	reading from process substitution OK
 suse.polarhome.com	reading from process substitution OK
 tru64.polarhome.com	reading from process substitution OK
+ubuntu.polarhome.com	reading from process substitution OK
 
 ### parset arr seq ::: 2 3 4
 (bash ksh zsh only)
@@ -375,6 +395,7 @@ solaris-x86.polarhome.com	1 2 1 2 3 1 2 3 4
 solaris.polarhome.com	1 2 1 2 3 1 2 3 4
 suse.polarhome.com	1 2 1 2 3 1 2 3 4
 tru64.polarhome.com	1 2 1 2 3 1 2 3 4
+ubuntu.polarhome.com	1 2 1 2 3 1 2 3 4
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
 ### env_parset arr seq ::: 2 3 4
@@ -398,6 +419,7 @@ solaris-x86.polarhome.com	2 2 3 2 3 4
 solaris.polarhome.com	1 2 1 2 1 2
 suse.polarhome.com	2 2 3 2 3 4
 tru64.polarhome.com	2 2 3 2 3 4
+ubuntu.polarhome.com	2 2 3 2 3 4
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
 
@@ -423,6 +445,7 @@ solaris-x86.polarhome.com	1 2,1 2 3,1 2 3 4
 solaris.polarhome.com	1 2,1 2 3,1 2 3 4
 suse.polarhome.com	1 2,1 2 3,1 2 3 4
 tru64.polarhome.com	1 2,1 2 3,1 2 3 4
+ubuntu.polarhome.com	1 2,1 2 3,1 2 3 4
 unixware.polarhome.com	,,
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 ### env_parset var1,var2,var3 seq ::: 2 3 4
@@ -446,5 +469,6 @@ solaris-x86.polarhome.com	2,2 3,2 3 4
 solaris.polarhome.com	1 2,1 2,1 2
 suse.polarhome.com	2,2 3,2 3 4
 tru64.polarhome.com	2,2 3,2 3 4
+ubuntu.polarhome.com	2,2 3,2 3 4
 unixware.polarhome.com	2,2 3,2 3 4
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found

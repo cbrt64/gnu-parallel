@@ -1,18 +1,23 @@
 #!/bin/bash
 
 # Check servers up on http://www.polarhome.com/service/status/
+unset TIMEOUT
+. `which env_parallel.bash`
+env_parallel --session
+
 
 P_ALL="alpha tru64 hpux-ia64 syllable pidora raspbian solaris openindiana aix hpux qnx debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix irix hurd beaglebone cubieboard2"
 P_NOTWORKING="vax alpha openstep"
 P_NOTWORKING_YET="ultrix irix"
 
 P_WORKING="openbsd tru64 debian freebsd redhat netbsd macosx miros centos unixware pidora ubuntu scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux openindiana hpux-ia64"
-P_WORKING="openbsd tru64 debian redhat netbsd macosx miros centos unixware pidora scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux hurd freebsd"
-P_TEMPORARILY_BROKEN="minix dragonfly ubuntu openindiana hpux-ia64 beaglebone cubieboard2"
+P_WORKING="openbsd tru64 debian redhat netbsd macosx miros centos unixware pidora scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux hurd freebsd ubuntu"
+P_TEMPORARILY_BROKEN="minix dragonfly openindiana hpux-ia64 beaglebone cubieboard2"
 
 P="$P_WORKING"
 POLAR=`parallel -k echo {}.polarhome.com ::: $P`
 S_POLAR=`parallel -k echo -S 1/{}.polarhome.com ::: $P`
+
 # 2018-04-22 TIMEOUT=20
 TIMEOUT=25
 RETRIES=4
@@ -23,6 +28,9 @@ doit() {
     # Avoid the stupid /etc/issue.net banner at Polarhome: -oLogLevel=quiet
     PARALLEL_SSH="ssh -oLogLevel=quiet"
     export PARALLEL_SSH
+    export TIMEOUT
+    export RETRIES
+    echo TIMEOUT=$TIMEOUT RETRIES=$RETRIES
 
     copy() {
 	# scp, but atomic (avoid half files if disconnected)
@@ -105,8 +113,7 @@ doit() {
     par_nonall 'start=2; env_parset var1,var2,var3 seq \$start ::: 2 3 4; echo $var1,$var2,$var3' 2>&1
 }
 
-. `which env_parallel.bash`
-env_parallel -u --env _ -Sredhat.p doit ::: 1
+env_parallel -u -Sredhat.p doit ::: 1
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

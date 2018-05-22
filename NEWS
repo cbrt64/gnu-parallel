@@ -1,3 +1,36 @@
+20180522
+
+* --tty allows for more programs accessing /dev/tty in parallel. Some
+  programs require tty access without using it.
+
+* env_parallel --session will record names in current environment in
+  $PARALLEL_IGNORED_NAMES and exit. It is only used with env_parallel,
+  and can work like --record-env but in a single session.
+
+* 35 day course: Linux shell scripting and text processing for big
+  data https://comquest.in/training
+
+* How To Use Your Entire CPU In Bash With Parallel
+  https://bash-prompt.net/guides/parallell-bash/
+
+* An easy way to run parallel jobs on Stampede2
+  https://blog.uta.edu/xus/2017/09/29/an-easy-way-to-run-parallel-jobs-on-stampede2/
+
+* Get more done at the Linux command line with GNU Parallel
+  https://opensource.com/article/18/5/gnu-parallel
+
+* Save Time with Modern Search Techniques
+  https://www.sans.org/summit-archives/file/summit-archive-1524582079.pdf
+
+* GNU Parallel: haz más cosas simultáneamente en el terminal
+  https://blog.desdelinux.net/gnu-parallel-haz-mas-cosas-simultaneamente-en-el-terminal/
+
+* 「今日から使い切る」ための GNU Parallelによる並列処理入門
+  https://www.slideshare.net/koji_matsuda/gnu-parallel
+
+* Bug fixes and man page updates.
+
+
 20180422
 
 * --csv makes GNU Parallel parse the input sources as CSV. When used

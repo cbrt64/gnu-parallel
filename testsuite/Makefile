@@ -20,7 +20,6 @@ polarhome: polar
 	true
 
 polar: ../src/parallel tests-to-run/*polar* wanted-results/*polar* prereqlocal
-	make stopvm
 	time bash Start.sh polar NONE || true
 	touch ~/.parallel/will-cite
 
