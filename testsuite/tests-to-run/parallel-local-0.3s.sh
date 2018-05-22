@@ -129,12 +129,6 @@ parallel -k echo {#} ::: 1 2 ::: 1 2
 
 echo '**'
 
-testquote() { printf '"#&/\n()*=?'"'" | PARALLEL_SHELL=$1 parallel -0 echo; }; 
-  export -f testquote; 
-  parallel --tag -k testquote ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rc rzsh sash sh static-sh tcsh yash zsh
-
-echo '**'
-
 echo '### bug #45769: --round-robin --pipepart gives wrong results'
 
 seq 10000 >/tmp/seq10000; 
@@ -796,6 +790,16 @@ par_results() {
     parallel -k --results /tmp/$$.csv echo ::: a b c
     rm /tmp/$$.csv
 }
+
+par_testquote() {
+    testquote() {
+	printf '"#&/\n()*=?'"'" |
+	    PARALLEL_SHELL=$1 parallel -0 echo
+    }
+    export -f testquote
+    parallel --tag -k testquote ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rc rzsh sash sh static-sh tcsh yash zsh
+}
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

@@ -96,9 +96,10 @@ dir that makes most sense for the sysadmin.
 
 =head3 env_parallel.bash / env_parallel.zsh / env_parallel.ksh / env_parallel.pdksh
 
-B<env_parallel.(bash|ksh|pdksh|zsh)> sets the function B<env_parallel>. It uses
-B<alias> and B<typeset> to dump the configuration (with a few
-exceptions) into B<$PARALLEL_ENV> before running GNU B<parallel>.
+B<env_parallel.(bash|ksh|pdksh|zsh)> defines the function
+B<env_parallel>. It uses B<alias> and B<typeset> to dump the
+configuration (with a few exceptions) into B<$PARALLEL_ENV> before
+running GNU B<parallel>.
 
 After GNU B<parallel> is finished, B<$PARALLEL_ENV> is deleted.
 
@@ -734,6 +735,49 @@ not known to B<bash>.
 
 If GNU B<parallel> guesses wrong in these situation, set the shell using
 B<$PARALLEL_SHELL>.
+
+
+=head2 Always running commands in a shell
+
+If the command is a simple command with no redirection and setting of
+variables, the command I<could> be run without spawning a shell. E.g.:
+
+  parallel "grep -E 'a|bc' {}" ::: foo
+
+could be run as:
+
+  system("grep","-E","a|bc","foo");
+
+However, as soon as the command is a bit more complex a shell I<must>
+be spawned:
+
+  parallel "grep -E 'a|bc' {} | wc" ::: foo
+
+It is impossible to tell the difference between these two without
+parsing the string (is the B<|> a pipe in shell or an alternation in
+B<grep>?).
+
+On top of this wrapper scripts will often require a shell to be
+spawned.
+
+The downside is that you need to quote special shell chars twice:
+
+  parallel echo '*' ::: This will expand the asterisk
+  parallel echo "'*'" ::: This will not
+  parallel "echo '*'" ::: This will not
+  parallel echo '\*' ::: This will not
+  parallel echo \''*'\' ::: This will not
+  parallel -q echo '*' ::: This will not
+
+B<-q> will quote all special chars, thus redirection will not work:
+this prints '* > out.1' and I<does not> save '*' into the file out.1:
+
+  parallel -q echo "*" ">" out.{} ::: 1
+
+GNU B<parallel> tries to live up to Principle Of Least Astonishment
+(POLA), and the requirement of using B<-q> is hard to understand, when
+you do not see the whole picture.
+
 
 =head2 Quoting
 

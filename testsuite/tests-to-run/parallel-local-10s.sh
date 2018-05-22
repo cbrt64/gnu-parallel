@@ -306,6 +306,8 @@ par_retries_all_fail() {
 	parallel -k -j0 --retries 2 --timeout 0.1 'echo {}; sleep {}; false' 2>/dev/null
 }
 
+
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1'

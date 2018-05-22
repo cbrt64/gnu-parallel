@@ -8,4 +8,9 @@ echo '### See if we get compile error'
 PATH=input-files/perllib:../input-files/perllib:$PATH
 perl32 `which parallel` ::: 'echo perl'
 echo '### See if we read modules outside perllib'
-echo perl | stdout strace -ff perl32 `which parallel` echo | grep open | grep perl | grep -v input-files/perllib
+echo perl |
+    stdout strace -ff perl32 `which parallel` echo |
+    grep open |
+    grep perl |
+    grep -v '] read(6' |
+    grep -v input-files/perllib

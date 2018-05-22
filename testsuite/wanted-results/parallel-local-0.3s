@@ -164,49 +164,6 @@ parallel -k echo {#} ::: 1 2 ::: 1 2
 4
 echo '**'
 **
-testquote() { printf '"#&/\n()*=?'"'" | PARALLEL_SHELL=$1 parallel -0 echo; };   export -f testquote;   parallel --tag -k testquote ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rc rzsh sash sh static-sh tcsh yash zsh
-ash	"#&/
-ash	()*=?'
-bash	"#&/
-bash	()*=?'
-csh	"#&/
-csh	()*=?'
-dash	"#&/
-dash	()*=?'
-fdsh	"#&/
-fdsh	()*=?'
-fish	"#&/
-fish	()*=?'
-fizsh	"#&/
-fizsh	()*=?'
-ksh	"#&/
-ksh	()*=?'
-ksh93	"#&/
-ksh93	()*=?'
-mksh	"#&/
-mksh	()*=?'
-posh	"#&/
-posh	()*=?'
-rbash	"#&/
-rbash	()*=?'
-rc	"#&/
-rc	()*=?'
-rzsh	"#&/
-rzsh	()*=?'
-sash	"#&/
-sash	()*=?'
-sh	"#&/
-sh	()*=?'
-static-sh	"#&/
-static-sh	()*=?'
-tcsh	"#&/
-tcsh	()*=?'
-yash	"#&/
-yash	()*=?'
-zsh	"#&/
-zsh	()*=?'
-echo '**'
-**
 echo '### bug #45769: --round-robin --pipepart gives wrong results'
 ### bug #45769: --round-robin --pipepart gives wrong results
 seq 10000 >/tmp/seq10000;   parallel -j2 --pipepart -a /tmp/seq10000 --block 14 --round-robin wc | wc -l;   rm /tmp/seq10000
@@ -1575,6 +1532,46 @@ par_tee	4 -l	122853
 par_tee	4 -c	815290
 par_tee	5 -l	122853
 par_tee	5 -c	815290
+par_testquote	ash	"#&/
+par_testquote	ash	()*=?'
+par_testquote	bash	"#&/
+par_testquote	bash	()*=?'
+par_testquote	csh	"#&/
+par_testquote	csh	()*=?'
+par_testquote	dash	"#&/
+par_testquote	dash	()*=?'
+par_testquote	fdsh	"#&/
+par_testquote	fdsh	()*=?'
+par_testquote	fish	"#&/
+par_testquote	fish	()*=?'
+par_testquote	fizsh	"#&/
+par_testquote	fizsh	()*=?'
+par_testquote	ksh	"#&/
+par_testquote	ksh	()*=?'
+par_testquote	ksh93	"#&/
+par_testquote	ksh93	()*=?'
+par_testquote	mksh	"#&/
+par_testquote	mksh	()*=?'
+par_testquote	posh	"#&/
+par_testquote	posh	()*=?'
+par_testquote	rbash	"#&/
+par_testquote	rbash	()*=?'
+par_testquote	rc	"#&/
+par_testquote	rc	()*=?'
+par_testquote	rzsh	"#&/
+par_testquote	rzsh	()*=?'
+par_testquote	sash	"#&/
+par_testquote	sash	()*=?'
+par_testquote	sh	"#&/
+par_testquote	sh	()*=?'
+par_testquote	static-sh	"#&/
+par_testquote	static-sh	()*=?'
+par_testquote	tcsh	"#&/
+par_testquote	tcsh	()*=?'
+par_testquote	yash	"#&/
+par_testquote	yash	()*=?'
+par_testquote	zsh	"#&/
+par_testquote	zsh	()*=?'
 par_tricolonplus	### bug #48745: :::+ bug
 par_tricolonplus	11 1 21 a aa
 par_tricolonplus	11 1 21 b bb

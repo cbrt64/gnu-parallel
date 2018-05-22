@@ -40,6 +40,67 @@ par_sigterm	parallel: sleep 15; echo 6
 par_sigterm	parallel: sleep 15; echo 7
 par_sigterm	parallel: sleep 15; echo 8
 par_sigterm	parallel: sleep 15; echo 9
+par_test_detected_shell	### bug #42913: Dont use $SHELL but the shell currently running
+par_test_detected_shell	test_unknown_shell ash	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell bash	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell csh	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell dash	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell fish	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell fizsh	Global::shell /usr/bin/zsh
+par_test_detected_shell	test_unknown_shell ksh	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell ksh93	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell mksh	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell posh	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell rbash	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell rush	Local configuration error occurred.
+par_test_detected_shell	test_unknown_shell rush	Contact the systems administrator for further assistance.
+par_test_detected_shell	test_unknown_shell rzsh	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell sash	Global::shell /bin/sh
+par_test_detected_shell	test_unknown_shell sh	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell static-sh	test_unknown_shell_static-sh: applet not found
+par_test_detected_shell	test_unknown_shell tcsh	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell yash	Global::shell /bin/bash
+par_test_detected_shell	test_unknown_shell zsh	Global::shell /bin/bash
+par_test_detected_shell	test_known_shell_c ash	Global::shell /bin/ash
+par_test_detected_shell	test_known_shell_c bash	Global::shell /bin/bash
+par_test_detected_shell	test_known_shell_c csh	Global::shell /bin/csh
+par_test_detected_shell	test_known_shell_c dash	Global::shell /bin/dash
+par_test_detected_shell	test_known_shell_c fish	Global::shell /usr/bin/fish
+par_test_detected_shell	test_known_shell_c fizsh	Global::shell /usr/bin/zsh
+par_test_detected_shell	test_known_shell_c ksh	Global::shell /usr/bin/ksh
+par_test_detected_shell	test_known_shell_c ksh93	Global::shell /bin/ksh93
+par_test_detected_shell	test_known_shell_c mksh	Global::shell /bin/mksh
+par_test_detected_shell	test_known_shell_c posh	Global::shell /bin/posh
+par_test_detected_shell	test_known_shell_c rbash	Global::shell /bin/rbash
+par_test_detected_shell	test_known_shell_c rush	Local configuration error occurred.
+par_test_detected_shell	test_known_shell_c rush	Contact the systems administrator for further assistance.
+par_test_detected_shell	test_known_shell_c rzsh	Global::shell /bin/rzsh
+par_test_detected_shell	test_known_shell_c sash	Global::shell /bin/sh
+par_test_detected_shell	test_known_shell_c sh	Global::shell /bin/sh
+par_test_detected_shell	test_known_shell_c static-sh	Global::shell /bin/static-sh
+par_test_detected_shell	test_known_shell_c tcsh	Global::shell /usr/bin/tcsh
+par_test_detected_shell	test_known_shell_c yash	Global::shell /usr/bin/yash
+par_test_detected_shell	test_known_shell_c zsh	Global::shell /usr/bin/zsh
+par_test_detected_shell	test_known_shell_pipe ash	Global::shell /bin/ash
+par_test_detected_shell	test_known_shell_pipe bash	Global::shell /bin/bash
+par_test_detected_shell	test_known_shell_pipe csh	Global::shell /bin/csh
+par_test_detected_shell	test_known_shell_pipe dash	Global::shell /bin/dash
+par_test_detected_shell	test_known_shell_pipe fish	Global::shell /usr/bin/fish
+par_test_detected_shell	test_known_shell_pipe fizsh	Global::shell /usr/bin/zsh
+par_test_detected_shell	test_known_shell_pipe ksh	Global::shell /usr/bin/ksh
+par_test_detected_shell	test_known_shell_pipe ksh93	Global::shell /bin/ksh93
+par_test_detected_shell	test_known_shell_pipe mksh	Global::shell /bin/mksh
+par_test_detected_shell	test_known_shell_pipe posh	Global::shell /bin/posh
+par_test_detected_shell	test_known_shell_pipe rbash	Global::shell /bin/rbash
+par_test_detected_shell	test_known_shell_pipe rush	Local configuration error occurred.
+par_test_detected_shell	test_known_shell_pipe rush	Contact the systems administrator for further assistance.
+par_test_detected_shell	test_known_shell_pipe rzsh	Global::shell /bin/rzsh
+par_test_detected_shell	test_known_shell_pipe sash	Global::shell /bin/sh
+par_test_detected_shell	test_known_shell_pipe sh	Global::shell /bin/sh
+par_test_detected_shell	test_known_shell_pipe static-sh	Global::shell /bin/static-sh
+par_test_detected_shell	test_known_shell_pipe tcsh	Global::shell /usr/bin/tcsh
+par_test_detected_shell	test_known_shell_pipe yash	Global::shell /usr/bin/yash
+par_test_detected_shell	test_known_shell_pipe zsh	Global::shell /usr/bin/zsh
 par_tmp_full	### Test --tmpdir running full. bug #40733 was caused by this
 par_tmp_full	parallel: Error: Output is incomplete.
 par_tmp_full	parallel: Error: Cannot append to buffer file in /tmp/shm/parallel.

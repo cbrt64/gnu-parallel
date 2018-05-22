@@ -1163,12 +1163,12 @@ sub parse_options {
     $Global::debug = $opt::D;
     $Global::shell = $ENV{'PARALLEL_SHELL'} || parent_shell($$)
 	|| $ENV{'SHELL'} || "/bin/sh";
-    if(not which($Global::shell)) {
+    if(not -x $Global::shell and not which($Global::shell)) {
 	::error("Shell '$Global::shell' not found.");
 	wait_and_exit(255);
     }
-    $Global::cshell = $Global::shell =~ m:/csh:;
-
+    ::debug("init","Global::shell $Global::shell\n");
+    $Global::cshell = $Global::shell =~ m:(/[-a-z]*)?csh:;
     if(defined $opt::X) { $Global::ContextReplace = 1; }
     if(defined $opt::silent) { $Global::verbose = 0; }
     if(defined $opt::null) { $/ = "\0"; }
@@ -2252,7 +2252,7 @@ sub shell_quote_scalar {
     # Speed optimization: Choose the correct shell_quote_scalar_*
     # and call that directly from now on
     no warnings 'redefine';
-    if($Global::shell =~ m:(^|/)t?csh$:) {
+    if($Global::cshell) {
 	# (t)csh
 	*shell_quote_scalar = \&shell_quote_scalar_csh;
     } elsif($Global::shell =~ m:(^|/)rc$:) {
@@ -4776,7 +4776,7 @@ sub which {
 }
 
 {
-    my ($regexp,%fakename);
+    my ($regexp,$shell,%fakename);
 
     sub parent_shell {
 	# Input:
@@ -4784,13 +4784,15 @@ sub which {
 	# Returns:
 	#   $shellpath = path to shell - undef if no shell found
 	my $pid = shift;
+	::debug("init","Parent of $pid\n");
 	if(not $regexp) {
 	    # All shells known to mankind
 	    #
 	    # ash bash csh dash fdsh fish fizsh ksh ksh93 mksh pdksh
 	    # posh rbash rc rush rzsh sash sh static-sh tcsh yash zsh
-	    my @shells = (qw(ash bash csh dash fdsh fish fizsh ksh
-	    ksh93 lksh mksh pdksh posh rbash rc rush rzsh sash sh
+
+	    my @shells = (qw(ash bash bsd-csh csh dash fdsh fish fizsh
+	    ksh ksh93 lksh mksh pdksh posh rbash rc rush rzsh sash sh
 	    static-sh tcsh yash zsh -sh -csh -bash),
 			  '-sh (sh)' # sh on FreeBSD
 		);
@@ -4798,26 +4800,50 @@ sub which {
 	    #   [sh]  -sh  sh  busybox sh  -sh (sh)
 	    #   /bin/sh /sbin/sh /opt/csw/sh
 	    # But not: foo.sh sshd crash flush pdflush scosh fsflush ssh
-	    my $shell = "(?:".join("|",map { "\Q$_\E" } @shells).")";
-	    $regexp = '^((\[)('. $shell. ')(\])|(|\S+/|busybox )('. $shell. '))( *$| [^(])';
+	    $shell = "(?:".join("|",map { "\Q$_\E" } @shells).")";
+	    $regexp = '^((\[)(-?)('. $shell. ')(\])|(|\S+/|busybox )'.
+		'(-?)('. $shell. '))( *$| [^(])';
 	    %fakename = (
 		# sh disguises itself as -sh (sh) on FreeBSD
 		"-sh (sh)" => ["sh"],
 		# csh and tcsh disguise themselves as -sh/-csh
-		"-sh" => ["csh", "tcsh"],
+		# E.g.: ssh -tt csh@lo 'ps aux;true' |egrep ^csh
+		# but sh also disguise itself as -sh
+		# (When?)
+		"-sh" => ["sh"],
 		"-csh" => ["tcsh", "csh"],
+		# ash disguises itself as -ash
+		"-ash" => ["ash", "dash", "sh"],
+		# dash disguises itself as -dash
+		"-dash" => ["dash", "ash", "sh"],
 		# bash disguises itself as -bash
 		"-bash" => ["bash", "sh"],
+		# ksh disguises itself as -ash
+		"-ksh" => ["ksh", "sh"],
+		# zsh disguises itself as -zsh
+		"-zsh" => ["zsh", "sh"],
 		);
 	}
+	# if -sh or -csh try readlink /proc/$$/exe
 	my ($children_of_ref, $parent_of_ref, $name_of_ref) = pid_table();
 	my $shellpath;
 	my $testpid = $pid;
 	while($testpid) {
-	    ::debug("init", "shell? ". $name_of_ref->{$testpid}."\n");
 	    if($name_of_ref->{$testpid} =~ /$regexp/o) {
-		::debug("init", "which ".($3||$6)." => ");
-		$shellpath = (which($3 || $6,@{$fakename{$3 || $6}}))[0];
+		my $shellname = $4 || $8;
+		my $dash = $3 || $7;
+		if($shellname eq "sh" and $dash) {
+		    # -sh => csh or sh
+		    if($shellpath = readlink "/proc/$testpid/exe") {
+			::debug("init","procpath $shellpath\n");
+			if($shellpath =~ m:/$shell$:o) {
+			    ::debug("init", "proc which ".$shellpath." => ");
+			    return $shellpath;
+			}
+		    }
+		}
+		::debug("init", "which ".$shellname." => ");
+		$shellpath = (which($shellname,@{$fakename{$shellname}}))[0];
 		::debug("init", "shell path $shellpath\n");
 		$shellpath and last;
 	    }

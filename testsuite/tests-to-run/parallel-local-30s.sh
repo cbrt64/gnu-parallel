@@ -121,6 +121,38 @@ par_memfree() {
     stdout parallel --timeout 20 --argsep II parallel --memfree 1t echo Free mem: ::: II 1t
 }
 
+par_test_detected_shell() {
+    echo '### bug #42913: Dont use $SHELL but the shell currently running'
+
+    shells="ash bash csh dash fish fizsh ksh ksh93 mksh posh rbash rush rzsh sash sh static-sh tcsh yash zsh"
+    test_unknown_shell() {
+	shell="$1"
+	tmp="/tmp/test_unknown_shell_$shell"
+	cp $(which "$shell") "$tmp"
+	chmod +x "$tmp"
+	$tmp -c 'ppar -Dinit echo ::: 1; true' |
+	    grep Global::shell
+	rm "$tmp"
+    }
+    export -f test_unknown_shell
+
+    test_known_shell_c() {
+	shell="$1"
+	$shell -c 'parallel -Dinit echo ::: 1; true' |
+	    grep Global::shell
+    }
+    export -f test_known_shell_c
+
+    test_known_shell_pipe() {
+	shell="$1"
+	echo 'parallel -Dinit echo ::: 1; true' |
+	    $shell | grep Global::shell
+    }
+    export -f test_known_shell_pipe
+
+    parallel -j0 --tag -k ::: test_unknown_shell test_known_shell_c test_known_shell_pipe ::: $shells
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j0 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

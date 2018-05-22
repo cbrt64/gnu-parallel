@@ -71,26 +71,6 @@ echo '### bug #42902: profiles containing arguments with space'
 echo '### bug #42892: parallel -a nonexiting --pipepart'
   parallel --pipepart -a nonexisting wc
 
-echo '### bug #42913: Dont use $SHELL but the shell currently running'
-  echo '## Unknown shell => $SHELL (bash)'
-  parallel -kj1 "rm -f /tmp/SHELL; cp \`which {}\` /tmp/SHELL; /tmp/SHELL -c 'parallel -Dinit echo ::: 1' | grep which;" 
-  ::: ash bash csh dash fish fizsh ksh ksh93 mksh posh rbash rush rzsh sash sh static-sh tcsh yash zsh; 
-  rm -f /tmp/SHELL /tmp/par*.par
-
-  echo '## Known shells -c'
-  parallel -k "\`which {}\` -c 'parallel -Dinit echo ::: 1' | grep which;" 
-  ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rush rzsh sash sh static-sh tcsh yash zsh; 
-  rm -f /tmp/par*.par
-
-  echo '## Known shells |'
-  parallel -k "echo 'parallel -Dinit echo ::: 1' | \`which {}\` | grep which;" 
-  ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rush rzsh sash sh static-sh tcsh yash zsh; 
-  rm -f /tmp/par*.par
-
-  echo '## Started directly from perl'
-  perl -e 'system(qw(parallel -Dinit echo ::: 1))' | grep which; 
-  rm -f /tmp/par*.par
-
 echo '### added transfersize/returnsize to local jobs'
   echo '### normal'
   seq 100 111 | parallel --joblog /dev/stderr seq {} '|' pv -qL100 2>&1 >/dev/null | cut -f 5-7 | sort
