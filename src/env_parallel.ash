@@ -233,9 +233,11 @@ env_parallel() {
     else
 	unset PARALLEL_ENV;
 	_error "Your environment is too big."
-	_error "You can try 2 different approaches:"
-	_error "1. Use --env and only mention the names to copy."
-	_error "2. Try running this in a clean environment once:"
+	_error "You can try 3 different approaches:"
+	_error "1. Run 'env_parallel --session' before you set"
+	_error "   variables or define functions."
+	_error "2. Use --env and only mention the names to copy."
+	_error "3. Try running this in a clean environment once:"
 	_error "     env_parallel --record-env"
 	_error "   And then use '--env _'"
 	_error "For details see: man env_parallel"
