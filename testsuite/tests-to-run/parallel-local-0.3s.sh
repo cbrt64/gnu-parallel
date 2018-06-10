@@ -800,6 +800,14 @@ par_testquote() {
     parallel --tag -k testquote ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rc rzsh sash sh static-sh tcsh yash zsh
 }
 
+par_locale_quoting() {
+    echo "### quoting in different locales"
+    printf '\243`/tmp/test\243`\n'
+    printf '\243`/tmp/test\243`\n' | LC_ALL=zh_HK.big5hkscs xargs echo '$LC_ALL'
+    # LC_ALL should be zh_HK.big5hkscs, but that makes quoting hard.
+    printf '\243`/tmp/test\243`\n' | LC_ALL=zh_HK.big5hkscs parallel -v echo '$LC_ALL'
+}
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

@@ -199,37 +199,32 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180522 ('Korea/The Great March of Return') released <<[stable]>>
+Subject: GNU Parallel 20180622 ('GDPR/Guatamala') released <<[stable]>>
 
-GNU Parallel 20180522 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-<<>>
+  GNU Parallel 實在太方便啦！！
+  Yucheng Chuang @yorkxin@twitter
+
 
 New in this release:
 
-* --tty allows for more programs accessing /dev/tty in parallel. Some programs require tty access without using it.
+?https://www.zcfy.cc/article/get-more-done-at-the-linux-command-line-with-gnu-parallel
+https://linux.cn/article-9718-1.html
+https://poesiabinaria.net/2018/06/ejecutando-tareas-desde-consola-simultaneamente-gnu-parallel/
+https://www.ubuntizando.com/como-ejecutar-varias-tareas-simultaneamente-en-el-terminal-con-gnu-parallel/
+dr.dk
+https://www.techrepublic.com/article/how-to-run-commands-simultaneously-with-gnu-parallel/#ftag=RSS56d97e7
 
-* env_parallel --session will record names in current environment in $PARALLEL_IGNORED_NAMES and exit. It is only used with env_parallel, and can work like --record-env but in a single session.
+http://mpharrigan.com/2016/08/02/parallel.html
+http://slhogle.github.io/2016/gnu-parallel/
+http://genoglobe.kr/kribb/gnu_parallel
 
-https://comquest.in/training
-https://bash-prompt.net/guides/parallell-bash/
-https://blog.uta.edu/xus/2017/09/29/an-easy-way-to-run-parallel-jobs-on-stampede2/
-
-https://opensource.com/article/18/5/gnu-parallel
-
-
-GNU Parallel: haz más cosas simultáneamente en el terminal
-https://blog.desdelinux.net/gnu-parallel-haz-mas-cosas-simultaneamente-en-el-terminal/
-https://www.sans.org/summit-archives/file/summit-archive-1524582079.pdf
-
-「今日から使い切る」ための GNU Parallelによる並列処理入門
-
-https://www.slideshare.net/koji_matsuda/gnu-parallel?qid=65d63b1a-1ef4-46fa-82c3-69c9ab7df439&v=&b=&from_search=1
-
+https://www.crowdsupply.com/ground-electronics/circumference/updates/a-gnu-parallel-clustering-demo
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

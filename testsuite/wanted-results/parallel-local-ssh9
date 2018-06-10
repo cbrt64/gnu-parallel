@@ -9,9 +9,11 @@ par_zsh_embed	parallel_OK
 par_zsh_embed	env_parallel --env OK
 par_zsh_embed	_which:12: argument list too long: perl
 par_zsh_embed	env_parallel: Error: Your environment is too big.
-par_zsh_embed	env_parallel: Error: You can try 2 different approaches:
-par_zsh_embed	env_parallel: Error: 1. Use --env and only mention the names to copy.
-par_zsh_embed	env_parallel: Error: 2. Try running this in a clean environment once:
+par_zsh_embed	env_parallel: Error: You can try 3 different approaches:
+par_zsh_embed	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_zsh_embed	env_parallel: Error:    variables or define functions.
+par_zsh_embed	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_zsh_embed	env_parallel: Error: 3. Try running this in a clean environment once:
 par_zsh_embed	env_parallel: Error:      env_parallel --record-env
 par_zsh_embed	env_parallel: Error:    And then use '--env _'
 par_zsh_embed	env_parallel: Error: For details see: man env_parallel
@@ -49,9 +51,11 @@ par_ksh_embed	parallel_OK
 par_ksh_embed	env_parallel --env OK
 par_ksh_embed	./parallel-embed[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
 par_ksh_embed	env_parallel: Error: Your environment is too big.
-par_ksh_embed	env_parallel: Error: You can try 2 different approaches:
-par_ksh_embed	env_parallel: Error: 1. Use --env and only mention the names to copy.
-par_ksh_embed	env_parallel: Error: 2. Try running this in a clean environment once:
+par_ksh_embed	env_parallel: Error: You can try 3 different approaches:
+par_ksh_embed	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_ksh_embed	env_parallel: Error:    variables or define functions.
+par_ksh_embed	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_ksh_embed	env_parallel: Error: 3. Try running this in a clean environment once:
 par_ksh_embed	env_parallel: Error:      env_parallel --record-env
 par_ksh_embed	env_parallel: Error:    And then use '--env _'
 par_ksh_embed	env_parallel: Error: For details see: man env_parallel
@@ -74,9 +78,11 @@ par_bash_embed	parallel_OK
 par_bash_embed	env_parallel --env OK
 par_bash_embed	./parallel-embed: line XXX: /usr/bin/perl: Argument list too long
 par_bash_embed	env_parallel: Error: Your environment is too big.
-par_bash_embed	env_parallel: Error: You can try 2 different approaches:
-par_bash_embed	env_parallel: Error: 1. Use --env and only mention the names to copy.
-par_bash_embed	env_parallel: Error: 2. Try running this in a clean environment once:
+par_bash_embed	env_parallel: Error: You can try 3 different approaches:
+par_bash_embed	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_bash_embed	env_parallel: Error:    variables or define functions.
+par_bash_embed	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_bash_embed	env_parallel: Error: 3. Try running this in a clean environment once:
 par_bash_embed	env_parallel: Error:      env_parallel --record-env
 par_bash_embed	env_parallel: Error:    And then use '--env _'
 par_bash_embed	env_parallel: Error: For details see: man env_parallel

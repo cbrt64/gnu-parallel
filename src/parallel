@@ -1521,6 +1521,8 @@ sub init_globals {
     $Global::trim = 'n';
     $Global::max_jobs_running = 0;
     $Global::job_already_run = '';
+    # LC_ALL workaround for multibyte chars containing special shell chars
+    $ENV{'LC_ALL'} = 'C';
     $ENV{'TMPDIR'} ||= "/tmp";
     if(not $ENV{HOME}) {
 	# $ENV{HOME} is sometimes not set if called from PHP
@@ -10044,15 +10046,6 @@ sub new {
     my @command = @$commandref;
     my $dummy = '';
     my $seq = 1;
-    # If the first command start with '-' it is probably an option
-    if($command[0] =~ /^\s*(-\S+)/) {
-	# Is this really a command in $PATH starting with '-'?
-	my $cmd = $1;
-	if(not ::which($cmd)) {
-	    ::error("Command ($cmd) starts with '-'. Is this a wrong option?");
-	    ::wait_and_exit(255);
-	}
-    }
     # Replace replacement strings with {= perl expr =}
     # '{=' 'perlexpr' '=}'  => '{= perlexpr =}'
     @command = merge_rpl_parts(@command);

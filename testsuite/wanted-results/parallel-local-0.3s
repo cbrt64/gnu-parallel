@@ -1407,6 +1407,11 @@ par_link_files_as_only_arg	bug #50685: single ::::+ does not work
 par_link_files_as_only_arg	1 1 1
 par_link_files_as_only_arg	2 2 2
 par_link_files_as_only_arg	3 3 3
+par_locale_quoting	### quoting in different locales
+par_locale_quoting	£`/tmp/test£`
+par_locale_quoting	$LC_ALL £`/tmp/test£`
+par_locale_quoting	echo $LC_ALL \£\`/tmp/test\£\`
+par_locale_quoting	C £`/tmp/test£`
 par_newline_in_command	Command with newline and positional replacement strings
 par_newline_in_command	O K
 par_no_command_given	### Test bugfix if no command given
