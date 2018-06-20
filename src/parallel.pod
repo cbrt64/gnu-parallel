@@ -596,7 +596,7 @@ Use I<prg> for (de)compressing temporary files. It is assumed that I<prg
 output) unless B<--decompress-program> is given.
 
 
-=item B<--csv> (beta testing)
+=item B<--csv>
 
 Treat input as CSV-format. B<--colsep> sets the field delimiter. It
 works very much like B<--colsep> except it deals correctly with
@@ -1596,9 +1596,9 @@ it to the command.
 Only used with B<--pipe>.
 
 
-=item B<--results> I<name> (alpha testing)
+=item B<--results> I<name> (beta testing)
 
-=item B<--res> I<name> (alpha testing)
+=item B<--res> I<name> (beta testing)
 
 Save the output into files.
 
@@ -2330,7 +2330,7 @@ Silent.  The job to be run will not be printed. This is the default.
 Can be reversed with B<-v>.
 
 
-=item B<--tty> (beta testing)
+=item B<--tty>
 
 Open terminal tty. If GNU B<parallel> is used for starting a program
 that accesses the tty (such as an interactive program) then this

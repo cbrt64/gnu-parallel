@@ -1,3 +1,39 @@
+20180622
+
+* Deal better with multibyte chars by forcing LC_ALL=C.
+
+* GNU Parallel was introduced in Pincount Podcast:
+  https://pincountpodcast.com/episodes/29.html
+
+* GNU Parallel was shown on Danish national news for 1.7 seconds: dr.dk
+
+* How to run Linux commands simultaneously with GNU Parallel
+  https://www.techrepublic.com/article/how-to-run-commands-simultaneously-with-gnu-parallel/#ftag=RSS56d97e7
+
+* Easy parallelization with GNU parallel
+  http://mpharrigan.com/2016/08/02/parallel.html
+
+* GNU Parallel for mutlithreaded tasks
+  http://slhogle.github.io/2016/gnu-parallel/
+
+* A GNU Parallel Clustering Demo
+  https://www.crowdsupply.com/ground-electronics/circumference/updates/a-gnu-parallel-clustering-demo
+
+* 使用 GNU Parallel 提高 Linux 命令行执行效率
+  https://linux.cn/article-9718-1.html
+
+* Ejecutando tareas desde consola simultáneamente con GNU Parallel
+  https://poesiabinaria.net/2018/06/ejecutando-tareas-desde-consola-simultaneamente-gnu-parallel/
+
+* Cómo ejecutar varias tareas simultáneamente en el terminal con GNU
+  Parallel
+  https://www.ubuntizando.com/como-ejecutar-varias-tareas-simultaneamente-en-el-terminal-con-gnu-parallel/
+
+* GNU Parallel 활용 가이드 http://genoglobe.kr/kribb/gnu_parallel
+
+* Bug fixes and man page updates.
+
+
 20180522
 
 * --tty allows for more programs accessing /dev/tty in parallel. Some

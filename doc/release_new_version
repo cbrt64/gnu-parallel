@@ -199,7 +199,7 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180622 ('GDPR/Guatamala') released <<[stable]>>
+Subject: GNU Parallel 20180622 ('Kim Trump/GDPR/Guatamala') released <<[stable]>>
 
 GNU Parallel 20180622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -212,6 +212,11 @@ Quote of the month:
 
 
 New in this release:
+
+* Deal better with multibyte chars by forcing LC_ALL=C.
+
+* GNU Parallel was introduced in Pincount Podcast: https://pincountpodcast.com/episodes/29.html
+
 
 ?https://www.zcfy.cc/article/get-more-done-at-the-linux-command-line-with-gnu-parallel
 https://linux.cn/article-9718-1.html
