@@ -91,21 +91,21 @@ par_retries_1() {
     echo '### Test of --retries - it should run 13 jobs in total'; 
     export PARALLEL="--retries 1 -S 12/localhost,1/:,parallel@parallel-server1 -uq"
     seq 0 12 |
-	stdout parallel perl -e 'print "job{}\n";exit({})' | wc -l
+	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
 }
 
 par_retries_2() {
     echo '### Test of --retries - it should run 25 jobs in total'; 
     export PARALLEL="--retries 2 -S 12/localhost,1/:,parallel@parallel-server1 -uq"
     seq 0 12 |
-	stdout parallel perl -e 'print "job{}\n";exit({})' | wc -l
+	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
 }
 
 par_retries_4() {
     echo '### Test of --retries - it should run 49 jobs in total'; 
     export PARALLEL="--retries 4 -S 12/localhost,1/:,parallel@parallel-server1 -uq"
     seq 0 12 |
-	stdout parallel perl -e 'print "job{}\n";exit({})' | wc -l
+	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
 }
 
 par_retries_bug_from_2010() {
@@ -156,4 +156,5 @@ par_retries_bug_from_2010() {
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 compgen -A function | grep par_ | sort |
-    parallel --joblog /tmp/jl-`basename $0` --delay 0.1 -j10 --tag -k '{} 2>&1'
+    parallel --joblog /tmp/jl-`basename $0` --delay 0.1 -j10 --tag -k '{} 2>&1' |
+    grep -Ev 'microk8s|smart connected IoT'

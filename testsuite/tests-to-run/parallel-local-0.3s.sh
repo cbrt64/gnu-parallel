@@ -215,11 +215,6 @@ echo 'bug #47290: xargs: Warning: a NUL character occurred in the input'
 
 echo '**'
 
-echo '### Test --shellquote'
-  parallel --tag -q -k {} -c perl\ -e\ \'print\ pack\(\"c\*\",1..255\)\'\ \|\ parallel\ -0\ --shellquote ::: ash bash csh dash fish fizsh ksh ksh93 lksh mksh posh rzsh sash sh static-sh tcsh yash zsh csh tcsh
-
-echo '**'
-
 echo xargs compatibility
 
 echo '### Test -L -l and --max-lines'
@@ -808,6 +803,21 @@ par_locale_quoting() {
     printf '\243`/tmp/test\243`\n' | LC_ALL=zh_HK.big5hkscs parallel -v echo '$LC_ALL'
 }
 
+par_PARALLEL_ENV() {
+    echo '### PARALLEL_ENV as variable'
+    PARALLEL_ENV="v='OK as variable'" parallel {} '$v' ::: echo
+    PARALLEL_ENV=$(mktemp)
+    echo '### PARALLEL_ENV as file'
+    echo "v='OK as file'" > $PARALLEL_ENV
+    PARALLEL_ENV="$PARALLEL_ENV" parallel {} '$v' ::: echo
+    echo '### PARALLEL_ENV as fifo'
+    rm $PARALLEL_ENV
+    mkfifo $PARALLEL_ENV
+    # () needed to avoid [1]+  Done
+    (echo "v='OK as fifo'" > $PARALLEL_ENV &) 2>/dev/null
+    PARALLEL_ENV="$PARALLEL_ENV" parallel {} '$v' ::: echo
+    rm $PARALLEL_ENV
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

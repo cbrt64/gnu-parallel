@@ -22,8 +22,16 @@ par_pipe_line_buffer() {
     tmp1=$(tempfile)
     tmp2=$(tempfile)
 
-    seq 200| parallel -N10 -L1 --pipe  -j20 --line-buffer --tagstring {#} pv -qL 10 > $tmp1
-    seq 200| parallel -N10 -L1 --pipe  -j20               --tagstring {#} pv -qL 10 > $tmp2
+    nowarn() {
+	# Ignore certain warnings
+	# parallel: Warning: Starting 11 processes took > 2 sec.
+	# parallel: Warning: Consider adjusting -j. Press CTRL-C to stop.
+	grep -v '^parallel: Warning: (Starting|Consider)'
+    }
+
+    export PARALLEL="-N10 -L1 --pipe  -j20 --tagstring {#}"
+    seq 200| parallel --line-buffer pv -qL 10 > $tmp1 2> >(nowarn)
+    seq 200| parallel               pv -qL 10 > $tmp2 2> >(nowarn)
     cat $tmp1 | wc
     diff $tmp1 $tmp2 >/dev/null
     echo These must diff: $?
@@ -39,7 +47,7 @@ par__pipepart_spawn() {
     echo '### bug #46214: Using --pipepart doesnt spawn multiple jobs in version 20150922'
     seq 1000000 > /tmp/num1000000;
     stdout nice parallel --pipepart --progress -a /tmp/num1000000 --block 10k -j0 true |
-    grep 1:local | perl -pe 's/\d\d\d/999/g'
+    grep 1:local | perl -pe 's/\d\d\d/999/g; s/[2-9]/2+/g;'
 }
 
 par__pipe_tee() {
@@ -305,8 +313,6 @@ par_retries_all_fail() {
     seq 8 |
 	parallel -k -j0 --retries 2 --timeout 0.1 'echo {}; sleep {}; false' 2>/dev/null
 }
-
-
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

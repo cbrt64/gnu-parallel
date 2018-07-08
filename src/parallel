@@ -1374,9 +1374,78 @@ sub parse_options {
 
     if(defined $opt::eta) { $opt::progress = $opt::eta; }
     if(defined $opt::bar) { $opt::progress = $opt::bar; }
+
+    # Funding a free software project is hard. GNU parallel is no
+    # exception. On top of that it seems the less visible a project
+    # is, the harder it is to get funding. And the nature of GNU
+    # parallel is that it will never be seen by "the guy with the
+    # checkbook", but only by the people doing the actual work.
+    #
+    # This problem has been covered by others - though no solution has
+    # been found:
+    # https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
+    # https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
+    #
+    # Before implementing the citation notice it was discussed with
+    # the users:
+    # https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
+    #
+    # Having to spend 10 seconds on running 'parallel --citation' once
+    # is no doubt not an ideal solution, but no one has so far come up
+    # with an ideal solution - neither for funding GNU parallel nor
+    # other free software.
+    #
+    # If you believe you have the perfect solution, you should try it
+    # out, and if it works, you should post it on the email
+    # list. Ideas that will cost work and which have not been tested
+    # are, however, unlikely to be prioritized.
+    #
+    # Please note that GPL version 3 gives you the right to fork GNU
+    # Parallel under a new name, but it does not give you the right to
+    # distribute modified copies with the citation notice disabled
+    # under the name GNU Parallel. To do that you need to be the owner
+    # of the GNU Parallel trademark. The xt:Commerce case shows this.
+    #
+    # Description of the xt:Commerce case in OLG Duesseldorf
+    # http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
+    #
+    # The verdict in German
+    # https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
+    #
+    # Other free software limiting derivates by the same name
+    # https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux_derivatives#Legal_aspects
+    # https://tm.joomla.org/trademark-faq.html
+    # https://www.mozilla.org/en-US/foundation/trademarks/faq/
+    #
+    # Running 'parallel --citation' one single time takes less than 10
+    # seconds, and will silence the citation notice for future
+    # runs. If that is too much trouble for you, why not use one of
+    # the alternatives instead?  See a list in: 'man
+    # parallel_alternatives'
     citation_notice();
 
     parse_halt();
+
+    if($ENV{'PARALLEL_ENV'}) {
+	# Read environment and set $Global::parallel_env
+	# Must be done before is_acceptable_command_line_length()
+	my $penv = $ENV{'PARALLEL_ENV'};
+	# unset $PARALLEL_ENV: It should not be given to children
+	# because it takes up a lot of env space
+	delete $ENV{'PARALLEL_ENV'};
+	if(-e $penv) {
+	    # This is a file/fifo: Replace envvar with content of file
+	    open(my $parallel_env, "<", $penv) ||
+		::die_bug("Cannot read parallel_env from $penv");
+	    local $/; # Put <> in slurp mode
+	    $penv = <$parallel_env>;
+	    close $parallel_env;
+	}
+	# Map \001 to \n to make it easer to quote \n in $PARALLEL_ENV
+	$penv =~ s/\001/\n/g;
+	$Global::parallel_env = $penv;
+    }
+
     parse_sshlogin();
 
     if(remote_hosts() and ($opt::X or $opt::m or $opt::xargs)) {
@@ -7787,25 +7856,15 @@ sub wrapped {
 	    $command = "/bin/echo " .
 		::shell_quote_scalar(::shell_quote_scalar($command));
 	}
-	if($ENV{'PARALLEL_ENV'}) {
-	    if(-e $ENV{'PARALLEL_ENV'}) {
-		# This is a file/fifo: Replace envvar with content of file
-		open(my $parallel_env, "<", $ENV{'PARALLEL_ENV'}) ||
-		    ::die_bug("Cannot read parallel_env from $ENV{'PARALLEL_ENV'}");
-		local $/;
-		$ENV{'PARALLEL_ENV'} = <$parallel_env>;
-		close $parallel_env;
-	    }
+	if($Global::parallel_env) {
 	    # If $PARALLEL_ENV set, put that in front of the command
 	    # Used for env_parallel.*
-	    # Map \001 to \n to make it easer to quote \n in $PARALLEL_ENV
-	    $ENV{'PARALLEL_ENV'} =~ s/\001/\n/g;
 	    if($Global::shell =~ /zsh/) {
 		# The extra 'eval' will make aliases work, too
-		$command = $ENV{'PARALLEL_ENV'}."\n".
+		$command = $Global::parallel_env."\n".
 		    "eval ".::shell_quote_scalar($command);
 	    } else {
-		$command = $ENV{'PARALLEL_ENV'}."\n".$command;
+		$command = $Global::parallel_env."\n".$command;
 	    }
 	}
 	if($opt::cat) {
@@ -10472,8 +10531,8 @@ sub is_acceptable_command_line_length {
     #   0 if the command line length is too long
     #   1 otherwise
     my $len = shift;
-    if($ENV{PARALLEL_ENV}) {
-	$len += length $ENV{PARALLEL_ENV} + (-s $ENV{PARALLEL_ENV})*2;
+    if($Global::parallel_env) {
+	$len += length $Global::parallel_env;
     }
     ::qqx("true "."x"x$len);
     ::debug("init", "$len=$? ");

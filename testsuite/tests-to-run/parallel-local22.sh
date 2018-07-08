@@ -99,10 +99,6 @@ echo '### added transfersize/returnsize to local jobs'
   echo '### --pipe --round-robin'
   seq 1000 | parallel --joblog /dev/stderr --block 1111 -j2 --pipe --round-robin pv -qL300 2>&1 >/dev/null | cut -f 5-7 | sort
 
-echo '### --tmux test - check termination'
-  perl -e 'map {printf "$_%o%c\n",$_,$_}1..255' | 
-    stdout parallel --tmux 'sleep 0.2;echo {}' :::: - ::: a b | 
-    perl -pe 's:(/tmp\S+/tms).....:$1XXXXX:;'
 
 EOF
 

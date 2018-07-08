@@ -1327,13 +1327,11 @@ par_bash_man	exit value 2 should be 2
 par_bash_man	Unknown option: no-such-option
 par_bash_man	exit value 255 should be 255
 par_bash_funky	
-par_bash_funky	
-par_bash_funky	
 par_bash_funky	\\\\\\\\	
 par_bash_funky		
 par_bash_funky		
-par_bash_funky	
-par_bash_funky	
+par_bash_funky	-funkymultiline
+par_bash_funky	-funkymultiline
 par_bash_funky	  space  6  
 par_bash_funky	  space  6  
 par_bash_funky	3 arg alias_works
@@ -1350,8 +1348,6 @@ par_bash_funky	function_works
 par_bash_funky	function_works_over_ssh
 par_bash_funky	myvar  works
 par_bash_funky	myvar  works
-par_bash_funky	-funkymultiline
-par_bash_funky	-funkymultiline
 par_bash_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
 par_bash_environment_too_big	OK_bigvar
 par_bash_environment_too_big	OK_bigvar_remote

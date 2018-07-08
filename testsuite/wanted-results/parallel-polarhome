@@ -1,5 +1,327 @@
 TIMEOUT=25 RETRIES=4
 ### Copy commands to servers
+bin/parallel openbsd.polarhome.com	copy openbsd.polarhome.com bin/parallel parallel
+bin/parallel tru64.polarhome.com	copy tru64.polarhome.com bin/parallel parallel
+bin/parallel debian.polarhome.com	copy debian.polarhome.com bin/parallel parallel
+bin/parallel redhat.polarhome.com	copy redhat.polarhome.com bin/parallel parallel
+bin/parallel netbsd.polarhome.com	copy netbsd.polarhome.com bin/parallel parallel
+bin/parallel macosx.polarhome.com	copy macosx.polarhome.com bin/parallel parallel
+bin/parallel miros.polarhome.com	copy miros.polarhome.com bin/parallel parallel
+bin/parallel centos.polarhome.com	copy centos.polarhome.com bin/parallel parallel
+bin/parallel unixware.polarhome.com	copy unixware.polarhome.com bin/parallel parallel
+bin/parallel pidora.polarhome.com	copy pidora.polarhome.com bin/parallel parallel
+bin/parallel scosysv.polarhome.com	copy scosysv.polarhome.com bin/parallel parallel
+bin/parallel raspbian.polarhome.com	copy raspbian.polarhome.com bin/parallel parallel
+bin/parallel solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/parallel parallel
+bin/parallel aix.polarhome.com	copy aix.polarhome.com bin/parallel parallel
+bin/parallel mandriva.polarhome.com	copy mandriva.polarhome.com bin/parallel parallel
+bin/parallel debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/parallel parallel
+bin/parallel suse.polarhome.com	copy suse.polarhome.com bin/parallel parallel
+bin/parallel solaris.polarhome.com	copy solaris.polarhome.com bin/parallel parallel
+bin/parallel hpux.polarhome.com	copy hpux.polarhome.com bin/parallel parallel
+bin/parallel hurd.polarhome.com	copy hurd.polarhome.com bin/parallel parallel
+bin/parallel freebsd.polarhome.com	copy freebsd.polarhome.com bin/parallel parallel
+bin/parallel ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/parallel parallel
+bin/parallel openindiana.polarhome.com	copy openindiana.polarhome.com bin/parallel parallel
+bin/env_parallel openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel debian.polarhome.com	copy debian.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel miros.polarhome.com	copy miros.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel centos.polarhome.com	copy centos.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel aix.polarhome.com	copy aix.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel suse.polarhome.com	copy suse.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel env_parallel
+bin/env_parallel.ash openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.bash openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.csh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.dash openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.fish openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.ksh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.pdksh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.sh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.tcsh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.zsh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.zsh env_parallel.zsh
+bin/parcat openbsd.polarhome.com	copy openbsd.polarhome.com bin/parcat parcat
+bin/parcat tru64.polarhome.com	copy tru64.polarhome.com bin/parcat parcat
+bin/parcat debian.polarhome.com	copy debian.polarhome.com bin/parcat parcat
+bin/parcat redhat.polarhome.com	copy redhat.polarhome.com bin/parcat parcat
+bin/parcat netbsd.polarhome.com	copy netbsd.polarhome.com bin/parcat parcat
+bin/parcat macosx.polarhome.com	copy macosx.polarhome.com bin/parcat parcat
+bin/parcat miros.polarhome.com	copy miros.polarhome.com bin/parcat parcat
+bin/parcat centos.polarhome.com	copy centos.polarhome.com bin/parcat parcat
+bin/parcat unixware.polarhome.com	copy unixware.polarhome.com bin/parcat parcat
+bin/parcat pidora.polarhome.com	copy pidora.polarhome.com bin/parcat parcat
+bin/parcat scosysv.polarhome.com	copy scosysv.polarhome.com bin/parcat parcat
+bin/parcat raspbian.polarhome.com	copy raspbian.polarhome.com bin/parcat parcat
+bin/parcat solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/parcat parcat
+bin/parcat aix.polarhome.com	copy aix.polarhome.com bin/parcat parcat
+bin/parcat mandriva.polarhome.com	copy mandriva.polarhome.com bin/parcat parcat
+bin/parcat debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/parcat parcat
+bin/parcat suse.polarhome.com	copy suse.polarhome.com bin/parcat parcat
+bin/parcat solaris.polarhome.com	copy solaris.polarhome.com bin/parcat parcat
+bin/parcat hpux.polarhome.com	copy hpux.polarhome.com bin/parcat parcat
+bin/parcat hurd.polarhome.com	copy hurd.polarhome.com bin/parcat parcat
+bin/parcat freebsd.polarhome.com	copy freebsd.polarhome.com bin/parcat parcat
+bin/parcat ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/parcat parcat
+bin/parcat openindiana.polarhome.com	copy openindiana.polarhome.com bin/parcat parcat
+bin/stdout openbsd.polarhome.com	copy openbsd.polarhome.com bin/stdout stdout
+bin/stdout tru64.polarhome.com	copy tru64.polarhome.com bin/stdout stdout
+bin/stdout debian.polarhome.com	copy debian.polarhome.com bin/stdout stdout
+bin/stdout redhat.polarhome.com	copy redhat.polarhome.com bin/stdout stdout
+bin/stdout netbsd.polarhome.com	copy netbsd.polarhome.com bin/stdout stdout
+bin/stdout macosx.polarhome.com	copy macosx.polarhome.com bin/stdout stdout
+bin/stdout miros.polarhome.com	copy miros.polarhome.com bin/stdout stdout
+bin/stdout centos.polarhome.com	copy centos.polarhome.com bin/stdout stdout
+bin/stdout unixware.polarhome.com	copy unixware.polarhome.com bin/stdout stdout
+bin/stdout pidora.polarhome.com	copy pidora.polarhome.com bin/stdout stdout
+bin/stdout scosysv.polarhome.com	copy scosysv.polarhome.com bin/stdout stdout
+bin/stdout raspbian.polarhome.com	copy raspbian.polarhome.com bin/stdout stdout
+bin/stdout solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/stdout stdout
+bin/stdout aix.polarhome.com	copy aix.polarhome.com bin/stdout stdout
+bin/stdout mandriva.polarhome.com	copy mandriva.polarhome.com bin/stdout stdout
+bin/stdout debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/stdout stdout
+bin/stdout suse.polarhome.com	copy suse.polarhome.com bin/stdout stdout
+bin/stdout solaris.polarhome.com	copy solaris.polarhome.com bin/stdout stdout
+bin/stdout hpux.polarhome.com	copy hpux.polarhome.com bin/stdout stdout
+bin/stdout hurd.polarhome.com	copy hurd.polarhome.com bin/stdout stdout
+bin/stdout freebsd.polarhome.com	copy freebsd.polarhome.com bin/stdout stdout
+bin/stdout ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/stdout stdout
+bin/stdout openindiana.polarhome.com	copy openindiana.polarhome.com bin/stdout stdout
 Done copying
 aix.polarhome.com	### Test if empty command in process list causes problems
 aix.polarhome.com	OK_with_empty_cmd
@@ -10,6 +332,8 @@ debian-ppc.polarhome.com	OK_with_empty_cmd
 debian.polarhome.com	### Test if empty command in process list causes problems
 debian.polarhome.com	OK_with_empty_cmd
 freebsd.polarhome.com	export: Illegal option -f
+hpux.polarhome.com	### Test if empty command in process list causes problems
+hpux.polarhome.com	OK_with_empty_cmd
 macosx.polarhome.com	### Test if empty command in process list causes problems
 macosx.polarhome.com	OK_with_empty_cmd
 mandriva.polarhome.com	### Test if empty command in process list causes problems
@@ -19,6 +343,8 @@ miros.polarhome.com	OK_with_empty_cmd
 netbsd.polarhome.com	CSH/TCSH DO NOT SUPPORT newlines IN VARIABLES/FUNCTIONS. Unset test_empty_cmd test_empty_cmd
 openbsd.polarhome.com	### Test if empty command in process list causes problems
 openbsd.polarhome.com	OK_with_empty_cmd
+openindiana.polarhome.com	### Test if empty command in process list causes problems
+openindiana.polarhome.com	OK_with_empty_cmd
 pidora.polarhome.com	### Test if empty command in process list causes problems
 pidora.polarhome.com	OK_with_empty_cmd
 raspbian.polarhome.com	### Test if empty command in process list causes problems
@@ -43,11 +369,13 @@ centos.polarhome.com	Works on centos.polarhome.com
 debian-ppc.polarhome.com	Works on debian-ppc
 debian.polarhome.com	Works on debian
 freebsd.polarhome.com	Syntax error: Bad fd number
+hpux.polarhome.com	Works on hpux64
 macosx.polarhome.com	Works on macosx.polarhome.com
 mandriva.polarhome.com	Works on mandriva.polarhome.com
 miros.polarhome.com	Works on miros.polarhome.com
 netbsd.polarhome.com	Works on netbsd.polarhome.com
 openbsd.polarhome.com	Works on openbsd.polarhome.com
+openindiana.polarhome.com	Works on openindiana
 pidora.polarhome.com	Works on pidora
 raspbian.polarhome.com	Works on raspbian
 redhat.polarhome.com	Works on redhat.polarhome.com
@@ -69,6 +397,7 @@ debian-ppc.polarhome.com	OK
 debian.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 debian.polarhome.com	OK
 freebsd.polarhome.com	Syntax error: Bad fd number
+hpux.polarhome.com	No such file or directory: bash
 macosx.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /Users/tange/bin/parallel line 0000
 macosx.polarhome.com	OK
 mandriva.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
@@ -79,6 +408,8 @@ miros.polarhome.com	OK
 netbsd.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 openbsd.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
 openbsd.polarhome.com	OK
+openindiana.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /u/t/tange/bin/parallel line 0000
+openindiana.polarhome.com	OK
 pidora.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 pidora.polarhome.com	OK
 raspbian.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
@@ -88,7 +419,7 @@ redhat.polarhome.com	OK
 scosysv.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 scosysv.polarhome.com	 at /home/t/tange/bin/parallel line 0000
 scosysv.polarhome.com	OK
-solaris-x86.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/tange/bin/parallel line 0000
+solaris-x86.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 solaris-x86.polarhome.com	OK
 solaris.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 solaris.polarhome.com	 at /home/t/tange/bin/parallel line 0000
@@ -110,11 +441,13 @@ centos.polarhome.com	bash only A
 debian-ppc.polarhome.com	bash only A
 debian.polarhome.com	bash only A
 freebsd.polarhome.com	Syntax error: "(" unexpected (expecting word)
+hpux.polarhome.com	bash only A
 macosx.polarhome.com	bash only A
 mandriva.polarhome.com	bash only A
 miros.polarhome.com	bash only A
 netbsd.polarhome.com	Missing name for redirect.
 openbsd.polarhome.com	bash only A
+openindiana.polarhome.com	bash only A
 pidora.polarhome.com	bash only A
 raspbian.polarhome.com	bash only A
 redhat.polarhome.com	bash only A
@@ -137,6 +470,7 @@ mandriva.polarhome.com	bash only B
 miros.polarhome.com	bash only B
 netbsd.polarhome.com	bash only B
 openbsd.polarhome.com	bash only B
+openindiana.polarhome.com	bash only B
 pidora.polarhome.com	bash only B
 raspbian.polarhome.com	bash only B
 redhat.polarhome.com	bash only B
@@ -242,6 +576,16 @@ openbsd.polarhome.com	     /home/t/tange/.profile
 openbsd.polarhome.com	     /home/t/tange/.cshrc
 openbsd.polarhome.com	     /home/t/tange/.tcshrc
 openbsd.polarhome.com	install-OK
+openindiana.polarhome.com	Installed env_parallel in:
+openindiana.polarhome.com	     /u/t/tange/.bashrc
+openindiana.polarhome.com	     /u/t/tange/.shrc
+openindiana.polarhome.com	     /u/t/tange/.zshenv
+openindiana.polarhome.com	     /u/t/tange/.config/fish/config.fish
+openindiana.polarhome.com	     /u/t/tange/.kshrc
+openindiana.polarhome.com	     /u/t/tange/.profile
+openindiana.polarhome.com	     /u/t/tange/.cshrc
+openindiana.polarhome.com	     /u/t/tange/.tcshrc
+openindiana.polarhome.com	install-OK
 pidora.polarhome.com	Installed env_parallel in:
 pidora.polarhome.com	     /home/t/tange/.bashrc
 pidora.polarhome.com	     /home/t/tange/.shrc
@@ -283,14 +627,14 @@ scosysv.polarhome.com	     /home/t/tange/.cshrc
 scosysv.polarhome.com	     /home/t/tange/.tcshrc
 scosysv.polarhome.com	install-OK
 solaris-x86.polarhome.com	Installed env_parallel in:
-solaris-x86.polarhome.com	     /home/tange/.bashrc
-solaris-x86.polarhome.com	     /home/tange/.shrc
-solaris-x86.polarhome.com	     /home/tange/.zshenv
-solaris-x86.polarhome.com	     /home/tange/.config/fish/config.fish
-solaris-x86.polarhome.com	     /home/tange/.kshrc
-solaris-x86.polarhome.com	     /home/tange/.profile
-solaris-x86.polarhome.com	     /home/tange/.cshrc
-solaris-x86.polarhome.com	     /home/tange/.tcshrc
+solaris-x86.polarhome.com	     ~/.bashrc
+solaris-x86.polarhome.com	     ~/.shrc
+solaris-x86.polarhome.com	     ~/.zshenv
+solaris-x86.polarhome.com	     ~/.config/fish/config.fish
+solaris-x86.polarhome.com	     ~/.kshrc
+solaris-x86.polarhome.com	     ~/.profile
+solaris-x86.polarhome.com	     ~/.cshrc
+solaris-x86.polarhome.com	     ~/.tcshrc
 solaris-x86.polarhome.com	install-OK
 solaris.polarhome.com	Installed env_parallel in:
 solaris.polarhome.com	     /home/t/tange/.bashrc
@@ -339,11 +683,13 @@ centos.polarhome.com	env_parallel run-OK
 debian-ppc.polarhome.com	env_parallel run-OK
 debian.polarhome.com	env_parallel run-OK
 freebsd.polarhome.com	Syntax error: Bad fd number
+hpux.polarhome.com	env_parallel run-OK
 macosx.polarhome.com	env_parallel run-OK
 mandriva.polarhome.com	env_parallel run-OK
 miros.polarhome.com	env_parallel run-OK
 netbsd.polarhome.com	env_parallel run-OK
 openbsd.polarhome.com	env_parallel run-OK
+openindiana.polarhome.com	env_parallel run-OK
 pidora.polarhome.com	env_parallel run-OK
 raspbian.polarhome.com	env_parallel run-OK
 redhat.polarhome.com	env_parallel run-OK
@@ -359,10 +705,12 @@ aix.polarhome.com	reading from process substitution OK
 centos.polarhome.com	reading from process substitution OK
 debian-ppc.polarhome.com	reading from process substitution OK
 debian.polarhome.com	reading from process substitution OK
+hpux.polarhome.com	reading from process substitution OK
 macosx.polarhome.com	reading from process substitution OK
 mandriva.polarhome.com	reading from process substitution OK
 miros.polarhome.com	reading from process substitution OK
 openbsd.polarhome.com	reading from process substitution OK
+openindiana.polarhome.com	reading from process substitution OK
 pidora.polarhome.com	reading from process substitution OK
 raspbian.polarhome.com	reading from process substitution OK
 redhat.polarhome.com	reading from process substitution OK
@@ -381,12 +729,14 @@ centos.polarhome.com	1 2 1 2 3 1 2 3 4
 debian-ppc.polarhome.com	1 2 1 2 3 1 2 3 4
 debian.polarhome.com	1 2 1 2 3 1 2 3 4
 freebsd.polarhome.com	Syntax error: Bad fd number
+hpux.polarhome.com	
 macosx.polarhome.com	1 2 1 2 3 1 2 3 4
 mandriva.polarhome.com	1 2 1 2 3 1 2 3 4
 miros.polarhome.com	1 2 1 2 3 1 2 3 4
 netbsd.polarhome.com	parset: Command not found.
 netbsd.polarhome.com	arr: Undefined variable.
 openbsd.polarhome.com	
+openindiana.polarhome.com	1 2 1 2 3 1 2 3 4
 pidora.polarhome.com	1 2 1 2 3 1 2 3 4
 raspbian.polarhome.com	1 2 1 2 3 1 2 3 4
 redhat.polarhome.com	1 2 1 2 3 1 2 3 4
@@ -404,6 +754,7 @@ centos.polarhome.com	2 2 3 2 3 4
 debian-ppc.polarhome.com	2 2 3 2 3 4
 debian.polarhome.com	2 2 3 2 3 4
 freebsd.polarhome.com	Syntax error: Bad fd number
+hpux.polarhome.com	
 macosx.polarhome.com	2 2 3 2 3 4
 mandriva.polarhome.com	2 2 3 2 3 4
 miros.polarhome.com	1 2 1 2 1 2
@@ -411,6 +762,7 @@ netbsd.polarhome.com	start=2: Command not found.
 netbsd.polarhome.com	env_parset: Command not found.
 netbsd.polarhome.com	arr: Undefined variable.
 openbsd.polarhome.com	
+openindiana.polarhome.com	2 2 3 2 3 4
 pidora.polarhome.com	2 2 3 2 3 4
 raspbian.polarhome.com	2 2 3 2 3 4
 redhat.polarhome.com	2 2 3 2 3 4
@@ -431,12 +783,14 @@ centos.polarhome.com	1 2,1 2 3,1 2 3 4
 debian-ppc.polarhome.com	1 2,1 2 3,1 2 3 4
 debian.polarhome.com	1 2,1 2 3,1 2 3 4
 freebsd.polarhome.com	Syntax error: Bad fd number
+hpux.polarhome.com	,,
 macosx.polarhome.com	1 2,1 2 3,1 2 3 4
 mandriva.polarhome.com	1 2,1 2 3,1 2 3 4
 miros.polarhome.com	1 2,1 2 3,1 2 3 4
 netbsd.polarhome.com	parset: Command not found.
 netbsd.polarhome.com	var1: Undefined variable.
 openbsd.polarhome.com	,,
+openindiana.polarhome.com	1 2,1 2 3,1 2 3 4
 pidora.polarhome.com	1 2,1 2 3,1 2 3 4
 raspbian.polarhome.com	1 2,1 2 3,1 2 3 4
 redhat.polarhome.com	1 2,1 2 3,1 2 3 4
@@ -454,6 +808,7 @@ centos.polarhome.com	2,2 3,2 3 4
 debian-ppc.polarhome.com	2,2 3,2 3 4
 debian.polarhome.com	2,2 3,2 3 4
 freebsd.polarhome.com	Syntax error: Bad fd number
+hpux.polarhome.com	,,
 macosx.polarhome.com	2,2 3,2 3 4
 mandriva.polarhome.com	2,2 3,2 3 4
 miros.polarhome.com	1 2,1 2,1 2
@@ -461,6 +816,7 @@ netbsd.polarhome.com	start=2: Command not found.
 netbsd.polarhome.com	env_parset: Command not found.
 netbsd.polarhome.com	var1: Undefined variable.
 openbsd.polarhome.com	,,
+openindiana.polarhome.com	2,2 3,2 3 4
 pidora.polarhome.com	2,2 3,2 3 4
 raspbian.polarhome.com	2,2 3,2 3 4
 redhat.polarhome.com	2,2 3,2 3 4

@@ -1420,3 +1420,5 @@ par_testhalt	soon done 70% false	job 17
 par_testhalt	soon done 70% false	parallel: This job finished:
 par_testhalt	soon done 70% false	echo job 17; sleep 7.5; exit 7
 par_testhalt	soon done 70% false	20
+par_tmux_termination	### --tmux test - check termination
+par_tmux_termination	See output with: tmux -S /tmp/parallel-local-race02-tmpdir/tmsXXXXX attach

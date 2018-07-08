@@ -37,6 +37,8 @@ par_delay_human_readable	c
 par_delay_human_readable	a
 par_delay_human_readable	b
 par_delay_human_readable	c
+par_do_not_export_ENV_PARALLEL	### Do not export $ENV_PARALLEL to children
+par_do_not_export_ENV_PARALLEL	      1       1   60001
 par_dryrun_timeout_ungroup	bug #51039: --dry-run --timeout 1.4m -u breaks
 par_dryrun_timeout_ungroup	   1000    2000    8893
 par_exitval_signal	### Test --joblog with exitval and Test --joblog with signal -- timing dependent
@@ -69,12 +71,13 @@ par_multiline_commands	parallel: Warning: Command lines contain newline. Forcing
 par_multiline_commands	4
 par_multiline_commands	finish 4
 par_nice	Check that --nice works
+par_nice	load_10
 par_nice	bzip2            18
 par_nice	bzip2            18
-par_nice	parallel: Warning: This job was killed because it timed out:
-par_nice	parallel: Warning: bzip2 < /dev/zero
-par_nice	parallel: Warning: This job was killed because it timed out:
-par_nice	parallel: Warning: bzip2 < /dev/zero
+par_nice	parallel: SIGTERM received. No new jobs will be started.
+par_nice	parallel: Waiting for these 2 jobs to finish. Send SIGTERM again to stop now.
+par_nice	parallel: bzip2 < /dev/zero
+par_nice	parallel: bzip2 < /dev/zero
 par_parcat_mixing	parcat output should mix: a b a b
 par_parcat_mixing	astart
 par_parcat_mixing	bstart

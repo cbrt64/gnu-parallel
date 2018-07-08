@@ -83,6 +83,18 @@ par_hostgroup() {
     parallel -S @g1+g2 -S @g1/1/tcsh@lo -S @g1/1/localhost -S @g2/1/parallel@lo whoami\;true ::: {1..6} | sort
 }
 
+par_tmux_termination() {
+    echo '### --tmux test - check termination'
+    doit() {
+	perl -e 'map {printf "$_%o%c\n",$_,$_}1..255' |
+	    stdout parallel --tmux 'sleep 0.2;echo {}' :::: - ::: a b |
+	    perl -pe 's:(/tmp\S*/tms).....:$1XXXXX:;'
+    }
+    export -f doit
+    stdout parallel --timeout 120 doit ::: 1
+}
+
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     #    parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1'

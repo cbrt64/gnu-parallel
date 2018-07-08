@@ -49,7 +49,8 @@ echo forever "'echo; pstree -lp '"$$"'; pstree -l'" $$ >/tmp/monitor
 chmod 755 /tmp/monitor
 # Log rotate
 mkdir -p log
-seq 10 -1 1 | parallel -j1 mv log/testsuite.log.{} log/testsuite.log.'{= $_++ =}'
+seq 10 -1 1 |
+    parallel -j1 mv log/testsuite.log.{} log/testsuite.log.'{= $_++ =}'
 mv testsuite.log log/testsuite.log.1
 date
 mkdir -p actual-results

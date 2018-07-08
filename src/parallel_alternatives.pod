@@ -1213,7 +1213,7 @@ B<rush> has:
 
 =item * B<awk -v> like custom defined variables (B<-v>)
 
-With GNU B<parallel> you would simply simply set a shell variable:
+With GNU B<parallel> you would simply set a shell variable:
 
    parallel 'v={}; echo "$v"' ::: foo
    echo foo | rush -v v={} 'echo {v}'
@@ -1568,7 +1568,7 @@ This test stresses whether output mixes.
 =head2 RAM: Output limited by RAM
 
 Some tools cache output in RAM. This makes them extremely slow if the
-output is bigger than physical memory and crash if the the output is
+output is bigger than physical memory and crash if the output is
 bigger than the virtual memory.
 
   #!/bin/bash

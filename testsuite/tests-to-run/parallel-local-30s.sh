@@ -78,9 +78,18 @@ linebuffer_matters() {
 	}
 	export -f incompressible_ascii
 
+	nowarn() {
+	    # Ignore certain warnings
+	    # parallel: Warning: Starting 11 processes took > 2 sec.
+	    # parallel: Warning: Consider adjusting -j. Press CTRL-C to stop.
+	    grep -v '^parallel: Warning: (Starting|Consider)'
+	}
+
 	parallel -j0 $linebuffer --compress $TAG \
-		 incompressible_ascii ::: {0..10} |
-	    perl -ne '/^(\d+)\s/ and print "$1\n"' | uniq | sort
+		 incompressible_ascii ::: {0..10} 2> >(nowarn) |
+	    perl -ne '/^(\d+)\s/ and print "$1\n"' |
+	    uniq |
+	    sort
     }
 
     # These can run in parallel if there are enough ressources
@@ -116,9 +125,21 @@ par_linebuffer_matters_compress() {
 }
 
 par_memfree() {
-    echo '### test memfree'
+    echo '### test memfree - it should be killed by timeout'
     parallel --memfree 1k echo Free mem: ::: 1k
-    stdout parallel --timeout 20 --argsep II parallel --memfree 1t echo Free mem: ::: II 1t
+    stdout parallel --timeout 20 --argsep II parallel --memfree 1t echo Free mem: ::: II 1t |
+	grep -v TERM | grep -v ps/display.c
+}
+
+par_shellquote() {
+    echo '### Test --shellquote in all shells'
+    doit() {
+	# Run --shellquote for ascii 1..255 in a shell
+	shell="$1"
+	"$shell" -c perl\ -e\ \'print\ pack\(\"c\*\",1..255\)\'\ \|\ parallel\ -0\ --shellquote
+    }
+    export -f doit
+    parallel --tag -q -k doit {} ::: ash bash csh dash fish fizsh ksh ksh93 lksh mksh posh rzsh sash sh static-sh tcsh yash zsh csh tcsh
 }
 
 par_test_detected_shell() {
@@ -150,7 +171,10 @@ par_test_detected_shell() {
     }
     export -f test_known_shell_pipe
 
-    parallel -j0 --tag -k ::: test_unknown_shell test_known_shell_c test_known_shell_pipe ::: $shells
+    stdout parallel -j0 --tag -k \
+	   ::: test_unknown_shell test_known_shell_c test_known_shell_pipe \
+	   ::: $shells |
+	grep -Ev 'parallel: Warning: (Starting .* processes took|Consider adjusting)'
 }
 
 export -f $(compgen -A function | grep par_)

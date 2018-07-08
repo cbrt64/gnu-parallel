@@ -488,6 +488,11 @@ making it harder to finance development. However, if you pay 10000
 EUR, you have done your part to finance future development and should
 feel free to use B<--will-cite> in scripts.
 
+If you do not want to help financing future development by letting
+other users see the citation notice or by paying, then please use
+another tool instead of GNU B<parallel>. You can find some of the
+alternatives in B<man parallel_alternatives>.
+
 
 =item B<--block> I<size>
 

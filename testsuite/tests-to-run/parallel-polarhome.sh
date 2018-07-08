@@ -11,8 +11,8 @@ P_NOTWORKING="vax alpha openstep"
 P_NOTWORKING_YET="ultrix irix"
 
 P_WORKING="openbsd tru64 debian freebsd redhat netbsd macosx miros centos unixware pidora ubuntu scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux openindiana hpux-ia64"
-P_WORKING="openbsd tru64 debian redhat netbsd macosx miros centos unixware pidora scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux hurd freebsd ubuntu"
-P_TEMPORARILY_BROKEN="minix dragonfly openindiana hpux-ia64 beaglebone cubieboard2"
+P_WORKING="openbsd tru64 debian redhat netbsd macosx miros centos unixware pidora scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux hurd freebsd ubuntu openindiana"
+P_TEMPORARILY_BROKEN="minix dragonfly hpux-ia64 beaglebone cubieboard2"
 
 P="$P_WORKING"
 POLAR=`parallel -k echo {}.polarhome.com ::: $P`
@@ -22,7 +22,7 @@ S_POLAR=`parallel -k echo -S 1/{}.polarhome.com ::: $P`
 TIMEOUT=25
 RETRIES=4
 
-parallel --retries $RETRIES rsync -a /usr/local/bin/{parallel,env_parallel,env_parallel.*,parcat} ::: redhat.p:bin/
+parallel --retries $RETRIES rsync -a /usr/local/bin/{parallel,env_parallel,env_parallel.*,parcat} ::: redhat.polarhome.com:bin/
 
 doit() {
     # Avoid the stupid /etc/issue.net banner at Polarhome: -oLogLevel=quiet
@@ -50,7 +50,7 @@ doit() {
     export -f par_nonall
 
     echo '### Copy commands to servers'
-    parallel -kj15 -r --retries $RETRIES --timeout $TIMEOUT --delay 0.03 --tag \
+    parallel -vkj15 --retries $RETRIES --timeout $TIMEOUT --delay 0.03 --tag \
 	     copy {2} {1} {1/} \
 	     ::: bin/{parallel,env_parallel,env_parallel.*,parcat,stdout} \
 	     ::: $POLAR
@@ -113,7 +113,7 @@ doit() {
     par_nonall 'start=2; env_parset var1,var2,var3 seq \$start ::: 2 3 4; echo $var1,$var2,$var3' 2>&1
 }
 
-env_parallel -u -Sredhat.p doit ::: 1
+env_parallel -u -Sredhat.polarhome.com doit ::: 1
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

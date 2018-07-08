@@ -28,6 +28,7 @@ par_exit_code() {
 	
 	echo '# Ideally the command should return the same'
 	echo '#   with or without parallel'
+	echo '# but fish 2.4.0 returns 1 while X.X.X returns 0'
 	parallel -kj500% --argsep ,, --tag in_shell_run_command {1} '{=2 $_=Q($_) =}' \
 		 ,, $OK $BAD ,, \
 	'/tmp/mysleep '$s \
@@ -153,6 +154,37 @@ par_halt_on_error() {
     parallel -j1 -k --tag mytest ::: -2 -1 0 1 2 ::: true false ::: true false
 }
 
+par_test_build_and_install() {
+    cd ~/privat/parallel
+    # Make a .tar.gz file
+    stdout make dist |
+	perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
+    LAST=$(ls *tar.gz | tail -n1)
+
+    cd /tmp
+    rm -rf parallel-20??????/
+    tar xf ~/privat/parallel/$LAST
+    cd parallel-20??????/
+
+    echo "### Test normal build and install"
+    # Make sure files depending on *.pod have to be rebuilt
+    touch src/*pod src/sql
+    ./configure &&
+	sudo stdout nice make install |
+	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
+
+    echo '### Test installation missing pod2*'
+    parallel which ::: pod2html pod2man pod2texi pod2pdf |
+	sudo parallel mv {} {}.hidden
+    # Make sure files depending on *.pod have to be rebuilt
+    touch src/*pod src/sql
+    ./configure &&
+	sudo stdout nice make install |
+	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
+
+    parallel which {}.hidden ::: pod2html pod2man pod2texi pod2pdf |
+	sudo parallel mv {} {.}
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort | parallel -vj0 -k --tag --joblog /tmp/jl-`basename $0` '{} 2>&1'

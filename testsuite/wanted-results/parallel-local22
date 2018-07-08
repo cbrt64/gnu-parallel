@@ -245,7 +245,3 @@ Send	Receive	Exitval
 1677	1677	0
 2216	2216	0
 Send	Receive	Exitval
-echo '### --tmux test - check termination'
-### --tmux test - check termination
-  perl -e 'map {printf "$_%o%c\n",$_,$_}1..255' |     stdout parallel --tmux 'sleep 0.2;echo {}' :::: - ::: a b |     perl -pe 's:(/tmp\S+/tms).....:$1XXXXX:;'
-See output with: tmux -S /tmp/parallel-local22-tmpdir/tmsXXXXX attach

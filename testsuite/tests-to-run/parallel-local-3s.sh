@@ -208,15 +208,6 @@ par_parcat_mixing() {
     parcat $tmp1 $tmp2 | tr -s ab
 }
 
-par_nice() {
-    echo 'Check that --nice works'
-    # parallel-20160422 OK
-    parallel --timeout 3 --nice 18 bzip2 '<' ::: /dev/zero /dev/zero &
-    sleep 1
-    # Should find 2 lines
-    ps -eo "%c %n" | grep 18 | grep bzip2
-}
-
 par_delay_human_readable() {
     # Test that you can use d h m s in --delay
     parallel --delay 0.1s echo ::: a b c
@@ -243,6 +234,34 @@ par_exitval_signal() {
     
     rm -f /tmp/parallel_joblog_exitval /tmp/parallel_joblog_signal
 }
+
+par_do_not_export_ENV_PARALLEL() {
+    echo '### Do not export $ENV_PARALLEL to children'
+    doit() {
+	parallel echo '{=$_="\""x$_=}' ::: 60000 | wc
+    }
+    . `which env_parallel.bash`
+    env_parallel doit ::: 1
+}
+
+par_nice() {
+    echo 'Check that --nice works'
+    # parallel-20160422 OK
+    # wait for load < 10
+    parallel --load 10 echo ::: load_10
+    parallel -j0 --timeout 10 --nice 18 bzip2 '<' ::: /dev/zero /dev/zero &
+    pid=$!
+    # Should find 2 lines
+    # Try 5 times if the machine is slow starting bzip2
+    (sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
+	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
+	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
+	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
+	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
+	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2)
+    parallel --retries 10 '! kill -TERM' ::: $pid 2>/dev/null
+}
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort | parallel -j6 --tag -k '{} 2>&1'

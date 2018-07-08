@@ -740,22 +740,25 @@ B<$PARALLEL_SHELL>.
 =head2 Always running commands in a shell
 
 If the command is a simple command with no redirection and setting of
-variables, the command I<could> be run without spawning a shell. E.g.:
+variables, the command I<could> be run without spawning a
+shell. E.g. this simple B<grep> matching either 'ls ' or ' wc >> c':
 
-  parallel "grep -E 'a|bc' {}" ::: foo
+  parallel "grep -E 'ls | wc >> c' {}" ::: foo
 
 could be run as:
 
-  system("grep","-E","a|bc","foo");
+  system("grep","-E","ls | wc >> c","foo");
 
 However, as soon as the command is a bit more complex a shell I<must>
 be spawned:
 
-  parallel "grep -E 'a|bc' {} | wc" ::: foo
+  parallel "grep -E 'ls | wc >> c' {} | wc >> c" ::: foo
+  parallel "LANG=C grep -E 'ls | wc >> c' {}" ::: foo
 
-It is impossible to tell the difference between these two without
-parsing the string (is the B<|> a pipe in shell or an alternation in
-B<grep>?).
+It is impossible to tell the difference between these without parsing
+the string (is the B<|> a pipe in shell or an alternation in a B<grep>
+regexp?  Is B<LANG=C> a command in B<csh> or setting a variable in
+B<bash>? Is B<>>> redirection or part of a regexp?).
 
 On top of this wrapper scripts will often require a shell to be
 spawned.
@@ -884,7 +887,7 @@ B<--sqlmaster> be the part that shuffles the jobs. The B<--sqlworker>s
 simply executes according to Seq number.
 
 
-=head --csv
+=head2 --csv
 
 B<--pipepart> is incompatible with B<--csv> because you can have
 records like:
@@ -1193,14 +1196,20 @@ Before implementing the citation notice it was discussed with the
 users:
 https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
 
-There is no doubt that this is not an ideal solution, but no one has
-so far come up with an ideal solution - neither for funding GNU
-B<parallel> nor other free software.
+Having to spend 10 seconds on running B<parallel --citation> once is
+no doubt not an ideal solution, but no one has so far come up with an
+ideal solution - neither for funding GNU B<parallel> nor other free
+software.
 
 If you believe you have the perfect solution, you should try it out,
 and if it works, you should post it on the email list. Ideas that will
 cost work and which have not been tested are, however, unlikely to be
 prioritized.
+
+Running B<parallel --citation> one single time takes less than 10
+seconds, and will silence the citation notice for future runs. If that
+is too much trouble for you, why not use one of the alternatives
+instead?  See a list in: B<man parallel_alternatives>.
 
 
 =head1 Ideas for new design

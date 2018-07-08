@@ -9,7 +9,7 @@ export -f par_tmux_filter
 par_tmux() {
     # Read command line length on stdin
     # The line will be a number of \'s
-    (stdout parallel --timeout 3 --tmux --delay 0.03 echo '{}{=$_="\\"x$_=}'; echo $?) |
+    (stdout parallel --timeout 10 --tmux --delay 0.03 echo '{}{=$_="\\"x$_=}'; echo $?) |
 	par_tmux_filter
 }
 export -f par_tmux
@@ -24,7 +24,7 @@ export -f par_tmux
 # echo '### bug #48841: --tmux(pane) --fg should start tmux in foreground'
 # stdout /usr/bin/time -f %e script -q -f -c /tmp/parallel-local7-script /dev/null |  perl -ne '$_ >= 26 and $_ <= 45 and print "OK\n"'
 
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj8 --delay 1 --timeout 60 --retries 1 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj8 --delay 1 --timeout 100 --retries 1 -k --joblog /tmp/jl-`basename $0` -L1
 
 echo '### tmux-1.9'
   seq 000   100 | PARALLEL_TMUX=tmux-1.9 par_tmux
@@ -64,11 +64,11 @@ echo '### tmux-1.8 fails'
 
 echo '### tmux-1.8 0..255 ascii'
 perl -e 'print map { ($_, map { pack("c*",$_) } grep { $_>=1 && $_!=10 } $_-110..$_),"\n" } 0..255' | 
-   PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux --timeout 3 echo | par_tmux_filter; echo $?
+   PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux --timeout 5 echo | par_tmux_filter; echo $?
 
 echo '### tmux-1.9 0..255 ascii'
 perl -e 'print map { ($_, map { pack("c*",$_) } grep { $_>=1 && $_!=10 } 0..$_),"\n" } 0..255' | 
-   PARALLEL_TMUX=tmux-1.9 stdout parallel --tmux --timeout 3 echo | par_tmux_filter; echo $?
+   PARALLEL_TMUX=tmux-1.9 stdout parallel --tmux --timeout 5 echo | par_tmux_filter; echo $?
 
 echo '### Test output ascii'
   rm -f /tmp/paralocal7-ascii*; 
