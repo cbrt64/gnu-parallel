@@ -4,17 +4,6 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
-par_max_length_len_128k() {
-    echo "### BUG: The length for -X is not close to max (131072)"
-
-    seq 1 60000 | parallel -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
-    seq 1 60000 | parallel -X echo a{}b{}c |head -n 1 |wc
-    seq 1 60000 | parallel -X echo |head -n 1 |wc
-    seq 1 60000 | parallel -X echo a{}b{}c {} |head -n 1 |wc
-    seq 1 60000 | parallel -X echo {}aa{} |head -n 1 |wc
-    seq 1 60000 | parallel -X echo {} aa {} |head -n 1 |wc
-}
-
 par_fifo_under_csh() {
     echo '### Test --fifo under csh'
 
@@ -52,52 +41,6 @@ par_test_XI_mI() {
 
     echo "### Test -m -I"
     seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -m -k -I :: echo a{} b::'
-}
-
-par_linebuffer_files() {
-    echo 'bug #48658: --linebuffer --files'
-    rm -rf /tmp/par48658-*
-
-    doit() {
-	compress="$1"
-	echo "normal"
-	parallel --linebuffer --compress-program $compress seq ::: 100000 |
-	    wc -l
-	echo "--files"
-	parallel --files --linebuffer --compress-program $1 seq ::: 100000 |
-	    wc -l
-	echo "--results"
-	parallel --results /tmp/par48658-$compress --linebuffer --compress-program $compress seq ::: 100000 |
-	    wc -l
-	rm -rf "/tmp/par48658-$compress"
-    }
-    export -f doit
-    parallel --tag -k doit ::: zstd pzstd clzip lz4 lzop pigz pxz gzip plzip pbzip2 lzma xz lzip bzip2 lbzip2 lrz
-}
-
-par_no_newline_compress() {
-    echo 'bug #41613: --compress --line-buffer - no newline';
-    pipe_doit() {
-	tagstring="$1"
-	compress="$2"
-	echo tagstring="$tagstring" compress="$compress"
-	perl -e 'print "O"'|
-	    parallel "$compress" $tagstring --pipe --line-buffer cat
-	echo "K"
-    }
-    export -f pipe_doit
-    nopipe_doit() {
-	tagstring="$1"
-	compress="$2"
-	echo tagstring="$tagstring" compress="$compress"
-	parallel "$compress" $tagstring --line-buffer echo {} O ::: -n
-	echo "K"
-    }
-    export -f nopipe_doit
-    parallel -qk --header : {pipe}_doit {tagstring} {compress} \
-	     ::: tagstring '--tagstring {#}' -k \
-	     ::: compress --compress -k \
-	     ::: pipe pipe nopipe
 }
 
 par_failing_compressor() {
@@ -235,21 +178,6 @@ _EOF
     parallel --lb /tmp/parallel--lb-test ::: 1 | head
     # Should be empty
     ps aux | grep parallel[-]-lb-test
-}
-
-par_macron() {
-    print_it() {
-	parallel ::: "echo $1"
-	parallel echo ::: "$1"
-	parallel echo "$1" ::: "$1"
-	parallel echo \""$1"\" ::: "$1"
-	parallel -q echo ::: "$1"
-	parallel -q echo "$1" ::: "$1"
-	parallel -q echo \""$1"\" ::: "$1"
-    }
-    print_it "$(perl -e 'print "\257"')"
-    print_it "$(perl -e 'print "\257\256"')"
-    print_it "$(perl -e 'print "\257<\257<\257>\257>"')"
 }
 
 par_header_parens() {

@@ -37,8 +37,11 @@ par_delay_human_readable	c
 par_delay_human_readable	a
 par_delay_human_readable	b
 par_delay_human_readable	c
-par_do_not_export_ENV_PARALLEL	### Do not export $ENV_PARALLEL to children
-par_do_not_export_ENV_PARALLEL	      1       1   60001
+par_do_not_export_PARALLEL_ENV	### Do not export $PARALLEL_ENV to children
+par_do_not_export_PARALLEL_ENV	Should be 0
+par_do_not_export_PARALLEL_ENV	      1       0       1
+par_do_not_export_PARALLEL_ENV	Should give 60k and not overflow
+par_do_not_export_PARALLEL_ENV	      1       1   60001
 par_dryrun_timeout_ungroup	bug #51039: --dry-run --timeout 1.4m -u breaks
 par_dryrun_timeout_ungroup	   1000    2000    8893
 par_exitval_signal	### Test --joblog with exitval and Test --joblog with signal -- timing dependent

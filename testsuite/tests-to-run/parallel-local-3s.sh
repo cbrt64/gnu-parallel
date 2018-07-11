@@ -235,20 +235,25 @@ par_exitval_signal() {
     rm -f /tmp/parallel_joblog_exitval /tmp/parallel_joblog_signal
 }
 
-par_do_not_export_ENV_PARALLEL() {
-    echo '### Do not export $ENV_PARALLEL to children'
+par_do_not_export_PARALLEL_ENV() {
+    echo '### Do not export $PARALLEL_ENV to children'
     doit() {
-	parallel echo '{=$_="\""x$_=}' ::: 60000 | wc
+	echo Should be 0
+	echo "$PARALLEL_ENV" | wc
+	echo Should give 60k and not overflow
+	PARALLEL_ENV="$PARALLEL_ENV" parallel echo '{=$_="\""x$_=}' ::: 60000 | wc
     }
     . `which env_parallel.bash`
+    # Make PARALLEL_ENV as big as possible
+    PARALLEL_ENV="a='$(seq 100000 | head -c $((139000-$(set|wc -c) )) )'"
     env_parallel doit ::: 1
 }
 
 par_nice() {
     echo 'Check that --nice works'
     # parallel-20160422 OK
-    # wait for load < 10
-    parallel --load 10 echo ::: load_10
+    # wait for load < 8
+    parallel --load 8 echo ::: load_10
     parallel -j0 --timeout 10 --nice 18 bzip2 '<' ::: /dev/zero /dev/zero &
     pid=$!
     # Should find 2 lines

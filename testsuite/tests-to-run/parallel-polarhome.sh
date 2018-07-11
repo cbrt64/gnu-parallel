@@ -69,7 +69,7 @@ doit() {
     par_nonall parallel echo Works on {} ::: '`hostname`' 2>&1
     par_nonall "stdout parallel --tmpdir / echo ::: test read-only tmp |" \
 	       "perl -pe '\$exit += s:/[a-z0-9_]+.arg:/XXXXXXXX.arg:gi; \$exit += s/[0-9][0-9][0-9][0-9]/0000/gi; END { exit not \$exit }' &&" \
-	       "echo OK" 2>&1
+	       "echo OK readonly tmp" 2>&1
     echo
     echo '### Does exporting a bash function kill parallel'
     echo

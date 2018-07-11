@@ -37,9 +37,9 @@ env_parallel() {
 	    if [ $(alias $_i | wc -l) == 1 ] ; then
 		true Alias is a single line. Good.
 	    else
-		_warning "Alias '$_i' contains newline."
-		_warning "Make sure the command has at least one newline after '$_i'."
-		_warning "See BUGS in 'man env_parallel'."
+		_warning_PAR "Alias '$_i' contains newline."
+		_warning_PAR "Make sure the command has at least one newline after '$_i'."
+		_warning_PAR "See BUGS in 'man env_parallel'."
 	    fi
 	done
 	alias "$@"
@@ -56,48 +56,72 @@ env_parallel() {
     _bodies_of_VARIABLES() {
 	typeset -p "$@"
     }
+    _ignore_HARDCODED() {
+	# These names cannot be detected
+	echo '(_|TIMEOUT|GROUPS|FUNCNAME|DIRSTACK|PIPESTATUS|USERNAME|BASH_[A-Z_]+)'
+    }
+    _ignore_READONLY() {
+	readonly | perl -e '@r = map {
+                chomp;
+                # sh on UnixWare: readonly TIMEOUT
+	        # ash: readonly var='val'
+	        # ksh: var='val'
+                s/^(readonly )?([^= ]*)(=.*|)$/$2/ or
+	        # bash: declare -ar BASH_VERSINFO=([0]="4" [1]="4")
+	        # zsh: typeset -r var='val'
+                  s/^\S+\s+\S+\s+(\S[^=]*)(=.*|$)/$1/;
+                $_ } <>;
+            $vars = join "|",map { quotemeta $_ } @r;
+            print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
+            '
+    }
     _remove_bad_NAMES() {
 	# Do not transfer vars and funcs from env_parallel
-	_remove_readonly() {
-	   _list_readonly() {
-	       readonly | perl -pe 's/^\S+\s+\S+\s+(\S[^=]*)=.*/$1/'
-	   }
-	   perl -e '$r=join("|",@ARGV); while(<STDIN>) {/$r/o or print}' `_list_readonly`
-	}
+	_ignore_RO="`_ignore_READONLY`"
+	_ignore_HARD="`_ignore_HARDCODED`"
 	# Macos-grep does not like long patterns
 	# Old Solaris grep does not support -E
-	# so 'grep' is converted to 'perl'
-
 	# Perl Version of:
-	#   grep -Ev '^(_names_of_ALIASES|_bodies_of_ALIASES|_names_of_maybe_FUNCTIONS|_names_of_FUNCTIONS|_bodies_of_FUNCTIONS|_names_of_VARIABLES|_bodies_of_VARIABLES|_remove_bad_NAMES|_prefix_PARALLEL_ENV)$' |
-	#   grep -Ev '^(_get_ignored_VARS|_make_grep_REGEXP|_ignore_UNDERSCORE|_alias_NAMES|_list_alias_BODIES|_function_NAMES|_list_function_BODIES|_variable_NAMES|_list_variable_VALUES|_prefix_PARALLEL_ENV|PARALLEL_TMP)$' |
-	perl -ne '/^(_names_of_ALIASES|
-			   _bodies_of_ALIASES|
-			   _names_of_maybe_FUNCTIONS|
-			   _names_of_FUNCTIONS|
-			   _bodies_of_FUNCTIONS|
-			   _names_of_VARIABLES|
-			   _bodies_of_VARIABLES|
-			   _remove_bad_NAMES|
-			   _remove_readonly|
-			   _prefix_PARALLEL_ENV|
-			   _get_ignored_VARS|
-			   _make_grep_REGEXP|
-			   _ignore_UNDERSCORE|
-			   _alias_NAMES|
-			   _list_alias_BODIES|
-			   _function_NAMES|
-			   _list_function_BODIES|
-			   _variable_NAMES|
-			   _list_variable_VALUES|
-			   _prefix_PARALLEL_ENV|
-			   PARALLEL_TMP)$/x or print' |
+	# grep -Ev '^(...)$' |
+	perl -ne '/^(
+		     PARALLEL_ENV|
+		     PARALLEL_TMP|
+		     _alias_NAMES|
+		     _bodies_of_ALIASES|
+		     _bodies_of_FUNCTIONS|
+		     _bodies_of_VARIABLES|
+		     _error_PAR|
+		     _function_NAMES|
+		     _get_ignored_VARS|
+		     _grep_REGEXP|
+		     _ignore_HARD|
+		     _ignore_HARDCODED|
+		     _ignore_READONLY|
+		     _ignore_RO|
+		     _ignore_UNDERSCORE|
+		     _list_alias_BODIES|
+		     _list_function_BODIES|
+		     _list_variable_VALUES|
+		     _make_grep_REGEXP|
+		     _names_of_ALIASES|
+		     _names_of_FUNCTIONS|
+		     _names_of_VARIABLES|
+		     _names_of_maybe_FUNCTIONS|
+		     _parallel_exit_CODE|
+		     _prefix_PARALLEL_ENV|
+		     _prefix_PARALLEL_ENV|
+		     _remove_bad_NAMES|
+		     _remove_readonly|
+		     _variable_NAMES|
+		     _warning_PAR|
+		     _which_PAR)$/x and next;
 	    # Filter names matching --env
-	    # perl version of: grep -E "^$_grep_REGEXP"\$ | grep -vE "^"\$ |
-	    perl -ne "/^$_grep_REGEXP"'$/ and not /^'"$_ignore_UNDERSCORE"'$/ and print' |
-            _remove_readonly |
-	    # perl version of: grep -Ev '^(BASHOPTS|BASHPID|EUID|GROUPS|FUNCNAME|DIRSTACK|_|PIPESTATUS|PPID|SHELLOPTS|UID|USERNAME|BASH_[A-Z_]+)$'
-	    perl -ne 'not /^(BASHOPTS|BASHPID|EUID|GROUPS|FUNCNAME|DIRSTACK|_|PIPESTATUS|PPID|SHELLOPTS|UID|USERNAME|BASH_[A-Z_]+)$/ and print'
+	    /^'"$_grep_REGEXP"'$/ or next;
+            /^'"$_ignore_UNDERSCORE"'$/ and next;
+	    # Remove readonly variables
+            /^'"$_ignore_RO"'$/ and next;
+            /^'"$_ignore_HARD"'$/ and next;
+            print;'
     }
     _prefix_PARALLEL_ENV() {
         shopt 2>/dev/null |
@@ -145,7 +169,7 @@ env_parallel() {
             print $vars ? "($vars)" : "(.*)";
             ' -- "$@"
     }
-    _which() {
+    _which_PAR() {
 	# type returns:
 	#   ll is an alias for ls -l (in ash)
 	#   bash is a tracked alias for /bin/bash
@@ -166,17 +190,17 @@ env_parallel() {
                                 s/.* is (a tracked alias for )?//);
                       END { exit not $exit }'
     }
-    _warning() {
+    _warning_PAR() {
 	echo "env_parallel: Warning: $@" >&2
     }
-    _error() {
+    _error_PAR() {
 	echo "env_parallel: Error: $@" >&2
     }
 
     # Bash is broken in version 3.2.25 and 4.2.39
     # The crazy '[ "`...`" == "" ]' is needed for the same reason
-    if [ "`_which parallel`" == "" ]; then
-	_error 'parallel must be in $PATH.'
+    if [ "`_which_PAR parallel`" == "" ]; then
+	_error_PAR 'parallel must be in $PATH.'
 	return 255
     fi
 
@@ -239,7 +263,7 @@ env_parallel() {
     fi
     unset _variable_NAMES
 
-    _which_true="`_which true`"
+    _which_TRUE="`_which_PAR true`"
     # Copy shopt (so e.g. extended globbing works)
     # But force expand_aliases as aliases otherwise do not work
     PARALLEL_ENV="`
@@ -255,22 +279,22 @@ env_parallel() {
     unset _grep_REGEXP
     unset _ignore_UNDERSCORE
     # Test if environment is too big
-    if [ "`_which true`" == "$_which_true" ] ; then
+    if [ "`_which_PAR true`" == "$_which_TRUE" ] ; then
 	parallel "$@";
 	_parallel_exit_CODE=$?
 	unset PARALLEL_ENV;
 	return $_parallel_exit_CODE
     else
 	unset PARALLEL_ENV;
-	_error "Your environment is too big."
-	_error "You can try 3 different approaches:"
-	_error "1. Run 'env_parallel --session' before you set"
-	_error "   variables or define functions."
-	_error "2. Use --env and only mention the names to copy."
-	_error "3. Try running this in a clean environment once:"
-	_error "     env_parallel --record-env"
-	_error "   And then use '--env _'"
-	_error "For details see: man env_parallel"
+	_error_PAR "Your environment is too big."
+	_error_PAR "You can try 3 different approaches:"
+	_error_PAR "1. Run 'env_parallel --session' before you set"
+	_error_PAR "   variables or define functions."
+	_error_PAR "2. Use --env and only mention the names to copy."
+	_error_PAR "3. Try running this in a clean environment once:"
+	_error_PAR "     env_parallel --record-env"
+	_error_PAR "   And then use '--env _'"
+	_error_PAR "For details see: man env_parallel"
 	return 255
     fi
 }

@@ -74,9 +74,9 @@ par_env_parallel_fifo() {
 	echo transferred non-exported func;
     }
     echo data from stdin |
-	env_parallel --pipe -S lo --fifo 'cat {};myfunc'
+	env_parallel --timeout 10 --pipe -S lo --fifo 'cat {};myfunc'
     echo data from stdin |
-	env_parallel --pipe -S lo --cat 'cat {};myfunc'
+	env_parallel --timeout 10 --pipe -S lo --cat 'cat {};myfunc'
 }
 
 par_tee_ssh() {

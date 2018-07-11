@@ -1610,7 +1610,7 @@ par_ksh_environment_too_big() {
 
     echo Rest should fail
 
-    bigvar="$(perl -e 'print "x"x127000')"
+    bigvar="$(perl -e 'print "x"x130000')"
     env_parallel echo ::: fail_bigvar
     env_parallel -S lo echo ::: fail_bigvar_remote
 

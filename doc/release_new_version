@@ -207,10 +207,15 @@ GNU Parallel 20180622 ('') <<[stable]>> has been released. It is available for d
 
 Quote of the month:
 
-  <<>>
-
+  I've been using GNU Parallel very much and effectively lately.
+  Such an easy way to get huge speed-ups with my simple bash/Perl/Python
+  programs -- parallelize them!
+    -- Ken Youens-Clark @kycl4rk@twitter
 
 New in this release:
+
+
+* GNU Parallel is distributed as part of Snippy https://github.com/tseemann/snippy
 
 https://esgeeks.com/gnu-parallel-ejecutar-comandos-simultaneo-linux/
 

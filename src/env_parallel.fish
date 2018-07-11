@@ -94,7 +94,7 @@ function env_parallel
       # Replace \001 with \002 because \001 is used by env_parallel
       # Convert \n to \001
       functions -n | perl -pe 's/,/\n/g' | \
-        grep -Ev '^(PARALLEL_TMP)$' | \
+        grep -Ev '^(PARALLEL_ENV|PARALLEL_TMP)$' | \
         grep -E "^$_grep_REGEXP"\$ | grep -vE "^$_ignore_UNDERSCORE"\$ | \
         while read d; functions $d; end | \
         perl -pe 's/\001/\002/g and not $printed++ and print STDERR

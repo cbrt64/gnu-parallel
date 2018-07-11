@@ -7,7 +7,7 @@ par_path_remote_bash() {
   rm -rf /tmp/parallel
   cp /usr/local/bin/parallel /tmp
   
-  cat <<'_EOS' | stdout ssh nopathbash@lo -T | grep -Ev 'For upgrade information, please visit:|updates are security updates|packages can be updated|System restart required|Welcome to|https://|Ubuntu|http://|from 13 to 17 years|mentor:|New release|do-release-upgrade|\s*^$' | uniq
+  cat <<'_EOS' | stdout ssh nopathbash@lo -T | grep -Ev 'For upgrade information, please visit:|updates are security updates|packages can be updated|System restart required|Welcome to|https://|Ubuntu|http://|from 13 to 17 years|mentor:|New release|do-release-upgrade|public clouds|\s*^$' | uniq
   echo BASH Path before: $PATH with no parallel
   parallel echo ::: 1
   # Race condition stderr/stdout
@@ -28,7 +28,7 @@ par_path_remote_csh() {
   rm -rf /tmp/parallel
   cp /usr/local/bin/parallel /tmp
 
-  cat <<'_EOS' | stdout ssh nopathcsh@lo -T | grep -Ev 'For upgrade information, please visit:|updates are security updates|packages can be updated|System restart required|Welcome to|https://|Ubuntu|http://|from 13 to 17 years|mentor:|New release|do-release-upgrade|\s*^$' | uniq
+  cat <<'_EOS' | stdout ssh nopathcsh@lo -T | grep -Ev 'For upgrade information, please visit:|updates are security updates|packages can be updated|System restart required|Welcome to|https://|Ubuntu|http://|from 13 to 17 years|mentor:|New release|do-release-upgrade|public clouds|\s*^$' | uniq
   echo CSH Path before: $PATH with no parallel
   which parallel >& /dev/stdout
   echo '^^^^^^^^ Not found is OK'

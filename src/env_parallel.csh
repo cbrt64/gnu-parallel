@@ -75,7 +75,7 @@ else
   rm $_tMpscRIpt
 
   # Get the scalar and array variable names
-  set _vARnAmES=(`set | perl -ne 's/\s.*//; /^(#|_|killring|prompt2|command|PARALLEL_TMP)$/ and next; /^'"$_grep_REGEXP"'$/ or next; /^'"$_ignore_UNDERSCORE"'$/ and next; print'`)
+  set _vARnAmES=(`set | perl -ne 's/\s.*//; /^(#|_|killring|prompt2|command|PARALLEL_ENV|PARALLEL_TMP)$/ and next; /^'"$_grep_REGEXP"'$/ or next; /^'"$_ignore_UNDERSCORE"'$/ and next; print'`)
 
   # Make a tmpfile for the variable definitions
   set _tMpvARfILe=`_tempfile`

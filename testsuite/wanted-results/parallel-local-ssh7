@@ -21,9 +21,9 @@ par_zsh_underscore	(eval):1: command not found: myecho
 par_zsh_underscore	OK if no .^^^^^^^^^^^^^^^^^^^^^^^^^ myecho
 par_zsh_underscore	(eval):1: command not found: myecho
 par_zsh_underscore	OK if no .^^^^^^^^^^^^^^^^^^^^^^^^^ myecho
-par_zsh_underscore	(eval):1: command not found: myfunc
+par_zsh_underscore	zsh:1: command not found: myfunc
 par_zsh_underscore	OK if no .^^^^^^^^^^^^^^^^^^^^^^^^^ myfunc
-par_zsh_underscore	(eval):1: command not found: myfunc
+par_zsh_underscore	zsh:1: command not found: myfunc
 par_zsh_underscore	OK if no .^^^^^^^^^^^^^^^^^^^^^^^^^ myfunc
 par_zsh_parset	parset
 par_zsh_parset	### parset into array
@@ -152,7 +152,7 @@ par_zsh_environment_too_big	OK_bigfunc_remote
 par_zsh_environment_too_big	OK_bigfunc_quote
 par_zsh_environment_too_big	OK_bigfunc_quote_remote
 par_zsh_environment_too_big	Rest should fail
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -162,7 +162,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -172,7 +172,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -182,7 +182,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -192,7 +192,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -202,7 +202,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -212,7 +212,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -222,7 +222,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -383,13 +383,13 @@ par_sh_underscore	variables in aliases work
 par_sh_underscore	variables in aliases work
 par_sh_underscore	variables in aliases work
 par_sh_underscore	variables in aliases work
-par_sh_underscore	/bin/sh: 4: not_copied_alias: not found
+par_sh_underscore	/bin/sh: 3: not_copied_alias: not found
 par_sh_underscore	error=OK
 par_sh_underscore	aliases work
 par_sh_underscore	aliases work
-par_sh_underscore	/bin/sh: 2: myecho: not found
+par_sh_underscore	/bin/sh: 1: myecho: not found
 par_sh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_sh_underscore	/bin/sh: 2: myecho: not found
+par_sh_underscore	/bin/sh: 1: myecho: not found
 par_sh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_sh_parset	parset
 par_sh_parset	### parset into vars with comma
@@ -551,8 +551,8 @@ par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
-par_ksh_underscore	/usr/bin/ksh: line 5: not_copied_alias: not found
-par_ksh_underscore	/usr/bin/ksh: line 5: not_copied_func: not found
+par_ksh_underscore	/usr/bin/ksh: line 4: not_copied_alias: not found
+par_ksh_underscore	/usr/bin/ksh: line 4: not_copied_func: not found
 par_ksh_underscore	error=OK
 par_ksh_underscore	error=OK
 par_ksh_underscore	aliases in and arrays in functions work
@@ -563,9 +563,9 @@ par_ksh_underscore	/usr/bin/ksh: myecho: not found [No such file or directory]
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_ksh_underscore	/usr/bin/ksh: myecho: not found [No such file or directory]
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	/usr/bin/ksh: line 2: myfunc: not found
+par_ksh_underscore	/usr/bin/ksh: myfunc: not found
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	/usr/bin/ksh: line 2: myfunc: not found
+par_ksh_underscore	/usr/bin/ksh: myfunc: not found
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
 par_ksh_parset	parset
 par_ksh_parset	### parset into array
@@ -780,9 +780,9 @@ par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_ksh_env_parallel_session	### Test env_parallel --session
 par_ksh_env_parallel_session	/usr/bin/ksh: line 4: aliasbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 5: aliasbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 5: funcbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 5: funcbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 4: aliasbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 4: funcbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 4: funcbefore: not found
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
@@ -945,13 +945,13 @@ par_dash_underscore	variables in aliases work
 par_dash_underscore	variables in aliases work
 par_dash_underscore	variables in aliases work
 par_dash_underscore	variables in aliases work
-par_dash_underscore	/bin/dash: 4: not_copied_alias: not found
+par_dash_underscore	/bin/dash: 3: not_copied_alias: not found
 par_dash_underscore	error=OK
 par_dash_underscore	aliases work
 par_dash_underscore	aliases work
-par_dash_underscore	/bin/dash: 2: myecho: not found
+par_dash_underscore	/bin/dash: 1: myecho: not found
 par_dash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_dash_underscore	/bin/dash: 2: myecho: not found
+par_dash_underscore	/bin/dash: 1: myecho: not found
 par_dash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_dash_parset	parset
 par_dash_parset	### parset into vars with comma
@@ -1481,13 +1481,13 @@ par_ash_underscore	variables in aliases work
 par_ash_underscore	variables in aliases work
 par_ash_underscore	variables in aliases work
 par_ash_underscore	variables in aliases work
-par_ash_underscore	/bin/ash: 4: not_copied_alias: not found
+par_ash_underscore	/bin/ash: 3: not_copied_alias: not found
 par_ash_underscore	error=OK
 par_ash_underscore	aliases work
 par_ash_underscore	aliases work
-par_ash_underscore	/bin/ash: 2: myecho: not found
+par_ash_underscore	/bin/ash: 1: myecho: not found
 par_ash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_ash_underscore	/bin/ash: 2: myecho: not found
+par_ash_underscore	/bin/ash: 1: myecho: not found
 par_ash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_ash_parset	parset
 par_ash_parset	### parset into vars with comma

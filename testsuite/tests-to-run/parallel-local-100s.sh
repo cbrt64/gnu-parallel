@@ -169,8 +169,9 @@ par_test_build_and_install() {
     echo "### Test normal build and install"
     # Make sure files depending on *.pod have to be rebuilt
     touch src/*pod src/sql
-    ./configure &&
-	sudo stdout nice make install |
+    ./configure --prefix=/tmp/parallel-install &&
+	(stdout nice make -j3 >/dev/null;
+	 stdout nice make install) |
 	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
 
     echo '### Test installation missing pod2*'
@@ -178,8 +179,9 @@ par_test_build_and_install() {
 	sudo parallel mv {} {}.hidden
     # Make sure files depending on *.pod have to be rebuilt
     touch src/*pod src/sql
-    ./configure &&
-	sudo stdout nice make install |
+    ./configure --prefix=/tmp/parallel-install &&
+	(stdout nice make -j3 >/dev/null;
+	 stdout nice make install) |
 	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
 
     parallel which {}.hidden ::: pod2html pod2man pod2texi pod2pdf |
