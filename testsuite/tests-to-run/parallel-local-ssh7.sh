@@ -346,6 +346,69 @@ _EOF
   ssh ksh@lo "$myscript"
 }
 
+par_mksh_man() {
+  echo '### mksh'
+  myscript=$(cat <<'_EOF'
+    echo "### From man env_parallel"
+
+    . `which env_parallel.mksh`;
+
+    alias myecho='echo aliases with \= \& \" \!'" \'"
+    myecho work
+    env_parallel myecho ::: work
+    env_parallel -S server myecho ::: work
+    env_parallel --env myecho myecho ::: work
+    env_parallel --env myecho -S server myecho ::: work
+
+    alias multiline='echo multiline
+      echo aliases with \= \& \" \!'" \'"
+    multiline work
+    env_parallel multiline ::: work
+    env_parallel -S server multiline ::: work
+    env_parallel --env multiline multiline ::: work
+    env_parallel --env multiline -S server multiline ::: work
+    alias multiline='dummy'
+
+    myfunc() { echo functions 'with  = & " !'" '" $*; }
+    myfunc work
+    env_parallel myfunc ::: work
+    env_parallel -S server myfunc ::: work
+    env_parallel --env myfunc myfunc ::: work
+    env_parallel --env myfunc -S server myfunc ::: work
+
+    myvar='variables with  = & " !'" '"
+    echo "$myvar" work
+    env_parallel echo '"$myvar"' ::: work
+    env_parallel -S server echo '"$myvar"' ::: work
+    env_parallel --env myvar echo '"$myvar"' ::: work
+    env_parallel --env myvar -S server echo '"$myvar"' ::: work
+
+    multivar='multiline
+    variables with  = & " !'" '"
+    echo "$multivar" work
+    env_parallel echo '"$multivar"' ::: work
+    env_parallel -S server echo '"$multivar"' ::: work
+    env_parallel --env multivar echo '"$multivar"' ::: work
+    env_parallel --env multivar -S server echo '"$multivar"' ::: work
+
+    myarray=(arrays 'with = & " !'" '" work, too)
+    echo "${myarray[0]}" "${myarray[1]}" "${myarray[2]}" "${myarray[3]}"
+    env_parallel -k echo '"${myarray[{}]}"' ::: 0 1 2 3
+    env_parallel -k -S server echo '"${myarray[{}]}"' ::: 0 1 2 3
+    env_parallel -k --env myarray echo '"${myarray[{}]}"' ::: 0 1 2 3
+    env_parallel -k --env myarray -S server echo '"${myarray[{}]}"' ::: 0 1 2 3
+
+    env_parallel ::: true false true false
+    echo exit value $? should be 2
+
+    env_parallel --no-such-option 2>&1 >/dev/null
+    # Sleep 1 to delay output to stderr to avoid race
+    echo exit value $? should be 255 `sleep 1`
+_EOF
+  )
+  ssh mksh@lo "$myscript"
+}
+
 par_sh_man() {
   echo '### sh'
 
@@ -796,6 +859,54 @@ _EOF
   ssh ksh@lo "$myscript"
 }
 
+par_mksh_underscore() {
+  echo '### mksh'
+  myscript=$(cat <<'_EOF'
+    echo "### Testing of --env _"
+
+    alias not_copied_alias="echo BAD"
+    not_copied_func() { echo BAD; };
+    not_copied_var=BAD
+    not_copied_array=(BAD BAD BAD);
+    . `which env_parallel.mksh`;
+    env_parallel --record-env;
+    alias myecho="echo \$myvar aliases in";
+    myfunc() { myecho ${myarray[@]} functions $*; };
+    myvar="variables in";
+    myarray=(and arrays in);
+    env_parallel myfunc ::: work;
+    env_parallel -S server myfunc ::: work;
+    env_parallel --env myfunc,myvar,myarray,myecho myfunc ::: work;
+    env_parallel --env myfunc,myvar,myarray,myecho -S server myfunc ::: work;
+    env_parallel --env _ myfunc ::: work;
+    env_parallel --env _ -S server myfunc ::: work;
+
+    env_parallel --env _ -S server not_copied_alias ::: error=OK;
+    env_parallel --env _ -S server not_copied_func ::: error=OK;
+    env_parallel --env _ -S server echo \$not_copied_var ::: error=OK;
+    env_parallel --env _ -S server echo \${not_copied_array[@]} ::: error=OK;
+
+    echo myvar >> ~/.parallel/ignored_vars;
+    env_parallel --env _ myfunc ::: work;
+    env_parallel --env _ -S server myfunc ::: work;
+    echo myarray >> ~/.parallel/ignored_vars;
+    env_parallel --env _ myfunc ::: work;
+    env_parallel --env _ -S server myfunc ::: work;
+    echo myecho >> ~/.parallel/ignored_vars;
+    env_parallel --env _ myfunc ::: work;
+    echo "OK if no myecho    ^^^^^^^^^^^^^^^^^" >&2;
+    env_parallel --env _ -S server myfunc ::: work;
+    echo "OK if no myecho    ^^^^^^^^^^^^^^^^^" >&2;
+    echo myfunc >> ~/.parallel/ignored_vars;
+    env_parallel --env _ myfunc ::: work;
+    echo "OK if no myfunc         ^^^^^^^^^^^^^^^^^" >&2;
+    env_parallel --env _ -S server myfunc ::: work;
+    echo "OK if no myfunc         ^^^^^^^^^^^^^^^^^" >&2;
+_EOF
+  )
+  ssh mksh@lo "$myscript"
+}
+
 par_sh_underscore() {
   echo '### sh'
   myscript=$(cat <<'_EOF'
@@ -1144,6 +1255,39 @@ _EOF
   ssh ksh@lo "$myscript" 2>&1 | sort
 }
 
+par_mksh_funky() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.mksh`;
+
+    myvar="myvar  works"
+    funky=$(perl -e "print pack \"c*\", 1..255")
+    myarray=("" array_val2 3 "" 5 "  space  6  ")
+# Assoc arrays not supported
+#    typeset -A assocarr
+#    assocarr[a]=assoc_val_a
+#    assocarr[b]=assoc_val_b
+    alias alias_echo="echo 3 arg";
+
+    func_echo() {
+      echo $*;
+      echo "$myvar"
+      echo "${myarray[5]}"
+#      echo ${assocarr[a]}
+      echo Funky-"$funky"-funky
+    }
+
+    env_parallel alias_echo ::: alias_works
+    env_parallel func_echo ::: function_works
+    env_parallel -S mksh@lo alias_echo ::: alias_works_over_ssh
+    env_parallel -S mksh@lo func_echo ::: function_works_over_ssh
+    echo
+    echo "$funky" | parallel --shellquote
+_EOF
+  )
+  # Order is often different. Dunno why. So sort
+  ssh mksh@lo "$myscript" 2>&1 | sort
+}
+
 par_sh_funky() {
   myscript=$(cat <<'_EOF'
     . `which env_parallel.sh`;
@@ -1365,6 +1509,31 @@ _EOF
   )
   # Order is often different. Dunno why. So sort
   ssh ksh@lo "$myscript" 2>&1 | sort
+}
+
+par_mksh_env_parallel() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.mksh`;
+    echo 'bug #50435: Remote fifo broke in 20150522'
+    # Due to $PARALLEL_TMP being transferred
+    OK=OK
+    echo data from stdin | env_parallel --pipe -S lo --fifo 'cat {} && echo $OK'
+    echo data from stdin | env_parallel --pipe -S lo --cat 'cat {} && echo $OK'
+
+    echo 'bug #52534: Tail of multiline alias is ignored'
+    alias myalias='echo alias line 1
+      echo alias line 2
+      echo alias line 3
+    '
+    alias myalias2='echo alias2 line 1
+      echo alias2 line 2
+    '
+    env_parallel myalias ::: myalias2
+    env_parallel -S lo myalias ::: myalias2
+_EOF
+  )
+  # Order is often different. Dunno why. So sort
+  ssh mksh@lo "$myscript" 2>&1 | sort
 }
 
 par_sh_env_parallel() {
@@ -1631,6 +1800,54 @@ par_ksh_environment_too_big() {
 _EOF
   )
   ssh ksh@lo "$myscript"
+}
+
+par_mksh_environment_too_big() {
+  myscript=$(cat <<'_EOF'
+    echo 'bug #50815: env_parallel should warn if the environment is too big'
+    . `which env_parallel.mksh`;
+
+    bigvar="$(perl -e 'print "x"x119000')"
+    env_parallel echo ::: OK_bigvar
+    env_parallel -S lo echo ::: OK_bigvar_remote
+
+    bigvar="$(perl -e 'print "\""x119000')"
+    env_parallel echo ::: OK_bigvar_quote
+    env_parallel -S lo echo ::: OK_bigvar_quote_remote
+
+    bigvar=u
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x119000')"'"; };'
+    env_parallel echo ::: OK_bigfunc
+    env_parallel -S lo echo ::: OK_bigfunc_remote
+
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x119000')"'"; };'
+    env_parallel echo ::: OK_bigfunc_quote
+    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
+    bigfunc() { true; }
+
+    echo Rest should fail
+
+    bigvar="$(perl -e 'print "x"x130000')"
+    env_parallel echo ::: fail_bigvar
+    env_parallel -S lo echo ::: fail_bigvar_remote
+
+    bigvar="$(perl -e 'print "\""x130000')"
+    env_parallel echo ::: fail_bigvar_quote
+    env_parallel -S lo echo ::: fail_bigvar_quote_remote
+
+    bigvar=u
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x129000')"'"; };'
+    env_parallel echo ::: fail_bigfunc
+    env_parallel -S lo echo ::: fail_bigfunc_remote
+
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x130000')"'"; };'
+    env_parallel echo ::: fail_bigfunc_quote
+    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
+
+    bigfunc() { true; }
+_EOF
+  )
+  ssh mksh@lo "$myscript"
 }
 
 par_sh_environment_too_big() {
@@ -1969,6 +2186,60 @@ _EOF
   ssh ksh@lo "$myscript"
 }
 
+par_mksh_parset() {
+  myscript=$(cat <<'_EOF'
+    echo 'parset'
+    . `which env_parallel.mksh`
+
+    echo '### parset into array'
+    parset arr1 echo ::: foo bar baz
+    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+    echo '### parset into indexed array vars'
+    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+    echo ${myarray[*]}
+    echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
+
+    echo '### env_parset'
+    myfun() {
+        myecho myfun "$@";
+    }
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
+    myvar="myvar"
+    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+    env_parset arr1 myfun ::: foo bar baz
+    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myfun ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myfum ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
+    echo "${myarray[*]}"
+    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
+_EOF
+  )
+  ssh mksh@lo "$myscript"
+}
+
 par_sh_parset() {
   myscript=$(cat <<'_EOF'
     echo 'parset'
@@ -2132,7 +2403,7 @@ par_ash_env_parallel_session() {
 # Arrays not supported
 #    arraybefore=(array before)
     env_parallel --session
-    # stuff defined 
+    # stuff defined
     env_parallel aliasbefore ::: must_fail
     env_parallel -S lo aliasbefore ::: must_fail
 # Functions not supported
@@ -2175,7 +2446,7 @@ par_bash_env_parallel_session() {
     funcbefore() { echo 'before' "$@"; }
     arraybefore=(array before)
     env_parallel --session
-    # stuff defined 
+    # stuff defined
     env_parallel aliasbefore ::: must_fail
     env_parallel -S lo aliasbefore ::: must_fail
     env_parallel funcbefore ::: must_fail
@@ -2218,7 +2489,7 @@ par_dash_env_parallel_session() {
 # Arrays not supported
 #    arraybefore=(array before)
     env_parallel --session
-    # stuff defined 
+    # stuff defined
     env_parallel aliasbefore ::: must_fail
     env_parallel -S lo aliasbefore ::: must_fail
 # Functions not supported
@@ -2265,7 +2536,7 @@ par_ksh_env_parallel_session() {
     funcbefore() { echo 'before' "$@"; }
     arraybefore=(array before)
     env_parallel --session
-    # stuff defined 
+    # stuff defined
     env_parallel aliasbefore ::: must_fail
     env_parallel -S lo aliasbefore ::: must_fail
     env_parallel funcbefore ::: must_fail
@@ -2292,6 +2563,43 @@ _EOF
   ssh ksh@lo "$myscript"
 }
 
+par_mksh_env_parallel_session() {
+  myscript=$(cat <<'_EOF'
+    . `which env_parallel.mksh`
+    echo '### Test env_parallel --session'
+
+    alias aliasbefore='echo before'
+    varbefore='before'
+    funcbefore() { echo 'before' "$@"; }
+    arraybefore=(array before)
+    env_parallel --session
+    # stuff defined
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+    env_parallel funcbefore ::: must_fail
+    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+    env_parallel echo '${arraybefore[*]}' ::: no_before
+    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
+    alias aliasafter='echo after'
+    varafter='after'
+    funcafter() { echo 'after' "$@"; }
+    arrayafter=(array after)
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+    env_parallel funcafter ::: funcafter_OK
+    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
+    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    unset PARALLEL_IGNORED_NAMES
+_EOF
+  )
+  ssh mksh@lo "$myscript"
+}
+
 par_sh_env_parallel_session() {
   myscript=$(cat <<'_EOF'
     . `which env_parallel.sh`
@@ -2304,7 +2612,7 @@ par_sh_env_parallel_session() {
 #    Arrays not supported
 #    arraybefore=(array before)
     env_parallel --session
-    # stuff defined 
+    # stuff defined
     env_parallel aliasbefore ::: must_fail
     env_parallel -S lo aliasbefore ::: must_fail
 # Functions not supported
@@ -2351,7 +2659,7 @@ par_zsh_env_parallel_session() {
     funcbefore() { echo 'before' "$@"; }
     arraybefore=(array before)
     env_parallel --session
-    # stuff defined 
+    # stuff defined
     env_parallel aliasbefore ::: must_fail
     env_parallel -S lo aliasbefore ::: must_fail
     env_parallel funcbefore ::: must_fail

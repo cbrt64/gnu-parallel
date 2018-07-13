@@ -43,6 +43,7 @@ while test $# -gt 0; do
 	  installer . env_parallel.sh  $HOME/.shrc
 	  installer . env_parallel.zsh   $HOME/.zshenv
 	  installer source env_parallel.ksh $HOME/.kshrc
+	  installer source env_parallel.mksh $HOME/.mkshrc
 	  echo $SHELL | grepq /pdksh &&
 	      installer . env_parallel.pdksh $HOME/.profile
 	  echo $SHELL | grepq /ash &&
@@ -60,6 +61,7 @@ while test $# -gt 0; do
   	  echo "    " $HOME/.zshenv
   	  echo "    " $HOME/.config/fish/config.fish
   	  echo "    " $HOME/.kshrc
+  	  echo "    " $HOME/.mkshrc
   	  echo "    " $HOME/.profile
   	  echo "    " $HOME/.cshrc
   	  echo "    " $HOME/.tcshrc
@@ -92,6 +94,10 @@ fish:  Put this in $HOME/.config/fish/config.fish:
 
 ksh:   Put this in $HOME/.kshrc:  source `which env_parallel.ksh`
        E.g. by doing:  echo 'source `which env_parallel.ksh`' >> $HOME/.kshrc
+       Supports: aliases, functions, variables, arrays
+
+mksh:  Put this in $HOME/.mkshrc:  source `which env_parallel.mksh`
+       E.g. by doing:  echo 'source `which env_parallel.mksh`' >> $HOME/.mkshrc
        Supports: aliases, functions, variables, arrays
 
 pdksh: Put this in $HOME/.profile:  source `which env_parallel.pdksh`

@@ -543,6 +543,284 @@ par_sh_env_parallel	bug #50435: Remote fifo broke in 20150522
 par_sh_env_parallel	bug #52534: Tail of multiline alias is ignored
 par_sh_env_parallel	data from stdin
 par_sh_env_parallel	data from stdin
+par_mksh_underscore	### mksh
+par_mksh_underscore	### Testing of --env _
+par_mksh_underscore	variables in aliases in and arrays in functions work
+par_mksh_underscore	variables in aliases in and arrays in functions work
+par_mksh_underscore	variables in aliases in and arrays in functions work
+par_mksh_underscore	variables in aliases in and arrays in functions work
+par_mksh_underscore	variables in aliases in and arrays in functions work
+par_mksh_underscore	variables in aliases in and arrays in functions work
+par_mksh_underscore	/bin/mksh: not_copied_alias: not found
+par_mksh_underscore	/bin/mksh: not_copied_func: not found
+par_mksh_underscore	error=OK
+par_mksh_underscore	error=OK
+par_mksh_underscore	aliases in and arrays in functions work
+par_mksh_underscore	aliases in and arrays in functions work
+par_mksh_underscore	aliases in functions work
+par_mksh_underscore	aliases in functions work
+par_mksh_underscore	aliases in functions work
+par_mksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
+par_mksh_underscore	aliases in functions work
+par_mksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
+par_mksh_underscore	/bin/mksh: myfunc: not found
+par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
+par_mksh_underscore	/bin/mksh: myfunc: not found
+par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
+par_mksh_parset	parset
+par_mksh_parset	### parset into array
+par_mksh_parset	foo bar baz
+par_mksh_parset	### parset into vars with comma
+par_mksh_parset	foo bar baz
+par_mksh_parset	### parset into vars with space
+par_mksh_parset	foo bar baz
+par_mksh_parset	### parset with newlines
+par_mksh_parset	1
+par_mksh_parset	1
+par_mksh_parset	2
+par_mksh_parset	1
+par_mksh_parset	2
+par_mksh_parset	3
+par_mksh_parset	### parset into indexed array vars
+par_mksh_parset	foo bar baz
+par_mksh_parset	foo bar baz
+par_mksh_parset	### env_parset
+par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
+par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
+par_mksh_parset	  
+par_mksh_parset	newline1
+par_mksh_parset	newline2
+par_mksh_parset	1
+par_mksh_parset	newline1
+par_mksh_parset	newline2
+par_mksh_parset	1
+par_mksh_parset	2
+par_mksh_parset	newline1
+par_mksh_parset	newline2
+par_mksh_parset	1
+par_mksh_parset	2
+par_mksh_parset	3
+par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
+par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
+par_mksh_man	### mksh
+par_mksh_man	### From man env_parallel
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	multiline
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_mksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_mksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
+par_mksh_man	multiline
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_mksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_mksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
+par_mksh_man	multiline
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_mksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_mksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
+par_mksh_man	multiline
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	env_parallel: Warning: Alias "multiline" contains newline.
+par_mksh_man	env_parallel: Warning: Make sure the command has at least one newline after "multiline".
+par_mksh_man	env_parallel: Warning: See BUGS in "man env_parallel".
+par_mksh_man	multiline
+par_mksh_man	aliases with = & " ! ' work
+par_mksh_man	functions with  = & " ! ' work
+par_mksh_man	functions with  = & " ! ' work
+par_mksh_man	functions with  = & " ! ' work
+par_mksh_man	functions with  = & " ! ' work
+par_mksh_man	functions with  = & " ! ' work
+par_mksh_man	variables with  = & " ! ' work
+par_mksh_man	variables with  = & " ! ' work
+par_mksh_man	variables with  = & " ! ' work
+par_mksh_man	variables with  = & " ! ' work
+par_mksh_man	variables with  = & " ! ' work
+par_mksh_man	multiline
+par_mksh_man	    variables with  = & " ! ' work
+par_mksh_man	multiline
+par_mksh_man	    variables with  = & " ! ' work
+par_mksh_man	multiline
+par_mksh_man	    variables with  = & " ! ' work
+par_mksh_man	multiline
+par_mksh_man	    variables with  = & " ! ' work
+par_mksh_man	multiline
+par_mksh_man	    variables with  = & " ! ' work
+par_mksh_man	arrays with = & " ! ' work, too
+par_mksh_man	arrays
+par_mksh_man	with = & " ! '
+par_mksh_man	work,
+par_mksh_man	too
+par_mksh_man	arrays
+par_mksh_man	with = & " ! '
+par_mksh_man	work,
+par_mksh_man	too
+par_mksh_man	arrays
+par_mksh_man	with = & " ! '
+par_mksh_man	work,
+par_mksh_man	too
+par_mksh_man	arrays
+par_mksh_man	with = & " ! '
+par_mksh_man	work,
+par_mksh_man	too
+par_mksh_man	exit value 2 should be 2
+par_mksh_man	Unknown option: no-such-option
+par_mksh_man	exit value 255 should be 255
+par_mksh_funky	
+par_mksh_funky	\\\\\\\\	
+par_mksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_mksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_mksh_funky	  space  6  
+par_mksh_funky	  space  6  
+par_mksh_funky	3 arg alias_works
+par_mksh_funky	3 arg alias_works_over_ssh
+par_mksh_funky	Funky-	
+par_mksh_funky	Funky-	
+par_mksh_funky	\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
+par_mksh_funky	function_works
+par_mksh_funky	function_works_over_ssh
+par_mksh_funky	myvar  works
+par_mksh_funky	myvar  works
+par_mksh_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
+par_mksh_environment_too_big	OK_bigvar
+par_mksh_environment_too_big	OK_bigvar_remote
+par_mksh_environment_too_big	OK_bigvar_quote
+par_mksh_environment_too_big	OK_bigvar_quote_remote
+par_mksh_environment_too_big	OK_bigfunc
+par_mksh_environment_too_big	OK_bigfunc_remote
+par_mksh_environment_too_big	OK_bigfunc_quote
+par_mksh_environment_too_big	OK_bigfunc_quote_remote
+par_mksh_environment_too_big	Rest should fail
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
+par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
+par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
+par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
+par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
+par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
+par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
+par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
+par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_env_parallel_session	### Test env_parallel --session
+par_mksh_env_parallel_session	/bin/mksh: aliasbefore: not found
+par_mksh_env_parallel_session	/bin/mksh: aliasbefore: not found
+par_mksh_env_parallel_session	/bin/mksh: funcbefore: not found
+par_mksh_env_parallel_session	/bin/mksh: funcbefore: not found
+par_mksh_env_parallel_session	no_before
+par_mksh_env_parallel_session	no_before
+par_mksh_env_parallel_session	no_before
+par_mksh_env_parallel_session	no_before
+par_mksh_env_parallel_session	after aliasafter_OK
+par_mksh_env_parallel_session	after aliasafter_OK
+par_mksh_env_parallel_session	after funcafter_OK
+par_mksh_env_parallel_session	after funcafter_OK
+par_mksh_env_parallel_session	after varafter_OK
+par_mksh_env_parallel_session	after varafter_OK
+par_mksh_env_parallel_session	array after arrayafter_OK
+par_mksh_env_parallel_session	array after arrayafter_OK
+par_mksh_env_parallel	OK
+par_mksh_env_parallel	OK
+par_mksh_env_parallel	alias line 1
+par_mksh_env_parallel	alias line 1
+par_mksh_env_parallel	alias line 2
+par_mksh_env_parallel	alias line 2
+par_mksh_env_parallel	alias line 3
+par_mksh_env_parallel	alias line 3
+par_mksh_env_parallel	alias2 line 1
+par_mksh_env_parallel	alias2 line 1
+par_mksh_env_parallel	alias2 line 2
+par_mksh_env_parallel	alias2 line 2
+par_mksh_env_parallel	bug #50435: Remote fifo broke in 20150522
+par_mksh_env_parallel	bug #52534: Tail of multiline alias is ignored
+par_mksh_env_parallel	data from stdin
+par_mksh_env_parallel	data from stdin
+par_mksh_env_parallel	env_parallel: Warning: Alias "myalias" contains newline.
+par_mksh_env_parallel	env_parallel: Warning: Alias "myalias" contains newline.
+par_mksh_env_parallel	env_parallel: Warning: Alias "myalias2" contains newline.
+par_mksh_env_parallel	env_parallel: Warning: Alias "myalias2" contains newline.
+par_mksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias".
+par_mksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias".
+par_mksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias2".
+par_mksh_env_parallel	env_parallel: Warning: Make sure the command has at least one newline after "myalias2".
+par_mksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
+par_mksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
+par_mksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
+par_mksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_underscore	### ksh
 par_ksh_underscore	### Testing of --env _
 par_ksh_underscore	variables in aliases in and arrays in functions work

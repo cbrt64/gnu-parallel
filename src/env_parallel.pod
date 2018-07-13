@@ -448,6 +448,68 @@ array with the given name. Multiple B<--env>s can be given.
 =back
 
 
+=head2 mksh (alpha testing)
+
+=head3 Installation
+
+Put this in $HOME/.mkshrc:
+
+  source `which env_parallel.mksh`
+
+E.g. by doing:
+
+  echo 'source `which env_parallel.mksh`' >> $HOME/.mkshrc
+
+=head3 Supported use
+
+B<--env> is supported to export only the variable, alias, function, or
+array with the given name. Multiple B<--env>s can be given.
+
+=over 8
+
+=item aliases
+
+  alias myecho='echo aliases'
+  env_parallel myecho ::: work
+  env_parallel -S server myecho ::: work
+  env_parallel --env myecho myecho ::: work
+  env_parallel --env myecho -S server myecho ::: work
+
+  alias multiline='echo multiline
+    echo aliases'
+  env_parallel multiline ::: work
+  env_parallel -S server multiline ::: work
+  env_parallel --env multiline multiline ::: work
+  env_parallel --env multiline -S server multiline ::: work
+
+=item functions
+
+  myfunc() { echo functions $*; }
+  env_parallel myfunc ::: work
+  env_parallel -S server myfunc ::: work
+  env_parallel --env myfunc myfunc ::: work
+  env_parallel --env myfunc -S server myfunc ::: work
+
+=item variables
+
+  myvar=variables
+  env_parallel echo '$myvar' ::: work
+  env_parallel -S server echo '$myvar' ::: work
+  env_parallel --env myvar echo '$myvar' ::: work
+  env_parallel --env myvar -S server echo '$myvar' ::: work
+
+=item arrays
+
+  myarray=(arrays work, too)
+  env_parallel -k echo '${myarray[{}]}' ::: 0 1 2
+  env_parallel -k -S server echo '${myarray[{}]}' ::: 0 1 2
+  env_parallel -k --env myarray echo '${myarray[{}]}' ::: 0 1 2
+  env_parallel -k --env myarray -S server \
+    echo '${myarray[{}]}' ::: 0 1 2
+
+=back
+
+
 =head2 pdksh
 
 =head3 Installation
