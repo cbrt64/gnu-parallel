@@ -94,9 +94,11 @@ user having to know the location. So if the user's path includes
 dir that makes most sense for the sysadmin.
 
 
-=head3 env_parallel.bash / env_parallel.zsh / env_parallel.ksh / env_parallel.pdksh
+=head3 env_parallel.bash / env_parallel.sh / env_parallel.ash /
+env_parallel.dash / env_parallel.zsh / env_parallel.ksh /
+env_parallel.mksh
 
-B<env_parallel.(bash|ksh|pdksh|zsh)> defines the function
+B<env_parallel.(bash|sh|ash|dash|ksh|mksh|zsh)> defines the function
 B<env_parallel>. It uses B<alias> and B<typeset> to dump the
 configuration (with a few exceptions) into B<$PARALLEL_ENV> before
 running GNU B<parallel>.
@@ -145,7 +147,7 @@ This is then all saved in B<$PARALLEL_ENV>.
 GNU B<parallel> is called, and B<$PARALLEL_ENV> is deleted.
 
 
-=head2 parset
+=head2 parset (supported in sh, ash, dash, bash, zsh, ksh, mksh)
 
 B<parset> is a shell function. This is the reason why B<parset> can
 set variables: It runs in the shell which is calling it.
@@ -327,7 +329,9 @@ It is made this way to be compatible with B<*csh>/B<fish>.
   < $FILE perl -e 'while(@ARGV) {
       sysseek(STDIN,shift,0) || die;
       $left = shift;
-      while($read = sysread(STDIN,$buf, ($left > 131072 ? 131072 : $left))){
+      while($read =
+            sysread(STDIN,$buf,
+                    ($left > 131072 ? 131072 : $left))){
         $left -= $read;
         syswrite(STDOUT,$buf);
       }
@@ -343,7 +347,8 @@ and send it to STDOUT.
 =item --transfer
 
   ssh $SSHLOGIN mkdir -p ./$WORKDIR;
-  rsync --protocol 30 -rlDzR -essh ./{} $SSHLOGIN:./$WORKDIR;
+  rsync --protocol 30 -rlDzR \
+        -essh ./{} $SSHLOGIN:./$WORKDIR;
   ssh $SSHLOGIN "$COMMAND"
 
 Read about B<--protocol 30> in the section B<Rsync protocol version>.
@@ -359,8 +364,10 @@ Read about B<--protocol 30> in the section B<Rsync protocol version>.
 =item --return I<file>
 
   $COMMAND; _EXIT_status=$?; mkdir -p $WORKDIR;
-  rsync --protocol 30 --rsync-path=cd\ ./$WORKDIR\;\ rsync \
-    -rlDzR -essh $SSHLOGIN:./$FILE ./$WORKDIR; exit $_EXIT_status;
+  rsync --protocol 30 \
+    --rsync-path=cd\ ./$WORKDIR\;\ rsync \
+    -rlDzR -essh $SSHLOGIN:./$FILE ./$WORKDIR;
+  exit $_EXIT_status;
 
 The B<--rsync-path=cd ...> is needed because old versions of B<rsync>
 do not support B<--no-implied-dirs>.
@@ -374,7 +381,8 @@ wrapping 'sh -c' is enough?
 $RETURN is the wrapper from B<--return>
 
   $COMMAND; _EXIT_status=$?; $RETURN; 
-  ssh $SSHLOGIN \(rm\ -f\ ./$WORKDIR/{}\;\ rmdir\ ./$WORKDIR\ \>\&/dev/null\;\);
+  ssh $SSHLOGIN \(rm\ -f\ ./$WORKDIR/{}\;\
+                  rmdir\ ./$WORKDIR\ \>\&/dev/null\;\);
   exit $_EXIT_status;
 
 B<$_EXIT_status>: see B<--return> above.
@@ -496,7 +504,7 @@ And this will again work just fine, as long as you are running a
 single command. When you are running a composed command you need nice
 to apply to the whole command, and it gets harder still:
 
-  parallel -S server -q nice bash -c 'command1 ...; command2 | command3'
+  parallel -S server -q nice bash -c 'command1 ...; cmd2 | cmd3'
 
 It is not impossible, but by using B<--nice> GNU B<parallel> will do
 the right thing for you. Similarly when transferring files: It starts
@@ -824,7 +832,8 @@ B<parallel> had been in its normal mode. The script looks like this:
   < file perl -e 'while(@ARGV) { 
      sysseek(STDIN,shift,0) || die;
      $left = shift;
-     while($read = sysread(STDIN,$buf, ($left > 32768 ? 32768 : $left))){
+     while($read = sysread(STDIN,$buf,
+                           ($left > 131072 ? 131072 : $left))){
        $left -= $read; syswrite(STDOUT,$buf);
      }
   }' startbyte length_in_bytes
@@ -1135,6 +1144,23 @@ Unfortunately it is not always possible to predict the root cause of
 the error.
 
 
+=head2 Determine number of CPUs
+
+CPUs is an ambiguous term. It can mean the number of socket filled
+(i.e. the number of physical chips). It can mean the number of cores
+(i.e. the number of physical compute cores). It can mean the number of
+hyperthreaded cores (i.e. the number of virtual cores - with some of
+them possibly being hyperthreaded).
+
+On ark.intel.com Intel uses the terms I<cores> and I<threads> for
+number of physical cores and the number of hyperthreaded cores
+respectively.
+
+GNU B<parallel> uses uses I<CPUs> as the number of compute units and
+the terms I<sockets>, I<cores>, and I<threads> to specify how the
+number of compute units is calculated.
+
+
 =head2 Computation of load
 
 Contrary to the obvious B<--load> does not use load average. This is
@@ -1174,6 +1200,7 @@ respectively.
 
 The Signal column has been renamed to _Signal due to Signal being a
 reserved word in MySQL.
+
 
 =head2 Logo
 
@@ -1236,6 +1263,7 @@ Will that require 2x block size memory?
 
 These decisions were relevant for earlier versions of GNU B<parallel>,
 but not the current version. They are kept here as historical record.
+
 
 =head2 --tollef
 

@@ -1,4 +1,4 @@
-TIMEOUT=25 RETRIES=4
+MAXTIME=25 RETRIES=4
 ### Copy commands to servers
 bin/parallel openbsd.polarhome.com	copy openbsd.polarhome.com bin/parallel parallel
 bin/parallel tru64.polarhome.com	copy tru64.polarhome.com bin/parallel parallel
@@ -184,6 +184,29 @@ bin/env_parallel.ksh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel
 bin/env_parallel.ksh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.mksh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh redhat.polarhome.com	copy redhat.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh netbsd.polarhome.com	copy netbsd.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh macosx.polarhome.com	copy macosx.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh miros.polarhome.com	copy miros.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh centos.polarhome.com	copy centos.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh unixware.polarhome.com	copy unixware.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh pidora.polarhome.com	copy pidora.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh scosysv.polarhome.com	copy scosysv.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh raspbian.polarhome.com	copy raspbian.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh solaris-x86.polarhome.com	copy solaris-x86.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh aix.polarhome.com	copy aix.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh mandriva.polarhome.com	copy mandriva.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh debian-ppc.polarhome.com	copy debian-ppc.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh suse.polarhome.com	copy suse.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh solaris.polarhome.com	copy solaris.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh hpux.polarhome.com	copy hpux.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh hurd.polarhome.com	copy hurd.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh freebsd.polarhome.com	copy freebsd.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh ubuntu.polarhome.com	copy ubuntu.polarhome.com bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh openindiana.polarhome.com	copy openindiana.polarhome.com bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.pdksh openbsd.polarhome.com	copy openbsd.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh tru64.polarhome.com	copy tru64.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh debian.polarhome.com	copy debian.polarhome.com bin/env_parallel.pdksh env_parallel.pdksh
@@ -388,51 +411,142 @@ ubuntu.polarhome.com	Works on ubuntu
 unixware.polarhome.com	Works on unixware.polarhome.com
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 aix.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: The file access permissions do not allow the specified action. at /home/t/tange/bin/parallel line 0000
-aix.polarhome.com	OK
+aix.polarhome.com	OK readonly tmp
 centos.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 centos.polarhome.com	 at /home/t/tange/bin/parallel line 0000
-centos.polarhome.com	OK
+centos.polarhome.com	OK readonly tmp
 debian-ppc.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
-debian-ppc.polarhome.com	OK
+debian-ppc.polarhome.com	OK readonly tmp
 debian.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
-debian.polarhome.com	OK
+debian.polarhome.com	OK readonly tmp
 freebsd.polarhome.com	Syntax error: Bad fd number
 hpux.polarhome.com	No such file or directory: bash
 macosx.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /Users/tange/bin/parallel line 0000
-macosx.polarhome.com	OK
+macosx.polarhome.com	OK readonly tmp
 mandriva.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
-mandriva.polarhome.com	OK
+mandriva.polarhome.com	OK readonly tmp
 miros.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 miros.polarhome.com	 at /home/t/tange/bin/parallel line 0000
-miros.polarhome.com	OK
+miros.polarhome.com	OK readonly tmp
 netbsd.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 openbsd.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
-openbsd.polarhome.com	OK
+openbsd.polarhome.com	OK readonly tmp
 openindiana.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /u/t/tange/bin/parallel line 0000
-openindiana.polarhome.com	OK
+openindiana.polarhome.com	OK readonly tmp
 pidora.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
-pidora.polarhome.com	OK
+pidora.polarhome.com	OK readonly tmp
 raspbian.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
-raspbian.polarhome.com	OK
+raspbian.polarhome.com	OK readonly tmp
 redhat.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
-redhat.polarhome.com	OK
+redhat.polarhome.com	OK readonly tmp
 scosysv.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 scosysv.polarhome.com	 at /home/t/tange/bin/parallel line 0000
-scosysv.polarhome.com	OK
+scosysv.polarhome.com	OK readonly tmp
 solaris-x86.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
-solaris-x86.polarhome.com	OK
+solaris-x86.polarhome.com	OK readonly tmp
 solaris.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 solaris.polarhome.com	 at /home/t/tange/bin/parallel line 0000
-solaris.polarhome.com	OK
+solaris.polarhome.com	OK readonly tmp
 suse.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
-suse.polarhome.com	OK
+suse.polarhome.com	OK readonly tmp
 tru64.polarhome.com	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 tru64.polarhome.com	 at /home/t/tange/bin/parallel line 0000
-tru64.polarhome.com	OK
+tru64.polarhome.com	OK readonly tmp
 ubuntu.polarhome.com	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
-ubuntu.polarhome.com	OK
+ubuntu.polarhome.com	OK readonly tmp
 unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 unixware.polarhome.com	UX:env: ERROR: No such file or directory: bash
+
+### --number-of-cores/--number-of-cpus should work with no error
+
+aix.polarhome.com	1
+centos.polarhome.com	1
+debian-ppc.polarhome.com	1
+debian.polarhome.com	1
+freebsd.polarhome.com	Syntax error: Bad fd number
+macosx.polarhome.com	2
+mandriva.polarhome.com	1
+miros.polarhome.com	1
+netbsd.polarhome.com	1
+openbsd.polarhome.com	1
+openindiana.polarhome.com	1
+pidora.polarhome.com	1
+raspbian.polarhome.com	1
+redhat.polarhome.com	1
+scosysv.polarhome.com	1
+solaris-x86.polarhome.com	
+solaris.polarhome.com	
+suse.polarhome.com	1
+tru64.polarhome.com	1
+ubuntu.polarhome.com	1
+unixware.polarhome.com	1
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
+aix.polarhome.com	1
+centos.polarhome.com	1
+debian-ppc.polarhome.com	1
+debian.polarhome.com	2
+freebsd.polarhome.com	Syntax error: Bad fd number
+macosx.polarhome.com	2
+mandriva.polarhome.com	1
+miros.polarhome.com	1
+netbsd.polarhome.com	1
+openbsd.polarhome.com	1
+openindiana.polarhome.com	1
+pidora.polarhome.com	1
+raspbian.polarhome.com	1
+redhat.polarhome.com	2
+scosysv.polarhome.com	1
+solaris-x86.polarhome.com	1
+solaris.polarhome.com	2
+suse.polarhome.com	1
+tru64.polarhome.com	1
+ubuntu.polarhome.com	2
+unixware.polarhome.com	1
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
+aix.polarhome.com	1
+centos.polarhome.com	1
+debian-ppc.polarhome.com	1
+debian.polarhome.com	2
+freebsd.polarhome.com	Syntax error: Bad fd number
+macosx.polarhome.com	2
+mandriva.polarhome.com	1
+miros.polarhome.com	1
+netbsd.polarhome.com	1
+openbsd.polarhome.com	1
+openindiana.polarhome.com	1
+pidora.polarhome.com	1
+raspbian.polarhome.com	1
+redhat.polarhome.com	2
+scosysv.polarhome.com	1
+solaris-x86.polarhome.com	1
+solaris.polarhome.com	2
+suse.polarhome.com	1
+tru64.polarhome.com	1
+ubuntu.polarhome.com	2
+unixware.polarhome.com	1
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
+aix.polarhome.com	1
+centos.polarhome.com	1
+debian-ppc.polarhome.com	1
+debian.polarhome.com	2
+freebsd.polarhome.com	Syntax error: Bad fd number
+macosx.polarhome.com	2
+mandriva.polarhome.com	1
+miros.polarhome.com	1
+netbsd.polarhome.com	1
+openbsd.polarhome.com	1
+openindiana.polarhome.com	1
+pidora.polarhome.com	1
+raspbian.polarhome.com	1
+redhat.polarhome.com	2
+scosysv.polarhome.com	1
+solaris-x86.polarhome.com	1
+solaris.polarhome.com	2
+suse.polarhome.com	1
+tru64.polarhome.com	1
+ubuntu.polarhome.com	2
+unixware.polarhome.com	1
+unixware.polarhome.com	UX:sh (/bin/sh): ERROR: source: Not found
 
 ### Does exporting a bash function kill parallel
 
@@ -491,6 +605,7 @@ aix.polarhome.com	     /home/t/tange/.shrc
 aix.polarhome.com	     /home/t/tange/.zshenv
 aix.polarhome.com	     /home/t/tange/.config/fish/config.fish
 aix.polarhome.com	     /home/t/tange/.kshrc
+aix.polarhome.com	     /home/t/tange/.mkshrc
 aix.polarhome.com	     /home/t/tange/.profile
 aix.polarhome.com	     /home/t/tange/.cshrc
 aix.polarhome.com	     /home/t/tange/.tcshrc
@@ -501,6 +616,7 @@ centos.polarhome.com	     /home/t/tange/.shrc
 centos.polarhome.com	     /home/t/tange/.zshenv
 centos.polarhome.com	     /home/t/tange/.config/fish/config.fish
 centos.polarhome.com	     /home/t/tange/.kshrc
+centos.polarhome.com	     /home/t/tange/.mkshrc
 centos.polarhome.com	     /home/t/tange/.profile
 centos.polarhome.com	     /home/t/tange/.cshrc
 centos.polarhome.com	     /home/t/tange/.tcshrc
@@ -511,6 +627,7 @@ debian-ppc.polarhome.com	     /home/t/tange/.shrc
 debian-ppc.polarhome.com	     /home/t/tange/.zshenv
 debian-ppc.polarhome.com	     /home/t/tange/.config/fish/config.fish
 debian-ppc.polarhome.com	     /home/t/tange/.kshrc
+debian-ppc.polarhome.com	     /home/t/tange/.mkshrc
 debian-ppc.polarhome.com	     /home/t/tange/.profile
 debian-ppc.polarhome.com	     /home/t/tange/.cshrc
 debian-ppc.polarhome.com	     /home/t/tange/.tcshrc
@@ -521,6 +638,7 @@ debian.polarhome.com	     /home/t/tange/.shrc
 debian.polarhome.com	     /home/t/tange/.zshenv
 debian.polarhome.com	     /home/t/tange/.config/fish/config.fish
 debian.polarhome.com	     /home/t/tange/.kshrc
+debian.polarhome.com	     /home/t/tange/.mkshrc
 debian.polarhome.com	     /home/t/tange/.profile
 debian.polarhome.com	     /home/t/tange/.cshrc
 debian.polarhome.com	     /home/t/tange/.tcshrc
@@ -532,6 +650,7 @@ macosx.polarhome.com	     /Users/tange/.shrc
 macosx.polarhome.com	     /Users/tange/.zshenv
 macosx.polarhome.com	     /Users/tange/.config/fish/config.fish
 macosx.polarhome.com	     /Users/tange/.kshrc
+macosx.polarhome.com	     /Users/tange/.mkshrc
 macosx.polarhome.com	     /Users/tange/.profile
 macosx.polarhome.com	     /Users/tange/.cshrc
 macosx.polarhome.com	     /Users/tange/.tcshrc
@@ -542,6 +661,7 @@ mandriva.polarhome.com	     /home/t/tange/.shrc
 mandriva.polarhome.com	     /home/t/tange/.zshenv
 mandriva.polarhome.com	     /home/t/tange/.config/fish/config.fish
 mandriva.polarhome.com	     /home/t/tange/.kshrc
+mandriva.polarhome.com	     /home/t/tange/.mkshrc
 mandriva.polarhome.com	     /home/t/tange/.profile
 mandriva.polarhome.com	     /home/t/tange/.cshrc
 mandriva.polarhome.com	     /home/t/tange/.tcshrc
@@ -552,6 +672,7 @@ miros.polarhome.com	     /home/t/tange/.shrc
 miros.polarhome.com	     /home/t/tange/.zshenv
 miros.polarhome.com	     /home/t/tange/.config/fish/config.fish
 miros.polarhome.com	     /home/t/tange/.kshrc
+miros.polarhome.com	     /home/t/tange/.mkshrc
 miros.polarhome.com	     /home/t/tange/.profile
 miros.polarhome.com	     /home/t/tange/.cshrc
 miros.polarhome.com	     /home/t/tange/.tcshrc
@@ -562,6 +683,7 @@ netbsd.polarhome.com	     /home/t/tange/.shrc
 netbsd.polarhome.com	     /home/t/tange/.zshenv
 netbsd.polarhome.com	     /home/t/tange/.config/fish/config.fish
 netbsd.polarhome.com	     /home/t/tange/.kshrc
+netbsd.polarhome.com	     /home/t/tange/.mkshrc
 netbsd.polarhome.com	     /home/t/tange/.profile
 netbsd.polarhome.com	     /home/t/tange/.cshrc
 netbsd.polarhome.com	     /home/t/tange/.tcshrc
@@ -572,6 +694,7 @@ openbsd.polarhome.com	     /home/t/tange/.shrc
 openbsd.polarhome.com	     /home/t/tange/.zshenv
 openbsd.polarhome.com	     /home/t/tange/.config/fish/config.fish
 openbsd.polarhome.com	     /home/t/tange/.kshrc
+openbsd.polarhome.com	     /home/t/tange/.mkshrc
 openbsd.polarhome.com	     /home/t/tange/.profile
 openbsd.polarhome.com	     /home/t/tange/.cshrc
 openbsd.polarhome.com	     /home/t/tange/.tcshrc
@@ -582,6 +705,7 @@ openindiana.polarhome.com	     /u/t/tange/.shrc
 openindiana.polarhome.com	     /u/t/tange/.zshenv
 openindiana.polarhome.com	     /u/t/tange/.config/fish/config.fish
 openindiana.polarhome.com	     /u/t/tange/.kshrc
+openindiana.polarhome.com	     /u/t/tange/.mkshrc
 openindiana.polarhome.com	     /u/t/tange/.profile
 openindiana.polarhome.com	     /u/t/tange/.cshrc
 openindiana.polarhome.com	     /u/t/tange/.tcshrc
@@ -592,6 +716,7 @@ pidora.polarhome.com	     /home/t/tange/.shrc
 pidora.polarhome.com	     /home/t/tange/.zshenv
 pidora.polarhome.com	     /home/t/tange/.config/fish/config.fish
 pidora.polarhome.com	     /home/t/tange/.kshrc
+pidora.polarhome.com	     /home/t/tange/.mkshrc
 pidora.polarhome.com	     /home/t/tange/.profile
 pidora.polarhome.com	     /home/t/tange/.cshrc
 pidora.polarhome.com	     /home/t/tange/.tcshrc
@@ -602,6 +727,7 @@ raspbian.polarhome.com	     /home/t/tange/.shrc
 raspbian.polarhome.com	     /home/t/tange/.zshenv
 raspbian.polarhome.com	     /home/t/tange/.config/fish/config.fish
 raspbian.polarhome.com	     /home/t/tange/.kshrc
+raspbian.polarhome.com	     /home/t/tange/.mkshrc
 raspbian.polarhome.com	     /home/t/tange/.profile
 raspbian.polarhome.com	     /home/t/tange/.cshrc
 raspbian.polarhome.com	     /home/t/tange/.tcshrc
@@ -612,6 +738,7 @@ redhat.polarhome.com	     /home/t/tange/.shrc
 redhat.polarhome.com	     /home/t/tange/.zshenv
 redhat.polarhome.com	     /home/t/tange/.config/fish/config.fish
 redhat.polarhome.com	     /home/t/tange/.kshrc
+redhat.polarhome.com	     /home/t/tange/.mkshrc
 redhat.polarhome.com	     /home/t/tange/.profile
 redhat.polarhome.com	     /home/t/tange/.cshrc
 redhat.polarhome.com	     /home/t/tange/.tcshrc
@@ -622,6 +749,7 @@ scosysv.polarhome.com	     /home/t/tange/.shrc
 scosysv.polarhome.com	     /home/t/tange/.zshenv
 scosysv.polarhome.com	     /home/t/tange/.config/fish/config.fish
 scosysv.polarhome.com	     /home/t/tange/.kshrc
+scosysv.polarhome.com	     /home/t/tange/.mkshrc
 scosysv.polarhome.com	     /home/t/tange/.profile
 scosysv.polarhome.com	     /home/t/tange/.cshrc
 scosysv.polarhome.com	     /home/t/tange/.tcshrc
@@ -632,6 +760,7 @@ solaris-x86.polarhome.com	     ~/.shrc
 solaris-x86.polarhome.com	     ~/.zshenv
 solaris-x86.polarhome.com	     ~/.config/fish/config.fish
 solaris-x86.polarhome.com	     ~/.kshrc
+solaris-x86.polarhome.com	     ~/.mkshrc
 solaris-x86.polarhome.com	     ~/.profile
 solaris-x86.polarhome.com	     ~/.cshrc
 solaris-x86.polarhome.com	     ~/.tcshrc
@@ -642,6 +771,7 @@ solaris.polarhome.com	     /home/t/tange/.shrc
 solaris.polarhome.com	     /home/t/tange/.zshenv
 solaris.polarhome.com	     /home/t/tange/.config/fish/config.fish
 solaris.polarhome.com	     /home/t/tange/.kshrc
+solaris.polarhome.com	     /home/t/tange/.mkshrc
 solaris.polarhome.com	     /home/t/tange/.profile
 solaris.polarhome.com	     /home/t/tange/.cshrc
 solaris.polarhome.com	     /home/t/tange/.tcshrc
@@ -652,6 +782,7 @@ suse.polarhome.com	     /home/t/tange/.shrc
 suse.polarhome.com	     /home/t/tange/.zshenv
 suse.polarhome.com	     /home/t/tange/.config/fish/config.fish
 suse.polarhome.com	     /home/t/tange/.kshrc
+suse.polarhome.com	     /home/t/tange/.mkshrc
 suse.polarhome.com	     /home/t/tange/.profile
 suse.polarhome.com	     /home/t/tange/.cshrc
 suse.polarhome.com	     /home/t/tange/.tcshrc
@@ -662,6 +793,7 @@ tru64.polarhome.com	     /home/t/tange/.shrc
 tru64.polarhome.com	     /home/t/tange/.zshenv
 tru64.polarhome.com	     /home/t/tange/.config/fish/config.fish
 tru64.polarhome.com	     /home/t/tange/.kshrc
+tru64.polarhome.com	     /home/t/tange/.mkshrc
 tru64.polarhome.com	     /home/t/tange/.profile
 tru64.polarhome.com	     /home/t/tange/.cshrc
 tru64.polarhome.com	     /home/t/tange/.tcshrc
@@ -672,6 +804,7 @@ ubuntu.polarhome.com	     /home/t/tange/.shrc
 ubuntu.polarhome.com	     /home/t/tange/.zshenv
 ubuntu.polarhome.com	     /home/t/tange/.config/fish/config.fish
 ubuntu.polarhome.com	     /home/t/tange/.kshrc
+ubuntu.polarhome.com	     /home/t/tange/.mkshrc
 ubuntu.polarhome.com	     /home/t/tange/.profile
 ubuntu.polarhome.com	     /home/t/tange/.cshrc
 ubuntu.polarhome.com	     /home/t/tange/.tcshrc

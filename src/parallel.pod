@@ -975,7 +975,7 @@ See also B<--resume> B<--resume-failed>.
 
 Number of jobslots on each machine. Run up to N jobs in parallel.  0
 means as many as possible. Default is 100% which will run one job per
-CPU core on each machine.
+CPU on each machine.
 
 If B<--semaphore> is set, the default is 1 thus making a mutex.
 
@@ -988,8 +988,9 @@ If B<--semaphore> is set, the default is 1 thus making a mutex.
 
 =item B<-P> I<+N>
 
-Add N to the number of CPU cores.  Run this many jobs in parallel.
-See also B<--use-cpus-instead-of-cores>.
+Add N to the number of CPUs.  Run this many jobs in parallel.  See
+also B<--use-cores-instead-of-threads> and
+B<--use-sockets-instead-of-threads>.
 
 
 =item B<--jobs> I<-N>
@@ -1000,9 +1001,10 @@ See also B<--use-cpus-instead-of-cores>.
 
 =item B<-P> I<-N>
 
-Subtract N from the number of CPU cores.  Run this many jobs in parallel.
+Subtract N from the number of CPUs.  Run this many jobs in parallel.
 If the evaluated number is less than 1 then 1 will be used.  See also
-B<--use-cpus-instead-of-cores>.
+B<--use-cores-instead-of-threads> and
+B<--use-sockets-instead-of-threads>.
 
 
 =item B<--jobs> I<N>%
@@ -1013,8 +1015,9 @@ B<--use-cpus-instead-of-cores>.
 
 =item B<-P> I<N>%
 
-Multiply N% with the number of CPU cores.  Run this many jobs in
-parallel. See also B<--use-cpus-instead-of-cores>.
+Multiply N% with the number of CPUs.  Run this many jobs in
+parallel. See also B<--use-cores-instead-of-threads> and
+B<--use-sockets-instead-of-threads>.
 
 
 =item B<--jobs> I<procfile>
@@ -1392,13 +1395,13 @@ inspired by bash's parameter expansion:
 =item B<--progress>
 
 Show progress of computations. List the computers involved in the task
-with number of CPU cores detected and the max number of jobs to
-run. After that show progress for each computer: number of running
-jobs, number of completed jobs, and percentage of all jobs done by
-this computer. The percentage will only be available after all jobs
-have been scheduled as GNU B<parallel> only read the next job when
-ready to schedule it - this is to avoid wasting time and memory by
-reading everything at startup.
+with number of CPUs detected and the max number of jobs to run. After
+that show progress for each computer: number of running jobs, number
+of completed jobs, and percentage of all jobs done by this
+computer. The percentage will only be available after all jobs have
+been scheduled as GNU B<parallel> only read the next job when ready to
+schedule it - this is to avoid wasting time and memory by reading
+everything at startup.
 
 By sending GNU B<parallel> SIGUSR2 you can toggle turning on/off
 B<--progress> on a running GNU B<parallel> process.
@@ -1450,16 +1453,29 @@ exit (used by GNU B<parallel> itself to determine the line length
 on remote computers).
 
 
-=item B<--number-of-cpus>
+=item B<--number-of-cpus> (obsolete)
 
-Print the number of physical CPUs and exit (used by GNU B<parallel>
-itself to determine the number of physical CPUs on remote computers).
+Print the number of physical CPU cores and exit.
 
 
-=item B<--number-of-cores>
+=item B<--number-of-cores> (alpha testing)
 
-Print the number of CPU cores and exit (used by GNU B<parallel> itself
-to determine the number of CPU cores on remote computers).
+Print the number of physical CPU cores and exit (used by GNU B<parallel> itself
+to determine the number of physical CPU cores on remote computers).
+
+
+=item B<--number-of-sockets> (alpha testing)
+
+Print the number of filled CPU sockets and exit (used by GNU
+B<parallel> itself to determine the number of filled CPU sockets on
+remote computers).
+
+
+=item B<--number-of-threads> (alpha testing)
+
+Print the number of hyperthreaded CPU cores and exit (used by GNU
+B<parallel> itself to determine the number of hyperthreaded CPU cores
+on remote computers).
 
 
 =item B<--no-keep-order>
@@ -2206,11 +2222,11 @@ I<secs> seconds after starting each ssh. I<secs> can be less than 1
 seconds.
 
 
-=item B<-S> I<[@hostgroups/][ncores/]sshlogin[,[@hostgroups/][ncores/]sshlogin[,...]]>
+=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]>
 
 =item B<-S> I<@hostgroup>
 
-=item B<--sshlogin> I<[@hostgroups/][ncores/]sshlogin[,[@hostgroups/][ncores/]sshlogin[,...]]>
+=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]>
 
 =item B<--sshlogin> I<@hostgroup>
 
@@ -2224,10 +2240,10 @@ will always be added to a hostgroup named the same as I<sshlogin>.
 If only the I<@hostgroup> is given, only the sshlogins in that
 hostgroup will be used. Multiple I<@hostgroup> can be given.
 
-GNU B<parallel> will determine the number of CPU cores on the remote
+GNU B<parallel> will determine the number of CPUs on the remote
 computers and run the number of jobs as specified by B<-j>.  If the
-number I<ncores> is given GNU B<parallel> will use this number for
-number of CPU cores on the host. Normally I<ncores> will not be
+number I<ncpus> is given GNU B<parallel> will use this number for
+number of CPUs on the host. Normally I<ncpus> will not be
 needed.
 
 An I<sshlogin> is of the form:
@@ -2268,24 +2284,24 @@ lines. Empty lines and lines starting with '#' are ignored. Example:
 
   server.example.com
   username@server2.example.com
-  8/my-8-core-server.example.com
+  8/my-8-cpu-server.example.com
   2/my_other_username@my-dualcore.example.net
   # This server has SSH running on port 2222
   ssh -p 2222 server.example.net
   4/ssh -p 2222 quadserver.example.net
   # Use a different ssh program
   myssh -p 2222 -l myusername hexacpu.example.net
-  # Use a different ssh program with default number of cores
+  # Use a different ssh program with default number of CPUs
   //usr/local/bin/myssh -p 2222 -l myusername hexacpu
-  # Use a different ssh program with 6 cores
+  # Use a different ssh program with 6 CPUs
   6//usr/local/bin/myssh -p 2222 -l myusername hexacpu
-  # Assume 16 cores on the local computer
+  # Assume 16 CPUs on the local computer
   16/:
   # Put server1 in hostgroup1
   @hostgroup1/server1
   # Put myusername@server2 in hostgroup1+hostgroup2
   @hostgroup1+hostgroup2/myusername@server2
-  # Force 4 cores and put 'ssh -p 2222 server3' in hostgroup1
+  # Force 4 CPUs and put 'ssh -p 2222 server3' in hostgroup1
   @hostgroup1/4/ssh -p 2222 server3
 
 When using a different ssh program the last argument must be the hostname.
@@ -2553,16 +2569,46 @@ Use the replacement string I<replace-str> instead of B<{.}> for input
 line without extension.
 
 
-=item B<--use-cpus-instead-of-cores>
+=item B<--use-sockets-instead-of-threads> (alpha testing)
 
-Count the number of physical CPUs instead of CPU cores. When computing
-how many jobs to run simultaneously relative to the number of CPU cores
-you can ask GNU B<parallel> to instead look at the number of physical
-CPUs. This will make sense for computers that have hyperthreading as
-two jobs running on one CPU with hyperthreading will run slower than
-two jobs running on two physical CPUs. Some multi-core CPUs can run
-faster if only one thread is running per physical CPU. Most users will
-not need this option.
+=item B<--use-cores-instead-of-threads> (alpha testing)
+
+=item B<--use-cpus-instead-of-cores> (obsolete)
+
+Determine how GNU B<parallel> counts the number of CPUs. GNU
+B<parallel> uses this number when the number of jobslots is computed
+relative to the number of CPUs (e.g. 100% or +1).
+
+CPUs can be counted in three different ways:
+
+=over 8
+
+=item sockets
+
+The number of filled CPU sockets (i.e. the number of physical chips).
+
+=item cores
+
+The number of physical cores (i.e. the number of physical compute
+cores).
+
+=item threads
+
+The number of hyperthreaded cores (i.e. the number of virtual
+cores - with some of them possibly being hyperthreaded)
+
+=back
+
+Normally the number of CPUs is computed as the number of CPU
+threads. With B<--use-sockets-instead-of-threads> or
+B<--use-cores-instead-of-threads> you can force it to be computed as
+the number of filled sockets or number of cores instead.
+
+Most users will not need these options.
+
+B<--use-cpus-instead-of-cores> is a (misleading) alias for
+B<--use-sockets-instead-of-threads> and is kept for backwards
+compatibility.
 
 
 =item B<-v>
@@ -2669,8 +2715,7 @@ using B<gzip> run:
 
   parallel gzip --best ::: *.html
 
-To convert *.wav to *.mp3 using LAME running one process per CPU core
-run:
+To convert *.wav to *.mp3 using LAME running one process per CPU run:
 
   parallel lame {} -o {.}.mp3 ::: *.wav
 
@@ -2725,8 +2770,8 @@ file:
 
   convert -geometry 120 foo.jpg thumb_foo.jpg
 
-This will run with number-of-cpu-cores jobs in parallel for all jpg
-files in a directory:
+This will run with number-of-cpus jobs in parallel for all jpg files
+in a directory:
 
   ls *.jpg | parallel convert -geometry 120 {} thumb_{}
 
@@ -2879,7 +2924,7 @@ Create a directory for each zip-file and unzip it in that dir:
   parallel 'mkdir {.}; cd {.}; unzip ../{}' ::: *.zip
 
 Recompress all .gz files in current directory using B<bzip2> running 1
-job per CPU core in parallel:
+job per CPU in parallel:
 
   parallel "zcat {} | bzip2 >{.}.bz2 && rm {}" ::: *.gz
 
@@ -3430,7 +3475,7 @@ GNU B<parallel> can often speed this up.
 
   find . -type f | parallel -k -j150% -n 1000 -m grep -H -n STRING {}
 
-This will run 1.5 job per core, and give 1000 arguments to B<grep>.
+This will run 1.5 job per CPU, and give 1000 arguments to B<grep>.
 
 
 =head1 EXAMPLE: Grepping n lines for m regular expressions.
@@ -3491,13 +3536,13 @@ If it still does not fit in memory you can do this:
   parallel --pipepart -a regexps.txt --block 1M grep -Ff - -n bigfile |
     sort -un | perl -pe 's/^\d+://'
 
-The 1M should be your free memory divided by the number of cores and
+The 1M should be your free memory divided by the number of CPU threads and
 divided by 200 for B<grep -F> and by 1000 for normal B<grep>. On
 GNU/Linux you can do:
 
   free=$(awk '/^((Swap)?Cached|MemFree|Buffers):/ { sum += $2 }
               END { print sum }' /proc/meminfo)
-  percpu=$((free / 200 / $(parallel --number-of-cores)))k
+  percpu=$((free / 200 / $(parallel --number-of-threads)))k
 
   parallel --pipepart -a regexps.txt --block $percpu --compress \
     grep -F -f - -n bigfile |
@@ -3607,13 +3652,13 @@ To include the local computer add the special sshlogin ':' to the list:
   server3.example.com
   :
 
-GNU B<parallel> will try to determine the number of CPU cores on each
-of the remote computers, and run one job per CPU core - even if the
-remote computers do not have the same number of CPU cores.
+GNU B<parallel> will try to determine the number of CPUs on each of
+the remote computers, and run one job per CPU - even if the remote
+computers do not have the same number of CPUs.
 
-If the number of CPU cores on the remote computers is not identified
-correctly the number of CPU cores can be added in front. Here the
-computer has 8 CPU cores.
+If the number of CPUs on the remote computers is not identified
+correctly the number of CPUs can be added in front. Here the computer
+has 8 CPUs.
 
   seq 10 | parallel --sshlogin 8/server.example.com echo
 
@@ -3691,7 +3736,8 @@ the special short hand I<-S ..> can be used:
 
 =head1 EXAMPLE: Distributing work to local and remote computers
 
-Convert *.mp3 to *.ogg running one process per CPU core on local computer and server2:
+Convert *.mp3 to *.ogg running one process per CPU on local computer
+and server2:
 
   parallel --trc {.}.ogg -S server2,: \
     'mpg321 -w - {} | oggenc -q0 - -o {.}.ogg' ::: *.mp3
@@ -3956,7 +4002,7 @@ To run 100 processes simultaneously do:
 As there is not a I<command> the jobs will be evaluated by the shell.
 
 
-=head1 EXAMPLE: Processing a big file using more cores
+=head1 EXAMPLE: Processing a big file using more CPUs
 
 To process a big file or some output you can use B<--pipe> to split up
 the data into blocks and pipe the blocks into the processing program.
@@ -3966,8 +4012,8 @@ If the program is B<gzip -9> you can do:
   cat bigfile | parallel --pipe --recend '' -k gzip -9 > bigfile.gz
 
 This will split B<bigfile> into blocks of 1 MB and pass that to B<gzip
--9> in parallel. One B<gzip> will be run per CPU core. The output of
-B<gzip -9> will be kept in order and saved to B<bigfile.gz>
+-9> in parallel. One B<gzip> will be run per CPU. The output of B<gzip
+-9> will be kept in order and saved to B<bigfile.gz>
 
 B<gzip> works fine if the output is appended, but some processing does
 not work like that - for example sorting. For this GNU B<parallel> can

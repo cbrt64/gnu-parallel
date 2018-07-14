@@ -991,7 +991,11 @@ sub options_hash {
 	 "noswap" => \$opt::noswap,
 	 "max-line-length-allowed" => \$opt::max_line_length_allowed,
 	 "number-of-cpus" => \$opt::number_of_cpus,
+	 "number-of-sockets" => \$opt::number_of_sockets,
 	 "number-of-cores" => \$opt::number_of_cores,
+	 "number-of-threads" => \$opt::number_of_threads,
+	 "use-sockets-instead-of-threads" => \$opt::use_sockets_instead_of_threads,
+	 "use-cores-instead-of-threads" => \$opt::use_cores_instead_of_threads,
 	 "use-cpus-instead-of-cores" => \$opt::use_cpus_instead_of_cores,
 	 "shellquote|shell_quote|shell-quote" => \$opt::shellquote,
 	 "nice=i" => \$opt::nice,
@@ -1215,11 +1219,17 @@ sub parse_options {
     if(defined $opt::arg_file_sep) {
 	$Global::arg_file_sep = $opt::arg_file_sep;
     }
+    if(defined $opt::number_of_sockets) {
+	print SSHLogin::no_of_sockets(),"\n"; wait_and_exit(0);
+    }
     if(defined $opt::number_of_cpus) {
-	print SSHLogin::no_of_cpus(),"\n"; wait_and_exit(0);
+	print SSHLogin::no_of_cores(),"\n"; wait_and_exit(0);
     }
     if(defined $opt::number_of_cores) {
         print SSHLogin::no_of_cores(),"\n"; wait_and_exit(0);
+    }
+    if(defined $opt::number_of_threads) {
+        print SSHLogin::no_of_threads(),"\n"; wait_and_exit(0);
     }
     if(defined $opt::max_line_length_allowed) {
         print Limits::Command::real_max_length(),"\n"; wait_and_exit(0);
@@ -3547,12 +3557,14 @@ sub filter_hosts {
     # Uses:
     #   %Global::host
     #   $Global::minimal_command_line_length
+    #   $opt::use_sockets_instead_of_threads
+    #   $opt::use_cores_instead_of_threads
     #   $opt::use_cpus_instead_of_cores
     # Returns: N/A
 
-    my ($ncores_ref, $ncpus_ref, $time_to_login_ref, $maxlen_ref,
-	$echo_ref, $down_hosts_ref) =
-	    parse_host_filtering(parallelized_host_filtering());
+    my ($nsockets_ref,$ncores_ref, $nthreads_ref, $time_to_login_ref,
+	$maxlen_ref, $echo_ref, $down_hosts_ref) =
+	parse_host_filtering(parallelized_host_filtering());
 
     delete @Global::host{@$down_hosts_ref};
     @$down_hosts_ref and ::warning("Removed @$down_hosts_ref.");
@@ -3560,17 +3572,22 @@ sub filter_hosts {
     $Global::minimal_command_line_length = 8_000_000;
     while (my ($sshlogin, $obj) = each %Global::host) {
 	if($sshlogin eq ":") { next }
-	$ncpus_ref->{$sshlogin} or
-	    ::die_bug("ncpus missing: ".$obj->serverlogin());
+	$nsockets_ref->{$sshlogin} or
+	    ::die_bug("nsockets missing: ".$obj->serverlogin());
 	$ncores_ref->{$sshlogin} or
 	    ::die_bug("ncores missing: ".$obj->serverlogin());
+	$nthreads_ref->{$sshlogin} or
+	    ::die_bug("nthreads missing: ".$obj->serverlogin());
 	$time_to_login_ref->{$sshlogin} or
 	    ::die_bug("time_to_login missing: ".$obj->serverlogin());
 	$maxlen_ref->{$sshlogin} or
 	    ::die_bug("maxlen missing: ".$obj->serverlogin());
+	$obj->set_ncpus($nthreads_ref->{$sshlogin});
 	if($opt::use_cpus_instead_of_cores) {
-	    $obj->set_ncpus($ncpus_ref->{$sshlogin});
-	} else {
+	    $obj->set_ncpus($ncores_ref->{$sshlogin});
+	} elsif($opt::use_sockets_instead_of_threads) {
+	    $obj->set_ncpus($nsockets_ref->{$sshlogin});
+	} elsif($opt::use_cores_instead_of_threads) {
 	    $obj->set_ncpus($ncores_ref->{$sshlogin});
 	}
 	$obj->set_time_to_login($time_to_login_ref->{$sshlogin});
@@ -3579,8 +3596,9 @@ sub filter_hosts {
 	    ::min($Global::minimal_command_line_length,
 		  int($maxlen_ref->{$sshlogin}/2));
 	::debug("init", "Timing from -S:$sshlogin ",
-		" ncpus:",$ncpus_ref->{$sshlogin},
+		" nsockets:",$nsockets_ref->{$sshlogin},
 		" ncores:", $ncores_ref->{$sshlogin},
+		" nthreads:",$nthreads_ref->{$sshlogin},
 		" time_to_login:", $time_to_login_ref->{$sshlogin},
 		" maxlen:", $maxlen_ref->{$sshlogin},
 		" min_max_len:", $Global::minimal_command_line_length,"\n");
@@ -3591,14 +3609,16 @@ sub parse_host_filtering {
     # Input:
     #   @lines = output from parallelized_host_filtering()
     # Returns:
+    #   \%nsockets = number of sockets of {host}
     #   \%ncores = number of cores of {host}
-    #   \%ncpus = number of cpus of {host}
+    #   \%nthreads = number of hyperthreaded cores of {host}
     #   \%time_to_login = time_to_login on {host}
     #   \%maxlen = max command len on {host}
     #   \%echo = echo received from {host}
     #   \@down_hosts = list of hosts with no answer
     local $/ = "\n";
-    my (%ncores, %ncpus, %time_to_login, %maxlen, %echo, @down_hosts);
+    my (%nsockets, %ncores, %nthreads, %time_to_login, %maxlen, %echo,
+	@down_hosts);
     for (@_) {
 	::debug("init",$_);
 	chomp;
@@ -3629,11 +3649,12 @@ sub parse_host_filtering {
 		push(@down_hosts, $host);
 	    } elsif($col[6] eq "127") {
 		# signal == 127: parallel not installed remote
-		# Set ncpus and ncores = 1
+		# Set nsockets, ncores, nthreads = 1
 		::warning("Could not figure out ".
 			  "number of cpus on $host. Using 1.");
+		$nsockets{$host} = 1;
 		$ncores{$host} = 1;
-		$ncpus{$host} = 1;
+		$nthreads{$host} = 1;
 		$maxlen{$host} = Limits::Command::max_length();
 	    } elsif($col[0] =~ /^\d+$/ and $Global::host{$host}) {
 		# Remember how log it took to log in
@@ -3651,10 +3672,12 @@ sub parse_host_filtering {
 	    if(/parallel: Warning: Cannot figure out number of/) {
 		next;
 	    }
-	    if(not $ncores{$col[0]}) {
+	    if(not $nsockets{$col[0]}) {
+		$nsockets{$col[0]} = $col[1];
+	    } elsif(not $ncores{$col[0]}) {
 		$ncores{$col[0]} = $col[1];
-	    } elsif(not $ncpus{$col[0]}) {
-		$ncpus{$col[0]} = $col[1];
+	    } elsif(not $nthreads{$col[0]}) {
+		$nthreads{$col[0]} = $col[1];
 	    } elsif(not $maxlen{$col[0]}) {
 		$maxlen{$col[0]} = $col[1];
 	    } elsif(not $echo{$col[0]}) {
@@ -3676,7 +3699,8 @@ sub parse_host_filtering {
 	}
     }
     @down_hosts = uniq(@down_hosts);
-    return(\%ncores, \%ncpus, \%time_to_login, \%maxlen, \%echo, \@down_hosts);
+    return(\%nsockets, \%ncores, \%nthreads, \%time_to_login,
+	   \%maxlen, \%echo, \@down_hosts);
 }
 
 sub parallelized_host_filtering {
@@ -3701,14 +3725,16 @@ sub parallelized_host_filtering {
 	return($job->{'wrapped'});
     }
 
-    my(@cores, @cpus, @maxline, @echo);
+    my(@sockets, @cores, @threads, @maxline, @echo);
     while (my ($host, $sshlogin) = each %Global::host) {
 	if($host eq ":") { next }
 	# The 'true' is used to get the $host out later
+	push(@sockets, $host."\t"."true $host; ".
+	     sshwrapped($sshlogin,"parallel --number-of-sockets")."\n\0");
 	push(@cores, $host."\t"."true $host; ".
 	     sshwrapped($sshlogin,"parallel --number-of-cores")."\n\0");
-	push(@cpus, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --number-of-cpus")."\n\0");
+	push(@threads, $host."\t"."true $host; ".
+	     sshwrapped($sshlogin,"parallel --number-of-threads")."\n\0");
 	push(@maxline, $host."\t"."true $host; ".
 	     sshwrapped($sshlogin,"parallel --max-line-length-allowed")."\n\0");
 	# 'echo' is used to get the fastest possible ssh login time
@@ -3735,7 +3761,7 @@ sub parallelized_host_filtering {
     if(not fork()) {
 	# Give the commands to run to the $cmd
 	close $host_fh;
-	print $in @cores, @cpus, @maxline, @echo;
+	print $in @sockets, @cores, @threads, @maxline, @echo;
 	close $in;
 	exit();
     }
@@ -6327,18 +6353,26 @@ sub ncpus {
         my $sshcmd = $self->sshcommand();
         my $serverlogin = $self->serverlogin();
         if($serverlogin eq ":") {
-            if($opt::use_cpus_instead_of_cores) {
-                $self->{'ncpus'} = no_of_cpus();
+            if($opt::use_sockets_instead_of_threads) {
+                $self->{'ncpus'} = socket_core_thread()->{'sockets'};
+	    } elsif($opt::use_cores_instead_of_threads) {
+                $self->{'ncpus'} = socket_core_thread()->{'cores'};
             } else {
-                $self->{'ncpus'} = no_of_cores();
+                $self->{'ncpus'} = socket_core_thread()->{'threads'};
             }
         } else {
             my $ncpu;
-            if($opt::use_cpus_instead_of_cores) {
-                $ncpu = ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-cpus");
+            if($opt::use_sockets_instead_of_threads
+	       or
+		$opt::use_cpus_instead_of_cores) {
+                $ncpu =
+		    ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-sockets");
+	    } elsif($opt::use_cores_instead_of_threads) {
+                $ncpu =
+		    ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-cores");
             } else {
-		::debug("init",qq(echo|$sshcmd $serverlogin -- parallel --number-of-cores\n));
-                $ncpu = ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-cores");
+                $ncpu =
+		    ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-threads");
             }
 	    chomp $ncpu;
             if($ncpu =~ /^\s*[0-9]+\s*$/s) {
@@ -6353,472 +6387,455 @@ sub ncpus {
     return $self->{'ncpus'};
 }
 
-sub no_of_cpus {
-    # Returns:
-    #   Number of physical CPUs
-    local $/ = "\n"; # If delimiter is set, then $/ will be wrong
-    my $no_of_cpus;
-    if ($^O eq 'linux') {
-        $no_of_cpus = no_of_cpus_gnu_linux() || no_of_cores_gnu_linux();
-    } elsif ($^O eq 'freebsd') {
-        $no_of_cpus = no_of_cpus_freebsd();
-    } elsif ($^O eq 'netbsd') {
-        $no_of_cpus = no_of_cpus_netbsd();
-    } elsif ($^O eq 'openbsd') {
-        $no_of_cpus = no_of_cpus_openbsd();
-    } elsif ($^O eq 'gnu') {
-        $no_of_cpus = no_of_cpus_hurd();
-    } elsif ($^O eq 'darwin') {
-	$no_of_cpus = no_of_cpus_darwin();
-    } elsif ($^O eq 'solaris') {
-        $no_of_cpus = no_of_cpus_solaris() || nproc();
-    } elsif ($^O eq 'aix') {
-        $no_of_cpus = no_of_cpus_aix();
-    } elsif ($^O eq 'hpux') {
-        $no_of_cpus = no_of_cpus_hpux();
-    } elsif ($^O eq 'nto') {
-        $no_of_cpus = no_of_cpus_qnx();
-    } elsif ($^O eq 'svr5') {
-        $no_of_cpus = no_of_cpus_openserver();
-    } elsif ($^O eq 'irix') {
-        $no_of_cpus = no_of_cpus_irix();
-    } elsif ($^O eq 'dec_osf') {
-        $no_of_cpus = no_of_cpus_tru64();
-    } else {
-	$no_of_cpus = (no_of_cpus_gnu_linux()
-		       || no_of_cpus_freebsd()
-		       || no_of_cpus_netbsd()
-		       || no_of_cpus_openbsd()
-		       || no_of_cpus_hurd()
-		       || no_of_cpus_darwin()
-		       || no_of_cpus_solaris()
-		       || no_of_cpus_aix()
-		       || no_of_cpus_hpux()
-		       || no_of_cpus_qnx()
-		       || no_of_cpus_openserver()
-		       || no_of_cpus_irix()
-		       || no_of_cpus_tru64()
-			# Number of cores is better than no guess for #CPUs
-		       || nproc()
-	    );
-    }
-    if($no_of_cpus) {
-	chomp $no_of_cpus;
-        return $no_of_cpus;
-    } else {
-        ::warning("Cannot figure out number of cpus. Using 1.");
-        return 1;
-    }
-}
-
-sub no_of_cores {
-    # Returns:
-    #   Number of CPU cores
-    local $/ = "\n"; # If delimiter is set, then $/ will be wrong
-    my $no_of_cores;
-    if ($^O eq 'linux') {
-	$no_of_cores = no_of_cores_gnu_linux();
-    } elsif ($^O eq 'freebsd') {
-        $no_of_cores = no_of_cores_freebsd();
-    } elsif ($^O eq 'netbsd') {
-        $no_of_cores = no_of_cores_netbsd();
-    } elsif ($^O eq 'openbsd') {
-        $no_of_cores = no_of_cores_openbsd();
-    } elsif ($^O eq 'gnu') {
-        $no_of_cores = no_of_cores_hurd();
-    } elsif ($^O eq 'darwin') {
-	$no_of_cores = no_of_cores_darwin();
-    } elsif ($^O eq 'solaris') {
-	$no_of_cores = no_of_cores_solaris() || nproc();
-    } elsif ($^O eq 'aix') {
-        $no_of_cores = no_of_cores_aix();
-    } elsif ($^O eq 'hpux') {
-        $no_of_cores = no_of_cores_hpux();
-    } elsif ($^O eq 'nto') {
-        $no_of_cores = no_of_cores_qnx();
-    } elsif ($^O eq 'svr5') {
-        $no_of_cores = no_of_cores_openserver();
-    } elsif ($^O eq 'irix') {
-        $no_of_cores = no_of_cores_irix();
-    } elsif ($^O eq 'dec_osf') {
-        $no_of_cores = no_of_cores_tru64();
-    } else {
-	$no_of_cores = (no_of_cores_gnu_linux()
-			|| no_of_cores_freebsd()
-			|| no_of_cores_netbsd()
-			|| no_of_cores_openbsd()
-			|| no_of_cores_hurd()
-			|| no_of_cores_darwin()
-			|| no_of_cores_solaris()
-			|| no_of_cores_aix()
-			|| no_of_cores_hpux()
-			|| no_of_cores_qnx()
-			|| no_of_cores_openserver()
-			|| no_of_cores_irix()
-			|| no_of_cores_tru64()
-			|| nproc()
-	    );
-    }
-    if($no_of_cores) {
-	chomp $no_of_cores;
-        return $no_of_cores;
-    } else {
-        ::warning("Cannot figure out number of CPU cores. Using 1.");
-        return 1;
-    }
-}
 
 sub nproc {
     # Returns:
-    #   Number of cores using `nproc`
-    my $no_of_cores = ::qqx("nproc");
-    return $no_of_cores;
+    #   Number of threads using `nproc`
+    my $no_of_threads = ::qqx("nproc");
+    chomp $no_of_threads;
+    return $no_of_threads;
 }
 
-sub no_of_cpus_gnu_linux {
+sub no_of_sockets() {
+    return socket_core_thread()->{'sockets'};
+}
+
+sub no_of_cores() {
+    return socket_core_thread()->{'cores'};
+}
+
+sub no_of_threads() {
+    return socket_core_thread()->{'threads'};
+}
+
+sub socket_core_thread() {
     # Returns:
-    #   Number of physical CPUs on GNU/Linux
-    #   undef if not GNU/Linux
-    my $no_of_cpus;
-    my $no_of_cores;
-    my $no_of_active_cores;
+    #   {
+    #     'sockets' => #sockets = number of socket with CPU present
+    #     'cores' => #cores = number of physical cores
+    #     'threads' => #threads = number of compute cores (hyperthreading)
+    #     'active' => #taskset_threads = number of taskset limited cores
+    #   }
+    my $cpu;
+
+    if ($^O eq 'linux') {
+	$cpu = sct_gnu_linux();
+    } elsif ($^O eq 'freebsd') {
+        $cpu = sct_freebsd();
+    } elsif ($^O eq 'netbsd') {
+        $cpu = sct_netbsd();
+    } elsif ($^O eq 'openbsd') {
+        $cpu = sct_openbsd();
+    } elsif ($^O eq 'gnu') {
+        $cpu = sct_hurd();
+    } elsif ($^O eq 'darwin') {
+	$cpu = sct_darwin();
+    } elsif ($^O eq 'solaris') {
+        $cpu = sct_solaris();
+    } elsif ($^O eq 'aix') {
+        $cpu = sct_aix();
+    } elsif ($^O eq 'hpux') {
+        $cpu = sct_hpux();
+    } elsif ($^O eq 'nto') {
+        $cpu = sct_qnx();
+    } elsif ($^O eq 'svr5') {
+        $cpu = sct_openserver();
+    } elsif ($^O eq 'irix') {
+        $cpu = sct_irix();
+    } elsif ($^O eq 'dec_osf') {
+        $cpu = sct_tru64();
+    } else {
+	# Try all methods until you find something that works
+	$cpu = (sct_gnu_linux()
+		|| sct_freebsd()
+		|| sct_netbsd()
+		|| sct_openbsd()
+		|| sct_hurd()
+		|| sct_darwin()
+		|| sct_solaris()
+		|| sct_aix()
+		|| sct_hpux()
+		|| sct_qnx()
+		|| sct_openserver()
+		|| sct_irix()
+		|| sct_tru64()
+	    );
+    }
+    if(not $cpu) {
+	my $nproc = nproc();
+	if($nproc) {
+	    $cpu->{'sockets'} =
+		$cpu->{'cores'} =
+		$cpu->{'threads'} =
+		$cpu->{'active'} =
+		$nproc;
+	}
+    }
+    if(not $cpu) {
+	::warning("Cannot figure out number of cpus. Using 1.");
+	$cpu->{'sockets'} =
+	    $cpu->{'cores'} =
+	    $cpu->{'threads'} =
+	    $cpu->{'active'} =
+	    1
+    }
+
+    # Choose minimum of active and actual
+    my $mincpu;
+    $mincpu->{'sockets'} = ::min($cpu->{'sockets'},$cpu->{'active'});
+    $mincpu->{'cores'} = ::min($cpu->{'cores'},$cpu->{'active'});
+    $mincpu->{'threads'} = ::min($cpu->{'threads'},$cpu->{'active'});
+    return $mincpu;
+}
+
+sub sct_gnu_linux() {
+    # Returns:
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    my $cpu;
+    local $/ = "\n"; # If delimiter is set, then $/ will be wrong
     if(-e "/proc/cpuinfo") {
-        $no_of_cpus = 0;
-        $no_of_cores = 0;
-        my %seen;
-        if(open(my $in_fh, "<", "/proc/cpuinfo")) {
+	$cpu->{'sockets'} = 0;
+	$cpu->{'cores'} = 0;
+	$cpu->{'threads'} = 0;
+	my %seen;
+	my %phy_seen;
+	if(open(my $in_fh, "<", "/proc/cpuinfo")) {
 	    while(<$in_fh>) {
-		if(/^physical id.*[:](.*)/ and not $seen{$1}++) {
-		    $no_of_cpus++;
+		if(/^physical id.*[:](.*)/ and not $phy_seen{$1}++) {
+		    $cpu->{'sockets'}++;
 		}
-		/^processor.*[:]/i and $no_of_cores++;
+		if(/^core id.*[:](.*)/ and not $seen{$1}++) {
+		    $cpu->{'cores'}++;
+		}
+		/^processor.*[:]/i and $cpu->{'threads'}++;
 	    }
 	    close $in_fh;
 	}
+	$cpu->{'sockets'} ||= 1;
+	$cpu->{'cores'} ||= $cpu->{'threads'};
     }
     if(-e "/proc/self/status") {
-	# if 'taskset' is used to limit number of cores
-        if(open(my $in_fh, "<", "/proc/self/status")) {
+	# if 'taskset' is used to limit number of threads
+	if(open(my $in_fh, "<", "/proc/self/status")) {
 	    while(<$in_fh>) {
 		if(/^Cpus_allowed:\s*(\S+)/) {
 		    my $a = $1;
 		    $a =~ tr/,//d;
-		    $no_of_active_cores = unpack ("%32b*", pack ("H*",$a));
+		    $cpu->{'active'} = unpack ("%32b*", pack ("H*",$a));
 		}
 	    }
 	    close $in_fh;
 	}
     }
-    return (::min($no_of_cpus || $no_of_cores,$no_of_active_cores));
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cores_gnu_linux {
+sub sct_freebsd() {
     # Returns:
-    #   Number of CPU cores on GNU/Linux
-    #   undef if not GNU/Linux
-    my $no_of_cores;
-    my $no_of_active_cores;
-    if(-e "/proc/cpuinfo") {
-        $no_of_cores = 0;
-        open(my $in_fh, "<", "/proc/cpuinfo") || return undef;
-        while(<$in_fh>) {
-            /^processor.*[:]/i and $no_of_cores++;
-        }
-        close $in_fh;
-    }
-    if(-e "/proc/self/status") {
-	# if 'taskset' is used to limit number of cores
-        if(open(my $in_fh, "<", "/proc/self/status")) {
-	    while(<$in_fh>) {
-		if(/^Cpus_allowed:\s*(\S+)/) {
-		    my $a = $1;
-		    $a =~ tr/,//d;
-		    $no_of_active_cores = unpack ("%32b*", pack ("H*",$a));
-		}
-	    }
-	    close $in_fh;
-	}
-    }
-    return (::min($no_of_cores,$no_of_active_cores));
-}
-
-sub no_of_cpus_freebsd {
-    # Returns:
-    #   Number of physical CPUs on FreeBSD
-    #   undef if not FreeBSD
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $no_of_cpus =
-	(::qqx(qq{ sysctl -a dev.cpu | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }' })
+    my $cpu;
+    $cpu->{'cores'} = (::qqx(qq{ sysctl -a dev.cpu | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }' })
 	 or
 	 ::qqx(qq{ sysctl hw.ncpu | awk '{ print \$2 }' }));
-    chomp $no_of_cpus;
-    return $no_of_cpus;
-}
-
-sub no_of_cores_freebsd {
-    # Returns:
-    #   Number of CPU cores on FreeBSD
-    #   undef if not FreeBSD
-    local $/ = "\n";
-    my $no_of_cores =
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+    $cpu->{'threads'} =
 	(::qqx(qq{ sysctl hw.ncpu | awk '{ print \$2 }' })
 	 or
 	 ::qqx(qq{ sysctl -a dev.cpu | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }' }));
-    chomp $no_of_cores;
-    return $no_of_cores;
+    $cpu->{'threads'} and chomp $cpu->{'threads'};
+    $cpu->{'sockets'} ||= $cpu->{'cores'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cpus_netbsd {
+sub sct_netbsd() {
     # Returns:
-    #   Number of physical CPUs on NetBSD
-    #   undef if not NetBSD
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $no_of_cpus = ::qqx("sysctl -n hw.ncpu");
-    chomp $no_of_cpus;
-    return $no_of_cpus;
+    my $cpu;
+    $cpu->{'cores'} = ::qqx("sysctl -n hw.ncpu");
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+    $cpu->{'threads'} = ::qqx("sysctl -n hw.ncpu");
+    $cpu->{'threads'} and chomp $cpu->{'threads'};
+    $cpu->{'sockets'} ||= $cpu->{'cores'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cores_netbsd {
+sub sct_openbsd() {
     # Returns:
-    #   Number of CPU cores on NetBSD
-    #   undef if not NetBSD
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $no_of_cores = ::qqx("sysctl -n hw.ncpu");
-    chomp $no_of_cores;
-    return $no_of_cores;
+    my $cpu;
+    $cpu->{'cores'} = ::qqx('sysctl -n hw.ncpu');
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+    $cpu->{'threads'} = ::qqx('sysctl -n hw.ncpu');
+    $cpu->{'threads'} and chomp $cpu->{'threads'};
+    $cpu->{'sockets'} ||= $cpu->{'cores'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cpus_openbsd {
+sub sct_hurd() {
     # Returns:
-    #   Number of physical CPUs on OpenBSD
-    #   undef if not OpenBSD
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $no_of_cpus = ::qqx('sysctl -n hw.ncpu');
-    chomp $no_of_cpus;
-    return $no_of_cpus;
+    my $cpu;
+    $cpu->{'cores'} = ::qqx("nproc");
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+    $cpu->{'threads'} = ::qqx("nproc");
+    $cpu->{'threads'} and chomp $cpu->{'threads'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cores_openbsd {
+sub sct_darwin() {
     # Returns:
-    #   Number of CPU cores on OpenBSD
-    #   undef if not OpenBSD
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $no_of_cores = ::qqx('sysctl -n hw.ncpu');
-    chomp $no_of_cores;
-    return $no_of_cores;
-}
-
-sub no_of_cpus_hurd {
-    # Returns:
-    #   Number of physical CPUs on HURD
-    #   undef if not HURD
-    local $/ = "\n";
-    my $no_of_cpus = ::qqx("nproc");
-    chomp $no_of_cpus;
-    return $no_of_cpus;
-}
-
-sub no_of_cores_hurd {
-    # Returns:
-    #   Number of physical CPUs on HURD
-    #   undef if not HURD
-    local $/ = "\n";
-    my $no_of_cores = ::qqx("nproc");
-    chomp $no_of_cores;
-    return $no_of_cores;
-}
-
-sub no_of_cpus_darwin {
-    # Returns:
-    #   Number of physical CPUs on MacOSX Darwin
-    #   undef if not MacOSX Darwin
-    my $no_of_cpus =
+    my $cpu;
+    $cpu->{'cores'} =
 	(::qqx('sysctl -n hw.physicalcpu')
 	 or
 	 ::qqx(qq{ sysctl -a hw | grep [^a-z]physicalcpu[^a-z] | awk '{ print \$2 }' }));
-    return $no_of_cpus;
-}
-
-sub no_of_cores_darwin {
-    # Returns:
-    #   Number of CPU cores on Mac Darwin
-    #   undef if not Mac Darwin
-    my $no_of_cores =
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+    $cpu->{'threads'} =
 	(::qqx('sysctl -n hw.logicalcpu')
 	 or
 	 ::qqx(qq{ sysctl -a hw | grep [^a-z]logicalcpu[^a-z] | awk '{ print \$2 }' }));
-    return $no_of_cores;
+    $cpu->{'threads'} and chomp $cpu->{'threads'};
+    $cpu->{'sockets'} ||= $cpu->{'cores'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cpus_solaris {
+sub sct_solaris() {
     # Returns:
-    #   Number of physical CPUs on Solaris
-    #   undef if not Solaris
-    if(-x "/usr/sbin/psrinfo") {
-        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
-        if($#psrinfo >= 0) {
-            return $#psrinfo +1;
-        }
-    }
-    if(-x "/usr/sbin/prtconf") {
-        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
-        if($#prtconf >= 0) {
-            return $#prtconf +1;
-        }
-    }
-    if(-x "/usr/sbin/prtconf") {
-        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
-        if($#prtconf >= 0) {
-            return $#prtconf +1;
-        }
-    }
-    return undef;
-}
-
-sub no_of_cores_solaris {
-    # Returns:
-    #   Number of CPU cores on Solaris
-    #   undef if not Solaris
-    if(-x "/usr/sbin/psrinfo") {
-        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
-        if($#psrinfo >= 0) {
-            return $#psrinfo +1;
-        }
-    }
-    if(-x "/usr/sbin/prtconf") {
-        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
-        if($#prtconf >= 0) {
-            return $#prtconf +1;
-        }
-    }
-    return undef;
-}
-
-sub no_of_cpus_aix {
-    # Returns:
-    #   Number of physical CPUs on AIX
-    #   undef if not AIX
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $no_of_cpus = 0;
+    my $cpu;
+    if(-x "/usr/sbin/psrinfo") {
+        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
+        if($#psrinfo >= 0) {
+            $cpu->{'cores'} = $#psrinfo +1;
+        }
+    }
+    if(-x "/usr/sbin/prtconf") {
+        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
+        if($#prtconf >= 0) {
+            $cpu->{'cores'} = $#prtconf +1;
+        }
+    }
+    if(-x "/usr/sbin/prtconf") {
+        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
+        if($#prtconf >= 0) {
+            $cpu->{'cores'} = $#prtconf +1;
+        }
+    }
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+
+    if(-x "/usr/sbin/psrinfo") {
+        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
+        if($#psrinfo >= 0) {
+            $cpu->{'threads'} = $#psrinfo +1;
+        }
+    }
+    if(-x "/usr/sbin/prtconf") {
+        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
+        if($#prtconf >= 0) {
+            $cpu->{'threads'} = $#prtconf +1;
+        }
+    }
+    $cpu->{'threads'} and chomp $cpu->{'threads'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
+}
+
+sub sct_aix() {
+    # Returns:
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    local $/ = "\n";
+    my $cpu;
     if(-x "/usr/sbin/lscfg") {
-	open(my $in_fh, "-|", "/usr/sbin/lscfg -vs |grep proc | wc -l|tr -d ' '")
-	    || return undef;
-	$no_of_cpus = <$in_fh>;
-	chomp ($no_of_cpus);
-	close $in_fh;
-    }
-    return $no_of_cpus;
-}
-
-sub no_of_cores_aix {
-    # Returns:
-    #   Number of CPU cores on AIX
-    #   undef if not AIX
-    my $no_of_cores;
-    if(-x "/usr/bin/vmstat") {
-	open(my $in_fh, "-|", "/usr/bin/vmstat 1 1") || return undef;
-	while(<$in_fh>) {
-	    /lcpu=([0-9]*) / and $no_of_cores = $1;
+	if(open(my $in_fh, "-|", "/usr/sbin/lscfg -vs |grep proc | wc -l|tr -d ' '")) {
+	    $cpu->{'cores'} = <$in_fh>;
+	    chomp ($cpu->{'cores'});
+	    close $in_fh;
 	}
-	close $in_fh;
     }
-    return $no_of_cores;
+    if(-x "/usr/bin/vmstat") {
+	if(open(my $in_fh, "-|", "/usr/bin/vmstat 1 1")) {
+	    while(<$in_fh>) {
+		/lcpu=([0-9]*) / and $cpu->{'threads'} = $1;
+	    }
+	    close $in_fh;
+	}
+    }
+    $cpu->{'sockets'} ||= $cpu->{'cores'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cpus_hpux {
+sub sct_hpux() {
     # Returns:
-    #   Number of physical CPUs on HP-UX
-    #   undef if not HP-UX
-    my $no_of_cpus =
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    local $/ = "\n";
+    my $cpu;
+    $cpu->{'cores'} =
         ::qqx(qq{ /usr/bin/mpsched -s 2>&1 | grep 'Locality Domain Count' | awk '{ print \$4 }'});
-    return $no_of_cpus;
-}
-
-sub no_of_cores_hpux {
-    # Returns:
-    #   Number of CPU cores on HP-UX
-    #   undef if not HP-UX
-    my $no_of_cores =
+    $cpu->{'threads'} =
         ::qqx(qq{ /usr/bin/mpsched -s 2>&1 | perl -ne '/Processor Count\\D+(\\d+)/ and print "\$1\n"'});
-    return $no_of_cores;
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cpus_qnx {
+sub sct_qnx() {
     # Returns:
-    #   Number of physical CPUs on QNX
-    #   undef if not QNX
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    local $/ = "\n";
+    my $cpu;
     # BUG: It is not known how to calculate this.
-    my $no_of_cpus = 0;
-    return $no_of_cpus;
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cores_qnx {
+sub sct_openserver() {
     # Returns:
-    #   Number of CPU cores on QNX
-    #   undef if not QNX
-    # BUG: It is not known how to calculate this.
-    my $no_of_cores = 0;
-    return $no_of_cores;
-}
-
-sub no_of_cpus_openserver {
-    # Returns:
-    #   Number of physical CPUs on SCO OpenServer
-    #   undef if not SCO OpenServer
-    my $no_of_cpus = 0;
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    local $/ = "\n";
+    my $cpu;
     if(-x "/usr/sbin/psrinfo") {
         my @psrinfo = ::qqx("/usr/sbin/psrinfo");
         if($#psrinfo >= 0) {
-            return $#psrinfo +1;
+            $cpu->{'cores'} = $#psrinfo +1;
         }
     }
-    return $no_of_cpus;
-}
-
-sub no_of_cores_openserver {
-    # Returns:
-    #   Number of CPU cores on SCO OpenServer
-    #   undef if not SCO OpenServer
-    my $no_of_cores = 0;
     if(-x "/usr/sbin/psrinfo") {
         my @psrinfo = ::qqx("/usr/sbin/psrinfo");
         if($#psrinfo >= 0) {
-            return $#psrinfo +1;
+            $cpu->{'threads'} = $#psrinfo +1;
         }
     }
-    return $no_of_cores;
+    $cpu->{'sockets'} ||= $cpu->{'cores'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cpus_irix {
+sub sct_irix() {
     # Returns:
-    #   Number of physical CPUs on IRIX
-    #   undef if not IRIX
-    my $no_of_cpus = ::qqx(qq{ hinv | grep HZ | grep Processor | awk '{print \$1}' });
-    return $no_of_cpus;
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    local $/ = "\n";
+    my $cpu;
+    $cpu->{'cores'} = ::qqx(qq{ hinv | grep HZ | grep Processor | awk '{print \$1}' });
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
-sub no_of_cores_irix {
+sub sct_tru64() {
     # Returns:
-    #   Number of CPU cores on IRIX
-    #   undef if not IRIX
-    my $no_of_cores = ::qqx(qq{ hinv | grep HZ | grep Processor | awk '{print \$1}' });
-    return $no_of_cores;
-}
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    local $/ = "\n";
+    my $cpu;
+    $cpu->{'cores'} = ::qqx("sizer -pr");
+    $cpu->{'cores'} and chomp $cpu->{'cores'};
+    $cpu->{'cores'} ||= 1;
+    $cpu->{'sockets'} ||= $cpu->{'cores'};
+    $cpu->{'threads'} ||= $cpu->{'cores'};
 
-sub no_of_cpus_tru64 {
-    # Returns:
-    #   Number of physical CPUs on Tru64
-    #   undef if not Tru64
-    my $no_of_cpus = ::qqx("sizer -pr");
-    return $no_of_cpus;
-}
-
-sub no_of_cores_tru64 {
-    # Returns:
-    #   Number of CPU cores on Tru64
-    #   undef if not Tru64
-    my $no_of_cores = ::qqx("sizer -pr");
-    return $no_of_cores;
+    if(grep { /\d/ } values %$cpu) {
+	return $cpu;
+    } else {
+	return undef;
+    }
 }
 
 sub sshcommand {

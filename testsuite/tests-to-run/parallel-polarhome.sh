@@ -18,8 +18,8 @@ P="$P_WORKING"
 POLAR=`parallel -k echo {}.polarhome.com ::: $P`
 S_POLAR=`parallel -k echo -S 1/{}.polarhome.com ::: $P`
 
-# 2018-04-22 TIMEOUT=20
-TIMEOUT=25
+# 2018-04-22 MAXTIME=20
+MAXTIME=25
 RETRIES=4
 
 parallel --retries $RETRIES rsync -a /usr/local/bin/{parallel,env_parallel,env_parallel.*,parcat} ::: redhat.polarhome.com:bin/
@@ -28,9 +28,9 @@ doit() {
     # Avoid the stupid /etc/issue.net banner at Polarhome: -oLogLevel=quiet
     PARALLEL_SSH="ssh -oLogLevel=quiet"
     export PARALLEL_SSH
-    export TIMEOUT
+    export MAXTIME
     export RETRIES
-    echo TIMEOUT=$TIMEOUT RETRIES=$RETRIES
+    echo MAXTIME=$MAXTIME RETRIES=$RETRIES
 
     copy() {
 	# scp, but atomic (avoid half files if disconnected)
@@ -43,19 +43,19 @@ doit() {
     export -f copy
 
     par_nonall() {
-	parallel -j15 -k --retries $RETRIES --timeout $TIMEOUT --delay 0.1 --tag \
+	parallel -j15 -k --retries $RETRIES --timeout $MAXTIME --delay 0.1 --tag \
 		 --nonall $S_POLAR --argsep ,:- \
 		 'source setupenv >&/dev/null || . `pwd`/setupenv;' "$@"
     }
     export -f par_nonall
 
     echo '### Copy commands to servers'
-    parallel -vkj15 --retries $RETRIES --timeout $TIMEOUT --delay 0.03 --tag \
+    parallel -vkj15 --retries $RETRIES --timeout $MAXTIME --delay 0.03 --tag \
 	     copy {2} {1} {1/} \
 	     ::: bin/{parallel,env_parallel,env_parallel.*,parcat,stdout} \
 	     ::: $POLAR
     echo Done copying
-    
+
     # Test empty command
     test_empty_cmd() {
 	echo '### Test if empty command in process list causes problems'
@@ -65,11 +65,19 @@ doit() {
     export -f test_empty_cmd
     PARALLEL='--env test_empty_cmd' par_nonall test_empty_cmd 2>&1
 
-    
     par_nonall parallel echo Works on {} ::: '`hostname`' 2>&1
     par_nonall "stdout parallel --tmpdir / echo ::: test read-only tmp |" \
 	       "perl -pe '\$exit += s:/[a-z0-9_]+.arg:/XXXXXXXX.arg:gi; \$exit += s/[0-9][0-9][0-9][0-9]/0000/gi; END { exit not \$exit }' &&" \
 	       "echo OK readonly tmp" 2>&1
+
+    echo
+    echo '### --number-of-cores/--number-of-cpus should work with no error'
+    echo
+    par_nonall parallel --number-of-sockets 2>&1
+    par_nonall parallel --number-of-cores 2>&1
+    par_nonall parallel --number-of-threads 2>&1
+    par_nonall parallel --number-of-cpus 2>&1
+
     echo
     echo '### Does exporting a bash function kill parallel'
     echo
