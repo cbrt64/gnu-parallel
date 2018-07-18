@@ -120,6 +120,9 @@ par_zsh_man	arrays
 par_zsh_man	with = & " ! '
 par_zsh_man	work,
 par_zsh_man	too
+par_zsh_man	multi
+par_zsh_man	level
+par_zsh_man	env_parallel
 par_zsh_man	exit value 2 should be 2
 par_zsh_man	Unknown option: no-such-option
 par_zsh_man	exit value 255 should be 255
@@ -315,6 +318,9 @@ par_tcsh_man	arrays
 par_tcsh_man	with=&"'
 par_tcsh_man	work,
 par_tcsh_man	too
+par_tcsh_man	multi
+par_tcsh_man	level
+par_tcsh_man	env_parallel
 par_tcsh_man	exit value 2 should be 2
 par_tcsh_man	Unknown option: no-such-option
 par_tcsh_man	Usage:
@@ -668,6 +674,9 @@ par_mksh_man	arrays
 par_mksh_man	with = & " ! '
 par_mksh_man	work,
 par_mksh_man	too
+par_mksh_man	multi
+par_mksh_man	level
+par_mksh_man	env_parallel
 par_mksh_man	exit value 2 should be 2
 par_mksh_man	Unknown option: no-such-option
 par_mksh_man	exit value 255 should be 255
@@ -1172,6 +1181,9 @@ par_fish_man	arrays
 par_fish_man	with  = & " ! '
 par_fish_man	work,
 par_fish_man	too
+par_fish_man	multi
+par_fish_man	level
+par_fish_man	env_parallel
 par_fish_man	exit value 2 should be 2
 par_fish_man	Unknown option: no-such-option
 par_fish_man	exit value 255 should be 255 `sleep 1`
@@ -1431,8 +1443,11 @@ par_csh_man	arrays
 par_csh_man	arrays
 par_csh_man	arrays
 par_csh_man	cat ... | parallel --pipe [options] [command [arguments]]
+par_csh_man	env_parallel
 par_csh_man	exit value -1 should be 255
 par_csh_man	exit value 2 should be 2
+par_csh_man	level
+par_csh_man	multi
 par_csh_man	parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...
 par_csh_man	parallel [options] [command [arguments]] < list_of_arguments
 par_csh_man	scientific publication, please cite:
@@ -1601,6 +1616,9 @@ par_bash_man	arrays
 par_bash_man	with = & " ! '
 par_bash_man	work,
 par_bash_man	too
+par_bash_man	multi
+par_bash_man	level
+par_bash_man	env_parallel
 par_bash_man	exit value 2 should be 2
 par_bash_man	Unknown option: no-such-option
 par_bash_man	exit value 255 should be 255

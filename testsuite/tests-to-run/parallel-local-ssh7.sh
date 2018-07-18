@@ -51,6 +51,9 @@ par_ash_man() {
 
     # Arrays are not supported in ash
 
+    # Exporting of functions is not supported
+    # env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
+
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
@@ -121,6 +124,8 @@ par_bash_man() {
     env_parallel -k --env myarray echo '"${myarray[{}]}"' ::: 0 1 2 3
     env_parallel -k --env myarray -S server echo '"${myarray[{}]}"' ::: 0 1 2 3
 
+    env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
+
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
@@ -162,6 +167,8 @@ par_csh_man() {
     env_parallel -k -S server echo \$'{myarray[{}]}' ::: 1 2 3 4
     env_parallel -k --env myarray echo \$'{myarray[{}]}' ::: 1 2 3 4
     env_parallel -k --env myarray -S server echo \$'{myarray[{}]}' ::: 1 2 3 4
+
+    env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
     echo exit value $status should be 2
@@ -216,6 +223,9 @@ par_dash_man() {
     env_parallel --env multivar -S server echo '"$multivar"' ::: work
 
     # Arrays are not supported in dash
+
+    # Exporting of functions is not supported
+    # env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -272,6 +282,8 @@ par_fish_man() {
     env_parallel -k -S server echo '$myarray[{}]' ::: 1 2 3 4
     env_parallel -k --env myarray echo '$myarray[{}]' ::: 1 2 3 4
     env_parallel -k --env myarray -S server echo '$myarray[{}]' ::: 1 2 3 4
+
+    env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
     echo exit value $status should be 2
@@ -334,6 +346,8 @@ par_ksh_man() {
     env_parallel -k -S server echo '"${myarray[{}]}"' ::: 0 1 2 3
     env_parallel -k --env myarray echo '"${myarray[{}]}"' ::: 0 1 2 3
     env_parallel -k --env myarray -S server echo '"${myarray[{}]}"' ::: 0 1 2 3
+
+    env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -398,6 +412,8 @@ par_mksh_man() {
     env_parallel -k --env myarray echo '"${myarray[{}]}"' ::: 0 1 2 3
     env_parallel -k --env myarray -S server echo '"${myarray[{}]}"' ::: 0 1 2 3
 
+    env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
+
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
@@ -452,6 +468,9 @@ par_sh_man() {
 
     # Arrays are not supported
 
+    # Exporting of functions is not supported
+    # env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
+
     env_parallel ::: true false true false
     echo exit value $? should be 2
 
@@ -493,6 +512,8 @@ par_tcsh_man() {
     env_parallel -k -S server echo \$'{myarray[{}]}' ::: 1 2 3 4
     env_parallel -k --env myarray echo \$'{myarray[{}]}' ::: 1 2 3 4
     env_parallel -k --env myarray -S server echo \$'{myarray[{}]}' ::: 1 2 3 4
+
+    env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
     echo exit value $status should be 2
@@ -559,6 +580,8 @@ par_zsh_man() {
     env_parallel -k -S server echo '"${myarray[{}]}"' ::: 1 2 3 4
     env_parallel -k --env myarray echo '"${myarray[{}]}"' ::: 1 2 3 4
     env_parallel -k --env myarray -S server echo '"${myarray[{}]}"' ::: 1 2 3 4
+
+    env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
     echo exit value $? should be 2
@@ -1653,20 +1676,20 @@ par_bash_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.bash`;
 
-    bigvar="$(perl -e 'print "x"x120000')"
+    bigvar="$(perl -e 'print "x"x110000')"
     env_parallel echo ::: OK_bigvar
     env_parallel -S lo echo ::: OK_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x60000')"
+    bigvar="$(perl -e 'print "\""x55000')"
     env_parallel echo ::: OK_bigvar_quote
     env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x120000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x110000')"'"; };'
     env_parallel echo ::: OK_bigfunc
     env_parallel -S lo echo ::: OK_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x120000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x110000')"'"; };'
     env_parallel echo ::: OK_bigfunc_quote
     env_parallel -S lo echo ::: OK_bigfunc_quote_remote
     bigfunc() { true; }

@@ -66,7 +66,7 @@ else
             	    "Run \"parallel --record-env\" in a clean environment first.\n";
                 } else {
             	    chomp(@ignored_vars = <IN>);
-            	    $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+            	    $vars = join "|",map { quotemeta $_ } @ignored_vars;
 		    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
                 }
             }
@@ -136,7 +136,3 @@ else
   setenv PARALLEL
 endif
 (exit $_parallel_exit_CODE)
-
-# Tested working for aliases
-# alias env_parallel 'setenv PARALLEL_ENV "`alias | perl -pe s/\\047/\\047\\042\\047\\042\\047/g\;s/\^\(\\S+\)\(\\s+\)\\\(\(.\*\)\\\)/\\1\\2\\3/\;s/\^\(\\S+\)\(\\s+\)\(.\*\)/\\1\\2\\047\\3\\047/\;s/\^/\\001alias\ /\;s/\\\!/\\\\\\\!/g;`";parallel \!*; setenv PARALLEL_ENV'
-

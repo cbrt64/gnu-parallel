@@ -48,7 +48,8 @@ env_parallel() {
 	typeset +p -f | perl -pe 's/\(\).*//'
     }
     _bodies_of_FUNCTIONS() {
-	typeset -f "$@"
+	#	typeset -f "$@"
+	functions "$@"
     }
     _names_of_VARIABLES() {
 	typeset +p | perl -pe 's/^typeset .. //'
@@ -58,7 +59,7 @@ env_parallel() {
     }
     _ignore_HARDCODED() {
 	# These names cannot be detected
-	echo '(_|TIMEOUT)'
+	echo '(_|TIMEOUT|IFS)'
     }
     _ignore_READONLY() {
 	readonly | perl -e '@r = map {
@@ -140,7 +141,7 @@ env_parallel() {
                 push @ignored_vars, split/\s+/, $ENV{PARALLEL_IGNORED_NAMES};
                 chomp @ignored_vars;
             }
-            $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+            $vars = join "|",map { quotemeta $_ } @ignored_vars;
 	    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
             ' -- "$@"
     }

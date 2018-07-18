@@ -149,7 +149,7 @@ env_parallel() {
                 push @ignored_vars, split/\s+/, $ENV{PARALLEL_IGNORED_NAMES};
                 chomp @ignored_vars;
             }
-            $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+            $vars = join "|",map { quotemeta $_ } @ignored_vars;
 	    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
             ' -- "$@"
     }

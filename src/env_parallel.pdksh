@@ -78,7 +78,7 @@ env_parallel() {
             	    "Run \"parallel --record-env\" in a clean environment first.\n";
                 } else {
             	    chomp(@ignored_vars = <IN>);
-            	    $vars = join "|",map { quotemeta $_ } "env_parallel", @ignored_vars;
+            	    $vars = join "|",map { quotemeta $_ } @ignored_vars;
 		    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
                 }
             }
