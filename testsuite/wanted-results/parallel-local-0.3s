@@ -1388,6 +1388,19 @@ par_parcat_rm	OK1
 par_parcat_rm	OK file removed
 par_pipe_no_command	### --pipe without command
 par_pipe_no_command	parallel: Error: --pipe/--pipepart must have a command to pipe into (e.g. 'cat').
+par_pipe_recend	bug #54328: --pipe --recend  blocks
+par_pipe_recend	00000000: 31                                       1
+par_pipe_recend	00000000: 0a                                       .
+par_pipe_recend	00000000: 32                                       2
+par_pipe_recend	00000000: 0a                                       .
+par_pipe_recend	00000000: 33                                       3
+par_pipe_recend	00000000: 0a                                       .
+par_pipe_recend	00000000: 31                                       1
+par_pipe_recend	00000000: 0a                                       .
+par_pipe_recend	00000000: 32                                       2
+par_pipe_recend	00000000: 0a                                       .
+par_pipe_recend	00000000: 33                                       3
+par_pipe_recend	00000000: 0a                                       .
 par_pipe_record_size_in_lines	bug #34958: --pipe with record size measured in lines
 par_pipe_record_size_in_lines	1
 par_pipe_record_size_in_lines	2

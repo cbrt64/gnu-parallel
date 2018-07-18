@@ -819,6 +819,12 @@ par_PARALLEL_ENV() {
     rm $PARALLEL_ENV
 }
 
+par_pipe_recend() {
+    echo 'bug #54328: --pipe --recend '' blocks'
+    seq 3 | parallel -k --pipe --regexp --recend '' -n 1 xxd
+    seq 3 | parallel -k --pipe --recend '' -n 1 xxd
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

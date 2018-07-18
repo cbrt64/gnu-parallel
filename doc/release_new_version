@@ -199,9 +199,9 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180622 ('Kim Trump/GDPR/Guatamala') released <<[stable]>>
+Subject: GNU Parallel 20180722 ('?') released <<[stable]>>
 
-GNU Parallel 20180622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180722 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -214,6 +214,11 @@ Quote of the month:
 
 New in this release:
 
+* The CPU calculation has changed. By default GNU Parallel uses the number of CPU threads as the number of CPUs. This can be change to the number of CPU cores or number of CPU sockets with --use-cores-instead-of-threads or --use-sockets-instead-of-threads.
+
+* The detected number of sockets, cores, and threads can be shown with --number-of-sockets, --number-of-cores, and --number-of-threads.
+
+* env_parallel now support mksh using env_parallel.mksh.
 
 * GNU Parallel is distributed as part of Snippy https://github.com/tseemann/snippy
 

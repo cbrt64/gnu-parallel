@@ -519,12 +519,13 @@ sub spreadstdin {
 		  $Global::max_number_of_args * ($Global::max_lines || 1);
 	      # (?!negative lookahead) is needed to avoid backtracking
 	      # See: https://unix.stackexchange.com/questions/439356/
-	      while($buf =~ /# From start up till recend
-                             ^((?:(?!$recend$recstart).)*?$recend
-                             # Then n-1 times recstart.*recend
-                             (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines})
-                             # Followed by recstart
-                             (?=$recstart)/osx) {
+	      while($buf =~
+		    /# From start up till recend
+		    ^((?:(?!$recend$recstart).)*?$recend
+		    # Then n-1 times recstart.*recend
+		    (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines})
+		    # Followed by recstart
+		    (?=$recstart)/osx) {
 		  $anything_written +=
 		      write_record_to_pipe($chunk_number++,\$header,\$buf,
 					   $recstart,$recend,length $1);
@@ -561,7 +562,9 @@ sub spreadstdin {
 	      my $i = 0;
 	      my $read_n_lines =
 		  $Global::max_number_of_args * ($Global::max_lines || 1);
-	      while(($i = nindex(\$buf,$recendrecstart,$read_n_lines)) != -1) {
+	      while(($i = nindex(\$buf,$recendrecstart,$read_n_lines)) != -1
+		    and
+		    length $buf) {
 		  $i += length $recend; # find the actual splitting location
 		  $anything_written +=
 		      write_record_to_pipe($chunk_number++,\$header,\$buf,
@@ -657,6 +660,10 @@ sub recstartrecend {
 	# If --recend is given then it must match end of record
 	$recstart = "";
 	$recend = $opt::recend;
+	if($opt::regexp and $recend eq '') {
+	    # --regexp --recend ''
+	    $recend = '.';
+	}
     }
 
     if($opt::regexp) {
@@ -1385,10 +1392,10 @@ sub parse_options {
     if(defined $opt::eta) { $opt::progress = $opt::eta; }
     if(defined $opt::bar) { $opt::progress = $opt::bar; }
 
-    # Funding a free software project is hard. GNU parallel is no
+    # Funding a free software project is hard. GNU Parallel is no
     # exception. On top of that it seems the less visible a project
     # is, the harder it is to get funding. And the nature of GNU
-    # parallel is that it will never be seen by "the guy with the
+    # Parallel is that it will never be seen by "the guy with the
     # checkbook", but only by the people doing the actual work.
     #
     # This problem has been covered by others - though no solution has
@@ -1402,7 +1409,7 @@ sub parse_options {
     #
     # Having to spend 10 seconds on running 'parallel --citation' once
     # is no doubt not an ideal solution, but no one has so far come up
-    # with an ideal solution - neither for funding GNU parallel nor
+    # with an ideal solution - neither for funding GNU Parallel nor
     # other free software.
     #
     # If you believe you have the perfect solution, you should try it
@@ -1418,9 +1425,11 @@ sub parse_options {
     #
     # Description of the xt:Commerce case in OLG Duesseldorf
     # http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
+    # https://web.archive.org/web/20180715073746/http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
     #
     # The verdict in German
     # https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
+    # https://web.archive.org/web/20180715073717/https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
     #
     # Other free software limiting derivates by the same name
     # https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux_derivatives#Legal_aspects
@@ -4263,6 +4272,26 @@ sub citation_notice {
 	     "To silence this citation notice: run 'parallel --citation' once.",
 	     ""
 	    );
+	mkdir $Global::config_dir;
+	# Number of times the user has run GNU Parallel without showing
+	# willingness to cite
+	my $runs = 0;
+	if(open (my $fh, "<", $Global::config_dir.
+		 "/runs-without-willing-to-cite")) {
+	    $runs = <$fh>;
+	    close $fh;
+	}
+	$runs++;
+	if(open (my $fh, ">", $Global::config_dir.
+		 "/runs-without-willing-to-cite")) {
+	    print $fh $runs;
+	    close $fh;
+	    if($runs >= 10) {
+		::status("Come on: You have run parallel $runs times. Isn't it about time ",
+			 "you run 'parallel --citation' once to silence the citation notice?",
+			 "");
+	    }
+	}
     }
 }
 
@@ -9175,6 +9204,7 @@ sub print_linebuffer {
 	    my ($buf,$i,$rv);
 	    while($rv = sysread($in_fh, $buf, 131072)) {
 		$outputlength += $rv;
+		# TODO --recend
 		# Treat both \n and \r as line end
 		$i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
 		if($i) {
@@ -9182,6 +9212,7 @@ sub print_linebuffer {
 		    if($opt::tag or defined $opt::tagstring) {
 			# Replace ^ with $tag within the full line
 			my $tag = $self->tag();
+			# TODO --recend
 			substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
 			# The length changed, so find the new ending pos
 			$i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);

@@ -1056,11 +1056,11 @@ If used with B<--pipe --roundrobin> and the same input, the jobslots
 will get the same blocks in the same order in every run.
 
 
-=item B<-L> I<max-lines>
+=item B<-L> I<recsize>
 
-When used with B<--pipe>: Read records of I<max-lines>.
+When used with B<--pipe>: Read records of I<recsize>.
 
-When used otherwise: Use at most I<max-lines> nonblank input lines per
+When used otherwise: Use at most I<recsize> nonblank input lines per
 command line.  Trailing blanks cause an input line to be logically
 continued on the next input line.
 
@@ -1070,14 +1070,14 @@ line.
 Implies B<-X> unless B<-m>, B<--xargs>, or B<--pipe> is set.
 
 
-=item B<--max-lines>[=I<max-lines>]
+=item B<--max-lines>[=I<recsize>]
 
-=item B<-l>[I<max-lines>]
+=item B<-l>[I<recsize>]
 
-When used with B<--pipe>: Read records of I<max-lines>.
+When used with B<--pipe>: Read records of I<recsize> lines.
 
 When used otherwise: Synonym for the B<-L> option.  Unlike B<-L>, the
-I<max-lines> argument is optional.  If I<max-lines> is not specified,
+I<recsize> argument is optional.  If I<recsize> is not specified,
 it defaults to one.  The B<-l> option is deprecated since the POSIX
 standard specifies B<-L> instead.
 
@@ -3025,6 +3025,19 @@ B<parallel> finally uses B<wget> to fetch the images.
     jq -r .[] |
     grep large |
     parallel wget
+
+
+=head1 EXAMPLE: Download video playlist in parallel
+
+B<youtube-dl> is an excellent tool to download videos. It can,
+however, not download videos in parallel. This takes a playlist and
+downloads 10 videos in parallel.
+
+  url='https://youtu.be/watch?v=0wOf2Fgi3DE&list=UU_cznB5YZZmvAmeq7Y3EriQ'
+  export url
+  youtube-dl --flat-playlist "$url" |
+    parallel --tagstring {#} --lb -j10 \
+      LC_ALL= youtube-dl --playlist-start {#} --playlist-end {#} '"$url"'
 
 
 =head1 EXAMPLE: Copy files as last modified date (ISO8601) with added
