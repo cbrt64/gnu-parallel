@@ -825,6 +825,17 @@ par_pipe_recend() {
     seq 3 | parallel -k --pipe --recend '' -n 1 xxd
 }
 
+par_perlexpr_with_newline() {
+    echo 'Perl expression spanning 2 lines'
+    cd tmp
+    touch "Dad's \"famous\" 1' pizza"
+    # Important with newline in perl expression:
+    parallel mv {} '{= $a=pQ($_); $b=$_;
+      $_=qx{date -r "$a" +%FT%T}; chomp; $_="$_ $b" =}' \
+	 ::: "Dad's \"famous\" 1' pizza"
+    rm *"Dad's \"famous\" 1' pizza"
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

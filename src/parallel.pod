@@ -2702,7 +2702,8 @@ To compress all html files using B<gzip> run:
 If the file names may contain a newline use B<-0>. Substitute FOO BAR with
 FUBAR in all files in this dir and subdirs:
 
-  find . -type f -print0 | parallel -q0 perl -i -pe 's/FOO BAR/FUBAR/g'
+  find . -type f -print0 | \
+    parallel -q0 perl -i -pe 's/FOO BAR/FUBAR/g'
 
 Note B<-q> is needed because of the space in 'FOO BAR'.
 
@@ -2777,7 +2778,8 @@ in a directory:
 
 To do it recursively use B<find>:
 
-  find . -name '*.jpg' | parallel convert -geometry 120 {} {}_thumb.jpg
+  find . -name '*.jpg' | \
+    parallel convert -geometry 120 {} {}_thumb.jpg
 
 Notice how the argument has to start with B<{}> as B<{}> will include path
 (e.g. running B<convert -geometry 120 ./foo/bar.jpg
@@ -2787,7 +2789,8 @@ generate files like ./foo/bar.jpg_thumb.jpg.
 Use B<{.}> to avoid the extra .jpg in the file name. This command will
 make files like ./foo/bar_thumb.jpg:
 
-  find . -name '*.jpg' | parallel convert -geometry 120 {} {.}_thumb.jpg
+  find . -name '*.jpg' | \
+    parallel convert -geometry 120 {} {.}_thumb.jpg
 
 
 =head1 EXAMPLE: Substitution and redirection
@@ -3037,16 +3040,15 @@ downloads 10 videos in parallel.
   export url
   youtube-dl --flat-playlist "$url" |
     parallel --tagstring {#} --lb -j10 \
-      LC_ALL= youtube-dl --playlist-start {#} --playlist-end {#} '"$url"'
+      youtube-dl --playlist-start {#} --playlist-end {#} '"$url"'
 
 
-=head1 EXAMPLE: Copy files as last modified date (ISO8601) with added
-random digits
+=head1 EXAMPLE: Prepend last modified date (ISO8601) to file name
 
-  find . | parallel cp {} '../destdir/{= $a=int(10000*rand); $_=pQ($_);
-    $_=`date -r "$_" +%FT%T"$a"`; chomp; =}'
+  parallel mv {} '{= $a=pQ($_); $b=$_;' \
+    '$_=qx{date -r "$a" +%FT%T}; chomp; $_="$_ $b" =}' ::: *
 
-B<{=> and B<=}> mark a perl expression. B<pQ> quotes the
+B<{=> and B<=}> mark a perl expression. B<pQ> perl-quotes the
 string. B<date +%FT%T> is the date in ISO8601 with time.
 
 
@@ -3269,7 +3271,8 @@ repeat the list and use replacement string with a Perl expression that
 skips the job if the value from input source 1 is greater than or
 equal to the value from input source 2:
 
-  parallel echo {= 'if($arg[1] ge $arg[2]) { skip() }' =} ::: A B C D ::: A B C D
+  parallel echo {= 'if($arg[1] ge $arg[2]) { skip() }' =} \
+    ::: A B C D ::: A B C D
 
 Or more generally:
 

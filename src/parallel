@@ -10001,7 +10001,7 @@ sub replaced {
 		    while($tt =~ s/([^\s\257]*  # before {=
                      (?:
                       \257<       # {=
-                      (?: (?! \257[<>]). )* # The perl expression
+                      (?: [^\257]*|[\257][^<>] )* # The perl expression
                       \257>       # =}
                       [^\s\257]*  # after =}
                      )+)/ /xs) {
@@ -10009,7 +10009,10 @@ sub replaced {
 			$word{"$1"} ||= 1;
 		    }
 		} else {
-		    while($tt =~ s/( \257<(?: (?! \257[<>]). )*\257> )//xs) {
+		    while($tt =~ s/( \257<(?: # {=
+			  [^\257]*|[\257][^<>] )* # not \257< or \257>
+			  \257> ) # =}
+			  //xs) {
 			# $1 = \257< perlexpr \257>
 			$word{$1} ||= 1;
 		    }
@@ -10148,10 +10151,9 @@ sub new {
     my $transfer_files = shift;
     my $return_files = shift;
     my @unget = ();
-    my ($count,$posrpl,$perlexpr);
+    my $posrpl;
     my ($replacecount_ref, $len_ref);
     my @command = @$commandref;
-    my $dummy = '';
     my $seq = 1;
     # Replace replacement strings with {= perl expr =}
     # '{=' 'perlexpr' '=}'  => '{= perlexpr =}'
@@ -10180,7 +10182,7 @@ sub new {
           #   needed to force matching the shortest {= =}
           ((?:(?! \Q$Global::parensleft\E|\Q$Global::parensright\E ).)*?)
           \Q$Global::parensright\E ] # Match =}
-	{\257<$1\257>}gx;
+	{\257<$1\257>}gxs;
 	for my $rpl (sort { length $b <=> length $a } keys %Global::rpl) {
 	    # Replace long --rpl's before short ones, as a short may be a
 	    # substring of a long:
@@ -10202,7 +10204,7 @@ sub new {
                         /xs;
 	    $grp_regexp ||= '';
 	    my $rplval = $Global::rpl{$rpl};
-	    while(s{( (?: ^|\257> ) (?: (?! \257[<>])(?:.|\n) )*? )
+	    while(s{( (?: ^|\257> ) (?: [^\257]*|[\257][^<>] )*? )
                       # Don't replace after \257 unless \257>
                     \Q$prefix\E $grp_regexp \Q$postfix\E}
 		  {
@@ -10235,7 +10237,7 @@ sub new {
 		# Only do this if the shorthand start with {
 		$prefix=~s/^\{//;
 		# Don't replace after \257 unless \257>
-		while(s{( (?: ^|\257> ) (?: (?! \257[<>]). )*? )
+		while(s{( (?: ^|\257> ) (?: [^\257]*|[\257][^<>] )*? )
 		  \{(-?\d+) \s* \Q$prefix\E $grp_regexp \Q$postfix\E}
 		      {
 		      # The start remains the same
@@ -10314,13 +10316,13 @@ sub merge_rpl_parts {
 	my $s = shift @in;
 	$_ = $s;
 	# Remove matching (right most) parens
-	while(s/(.*)$l.*?$r/$1/o) {}
+	while(s/(.*)$l.*?$r/$1/os) {}
 	if(/$l/o) {
 	    # Missing right parens
 	    while(@in) {
 		$s .= " ".shift @in;
 		$_ = $s;
-		while(s/(.*)$l.*?$r/$1/o) {}
+		while(s/(.*)$l.*?$r/$1/os) {}
 		if(not /$l/o) {
 		    last;
 		}
@@ -10355,7 +10357,7 @@ sub replacement_counts_and_lengths {
 	my $noncontextlen = 0;
 	my $contextgroups = 0;
 	for my $c (@cmd) {
-	    while($c =~ s/ \257<( (?: (?! \257[<>]). )*?)\257> /\000/xs) {
+	    while($c =~ s/ \257<( (?: [^\257]*|[\257][^<>] )*?)\257> /\000/xs) {
 		# %replacecount = { "perlexpr" => number of times seen }
 		# e.g { "s/a/b/" => 2 }
 		$replacecount{$1}++;
@@ -10378,7 +10380,7 @@ sub replacement_counts_and_lengths {
 	    # Options that can contain replacement strings
 	    $_ or next;
 	    my $t = $_;
-	    while($t =~ s/ \257<( (?: (?! \257[<>]). )* )\257> //xs) {
+	    while($t =~ s/ \257<( (?: [^\257]*|[\257][^<>] )* )\257> //xs) {
 		# %replacecount = { "perlexpr" => number of times seen }
 		# e.g { "$_++" => 2 }
 		# But for tagstring we just need to mark it as seen
