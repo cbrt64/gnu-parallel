@@ -89,7 +89,7 @@ from one to xoney
 xargs: argument list too long
 stdsort parallel -k -i -s26 -0 echo from \{\} to x{}y < items-0.xi
 
-parallel: Error: Command line too long (42 >= 26) at input 0:  	
+parallel: Error: Command line too long (32 >= 26) at input 0:  	
 echo '###  -l -0 echo < ldata-0.xi'
 ###  -l -0 echo < ldata-0.xi
 stdout xargs -l -0 echo < ldata-0.xi
@@ -449,7 +449,7 @@ this plus that
 
 stdout parallel -k -t -0 echo this plus that < space.xi
 echo this plus that '
-'\ \\\	\'
+ 	
 '
 this plus that 
  	
@@ -1212,7 +1212,7 @@ stdsort xargs -i -s26 echo from \{\} to x{}y < items.xi
 from dumb to xdumby
 xargs: argument list too long
 stdsort parallel -k -i -s26 echo from \{\} to x{}y < items.xi
-parallel: Error: Command line too long (36 >= 26) at input 0:  	
+parallel: Error: Command line too long (30 >= 26) at input 0:  	
 echo '###  -i__ echo FIRST __ IS OK < quotes.xi'
 ###  -i__ echo FIRST __ IS OK < quotes.xi
 stdout xargs -i__ echo FIRST __ IS OK < quotes.xi
@@ -1344,7 +1344,7 @@ echo this plus that
 this plus that
 stdout parallel -k -t echo this plus that < space.xi
 echo this plus that ''
-echo this plus that \ \\\	\
+echo this plus that ' 	'
 this plus that 
 this plus that  	
 echo '###  -n1 printf "@%s@\n" < empty.xi'
@@ -1366,7 +1366,7 @@ foo bar
 echo baz ugh 
 baz ugh
 stdout parallel -k -n2 -t echo < foobar.xi
-echo foo\ bar baz\ 
+echo 'foo bar' 'baz '
 echo ugh
 foo bar baz 
 ugh

@@ -262,7 +262,7 @@ sub pipepart_setup {
 	@Global::cat_prepends = map { pipe_part_files($_) } @opt::a;
 	# Unget the empty arg as many times as there are parts
 	$Global::JobQueue->{'commandlinequeue'}{'arg_queue'}->unget(
-	    map { [Arg->new("\0")] } @Global::cat_prepends
+	    map { [Arg->new("\0noarg")] } @Global::cat_prepends
 	    );
     }
 }
@@ -1317,10 +1317,10 @@ sub parse_options {
 	# Append a dummy empty argument if there are no arguments
 	# on the command line to avoid reading from STDIN.
 	# arg_sep = random 50 char
-	# \0 => nothing (not the empty string)
+	# \0noarg => nothing (not the empty string)
 	$Global::arg_sep = join "",
 	map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..50);
-	push @ARGV, $Global::arg_sep, "\0";
+	push @ARGV, $Global::arg_sep, "\0noarg";
     }
     if(defined $opt::tee) {
 	if(not defined $opt::jobs) {
@@ -1462,6 +1462,9 @@ sub parse_options {
 	}
 	# Map \001 to \n to make it easer to quote \n in $PARALLEL_ENV
 	$penv =~ s/\001/\n/g;
+	if($penv =~ /\0/) {
+	    ::warning('\0 (NUL) in environment is not supported');
+	}
 	$Global::parallel_env = $penv;
     }
 
@@ -1538,7 +1541,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180622;
+    $Global::version = 20180722;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -1609,8 +1612,6 @@ sub init_globals {
     $Global::trim = 'n';
     $Global::max_jobs_running = 0;
     $Global::job_already_run = '';
-    # LC_ALL workaround for multibyte chars containing special shell chars
-    $ENV{'LC_ALL'} = 'C';
     $ENV{'TMPDIR'} ||= "/tmp";
     if(not $ENV{HOME}) {
 	# $ENV{HOME} is sometimes not set if called from PHP
@@ -1789,7 +1790,7 @@ sub parse_semaphore {
 	@opt::a = ("/dev/null");
 	# Append a dummy empty argument
 	# \0 => nothing (not the empty string)
-        push(@Global::unget_argv, [Arg->new("\0")]);
+        push(@Global::unget_argv, [Arg->new("\0noarg")]);
         $Semaphore::timeout = $opt::semaphoretimeout || 0;
         if(defined $opt::semaphorename) {
             $Semaphore::name = $opt::semaphorename;
@@ -2266,8 +2267,8 @@ sub shell_quote {
     # Output:
     #   @shell_quoted_strings = string quoted with \ as needed by the shell
     return wantarray ?
-	(map { shell_quote_scalar($_) } @_)
-	: (join" ",map { shell_quote_scalar($_) } @_);
+	(map { Q($_) } @_)
+	: (join" ",map { Q($_) } @_);
 }
 
 sub shell_quote_scalar_rc {
@@ -2310,26 +2311,19 @@ sub shell_quote_scalar_csh {
 }
 
 sub shell_quote_scalar_default {
-    # Quote for other shells
-    my $a = $_[0];
-    if(defined $a) {
-	# zsh wants '=' quoted
-	# Solaris sh wants ^ quoted.
-	# $a =~ s/([\002-\011\013-\032\\\#\?\`\(\)\{\}\[\]\^\*\>\<\~\|\; \"\!\$\&\'\202-\377])/\\$1/g;
-	# This is 1% faster than the above
-	if(($a =~ s/[\002-\011\013-\032\\\#\?\`\(\)\{\}\[\]\^\*\<\=\>\~\|\; \"\!\$\&\'\202-\377]/\\$&/go)
-	   +
-	   # quote newline as '\n'
-	   ($a =~ s/[\n]/'\n'/go)) {
-	    # A string was replaced
-	    # No need to test for "" or \0
-	} elsif($a eq "") {
-	    $a = "''";
-	} elsif($a eq "\0") {
-	    $a = "";
-	}
+    # Quote for other shells (Bourne compatibles)
+    my ($par) = $_[0];
+    if($par =~ /[^-_.+a-z0-9\/]/i) {
+	$par =~ s/'/'"'"'/g;  # "-quote single quotes
+	$par = "'$par'";      # '-quote entire string
+	$par =~ s/^''|''$//g; # Remove unneeded '' at ends
+	return $par;
+    } elsif ($par eq "") {
+	return "''";
+    } else {
+	# No quoting needed
+	return $par;
     }
-    return $a;
 }
 
 sub shell_quote_scalar {
@@ -2356,6 +2350,12 @@ sub shell_quote_scalar {
     return shell_quote_scalar(@_);
 }
 
+sub Q {
+    # Q alias for ::shell_quote_scalar
+    *Q = \&::shell_quote_scalar;
+    return Q(@_);
+}
+
 sub shell_quote_file {
     # Quote the string so shell will not expand any special chars
     # and prepend ./ if needed
@@ -2363,7 +2363,7 @@ sub shell_quote_file {
     #   $filename = filename to be shell quoted
     # Returns:
     #   $quoted_filename = filename quoted with \ and ./ if needed
-    my $a = shell_quote_scalar(shift);
+    my $a = shift;
     if(defined $a) {
 	if($a =~ m:^/: or $a =~ m:^\./:) {
 	    # /abs/path or ./rel/path => skip
@@ -2372,7 +2372,7 @@ sub shell_quote_file {
 	    $a = "./".$a;
 	}
     }
-    return $a;
+    return ::Q($a);
 }
 
 sub shell_words {
@@ -2395,6 +2395,12 @@ sub perl_quote_scalar {
 	$a =~ s/[\\\"\$\@]/\\$&/go;
     }
     return $a;
+}
+
+sub pQ {
+    # pQ alias for ::perl_quote_scalar
+    *pQ = \&::perl_quote_scalar;
+    return pQ(@_);
 }
 
 sub unquote_printf {
@@ -2910,7 +2916,7 @@ sub drain_job_queue {
 		    # Replace --sql/--sqlandworker with --sqlworker
 		    my @ARGV = map { s/^--sql(andworker)?$/--sqlworker/; $_ } @Global::options_in_argv;
 		    # exec the --sqlworker
-		    exec($0,::shell_quote(@ARGV),@command);
+		    exec($0,@ARGV,@command);
 		}
 	    }
 	}
@@ -3629,7 +3635,7 @@ sub parse_host_filtering {
     my (%nsockets, %ncores, %nthreads, %time_to_login, %maxlen, %echo,
 	@down_hosts);
     for (@_) {
-	::debug("init",$_);
+	::debug("init","Read: ",$_);
 	chomp;
 	my @col = split /\t/, $_;
 	if($col[0] =~ /^parallel: Warning:/) {
@@ -3645,7 +3651,7 @@ sub parse_host_filtering {
 		next;
 	    }
 	    # Get server from: eval true server\;
-	    $col[8] =~ /eval true..([^;]+).;/ or
+	    $col[8] =~ /eval .?true.?\s([^\;]+);/ or
 		::die_bug("col8 does not contain host: $col[8]");
 	    my $host = $1;
 	    $host =~ tr/\\//d;
@@ -3776,12 +3782,13 @@ sub parallelized_host_filtering {
     }
     close $in;
     for(<$host_fh>) {
-	if(/\'$/) {
-	    # if last char = ' then append next line
-	    # This may be due to quoting of \n in environment var
-	    $prepend .= $_;
-	    next;
-	}
+	# TODO incompatible with '-quoting. Needs to be fixed differently
+	#if(/\'$/) {
+	#    # if last char = ' then append next line
+	#    # This may be due to quoting of \n in environment var
+	#    $prepend .= $_;
+	#    next;
+	#}
 	$_ = $prepend . $_;
 	$prepend = "";
 	push @out, $_;
@@ -8276,7 +8283,7 @@ sub sshlogin_wrap {
 		    $wd =~ s:^([^/]):$ENV{'HOME'}/$1:;
 		}
 		::mkdir_or_die($wd);
-		$command = "cd ".::shell_quote_scalar($wd)." || exit 255; ".$command;
+		$command = "cd ".::Q($wd)." || exit 255; ".$command;
 	    }
 	    if(@opt::env) {
 		# Prepend with environment setter, which sets functions in zsh
@@ -8302,7 +8309,7 @@ sub sshlogin_wrap {
 	    my $pwd = "";
 	    if($opt::workdir) {
 		# Create remote workdir if needed. Then cd to it.
-	        my $wd = $self->workdir();
+	        my $wd = ::pQ($self->workdir());
 		$pwd = qq{system("mkdir","-p","--","$wd"); chdir "$wd" ||}.
 		    qq{print(STDERR "parallel: Cannot chdir to $wd\\n") && exit 255;};
 	    }
@@ -8560,7 +8567,7 @@ sub workdir {
 	} else {
 	    $workdir = ".";
 	}
-	$self->{'workdir'} = ::shell_quote_scalar($workdir);
+	$self->{'workdir'} = $workdir;
     }
     return $self->{'workdir'};
 }
@@ -9974,163 +9981,190 @@ sub replaced {
     return $self->{'replaced'};
 }
 
-{
-    my @target;
-    my $context_replace;
-    my $perl_expressions_as_re;
-    my @arg;
-    my %words_with_rpl_strings;
+sub replace_placeholders {
+    # Replace foo{}bar with fooargbar
+    # Uses:
+    #   @Arg::arg = arguments as strings to be use in {= =}
+    # Input:
+    #   $targetref = command as shell words
+    #   $quote = should everything be quoted?
+    #   $quote_arg = should replaced arguments be quoted?
+    # Returns:
+    #   @target with placeholders replaced
+    my $self = shift;
+    my $targetref = shift;
+    my $quote = shift;
+    my $quote_arg = shift;
+    my %replace;
 
-    sub fish_out_words_with_rpl_strings {
-	if(not $words_with_rpl_strings{$context_replace,@target}) {
-	    my %word;
-	    for (@target) {
-		my $tt = $_;
-		::debug("replace", "Target: $tt");
-		# Command line template:
-		#   a{1}b{}c{}d
-		# becomes:
-		#   a{=1 $_=$_ =}b{= $_=$_ =}c{= $_=$_ =}d
-		# becomes:
-		#   a\257<1 $_=$_ \257>b\257< $_=$_ \257>c\257< $_=$_ \257>d
-		# Input A B C (no context) becomes:
-		#    A B C => aAbA B CcA B Cd
-		# Input A B C (context -X) becomes:
-		#    A B C => aAbAcAd aAbBcBd aAbCcCd
-		if($context_replace) {
-		    while($tt =~ s/([^\s\257]*  # before {=
-                     (?:
-                      \257<       # {=
-                      (?: [^\257]*|[\257][^<>] )* # The perl expression
-                      \257>       # =}
-                      [^\s\257]*  # after =}
-                     )+)/ /xs) {
-			# $1 = pre \257< perlexpr \257> post
-			$word{"$1"} ||= 1;
-		    }
-		} else {
-		    while($tt =~ s/( \257<(?: # {=
-			  [^\257]*|[\257][^<>] )* # not \257< or \257>
-			  \257> ) # =}
-			  //xs) {
-			# $1 = \257< perlexpr \257>
-			$word{$1} ||= 1;
-		    }
-		}
-	    }
-	    @{$words_with_rpl_strings{$context_replace,@target}} = keys %word
+    # Token description:
+    #   \0spc = unquoted space
+    #   \0end = last token element
+    #   \0ign = dummy token to be ignored
+    #   \257<...\257> = replacement expression
+    #   " " = quoted space, that splits -X group
+    #   text = normal text - possibly part of -X group
+    my $spacer = 0;
+    my @tokens = grep { length $_ > 0 } map {
+	if(/^\257<|^ $/) {
+	    # \257<...\257> or space
+	    $_
+	} else {
+	    # Split each space into a token
+	    split /(?= )|(?<= )/
 	}
-	return @{$words_with_rpl_strings{$context_replace,@target}};
     }
+    # Split \257< ... \257> into own token
+    map { split /(?=\257<)|(?<=\257>)/ }
+    # Insert "\0spc" between every element
+    # This space should never be quoted
+    map { $spacer++ ? ("\0spc",$_) : $_ }
+    map { $_ eq "" ? "\0empty" : $_ }
+    @$targetref;
 
-    sub replace_placeholders {
-	# Replace foo{}bar with fooargbar
-	# Uses:
-	#   @Arg::arg = arguments as strings to be use in {= =}
-	# Input:
-	#   $targetref = command as shell words
-	#   $quote = should everything be quoted?
-	#   $quote_arg = should replaced arguments be quoted?
-	# Returns:
-	#   @target with placeholders replaced
-	my $self = shift;
-	my $targetref = shift;
-	my $quote = shift;
-	my $quote_arg = shift;
-	my %replace;
-	# -X = context replace (fish_out_words_with_rpl_strings)
-	$context_replace = $self->{'context_replace'};
-	@target = @$targetref;
-	::debug("replace", "Replace @target\n");
-	if(not @target) {
-	    # @target is empty: Return empty array
-	    return @target;
-	}
-	# Make it possible to use $arg[2] in {= =}
-	*Arg::arg = $self->{'arg_list_flat_orig'};
-	# Flat list:
-	# $self->{'arg_list'} = [ [Arg11, Arg12], [Arg21, Arg22], [Arg31, Arg32] ]
-	# $self->{'arg_list_flat'} = [ Arg11, Arg12, Arg21, Arg22, Arg31, Arg32 ]
-	if(not @{$self->{'arg_list_flat'}}) {
-	    @{$self->{'arg_list_flat'}} = Arg->new("");
-	}
-	my $argref = $self->{'arg_list_flat'};
-	# Number of arguments - used for positional arguments
-	my $n = $#$argref+1;
+    if(not @tokens) {
+	# @tokens is empty: Return empty array
+	return @tokens;
+    }
+    ::debug("replace", "Tokens ".join":",@tokens,"\n");
+    # Make it possible to use $arg[2] in {= =}
+    *Arg::arg = $self->{'arg_list_flat_orig'};
+    # Flat list:
+    # $self->{'arg_list'} = [ [Arg11, Arg12], [Arg21, Arg22], [Arg31, Arg32] ]
+    # $self->{'arg_list_flat'} = [ Arg11, Arg12, Arg21, Arg22, Arg31, Arg32 ]
+    if(not @{$self->{'arg_list_flat'}}) {
+	@{$self->{'arg_list_flat'}} = Arg->new("");
+    }
+    my $argref = $self->{'arg_list_flat'};
+    # Number of arguments - used for positional arguments
+    my $n = $#$argref+1;
 
-	# $self is actually a CommandLine-object,
-	# but it looks nice to be able to say {= $job->slot() =}
-	my $job = $self;
-	$perl_expressions_as_re =
-	    join("|", map {s/^-?\d+//; "\Q$_\E"} keys %{$self->{'replacecount'}});
-	# Fish out the words that have replacement strings in them
-	for my $word (fish_out_words_with_rpl_strings()) {
-	    # word = AB \257< perlexpr \257> CD \257< perlexpr \257> EF
-	    ::debug("replace", "Replacing in $word\n");
-	    my $normal_replace;
-
-	    # for each arg:
-	    #   replace replacement strings with replacement in the word value
-	    #   push to replace word value
-	    for my $arg (@$argref) {
-		my $val = $word;
-		# Replace {= perl expr =} with value for each arg
-		$val =~ s{\257<(-?\d+)?($perl_expressions_as_re)\257>}
-		{
-			if($1) {
+    # $self is actually a CommandLine-object,
+    # but it looks nice to be able to say {= $job->slot() =}
+    my $job = $self;
+    # @replaced = tokens with \257< \257> replaced
+    my @replaced;
+    if($self->{'context_replace'}) {
+	my @ctxgroup;
+	for my $t (@tokens,"\0end") {
+	    # \0end = last token was end of tokens.
+	    if($t eq " " or $t eq "\0end" or $t eq "\0spc") {
+		# Context group complete: Replace in it
+		if(grep { /^\257</ } @ctxgroup) {
+		    # Context group contains a replacement string:
+		    # Copy once per arg
+		    my $space = "\0ign";
+		    for my $arg (@$argref) {
+			my $normal_replace;
+			# Push output
+			# Put unquoted space before each context group
+			# except the first
+			CORE::push @replaced, $space, map {
+			    $a = $_;
+			    $a =~
+				s{\257<(-?\d+)?(.*)\257>}
+			    {
+			    if($1) {
 			    # Positional replace
 			    # Find the relevant arg and replace it
 			    ($argref->[$1 > 0 ? $1-1 : $n+$1] ? # If defined: replace
 			     $argref->[$1 > 0 ? $1-1 : $n+$1]->
 			     replace($2,$quote_arg,$self)
 			     : "");
-			} else {
+			    } else {
 			    # Normal replace
 			    $normal_replace ||= 1;
 			    ($arg ? $arg->replace($2,$quote_arg,$self) : "");
-			}
-		    }gxe;
-		if($quote) {
-		    CORE::push(@{$replace{::shell_quote_scalar($word)}},
-			       ::shell_quote_scalar($val));
+			    }
+			    }sgxe;
+			    $a
+			} @ctxgroup;
+			$normal_replace or last;
+			$space = "\0spc";
+		    }
 		} else {
-		    CORE::push(@{$replace{$word}}, $val);
+		    # Context group has no a replacement string: Copy it once
+		    CORE::push @replaced, @ctxgroup;
 		}
-		# No normal replacements => only run once
-		$normal_replace or last;
+		# New context group
+		@ctxgroup=();
+	    }
+	    if($t eq "\0spc") {
+		CORE::push @replaced,$t;
+	    } else {
+		CORE::push @ctxgroup,$t;
 	    }
 	}
-	*Arg::arg = [];
-	if($quote) {
-	    @target = ::shell_quote(@target);
-	}
-	if(%replace) {
-	    # Substitute the replace strings with the replacement values
-	    # Must be sorted by length if a short word is a substring of a long word
-	    my $regexp = join('|', map { my $s = $_; $s =~ s/(\W)/\\$1/g; $s }
-			      sort { length $b <=> length $a } keys %replace);
-	    for(@target) {
-		s/($regexp)/join(" ",@{$replace{$1}})/ge;
-	    }
-	}
-	if($Global::escape_string_present) {
-	    # Command line contains \257: Unescape it \257\256 => \257
-	    # If a replacement resulted in \257\256
-	    # it will have been escaped into \\\257\\\\256
-	    # and will not be matched below
-	    for(@target) {
-		s/\257\256/\257/g;
-	    }
-	    if($opt::q) {
-		# \257 will be quoted too much
-		for(@target) {
-		    s/\\\257\\\256/\\\257/g;
+    } else {
+	# @group = @token
+	# Replace in group
+	# Push output
+	# repquote = no if {} first on line, no if $quote, yes otherwise
+	for my $t (@tokens) {
+	    if($t =~ /^\257</) {
+		my $space = "\0ign";
+		for my $arg (@$argref) {
+		    my $normal_replace;
+		    $a = $t;
+		    $a =~
+			s{\257<(-?\d+)?(.*)\257>}
+		    {
+		    if($1) {
+		    # Positional replace
+		    # Find the relevant arg and replace it
+		    ($argref->[$1 > 0 ? $1-1 : $n+$1] ? # If defined: replace
+		     $argref->[$1 > 0 ? $1-1 : $n+$1]->
+		     replace($2,$quote_arg,$self)
+		     : "");
+		    } else {
+		    # Normal replace
+		    $normal_replace ||= 1;
+		    ($arg ? $arg->replace($2,$quote_arg,$self) : "");
+		    }
+		    }sgxe;
+		    CORE::push @replaced, $space, $a;
+		    $normal_replace or last;
+		    $space = "\0spc";
 		}
+	    } else {
+		# No replacement
+		CORE::push @replaced, $t;
 	    }
 	}
-	::debug("replace", "Return @target\n");
-	return wantarray ? @target : "@target";
     }
+    *Arg::arg = [];
+    ::debug("replace","Replaced: ".join":",@replaced,"\n");
+    if($Global::escape_string_present) {
+	# Command line contains \257: Unescape it \257\256 => \257
+	# If a replacement resulted in \257\256
+	# it will have been escaped into \\\257\\\\256
+	# and will not be matched below
+	for(@replaced) {
+	    s/\257\256/\257/g;
+	}
+    }
+
+    # Put tokens into groups that may be quoted.
+    my @quotegroup;
+    my @quoted;
+    for (map { $_ eq "\0empty" ? "" : $_ }
+	 grep { $_ ne "\0ign" }
+	 grep { $_ !~ /\0noarg/ }
+	 @replaced, "\0end") {
+	if($_ eq "\0spc" or $_ eq "\0end") {
+	    # \0spc splits quotable groups
+	    if($quote) {
+		CORE::push @quoted, ::shell_quote_scalar(join"",@quotegroup);
+	    } else {
+		CORE::push @quoted, join"",@quotegroup;
+	    }
+	    @quotegroup = ();
+	} else {
+	    CORE::push @quotegroup, $_;
+	}
+    }
+    ::debug("replace","Quoted: ".join":",@quoted,"\n");
+    return wantarray ? @quoted : "@quoted";
 }
 
 sub skip {
@@ -10672,17 +10706,23 @@ sub get {
     my $ret = $self->{'arg_sub_queue'}->get();
     if($ret) {
 	if(grep { index($_->orig(),"\0") > 0 } @$ret) {
-	    # Allow for \0 in position 0 because GNU Parallel uses "\0"
+	    # Allow for \0 in position 0 because GNU Parallel uses "\0noarg"
 	    # to mean no-string
-	    ::warning("a NUL character occurred in the input.",
-		      "It cannot be passed through in the argument list.",
+	    ::warning("A NUL character in the input was replaced with \\0.",
+		      "NUL cannot be passed through in the argument list.",
 		      "Did you mean to use the --null option?");
+	    for(grep { index($_->orig(),"\0") > 0 } @$ret) {
+		# Replace \0 with \\0
+		my $a = $_->orig();
+		$a =~ s/\0/\\0/g;
+		$_->set_orig($a);
+	    }
 	}
 	if(defined $Global::max_number_of_args
 	   and $Global::max_number_of_args == 0) {
 	    ::debug("run", "Read 1 but return 0 args\n");
-	    # \0 => nothing (not the empty string)
-	    map { $_->set_orig("\0"); } @$ret;
+	    # \0noarg => nothing (not the empty string)
+	    map { $_->set_orig("\0noarg"); } @$ret;
 	}
 	# Flush cached computed replacements in Arg-objects
 	# To fix: parallel --bar echo {%} ::: a b c ::: d e f
@@ -11471,7 +11511,7 @@ sub parse_dburl {
     my %options = ();
     # sql:mysql://[[user][:password]@][host][:port]/[database[/table][?query]]
 
-    if($url=~m!(?:sql:)? # You can prefix with 'sql:'
+    if($url=~m!^(?:sql:)? # You can prefix with 'sql:'
                ((?:oracle|ora|mysql|pg|postgres|postgresql)(?:s|ssl|)|
                  (?:sqlite|sqlite2|sqlite3|csv)):// # Databasedriver ($1)
                (?:
@@ -11497,7 +11537,7 @@ sub parse_dburl {
                 \?
                 (.*)? # Query ($8)
                )?
-              !ix) {
+              $!ix) {
 	$options{databasedriver} = ::undef_if_empty(lc(uri_unescape($1)));
 	$options{user} = ::undef_if_empty(uri_unescape($2));
 	$options{password} = ::undef_if_empty(uri_unescape($3));

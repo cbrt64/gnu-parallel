@@ -210,13 +210,13 @@ echo '### Bug made 3 go before 1 2'
 echo '### Bug did not quote'
 ### Bug did not quote
   echo '>' | parallel -v echo
-echo \>
+echo '>'
 >
   parallel -v echo ::: '>'
-echo \>
+echo '>'
 >
   (echo '>'; echo  2) | parallel -j1 -vX echo
-echo \> 2
+echo '>' 2
 > 2
   parallel -X -j1 echo ::: '>' 2
 > 2

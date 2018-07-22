@@ -409,7 +409,7 @@ there is no data.
 
 =item --tmux
 
-<<TODO Fixup>>
+<<TODO Fixup with '-quoting>>
 mkfifo /tmp/tmx3cMEV &&
   sh -c 'tmux -S /tmp/tmsaKpv1 new-session -s p334310 -d "sleep .2" >/dev/null 2>&1';
 tmux -S /tmp/tmsaKpv1 new-window -t p334310 -n wc\ 10 \(wc\ 10\)\;\ perl\ -e\ \'while\(\$t++\<3\)\{\ print\ \$ARGV\[0\],\"\\n\"\ \}\'\ \$\?h/\$status\ \>\>\ /tmp/tmx3cMEV\&echo\ wc\\\ 10\;\ echo\ \Job\ finished\ at:\ \`date\`\;sleep\ 10;
@@ -792,16 +792,11 @@ you do not see the whole picture.
 
 =head2 Quoting
 
-Quoting depends on the shell. For most shells \ is used for all
-special chars and ' is used for newline. Whether a char is special
-depends on the shell and the context. Luckily quoting a bit too many
-chars does not break things.
+Quoting depends on the shell. For most shells '-quoting is used for
+strings containing special characters.
 
-It is fast, but has the distinct disadvantage that if a string needs
-to be quoted multiple times, the \'s double every time - increasing
-the string length exponentially.
-
-For B<tcsh>/B<csh> newline is quoted as \ followed by newline.
+For B<tcsh>/B<csh> newline is quoted as \ followed by newline. Other
+special characters are also \-quoted.
 
 For B<rc> everything is quoted using '.
 

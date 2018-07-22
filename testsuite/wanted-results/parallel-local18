@@ -41,5 +41,5 @@ par_space_quote	a  \'"b 4
 par_special_char	a'   * ? >o  <i*? ][\!#¤%=( ) | }b 5
 par_special_char	a'   * ? >o  <i*? ][\!#¤%=( ) | }b 5
 par_special_char	a'   * ? >o  <i*? ][\!#¤%=( ) | }b 5
-par_special_char	a'   * ? >o  <i*? ][\!#¤%=( ) | }b 5
-par_special_char	a'   * ? >o  <i*? ][\!#¤%=( ) | }b 5
+par_special_char	a'   * ? >o  <i*? ][!#¤%=( ) | }b 5
+par_special_char	a'   * ? >o  <i*? ][!#¤%=( ) | }b 5

@@ -16,7 +16,7 @@ par_exit_code() {
 	# Runs command in given shell via Perl's open3
 	shell="$1"
 	prg="$2"
-	perl -MIPC::Open3 -e 'open3($a,$b,$c,"'$shell'","-c","'"$prg"'"); wait; print $?>>8,"\n"'
+	perl -MIPC::Open3 -e 'open3($a,$b,$c,"'$shell'","-c",'"$prg"'); wait; print $?>>8,"\n"'
     }
     export -f in_shell_run_command
 

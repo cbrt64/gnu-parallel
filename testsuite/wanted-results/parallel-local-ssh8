@@ -1,5 +1,5 @@
 par_PARALLEL_RSYNC_OPTS	### test rsync opts
-par_PARALLEL_RSYNC_OPTS	rsync --protocol 30 -rlDzRRRRrsync --protocol 30 --rsync-path=cd\ ././.\;\ rsync -rlDzRRRRrsync --protocol 30 -zzrrllddRRRRrsync --protocol 30 --rsync-path=cd\ ././.\;\ rsync -zzrrllddRRRR
+par_PARALLEL_RSYNC_OPTS	rsync --protocol 30 -rlDzRRRRrsync --protocol 30 --rsync-path='cd ././.; rsync' -rlDzRRRRrsync --protocol 30 -zzrrllddRRRRrsync --protocol 30 --rsync-path='cd ././.; rsync' -zzrrllddRRRR
 par_bar_m	### test --bar -m
 par_bar_m	0
 par_bar_m	50

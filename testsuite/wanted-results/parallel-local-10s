@@ -256,6 +256,9 @@ par_linebuffer_tag_slow_output	a	a
 par_linebuffer_tag_slow_output	a	
 par_linebuffer_tag_slow_output	b	b
 par_linebuffer_tag_slow_output	b	
+par_long_line_remote	### Deal with long command lines on remote servers
+par_long_line_remote	      2       6   30006
+par_long_line_remote	      2      50  250050
 par_maxlinelen_X_I	### Test max line length -X -I
 par_maxlinelen_X_I	3cfc69ee81b0fe7fdbe8eb059ad2da61  -
 par_maxlinelen_X_I	Chars per line (817788/7): 116826
@@ -523,6 +526,15 @@ par_slow_total_jobs	b
 par_slow_total_jobs	1
 par_slow_total_jobs	2
 par_slow_total_jobs	parallel: Warning: Reading X arguments took longer than XX seconds.
+par_sockets_cores_threads	### Test --number-of-sockets/cores/threads
+par_sockets_cores_threads	1
+par_sockets_cores_threads	2
+par_sockets_cores_threads	2
+par_sockets_cores_threads	2
+par_sockets_cores_threads	### Test --use-sockets-instead-of-threads
+par_sockets_cores_threads	threads done
+par_sockets_cores_threads	sockets done
+par_sockets_cores_threads	Threads should complete first on machines with less than 8 sockets
 par_tmux_fg	bug #50107: --tmux --fg should also write how to access it
 par_tmux_fg	See output with: tmux -S tmp attach
 par_tmux_fg	open terminal failed: not a terminal

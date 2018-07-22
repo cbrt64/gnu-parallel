@@ -37,6 +37,7 @@ par_special_char() {
     echo a"$SPC"b 5
     LANG=C stdout parallel --env SPC echo 'a"$SPC"b' ::: 5
     LANG=C stdout parallel -S localhost --env SPC echo 'a"$SPC"b' ::: 5
+    # \ misses due to quoting incompatiblilty between bash and csh
     LANG=C stdout parallel -S csh@localhost --env SPC echo 'a"$SPC"b' ::: 5
     LANG=C stdout parallel -S tcsh@localhost --env SPC echo 'a"$SPC"b' ::: 5
 }

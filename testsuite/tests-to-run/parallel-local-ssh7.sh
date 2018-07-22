@@ -347,6 +347,8 @@ par_ksh_man() {
     env_parallel -k --env myarray echo '"${myarray[{}]}"' ::: 0 1 2 3
     env_parallel -k --env myarray -S server echo '"${myarray[{}]}"' ::: 0 1 2 3
 
+    echo This may never work
+    echo https://unix.stackexchange.com/questions/457031/extract-full-function-definitions
     env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
@@ -1502,6 +1504,7 @@ par_fish_env_parallel() {
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
     set OK OK
+    echo TODO fix env_parallel --fifo
     echo data from stdin | env_parallel --pipe -S lo --fifo 'cat {}; and echo $OK'
     echo data from stdin | env_parallel --pipe -S lo --cat 'cat {}; and echo $OK'
 _EOF

@@ -141,6 +141,7 @@ git push
 git push origin $TAG
 git push origin $YYYYMMDD
 
+
 == Update documentation ==
 
 Update version number + 1
@@ -153,6 +154,12 @@ perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload
 Unmodified beta since last version => production
 Unmodified alpha since last version => beta
 Modified => alpha
+
+
+== Check URLs ==
+
+make testurls
+
 
 == Update Savannah ==
 
@@ -199,10 +206,11 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180722 ('?') released <<[stable]>>
+Subject: GNU Parallel 20180722 ('Crimson Hexagon') released [alpha] <<[stable]>>
 
-GNU Parallel 20180722 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180722 ('Crimson Hexagon') [alpha] <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
+This release has signficant changes and is considered alpha quality.
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
@@ -214,6 +222,8 @@ Quote of the month:
 
 New in this release:
 
+* The quoting engine has been changed. Instead of using \-quoting GNU Parallel now uses '-quoting in bash/ash/dash/ksh. This should improve compatibility with different locales. This is a big change causing this release to be alpha quality.
+
 * The CPU calculation has changed. By default GNU Parallel uses the number of CPU threads as the number of CPUs. This can be change to the number of CPU cores or number of CPU sockets with --use-cores-instead-of-threads or --use-sockets-instead-of-threads.
 
 * The detected number of sockets, cores, and threads can be shown with --number-of-sockets, --number-of-cores, and --number-of-threads.
@@ -222,7 +232,9 @@ New in this release:
 
 * GNU Parallel is distributed as part of Snippy https://github.com/tseemann/snippy
 
-https://esgeeks.com/gnu-parallel-ejecutar-comandos-simultaneo-linux/
+* GNU Parallel: Ejecutar comandos simultáneamente en Linux https://esgeeks.com/gnu-parallel-ejecutar-comandos-simultaneo-linux/
+
+* Parallel download genomic data with GNU-Parallel https://digibio.blogspot.com/search/label/GNU-Parallel
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

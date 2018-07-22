@@ -119,4 +119,7 @@ monitorman:
 # If man page changed: open new pdfman
 	inotifywait -qmre MOVED_TO -e CLOSE_WRITE --format %w%f . | parallel -uj1 'echo {=/\.pod$$/ or skip()=};make -j && sudo make install; pdfman {/.} &'
 
+testurls:
+	grep -h -Po 'https?://[^ $$<>")}]+' src/* | perl -pe 's/(&gt|\{).*//;s/\\//g;s/&amp;/&/g;s/&#.*//;'"s/'.*//" | sort -u | parallel -j0 --tag 'wget -qm -l1 -Q1 {}; echo $$?'
+
 EXTRA_DIST = CITATION CREDITS cc-by-sa.txt fdl.txt

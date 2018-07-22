@@ -1,4 +1,4 @@
-par_append_different_cmd $MYSQL	p_wrapper par_append_different_cmd \$MYSQL
+par_append_different_cmd $MYSQL	p_wrapper par_append_different_cmd '$MYSQL'
 par_append_different_cmd $MYSQL	Exit=0
 par_append_different_cmd $MYSQL	Exit=0
 par_append_different_cmd $MYSQL	Command	V1	V2	Stdout	Stderr
@@ -52,7 +52,7 @@ par_append_different_cmd $MYSQL	sleep .3;echo B-15	15	B	B-15\n
 par_append_different_cmd $MYSQL	sleep .3;echo C-15	15	C	C-15\n	
 par_append_different_cmd $MYSQL	sleep .3;echo D-15	15	D	D-15\n	
 par_append_different_cmd $MYSQL	sleep .3;echo E-15	15	E	E-15\n	
-par_append_different_cmd $PG	p_wrapper par_append_different_cmd \$PG
+par_append_different_cmd $PG	p_wrapper par_append_different_cmd '$PG'
 par_append_different_cmd $PG	Exit=0
 par_append_different_cmd $PG	Exit=0
 par_append_different_cmd $PG	      command       | v1 | v2 | stdout | stderr 
@@ -159,7 +159,7 @@ par_append_different_cmd $PG	 sleep .3;echo E-15 | 15 | E  | E-15  +|
 par_append_different_cmd $PG	                    |    |    |        | 
 par_append_different_cmd $PG	(50 rows)
 par_append_different_cmd $PG	
-par_append_different_cmd $SQLITE	p_wrapper par_append_different_cmd \$SQLITE
+par_append_different_cmd $SQLITE	p_wrapper par_append_different_cmd '$SQLITE'
 par_append_different_cmd $SQLITE	Exit=0
 par_append_different_cmd $SQLITE	Exit=0
 par_append_different_cmd $SQLITE	Command|V1|V2|Stdout|Stderr
@@ -263,7 +263,7 @@ par_append_different_cmd $SQLITE	sleep .3;echo D-15|15|D|D-15
 par_append_different_cmd $SQLITE	|
 par_append_different_cmd $SQLITE	sleep .3;echo E-15|15|E|E-15
 par_append_different_cmd $SQLITE	|
-par_no_table $MYSQL	p_wrapper par_no_table \$MYSQL
+par_no_table $MYSQL	p_wrapper par_no_table '$MYSQL'
 par_no_table $MYSQL	bug #50018: --dburl without table dies
 par_no_table $MYSQL	255
 par_no_table $MYSQL	255
@@ -275,7 +275,7 @@ par_no_table $MYSQL	true dummy dummy	dummy	dummy
 par_no_table $MYSQL	parallel: Error: The DBURL (mysql://tange:tange@lo/tange) must contain a table.
 par_no_table $MYSQL	parallel: Error: The DBURL (mysql://tange:tange@lo/tange) must contain a table.
 par_no_table $MYSQL	parallel: Error: The DBURL (mysql://tange:tange@lo/tange) must contain a table.
-par_no_table $PG	p_wrapper par_no_table \$PG
+par_no_table $PG	p_wrapper par_no_table '$PG'
 par_no_table $PG	bug #50018: --dburl without table dies
 par_no_table $PG	255
 par_no_table $PG	255
@@ -290,7 +290,7 @@ par_no_table $PG
 par_no_table $PG	parallel: Error: The DBURL (pg://tange:tange@lo/tange) must contain a table.
 par_no_table $PG	parallel: Error: The DBURL (pg://tange:tange@lo/tange) must contain a table.
 par_no_table $PG	parallel: Error: The DBURL (pg://tange:tange@lo/tange) must contain a table.
-par_no_table $SQLITE	p_wrapper par_no_table \$SQLITE
+par_no_table $SQLITE	p_wrapper par_no_table '$SQLITE'
 par_no_table $SQLITE	bug #50018: --dburl without table dies
 par_no_table $SQLITE	255
 par_no_table $SQLITE	255
@@ -302,7 +302,7 @@ par_no_table $SQLITE	true dummy dummy|dummy|dummy||
 par_no_table $SQLITE	parallel: Error: The DBURL (sqlite3:///%2Frun%2Fshm%2Fparallel.db) must contain a table.
 par_no_table $SQLITE	parallel: Error: The DBURL (sqlite3:///%2Frun%2Fshm%2Fparallel.db) must contain a table.
 par_no_table $SQLITE	parallel: Error: The DBURL (sqlite3:///%2Frun%2Fshm%2Fparallel.db) must contain a table.
-par_shuf $MYSQL	p_wrapper par_shuf \$MYSQL
+par_shuf $MYSQL	p_wrapper par_shuf '$MYSQL'
 par_shuf $MYSQL	1 a
 par_shuf $MYSQL	1 b
 par_shuf $MYSQL	1 c
@@ -357,7 +357,7 @@ par_shuf $MYSQL	sleep .3;echo 5 b	5	b	/tmp/parallel-bug49791-c20/1/5/2/b/stdout	
 par_shuf $MYSQL	sleep .3;echo 5 c	5	c	/tmp/parallel-bug49791-c20/1/5/2/c/stdout	/tmp/parallel-bug49791-c20/1/5/2/c/stderr
 par_shuf $MYSQL	sleep .3;echo 5 d	5	d	/tmp/parallel-bug49791-c20/1/5/2/d/stdout	/tmp/parallel-bug49791-c20/1/5/2/d/stderr
 par_shuf $MYSQL	sleep .3;echo 5 e	5	e	/tmp/parallel-bug49791-c20/1/5/2/e/stdout	/tmp/parallel-bug49791-c20/1/5/2/e/stderr
-par_shuf $PG	p_wrapper par_shuf \$PG
+par_shuf $PG	p_wrapper par_shuf '$PG'
 par_shuf $PG	1 a
 par_shuf $PG	1 b
 par_shuf $PG	1 c
@@ -415,7 +415,7 @@ par_shuf $PG	 sleep .3;echo 5 d | 5  | d  | /tmp/parallel-bug49791-792/1/5/2/d/s
 par_shuf $PG	 sleep .3;echo 5 e | 5  | e  | /tmp/parallel-bug49791-792/1/5/2/e/stdout | /tmp/parallel-bug49791-792/1/5/2/e/stderr
 par_shuf $PG	(25 rows)
 par_shuf $PG	
-par_shuf $SQLITE	p_wrapper par_shuf \$SQLITE
+par_shuf $SQLITE	p_wrapper par_shuf '$SQLITE'
 par_shuf $SQLITE	1 a
 par_shuf $SQLITE	1 b
 par_shuf $SQLITE	1 c
@@ -470,7 +470,7 @@ par_shuf $SQLITE	sleep .3;echo 5 b|5|b|/tmp/parallel-bug49791-932/1/5/2/b/stdout
 par_shuf $SQLITE	sleep .3;echo 5 c|5|c|/tmp/parallel-bug49791-932/1/5/2/c/stdout|/tmp/parallel-bug49791-932/1/5/2/c/stderr
 par_shuf $SQLITE	sleep .3;echo 5 d|5|d|/tmp/parallel-bug49791-932/1/5/2/d/stdout|/tmp/parallel-bug49791-932/1/5/2/d/stderr
 par_shuf $SQLITE	sleep .3;echo 5 e|5|e|/tmp/parallel-bug49791-932/1/5/2/e/stdout|/tmp/parallel-bug49791-932/1/5/2/e/stderr
-par_sql_joblog $MYSQL	p_wrapper par_sql_joblog \$MYSQL
+par_sql_joblog $MYSQL	p_wrapper par_sql_joblog '$MYSQL'
 par_sql_joblog $MYSQL	### should only give a single --joblog heading
 par_sql_joblog $MYSQL	### --sqlmaster/--sqlworker
 par_sql_joblog $MYSQL	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
@@ -604,7 +604,7 @@ par_sql_joblog $MYSQL	sleep .3;echo 5 b	5	b	5 b\n
 par_sql_joblog $MYSQL	sleep .3;echo 5 c	5	c	5 c\n	
 par_sql_joblog $MYSQL	sleep .3;echo 5 d	5	d	5 d\n	
 par_sql_joblog $MYSQL	sleep .3;echo 5 e	5	e	5 e\n	
-par_sql_joblog $PG	p_wrapper par_sql_joblog \$PG
+par_sql_joblog $PG	p_wrapper par_sql_joblog '$PG'
 par_sql_joblog $PG	### should only give a single --joblog heading
 par_sql_joblog $PG	### --sqlmaster/--sqlworker
 par_sql_joblog $PG	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
@@ -766,7 +766,7 @@ par_sql_joblog $PG	 sleep .3;echo 5 e | 5  | e  | 5 e   +|
 par_sql_joblog $PG	                   |    |    |        | 
 par_sql_joblog $PG	(25 rows)
 par_sql_joblog $PG	
-par_sql_joblog $SQLITE	p_wrapper par_sql_joblog \$SQLITE
+par_sql_joblog $SQLITE	p_wrapper par_sql_joblog '$SQLITE'
 par_sql_joblog $SQLITE	### should only give a single --joblog heading
 par_sql_joblog $SQLITE	### --sqlmaster/--sqlworker
 par_sql_joblog $SQLITE	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
@@ -925,7 +925,7 @@ par_sql_joblog $SQLITE	sleep .3;echo 5 d|5|d|5 d
 par_sql_joblog $SQLITE	|
 par_sql_joblog $SQLITE	sleep .3;echo 5 e|5|e|5 e
 par_sql_joblog $SQLITE	|
-par_sqlandworker $MYSQL	p_wrapper par_sqlandworker \$MYSQL
+par_sqlandworker $MYSQL	p_wrapper par_sqlandworker '$MYSQL'
 par_sqlandworker $MYSQL	Exit=0
 par_sqlandworker $MYSQL	Exit=0
 par_sqlandworker $MYSQL	Command	V1	V2	Stdout	Stderr
@@ -954,7 +954,7 @@ par_sqlandworker $MYSQL	sleep .3;echo 5 b	5	b	5 b\n
 par_sqlandworker $MYSQL	sleep .3;echo 5 c	5	c	5 c\n	
 par_sqlandworker $MYSQL	sleep .3;echo 5 d	5	d	5 d\n	
 par_sqlandworker $MYSQL	sleep .3;echo 5 e	5	e	5 e\n	
-par_sqlandworker $PG	p_wrapper par_sqlandworker \$PG
+par_sqlandworker $PG	p_wrapper par_sqlandworker '$PG'
 par_sqlandworker $PG	Exit=0
 par_sqlandworker $PG	Exit=0
 par_sqlandworker $PG	      command      | v1 | v2 | stdout | stderr 
@@ -1011,7 +1011,7 @@ par_sqlandworker $PG	 sleep .3;echo 5 e | 5  | e  | 5 e   +|
 par_sqlandworker $PG	                   |    |    |        | 
 par_sqlandworker $PG	(25 rows)
 par_sqlandworker $PG	
-par_sqlandworker $SQLITE	p_wrapper par_sqlandworker \$SQLITE
+par_sqlandworker $SQLITE	p_wrapper par_sqlandworker '$SQLITE'
 par_sqlandworker $SQLITE	Exit=0
 par_sqlandworker $SQLITE	Exit=0
 par_sqlandworker $SQLITE	Command|V1|V2|Stdout|Stderr
@@ -1065,7 +1065,7 @@ par_sqlandworker $SQLITE	sleep .3;echo 5 d|5|d|5 d
 par_sqlandworker $SQLITE	|
 par_sqlandworker $SQLITE	sleep .3;echo 5 e|5|e|5 e
 par_sqlandworker $SQLITE	|
-par_sqlandworker_lo $MYSQL	p_wrapper par_sqlandworker_lo \$MYSQL
+par_sqlandworker_lo $MYSQL	p_wrapper par_sqlandworker_lo '$MYSQL'
 par_sqlandworker_lo $MYSQL	Exit=0
 par_sqlandworker_lo $MYSQL	Exit=0
 par_sqlandworker_lo $MYSQL	Command	V1	V2	Stdout	Stderr
@@ -1094,7 +1094,7 @@ par_sqlandworker_lo $MYSQL	sleep .3;echo 5 b	5	b	5 b\n
 par_sqlandworker_lo $MYSQL	sleep .3;echo 5 c	5	c	5 c\n	
 par_sqlandworker_lo $MYSQL	sleep .3;echo 5 d	5	d	5 d\n	
 par_sqlandworker_lo $MYSQL	sleep .3;echo 5 e	5	e	5 e\n	
-par_sqlandworker_lo $PG	p_wrapper par_sqlandworker_lo \$PG
+par_sqlandworker_lo $PG	p_wrapper par_sqlandworker_lo '$PG'
 par_sqlandworker_lo $PG	Exit=0
 par_sqlandworker_lo $PG	Exit=0
 par_sqlandworker_lo $PG	      command      | v1 | v2 | stdout | stderr 
@@ -1151,7 +1151,7 @@ par_sqlandworker_lo $PG	 sleep .3;echo 5 e | 5  | e  | 5 e   +|
 par_sqlandworker_lo $PG	                   |    |    |        | 
 par_sqlandworker_lo $PG	(25 rows)
 par_sqlandworker_lo $PG	
-par_sqlandworker_lo $SQLITE	p_wrapper par_sqlandworker_lo \$SQLITE
+par_sqlandworker_lo $SQLITE	p_wrapper par_sqlandworker_lo '$SQLITE'
 par_sqlandworker_lo $SQLITE	Exit=0
 par_sqlandworker_lo $SQLITE	Exit=0
 par_sqlandworker_lo $SQLITE	Command|V1|V2|Stdout|Stderr
@@ -1205,7 +1205,7 @@ par_sqlandworker_lo $SQLITE	sleep .3;echo 5 d|5|d|5 d
 par_sqlandworker_lo $SQLITE	|
 par_sqlandworker_lo $SQLITE	sleep .3;echo 5 e|5|e|5 e
 par_sqlandworker_lo $SQLITE	|
-par_sqlandworker_results $MYSQL	p_wrapper par_sqlandworker_results \$MYSQL
+par_sqlandworker_results $MYSQL	p_wrapper par_sqlandworker_results '$MYSQL'
 par_sqlandworker_results $MYSQL	Exit=0
 par_sqlandworker_results $MYSQL	Exit=0
 par_sqlandworker_results $MYSQL	Command	V1	V2	Stdout	Stderr
@@ -1234,7 +1234,7 @@ par_sqlandworker_results $MYSQL	sleep .3;echo 5 b	5	b	/tmp/out--sql/1/5/2/b/stdo
 par_sqlandworker_results $MYSQL	sleep .3;echo 5 c	5	c	/tmp/out--sql/1/5/2/c/stdout	/tmp/out--sql/1/5/2/c/stderr
 par_sqlandworker_results $MYSQL	sleep .3;echo 5 d	5	d	/tmp/out--sql/1/5/2/d/stdout	/tmp/out--sql/1/5/2/d/stderr
 par_sqlandworker_results $MYSQL	sleep .3;echo 5 e	5	e	/tmp/out--sql/1/5/2/e/stdout	/tmp/out--sql/1/5/2/e/stderr
-par_sqlandworker_results $PG	p_wrapper par_sqlandworker_results \$PG
+par_sqlandworker_results $PG	p_wrapper par_sqlandworker_results '$PG'
 par_sqlandworker_results $PG	Exit=0
 par_sqlandworker_results $PG	Exit=0
 par_sqlandworker_results $PG	      command      | v1 | v2 |            stdout            |            stderr            
@@ -1266,7 +1266,7 @@ par_sqlandworker_results $PG	 sleep .3;echo 5 d | 5  | d  | /tmp/out--sql/1/5/2/
 par_sqlandworker_results $PG	 sleep .3;echo 5 e | 5  | e  | /tmp/out--sql/1/5/2/e/stdout | /tmp/out--sql/1/5/2/e/stderr
 par_sqlandworker_results $PG	(25 rows)
 par_sqlandworker_results $PG	
-par_sqlandworker_results $SQLITE	p_wrapper par_sqlandworker_results \$SQLITE
+par_sqlandworker_results $SQLITE	p_wrapper par_sqlandworker_results '$SQLITE'
 par_sqlandworker_results $SQLITE	Exit=0
 par_sqlandworker_results $SQLITE	Exit=0
 par_sqlandworker_results $SQLITE	Command|V1|V2|Stdout|Stderr
@@ -1295,7 +1295,7 @@ par_sqlandworker_results $SQLITE	sleep .3;echo 5 b|5|b|/tmp/out--sql/1/5/2/b/std
 par_sqlandworker_results $SQLITE	sleep .3;echo 5 c|5|c|/tmp/out--sql/1/5/2/c/stdout|/tmp/out--sql/1/5/2/c/stderr
 par_sqlandworker_results $SQLITE	sleep .3;echo 5 d|5|d|/tmp/out--sql/1/5/2/d/stdout|/tmp/out--sql/1/5/2/d/stderr
 par_sqlandworker_results $SQLITE	sleep .3;echo 5 e|5|e|/tmp/out--sql/1/5/2/e/stdout|/tmp/out--sql/1/5/2/e/stderr
-par_sqlandworker_tag $MYSQL	p_wrapper par_sqlandworker_tag \$MYSQL
+par_sqlandworker_tag $MYSQL	p_wrapper par_sqlandworker_tag '$MYSQL'
 par_sqlandworker_tag $MYSQL	Exit=0
 par_sqlandworker_tag $MYSQL	Exit=0
 par_sqlandworker_tag $MYSQL	Command	V1	V2	Stdout	Stderr
@@ -1324,7 +1324,7 @@ par_sqlandworker_tag $MYSQL	sleep .3;echo 5 b	5	b	5 b\t5 b\n
 par_sqlandworker_tag $MYSQL	sleep .3;echo 5 c	5	c	5 c\t5 c\n	
 par_sqlandworker_tag $MYSQL	sleep .3;echo 5 d	5	d	5 d\t5 d\n	
 par_sqlandworker_tag $MYSQL	sleep .3;echo 5 e	5	e	5 e\t5 e\n	
-par_sqlandworker_tag $PG	p_wrapper par_sqlandworker_tag \$PG
+par_sqlandworker_tag $PG	p_wrapper par_sqlandworker_tag '$PG'
 par_sqlandworker_tag $PG	Exit=0
 par_sqlandworker_tag $PG	Exit=0
 par_sqlandworker_tag $PG	      command      | v1 | v2 |   stdout    | stderr 
@@ -1381,7 +1381,7 @@ par_sqlandworker_tag $PG	 sleep .3;echo 5 e | 5  | e  | 5 e     5 e+|
 par_sqlandworker_tag $PG	                   |    |    |             | 
 par_sqlandworker_tag $PG	(25 rows)
 par_sqlandworker_tag $PG	
-par_sqlandworker_tag $SQLITE	p_wrapper par_sqlandworker_tag \$SQLITE
+par_sqlandworker_tag $SQLITE	p_wrapper par_sqlandworker_tag '$SQLITE'
 par_sqlandworker_tag $SQLITE	Exit=0
 par_sqlandworker_tag $SQLITE	Exit=0
 par_sqlandworker_tag $SQLITE	Command|V1|V2|Stdout|Stderr
@@ -1435,7 +1435,7 @@ par_sqlandworker_tag $SQLITE	sleep .3;echo 5 d|5|d|5 d	5 d
 par_sqlandworker_tag $SQLITE	|
 par_sqlandworker_tag $SQLITE	sleep .3;echo 5 e|5|e|5 e	5 e
 par_sqlandworker_tag $SQLITE	|
-par_sqlandworker_total_jobs $MYSQL	p_wrapper par_sqlandworker_total_jobs \$MYSQL
+par_sqlandworker_total_jobs $MYSQL	p_wrapper par_sqlandworker_total_jobs '$MYSQL'
 par_sqlandworker_total_jobs $MYSQL	Exit=0
 par_sqlandworker_total_jobs $MYSQL	Exit=0
 par_sqlandworker_total_jobs $MYSQL	Command	V1	V2	Stdout	Stderr
@@ -1464,7 +1464,7 @@ par_sqlandworker_total_jobs $MYSQL	echo 22 of 25; sleep .3;echo	5	b	22 of 25\n\n
 par_sqlandworker_total_jobs $MYSQL	echo 23 of 25; sleep .3;echo	5	c	23 of 25\n\n	
 par_sqlandworker_total_jobs $MYSQL	echo 24 of 25; sleep .3;echo	5	d	24 of 25\n\n	
 par_sqlandworker_total_jobs $MYSQL	echo 25 of 25; sleep .3;echo	5	e	25 of 25\n\n	
-par_sqlandworker_total_jobs $PG	p_wrapper par_sqlandworker_total_jobs \$PG
+par_sqlandworker_total_jobs $PG	p_wrapper par_sqlandworker_total_jobs '$PG'
 par_sqlandworker_total_jobs $PG	Exit=0
 par_sqlandworker_total_jobs $PG	Exit=0
 par_sqlandworker_total_jobs $PG	           command            | v1 | v2 |  stdout  | stderr 
@@ -1546,7 +1546,7 @@ par_sqlandworker_total_jobs $PG	                              |    |    |       
 par_sqlandworker_total_jobs $PG	                              |    |    |          | 
 par_sqlandworker_total_jobs $PG	(25 rows)
 par_sqlandworker_total_jobs $PG	
-par_sqlandworker_total_jobs $SQLITE	p_wrapper par_sqlandworker_total_jobs \$SQLITE
+par_sqlandworker_total_jobs $SQLITE	p_wrapper par_sqlandworker_total_jobs '$SQLITE'
 par_sqlandworker_total_jobs $SQLITE	Exit=0
 par_sqlandworker_total_jobs $SQLITE	Exit=0
 par_sqlandworker_total_jobs $SQLITE	Command|V1|V2|Stdout|Stderr
@@ -1625,7 +1625,7 @@ par_sqlandworker_total_jobs $SQLITE	|
 par_sqlandworker_total_jobs $SQLITE	echo 25 of 25; sleep .3;echo|5|e|25 of 25
 par_sqlandworker_total_jobs $SQLITE	
 par_sqlandworker_total_jobs $SQLITE	|
-par_sqlandworker_unbuffer $MYSQL	p_wrapper par_sqlandworker_unbuffer \$MYSQL
+par_sqlandworker_unbuffer $MYSQL	p_wrapper par_sqlandworker_unbuffer '$MYSQL'
 par_sqlandworker_unbuffer $MYSQL	Exit=0
 par_sqlandworker_unbuffer $MYSQL	Exit=0
 par_sqlandworker_unbuffer $MYSQL	Command	V1	V2	Stdout	Stderr
@@ -1654,7 +1654,7 @@ par_sqlandworker_unbuffer $MYSQL	sleep .3;echo 5 b	5	b
 par_sqlandworker_unbuffer $MYSQL	sleep .3;echo 5 c	5	c		
 par_sqlandworker_unbuffer $MYSQL	sleep .3;echo 5 d	5	d		
 par_sqlandworker_unbuffer $MYSQL	sleep .3;echo 5 e	5	e		
-par_sqlandworker_unbuffer $PG	p_wrapper par_sqlandworker_unbuffer \$PG
+par_sqlandworker_unbuffer $PG	p_wrapper par_sqlandworker_unbuffer '$PG'
 par_sqlandworker_unbuffer $PG	Exit=0
 par_sqlandworker_unbuffer $PG	Exit=0
 par_sqlandworker_unbuffer $PG	      command      | v1 | v2 | stdout | stderr 
@@ -1686,7 +1686,7 @@ par_sqlandworker_unbuffer $PG	 sleep .3;echo 5 d | 5  | d  |        |
 par_sqlandworker_unbuffer $PG	 sleep .3;echo 5 e | 5  | e  |        | 
 par_sqlandworker_unbuffer $PG	(25 rows)
 par_sqlandworker_unbuffer $PG	
-par_sqlandworker_unbuffer $SQLITE	p_wrapper par_sqlandworker_unbuffer \$SQLITE
+par_sqlandworker_unbuffer $SQLITE	p_wrapper par_sqlandworker_unbuffer '$SQLITE'
 par_sqlandworker_unbuffer $SQLITE	Exit=0
 par_sqlandworker_unbuffer $SQLITE	Exit=0
 par_sqlandworker_unbuffer $SQLITE	Command|V1|V2|Stdout|Stderr

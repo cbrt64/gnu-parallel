@@ -27,40 +27,28 @@ export -f par_tmux
 cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj8 --delay 1 --timeout 100 --retries 1 -k --joblog /tmp/jl-`basename $0` -L1
 
 echo '### tmux-1.9'
-  seq 000   100 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 100   200 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 200   300 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 300   400 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 400   500 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 500   600 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 600   700 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 700   800 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 800   900 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 900  1000 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1000 1100 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1100 1200 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1200 1300 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1300 1400 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1400 1500 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1500 1600 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1600 1700 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1700 1800 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1800 1900 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1900 2000 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 2000 2018 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 0000 10 1000 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1001 10 2000 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 2001 10 3000 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 3001 10 4000 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 4001 10 4030 | PARALLEL_TMUX=tmux-1.9 par_tmux
+
 echo '### tmux-1.9 fails'
-  echo 2019 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  echo 2020 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  echo 2021 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  echo 4036 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  echo 4037 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  echo 4038 | PARALLEL_TMUX=tmux-1.9 par_tmux
 
 echo '### tmux-1.8'
-  seq   1 100 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  seq 101 200 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  seq 201 231 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq   1 5 100 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 101 5 200 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 201 5 300 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 301 5 400 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 401 5 460 | PARALLEL_TMUX=tmux-1.8 par_tmux
+
 echo '### tmux-1.8 fails'
-  echo 232 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  echo 233 | PARALLEL_TMUX=tmux-1.8 par_tmux
-  echo 234 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  echo 462 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  echo 463 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  echo 464 | PARALLEL_TMUX=tmux-1.8 par_tmux
 
 echo '### tmux-1.8 0..255 ascii'
 perl -e 'print map { ($_, map { pack("c*",$_) } grep { $_>=1 && $_!=10 } $_-110..$_),"\n" } 0..255' | 

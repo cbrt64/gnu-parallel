@@ -20,7 +20,7 @@ a
 ls b|wc;echo b
       4       4      26
 b
-ls \鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)|wc;echo \鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)
+ls '涓浗 (Zh艒nggu贸)'|wc;echo '涓浗 (Zh艒nggu贸)'
       4      12     118
 涓浗 (Zh艒nggu贸)
 1 1-col.diff
@@ -29,14 +29,14 @@ ls \鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)|wc;echo \鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)
 1 2-col.txt
 6 a
 4 b
-4 涓浗 (Zh艒nggu贸)
+4 '涓浗 (Zh艒nggu贸)'
 1 1-col.diff
 1 1-col.txt
 1 2-col.diff
 1 2-col.txt
 6 a
 4 b
-4 涓浗 (Zh艒nggu贸)
+4 '涓浗 (Zh艒nggu贸)'
 touch -- 1-col/abc-1-col-1-col
 touch -- 1-col/abc-1-col-1-col.diff
 touch -- 1-col/abc-1-col-1-col.txt
@@ -45,7 +45,7 @@ touch -- 2-col/abc-2-col-2-col.diff
 touch -- 2-col/abc-2-col-2-col.txt
 touch -- a/abc-a-a
 touch -- b/abc-b-b
-touch -- \鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)/abc-\鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)-\鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)
+touch -- '涓浗 (Zh艒nggu贸)'/abc-'涓浗 (Zh艒nggu贸)'-'涓浗 (Zh艒nggu贸)'
 rm -- 1-col/abc-1-col-1-col
 rm -- 1-col/abc-1-col-1-col.diff
 rm -- 1-col/abc-1-col-1-col.txt
@@ -54,7 +54,7 @@ rm -- 2-col/abc-2-col-2-col.diff
 rm -- 2-col/abc-2-col-2-col.txt
 rm -- a/abc-a-a
 rm -- b/abc-b-b
-rm -- \鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)/abc-\鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)-\鋅竆璡錦沑絓 \(Zh\臷峮ggu\肻砛)
+rm -- '涓浗 (Zh艒nggu贸)'/abc-'涓浗 (Zh艒nggu贸)'-'涓浗 (Zh艒nggu贸)'
 echo '### Test compress'
 ### Test compress
   seq 5 | parallel -j2 --tag --compress 'seq {} | pv -q -L 10'

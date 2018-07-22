@@ -349,8 +349,8 @@ _parset_main() {
     else
 	# $_parset_name does not contain , or space
 	# => $_parset_name is the name of the array to put data into
-	# Supported in: bash zsh ksh
-	# Arrays do not work in: ash dash
+	# Supported in: bash zsh ksh mksh
+	# Arrays do not work in: sh ash dash
 	eval "$_parset_name=( $( $_parset_parallel_prg --files -k "$@" |
               perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"
     fi

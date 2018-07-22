@@ -41,6 +41,7 @@ rm /tmp/parallel-script-for-script3
 stdout parallel --citation < /dev/null
 
 touch ~/.parallel/will-cite
+echo 1 > ~/.parallel/runs-without-willing-to-cite
 # Clear screen
 eval `resize`
 seq $LINES | parallel -N0 echo > /dev/tty

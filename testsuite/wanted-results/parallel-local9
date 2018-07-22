@@ -64,17 +64,6 @@ echo '### Test --spreadstdin -k';   nice seq 1 1000000 | $NICEPAR -k --recend "\
 echo '### Test --spreadstdin --files';   nice seq 1 1000000 | shuf | $NICEPAR --files --recend "\n" -j10 --spreadstdin sort -n | parallel -Xj1 sort -nm {} ";"rm {} | md5sum
 ### Test --spreadstdin --files
 8a7095c1c23bfadc311fe6b16d950582  -
-echo '### Test --number-of-cpus';   stdout $NICEPAR --number-of-cpus
-### Test --number-of-cpus
-1
-echo '### Test --number-of-cores';   stdout $NICEPAR --number-of-cores
-### Test --number-of-cores
-2
-echo '### Test --use-cpus-instead-of-cores';   (seq 1 8 | stdout parallel --use-cpus-instead-of-cores -j100% sleep) && echo CPUs done &   (seq 1 8 | stdout parallel -j100% sleep) && echo cores done &   echo 'Cores should complete first on machines with less than 8 physical CPUs';   wait
-### Test --use-cpus-instead-of-cores
-Cores should complete first on machines with less than 8 physical CPUs
-cores done
-CPUs done
 echo '### Test --tag ::: a ::: b';   stdout $NICEPAR -k --tag -j1  echo stderr-{.} ">&2;" echo stdout-{} ::: a ::: b
 ### Test --tag ::: a ::: b
 a b	stdout-a b
@@ -313,31 +302,31 @@ b
 echo '### Quote test triplet 2'
 ### Quote test triplet 2
 $XAP -kv echo :::: <(echo 'echo a'; echo 'echo b')
-echo echo\ a
+echo 'echo a'
 echo a
-echo echo\ b
+echo 'echo b'
 echo b
 $XAP -kv -a <(echo 'echo a'; echo 'echo b') echo
-echo echo\ a
+echo 'echo a'
 echo a
-echo echo\ b
+echo 'echo b'
 echo b
 (echo 'echo a'; echo 'echo b') | $XAP -kv echo
-echo echo\ a
+echo 'echo a'
 echo a
-echo echo\ b
+echo 'echo b'
 echo b
 echo '### Quoting if there is a command and 2 arg files'
 ### Quoting if there is a command and 2 arg files
 $XAP -kv echo :::: <(echo 'echo a') <(echo 'echo b')
-echo echo\ a echo\ b
+echo 'echo a' 'echo b'
 echo a echo b
 echo '### Quoting if there is a command and 2 arg files of uneven length'
 ### Quoting if there is a command and 2 arg files of uneven length
 $XAP -kv echo :::: <(echo 'echo a';echo a1) <(echo 'echo b')
-echo echo\ a echo\ b
+echo 'echo a' 'echo b'
 echo a echo b
-echo a1 echo\ b
+echo a1 'echo b'
 a1 echo b
 echo '### Quoting if there is no command and 2 arg files'
 ### Quoting if there is no command and 2 arg files

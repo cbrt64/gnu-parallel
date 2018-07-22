@@ -32,6 +32,12 @@ local:	testlocal
 testlocal: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
 	time bash Start.sh local mem
 
+short:	testlocalshort
+	true
+
+testlocalshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
+	time bash Start.sh local mem'|'100s
+
 prereqlocal: installparallel
 	tcsh -c echo tcsh installed || (echo tcsh is required for testsuite; /bin/false)
 	seq 1 2 >/dev/null || (echo seq is required for testsuite; /bin/false)

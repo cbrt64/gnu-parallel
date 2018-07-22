@@ -58,7 +58,7 @@ par_kill_term_twice	bash-+-perl---bash---sleep
 par_kill_term_twice	     `-pstree
 par_kill_term_twice	parallel: SIGTERM received. No new jobs will be started.
 par_kill_term_twice	parallel: Waiting for these 1 jobs to finish. Send SIGTERM again to stop now.
-par_kill_term_twice	parallel: bash -c sleep\ 120\ \&\ pid\=\$\!\;\ wait\ \$pid 1
+par_kill_term_twice	parallel: bash -c 'sleep 120 & pid=$!; wait $pid' 1
 par_kill_term_twice	bash-+-perl---bash---sleep
 par_kill_term_twice	     `-pstree
 par_kill_term_twice	bash---pstree

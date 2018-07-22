@@ -18,8 +18,8 @@ perl -e 'print map {"more_than_5000-$_\n" } (4000..9999)' | parallel -vj 0 touch
 echo '### rm'
 perl -e 'print map {"more_than_5000-$_\n" } (4000..9900)' | parallel -j 0 rm | sort
 cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 | egrep -v 'parallel: Warning: Starting|parallel: Warning: Consider'
-ls | parallel -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" {}\n\"}"' | sort
-ls | parallel --group -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" {}\n\"}"' | sort
+ls | parallel -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" "{=$_=pQ($_)=}"\n\"}"' | sort
+ls | parallel --group -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" "{=$_=pQ($_)=}"\n\"}"' | sort
 find . -type f | parallel --group  "perl -ne '/^\\S+\\s+\\S+$/ and print \$ARGV,\"\\n\"'" | sort
 find . -type f | parallel -v --group "perl -ne '/^\\S+\\s+\\S+$/ and print \$ARGV,\"\\n\"'" | sort
 find . -type f | parallel -q --group  perl -ne '/^\S+\s+\S+$/ and print $ARGV,"\n"' | sort

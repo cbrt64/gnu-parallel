@@ -1,100 +1,58 @@
 echo '### tmux-1.9'
 ### tmux-1.9
-  seq 000   100 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 0000 10 1000 | PARALLEL_TMUX=tmux-1.9 par_tmux
 See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
-  seq 100   200 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 1001 10 2000 | PARALLEL_TMUX=tmux-1.9 par_tmux
 See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
-  seq 200   300 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 2001 10 3000 | PARALLEL_TMUX=tmux-1.9 par_tmux
 See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
-  seq 300   400 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 3001 10 4000 | PARALLEL_TMUX=tmux-1.9 par_tmux
 See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
-  seq 400   500 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 500   600 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 600   700 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 700   800 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 800   900 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 900  1000 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1000 1100 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1100 1200 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1200 1300 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1300 1400 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1400 1500 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1500 1600 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1600 1700 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1700 1800 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1800 1900 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 1900 2000 | PARALLEL_TMUX=tmux-1.9 par_tmux
-See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-0
-  seq 2000 2018 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 4001 10 4030 | PARALLEL_TMUX=tmux-1.9 par_tmux
 See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
 echo '### tmux-1.9 fails'
 ### tmux-1.9 fails
-  echo 2019 | PARALLEL_TMUX=tmux-1.9 par_tmux
-parallel: Error: Command line too long (4047 >= 4047) at input 0: 2019
+  echo 4036 | PARALLEL_TMUX=tmux-1.9 par_tmux
+parallel: Error: Command line too long (4047 >= 4047) at input 0: 4036
 255
-  echo 2020 | PARALLEL_TMUX=tmux-1.9 par_tmux
-parallel: Error: Command line too long (4049 >= 4047) at input 0: 2020
+  echo 4037 | PARALLEL_TMUX=tmux-1.9 par_tmux
+parallel: Error: Command line too long (4048 >= 4047) at input 0: 4037
 255
-  echo 2021 | PARALLEL_TMUX=tmux-1.9 par_tmux
-parallel: Error: Command line too long (4051 >= 4047) at input 0: 2021
+  echo 4038 | PARALLEL_TMUX=tmux-1.9 par_tmux
+parallel: Error: Command line too long (4049 >= 4047) at input 0: 4038
 255
 echo '### tmux-1.8'
 ### tmux-1.8
-  seq   1 100 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq   1 5 100 | PARALLEL_TMUX=tmux-1.8 par_tmux
 See output with: tmux-1.8 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
-  seq 101 200 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 101 5 200 | PARALLEL_TMUX=tmux-1.8 par_tmux
 See output with: tmux-1.8 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
-  seq 201 231 | PARALLEL_TMUX=tmux-1.8 par_tmux
+  seq 201 5 300 | PARALLEL_TMUX=tmux-1.8 par_tmux
+See output with: tmux-1.8 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
+0
+  seq 301 5 400 | PARALLEL_TMUX=tmux-1.8 par_tmux
+See output with: tmux-1.8 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
+0
+  seq 401 5 460 | PARALLEL_TMUX=tmux-1.8 par_tmux
 See output with: tmux-1.8 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
 0
 echo '### tmux-1.8 fails'
 ### tmux-1.8 fails
-  echo 232 | PARALLEL_TMUX=tmux-1.8 par_tmux
-parallel: Error: Command line too long (472 >= 472) at input 0: 232
+  echo 462 | PARALLEL_TMUX=tmux-1.8 par_tmux
+parallel: Error: Command line too long (472 >= 472) at input 0: 462
 255
-  echo 233 | PARALLEL_TMUX=tmux-1.8 par_tmux
-parallel: Error: Command line too long (474 >= 472) at input 0: 233
+  echo 463 | PARALLEL_TMUX=tmux-1.8 par_tmux
+parallel: Error: Command line too long (473 >= 472) at input 0: 463
 255
-  echo 234 | PARALLEL_TMUX=tmux-1.8 par_tmux
-parallel: Error: Command line too long (476 >= 472) at input 0: 234
+  echo 464 | PARALLEL_TMUX=tmux-1.8 par_tmux
+parallel: Error: Command line too long (474 >= 472) at input 0: 464
 255
 echo '### tmux-1.8 0..255 ascii'
 ### tmux-1.8 0..255 ascii
@@ -115,7 +73,6 @@ echo '### Test critical lengths. Must not block'
 ### Test critical lengths. Must not block
   seq 140 260 | PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux echo '{}{=$_="&"x$_=}' | par_tmux_filter
 See output with: tmux-1.8 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
-parallel: Error: Command line too long (472 >= 472) at input 0: 232
   seq 140 260 | PARALLEL_TMUX=tmux-1.9 stdout parallel --tmux echo '{}{=$_="&"x$_=}' | par_tmux_filter
 See output with: tmux-1.9 -S /tmp/parallel-local7-tmpdir/tmsXXXXX attach
   seq 560 850 | PARALLEL_TMUX=tmux-1.8 stdout parallel --tmux echo '{}{=$_="a"x$_=}' | par_tmux_filter

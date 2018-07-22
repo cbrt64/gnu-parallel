@@ -31,9 +31,6 @@ echo '### bug #41805: Idea: propagate --env for parallel --number-of-cores'
   FOO=test_csh_filter parallel --filter-hosts --env FOO,HOME -S csh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
   echo '** bug #41805 done'
 
-echo '### Deal with long command lines on remote servers'
-  perl -e 'print((("\""x5000)."\n")x26)' | parallel -j1 -S lo -N 10000 echo {} |wc
-
 echo '### Test bug #34241: --pipe should not spawn unneeded processes'
   seq 5 | ssh csh@lo parallel -k --block 5 --pipe -j10 cat\\\;echo Block_end
 
@@ -140,7 +137,7 @@ echo '### bug #46519: --onall ignores --transfer'
 
 echo '### Test --nice remote'
 stdout parallel --nice 1 -S lo -vv 'PAR=a bash -c "echo  \$PAR {}"' ::: b | 
-  perl -pe 's/\S*parallel-server\S*/one-server/;s:[a-z/\\+=0-9]{500,}:base64:i;'
+  perl -pe 's/\S*parallel-server\S*/one-server/;s:="[0-9]+":="XXXXX":i;'
 
 echo '**'
 

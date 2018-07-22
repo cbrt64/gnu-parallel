@@ -827,6 +827,7 @@ par_pipe_recend() {
 
 par_perlexpr_with_newline() {
     echo 'Perl expression spanning 2 lines'
+    mkdir -p tmp
     cd tmp
     touch "Dad's \"famous\" 1' pizza"
     # Important with newline in perl expression:
