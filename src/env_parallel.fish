@@ -121,7 +121,7 @@ function env_parallel
       # 
       begin;
         for v in (set -n | \
-          grep -Ev '^(PARALLEL_TMP)$' | \
+          grep -Ev '^(PARALLEL_TMP|PARALLEL_ENV)$' | \
           grep -E "^$_grep_REGEXP\$" | grep -vE "^$_ignore_UNDERSCORE\$");
           # Separate variables with the string: \000
 	  # array_name1 val1\0
@@ -168,8 +168,16 @@ function env_parallel
           s/\n/\001/g'
     end;
     )
-  # If --record-env: exit
-  perl -e 'exit grep { /^--record-env$/ } @ARGV' -- $argv; and parallel $argv;
+  # --session
+  perl -e 'exit grep { /^--session$/ } @ARGV' -- $argv; or begin;
+    setenv PARALLEL_IGNORED_NAMES (
+      functions -n | perl -ne 's/,/\n/g; /^(env_parallel)$/ and next; print';
+      set -n;
+    )
+  end;
+
+  # If --record-env or --session: exit
+  perl -e 'exit grep { /^(--record-env|--session)$/ } @ARGV' -- $argv; and parallel $argv;
   set _parallel_exit_CODE $status
   set -e PARALLEL_ENV
   return $_parallel_exit_CODE
