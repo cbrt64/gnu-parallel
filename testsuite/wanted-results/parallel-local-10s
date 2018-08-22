@@ -338,10 +338,10 @@ par_results_compress	0
 par_results_compress	1
 par_results_csv	bug #: --results csv
 par_results_csv	--header : --tag --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
-par_results_csv	--header : --tag --files --compress	1,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag --files --compress	2,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag --files --compress	3,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	--header : --tag --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --files --compress	2,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --files --compress	3,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	--header : --tag --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	--header : --tag --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header : --tag --files 	1,:,999.999,999.999,0,6,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	--header : --tag --files 	2,:,999.999,999.999,0,6,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
@@ -366,10 +366,10 @@ par_results_csv	--header : --tag  	",
 par_results_csv	--header : --tag  	4,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12	23 12
 par_results_csv	--header : --tag  	",
 par_results_csv	--header :  --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
-par_results_csv	--header :  --files --compress	1,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :  --files --compress	2,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :  --files --compress	3,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	--header :  --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --files --compress	2,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --files --compress	3,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	--header :  --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	--header :  --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header :  --files 	1,:,999.999,999.999,0,6,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	--header :  --files 	2,:,999.999,999.999,0,6,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
@@ -394,15 +394,15 @@ par_results_csv	--header :   	",
 par_results_csv	--header :   	4,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12
 par_results_csv	--header :   	",
 par_results_csv	 --tag --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
-par_results_csv	 --tag --files --compress	1,:,999.999,999.999,0,31,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	2,:,999.999,999.999,0,31,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	3,:,999.999,999.999,0,31,0,0,"echo H2 12",H2,12,"H2 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 22 H1",22,H1,"22 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	5,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	6,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	7,:,999.999,999.999,0,31,0,0,"echo 23 H1",23,H1,"23 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	8,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
-par_results_csv	 --tag --files --compress	9,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	1,:,999.999,999.999,0,15,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	2,:,999.999,999.999,0,15,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	3,:,999.999,999.999,0,15,0,0,"echo H2 12",H2,12,"H2 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 22 H1",22,H1,"22 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	5,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	6,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,"22 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	7,:,999.999,999.999,0,15,0,0,"echo 23 H1",23,H1,"23 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	8,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,"23 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
+par_results_csv	 --tag --files --compress	9,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,"23 12	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	 --tag --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
 par_results_csv	 --tag --files 	1,:,999.999,999.999,0,6,0,0,"echo H2 H1",H2,H1,"H2 H1	/tmp/parallel-local-10s-tmpdir/tmpfile",
 par_results_csv	 --tag --files 	2,:,999.999,999.999,0,6,0,0,"echo H2 11",H2,11,"H2 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
@@ -452,15 +452,15 @@ par_results_csv	 --tag  	",
 par_results_csv	 --tag  	9,:,999.999,999.999,0,6,0,0,"echo 23 12",23,12,"23 12	23 12
 par_results_csv	 --tag  	",
 par_results_csv	  --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
-par_results_csv	  --files --compress	1,:,999.999,999.999,0,31,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	2,:,999.999,999.999,0,31,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	3,:,999.999,999.999,0,31,0,0,"echo H2 12",H2,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	4,:,999.999,999.999,0,31,0,0,"echo 22 H1",22,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	5,:,999.999,999.999,0,31,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	6,:,999.999,999.999,0,31,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	7,:,999.999,999.999,0,31,0,0,"echo 23 H1",23,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	8,:,999.999,999.999,0,31,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
-par_results_csv	  --files --compress	9,:,999.999,999.999,0,31,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	1,:,999.999,999.999,0,15,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	2,:,999.999,999.999,0,15,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	3,:,999.999,999.999,0,15,0,0,"echo H2 12",H2,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	4,:,999.999,999.999,0,15,0,0,"echo 22 H1",22,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	5,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	6,:,999.999,999.999,0,15,0,0,"echo 22 12",22,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	7,:,999.999,999.999,0,15,0,0,"echo 23 H1",23,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	8,:,999.999,999.999,0,15,0,0,"echo 23 11",23,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
+par_results_csv	  --files --compress	9,:,999.999,999.999,0,15,0,0,"echo 23 12",23,12,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	  --files 	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,V1,V2,Stdout,Stderr
 par_results_csv	  --files 	1,:,999.999,999.999,0,6,0,0,"echo H2 H1",H2,H1,/tmp/parallel-local-10s-tmpdir/tmpfile,
 par_results_csv	  --files 	2,:,999.999,999.999,0,6,0,0,"echo H2 11",H2,11,/tmp/parallel-local-10s-tmpdir/tmpfile,
@@ -528,9 +528,9 @@ par_slow_total_jobs	2
 par_slow_total_jobs	parallel: Warning: Reading X arguments took longer than XX seconds.
 par_sockets_cores_threads	### Test --number-of-sockets/cores/threads
 par_sockets_cores_threads	1
-par_sockets_cores_threads	2
-par_sockets_cores_threads	2
-par_sockets_cores_threads	2
+par_sockets_cores_threads	4
+par_sockets_cores_threads	8
+par_sockets_cores_threads	4
 par_sockets_cores_threads	### Test --use-sockets-instead-of-threads
 par_sockets_cores_threads	threads done
 par_sockets_cores_threads	sockets done

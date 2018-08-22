@@ -46,12 +46,12 @@ par_exit_code	dash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	fish /tmp/mysleep 100	137
 par_exit_code	fish parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	fish parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	fish parallel --halt-on-error now,done=1 true ::: 100	1
+par_exit_code	fish parallel --halt-on-error now,done=1 true ::: 100	0
 par_exit_code	fish parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	fish true;/tmp/mysleep 100	137
 par_exit_code	fish parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	fish parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	fish parallel --halt-on-error now,done=1 "true;true" ::: 100	1
+par_exit_code	fish parallel --halt-on-error now,done=1 "true;true" ::: 100	0
 par_exit_code	fish parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	mksh /tmp/mysleep 100	0
 par_exit_code	mksh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137

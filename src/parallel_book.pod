@@ -15,7 +15,7 @@ situations, and to avoid overloading you with information, the most
 used features are presented first.
 
 All the examples are tested in Bash, and most will work in other
-shells, too, but there are a few exceptions. So you are recommened to
+shells, too, but there are a few exceptions. So you are recommended to
 use Bash while testing out the examples.
 
 
@@ -209,8 +209,8 @@ If the input is B<mydir/mysubdir/myfile.myext> then:
   {#} = the sequence number of the job
   {%} = the job slot number
 
-When a job is started it gets sequence number that starts at 1 and
-increases with 1 for each new job. The job also gets assigned a slot
+When a job is started it gets a sequence number that starts at 1 and
+increases by 1 for each new job. The job also gets assigned a slot
 number. This number is from 1 to the number of jobs running in
 parallel. It is unique between the running jobs, but is re-used as
 soon as a job finishes.
@@ -349,7 +349,7 @@ A shorthand for B<--transfer --return {} --cleanup> is B<--trc {}>.
 
 =head1 Advanced usage
 
-parset fifo, cmd substtition, arrayelements, array with var names and cmds, env_parset
+parset fifo, cmd substitution, arrayelements, array with var names and cmds, env_parset
 
 
 env_parallel
@@ -382,11 +382,11 @@ Interfacing with HTML/?
 
 =head2 Remote execution
 
-seq 10 | parallel --sshlogin 'ssh -i "key.pem" a@b.com' echo 
+seq 10 | parallel --sshlogin 'ssh -i "key.pem" a@b.com' echo
 
-seq 10 | PARALLLEL_SSH='ssh -i "key.pem"' parallel --sshlogin a@b.com echo 
+seq 10 | PARALLEL_SSH='ssh -i "key.pem"' parallel --sshlogin a@b.com echo
 
-seq 10 | parallel --ssh 'ssh -i "key.pem"' --sshlogin a@b.com echo 
+seq 10 | parallel --ssh 'ssh -i "key.pem"' --sshlogin a@b.com echo
 
 ssh-agent
 

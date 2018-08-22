@@ -2906,7 +2906,7 @@ Output:
 =head2 Timeout
 
 With B<--semaphoretimeout> you can force running the command anyway after
-a period (postive number) or give up (negative number):
+a period (positive number) or give up (negative number):
 
   sem --id foo -u 'echo Slow started; sleep 5; echo Slow ended' &&
   sem --id foo --semaphoretimeout 1 'echo Forced running after 1 sec' &&

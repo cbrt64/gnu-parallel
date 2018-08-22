@@ -24,6 +24,7 @@ par_exit_code() {
 	OK="ash bash csh dash fish mksh posh rc sash sh static-sh tcsh"
 	BAD="fdsh fizsh ksh ksh93 yash zsh"
 	s=100
+	rm -f /tmp/mysleep
 	cp /bin/sleep /tmp/mysleep
 	
 	echo '# Ideally the command should return the same'

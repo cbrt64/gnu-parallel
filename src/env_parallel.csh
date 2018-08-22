@@ -55,7 +55,7 @@ else
   # Deal with --env _
   cat <<'EOF' > $_tMpscRIpt
             #!/usr/bin/perl
-            
+
             for(@ARGV){
                 $next_is_env and push @envvar, split/,/, $_;
                 $next_is_env=/^--env$/;
@@ -125,8 +125,8 @@ else
 #   Quoted: s/\^/\\001alias\ /\;
   alias | \
     perl -ne '/^'"$_grep_REGEXP"'/ or next; /^'"$_ignore_UNDERSCORE"'[^_a-zA-Z]/ and next; print' | \
-    perl -pe s/\\047/\\047\\042\\047\\042\\047/g\;s/\^\(\\S+\)\(\\s+\)\\\(\(.\*\)\\\)/\\1\\2\\3/\;s/\^\(\\S+\)\(\\s+\)\(.\*\)/\\1\\2\\047\\3\\047/\;s/\^/\\001alias\ /\;s/\\\!/\\\\\\\!/g >> $_tMpaLLfILe 
-  
+    perl -pe s/\\047/\\047\\042\\047\\042\\047/g\;s/\^\(\\S+\)\(\\s+\)\\\(\(.\*\)\\\)/\\1\\2\\3/\;s/\^\(\\S+\)\(\\s+\)\(.\*\)/\\1\\2\\047\\3\\047/\;s/\^/\\001alias\ /\;s/\\\!/\\\\\\\!/g >> $_tMpaLLfILe
+
   setenv PARALLEL_ENV "`cat $_tMpaLLfILe; rm $_tMpaLLfILe`";
   unset _tMpaLLfILe;
   # Use $PARALLEL set in calling alias

@@ -66,6 +66,8 @@ par_zsh_parset	2
 par_zsh_parset	3
 par_zsh_parset	   myecho myvar myarr  0 myfun foo myecho myvar myarr  0 myfun bar myecho myvar myarr  0 myfun baz
 par_zsh_parset	myecho myvar myarr  0 myfun foo myecho myvar myarr  0 myfun bar myecho myvar myarr  0 myfun baz
+par_zsh_parset	Exit value 2 = 2
+par_zsh_parset	Exit value 2 = 2
 par_zsh_man	### zsh
 par_zsh_man	### From man env_parallel
 par_zsh_man	aliases with = & " ! ' work
@@ -368,7 +370,7 @@ par_tcsh_funky
 par_tcsh_funky	3 arg alias_works
 par_tcsh_funky	3 arg alias_works_over_ssh
 par_tcsh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works
-par_tcsh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~Â€ÂÂ‚ÂƒÂ„Â…Â†Â‡ÂˆÂ‰ÂŠÂ‹ÂŒÂÂÂÂÂ‘Â’Â“Â”Â•Â–Â—Â˜Â™ÂšÂ›ÂœÂÂÂŸÂ Â¡Â¢Â£Â¤Â¥Â¦Â§Â¨Â©ÂªÂ«Â¬Â­Â®Â¯Â°Â±Â²Â³Â´ÂµÂ¶Â·Â¸Â¹ÂºÂ»Â¼Â½Â¾Â¿Ã€ÃÃ‚ÃƒÃ„Ã…Ã†Ã‡ÃˆÃ‰ÃŠÃ‹ÃŒÃÃÃÃÃ‘Ã’Ã“Ã”Ã•Ã–Ã—Ã˜Ã™ÃšÃ›ÃœÃÃÃŸÃ Ã¡Ã¢Ã£Ã¤Ã¥Ã¦Ã§Ã¨Ã©ÃªÃ«Ã¬Ã­Ã®Ã¯Ã°Ã±Ã²Ã³Ã´ÃµÃ¶Ã·Ã¸Ã¹ÃºÃ»Ã¼Ã½Ã¾Ã¿-funky alias_var_works_over_ssh
+par_tcsh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works_over_ssh
 par_tcsh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
 par_tcsh_funky	func_echo: Command not found.
 par_tcsh_funky	func_echo: Command not found.
@@ -438,6 +440,8 @@ par_sh_parset	newline2
 par_sh_parset	1
 par_sh_parset	2
 par_sh_parset	3
+par_sh_parset	Exit value 2 = 2
+par_sh_parset	Exit value 2 = 2
 par_sh_man	### sh
 par_sh_man	### From man env_parallel
 par_sh_man	aliases with = & " ! ' work
@@ -608,6 +612,8 @@ par_mksh_parset	2
 par_mksh_parset	3
 par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
+par_mksh_parset	Exit value 2 = 2
+par_mksh_parset	Exit value 2 = 2
 par_mksh_man	### mksh
 par_mksh_man	### From man env_parallel
 par_mksh_man	aliases with = & " ! ' work
@@ -889,6 +895,8 @@ par_ksh_parset	2
 par_ksh_parset	3
 par_ksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_ksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
+par_ksh_parset	Exit value 2 = 2
+par_ksh_parset	Exit value 2 = 2
 par_ksh_man	### ksh
 par_ksh_man	### From man env_parallel
 par_ksh_man	aliases with = & " ! ' work
@@ -957,9 +965,9 @@ par_ksh_man	work,
 par_ksh_man	too
 par_ksh_man	This may never work
 par_ksh_man	https://unix.stackexchange.com/questions/457031/extract-full-function-definitions
-par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `{' unmatched
-par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `{' unmatched
-par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `{' unmatched
+par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `(' unexpected
+par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `(' unexpected
+par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `(' unexpected
 par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255
@@ -1130,15 +1138,15 @@ par_fish_underscore	aliases and arrays in functions work
 par_fish_underscore	aliases functions work
 par_fish_underscore	aliases functions work
 par_fish_underscore	      ^
-par_fish_underscore	in function â€œmyfuncâ€
+par_fish_underscore	in function 'myfunc'
 par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list â€œworkâ€
+par_fish_underscore		with parameter list 'work'
 par_fish_underscore	
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
 par_fish_underscore	      ^
-par_fish_underscore	in function â€œmyfuncâ€
+par_fish_underscore	in function 'myfunc'
 par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list â€œworkâ€
+par_fish_underscore		with parameter list 'work'
 par_fish_underscore	
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
 par_fish_underscore	      ^
@@ -1277,6 +1285,8 @@ par_dash_parset	newline2
 par_dash_parset	1
 par_dash_parset	2
 par_dash_parset	3
+par_dash_parset	Exit value 2 = 2
+par_dash_parset	Exit value 2 = 2
 par_dash_man	### dash
 par_dash_man	### From man env_parallel
 par_dash_man	aliases with = & " ! ' work
@@ -1553,6 +1563,8 @@ par_bash_parset	2
 par_bash_parset	3
 par_bash_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_bash_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
+par_bash_parset	Exit value 2 = 2
+par_bash_parset	Exit value 2 = 2
 par_bash_man	### bash
 par_bash_man	### From man env_parallel
 par_bash_man	aliases with = & " ! ' work
@@ -1630,10 +1642,12 @@ par_bash_man	exit value 2 should be 2
 par_bash_man	Unknown option: no-such-option
 par_bash_man	exit value 255 should be 255
 par_bash_funky	
+par_bash_funky	
+par_bash_funky	
 par_bash_funky		
 par_bash_funky		
-par_bash_funky	-funkymultiline
-par_bash_funky	-funkymultiline
+par_bash_funky	
+par_bash_funky	
 par_bash_funky	  space  6  
 par_bash_funky	  space  6  
 par_bash_funky	'	'
@@ -1651,6 +1665,8 @@ par_bash_funky	function_works
 par_bash_funky	function_works_over_ssh
 par_bash_funky	myvar  works
 par_bash_funky	myvar  works
+par_bash_funky	-funkymultiline
+par_bash_funky	-funkymultiline
 par_bash_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
 par_bash_environment_too_big	OK_bigvar
 par_bash_environment_too_big	OK_bigvar_remote
@@ -1819,6 +1835,8 @@ par_ash_parset	newline2
 par_ash_parset	1
 par_ash_parset	2
 par_ash_parset	3
+par_ash_parset	Exit value 2 = 2
+par_ash_parset	Exit value 2 = 2
 par_ash_man	### ash
 par_ash_man	### From man env_parallel
 par_ash_man	aliases with = & " ! ' work

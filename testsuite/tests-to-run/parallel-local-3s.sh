@@ -197,13 +197,13 @@ par_parcat_mixing() {
     slow_output() {
 	string=$1
 	perl -e 'print "'$string'"x9000,"start\n"'
-	sleep 4
+	sleep 6
 	perl -e 'print "'$string'"x9000,"end\n"'
     }
     tmp1=$(mktmpfifo)
     tmp2=$(mktmpfifo)
     slow_output a > $tmp1 &
-    sleep 2
+    sleep 3
     slow_output b > $tmp2 &
     parcat $tmp1 $tmp2 | tr -s ab
 }

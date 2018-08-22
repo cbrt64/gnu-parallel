@@ -118,7 +118,7 @@ function env_parallel
       # Generate commands to set scalar variables
       # Keep the ones from --env
       # Ignore the ones from ~/.parallel/ignored_vars
-      # 
+      #
       begin;
         for v in (set -n | \
           grep -Ev '^(PARALLEL_TMP)$' | \

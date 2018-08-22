@@ -1891,7 +1891,7 @@ sub open_joblog {
 			    $/ = "\0";
 			}
 			# Replace \0 with '\n' as used in print_joblog()
-			print $outfh map { s/\0/\n/g; $_,$/ } @group;
+			print $outfh map { s/\0/\n/g; $_,$/ } map { $_ } @group;
 			seek $outfh, 0, 0;
 			exit_if_disk_full();
 			# Set filehandle to -a
@@ -6760,9 +6760,10 @@ sub sct_aix() {
 	    close $in_fh;
 	}
     }
-    $cpu->{'sockets'} ||= $cpu->{'cores'};
 
     if(grep { /\d/ } values %$cpu) {
+	# BUG It is not not known how to calculate this
+	$cpu->{'sockets'} = 1;
 	return $cpu;
     } else {
 	return undef;
@@ -6779,10 +6780,13 @@ sub sct_hpux() {
     my $cpu;
     $cpu->{'cores'} =
         ::qqx(qq{ /usr/bin/mpsched -s 2>&1 | grep 'Locality Domain Count' | awk '{ print \$4 }'});
+    chomp($cpu->{'cores'});
     $cpu->{'threads'} =
-        ::qqx(qq{ /usr/bin/mpsched -s 2>&1 | perl -ne '/Processor Count\\D+(\\d+)/ and print "\$1\n"'});
+        ::qqx(qq{ /usr/bin/mpsched -s 2>&1 | perl -ne '/Processor Count\\D+(\\d+)/ and print "\$1"'});
 
     if(grep { /\d/ } values %$cpu) {
+	# BUG It is not not known how to calculate this
+	$cpu->{'sockets'} = 1;
 	return $cpu;
     } else {
 	return undef;
