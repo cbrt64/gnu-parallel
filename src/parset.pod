@@ -39,7 +39,7 @@ variable.
 
 =head1 SUPPORTED SHELLS
 
-=head2 Bash/Zsh/Ksh/(Mksh alpha testing)
+=head2 Bash/Zsh/Ksh/(Mksh beta testing)
 
 =head3 Examples
 

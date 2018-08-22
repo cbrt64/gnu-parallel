@@ -1460,20 +1460,20 @@ on remote computers).
 Print the number of physical CPU cores and exit.
 
 
-=item B<--number-of-cores> (alpha testing)
+=item B<--number-of-cores> (beta testing)
 
 Print the number of physical CPU cores and exit (used by GNU B<parallel> itself
 to determine the number of physical CPU cores on remote computers).
 
 
-=item B<--number-of-sockets> (alpha testing)
+=item B<--number-of-sockets> (beta testing)
 
 Print the number of filled CPU sockets and exit (used by GNU
 B<parallel> itself to determine the number of filled CPU sockets on
 remote computers).
 
 
-=item B<--number-of-threads> (alpha testing)
+=item B<--number-of-threads> (beta testing)
 
 Print the number of hyperthreaded CPU cores and exit (used by GNU
 B<parallel> itself to determine the number of hyperthreaded CPU cores
@@ -2571,9 +2571,9 @@ Use the replacement string I<replace-str> instead of B<{.}> for input
 line without extension.
 
 
-=item B<--use-sockets-instead-of-threads> (alpha testing)
+=item B<--use-sockets-instead-of-threads> (beta testing)
 
-=item B<--use-cores-instead-of-threads> (alpha testing)
+=item B<--use-cores-instead-of-threads> (beta testing)
 
 =item B<--use-cpus-instead-of-cores> (obsolete)
 

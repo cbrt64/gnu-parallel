@@ -1,3 +1,42 @@
+20180822
+
+* parset sets exit code.
+
+* How to install GNU Parallel
+  https://www.techrepublic.com/videos/how-to-install-gnu-parallel/
+
+* Bug fixes and man page updates.
+
+
+20180722
+
+* The quoting engine has been changed. Instead of using \-quoting GNU
+  Parallel now uses '-quoting in bash/ash/dash/ksh. This should
+  improve compatibility with different locales. This is a big change
+  causing this release to be alpha quality.
+
+* The CPU calculation has changed. By default GNU Parallel uses the
+  number of CPU threads as the number of CPUs. This can be changed to
+  the number of CPU cores or number of CPU sockets with
+  --use-cores-instead-of-threads or --use-sockets-instead-of-threads.
+
+* The detected number of sockets, cores, and threads can be shown with
+  --number-of-sockets, --number-of-cores, and --number-of-threads.
+
+* env_parallel now support mksh using env_parallel.mksh.
+
+* GNU Parallel is distributed as part of Snippy
+  https://github.com/tseemann/snippy
+
+* GNU Parallel: Ejecutar comandos simultáneamente en Linux
+  https://esgeeks.com/gnu-parallel-ejecutar-comandos-simultaneo-linux/
+
+* Parallel download genomic data with GNU-Parallel
+  https://digibio.blogspot.com/search/label/GNU-Parallel
+
+* Bug fixes and man page updates.
+
+
 20180622
 
 * Deal better with multibyte chars by forcing LC_ALL=C.

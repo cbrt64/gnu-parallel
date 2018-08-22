@@ -448,7 +448,7 @@ array with the given name. Multiple B<--env>s can be given.
 =back
 
 
-=head2 mksh (alpha testing)
+=head2 mksh (beta testing)
 
 =head3 Installation
 

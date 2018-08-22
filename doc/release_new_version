@@ -206,11 +206,10 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180822 ('Genova/Lombok/AM2431/Zimbabwe/Parker Solar Probe') released [alpha] <<[stable]>>
+Subject: GNU Parallel 20180822 ('Genova') released [alpha] <<[stable]>>
 
-GNU Parallel 20180822 ('') [alpha] <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180822 ('Genova') [alpha] <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
-This release has signficant changes and is considered alpha quality.
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
