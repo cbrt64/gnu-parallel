@@ -28,7 +28,9 @@ If I<variablename> is a single variable name, this will be treated as
 the destination variable and made into an array.
 
 If I<variablename> contains multiple names separated by ',' or space,
-the names will be the destination variables.
+the names will be the destination variables. The number of names must
+be at least the number of jobs - otherwise some tmp files will not be
+cleaned up.
 
 
 =head1 OPTIONS
@@ -39,7 +41,7 @@ variable.
 
 =head1 SUPPORTED SHELLS
 
-=head2 Bash/Zsh/Ksh/(Mksh beta testing)
+=head2 Bash/Zsh/Ksh/Mksh
 
 =head3 Examples
 

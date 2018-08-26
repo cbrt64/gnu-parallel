@@ -1,4 +1,4 @@
-MAXTIME=25 RETRIES=4
+MAXTIME=25 RETRIES=4 MAXPROC=150
 ### Filter out working servers
 ### Copy commands to servers
 bin/parallel qnx	copy qnx bin/parallel parallel
@@ -348,8 +348,9 @@ netbsd	Works on netbsd.polarhome.com
 openbsd	Works on openbsd.polarhome.com
 openindiana	Works on openindiana
 pidora	Works on pidora
+qnx	Works on qnx
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	Works on raspbian
 redhat	Works on redhat.polarhome.com
 scosysv	Works on scosysv.polarhome.com
@@ -376,7 +377,7 @@ mandriva	### Test if empty command in process list causes problems
 mandriva	OK_with_empty_cmd
 miros	### Test if empty command in process list causes problems
 miros	OK_with_empty_cmd
-netbsd	CSH/TCSH DO NOT SUPPORT newlines IN VARIABLES/FUNCTIONS. Unset test_empty_cmd test_empty_cmd
+netbsd	CSH/TCSH DO NOT SUPPORT newlines IN VARIABLES/FUNCTIONS. Unset test_empty_cmd test_empty_cmd test_empty_cmd test_empty_cmd
 openbsd	### Test if empty command in process list causes problems
 openbsd	OK_with_empty_cmd
 openindiana	### Test if empty command in process list causes problems
@@ -428,8 +429,9 @@ openindiana	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file 
 openindiana	OK readonly tmp
 pidora	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 pidora	OK readonly tmp
+qnx	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+qnx	OK readonly tmp
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
 raspbian	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
 raspbian	OK readonly tmp
 redhat	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
@@ -464,8 +466,9 @@ netbsd	1
 openbsd	1
 openindiana	1
 pidora	1
+qnx	1
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	1
 redhat	1
 scosysv	1
@@ -488,8 +491,9 @@ netbsd	1
 openbsd	1
 openindiana	1
 pidora	1
+qnx	1
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	1
 redhat	2
 scosysv	1
@@ -512,8 +516,9 @@ netbsd	1
 openbsd	1
 openindiana	1
 pidora	1
+qnx	1
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	1
 redhat	2
 scosysv	1
@@ -536,8 +541,9 @@ netbsd	1
 openbsd	1
 openindiana	1
 pidora	1
+qnx	1
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	1
 redhat	2
 scosysv	1
@@ -586,6 +592,7 @@ netbsd	bash only B
 openbsd	bash only B
 openindiana	bash only B
 pidora	bash only B
+qnx	bash only B
 raspbian	bash only B
 redhat	bash only B
 scosysv	bash only B
@@ -731,8 +738,18 @@ pidora	     /home/t/tange/.profile
 pidora	     /home/t/tange/.cshrc
 pidora	     /home/t/tange/.tcshrc
 pidora	install-OK
+qnx	Installed env_parallel in:
+qnx	     /home/t/tange/.bashrc
+qnx	     /home/t/tange/.shrc
+qnx	     /home/t/tange/.zshenv
+qnx	     /home/t/tange/.config/fish/config.fish
+qnx	     /home/t/tange/.kshrc
+qnx	     /home/t/tange/.mkshrc
+qnx	     /home/t/tange/.profile
+qnx	     /home/t/tange/.cshrc
+qnx	     /home/t/tange/.tcshrc
+qnx	install-OK
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
 raspbian	Installed env_parallel in:
 raspbian	     /home/t/tange/.bashrc
 raspbian	     /home/t/tange/.shrc
@@ -825,8 +842,9 @@ netbsd	env_parallel run-OK
 openbsd	env_parallel run-OK
 openindiana	env_parallel run-OK
 pidora	env_parallel run-OK
+qnx	env_parallel run-OK
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	env_parallel run-OK
 redhat	env_parallel run-OK
 scosysv	env_parallel run-OK
@@ -872,8 +890,10 @@ netbsd	arr: Undefined variable.
 openbsd	
 openindiana	1 2 1 2 3 1 2 3 4
 pidora	1 2 1 2 3 1 2 3 4
+qnx	
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	/bin/sh: syntax error: `(' unexpected
 raspbian	1 2 1 2 3 1 2 3 4
 redhat	1 2 1 2 3 1 2 3 4
 scosysv	1 2 1 2 3 1 2 3 4
@@ -899,8 +919,10 @@ netbsd	arr: Undefined variable.
 openbsd	
 openindiana	2 2 3 2 3 4
 pidora	2 2 3 2 3 4
+qnx	
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	/bin/sh: syntax error: `(' unexpected
 raspbian	2 2 3 2 3 4
 redhat	2 2 3 2 3 4
 scosysv	2 2 3 2 3 4
@@ -928,8 +950,10 @@ netbsd	var1: Undefined variable.
 openbsd	,,
 openindiana	1 2,1 2 3,1 2 3 4
 pidora	1 2,1 2 3,1 2 3 4
+qnx	,,
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	1 2,1 2 3,1 2 3 4
 redhat	1 2,1 2 3,1 2 3 4
 scosysv	1 2,1 2 3,1 2 3 4
@@ -955,8 +979,10 @@ netbsd	var1: Undefined variable.
 openbsd	,,
 openindiana	2,2 3,2 3 4
 pidora	2,2 3,2 3 4
+qnx	,,
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	/bin/sh: .: /home/t/tange/setupenv: No such file or directory
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	2,2 3,2 3 4
 redhat	2,2 3,2 3 4
 scosysv	2,2 3,2 3 4

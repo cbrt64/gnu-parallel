@@ -160,7 +160,8 @@ sub set_input_source_header {
 		::debug("init", "Colname: '$s'");
 		# Replace {colname} with {2}
 		for(@command,@Global::ret_files,@Global::transfer_files,
-		    $opt::tagstring, $opt::workdir, $opt::results, $opt::retries) {
+		    $opt::tagstring, $opt::workdir, $opt::results,
+		    $opt::retries) {
 		    # Skip if undefined
 		    $_ or next;
 		  s:\{$s(|/|//|\.|/\.)\}:\{$id$1\}:g;
@@ -202,7 +203,8 @@ sub halt {
 	if(not defined $Global::halt_exitstatus) {
 	    if($Global::halt_pct) {
 		$Global::halt_exitstatus =
-		    ::ceil($Global::total_failed / $Global::total_started * 100);
+		    ::ceil($Global::total_failed /
+			   $Global::total_started * 100);
 	    } elsif($Global::halt_count) {
 		$Global::halt_exitstatus =
 		    ::min(undef_as_zero($Global::total_failed),101);
@@ -226,7 +228,7 @@ sub pipepart_setup {
     if($opt::tee) {
 	# Prepend each command with
 	#   < file
-	my $cat_string = "< ".::shell_quote_scalar($opt::a[0]);
+	my $cat_string = "< ".Q($opt::a[0]);
 	for(1..$Global::JobQueue->total_jobs()) {
 	    push @Global::cat_appends, $cat_string;
 	    push @Global::cat_prepends, "";
@@ -337,7 +339,8 @@ sub find_header {
 	if($opt::header eq ":") { $opt::header = "(.*\n)"; }
 	# Number = number of lines
 	$opt::header =~ s/^(\d+)$/"(.*\n)"x$1/e;
-	while(read($fh,substr($$buf_ref,length $$buf_ref,0),$Global::blocksize)) {
+	while(read($fh,substr($$buf_ref,length $$buf_ref,0),
+		   $Global::blocksize)) {
 	    if($$buf_ref=~s/^($opt::header)//) {
 		$header = $1;
 		last;
@@ -441,7 +444,7 @@ sub cat_partial {
 		 }
 	     }
 	 });
-    return "<". shell_quote_scalar($file) .
+    return "<". Q($file) .
 	" perl -e '$script' @start_len |";
 }
 
@@ -667,7 +670,8 @@ sub recstartrecend {
     }
 
     if($opt::regexp) {
-	# If $recstart/$recend contains '|' this should only apply to the regexp
+	# If $recstart/$recend contains '|'
+	# this should only apply to the regexp
 	$recstart = "(?:".$recstart.")";
 	$recend = "(?:".$recend.")";
     } else {
@@ -726,7 +730,8 @@ sub nindex {
 		    if($job->block_length() > 0) {
 			$written += $job->non_blocking_write();
 		    } else {
-			$job->set_block($header_ref,$buffer_ref,$endpos,$recstart,$recend);
+			$job->set_block($header_ref, $buffer_ref,
+					$endpos, $recstart, $recend);
 			$block_passed = 1;
 			$job->set_virgin(0);
 			$written += $job->non_blocking_write();
@@ -740,8 +745,8 @@ sub nindex {
 			if($job->block_length() > 0) {
 			    $written += $job->non_blocking_write();
 			} else {
-			    $job->set_block($header_ref,$buffer_ref,
-					    $endpos,$recstart,$recend);
+			    $job->set_block($header_ref, $buffer_ref,
+					    $endpos, $recstart, $recend);
 			    $block_passed = 1;
 			    $job->set_virgin(0);
 			    $written += $job->non_blocking_write();
@@ -864,12 +869,14 @@ sub write_record_to_pipe {
     #   @Global::virgin_jobs
     # Returns:
     #   Number of chunks written (0 or 1)
-    my ($chunk_number,$header_ref,$buffer_ref,$recstart,$recend,$endpos) = @_;
+    my ($chunk_number, $header_ref, $buffer_ref,
+	$recstart, $recend, $endpos) = @_;
     if($endpos == 0) { return 0; }
     if(vec($Global::job_already_run,$chunk_number,1)) { return 1; }
     if($opt::roundrobin) {
 	# Write the block to one of the already running jobs
-	return round_robin_write($header_ref,$buffer_ref,$recstart,$recend,$endpos);
+	return round_robin_write($header_ref, $buffer_ref,
+				 $recstart, $recend, $endpos);
     }
     # If no virgin found, backoff
     my $sleep = 0.0001; # 0.01 ms - better performance on highend
@@ -889,7 +896,8 @@ sub write_record_to_pipe {
 	# Copy $buffer[0..$endpos] to $job->{'block'}
 	# Remove rec_sep
 	# Run $job->add_transfersize
-	$job->set_block($header_ref,$buffer_ref,$endpos,$recstart,$recend);
+	$job->set_block($header_ref, $buffer_ref, $endpos,
+			$recstart, $recend);
 	if(fork()) {
 	    # Skip
 	} else {
@@ -908,7 +916,7 @@ sub write_record_to_pipe {
 	    substr($$buffer_ref,$endpos,length $$buffer_ref) = "";
 	    # Remove rec_sep
 	    if($opt::remove_rec_sep) {
-		Job::remove_rec_sep($buffer_ref,$recstart,$recend);
+		Job::remove_rec_sep($buffer_ref, $recstart, $recend);
 	    }
 	    $job->write($header_ref);
 	    $job->write($buffer_ref);
@@ -931,7 +939,8 @@ sub acquire_semaphore {
     # Returns:
     #   The semaphore to be released when jobs is complete
     $Global::host{':'} = SSHLogin->new(":");
-    my $sem = Semaphore->new($Semaphore::name,$Global::host{':'}->max_jobs_running());
+    my $sem = Semaphore->new($Semaphore::name,
+			     $Global::host{':'}->max_jobs_running());
     $sem->acquire();
     if($Semaphore::fg) {
 	# skip
@@ -974,7 +983,8 @@ sub options_hash {
 	 "group" => \$opt::group,
 	 "g" => \$opt::retired,
 	 "ungroup|u" => \$opt::ungroup,
-	 "linebuffer|linebuffered|line-buffer|line-buffered|lb" => \$opt::linebuffer,
+	 "linebuffer|linebuffered|line-buffer|line-buffered|lb"
+	 => \$opt::linebuffer,
 	 "tmux" => \$opt::tmux,
 	 "tmuxpane" => \$opt::tmuxpane,
 	 "null|0" => \$opt::null,
@@ -1001,8 +1011,10 @@ sub options_hash {
 	 "number-of-sockets" => \$opt::number_of_sockets,
 	 "number-of-cores" => \$opt::number_of_cores,
 	 "number-of-threads" => \$opt::number_of_threads,
-	 "use-sockets-instead-of-threads" => \$opt::use_sockets_instead_of_threads,
-	 "use-cores-instead-of-threads" => \$opt::use_cores_instead_of_threads,
+	 "use-sockets-instead-of-threads"
+	 => \$opt::use_sockets_instead_of_threads,
+	 "use-cores-instead-of-threads"
+	 => \$opt::use_cores_instead_of_threads,
 	 "use-cpus-instead-of-cores" => \$opt::use_cpus_instead_of_cores,
 	 "shellquote|shell_quote|shell-quote" => \$opt::shellquote,
 	 "nice=i" => \$opt::nice,
@@ -1030,7 +1042,8 @@ sub options_hash {
 	 "rsync-opts|rsyncopts=s" => \$opt::rsync_opts,
 	 "tmpdir|tempdir=s" => \$opt::tmpdir,
 	 "use-compress-program|compress-program=s" => \$opt::compress_program,
-	 "use-decompress-program|decompress-program=s" => \$opt::decompress_program,
+	 "use-decompress-program|decompress-program=s"
+	 => \$opt::decompress_program,
 	 "compress" => \$opt::compress,
 	 "tty" => \$opt::tty,
 	 "T" => \$opt::retired,
@@ -1100,7 +1113,8 @@ sub options_hash {
 	 "wait" => \$opt::wait,
 	 # Shebang #!/usr/bin/parallel --shebang
 	 "shebang|hashbang" => \$opt::shebang,
-	 "internal-pipe-means-argfiles" => \$opt::internal_pipe_means_argfiles,
+	 "internal-pipe-means-argfiles"
+	 => \$opt::internal_pipe_means_argfiles,
 	 "Y" => \$opt::retired,
          "skip-first-line" => \$opt::skip_first_line,
 	 "bug" => \$opt::bug,
@@ -1541,7 +1555,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180822;
+    $Global::version = 20180824;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -2046,7 +2060,7 @@ sub read_options {
 	# remove --hashbang if it is set
         $opt::shebang .= ($ARGV[0] =~ s/^--hashbang *//);
 	if($opt::shebang) {
-	    my $argfile = shell_quote_scalar(pop @ARGV);
+	    my $argfile = Q(pop @ARGV);
 	    # exec myself to split $ARGV[0] into separate fields
 	    exec "$0 --skip-first-line -a $argfile @ARGV";
 	}
@@ -2069,7 +2083,7 @@ sub read_options {
 	    } else {
 		@options = shift @ARGV;
 	    }
-	    my $script = shell_quote_scalar(shift @ARGV);
+	    my $script = Q(shift @ARGV);
 	    # exec myself to split $ARGV[0] into separate fields
 	    exec "$0 --internal-pipe-means-argfiles @options @parser $script ".
 		"::: @ARGV";
@@ -2352,6 +2366,7 @@ sub shell_quote_scalar {
 
 sub Q {
     # Q alias for ::shell_quote_scalar
+    no warnings 'redefine';
     *Q = \&::shell_quote_scalar;
     return Q(@_);
 }
@@ -2372,7 +2387,7 @@ sub shell_quote_file {
 	    $a = "./".$a;
 	}
     }
-    return ::Q($a);
+    return Q($a);
 }
 
 sub shell_words {
@@ -3766,7 +3781,7 @@ sub parallelized_host_filtering {
     my $cmd =
 	"$0 -j0 --timeout 10 --joblog - --plain --delay 0.1 --retries 3 ".
 	"--tag --tagstring '{1}' -0 --colsep '\t' -k eval '{2}' && true ";
-    $cmd = $Global::shell." -c ".::shell_quote_scalar($cmd);
+    $cmd = $Global::shell." -c ".Q($cmd);
     ::debug("init", $cmd, "\n");
     my @out;
     my $prepend = "";
@@ -3895,16 +3910,16 @@ sub onall {
 	     ((defined $opt::timeout) ? "--timeout ".$opt::timeout : ""),
 	     ((defined $opt::ungroup) ? "-u" : ""),
 	     ((defined $opt::tee) ? "--tee" : ""),
-	     ((defined $opt::workdir) ? "--wd ".::shell_quote_scalar($opt::workdir) : ""),
-	     (@Global::transfer_files ? map { "--tf ".::shell_quote_scalar($_) }
+	     ((defined $opt::workdir) ? "--wd ".Q($opt::workdir) : ""),
+	     (@Global::transfer_files ? map { "--tf ".Q($_) }
 	      @Global::transfer_files : ""),
-	     (@Global::ret_files ? map { "--return ".::shell_quote_scalar($_) }
+	     (@Global::ret_files ? map { "--return ".Q($_) }
 	      @Global::ret_files : ""),
-	     (@opt::env ? map { "--env ".::shell_quote_scalar($_) } @opt::env : ""),
+	     (@opt::env ? map { "--env ".Q($_) } @opt::env : ""),
 	     (map { "-v" } @opt::v),
 	);
     ::debug("init", "| $0 $options\n");
-    open(my $parallel_fh, "|-", "$0 --will-cite -j0 $options") ||
+    open(my $parallel_fh, "|-", "$0 -0 --will-cite -j0 $options") ||
 	::die_bug("This does not run GNU Parallel: $0 $options");
     my @joblogs;
     for my $host (sort keys %Global::host) {
@@ -3915,16 +3930,20 @@ sub onall {
 	    $joblog = "--joblog $joblog";
 	}
 	my $quad = $opt::arg_file_sep || "::::";
-	::debug("init", "$0 $suboptions -j1 $joblog ",
+	# If PARALLEL_ENV is set: Pass it on
+	my $penv=$Global::parallel_env ?
+	    "PARALLEL_ENV=".Q($Global::parallel_env) :
+	    '';
+	::debug("init", "$penv $0 $suboptions -j1 $joblog ",
 	    ((defined $opt::tag) ?
-	     "--tagstring ".shell_quote_scalar($sshlogin->string()) : ""),
-	     " -S ", shell_quote_scalar($sshlogin->string())," ",
+	     "--tagstring ".Q($sshlogin->string()) : ""),
+	     " -S ", Q($sshlogin->string())," ",
 	     join(" ",shell_quote(@command))," $quad @argfiles\n");
-	print $parallel_fh "$0 $suboptions -j1 $joblog ",
+	print $parallel_fh "$penv $0 $suboptions -j1 $joblog ",
 	    ((defined $opt::tag) ?
-	     "--tagstring ".shell_quote_scalar($sshlogin->string()) : ""),
-	     " -S ", shell_quote_scalar($sshlogin->string())," ",
-	     join(" ",shell_quote(@command))," $quad @argfiles\n";
+	     "--tagstring ".Q($sshlogin->string()) : ""),
+	     " -S ", Q($sshlogin->string())," ",
+	     join(" ",shell_quote(@command))," $quad @argfiles\0";
     }
     close $parallel_fh;
     $Global::exitstatus = $? >> 8;
@@ -5528,7 +5547,7 @@ sub memfree_recompute {
 		$perlscript .= 'if($^O eq "'.$os.'") { '.$script_of{$os}.'}';
 	    }
 	    $perlscript =~ s/[\t\n ]+/ /g;
-	    $script = "perl -e " . ::shell_quote_scalar($perlscript);
+	    $script = "perl -e " . ::Q($perlscript);
 	}
 	return $script;
     }
@@ -5647,7 +5666,7 @@ sub swap_activity {
 	$swap_activity = swapactivityscript();
         if($self->{'string'} ne ":") {
             $swap_activity = $self->sshcommand() . " " . $self->serverlogin() . " " .
-		::shell_quote_scalar($swap_activity);
+		::Q($swap_activity);
         }
         # Run swap_activity measuring.
         # As the command can take long to run if run remote
@@ -5784,7 +5803,7 @@ sub swap_activity {
 		$perlscript .= 'if($^O eq "'.$os.'") { print `'.$vmstat{$os}[0].' | awk "{print ' .
 		    $vmstat{$os}[1] . '}"` }';
 	    }
-	    $script = "perl -e " . ::shell_quote_scalar($perlscript);
+	    $script = "perl -e " . ::Q($perlscript);
 	}
 	return $script;
     }
@@ -5944,7 +5963,7 @@ sub loadavg {
         my $cmd = "";
         if($self->{'string'} ne ":") {
 	    $cmd = $self->sshcommand() . " " . $self->serverlogin() . " " .
-		::shell_quote_scalar(loadavg_cmd());
+		::Q(loadavg_cmd());
 	} else {
 	    $cmd .= loadavg_cmd();
 	}
@@ -6102,8 +6121,8 @@ sub compute_number_of_processes {
 	    # The child takes one process slot
 	    # It will be killed later
 	    $SIG{'TERM'} = $Global::original_sig{'TERM'};
-	    if($^O eq "cygwin" or $^O eq "msys") {
-		# The exec does not work on Cygwin
+	    if($^O eq "cygwin" or $^O eq "msys" or $^O eq "nto") {
+		# The exec does not work on Cygwin and QNX
 		sleep 10101010;
 	    } else {
 		# 'exec sleep' takes less RAM than sleeping in perl
@@ -6932,7 +6951,7 @@ sub sshcommand_of_sshlogin {
                     open(STDIN,"<","/dev/null");
                     # Run a sleep that outputs data, so it will discover
 		    # if the ssh connection closes.
-                    my $sleep = ::shell_quote_scalar
+                    my $sleep = ::Q
 			('$|=1;while(1){sleep 1;print "foo\n"}');
                     my @master = ($opt::ssh, "-MTS",
 				  $control_path, $serverlogin, "--", "perl", "-e",
@@ -6995,7 +7014,7 @@ sub rsync_transfer_cmd {
     $file = ::shell_quote_file($file);
     my $sshcmd = $self->sshcommand();
     my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}.
-	" -e".::shell_quote_scalar($sshcmd);
+	" -e".::Q($sshcmd);
     my $serverlogin = $self->serverlogin();
     # Make dir if it does not exist
     return "$sshcmd $serverlogin -- mkdir -p $rsync_destdir && " .
@@ -7028,15 +7047,15 @@ sub cleanup_cmd {
 	$dir .= $_."/";
 	unshift @rmdir, ::shell_quote_file($dir);
     }
-    my $rmdir = @rmdir ? "sh -c ".::shell_quote_scalar("rmdir @rmdir 2>/dev/null;") : "";
+    my $rmdir = @rmdir ? "sh -c ".::Q("rmdir @rmdir 2>/dev/null;") : "";
     if(defined $opt::workdir and $opt::workdir eq "...") {
-	$rmdir .= ::shell_quote_scalar("rm -rf " . ::shell_quote_file($workdir).';');
+	$rmdir .= ::Q("rm -rf " . ::shell_quote_file($workdir).';');
     }
 
     $f = ::shell_quote_file($f);
     my $sshcmd = $self->sshcommand();
     my $serverlogin = $self->serverlogin();
-    return "$sshcmd $serverlogin -- ".::shell_quote_scalar("rm -f $f; $rmdir");
+    return "$sshcmd $serverlogin -- ".::Q("rm -f $f; $rmdir");
 }
 
 {
@@ -7511,7 +7530,7 @@ sub empty_input_wrapper {
 		exit ($?&127 ? 128+($?&127) : 1+$?>>8)
 	    }
 		  });
-    ::debug("run",'Empty wrap: perl -e '.::shell_quote_scalar($script)."\n");
+    ::debug("run",'Empty wrap: perl -e '.::Q($script)."\n");
     if($Global::cshell
        and
        length $command > 499) {
@@ -7519,12 +7538,12 @@ sub empty_input_wrapper {
 	# $command = "perl -e '".base64_zip_eval()."' ".
 	# join" ",string_zip_base64(
 	#         'exec "'.::perl_quote_scalar($command).'"');
-        return 'perl -e '.::shell_quote_scalar($script)." ".
+        return 'perl -e '.::Q($script)." ".
 	    base64_wrap("exec \"$Global::shell\",'-c',\"".
 				   ::perl_quote_scalar($command).'"');
     } else {
-	return 'perl -e '.::shell_quote_scalar($script)." ".
-	    $Global::shell." -c ".::shell_quote_scalar($command);
+	return 'perl -e '.::Q($script)." ".
+	    $Global::shell." -c ".::Q($command);
     }
 }
 
@@ -7911,7 +7930,7 @@ sub wrapped {
 	    # Prepend /bin/echo (echo no-/bin is wrong in csh)
 	    # and quote twice
 	    $command = "/bin/echo " .
-		::shell_quote_scalar(::shell_quote_scalar($command));
+		::Q(::Q($command));
 	}
 	if($Global::parallel_env) {
 	    # If $PARALLEL_ENV set, put that in front of the command
@@ -7919,7 +7938,7 @@ sub wrapped {
 	    if($Global::shell =~ /zsh/) {
 		# The extra 'eval' will make aliases work, too
 		$command = $Global::parallel_env."\n".
-		    "eval ".::shell_quote_scalar($command);
+		    "eval ".::Q($command);
 	    } else {
 		$command = $Global::parallel_env."\n".$command;
 	    }
@@ -7946,10 +7965,7 @@ sub wrapped {
 	    #   wait; rm {}
 	    # without affecting $?
 	    $command = fifo_wrap(). " ".
-		$Global::shell. " ".
-		::shell_quote_scalar($command).
-		' $PARALLEL_TMP'.
-		';';
+		$Global::shell. " ". ::Q($command). ' $PARALLEL_TMP'. ';';
 	}
 	# Wrap with ssh + tranferring of files
 	$command = $self->sshlogin_wrap($command);
@@ -8104,7 +8120,7 @@ sub base64_wrap {
     my $eval_string = shift;
     return
 	"perl -e ".
-	::shell_quote_scalar(base64_zip_eval())." ".
+	::Q(base64_zip_eval())." ".
 	join" ",::shell_quote(string_zip_base64($eval_string));
 }
 
@@ -8304,7 +8320,7 @@ sub sshlogin_wrap {
 		    # csh does not deal well with $ENV with \n
 		    $self->{'sshlogin_wrap'} = base64_wrap($perl_code);
 		} else {
-		    $self->{'sshlogin_wrap'} = "perl -e ".::shell_quote_scalar($perl_code);
+		    $self->{'sshlogin_wrap'} = "perl -e ".::Q($perl_code);
 		}
 	    } else {
 		$self->{'sshlogin_wrap'} = $command;
@@ -8321,10 +8337,8 @@ sub sshlogin_wrap {
 	    my $remote_command = $pwd.$envset.$bashfuncset.
 		'@ARGV="'.::perl_quote_scalar($command).'";'.
 		monitor_parent_sshd_script();
-	    $quoted_remote_command = "perl -e ".
-		::shell_quote_scalar($remote_command);
-	    my $dq_remote_command =
-		::shell_quote_scalar($quoted_remote_command);
+	    $quoted_remote_command = "perl -e ". ::Q($remote_command);
+	    my $dq_remote_command = ::Q($quoted_remote_command);
 	    if(length $dq_remote_command > 999
 	       or
 	       not $csh_friendly
@@ -8333,8 +8347,7 @@ sub sshlogin_wrap {
 		# csh does not deal well with > 1000 chars in one word
 		# csh does not deal well with $ENV with \n
 		$quoted_remote_command =
-		    "perl -e ".
-		    ::shell_quote_scalar(::shell_quote_scalar(base64_zip_eval()))." ".
+		    "perl -e ". ::Q(::Q(base64_zip_eval()))." ".
 		    join" ",::shell_quote(::shell_quote(string_zip_base64($remote_command)));
 	    } else {
 		$quoted_remote_command = $dq_remote_command;
@@ -8449,8 +8462,7 @@ sub sshreturn {
     my $sshlogin = $self->sshlogin();
     my $sshcmd = $sshlogin->sshcommand();
     my $serverlogin = $sshlogin->serverlogin();
-    my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}.
-	" -e".::shell_quote_scalar($sshcmd);
+    my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}. " -e". ::Q($sshcmd);
     my $pre = "";
     for my $file ($self->return()) {
 	$file =~ s:^\./::g; # Remove ./ if any
@@ -8471,9 +8483,8 @@ sub sshreturn {
 	my $nobasedir = $file;
 	$nobasedir =~ s:.*/\./::;
 	$cd = ::shell_quote_file(::dirname($nobasedir));
-	my $rsync_cd = '--rsync-path='.::shell_quote_scalar("cd $wd$cd; rsync");
-	my $basename =
-	    ::shell_quote_scalar(::shell_quote_file(::basename($file)));
+	my $rsync_cd = '--rsync-path='.::Q("cd $wd$cd; rsync");
+	my $basename = ::Q(::shell_quote_file(::basename($file)));
 	# --return
 	#   mkdir -p /home/tange/dir/subdir/;
         #   rsync (--protocol 30) -rlDzR
@@ -8502,7 +8513,7 @@ sub sshcleanup {
 	$cleancmd .= $sshlogin->cleanup_cmd($file,$workdir).";";
     }
     if(defined $opt::workdir and $opt::workdir eq "...") {
-	$cleancmd .= "$sshcmd $serverlogin -- rm -rf " . ::shell_quote_scalar($workdir).';';
+	$cleancmd .= "$sshcmd $serverlogin -- rm -rf " . ::Q($workdir).';';
     }
     return $cleancmd;
 }
@@ -8817,7 +8828,7 @@ sub interactive_start {
 	# ; causes problems
 	# ascii 194-245 annoys tmux
 	$title =~ tr/[\011-\016;\302-\365]/ /s;
-	$title = ::shell_quote_scalar($title);
+	$title = ::Q($title);
 
 	my $l_act = length($actual_command);
 	my $l_tit = length($title);
@@ -8825,7 +8836,7 @@ sub interactive_start {
 	# The line to run contains a 118 chars extra code + the title 2x
 	my $l_tot = 2 * $l_tit + $l_act + $l_fifo;
 
-	my $quoted_space75 = ::shell_quote_scalar(" ")x75;
+	my $quoted_space75 = ::Q(" ")x75;
 	while($l_tit < 1000 and
 	      (
 	       (890 < $l_tot and $l_tot < 1350)
@@ -8869,7 +8880,7 @@ sub interactive_start {
 
 	return "mkfifo $tmpfifo && $tmux ".
 	    # Run in tmux
-	    ::shell_quote_scalar
+	    ::Q
 	    (
 	     "(".$actual_command.');'.
 	     # The triple print is needed - otherwise the testsuite fails
@@ -10158,7 +10169,7 @@ sub replace_placeholders {
 	if($_ eq "\0spc" or $_ eq "\0end") {
 	    # \0spc splits quotable groups
 	    if($quote) {
-		CORE::push @quoted, ::shell_quote_scalar(join"",@quotegroup);
+		CORE::push @quoted, ::Q(join"",@quotegroup);
 	    } else {
 		CORE::push @quoted, join"",@quotegroup;
 	    }
@@ -11167,10 +11178,9 @@ sub new {
 
 sub Q {
     # Q alias for ::shell_quote_scalar
-    # Run shell_quote_scalar once to set the reference to the sub
-    my $a = ::shell_quote_scalar(@_);
+    no warnings 'redefine';
     *Q = \&::shell_quote_scalar;
-    return $a;
+    return Q(@_);
 }
 
 sub pQ {
@@ -11239,7 +11249,7 @@ sub total_jobs {
 	    $self->{'cache'}{$perlexpr} = $_;
 	}
 	# Return the value quoted if needed
-	return($quote ? ::shell_quote_scalar($self->{'cache'}{$perlexpr})
+	return($quote ? Q($self->{'cache'}{$perlexpr})
 	       : $self->{'cache'}{$perlexpr});
     }
 }

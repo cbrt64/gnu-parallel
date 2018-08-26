@@ -5,21 +5,21 @@ unset TIMEOUT
 . `which env_parallel.bash`
 env_parallel --session
 
-P_ALL="qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix irix hurd beaglebone cubieboard2"
-# P_NOTWORKING="vax alpha openstep"
-# P_NOTWORKING_YET="ultrix irix"
-# 
-# P_WORKING="openbsd tru64 debian freebsd redhat netbsd macosx miros centos unixware pidora ubuntu scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux openindiana hpux-ia64"
-# P_WORKING="openbsd tru64 debian redhat netbsd macosx miros centos unixware pidora scosysv raspbian solaris-x86 aix mandriva debian-ppc suse solaris hpux hurd freebsd ubuntu openindiana"
-# P_TEMPORARILY_BROKEN="minix dragonfly hpux-ia64 beaglebone cubieboard2"
-
+P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix irix hurd beaglebone cubieboard2"
 P="$P_ALL"
 
 # 2018-04-22 MAXTIME=20
 MAXTIME=25
 RETRIES=4
+MAXPROC=150
 
-parallel --retries $RETRIES rsync -a /usr/local/bin/{parallel,env_parallel,env_parallel.*,parcat} ::: ubuntu.polarhome.com:bin/
+# select a running master (debian or ubuntu)
+MASTER=$(parallel -j0 --halt now,success=1 ssh {} echo {} \
+		  ::: {suse,ubuntu,debian}.polarhome.com)
+
+parallel -j0 --delay 0.1 --retries $RETRIES \
+	 rsync -a /usr/local/bin/{parallel,env_parallel,env_parallel.*[^~],parcat} \
+	 ::: $MASTER:bin/
 
 doit() {
     # Avoid the stupid /etc/issue.net banner at Polarhome: -oLogLevel=quiet
@@ -27,12 +27,14 @@ doit() {
     export PARALLEL_SSH
     export MAXTIME
     export RETRIES
-
-    echo MAXTIME=$MAXTIME RETRIES=$RETRIES
+    export MAXPROC
+    export RET_TIME_K="-k --retries $RETRIES --timeout $MAXTIME"
+    
+    echo MAXTIME=$MAXTIME RETRIES=$RETRIES MAXPROC=$MAXPROC
 
     echo '### Filter out working servers'
-    POLAR="`bin/parallel -j0 -k --retries $RETRIES --timeout $MAXTIME $PARALLEL_SSH {} echo {} ::: $P`"
-    S_POLAR=`bin/parallel -j0 -k --retries $RETRIES --timeout $MAXTIME echo -S 1/{} ::: $POLAR`
+    POLAR="` bin/parallel -j0 $RET_TIME_K $PARALLEL_SSH {} echo {} ::: $P`"
+    S_POLAR=`bin/parallel -j0 $RET_TIME_K echo -S 1/{} ::: $POLAR`
     
     copy() {
 	# scp, but atomic (avoid half files if disconnected)
@@ -43,17 +45,16 @@ doit() {
 	    stdout ssh -oLogLevel=quiet $host "mkdir -p bin;cat > bin/'$dst'.tmp && chmod 755 bin/'$dst'.tmp && mv bin/'$dst'.tmp bin/'$dst'"
     }
     export -f copy
-
+    
     par_nonall() {
-	parallel -j150 -k --retries $RETRIES --timeout $MAXTIME --delay 0.1 --tag \
+	parallel -j$MAXPROC $RET_TIME_K --delay 0.1 --tag \
 		 --nonall $S_POLAR --argsep ,:- \
 		 'source setupenv >&/dev/null || . `pwd`/setupenv;' "$@"
     }
     export -f par_nonall
 
     echo '### Copy commands to servers'
-    parallel -vkj150 --retries $RETRIES --timeout $MAXTIME --delay 0.03 --tag \
-	     copy {2} {1} {1/} \
+    env_parallel -vj$MAXPROC $RET_TIME_K --delay 0.03 --tag copy {2} {1} {1/} \
 	     ::: bin/{parallel,env_parallel,env_parallel.*[^~],parcat,stdout} \
 	     ::: $POLAR
     echo Done copying
@@ -130,7 +131,7 @@ doit() {
     par_nonall 'start=2; env_parset var1,var2,var3 seq \$start ::: 2 3 4; echo $var1,$var2,$var3' 2>&1
 }
 
-env_parallel -u -Subuntu.polarhome.com doit ::: 1
+env_parallel -u -S$MASTER doit ::: 1
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

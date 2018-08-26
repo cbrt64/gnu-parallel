@@ -206,21 +206,20 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180822 ('Genova') released [alpha] <<[stable]>>
+Subject: GNU Parallel 20180922 ('') released <<[stable]>>
 
-GNU Parallel 20180822 ('Genova') [alpha] <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180922 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-  GNU parallel is a thing of magic.
-
-    -- Josh Meyer @joshmeyerphd@twitter
+  I know I'm late to the party but Gnu Parallel is truly amazing!
+    -- Sam Diaz-Munoz @sociovirology
 
 New in this release:
 
-* How to install GNU Parallel https://www.techrepublic.com/videos/how-to-install-gnu-parallel/
+* 
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

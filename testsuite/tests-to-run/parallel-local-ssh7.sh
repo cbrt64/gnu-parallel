@@ -2032,9 +2032,9 @@ par_ash_parset() {
 #    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
 #    echo "${myarray[*]}"
 #    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
-    parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
-    env_parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    env_parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
 _EOF
   )
@@ -2090,9 +2090,9 @@ par_bash_parset() {
     env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
     echo "${myarray[*]}"
     echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
-    parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
-    env_parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    env_parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
 _EOF
   )
@@ -2157,9 +2157,9 @@ par_dash_parset() {
 #    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
 #    echo "${myarray[*]}"
 #    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
-    parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
-    env_parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    env_parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
 _EOF
   )
@@ -2219,9 +2219,9 @@ par_ksh_parset() {
     env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
     echo "${myarray[*]}"
     echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
-    parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
-    env_parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    env_parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
 _EOF
   )
@@ -2277,9 +2277,9 @@ par_mksh_parset() {
     env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
     echo "${myarray[*]}"
     echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
-    parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
-    env_parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    env_parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
 _EOF
   )
@@ -2363,9 +2363,9 @@ par_sh_parset() {
 #    env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
 #    echo "${myarray[*]}"
 #    echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
-    parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
-    env_parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    env_parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
 _EOF
   )
@@ -2433,9 +2433,9 @@ par_zsh_parset() {
     env_parset 'myarray[6],myarray[5],myarray[4]' myfun ::: baz bar foo
     echo "${myarray[*]}"
     echo "${myarray[4]} ${myarray[5]} ${myarray[6]}"
-    parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
-    env_parset a,b,c 'echo {};exit {}' ::: 0 1 1 0
+    env_parset a,b,c,d 'echo {};exit {}' ::: 0 1 1 0
     echo Exit value 2 = $?
 _EOS`"
 _EOF

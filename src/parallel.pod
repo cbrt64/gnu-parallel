@@ -1460,20 +1460,20 @@ on remote computers).
 Print the number of physical CPU cores and exit.
 
 
-=item B<--number-of-cores> (beta testing)
+=item B<--number-of-cores>
 
 Print the number of physical CPU cores and exit (used by GNU B<parallel> itself
 to determine the number of physical CPU cores on remote computers).
 
 
-=item B<--number-of-sockets> (beta testing)
+=item B<--number-of-sockets>
 
 Print the number of filled CPU sockets and exit (used by GNU
 B<parallel> itself to determine the number of filled CPU sockets on
 remote computers).
 
 
-=item B<--number-of-threads> (beta testing)
+=item B<--number-of-threads>
 
 Print the number of hyperthreaded CPU cores and exit (used by GNU
 B<parallel> itself to determine the number of hyperthreaded CPU cores
@@ -1619,9 +1619,9 @@ it to the command.
 Only used with B<--pipe>.
 
 
-=item B<--results> I<name> (beta testing)
+=item B<--results> I<name>
 
-=item B<--res> I<name> (beta testing)
+=item B<--res> I<name>
 
 Save the output into files.
 
@@ -2058,7 +2058,7 @@ Use the replacement string I<replace-str> instead of B<{#}> for
 job sequence number.
 
 
-=item B<--session> (beta testing)
+=item B<--session>
 
 Record names in current environment in B<$PARALLEL_IGNORED_NAMES> and
 exit. Only used with B<env_parallel>. Aliases, functions, and
@@ -2571,9 +2571,9 @@ Use the replacement string I<replace-str> instead of B<{.}> for input
 line without extension.
 
 
-=item B<--use-sockets-instead-of-threads> (beta testing)
+=item B<--use-sockets-instead-of-threads>
 
-=item B<--use-cores-instead-of-threads> (beta testing)
+=item B<--use-cores-instead-of-threads>
 
 =item B<--use-cpus-instead-of-cores> (obsolete)
 
