@@ -2978,7 +2978,7 @@ When asking for help, always report the full output of this:
 Output:
 
   GNU parallel 20180122
-  Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018
+  Copyright (C) 2007-2018
   Ole Tange and Free Software Foundation, Inc.
   License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
   This is free software: you are free to change and redistribute it.
@@ -3139,7 +3139,7 @@ https://my.fsf.org/donate/
 
 =back
 
-(C) 2013,2014,2015,2016,2017,2018 Ole Tange, GPLv3
+(C) 2013-2018 Ole Tange, GPLv3
 
 
 =cut

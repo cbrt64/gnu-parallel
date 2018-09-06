@@ -206,7 +206,7 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180922 ('') released <<[stable]>>
+Subject: GNU Parallel 20180922 ('Myanmar/Jacksonville/Chemnitz') released <<[stable]>>
 
 GNU Parallel 20180922 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -214,7 +214,7 @@ GNU Parallel 20180922 ('') <<[stable]>> has been released. It is available for d
 
 Quote of the month:
 
-  I know I'm late to the party but Gnu Parallel is truly amazing!
+  I know I'm late to the party but GNU Parallel is truly amazing!
     -- Sam Diaz-Munoz @sociovirology
 
 New in this release:
@@ -270,6 +270,8 @@ for Big Data Applications https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumb
 <<Possible: http://link.springer.com/article/10.1007/s12021-015-9290-5 http://link.springer.com/protocol/10.1007/978-1-4939-3578-9_14>>
 
 * Bug fixes and man page updates.
+
+Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
 GNU Parallel - For people who live life in the parallel lane.
 
