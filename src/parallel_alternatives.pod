@@ -624,17 +624,20 @@ special characters:
   echo "The Cure" > My\ brother\'s\ 12\"\ records
 
   ls | \
-    map 'echo -n `gzip < "%" | wc -c`; echo -n '*100/'; wc -c < "%"' | bc
+    map 'echo -n `gzip < "%" | wc -c`; echo -n '*100/'; wc -c < "%"' |
+    bc
 
 It works with GNU B<parallel>:
 
   ls | \
-    parallel 'echo -n `gzip < {} | wc -c`; echo -n '*100/'; wc -c < {}' | bc
+    parallel \
+      'echo -n `gzip < {} | wc -c`; echo -n '*100/'; wc -c < {}' | bc
 
 And you can even get the file name prepended:
 
   ls | \
-    parallel --tag '(echo -n `gzip < {} | wc -c`'*100/'; wc -c < {}) | bc'
+    parallel --tag \
+      '(echo -n `gzip < {} | wc -c`'*100/'; wc -c < {}) | bc'
 
 B<map> has no support for grouping. So this gives the wrong results
 without any warnings:
@@ -655,23 +658,22 @@ completely for certain jobs (and may even be considered less readable):
 
   parallel echo -n {} ::: 1 2 3
 
-  map -p 4 'echo -n % 2>&1 | sed -e "s/^/$$:/"' 1 2 3 | sort | cut -f2- -d:
+  map -p 4 'echo -n % 2>&1 | sed -e "s/^/$$:/"' 1 2 3 | \
+    sort | cut -f2- -d:
 
 B<map>s replacement strings (% %D %B %E) can be simulated in GNU
 B<parallel> by putting this in B<~/.parallel/config>:
 
   --rpl '%'
-  --rpl '%D $_=::shell_quote(::dirname($_));'
+  --rpl '%D $_=Q(::dirname($_));'
   --rpl '%B s:.*/::;s:\.[^/.]+$::;'
   --rpl '%E s:.*\.::'
-
-B<map> cannot handle bundled options: B<map -vp 0 echo this fails>
 
 B<map> does not have an argument separator on the command line, but
 uses the first argument as command. This makes quoting harder which again
 may affect readability. Compare:
 
-  map -p 2 perl\\\ -ne\\\ \\\'/^\\\\S+\\\\s+\\\\S+\\\$/\\\ and\\\ print\\\ \\\$ARGV,\\\"\\\\n\\\"\\\' *
+  map -p 2 'perl -ne '"'"'/^\S+\s+\S+$/ and print $ARGV,"\n"'"'" *
 
   parallel -q perl -ne '/^\S+\s+\S+$/ and print $ARGV,"\n"' ::: *
 
@@ -680,16 +682,11 @@ context replace:
 
   parallel --xargs echo 'BEGIN{'{}'}END' ::: 1 2 3
 
-B<map> does not set exit value according to whether one of the jobs
-failed:
-
-  parallel false ::: 1 || echo Job failed
-
-  map false 1 || echo Never run
+  map "echo 'BEGIN{'%'}END'" 1 2 3
 
 B<map> requires Perl v5.10.0 making it harder to use on old systems.
 
-B<map> has no way of using % in the command (GNU Parallel has -I to
+B<map> has no way of using % in the command (GNU B<parallel> has -I to
 specify another replacement string than B<{}>).
 
 By design B<map> is option incompatible with B<xargs>, it does not
@@ -710,18 +707,21 @@ B<ladon> only works on files and the only way to specify files is
 using a quoted glob string (such as \*.jpg). It is not possible to
 list the files manually.
 
-As replacement strings it uses FULLPATH DIRNAME BASENAME EXT RELDIR RELPATH
+As replacement strings it uses FULLPATH DIRNAME BASENAME EXT RELDIR
+RELPATH
 
-These can be simulated using GNU B<parallel> by putting this in B<~/.parallel/config>:
+These can be simulated using GNU B<parallel> by putting this in
+B<~/.parallel/config>:
 
-    --rpl 'FULLPATH $_=::shell_quote($_);chomp($_=qx{readlink -f $_});'
-    --rpl 'DIRNAME $_=::shell_quote(::dirname($_));chomp($_=qx{readlink -f $_});'
+    --rpl 'FULLPATH $_=Q($_);chomp($_=qx{readlink -f $_});'
+    --rpl 'DIRNAME $_=Q(::dirname($_));chomp($_=qx{readlink -f $_});'
     --rpl 'BASENAME s:.*/::;s:\.[^/.]+$::;'
     --rpl 'EXT s:.*\.::'
-    --rpl 'RELDIR $_=::shell_quote($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;$_=::dirname($_);'
-    --rpl 'RELPATH $_=::shell_quote($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;'
+    --rpl 'RELDIR $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;$_=::dirname($_);'
+    --rpl 'RELPATH $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;'
 
-B<ladon> deals badly with filenames containing " and newline, and it fails for output larger than 200k:
+B<ladon> deals badly with filenames containing " and newline, and it
+fails for output larger than 200k:
 
     ladon '*' -- seq 36000 | wc
 
@@ -755,16 +755,22 @@ B<jobflow> can run multiple jobs in parallel.
 
 Just like B<xargs> output from B<jobflow> jobs running in parallel mix
 together by default. B<jobflow> can buffer into files (placed in
-/run/shm), but these are not cleaned up - not even if B<jobflow> dies
-unexpectedly. If the total output is big (in the order of RAM+swap)
-it can cause the system to run out of memory.
+/run/shm), but these are not cleaned up if B<jobflow> dies
+unexpectedly (e.g. by Ctrl-C). If the total output is big (in the
+order of RAM+swap) it can cause the system to slow to a crawl and
+eventually run out of memory.
 
 B<jobflow> gives no error if the command is unknown, and like B<xargs>
-redirection requires wrapping with B<bash -c>.
+redirection and composed commands require wrapping with B<bash -c>.
+
+Input lines can at most be 4096 bytes. You can at most have 16 {}'s in
+the command template. More than that either crashes the program or
+simple does not execute the command.
+
+B<jobflow> has no equivalent for B<--pipe>, or B<--sshlogin>.
 
 B<jobflow> makes it possible to set resource limits on the running
 jobs. This can be emulated by GNU B<parallel> using B<bash>'s B<ulimit>:
-
 
   jobflow -limits=mem=100M,cpu=3,fsize=20M,nofiles=300 myjob
 
@@ -832,7 +838,7 @@ setting SSHPASS and by using B<--ssh "sshpass ssh">.
 
 To make the emulation easier, make a simple alias:
 
-  alias par_emul="parallel -j0 --ssh 'sshpass ssh' --nonall --tag --linebuffer"
+  alias par_emul="parallel -j0 --ssh 'sshpass ssh' --nonall --tag --lb"
 
 If you want to supply a password run:
 
@@ -850,8 +856,10 @@ If the above is set up you can then do:
   orgalorg -o frontend1 -o frontend2 -p -C top -bid 1
   par_emul -S frontend1 -S frontend2 top -bid 1
 
-  orgalorg -o frontend1 -o frontend2 -p -er /tmp -n 'md5sum /tmp/bigfile' -S bigfile
-  par_emul -S frontend1 -S frontend2 --basefile bigfile --workdir /tmp  md5sum /tmp/bigfile
+  orgalorg -o frontend1 -o frontend2 -p -er /tmp -n \
+    'md5sum /tmp/bigfile' -S bigfile
+  par_emul -S frontend1 -S frontend2 --basefile bigfile --workdir /tmp \
+    md5sum /tmp/bigfile
 
 B<orgalorg> has a progress indicator for the transferring of a
 file. GNU B<parallel> does not.
@@ -865,8 +873,6 @@ Rust parallel focuses on speed. It is almost as fast as B<xargs>. It
 implements a few features from GNU B<parallel>, but lacks many
 functions. All these fail:
 
-  # Show what would be executed
-  parallel --dry-run echo ::: a
   # Read arguments from file
   parallel -a file echo
   # Changing the delimiter
@@ -874,8 +880,6 @@ functions. All these fail:
 
 These do something different from GNU B<parallel>
 
-  # Read more arguments at a time -n
-  parallel -n 2 echo ::: 1 a 2 b
   # -q to protect quoted $ and space
   parallel -q perl -e '$a=shift; print "$a"x10000000' ::: a b c
   # Generation of combination of inputs
@@ -885,7 +889,7 @@ These do something different from GNU B<parallel>
   # --pipe
   seq 100000 | parallel --pipe wc
   # linked arguments
-  parallel echo ::: S M L :::+ small medium large ::: R G B :::+ red green blue
+  parallel echo ::: S M L :::+ sml med lrg ::: R G B :::+ red grn blu
   # Run different shell dialects
   zsh -c 'parallel echo \={} ::: zsh && true'
   csh -c 'parallel echo \$\{\} ::: shell && true'
@@ -902,6 +906,14 @@ then /tmp/parallel will have the wrong permissions and Rust parallel
 will fail. A malicious user can setup the right permissions and
 symlink the output file to one of the user's files and next time the
 user uses Rust parallel it will overwrite this file.
+
+  attacker$ mkdir /tmp/parallel
+  attacker$ chmod a+rwX /tmp/parallel
+  # Symlink to the file the attacker wants to zero out
+  attacker$ ln -s ~victim/.important-file /tmp/parallel/stderr_1
+  victim$ seq 1000 | parallel echo
+  # This file is now overwritten with stderr from 'echo'
+  victim$ cat ~victim/.important-file
 
 If /tmp/parallel runs full during the run, Rust parallel does not
 report this, but finishes with success - thereby risking data loss.
@@ -1286,7 +1298,8 @@ E.g.
 
 With GNU B<parallel> this can be emulated by:
 
-  echo foosuffix | parallel --plus 'p={%suffix}; echo ${p}_new_suffix'
+  echo foosuffix |
+    parallel --plus 'p={%suffix}; echo ${p}_new_suffix'
 
 Opposite B<rush> GNU B<parallel> works fine if the input contains
 double space, ' and ":
@@ -1501,9 +1514,9 @@ https://github.com/soveran/map
 
 =head2 Todo
 
-Url for map, spread
+Url for spread
 
-machma. Requires Go >= 1.7.
+https://github.com/fd0/machma Requires Go >= 1.7.
 
 https://github.com/k-bx/par requires Haskell to work. This limits the
 number of platforms this can work on.
@@ -1517,6 +1530,8 @@ https://github.com/kou1okada/lesser-parallel
 https://github.com/Julian/Verge
 
 https://github.com/amattn/paral
+
+https://github.com/mmstick/concurr
 
 pyargs
 
@@ -1559,7 +1574,8 @@ This test stresses whether output mixes.
   chmod +x mycommand
 
   # Run 30 jobs in parallel
-  seq 30 | $paralleltool ./mycommand > >(tr -s abcdef) 2> >(tr -s abcdef >&2)
+  seq 30 |
+    $paralleltool ./mycommand > >(tr -s abcdef) 2> >(tr -s abcdef >&2)
 
   # 'a c e' and 'b d f' should always stay together
   # and there should only be a single line per job
@@ -1673,6 +1689,18 @@ Some tools can only insert the argument once.
   echo bar | $paralleltool echo {} foo {}
 
 
+=head2 INPUTSIZE: Length of input should not be limited
+
+Some tools limit the length of the input lines artificially with no good
+reason. GNU B<parallel> does not:
+
+  perl -e 'print "foo."."x"x100_000_000' | parallel echo {.}
+
+GNU B<parallel> limits the command to run to 128 KB due to execve(1):
+
+  perl -e 'print "x"x131_000' | parallel echo {} | wc
+
+
 =head2 NUMWORDS: Speed depends on number of words
 
 Some tools become very slow if output lines have many words.
@@ -1705,10 +1733,10 @@ If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 
 Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2008,2009,2010 Ole Tange, http://ole.tange.dk
+Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010,2011,2012,2013,2014,2015,2016,2017,2018 Ole Tange,
-http://ole.tange.dk and Free Software Foundation, Inc.
+Copyright (C) 2010-2018 Ole Tange, http://ole.tange.dk and Free
+Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by
 the manual of B<xargs> from GNU findutils 4.4.2.
@@ -1716,8 +1744,7 @@ the manual of B<xargs> from GNU findutils 4.4.2.
 
 =head1 LICENSE
 
-Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018
-Free Software Foundation, Inc.
+Copyright (C) 2007-2018 Free Software Foundation, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

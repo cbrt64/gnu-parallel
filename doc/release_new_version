@@ -206,7 +206,7 @@ to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 
-Subject: GNU Parallel 20180922 ('Myanmar/Jacksonville/Chemnitz') released <<[stable]>>
+Subject: GNU Parallel 20180922 ('Danske/Korea/India/Myanmar/Jacksonville/Chemnitz') released <<[stable]>>
 
 GNU Parallel 20180922 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -219,7 +219,10 @@ Quote of the month:
 
 New in this release:
 
-* 
+* Updated graph showing GNU Parallel's overhead per job for each version. https://www.gnu.org/software/parallel/process-time-j2-1700MHz-3000-1000.pdf
+
+http://carc.unm.edu/education--training/workshops-and-seminars.html
+
 
 <<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
 

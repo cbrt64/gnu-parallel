@@ -1,17 +1,38 @@
-MAXTIME=25 RETRIES=4 MAXPROC=150
+MAXTIME=50 RETRIES=2 MAXPROC=11 MAXINNERPROC=3
 ### Filter out working servers
+1d0
+< openstep
+4d2
+< alpha
+7d4
+< syllable
+10d6
+< openindiana
+13d8
+< debian-ppc
+17d11
+< ubuntu
+28,32d21
+< dragonfly
+< vax
+< ultrix
+< minix
+< irix
+34,35d22
+< beaglebone
+< cubieboard2
 ### Copy commands to servers
 bin/parallel qnx	copy qnx bin/parallel parallel
 bin/parallel pidora	copy pidora bin/parallel parallel
+bin/parallel tru64	copy tru64 bin/parallel parallel
+bin/parallel hpux-ia64	copy hpux-ia64 bin/parallel parallel
 bin/parallel raspbian	copy raspbian bin/parallel parallel
 bin/parallel solaris	copy solaris bin/parallel parallel
-bin/parallel openindiana	copy openindiana bin/parallel parallel
 bin/parallel aix	copy aix bin/parallel parallel
 bin/parallel hpux	copy hpux bin/parallel parallel
 bin/parallel suse	copy suse bin/parallel parallel
 bin/parallel solaris-x86	copy solaris-x86 bin/parallel parallel
 bin/parallel mandriva	copy mandriva bin/parallel parallel
-bin/parallel ubuntu	copy ubuntu bin/parallel parallel
 bin/parallel scosysv	copy scosysv bin/parallel parallel
 bin/parallel unixware	copy unixware bin/parallel parallel
 bin/parallel centos	copy centos bin/parallel parallel
@@ -23,17 +44,19 @@ bin/parallel openbsd	copy openbsd bin/parallel parallel
 bin/parallel freebsd	copy freebsd bin/parallel parallel
 bin/parallel debian	copy debian bin/parallel parallel
 bin/parallel hurd	copy hurd bin/parallel parallel
+bin/parallel minix	copy minix bin/parallel parallel
+bin/parallel minix	cat: stdout: no space left on device
 bin/env_parallel qnx	copy qnx bin/env_parallel env_parallel
 bin/env_parallel pidora	copy pidora bin/env_parallel env_parallel
+bin/env_parallel tru64	copy tru64 bin/env_parallel env_parallel
+bin/env_parallel hpux-ia64	copy hpux-ia64 bin/env_parallel env_parallel
 bin/env_parallel raspbian	copy raspbian bin/env_parallel env_parallel
 bin/env_parallel solaris	copy solaris bin/env_parallel env_parallel
-bin/env_parallel openindiana	copy openindiana bin/env_parallel env_parallel
 bin/env_parallel aix	copy aix bin/env_parallel env_parallel
 bin/env_parallel hpux	copy hpux bin/env_parallel env_parallel
 bin/env_parallel suse	copy suse bin/env_parallel env_parallel
 bin/env_parallel solaris-x86	copy solaris-x86 bin/env_parallel env_parallel
 bin/env_parallel mandriva	copy mandriva bin/env_parallel env_parallel
-bin/env_parallel ubuntu	copy ubuntu bin/env_parallel env_parallel
 bin/env_parallel scosysv	copy scosysv bin/env_parallel env_parallel
 bin/env_parallel unixware	copy unixware bin/env_parallel env_parallel
 bin/env_parallel centos	copy centos bin/env_parallel env_parallel
@@ -45,17 +68,19 @@ bin/env_parallel openbsd	copy openbsd bin/env_parallel env_parallel
 bin/env_parallel freebsd	copy freebsd bin/env_parallel env_parallel
 bin/env_parallel debian	copy debian bin/env_parallel env_parallel
 bin/env_parallel hurd	copy hurd bin/env_parallel env_parallel
+bin/env_parallel minix	copy minix bin/env_parallel env_parallel
+bin/env_parallel minix	cat: stdout: no space left on device
 bin/env_parallel.ash qnx	copy qnx bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash pidora	copy pidora bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash tru64	copy tru64 bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash hpux-ia64	copy hpux-ia64 bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash raspbian	copy raspbian bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash solaris	copy solaris bin/env_parallel.ash env_parallel.ash
-bin/env_parallel.ash openindiana	copy openindiana bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash aix	copy aix bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash hpux	copy hpux bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash suse	copy suse bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash solaris-x86	copy solaris-x86 bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash mandriva	copy mandriva bin/env_parallel.ash env_parallel.ash
-bin/env_parallel.ash ubuntu	copy ubuntu bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash scosysv	copy scosysv bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash unixware	copy unixware bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash centos	copy centos bin/env_parallel.ash env_parallel.ash
@@ -67,17 +92,19 @@ bin/env_parallel.ash openbsd	copy openbsd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash freebsd	copy freebsd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash debian	copy debian bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash hurd	copy hurd bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash minix	copy minix bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash minix	cat: stdout: no space left on device
 bin/env_parallel.bash qnx	copy qnx bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash pidora	copy pidora bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash tru64	copy tru64 bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash hpux-ia64	copy hpux-ia64 bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash raspbian	copy raspbian bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash solaris	copy solaris bin/env_parallel.bash env_parallel.bash
-bin/env_parallel.bash openindiana	copy openindiana bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash aix	copy aix bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash hpux	copy hpux bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash suse	copy suse bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash solaris-x86	copy solaris-x86 bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash mandriva	copy mandriva bin/env_parallel.bash env_parallel.bash
-bin/env_parallel.bash ubuntu	copy ubuntu bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash scosysv	copy scosysv bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash unixware	copy unixware bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash centos	copy centos bin/env_parallel.bash env_parallel.bash
@@ -89,17 +116,19 @@ bin/env_parallel.bash openbsd	copy openbsd bin/env_parallel.bash env_parallel.ba
 bin/env_parallel.bash freebsd	copy freebsd bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash debian	copy debian bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash hurd	copy hurd bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash minix	copy minix bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash minix	cat: stdout: no space left on device
 bin/env_parallel.csh qnx	copy qnx bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh pidora	copy pidora bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh tru64	copy tru64 bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh hpux-ia64	copy hpux-ia64 bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh raspbian	copy raspbian bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh solaris	copy solaris bin/env_parallel.csh env_parallel.csh
-bin/env_parallel.csh openindiana	copy openindiana bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh aix	copy aix bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh hpux	copy hpux bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh suse	copy suse bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh solaris-x86	copy solaris-x86 bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh mandriva	copy mandriva bin/env_parallel.csh env_parallel.csh
-bin/env_parallel.csh ubuntu	copy ubuntu bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh scosysv	copy scosysv bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh unixware	copy unixware bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh centos	copy centos bin/env_parallel.csh env_parallel.csh
@@ -111,17 +140,19 @@ bin/env_parallel.csh openbsd	copy openbsd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh freebsd	copy freebsd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh debian	copy debian bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh hurd	copy hurd bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh minix	copy minix bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh minix	cat: stdout: no space left on device
 bin/env_parallel.dash qnx	copy qnx bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash pidora	copy pidora bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash tru64	copy tru64 bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash hpux-ia64	copy hpux-ia64 bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash raspbian	copy raspbian bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash solaris	copy solaris bin/env_parallel.dash env_parallel.dash
-bin/env_parallel.dash openindiana	copy openindiana bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash aix	copy aix bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash hpux	copy hpux bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash suse	copy suse bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash solaris-x86	copy solaris-x86 bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash mandriva	copy mandriva bin/env_parallel.dash env_parallel.dash
-bin/env_parallel.dash ubuntu	copy ubuntu bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash scosysv	copy scosysv bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash unixware	copy unixware bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash centos	copy centos bin/env_parallel.dash env_parallel.dash
@@ -133,17 +164,19 @@ bin/env_parallel.dash openbsd	copy openbsd bin/env_parallel.dash env_parallel.da
 bin/env_parallel.dash freebsd	copy freebsd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash debian	copy debian bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash hurd	copy hurd bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash minix	copy minix bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash minix	cat: stdout: no space left on device
 bin/env_parallel.fish qnx	copy qnx bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish pidora	copy pidora bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish tru64	copy tru64 bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish hpux-ia64	copy hpux-ia64 bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish raspbian	copy raspbian bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish solaris	copy solaris bin/env_parallel.fish env_parallel.fish
-bin/env_parallel.fish openindiana	copy openindiana bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish aix	copy aix bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish hpux	copy hpux bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish suse	copy suse bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish solaris-x86	copy solaris-x86 bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish mandriva	copy mandriva bin/env_parallel.fish env_parallel.fish
-bin/env_parallel.fish ubuntu	copy ubuntu bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish scosysv	copy scosysv bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish unixware	copy unixware bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish centos	copy centos bin/env_parallel.fish env_parallel.fish
@@ -155,17 +188,19 @@ bin/env_parallel.fish openbsd	copy openbsd bin/env_parallel.fish env_parallel.fi
 bin/env_parallel.fish freebsd	copy freebsd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish debian	copy debian bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish hurd	copy hurd bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish minix	copy minix bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish minix	cat: stdout: no space left on device
 bin/env_parallel.ksh qnx	copy qnx bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh pidora	copy pidora bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh tru64	copy tru64 bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh hpux-ia64	copy hpux-ia64 bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh raspbian	copy raspbian bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh solaris	copy solaris bin/env_parallel.ksh env_parallel.ksh
-bin/env_parallel.ksh openindiana	copy openindiana bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh aix	copy aix bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh hpux	copy hpux bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh suse	copy suse bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh solaris-x86	copy solaris-x86 bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh mandriva	copy mandriva bin/env_parallel.ksh env_parallel.ksh
-bin/env_parallel.ksh ubuntu	copy ubuntu bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh scosysv	copy scosysv bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh unixware	copy unixware bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh centos	copy centos bin/env_parallel.ksh env_parallel.ksh
@@ -177,17 +212,19 @@ bin/env_parallel.ksh openbsd	copy openbsd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh freebsd	copy freebsd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh debian	copy debian bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh hurd	copy hurd bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh minix	copy minix bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh minix	cat: stdout: no space left on device
 bin/env_parallel.mksh qnx	copy qnx bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh pidora	copy pidora bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh tru64	copy tru64 bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh hpux-ia64	copy hpux-ia64 bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh raspbian	copy raspbian bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh solaris	copy solaris bin/env_parallel.mksh env_parallel.mksh
-bin/env_parallel.mksh openindiana	copy openindiana bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh aix	copy aix bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh hpux	copy hpux bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh suse	copy suse bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh solaris-x86	copy solaris-x86 bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh mandriva	copy mandriva bin/env_parallel.mksh env_parallel.mksh
-bin/env_parallel.mksh ubuntu	copy ubuntu bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh scosysv	copy scosysv bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh unixware	copy unixware bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh centos	copy centos bin/env_parallel.mksh env_parallel.mksh
@@ -199,17 +236,19 @@ bin/env_parallel.mksh openbsd	copy openbsd bin/env_parallel.mksh env_parallel.mk
 bin/env_parallel.mksh freebsd	copy freebsd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh debian	copy debian bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh hurd	copy hurd bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh minix	copy minix bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh minix	cat: stdout: no space left on device
 bin/env_parallel.pdksh qnx	copy qnx bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh pidora	copy pidora bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh tru64	copy tru64 bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh hpux-ia64	copy hpux-ia64 bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh raspbian	copy raspbian bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh solaris	copy solaris bin/env_parallel.pdksh env_parallel.pdksh
-bin/env_parallel.pdksh openindiana	copy openindiana bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh aix	copy aix bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh hpux	copy hpux bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh suse	copy suse bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh solaris-x86	copy solaris-x86 bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh mandriva	copy mandriva bin/env_parallel.pdksh env_parallel.pdksh
-bin/env_parallel.pdksh ubuntu	copy ubuntu bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh scosysv	copy scosysv bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh unixware	copy unixware bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh centos	copy centos bin/env_parallel.pdksh env_parallel.pdksh
@@ -221,17 +260,19 @@ bin/env_parallel.pdksh openbsd	copy openbsd bin/env_parallel.pdksh env_parallel.
 bin/env_parallel.pdksh freebsd	copy freebsd bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh debian	copy debian bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh hurd	copy hurd bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh minix	copy minix bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh minix	cat: stdout: no space left on device
 bin/env_parallel.sh qnx	copy qnx bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh pidora	copy pidora bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh tru64	copy tru64 bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh hpux-ia64	copy hpux-ia64 bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh raspbian	copy raspbian bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh solaris	copy solaris bin/env_parallel.sh env_parallel.sh
-bin/env_parallel.sh openindiana	copy openindiana bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh aix	copy aix bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh hpux	copy hpux bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh suse	copy suse bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh solaris-x86	copy solaris-x86 bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh mandriva	copy mandriva bin/env_parallel.sh env_parallel.sh
-bin/env_parallel.sh ubuntu	copy ubuntu bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh scosysv	copy scosysv bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh unixware	copy unixware bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh centos	copy centos bin/env_parallel.sh env_parallel.sh
@@ -243,17 +284,19 @@ bin/env_parallel.sh openbsd	copy openbsd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh freebsd	copy freebsd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh debian	copy debian bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh hurd	copy hurd bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh minix	copy minix bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh minix	cat: stdout: no space left on device
 bin/env_parallel.tcsh qnx	copy qnx bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh pidora	copy pidora bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh tru64	copy tru64 bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh hpux-ia64	copy hpux-ia64 bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh raspbian	copy raspbian bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh solaris	copy solaris bin/env_parallel.tcsh env_parallel.tcsh
-bin/env_parallel.tcsh openindiana	copy openindiana bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh aix	copy aix bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh hpux	copy hpux bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh suse	copy suse bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh solaris-x86	copy solaris-x86 bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh mandriva	copy mandriva bin/env_parallel.tcsh env_parallel.tcsh
-bin/env_parallel.tcsh ubuntu	copy ubuntu bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh scosysv	copy scosysv bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh unixware	copy unixware bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh centos	copy centos bin/env_parallel.tcsh env_parallel.tcsh
@@ -265,17 +308,19 @@ bin/env_parallel.tcsh openbsd	copy openbsd bin/env_parallel.tcsh env_parallel.tc
 bin/env_parallel.tcsh freebsd	copy freebsd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh debian	copy debian bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh hurd	copy hurd bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh minix	copy minix bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh minix	cat: stdout: no space left on device
 bin/env_parallel.zsh qnx	copy qnx bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh pidora	copy pidora bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh tru64	copy tru64 bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh hpux-ia64	copy hpux-ia64 bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh raspbian	copy raspbian bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh solaris	copy solaris bin/env_parallel.zsh env_parallel.zsh
-bin/env_parallel.zsh openindiana	copy openindiana bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh aix	copy aix bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh hpux	copy hpux bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh suse	copy suse bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh solaris-x86	copy solaris-x86 bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh mandriva	copy mandriva bin/env_parallel.zsh env_parallel.zsh
-bin/env_parallel.zsh ubuntu	copy ubuntu bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh scosysv	copy scosysv bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh unixware	copy unixware bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh centos	copy centos bin/env_parallel.zsh env_parallel.zsh
@@ -287,17 +332,19 @@ bin/env_parallel.zsh openbsd	copy openbsd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh freebsd	copy freebsd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh debian	copy debian bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh hurd	copy hurd bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh minix	copy minix bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh minix	cat: stdout: no space left on device
 bin/parcat qnx	copy qnx bin/parcat parcat
 bin/parcat pidora	copy pidora bin/parcat parcat
+bin/parcat tru64	copy tru64 bin/parcat parcat
+bin/parcat hpux-ia64	copy hpux-ia64 bin/parcat parcat
 bin/parcat raspbian	copy raspbian bin/parcat parcat
 bin/parcat solaris	copy solaris bin/parcat parcat
-bin/parcat openindiana	copy openindiana bin/parcat parcat
 bin/parcat aix	copy aix bin/parcat parcat
 bin/parcat hpux	copy hpux bin/parcat parcat
 bin/parcat suse	copy suse bin/parcat parcat
 bin/parcat solaris-x86	copy solaris-x86 bin/parcat parcat
 bin/parcat mandriva	copy mandriva bin/parcat parcat
-bin/parcat ubuntu	copy ubuntu bin/parcat parcat
 bin/parcat scosysv	copy scosysv bin/parcat parcat
 bin/parcat unixware	copy unixware bin/parcat parcat
 bin/parcat centos	copy centos bin/parcat parcat
@@ -309,17 +356,19 @@ bin/parcat openbsd	copy openbsd bin/parcat parcat
 bin/parcat freebsd	copy freebsd bin/parcat parcat
 bin/parcat debian	copy debian bin/parcat parcat
 bin/parcat hurd	copy hurd bin/parcat parcat
+bin/parcat minix	copy minix bin/parcat parcat
+bin/parcat minix	cat: stdout: no space left on device
 bin/stdout qnx	copy qnx bin/stdout stdout
 bin/stdout pidora	copy pidora bin/stdout stdout
+bin/stdout tru64	copy tru64 bin/stdout stdout
+bin/stdout hpux-ia64	copy hpux-ia64 bin/stdout stdout
 bin/stdout raspbian	copy raspbian bin/stdout stdout
 bin/stdout solaris	copy solaris bin/stdout stdout
-bin/stdout openindiana	copy openindiana bin/stdout stdout
 bin/stdout aix	copy aix bin/stdout stdout
 bin/stdout hpux	copy hpux bin/stdout stdout
 bin/stdout suse	copy suse bin/stdout stdout
 bin/stdout solaris-x86	copy solaris-x86 bin/stdout stdout
 bin/stdout mandriva	copy mandriva bin/stdout stdout
-bin/stdout ubuntu	copy ubuntu bin/stdout stdout
 bin/stdout scosysv	copy scosysv bin/stdout stdout
 bin/stdout unixware	copy unixware bin/stdout stdout
 bin/stdout centos	copy centos bin/stdout stdout
@@ -331,7 +380,14 @@ bin/stdout openbsd	copy openbsd bin/stdout stdout
 bin/stdout freebsd	copy freebsd bin/stdout stdout
 bin/stdout debian	copy debian bin/stdout stdout
 bin/stdout hurd	copy hurd bin/stdout stdout
+bin/stdout minix	copy minix bin/stdout stdout
+bin/stdout minix	cat: stdout: no space left on device
 Done copying
+
+    echo
+    echo '### Works on ...'
+    echo
+    par_nonall parallel echo Works on {} ::: '`hostname`' 2>&1
 
 ### Works on ...
 
@@ -340,6 +396,7 @@ centos	Works on centos.polarhome.com
 debian	Works on debian
 freebsd	Syntax error: Bad fd number
 hpux	Works on hpux64
+hpux-ia64	Works on hpux-ia64
 hurd	Works on hurd
 macosx	Works on macosx.polarhome.com
 mandriva	Works on mandriva.polarhome.com
@@ -356,50 +413,130 @@ redhat	Works on redhat.polarhome.com
 scosysv	Works on scosysv.polarhome.com
 solaris	Works on solaris
 solaris-x86	Works on solaris-x86
+sshminix minix	Works on minix
 suse	Works on suse
+tru64	Works on tru64.polarhome.com
 ubuntu	Works on ubuntu
 unixware	Works on unixware.polarhome.com
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
-aix	### Test if empty command in process list causes problems
-aix	OK_with_empty_cmd
-centos	### Test if empty command in process list causes problems
-centos	OK_with_empty_cmd
-debian	### Test if empty command in process list causes problems
-debian	OK_with_empty_cmd
-freebsd	export: Illegal option -f
-hpux	### Test if empty command in process list causes problems
-hpux	OK_with_empty_cmd
-hurd	### Test if empty command in process list causes problems
-hurd	OK_with_empty_cmd
-macosx	### Test if empty command in process list causes problems
-macosx	OK_with_empty_cmd
-mandriva	### Test if empty command in process list causes problems
-mandriva	OK_with_empty_cmd
-miros	### Test if empty command in process list causes problems
-miros	OK_with_empty_cmd
-netbsd	CSH/TCSH DO NOT SUPPORT newlines IN VARIABLES/FUNCTIONS. Unset test_empty_cmd test_empty_cmd test_empty_cmd test_empty_cmd
-openbsd	### Test if empty command in process list causes problems
-openbsd	OK_with_empty_cmd
-openindiana	### Test if empty command in process list causes problems
-openindiana	OK_with_empty_cmd
-pidora	### Test if empty command in process list causes problems
-pidora	OK_with_empty_cmd
-qnx	/bin/sh: export: -f: unknown option
-raspbian	### Test if empty command in process list causes problems
-raspbian	OK_with_empty_cmd
-redhat	### Test if empty command in process list causes problems
-redhat	OK_with_empty_cmd
-scosysv	### Test if empty command in process list causes problems
-scosysv	OK_with_empty_cmd
-solaris	### Test if empty command in process list causes problems
-solaris	OK_with_empty_cmd
-solaris-x86	### Test if empty command in process list causes problems
-solaris-x86	OK_with_empty_cmd
-suse	### Test if empty command in process list causes problems
-suse	OK_with_empty_cmd
-ubuntu	### Test if empty command in process list causes problems
-ubuntu	OK_with_empty_cmd
-unixware	UX:sh (/bin/sh): ERROR: -f: is not an identifier
+    echo
+    echo '### --number-of-cores/--number-of-cpus should work with no error'
+    echo
+    par_nonall 'parallel --number-of-sockets; parallel --number-of-cores' 2>&1
+    par_nonall 'parallel --number-of-threads; parallel --number-of-cpus' 2>&1
+
+### --number-of-cores/--number-of-cpus should work with no error
+
+aix	1
+aix	1
+centos	1
+centos	1
+debian	1
+debian	2
+freebsd	Syntax error: Bad fd number
+hpux	1
+hpux	1
+hpux-ia64	1
+hpux-ia64	1
+hurd	
+hurd	1
+macosx	2
+macosx	2
+mandriva	1
+mandriva	1
+miros	1
+miros	1
+netbsd	1
+netbsd	1
+openbsd	1
+openbsd	1
+pidora	1
+pidora	1
+qnx	1
+qnx	1
+qnx	/bin/sh: >&/dev/null : illegal file descriptor name
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+raspbian	1
+raspbian	1
+redhat	1
+redhat	2
+scosysv	1
+scosysv	1
+solaris	
+solaris	2
+solaris-x86	
+solaris-x86	1
+sshminix minix	1
+sshminix minix	1
+suse	1
+suse	1
+tru64	1
+tru64	1
+ubuntu	1
+ubuntu	2
+unixware	1
+unixware	1
+unixware	UX:sh (/bin/sh): ERROR: source: Not found
+aix	1
+aix	1
+centos	1
+centos	1
+debian	2
+debian	2
+freebsd	Syntax error: Bad fd number
+hpux	1
+hpux	1
+hpux-ia64	2
+hpux-ia64	1
+hurd	1
+hurd	1
+macosx	2
+macosx	2
+mandriva	1
+mandriva	1
+miros	1
+miros	1
+netbsd	1
+netbsd	1
+openbsd	1
+openbsd	1
+openindiana	1
+openindiana	1
+pidora	1
+pidora	1
+qnx	1
+qnx	1
+qnx	/bin/sh: >&/dev/null : illegal file descriptor name
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+raspbian	1
+raspbian	1
+redhat	2
+redhat	2
+scosysv	1
+scosysv	1
+solaris	2
+solaris	2
+solaris-x86	1
+solaris-x86	1
+sshminix minix	1
+sshminix minix	1
+suse	1
+suse	1
+tru64	1
+tru64	1
+ubuntu	2
+ubuntu	2
+unixware	1
+unixware	1
+unixware	UX:sh (/bin/sh): ERROR: source: Not found
+    echo
+    echo '### Fails if tmpdir is R/O'
+    echo
+    par_nonall "stdout parallel --tmpdir / echo ::: test read-only tmp |
+	        perl -pe '\$exit += s:/[a-z0-9_]+.arg:/XXXXXXXX.arg:gi; \$exit += s/[0-9][0-9][0-9][0-9]/0000/gi; END { exit not \$exit }' &&
+	        echo OK readonly tmp" 2>&1
 
 ### Fails if tmpdir is R/O
 
@@ -413,6 +550,9 @@ debian	OK readonly tmp
 freebsd	Syntax error: Bad fd number
 hpux	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
 hpux	OK readonly tmp
+hpux-ia64	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
+hpux-ia64	 at /home/t/tange/bin/parallel line 0000
+hpux-ia64	OK readonly tmp
 hurd	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 hurd	OK readonly tmp
 macosx	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /Users/tange/bin/parallel line 0000
@@ -422,7 +562,9 @@ mandriva	OK readonly tmp
 miros	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 miros	 at /home/t/tange/bin/parallel line 0000
 miros	OK readonly tmp
-netbsd	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+netbsd	OK readonly tmp
+netbsd	Invalid null command.
+netbsd	Invalid null command.
 openbsd	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
 openbsd	OK readonly tmp
 openindiana	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /u/t/tange/bin/parallel line 0000
@@ -446,161 +588,151 @@ solaris-x86	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file 
 solaris-x86	OK readonly tmp
 suse	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 suse	OK readonly tmp
+tru64	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
+tru64	 at /home/t/tange/bin/parallel line 0000
+tru64	OK readonly tmp
 ubuntu	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 ubuntu	OK readonly tmp
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
 unixware	UX:env: ERROR: No such file or directory: bash
+    echo
+    echo '### Does exporting a bash function make parallel fail?'
+    echo 'If login shell is not bash compatible it fails'
+    echo
+    # http://zmwangx.github.io/blog/2015-11-25-bash-function-exporting-fiasco.html
+    par_nonall 'echo test funcA
+        funcA() {
+            cat <(echo bash only A)
+        }
+        export -f funcA;
+        bin/parallel funcA ::: 1' 2>&1
 
-### --number-of-cores/--number-of-cpus should work with no error
+### Does exporting a bash function make parallel fail?
+If login shell is not bash compatible it fails
 
-aix	1
-centos	1
-debian	1
-freebsd	Syntax error: Bad fd number
-hpux	1
-hurd	
-macosx	2
-mandriva	1
-miros	1
-netbsd	1
-openbsd	1
-openindiana	1
-pidora	1
-qnx	1
-qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
-raspbian	1
-redhat	1
-scosysv	1
-solaris	
-solaris-x86	
-suse	1
-ubuntu	1
-unixware	1
-unixware	UX:sh (/bin/sh): ERROR: source: Not found
-aix	1
-centos	1
-debian	2
-freebsd	Syntax error: Bad fd number
-hpux	1
-hurd	1
-macosx	2
-mandriva	1
-miros	1
-netbsd	1
-openbsd	1
-openindiana	1
-pidora	1
-qnx	1
-qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
-raspbian	1
-redhat	2
-scosysv	1
-solaris	2
-solaris-x86	1
-suse	1
-ubuntu	2
-unixware	1
-unixware	UX:sh (/bin/sh): ERROR: source: Not found
-aix	1
-centos	1
-debian	2
-freebsd	Syntax error: Bad fd number
-hpux	1
-hurd	1
-macosx	2
-mandriva	1
-miros	1
-netbsd	1
-openbsd	1
-openindiana	1
-pidora	1
-qnx	1
-qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
-raspbian	1
-redhat	2
-scosysv	1
-solaris	2
-solaris-x86	1
-suse	1
-ubuntu	2
-unixware	1
-unixware	UX:sh (/bin/sh): ERROR: source: Not found
-aix	1
-centos	1
-debian	2
-freebsd	Syntax error: Bad fd number
-hpux	1
-hurd	1
-macosx	2
-mandriva	1
-miros	1
-netbsd	1
-openbsd	1
-openindiana	1
-pidora	1
-qnx	1
-qnx	/bin/sh: >&/dev/null : illegal file descriptor name
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
-raspbian	1
-redhat	2
-scosysv	1
-solaris	2
-solaris-x86	1
-suse	1
-ubuntu	2
-unixware	1
-unixware	UX:sh (/bin/sh): ERROR: source: Not found
-
-### Does exporting a bash function kill parallel
-
+aix	test funcA
 aix	bash only A
+centos	test funcA
 centos	bash only A
+debian	test funcA
 debian	bash only A
-freebsd	Syntax error: "(" unexpected (expecting word)
+freebsd	Syntax error: Bad fd number
+hpux	test funcA
 hpux	bash only A
+hpux-ia64	test funcA
+hpux-ia64	bash only A
+hurd	test funcA
 hurd	bash only A
+macosx	test funcA
 macosx	bash only A
+mandriva	test funcA
 mandriva	bash only A
+miros	test funcA
 miros	bash only A
+netbsd	test funcA
+netbsd	Badly placed ()'s.
 netbsd	Missing name for redirect.
+netbsd	}: Command not found.
+netbsd	export: Command not found.
+netbsd	funcA: Command not found.
+openbsd	test funcA
 openbsd	bash only A
-openindiana	bash only A
+pidora	test funcA
 pidora	bash only A
 qnx	/bin/sh: syntax error: `(' unexpected
+raspbian	test funcA
 raspbian	bash only A
+redhat	test funcA
 redhat	bash only A
+scosysv	test funcA
 scosysv	bash only A
+solaris	test funcA
 solaris	bash only A
+solaris-x86	test funcA
 solaris-x86	bash only A
-suse	/home/t/tange/bin/bash: func: command not found
-ubuntu	bash only A
-unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `(' unexpected
+sshminix minix	test funcA
+suse	test funcA
+suse	bash only A
+tru64	test funcA
+tru64	bash only A
+unixware	test funcA
+unixware	UX:sh (/bin/sh): ERROR: source: Not found
+unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 3: `(' unexpected
+    echo
+    echo '### Does PARALLEL_SHELL help exporting a bash function'
+    echo 'If login shell is not bash compatible it should work'
+    echo
+    mkdir -p tmp/bin
+    cp /bin/bash tmp/bin
+    cd tmp
+    export PARALLEL_SHELL=bin/bash
+    par_nonall 'echo test funcB
+        funcB() {
+            cat <(echo bash only B)
+        }
+        export -f funcB
+        export PARALLEL_SHELL=bin/bash
+        bin/parallel funcB ::: 1' 2>&1
 
-### Does PARALLEL_SHELL help exporting a bash function not kill parallel
+### Does PARALLEL_SHELL help exporting a bash function
+If login shell is not bash compatible it should work
 
+aix	test funcB
 aix	bash only B
+centos	test funcB
 centos	bash only B
+debian	test funcB
 debian	bash only B
+freebsd	test funcB
 freebsd	bash only B
+hpux	test funcB
+hpux	bash only B
+hpux-ia64	test funcB
+hpux-ia64	bash only B
+hurd	test funcB
+hurd	bash only B
+macosx	test funcB
 macosx	bash only B
+mandriva	test funcB
 mandriva	bash only B
+miros	test funcB
 miros	bash only B
+netbsd	test funcB
 netbsd	bash only B
+netbsd	/home/t/tange/setupenv: line 9: syntax error: unexpected end of file
+openbsd	test funcB
 openbsd	bash only B
-openindiana	bash only B
+pidora	test funcB
 pidora	bash only B
+qnx	test funcB
 qnx	bash only B
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+raspbian	test funcB
 raspbian	bash only B
+redhat	test funcB
 redhat	bash only B
+scosysv	test funcB
 scosysv	bash only B
+solaris	test funcB
 solaris	bash only B
+solaris-x86	test funcB
 solaris-x86	bash only B
+sshminix minix	test funcB
+suse	test funcB
 suse	bash only B
-ubuntu	bash only B
+tru64	test funcB
+tru64	bash only B
+unixware	test funcB
 unixware	bash only B
+    echo
+    echo '### env_parallel echo :::: <(echo OK)'
+    echo '(bash ksh mksh zsh only)'
+    echo
+    par_nonall 'bin/env_parallel --install && echo install-OK' 2>&1
+    par_nonall 'env_parallel echo env_parallel ::: run-OK' 2>&1
+    # csh on NetBSD does not support process substitution 
+    par_nonall 'env_parallel echo reading from process substitution :::: <(echo OK)' 2>&1 | 
+	grep -v ': /tmp/.*: No such file or directory'
 
 ### env_parallel echo :::: <(echo OK)
 (bash ksh mksh zsh only)
@@ -650,6 +782,18 @@ hpux	     /home/t/tange/.profile
 hpux	     /home/t/tange/.cshrc
 hpux	     /home/t/tange/.tcshrc
 hpux	install-OK
+hpux-ia64	Installed env_parallel in:
+hpux-ia64	     /home/t/tange/.bashrc
+hpux-ia64	     /home/t/tange/.shrc
+hpux-ia64	     /home/t/tange/.zshenv
+hpux-ia64	     /home/t/tange/.config/fish/config.fish
+hpux-ia64	     /home/t/tange/.kshrc
+hpux-ia64	     /home/t/tange/.mkshrc
+hpux-ia64	     /home/t/tange/.profile
+hpux-ia64	     /home/t/tange/.cshrc
+hpux-ia64	     /home/t/tange/.tcshrc
+hpux-ia64	install-OK
+hpux-ia64	bin/env_parallel: line 33: /home/t/tange/.cshrc: Permission denied
 hurd	Installed env_parallel in:
 hurd	     /home/t/tange/.bashrc
 hurd	     /home/t/tange/.shrc
@@ -805,6 +949,17 @@ solaris-x86	     /home/tange/.profile
 solaris-x86	     /home/tange/.cshrc
 solaris-x86	     /home/tange/.tcshrc
 solaris-x86	install-OK
+sshminix minix	Installed env_parallel in:
+sshminix minix	     /home/t/tange/.bashrc
+sshminix minix	     /home/t/tange/.shrc
+sshminix minix	     /home/t/tange/.zshenv
+sshminix minix	     /home/t/tange/.config/fish/config.fish
+sshminix minix	     /home/t/tange/.kshrc
+sshminix minix	     /home/t/tange/.mkshrc
+sshminix minix	     /home/t/tange/.profile
+sshminix minix	     /home/t/tange/.cshrc
+sshminix minix	     /home/t/tange/.tcshrc
+sshminix minix	install-OK
 suse	Installed env_parallel in:
 suse	     /home/t/tange/.bashrc
 suse	     /home/t/tange/.shrc
@@ -816,6 +971,17 @@ suse	     /home/t/tange/.profile
 suse	     /home/t/tange/.cshrc
 suse	     /home/t/tange/.tcshrc
 suse	install-OK
+tru64	Installed env_parallel in:
+tru64	     /home/t/tange/.bashrc
+tru64	     /home/t/tange/.shrc
+tru64	     /home/t/tange/.zshenv
+tru64	     /home/t/tange/.config/fish/config.fish
+tru64	     /home/t/tange/.kshrc
+tru64	     /home/t/tange/.mkshrc
+tru64	     /home/t/tange/.profile
+tru64	     /home/t/tange/.cshrc
+tru64	     /home/t/tange/.tcshrc
+tru64	install-OK
 ubuntu	Installed env_parallel in:
 ubuntu	     /home/t/tange/.bashrc
 ubuntu	     /home/t/tange/.shrc
@@ -834,6 +1000,7 @@ centos	env_parallel run-OK
 debian	env_parallel run-OK
 freebsd	Syntax error: Bad fd number
 hpux	env_parallel run-OK
+hpux-ia64	env_parallel run-OK
 hurd	env_parallel run-OK
 macosx	env_parallel run-OK
 mandriva	env_parallel run-OK
@@ -844,34 +1011,118 @@ openindiana	env_parallel run-OK
 pidora	env_parallel run-OK
 qnx	env_parallel run-OK
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	/bin/sh: shopt: cannot execute - No such file or directory
 raspbian	env_parallel run-OK
 redhat	env_parallel run-OK
 scosysv	env_parallel run-OK
 solaris	env_parallel run-OK
 solaris-x86	env_parallel run-OK
+sshminix minix	env_parallel run-OK
 suse	env_parallel run-OK
+tru64	env_parallel run-OK
 ubuntu	env_parallel run-OK
 unixware	env_parallel run-OK
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
 aix	reading from process substitution OK
 centos	reading from process substitution OK
 debian	reading from process substitution OK
+freebsd	Syntax error: "(" unexpected (expecting word)
 hpux	reading from process substitution OK
+hpux-ia64	reading from process substitution OK
 hurd	reading from process substitution OK
 macosx	reading from process substitution OK
 mandriva	reading from process substitution OK
 miros	reading from process substitution OK
+netbsd	Missing name for redirect.
+netbsd	Missing name for redirect.
+netbsd	parallel: Error: Cannot open input file `<': No such file or directory.
 openbsd	reading from process substitution OK
 openindiana	reading from process substitution OK
 pidora	reading from process substitution OK
+qnx	/bin/sh: syntax error: `(' unexpected
 raspbian	reading from process substitution OK
 redhat	reading from process substitution OK
 scosysv	reading from process substitution OK
 solaris	reading from process substitution OK
 solaris-x86	reading from process substitution OK
+sshminix minix	reading from process substitution OK
 suse	reading from process substitution OK
+tru64	reading from process substitution OK
 ubuntu	reading from process substitution OK
+unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `(' unexpected
+    # Test empty command name in process list
+    test_empty_cmd() {
+	echo '### Test if empty command name in process list causes problems'
+	perl -e '$0=" ";sleep 1000' &
+        pid=$!
+	parallel echo ::: OK_with_empty_cmd
+        kill $pid
+    }
+    export -f test_empty_cmd
+    export PARALLEL_SHELL=bin/bash
+    PARALLEL='--env test_empty_cmd' par_nonall test_empty_cmd 2>&1
+aix	### Test if empty command name in process list causes problems
+aix	OK_with_empty_cmd
+centos	### Test if empty command name in process list causes problems
+centos	OK_with_empty_cmd
+debian	### Test if empty command name in process list causes problems
+debian	OK_with_empty_cmd
+freebsd	### Test if empty command name in process list causes problems
+freebsd	OK_with_empty_cmd
+hpux	### Test if empty command name in process list causes problems
+hpux	OK_with_empty_cmd
+hpux-ia64	### Test if empty command name in process list causes problems
+hpux-ia64	OK_with_empty_cmd
+hurd	### Test if empty command name in process list causes problems
+hurd	OK_with_empty_cmd
+macosx	### Test if empty command name in process list causes problems
+macosx	OK_with_empty_cmd
+mandriva	### Test if empty command name in process list causes problems
+mandriva	OK_with_empty_cmd
+miros	### Test if empty command name in process list causes problems
+miros	OK_with_empty_cmd
+netbsd	### Test if empty command name in process list causes problems
+netbsd	OK_with_empty_cmd
+netbsd	/home/t/tange/setupenv: line 9: syntax error: unexpected end of file
+openbsd	### Test if empty command name in process list causes problems
+openbsd	OK_with_empty_cmd
+openindiana	### Test if empty command name in process list causes problems
+openindiana	OK_with_empty_cmd
+pidora	### Test if empty command name in process list causes problems
+pidora	OK_with_empty_cmd
+qnx	### Test if empty command name in process list causes problems
+qnx	OK_with_empty_cmd
+qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+raspbian	### Test if empty command name in process list causes problems
+raspbian	OK_with_empty_cmd
+redhat	### Test if empty command name in process list causes problems
+redhat	OK_with_empty_cmd
+scosysv	### Test if empty command name in process list causes problems
+scosysv	OK_with_empty_cmd
+solaris	### Test if empty command name in process list causes problems
+solaris	OK_with_empty_cmd
+solaris-x86	### Test if empty command name in process list causes problems
+solaris-x86	OK_with_empty_cmd
+sshminix minix	### Test if empty command name in process list causes problems
+suse	### Test if empty command name in process list causes problems
+suse	OK_with_empty_cmd
+tru64	### Test if empty command name in process list causes problems
+tru64	OK_with_empty_cmd
+ubuntu	### Test if empty command name in process list causes problems
+ubuntu	OK_with_empty_cmd
+unixware	### Test if empty command name in process list causes problems
+unixware	OK_with_empty_cmd
+    echo
+    echo '### parset arr seq ::: 2 3 4'
+    echo '(bash ksh mksh zsh only)'
+    echo
+    par_nonall 'parset arr seq ::: 2 3 4; echo ${arr[*]}' 2>&1
+    echo '### env_parset arr seq ::: 2 3 4'
+    par_nonall 'start=2;env_parset arr seq \$start ::: 2 3 4; echo ${arr[*]}' 2>&1
 
 ### parset arr seq ::: 2 3 4
 (bash ksh mksh zsh only)
@@ -881,6 +1132,7 @@ centos	1 2 1 2 3 1 2 3 4
 debian	1 2 1 2 3 1 2 3 4
 freebsd	Syntax error: Bad fd number
 hpux	
+hpux-ia64	1 2 1 2 3 1 2 3 4
 hurd	1 2 1 2 3 1 2 3 4
 macosx	1 2 1 2 3 1 2 3 4
 mandriva	1 2 1 2 3 1 2 3 4
@@ -899,7 +1151,9 @@ redhat	1 2 1 2 3 1 2 3 4
 scosysv	1 2 1 2 3 1 2 3 4
 solaris	1 2 1 2 3 1 2 3 4
 solaris-x86	1 2 1 2 3 1 2 3 4
+sshminix minix	1 2 1 2 3 1 2 3 4
 suse	1 2 1 2 3 1 2 3 4
+tru64	1 2 1 2 3 1 2 3 4
 ubuntu	1 2 1 2 3 1 2 3 4
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
 unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
@@ -909,6 +1163,7 @@ centos	2 2 3 2 3 4
 debian	2 2 3 2 3 4
 freebsd	Syntax error: Bad fd number
 hpux	
+hpux-ia64	1 2 1 2 1 2
 hurd	2 2 3 2 3 4
 macosx	2 2 3 2 3 4
 mandriva	2 2 3 2 3 4
@@ -921,6 +1176,9 @@ openindiana	2 2 3 2 3 4
 pidora	2 2 3 2 3 4
 qnx	
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 qnx	/bin/sh: syntax error: `(' unexpected
 raspbian	2 2 3 2 3 4
@@ -928,10 +1186,20 @@ redhat	2 2 3 2 3 4
 scosysv	2 2 3 2 3 4
 solaris	1 2 1 2 1 2
 solaris-x86	2 2 3 2 3 4
+sshminix minix	2 2 3 2 3 4
 suse	2 2 3 2 3 4
+tru64	2 2 3 2 3 4
 ubuntu	2 2 3 2 3 4
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
 unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
+    echo
+    echo '### parset var1,var2,var3 seq ::: 2 3 4'
+    echo '(bash ksh mksh zsh ash dash only)'
+    echo
+    par_nonall 'parset var1,var2,var3 seq ::: 2 3 4; echo $var1,$var2,$var3' 2>&1
+    echo '### env_parset var1,var2,var3 seq ::: 2 3 4'
+    par_nonall 'start=2; env_parset var1,var2,var3 seq \$start ::: 2 3 4; echo $var1,$var2,$var3' 2>&1
+
 
 ### parset var1,var2,var3 seq ::: 2 3 4
 (bash ksh mksh zsh ash dash only)
@@ -941,6 +1209,7 @@ centos	1 2,1 2 3,1 2 3 4
 debian	1 2,1 2 3,1 2 3 4
 freebsd	Syntax error: Bad fd number
 hpux	,,
+hpux-ia64	1 2,1 2 3,1 2 3 4
 hurd	1 2,1 2 3,1 2 3 4
 macosx	1 2,1 2 3,1 2 3 4
 mandriva	1 2,1 2 3,1 2 3 4
@@ -959,7 +1228,9 @@ redhat	1 2,1 2 3,1 2 3 4
 scosysv	1 2,1 2 3,1 2 3 4
 solaris	1 2,1 2 3,1 2 3 4
 solaris-x86	1 2,1 2 3,1 2 3 4
+sshminix minix	1 2,1 2 3,1 2 3 4
 suse	1 2,1 2 3,1 2 3 4
+tru64	1 2,1 2 3,1 2 3 4
 ubuntu	1 2,1 2 3,1 2 3 4
 unixware	,,
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
@@ -969,6 +1240,7 @@ centos	2,2 3,2 3 4
 debian	2,2 3,2 3 4
 freebsd	Syntax error: Bad fd number
 hpux	,,
+hpux-ia64	1 2,1 2,1 2
 hurd	2,2 3,2 3 4
 macosx	2,2 3,2 3 4
 mandriva	2,2 3,2 3 4
@@ -981,6 +1253,9 @@ openindiana	2,2 3,2 3 4
 pidora	2,2 3,2 3 4
 qnx	,,
 qnx	/bin/sh: >&/dev/null : illegal file descriptor name
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	2,2 3,2 3 4
@@ -988,7 +1263,9 @@ redhat	2,2 3,2 3 4
 scosysv	2,2 3,2 3 4
 solaris	1 2,1 2,1 2
 solaris-x86	2,2 3,2 3 4
+sshminix minix	2,2 3,2 3 4
 suse	2,2 3,2 3 4
+tru64	2,2 3,2 3 4
 ubuntu	2,2 3,2 3 4
 unixware	2,2 3,2 3 4
 unixware	UX:sh (/bin/sh): ERROR: source: Not found

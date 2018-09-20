@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo "### bug #41482: --pipe --compress blocks at different -j/seq combinations"
   seq 1 | parallel -k -j2 --compress -N1 -L1 --pipe cat;
   echo echo 1-4 + 1-4

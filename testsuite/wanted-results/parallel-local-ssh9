@@ -40,6 +40,20 @@ par_sh_embed	your
 par_sh_embed	code
 par_sh_embed	here
 par_sh_embed	Put your code here
+par_propagate_env	### bug #41805: Idea: propagate --env for parallel --number-of-cores
+par_propagate_env	** test_zsh
+par_propagate_env	FOO=test_zsh
+par_propagate_env	HOME=~
+par_propagate_env	** test_zsh_filter
+par_propagate_env	FOO=test_zsh_filter
+par_propagate_env	HOME=~
+par_propagate_env	** test_csh
+par_propagate_env	FOO=test_csh
+par_propagate_env	HOME=~
+par_propagate_env	** test_csh_filter
+par_propagate_env	FOO=test_csh_filter
+par_propagate_env	HOME=~
+par_propagate_env	** bug #41805 done
 par_ksh_embed	--embed
 par_ksh_embed	Redirect the output to a file and add your changes at the end:
 par_ksh_embed	  /usr/local/bin/parallel --embed > new_script
@@ -66,6 +80,9 @@ par_ksh_embed	code
 par_ksh_embed	here
 par_ksh_embed	Put your code here
 par_fish_embed	Not implemented
+par_env_parallel_big_env	### bug #54128: command too long when exporting big env
+par_env_parallel_big_env	should not fail
+par_env_parallel_big_env	OK
 par_csh_embed	Not implemented
 par_bash_embed	--embed
 par_bash_embed	Redirect the output to a file and add your changes at the end:

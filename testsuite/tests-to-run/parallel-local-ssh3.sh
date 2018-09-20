@@ -2,7 +2,7 @@
 
 
 # SSH only allowed to localhost/lo
-cat <<'EOF' | parallel -vj100% --retries 3 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | parallel -vj100% --retries 3 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### trailing space in sshlogin'
   echo 'sshlogin trailing space' | parallel  --sshlogin "ssh -l parallel localhost " echo
 

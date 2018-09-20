@@ -258,7 +258,7 @@ par_linebuffer_tag_slow_output	b	b
 par_linebuffer_tag_slow_output	b	
 par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      2       6   30006
-par_long_line_remote	      2      50  250050
+par_long_line_remote	      3      50  250050
 par_maxlinelen_X_I	### Test max line length -X -I
 par_maxlinelen_X_I	3cfc69ee81b0fe7fdbe8eb059ad2da61  -
 par_maxlinelen_X_I	Chars per line (817788/7): 116826

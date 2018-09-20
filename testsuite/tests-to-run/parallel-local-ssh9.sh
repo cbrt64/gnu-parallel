@@ -131,6 +131,28 @@ _EOF
   ssh zsh@lo "$myscript"
 }
 
+par_propagate_env() {
+    echo '### bug #41805: Idea: propagate --env for parallel --number-of-cores'
+    echo '** test_zsh'
+    FOO=test_zsh parallel --env FOO,HOME -S zsh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
+    echo '** test_zsh_filter'
+    FOO=test_zsh_filter parallel --filter-hosts --env FOO,HOME -S zsh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
+    echo '** test_csh'
+    FOO=test_csh parallel --env FOO,HOME -S csh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
+    echo '** test_csh_filter'
+    FOO=test_csh_filter parallel --filter-hosts --env FOO,HOME -S csh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
+    echo '** bug #41805 done'
+}
+
+par_env_parallel_big_env() {
+    echo '### bug #54128: command too long when exporting big env'
+    . `which env_parallel.bash`
+    a=`rand | head -c 75000`
+    env_parallel -Slo echo should not ::: fail 2>&1
+    a=`rand | head -c 76000`
+    env_parallel -Slo echo should not ::: fail 2>/dev/null || echo OK
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |

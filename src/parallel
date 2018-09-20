@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 
-# Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,
-# 2017,2018 Ole Tange and Free Software Foundation, Inc.
+# Copyright (C) 2007-2018 Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -1555,7 +1554,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180824;
+    $Global::version = 20180916;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -3257,19 +3256,8 @@ sub get_job_with_sshlogin {
             return undef;
         }
     }
-
-    my $clean_command = $job->replaced();
-    if($clean_command =~ /^\s*$/) {
-        # Do not run empty lines
-        if(not $Global::JobQueue->empty()) {
-            return get_job_with_sshlogin($sshlogin);
-        } else {
-            return undef;
-        }
-    }
     $job->set_sshlogin($sshlogin);
-    if($opt::retries and $clean_command and
-       $job->failed_here()) {
+    if($opt::retries and $job->failed_here()) {
         # This command with these args failed for this sshlogin
         my ($no_of_failed_sshlogins,$min_failures) = $job->min_failed();
 	# Only look at the Global::host that have > 0 jobslots
@@ -4366,17 +4354,17 @@ sub die_bug {
 
 sub version {
     # Returns: N/A
-    print join("\n",
-               "GNU $Global::progname $Global::version",
-               "Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018",
-	       "Ole Tange and Free Software Foundation, Inc.",
-               "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>",
-               "This is free software: you are free to change and redistribute it.",
-               "GNU $Global::progname comes with no warranty.",
-               "",
-               "Web site: http://www.gnu.org/software/${Global::progname}\n",
-	       "When using programs that use GNU Parallel to process data for publication",
-	       "please cite as described in 'parallel --citation'.\n",
+    print join
+	("\n",
+	 "GNU $Global::progname $Global::version",
+	 "Copyright (C) 2007-2018 Ole Tange and Free Software Foundation, Inc.",
+	 "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>",
+	 "This is free software: you are free to change and redistribute it.",
+	 "GNU $Global::progname comes with no warranty.",
+	 "",
+	 "Web site: http://www.gnu.org/software/${Global::progname}\n",
+	 "When using programs that use GNU Parallel to process data for publication",
+	 "please cite as described in 'parallel --citation'.\n",
         );
 }
 
@@ -4489,8 +4477,8 @@ sub embed {
 	}
 	print "#!$Global::shell
 
-# Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,
-# 2017,2018 $user, Ole Tange and Free Software Foundation, Inc.
+# Copyright (C) 2007-2018 $user, Ole Tange and Free Software
+# Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -5022,9 +5010,10 @@ sub which {
 	    # Filter for SysV-style `ps`
 	    my $sysv = q( ps -ef | perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}//; print "@F[1,2] $_"' );
-	    # Crazy msys: ' is not accepted on the cmd line, but " are treated as '
-	    my $msys = q( ps -ef | perl -ane "1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
-		q(s/^.{$s}//; print qq{@F[1,2] $_}" );
+	    # Minix uses cols 2,3 and can have newlines in the command
+	    # so lines not having numbers in cols 2,3 must be ignored
+	    my $minix = q( ps -ef | perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
+		q(s/^.{$s}// and $F[2]>0 and $F[3]>0 and print "@F[2,3] $_"' );
 	    # BSD-style `ps`
 	    my $bsd = q(ps -o pid,ppid,command -ax);
 	    %pid_parentpid_cmd =
@@ -5040,7 +5029,8 @@ sub which {
 	     'hpux' => $sysv,
 	     'linux' => $sysv,
 	     'mirbsd' => $bsd,
-	     'msys' => $msys,
+	     'minix' => $minix,
+	     'msys' => $sysv,
 	     'MSWin32' => $sysv,
 	     'netbsd' => $bsd,
 	     'nto' => $sysv,
@@ -5639,7 +5629,8 @@ sub swap_activity {
     # Should we update the swap_activity file?
     my $update_swap_activity_file = 0;
     if(-r $self->{'swap_activity_file'}) {
-        open(my $swap_fh, "<", $self->{'swap_activity_file'}) || ::die_bug("swap_activity_file-r");
+        open(my $swap_fh, "<", $self->{'swap_activity_file'}) ||
+	    ::die_bug("swap_activity_file-r");
         my $swap_out = <$swap_fh>;
         close $swap_fh;
         if($swap_out =~ /^(\d+)$/) {
@@ -6170,6 +6161,8 @@ sub compute_number_of_processes {
 		    return 0;
 		} else {
 		    $job = $Global::JobQueue->get();
+		    # Replacement must happen here due to seq()
+		    $job and $job->replaced();
 		    push(@jobs, $job);
 		    return 1;
 		}
@@ -9954,6 +9947,10 @@ sub len {
 		$self->{'replacecount'}{$replstring};
 	}
     }
+    if(defined $Global::parallel_env) {
+	# If we are using --env, add the prefix for that, too.
+	$len += length $Global::parallel_env;
+    }
     if($Global::quoting) {
 	# Pessimistic length if -q is set
 	# Worse than worst case: every char needs to be quoted with \
@@ -9964,8 +9961,12 @@ sub len {
 	# Worse than worst case: every char needs to be quoted with \ twice
 	$len *= 4;
     }
-    # If we are using --env, add the prefix for that, too.
-    $len += 0;
+    if(@opt::sshlogin) {
+	# Pessimistic length if remote
+	# Worst case is BASE64 encoding 3 bytes -> 4 bytes
+	$len = int($len*4/3);
+    }
+
     return $len;
 }
 
@@ -10513,14 +10514,9 @@ sub get {
 			"(e.g. 'cat').");
 		::wait_and_exit(255);
 	    }
-	} else {
-	    if($cmd_line->number_of_args() == 0) {
-		# We did not get more args - maybe at EOF string?
-		return undef;
-	    } elsif($cmd_line->replaced() eq "") {
-		# Empty command - get the next instead
-		return $self->get();
-	    }
+	} elsif($cmd_line->number_of_args() == 0) {
+	    # We did not get more args - maybe at EOF string?
+	    return undef;
 	}
 	$self->set_seq($self->seq()+1);
 	return $cmd_line;

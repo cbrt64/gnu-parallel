@@ -1833,20 +1833,20 @@ par_mksh_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     . `which env_parallel.mksh`;
 
-    bigvar="$(perl -e 'print "x"x119000')"
+    bigvar="$(perl -e 'print "x"x110000')"
     env_parallel echo ::: OK_bigvar
     env_parallel -S lo echo ::: OK_bigvar_remote
 
-    bigvar="$(perl -e 'print "\""x119000')"
+    bigvar="$(perl -e 'print "\""x110000')"
     env_parallel echo ::: OK_bigvar_quote
     env_parallel -S lo echo ::: OK_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x119000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "x"x110000')"'"; };'
     env_parallel echo ::: OK_bigfunc
     env_parallel -S lo echo ::: OK_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x119000')"'"; };'
+    eval 'bigfunc() { a="'"$(perl -e 'print "\""x110000')"'"; };'
     env_parallel echo ::: OK_bigfunc_quote
     env_parallel -S lo echo ::: OK_bigfunc_quote_remote
     bigfunc() { true; }

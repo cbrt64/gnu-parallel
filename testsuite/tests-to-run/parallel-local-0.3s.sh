@@ -27,7 +27,7 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj13 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj13 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### Test bug #45619: "--halt" erroneous error exit code (should give 0)'; 
   seq 10 | parallel --halt now,fail=1 true; 
   echo $?
@@ -835,6 +835,17 @@ par_perlexpr_with_newline() {
       $_=qx{date -r "$a" +%FT%T}; chomp; $_="$_ $b" =}' \
 	 ::: "Dad's \"famous\" 1' pizza"
     rm *"Dad's \"famous\" 1' pizza"
+}
+
+par_empty_command() {
+    echo 'bug #54647: parset ignores empty lines'
+    # really due to this. Should give an empty line due to -v:
+    parallel -v :::: <(echo)
+    . `which env_parallel.bash`
+    parset a,b,c :::: <(echo echo A; echo; echo echo C)
+    echo Empty: $b
+    parset a,b,c :::: <(echo echo A; echo echo B; echo echo C)
+    echo B: $b
 }
 
 export -f $(compgen -A function | grep par_)

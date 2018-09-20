@@ -2,7 +2,7 @@
 
 echo '### Test niceload -q'
 niceload -q perl -e '$a = "works";$b="This $a\n"; print($b);'
-echo 
+echo
 
 freepl >/dev/null
 freepl >/dev/null &
@@ -21,7 +21,7 @@ freepl >/dev/null &
 
 # niceload -q -l 5 perl -e '$a=join"",<>; while(1){push @a,$a}' &
 
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### --rm and --runmem'
   niceload  -H --rm 1g free -g | perl -ane '/Mem:/ and print $F[5],"\n"' | grep '[1-9]' >/dev/null && echo OK--rm
   niceload  -H --runmem 1g free -g | perl -ane '/Mem:/ and print $F[5],"\n"' | grep '[1-9]' >/dev/null && echo OK--runmem
