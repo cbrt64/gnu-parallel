@@ -1554,7 +1554,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180916;
+    $Global::version = 20180922;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -6944,8 +6944,7 @@ sub sshcommand_of_sshlogin {
                     open(STDIN,"<","/dev/null");
                     # Run a sleep that outputs data, so it will discover
 		    # if the ssh connection closes.
-                    my $sleep = ::Q
-			('$|=1;while(1){sleep 1;print "foo\n"}');
+                    my $sleep = ::Q('$|=1;while(1){sleep 1;print "foo\n"}');
                     my @master = ($opt::ssh, "-MTS",
 				  $control_path, $serverlogin, "--", "perl", "-e",
 				  $sleep);

@@ -150,7 +150,7 @@ par_env_parallel_big_env() {
     a=`rand | head -c 75000`
     env_parallel -Slo echo should not ::: fail 2>&1
     a=`rand | head -c 76000`
-    env_parallel -Slo echo should not ::: fail 2>/dev/null || echo OK
+    env_parallel -Slo echo should ::: fail 2>/dev/null || echo OK
 }
 
 export -f $(compgen -A function | grep par_)

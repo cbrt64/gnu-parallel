@@ -717,8 +717,10 @@ B<~/.parallel/config>:
     --rpl 'DIRNAME $_=Q(::dirname($_));chomp($_=qx{readlink -f $_});'
     --rpl 'BASENAME s:.*/::;s:\.[^/.]+$::;'
     --rpl 'EXT s:.*\.::'
-    --rpl 'RELDIR $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;$_=::dirname($_);'
-    --rpl 'RELPATH $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;'
+    --rpl 'RELDIR $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
+           s:\Q$c/\E::;$_=::dirname($_);'
+    --rpl 'RELPATH $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
+           s:\Q$c/\E::;'
 
 B<ladon> deals badly with filenames containing " and newline, and it
 fails for output larger than 200k:

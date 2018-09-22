@@ -205,10 +205,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
+Subject: GNU Parallel 20180922 ('Danske') released <<[stable]>>
 
-Subject: GNU Parallel 20180922 ('Danske/Korea/India/Myanmar/Jacksonville/Chemnitz') released <<[stable]>>
-
-GNU Parallel 20180922 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20180922 ('Danske') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -219,58 +218,15 @@ Quote of the month:
 
 New in this release:
 
+* Minix is supported again.
+
 * Updated graph showing GNU Parallel's overhead per job for each version. https://www.gnu.org/software/parallel/process-time-j2-1700MHz-3000-1000.pdf
 
-http://carc.unm.edu/education--training/workshops-and-seminars.html
+* Intro to Computing at CARC includes introduction to GNU Parallel http://carc.unm.edu/education--training/workshops-and-seminars.html
 
+* Fast-GBS uses GNU Parallel https://bitbucket.org/jerlar73/fast-gbs/wiki/Home
 
-<<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
-
-<<Wrong citation https://iris.sissa.it/retrieve/handle/20.500.11767/36149/10823/And%C3%B2_tesi.pdf>>
-
-<<Wrong citation http://www.cell.com/cms/attachment/2095201602/2077415979/mmc1.pdf>>
-
-<<Down http://www.nature.com/nprot/journal/v12/n5/full/nprot.2017.022.html?WT.feed_name=subjects_biotechnology>>
-
-<<Citation not ok: https://arxiv.org/pdf/1704.08997.pdf>>
-
-<<Citation needed: https://sdstrowes.co.uk/publications/sdstrowes-rdns-aaaa.pdf>>
-
-<<Citation not ok: https://www.nature.com/articles/s41598-017-01703-6>>
-
-<<Probably http://www.sciencedirect.com/science/article/pii/S0044848616312194>>
-
-<<Possibly http://link.springer.com/chapter/10.1007%2F978-3-319-22053-6_46>>
-
-<<Possibly http://link.springer.com/article/10.1007/s12021-015-9290-5>>
-
-<<Possibly http://link.springer.com/protocol/10.1007/978-1-4939-3578-9_14>>
-
-<<kontakt GNU Parallel was used (unfortunately without citation) in: Instrumentation and Trace Analysis for Ad-hoc Python Workflows in Cloud Environments http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=7214035>>
-
-<<Har angiveligt submittet ny version - afventer opdatering>> GNU Parallel was used (unfortunately without citation) in: MUGBAS: a species free gene-based programme suite for post-GWAS analysis http://www.ncbi.nlm.nih.gov/pubmed/25765345
-
-<<Afventer updateret publisering>> GNU Parallel was used in: Large Scale Author Name Disambiguation in Digital Libraries http://ieeexplore.ieee.org/xpl/abstractReferences.jsp?tp=&arnumber=7004487&url=http%3A%2F%2Fieeexplore.ieee.org%2Fxpls%2Fabs_all.jsp%3Farnumber%3D7004487
-
-<<kontaktet 2015-06-22 Afventer svar fra journal>> GNU Parallel was used (unfortunately with wrong citation) in: TADSim: Discrete Event-Based Performance Prediction for Temperature-Accelerated Dynamics http://vruehle.de/publications/2015c.pdf
-http://www.researchgate.net/profile/Christoph_Junghans/publication/276178326_TADSim_Discrete_Event-Based_Performance_Prediction_for_Temperature-Accelerated_Dynamics/links/55562b6708ae980ca60c8369.pdf
-
-<< Update forventet juni Rachel har lige svaret >> GNU Parallel was used in: SISRS: Site Identification from Short Read Sequences https://github.com/rachelss/SISRS/
-
-<<Citation needed: A Cache- and Memory-Aware Mapping Algorithm
-for Big Data Applications https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7323015>>
-
-<<Citation needed: Introspecting for RSA Key Material to Assist Intrusion Detection http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=7331177&url=http%3A%2F%2Fieeexplore.ieee.org%2Fxpls%2Fabs_all.jsp%3Farnumber%3D7331177>>
-
-<<Citation needed: 3D-GNOME: an integrated web service for structural modeling of the 3D genome http://nar.oxfordjournals.org/content/early/2016/05/16/nar.gkw437.full.pdf+html>>
-
-<<link No citation: Next-generation TCP for ns-3 simulator http://www.sciencedirect.com/science/article/pii/S1569190X15300939>>
-
-<<link No citation: Scalable metagenomics alignment research tool (SMART): a scalable, rapid, and complete search heuristic for the classification of metagenomic sequences from complex sequence populations http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1159-6#Bib1>>
-
-<<No citation: Argumentation Models for Cyber Attribution http://arxiv.org/pdf/1607.02171.pdf>>
-
-<<Possible: http://link.springer.com/article/10.1007/s12021-015-9290-5 http://link.springer.com/protocol/10.1007/978-1-4939-3578-9_14>>
+* Belgium at 10 m resolution in July 2018 http://www.cesbio.ups-tlse.fr/multitemp/?p=14116
 
 * Bug fixes and man page updates.
 
