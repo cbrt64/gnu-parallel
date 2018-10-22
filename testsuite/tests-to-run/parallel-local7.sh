@@ -1,5 +1,23 @@
 #!/bin/bash
 
+get_tmux() {
+    # To install tmux in different version run this
+    cd /tmp
+    doit() {
+	wget https://github.com/tmux/tmux/archive/$1.tar.gz
+	tar xvf $1.tar.gz
+	cd tmux-$1
+	./autogen.sh
+	./configure --prefix /tmp/tmux/$1
+	make
+	make install
+	sudo cp /tmp/tmux/$1/bin/tmux /usr/local/bin/tmux-$1
+    }
+
+    . `which env_parallel.bash`
+    seq 1.8 0.1 2.9 | env_parallel --tag --lb doit
+}
+
 par_tmux_filter() {
     # /tmp/parallel-local7/tmsOU2Ig
     perl -pe 's:(/tmp\S+/tms).....:$1XXXXX:;s/ p\d+/pID/;'

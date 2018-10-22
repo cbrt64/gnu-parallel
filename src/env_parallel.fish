@@ -42,6 +42,17 @@
 
 function env_parallel
   # env_parallel.fish
+
+  # --session
+  perl -e 'exit grep { /^--session/ } @ARGV' -- $argv; or begin;
+    setenv PARALLEL_IGNORED_NAMES (
+        begin;
+	  functions -n
+	  set -n;
+	end | perl -pe 's/\n/,/g';
+    )
+    return 0
+  end;
   setenv PARALLEL_ENV (
     begin;
       set _grep_REGEXP (
@@ -71,10 +82,14 @@ function env_parallel
             	    "Run \"parallel --record-env\" in a clean environment first.\n";
                 } else {
             	    chomp(@ignored_vars = <IN>);
-            	    $vars = join "|",map { quotemeta $_ } @ignored_vars;
-		    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
                 }
             }
+            if($ENV{PARALLEL_IGNORED_NAMES}) {
+                push @ignored_vars, split/,/, $ENV{PARALLEL_IGNORED_NAMES};
+                chomp @ignored_vars;
+            }
+            $vars = join "|",map { quotemeta $_ } @ignored_vars;
+	    print $vars ? "($vars)" : "(,,nO,,VaRs,,)";
             ' -- $argv;
         end;
       )

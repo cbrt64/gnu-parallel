@@ -19,30 +19,30 @@ ls: script2: No such file or directory
 OK
 ### Test --basefile + --sshlogin :
 1
-10
-11
-12
-13
-2
-3
-4
-5
-6
-7
-8
-9
 1
 10
+10
+11
 11
 12
+12
+13
 13
 2
+2
+3
 3
 4
+4
+5
 5
 6
+6
+7
 7
 8
+8
+9
 9
 ### Here we ought to test -m --return {/}_{/.}_{#/.}_{#/}_{#.} with files containing space
 ### But we will wait for a real world scenario

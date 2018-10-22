@@ -39,7 +39,8 @@ measure() {
 
     PATH=/tmp/bin:$PATH
     cd /tmp/bin
-    ls parallel-* | parallel --shuf -j$CORES --joblog ~/tmp/joblog$CORES-$INNER-$OUTER.csv 'seq '$INNER' | {2} true' :::: <(seq $OUTER) - 
+    ls parallel-* |
+	parallel --shuf -j$CORES --joblog ~/tmp/joblog$CORES-$INNER-$OUTER.csv 'seq '$INNER' | {2} true' :::: <(seq $OUTER) -
 
     killall forever
 
@@ -49,7 +50,7 @@ measure() {
       pdf("/tmp/boxplot.pdf");
       par(cex.axis=0.5);
       boxplot(JobRuntime/$INNER*1000~Command,data=jl,las=2,outline=F,
-              ylab="milliseconds/job",main="GNU Parallel performance of different versions\n$OUTER trials each running $INNER jobs");
+              ylab="milliseconds/job",main="GNU Parallel overhead for different versions\n$OUTER trials each running $INNER jobs");
 _
     cp /tmp/boxplot.pdf $HOME/tmp/boxplot-j$CORES-${MHZ}MHz-$OUTER-${INNER}v$VERSION.pdf
     evince /tmp/boxplot.pdf

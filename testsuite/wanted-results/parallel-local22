@@ -17,7 +17,7 @@ echo '### This causes problems if we kill child processes'; # 2>/dev/null to avo
 437c0d47a99b9a7c5bcb1d132f94c2e6  -
 echo '### This causes problems if we kill child processes (II)'; # 2>/dev/null to avoid parallel: Warning: Starting 45 processes took > 2 sec.
 ### This causes problems if we kill child processes (II)
-  seq 1 40 | parallel -j 0 seq 1 10 '| parallel -j 3 echo' 2>/dev/null | sort | md5sum
+  seq 1 40 | parallel -j 0 seq 1 10 '| parallel -j 3 echo' 2>/dev/null | LC_ALL=C sort | md5sum
 d7fb96d6a56d4347bc24930a395c431a  -
 echo '### Test -m';   (echo foo;echo bar) | parallel -j1 -m echo 1{}2{}3 A{}B{}C
 ### Test -m

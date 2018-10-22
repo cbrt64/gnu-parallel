@@ -1229,9 +1229,11 @@ cost work and which have not been tested are, however, unlikely to be
 prioritized.
 
 Running B<parallel --citation> one single time takes less than 10
-seconds, and will silence the citation notice for future runs. If that
-is too much trouble for you, why not use one of the alternatives
-instead?  See a list in: B<man parallel_alternatives>.
+seconds, and will silence the citation notice for future runs. This is
+comparable to graphical tools where you have to click a checkbox
+saying "Do not show this again". But if that is too much trouble for
+you, why not use one of the alternatives instead?  See a list in:
+B<man parallel_alternatives>.
 
 
 =head1 Ideas for new design

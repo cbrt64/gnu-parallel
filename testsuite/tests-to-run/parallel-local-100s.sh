@@ -35,12 +35,12 @@ par_exit_code() {
 	'/tmp/mysleep '$s \
 	'parallel --halt-on-error now,fail=1 /tmp/mysleep ::: '$s \
 	'parallel --halt-on-error now,done=1 /tmp/mysleep ::: '$s \
-	'parallel --halt-on-error now,done=1 true ::: '$s \
+	'parallel --halt-on-error now,done=1 /bin/true ::: '$s \
 	'parallel --halt-on-error now,done=1 exit ::: '$s \
 	'true;/tmp/mysleep '$s \
 	'parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: '$s \
 	'parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: '$s \
-	'parallel --halt-on-error now,done=1 "true;true" ::: '$s \
+	'parallel --halt-on-error now,done=1 "true;/bin/true" ::: '$s \
 	'parallel --halt-on-error now,done=1 "true;exit" ::: '$s
     }
     export -f runit

@@ -52,9 +52,9 @@ test_chr_on_sshlogin() {
 	stdout parallel -j4 -k -I // --arg-sep _ -0 V=// V2=V2=// LANG=C parallel -k -j1 $onall -S $sshlogin --env V,V2,LANG echo \''"{}$V$V2"'\' ::: {#} {#} {#} {#} |
 	sort |
 	uniq -c |
-	grep -v '   4 '|
-	grep -v xauth |
-	grep -v X11
+	grep -av '   4 '|
+	grep -av xauth |
+	grep -av X11
 }
 export -f test_chr_on_sshlogin
 
@@ -87,7 +87,7 @@ par_env_160() {
 par_env_160_onall() {
     echo '### Test --env for \160  - which kills csh - single and double --onall - no output is good'
     test_chr_on_sshlogin 160 :,1/lo,1/tcsh@lo --onall |
-	grep -v '   3 '
+	grep -a -v '   3 '
 }
 
 export -f $(compgen -A function | grep par_)

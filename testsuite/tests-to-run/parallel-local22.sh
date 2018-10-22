@@ -28,7 +28,7 @@ echo '### This causes problems if we kill child processes';
 
 echo '### This causes problems if we kill child processes (II)'; 
 # 2>/dev/null to avoid parallel: Warning: Starting 45 processes took > 2 sec.
-  seq 1 40 | parallel -j 0 seq 1 10 '| parallel -j 3 echo' 2>/dev/null | sort | md5sum
+  seq 1 40 | parallel -j 0 seq 1 10 '| parallel -j 3 echo' 2>/dev/null | LC_ALL=C sort | md5sum
 
 echo '### Test -m'; 
   (echo foo;echo bar) | parallel -j1 -m echo 1{}2{}3 A{}B{}C

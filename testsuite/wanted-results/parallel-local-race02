@@ -80,6 +80,24 @@ par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tcsh
 par_hostgroup	tcsh
+par_linebuffer_tag_slow_output	Test output tag with mixing halflines
+par_linebuffer_tag_slow_output	a	aH
+par_linebuffer_tag_slow_output	b	bH
+par_linebuffer_tag_slow_output	a	aa
+par_linebuffer_tag_slow_output	b	ba
+par_linebuffer_tag_slow_output	a	al
+par_linebuffer_tag_slow_output	b	bl
+par_linebuffer_tag_slow_output	a	af
+par_linebuffer_tag_slow_output	b	bf
+par_linebuffer_tag_slow_output	a	a
+par_linebuffer_tag_slow_output	a	
+par_linebuffer_tag_slow_output	b	b
+par_linebuffer_tag_slow_output	b	
+par_parcat_mixing	parcat output should mix: a b a b
+par_parcat_mixing	astart
+par_parcat_mixing	bstart
+par_parcat_mixing	aend
+par_parcat_mixing	bend
 par_testhalt	now fail 0 true	### testhalt --halt now,fail=0
 par_testhalt	now fail 0 true	job 1
 par_testhalt	now fail 0 true	parallel: This job failed:

@@ -6,19 +6,15 @@ MAXTIME=50 RETRIES=2 MAXPROC=11 MAXINNERPROC=3
 < alpha
 7d4
 < syllable
-10d6
-< openindiana
-13d8
+13d9
 < debian-ppc
-17d11
-< ubuntu
 28,32d21
 < dragonfly
 < vax
 < ultrix
 < minix
 < irix
-34,35d22
+34,35d23
 < beaglebone
 < cubieboard2
 ### Copy commands to servers
@@ -28,11 +24,13 @@ bin/parallel tru64	copy tru64 bin/parallel parallel
 bin/parallel hpux-ia64	copy hpux-ia64 bin/parallel parallel
 bin/parallel raspbian	copy raspbian bin/parallel parallel
 bin/parallel solaris	copy solaris bin/parallel parallel
+bin/parallel openindiana	copy openindiana bin/parallel parallel
 bin/parallel aix	copy aix bin/parallel parallel
 bin/parallel hpux	copy hpux bin/parallel parallel
 bin/parallel suse	copy suse bin/parallel parallel
 bin/parallel solaris-x86	copy solaris-x86 bin/parallel parallel
 bin/parallel mandriva	copy mandriva bin/parallel parallel
+bin/parallel ubuntu	copy ubuntu bin/parallel parallel
 bin/parallel scosysv	copy scosysv bin/parallel parallel
 bin/parallel unixware	copy unixware bin/parallel parallel
 bin/parallel centos	copy centos bin/parallel parallel
@@ -52,11 +50,13 @@ bin/env_parallel tru64	copy tru64 bin/env_parallel env_parallel
 bin/env_parallel hpux-ia64	copy hpux-ia64 bin/env_parallel env_parallel
 bin/env_parallel raspbian	copy raspbian bin/env_parallel env_parallel
 bin/env_parallel solaris	copy solaris bin/env_parallel env_parallel
+bin/env_parallel openindiana	copy openindiana bin/env_parallel env_parallel
 bin/env_parallel aix	copy aix bin/env_parallel env_parallel
 bin/env_parallel hpux	copy hpux bin/env_parallel env_parallel
 bin/env_parallel suse	copy suse bin/env_parallel env_parallel
 bin/env_parallel solaris-x86	copy solaris-x86 bin/env_parallel env_parallel
 bin/env_parallel mandriva	copy mandriva bin/env_parallel env_parallel
+bin/env_parallel ubuntu	copy ubuntu bin/env_parallel env_parallel
 bin/env_parallel scosysv	copy scosysv bin/env_parallel env_parallel
 bin/env_parallel unixware	copy unixware bin/env_parallel env_parallel
 bin/env_parallel centos	copy centos bin/env_parallel env_parallel
@@ -76,11 +76,13 @@ bin/env_parallel.ash tru64	copy tru64 bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash hpux-ia64	copy hpux-ia64 bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash raspbian	copy raspbian bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash solaris	copy solaris bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash openindiana	copy openindiana bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash aix	copy aix bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash hpux	copy hpux bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash suse	copy suse bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash solaris-x86	copy solaris-x86 bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash mandriva	copy mandriva bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash ubuntu	copy ubuntu bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash scosysv	copy scosysv bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash unixware	copy unixware bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash centos	copy centos bin/env_parallel.ash env_parallel.ash
@@ -100,11 +102,13 @@ bin/env_parallel.bash tru64	copy tru64 bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash hpux-ia64	copy hpux-ia64 bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash raspbian	copy raspbian bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash solaris	copy solaris bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash openindiana	copy openindiana bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash aix	copy aix bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash hpux	copy hpux bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash suse	copy suse bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash solaris-x86	copy solaris-x86 bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash mandriva	copy mandriva bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash ubuntu	copy ubuntu bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash scosysv	copy scosysv bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash unixware	copy unixware bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash centos	copy centos bin/env_parallel.bash env_parallel.bash
@@ -124,11 +128,13 @@ bin/env_parallel.csh tru64	copy tru64 bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh hpux-ia64	copy hpux-ia64 bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh raspbian	copy raspbian bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh solaris	copy solaris bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh openindiana	copy openindiana bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh aix	copy aix bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh hpux	copy hpux bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh suse	copy suse bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh solaris-x86	copy solaris-x86 bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh mandriva	copy mandriva bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh ubuntu	copy ubuntu bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh scosysv	copy scosysv bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh unixware	copy unixware bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh centos	copy centos bin/env_parallel.csh env_parallel.csh
@@ -148,11 +154,13 @@ bin/env_parallel.dash tru64	copy tru64 bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash hpux-ia64	copy hpux-ia64 bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash raspbian	copy raspbian bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash solaris	copy solaris bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash openindiana	copy openindiana bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash aix	copy aix bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash hpux	copy hpux bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash suse	copy suse bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash solaris-x86	copy solaris-x86 bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash mandriva	copy mandriva bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash ubuntu	copy ubuntu bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash scosysv	copy scosysv bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash unixware	copy unixware bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash centos	copy centos bin/env_parallel.dash env_parallel.dash
@@ -172,11 +180,13 @@ bin/env_parallel.fish tru64	copy tru64 bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish hpux-ia64	copy hpux-ia64 bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish raspbian	copy raspbian bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish solaris	copy solaris bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish openindiana	copy openindiana bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish aix	copy aix bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish hpux	copy hpux bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish suse	copy suse bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish solaris-x86	copy solaris-x86 bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish mandriva	copy mandriva bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish ubuntu	copy ubuntu bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish scosysv	copy scosysv bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish unixware	copy unixware bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish centos	copy centos bin/env_parallel.fish env_parallel.fish
@@ -196,11 +206,13 @@ bin/env_parallel.ksh tru64	copy tru64 bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh hpux-ia64	copy hpux-ia64 bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh raspbian	copy raspbian bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh solaris	copy solaris bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh openindiana	copy openindiana bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh aix	copy aix bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh hpux	copy hpux bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh suse	copy suse bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh solaris-x86	copy solaris-x86 bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh mandriva	copy mandriva bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh ubuntu	copy ubuntu bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh scosysv	copy scosysv bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh unixware	copy unixware bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh centos	copy centos bin/env_parallel.ksh env_parallel.ksh
@@ -220,11 +232,13 @@ bin/env_parallel.mksh tru64	copy tru64 bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh hpux-ia64	copy hpux-ia64 bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh raspbian	copy raspbian bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh solaris	copy solaris bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh openindiana	copy openindiana bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh aix	copy aix bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh hpux	copy hpux bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh suse	copy suse bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh solaris-x86	copy solaris-x86 bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh mandriva	copy mandriva bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh ubuntu	copy ubuntu bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh scosysv	copy scosysv bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh unixware	copy unixware bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh centos	copy centos bin/env_parallel.mksh env_parallel.mksh
@@ -244,11 +258,13 @@ bin/env_parallel.pdksh tru64	copy tru64 bin/env_parallel.pdksh env_parallel.pdks
 bin/env_parallel.pdksh hpux-ia64	copy hpux-ia64 bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh raspbian	copy raspbian bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh solaris	copy solaris bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh openindiana	copy openindiana bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh aix	copy aix bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh hpux	copy hpux bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh suse	copy suse bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh solaris-x86	copy solaris-x86 bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh mandriva	copy mandriva bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh ubuntu	copy ubuntu bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh scosysv	copy scosysv bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh unixware	copy unixware bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh centos	copy centos bin/env_parallel.pdksh env_parallel.pdksh
@@ -268,11 +284,13 @@ bin/env_parallel.sh tru64	copy tru64 bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh hpux-ia64	copy hpux-ia64 bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh raspbian	copy raspbian bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh solaris	copy solaris bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh openindiana	copy openindiana bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh aix	copy aix bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh hpux	copy hpux bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh suse	copy suse bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh solaris-x86	copy solaris-x86 bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh mandriva	copy mandriva bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh ubuntu	copy ubuntu bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh scosysv	copy scosysv bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh unixware	copy unixware bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh centos	copy centos bin/env_parallel.sh env_parallel.sh
@@ -292,11 +310,13 @@ bin/env_parallel.tcsh tru64	copy tru64 bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh hpux-ia64	copy hpux-ia64 bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh raspbian	copy raspbian bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh solaris	copy solaris bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh openindiana	copy openindiana bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh aix	copy aix bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh hpux	copy hpux bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh suse	copy suse bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh solaris-x86	copy solaris-x86 bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh mandriva	copy mandriva bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh ubuntu	copy ubuntu bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh scosysv	copy scosysv bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh unixware	copy unixware bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh centos	copy centos bin/env_parallel.tcsh env_parallel.tcsh
@@ -316,11 +336,13 @@ bin/env_parallel.zsh tru64	copy tru64 bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh hpux-ia64	copy hpux-ia64 bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh raspbian	copy raspbian bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh solaris	copy solaris bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh openindiana	copy openindiana bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh aix	copy aix bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh hpux	copy hpux bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh suse	copy suse bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh solaris-x86	copy solaris-x86 bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh mandriva	copy mandriva bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh ubuntu	copy ubuntu bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh scosysv	copy scosysv bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh unixware	copy unixware bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh centos	copy centos bin/env_parallel.zsh env_parallel.zsh
@@ -340,11 +362,13 @@ bin/parcat tru64	copy tru64 bin/parcat parcat
 bin/parcat hpux-ia64	copy hpux-ia64 bin/parcat parcat
 bin/parcat raspbian	copy raspbian bin/parcat parcat
 bin/parcat solaris	copy solaris bin/parcat parcat
+bin/parcat openindiana	copy openindiana bin/parcat parcat
 bin/parcat aix	copy aix bin/parcat parcat
 bin/parcat hpux	copy hpux bin/parcat parcat
 bin/parcat suse	copy suse bin/parcat parcat
 bin/parcat solaris-x86	copy solaris-x86 bin/parcat parcat
 bin/parcat mandriva	copy mandriva bin/parcat parcat
+bin/parcat ubuntu	copy ubuntu bin/parcat parcat
 bin/parcat scosysv	copy scosysv bin/parcat parcat
 bin/parcat unixware	copy unixware bin/parcat parcat
 bin/parcat centos	copy centos bin/parcat parcat
@@ -364,11 +388,13 @@ bin/stdout tru64	copy tru64 bin/stdout stdout
 bin/stdout hpux-ia64	copy hpux-ia64 bin/stdout stdout
 bin/stdout raspbian	copy raspbian bin/stdout stdout
 bin/stdout solaris	copy solaris bin/stdout stdout
+bin/stdout openindiana	copy openindiana bin/stdout stdout
 bin/stdout aix	copy aix bin/stdout stdout
 bin/stdout hpux	copy hpux bin/stdout stdout
 bin/stdout suse	copy suse bin/stdout stdout
 bin/stdout solaris-x86	copy solaris-x86 bin/stdout stdout
 bin/stdout mandriva	copy mandriva bin/stdout stdout
+bin/stdout ubuntu	copy ubuntu bin/stdout stdout
 bin/stdout scosysv	copy scosysv bin/stdout stdout
 bin/stdout unixware	copy unixware bin/stdout stdout
 bin/stdout centos	copy centos bin/stdout stdout
@@ -381,7 +407,6 @@ bin/stdout freebsd	copy freebsd bin/stdout stdout
 bin/stdout debian	copy debian bin/stdout stdout
 bin/stdout hurd	copy hurd bin/stdout stdout
 bin/stdout minix	copy minix bin/stdout stdout
-bin/stdout minix	cat: stdout: no space left on device
 Done copying
 
     echo
@@ -413,7 +438,7 @@ redhat	Works on redhat.polarhome.com
 scosysv	Works on scosysv.polarhome.com
 solaris	Works on solaris
 solaris-x86	Works on solaris-x86
-sshminix minix	Works on minix
+sshwithpass minix	Works on minix
 suse	Works on suse
 tru64	Works on tru64.polarhome.com
 ubuntu	Works on ubuntu
@@ -450,6 +475,8 @@ netbsd	1
 netbsd	1
 openbsd	1
 openbsd	1
+openindiana	1
+openindiana	1
 pidora	1
 pidora	1
 qnx	1
@@ -467,8 +494,8 @@ solaris
 solaris	2
 solaris-x86	
 solaris-x86	1
-sshminix minix	1
-sshminix minix	1
+sshwithpass minix	1
+sshwithpass minix	1
 suse	1
 suse	1
 tru64	1
@@ -520,8 +547,8 @@ solaris	2
 solaris	2
 solaris-x86	1
 solaris-x86	1
-sshminix minix	1
-sshminix minix	1
+sshwithpass minix	1
+sshwithpass minix	1
 suse	1
 suse	1
 tru64	1
@@ -637,6 +664,8 @@ netbsd	export: Command not found.
 netbsd	funcA: Command not found.
 openbsd	test funcA
 openbsd	bash only A
+openindiana	test funcA
+openindiana	bash only A
 pidora	test funcA
 pidora	bash only A
 qnx	/bin/sh: syntax error: `(' unexpected
@@ -650,11 +679,13 @@ solaris	test funcA
 solaris	bash only A
 solaris-x86	test funcA
 solaris-x86	bash only A
-sshminix minix	test funcA
+sshwithpass minix	test funcA
 suse	test funcA
 suse	bash only A
 tru64	test funcA
 tru64	bash only A
+ubuntu	test funcA
+ubuntu	bash only A
 unixware	test funcA
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
 unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 3: `(' unexpected
@@ -702,6 +733,8 @@ netbsd	bash only B
 netbsd	/home/t/tange/setupenv: line 9: syntax error: unexpected end of file
 openbsd	test funcB
 openbsd	bash only B
+openindiana	test funcB
+openindiana	bash only B
 pidora	test funcB
 pidora	bash only B
 qnx	test funcB
@@ -717,11 +750,13 @@ solaris	test funcB
 solaris	bash only B
 solaris-x86	test funcB
 solaris-x86	bash only B
-sshminix minix	test funcB
+sshwithpass minix	test funcB
 suse	test funcB
 suse	bash only B
 tru64	test funcB
 tru64	bash only B
+ubuntu	test funcB
+ubuntu	bash only B
 unixware	test funcB
 unixware	bash only B
     echo
@@ -949,17 +984,17 @@ solaris-x86	     /home/tange/.profile
 solaris-x86	     /home/tange/.cshrc
 solaris-x86	     /home/tange/.tcshrc
 solaris-x86	install-OK
-sshminix minix	Installed env_parallel in:
-sshminix minix	     /home/t/tange/.bashrc
-sshminix minix	     /home/t/tange/.shrc
-sshminix minix	     /home/t/tange/.zshenv
-sshminix minix	     /home/t/tange/.config/fish/config.fish
-sshminix minix	     /home/t/tange/.kshrc
-sshminix minix	     /home/t/tange/.mkshrc
-sshminix minix	     /home/t/tange/.profile
-sshminix minix	     /home/t/tange/.cshrc
-sshminix minix	     /home/t/tange/.tcshrc
-sshminix minix	install-OK
+sshwithpass minix	Installed env_parallel in:
+sshwithpass minix	     /home/t/tange/.bashrc
+sshwithpass minix	     /home/t/tange/.shrc
+sshwithpass minix	     /home/t/tange/.zshenv
+sshwithpass minix	     /home/t/tange/.config/fish/config.fish
+sshwithpass minix	     /home/t/tange/.kshrc
+sshwithpass minix	     /home/t/tange/.mkshrc
+sshwithpass minix	     /home/t/tange/.profile
+sshwithpass minix	     /home/t/tange/.cshrc
+sshwithpass minix	     /home/t/tange/.tcshrc
+sshwithpass minix	install-OK
 suse	Installed env_parallel in:
 suse	     /home/t/tange/.bashrc
 suse	     /home/t/tange/.shrc
@@ -1021,7 +1056,7 @@ redhat	env_parallel run-OK
 scosysv	env_parallel run-OK
 solaris	env_parallel run-OK
 solaris-x86	env_parallel run-OK
-sshminix minix	env_parallel run-OK
+sshwithpass minix	env_parallel run-OK
 suse	env_parallel run-OK
 tru64	env_parallel run-OK
 ubuntu	env_parallel run-OK
@@ -1049,7 +1084,7 @@ redhat	reading from process substitution OK
 scosysv	reading from process substitution OK
 solaris	reading from process substitution OK
 solaris-x86	reading from process substitution OK
-sshminix minix	reading from process substitution OK
+sshwithpass minix	reading from process substitution OK
 suse	reading from process substitution OK
 tru64	reading from process substitution OK
 ubuntu	reading from process substitution OK
@@ -1107,7 +1142,7 @@ solaris	### Test if empty command name in process list causes problems
 solaris	OK_with_empty_cmd
 solaris-x86	### Test if empty command name in process list causes problems
 solaris-x86	OK_with_empty_cmd
-sshminix minix	### Test if empty command name in process list causes problems
+sshwithpass minix	### Test if empty command name in process list causes problems
 suse	### Test if empty command name in process list causes problems
 suse	OK_with_empty_cmd
 tru64	### Test if empty command name in process list causes problems
@@ -1151,7 +1186,7 @@ redhat	1 2 1 2 3 1 2 3 4
 scosysv	1 2 1 2 3 1 2 3 4
 solaris	1 2 1 2 3 1 2 3 4
 solaris-x86	1 2 1 2 3 1 2 3 4
-sshminix minix	1 2 1 2 3 1 2 3 4
+sshwithpass minix	1 2 1 2 3 1 2 3 4
 suse	1 2 1 2 3 1 2 3 4
 tru64	1 2 1 2 3 1 2 3 4
 ubuntu	1 2 1 2 3 1 2 3 4
@@ -1186,7 +1221,7 @@ redhat	2 2 3 2 3 4
 scosysv	2 2 3 2 3 4
 solaris	1 2 1 2 1 2
 solaris-x86	2 2 3 2 3 4
-sshminix minix	2 2 3 2 3 4
+sshwithpass minix	2 2 3 2 3 4
 suse	2 2 3 2 3 4
 tru64	2 2 3 2 3 4
 ubuntu	2 2 3 2 3 4
@@ -1228,7 +1263,7 @@ redhat	1 2,1 2 3,1 2 3 4
 scosysv	1 2,1 2 3,1 2 3 4
 solaris	1 2,1 2 3,1 2 3 4
 solaris-x86	1 2,1 2 3,1 2 3 4
-sshminix minix	1 2,1 2 3,1 2 3 4
+sshwithpass minix	1 2,1 2 3,1 2 3 4
 suse	1 2,1 2 3,1 2 3 4
 tru64	1 2,1 2 3,1 2 3 4
 ubuntu	1 2,1 2 3,1 2 3 4
@@ -1263,7 +1298,7 @@ redhat	2,2 3,2 3 4
 scosysv	2,2 3,2 3 4
 solaris	1 2,1 2,1 2
 solaris-x86	2,2 3,2 3 4
-sshminix minix	2,2 3,2 3 4
+sshwithpass minix	2,2 3,2 3 4
 suse	2,2 3,2 3 4
 tru64	2,2 3,2 3 4
 ubuntu	2,2 3,2 3 4

@@ -15,7 +15,7 @@ par_env_newline_backslash_onall_bash	      8 10
 par_env_newline_backslash_onall_bash	      8 10V2=
 par_env_newline_backslash_onall_bash	      8 2\\ \92V2=\\ \92
 par_env_newline_backslash_onall_csh	### Test --env for \n and \\ - single and double --onall (*csh only) - no output is good but csh fails
-par_env_newline_backslash_onall_csh	      8 Unmatched ".
+par_env_newline_backslash_onall_csh	      8 Unmatched '"'.
 par_space	### Test --env  - https://savannah.gnu.org/bugs/?37351
 par_space	a  2  spaces  b 1
 par_space	a  2  spaces  b 1

@@ -178,7 +178,7 @@ par_csh_man() {
 _EOF
   )
   # Sometimes the order f*cks up
-  stdout ssh csh@lo "$myscript" | sort
+  stdout ssh csh@lo "$myscript" | LC_ALL=C sort
 }
 
 par_dash_man() {
@@ -243,6 +243,7 @@ par_fish_man() {
   myscript=$(cat <<'_EOF'
     echo "### From man env_parallel"
 
+    env_parallel --session
     alias myecho='echo aliases with \= \& \" \!'" \'"
     myecho work
     env_parallel myecho ::: work
@@ -545,8 +546,12 @@ par_zsh_man() {
 
     alias multiline='echo multiline
       echo aliases with \= \& \" \!'" \'"
-    # eval is needed make aliases work
     eval multiline work
+    # Zsh-5.4.2 requires additional quoting when multiline
+    # Looks like a bug
+    alias multiline='echo multiline
+      echo aliases with \\= \\& \\" \\!'" \\\'"
+    # eval is needed make aliases work
     env_parallel multiline ::: work
     env_parallel -S server multiline ::: work
     env_parallel --env multiline multiline ::: work
@@ -792,7 +797,8 @@ par_fish_underscore() {
     end
     set not_copied_var "BAD";
     set not_copied_array BAD BAD BAD;
-    env_parallel --record-env;
+#    env_parallel --record-env;
+    env_parallel --session;
     alias myecho="echo \$myvar aliases";
     function myfunc
       myecho $myarray functions $argv
@@ -1103,7 +1109,7 @@ par_ash_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh ash@lo "$myscript" 2>&1 | sort
+  ssh ash@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_bash_funky() {
@@ -1136,7 +1142,7 @@ par_bash_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh bash@lo "$myscript" 2>&1 | sort
+  ssh bash@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_csh_funky() {
@@ -1201,11 +1207,12 @@ par_dash_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh dash@lo "$myscript" 2>&1 | sort
+  ssh dash@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_fish_funky() {
   myscript=$(cat <<'_EOF'
+    env_parallel --session
     set myvar "myvar  works"
     setenv myenvvar "myenvvar  works"
 
@@ -1277,7 +1284,7 @@ par_ksh_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh ksh@lo "$myscript" 2>&1 | sort
+  ssh ksh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_mksh_funky() {
@@ -1310,7 +1317,7 @@ par_mksh_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh mksh@lo "$myscript" 2>&1 | sort
+  ssh mksh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_sh_funky() {
@@ -1343,13 +1350,13 @@ par_sh_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh sh@lo "$myscript" 2>&1 | sort
+  ssh sh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_tcsh_funky() {
   myscript=$(cat <<'_EOF'
-    # funky breaks with different LANG
-    setenv LANG C
+    # funky breaks with different LC_ALL
+    setenv LC_ALL C
     set myvar = "myvar  works"
     set funky = "`perl -e 'print pack q(c*), 2..255'`"
     set myarray = ('' 'array_val2' '3' '' '5' '  space  6  ')
@@ -1378,7 +1385,7 @@ par_tcsh_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh tcsh@lo "$myscript" 2>&1 | sort
+  ssh tcsh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_zsh_funky() {
@@ -1387,7 +1394,8 @@ par_zsh_funky() {
     . `which env_parallel.zsh`;
 
     myvar="myvar  works"
-    funky=$(perl -e "print pack \"c*\", 1..255")
+    # Zsh-5.4.2 fails for ascii 167
+    funky=$(perl -e "print pack \"c*\", 1..166,168..255")
     myarray=("" array_val2 3 "" 5 "  space  6  ")
     declare -A assocarr
     assocarr[a]=assoc_val_a
@@ -1409,7 +1417,7 @@ par_zsh_funky() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh zsh@lo "$myscript" 2>&1 | sort
+  ssh zsh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_ash_env_parallel() {
@@ -1434,7 +1442,7 @@ par_ash_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh ash@lo "$myscript" 2>&1 | sort
+  ssh ash@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_bash_env_parallel() {
@@ -1459,7 +1467,7 @@ par_bash_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh bash@lo "$myscript" 2>&1 | sort
+  ssh bash@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_csh_env_parallel() {
@@ -1496,7 +1504,7 @@ par_dash_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh dash@lo "$myscript" 2>&1 | sort
+  ssh dash@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_fish_env_parallel() {
@@ -1534,7 +1542,7 @@ par_ksh_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh ksh@lo "$myscript" 2>&1 | sort
+  ssh ksh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_mksh_env_parallel() {
@@ -1559,7 +1567,7 @@ par_mksh_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh mksh@lo "$myscript" 2>&1 | sort
+  ssh mksh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_sh_env_parallel() {
@@ -1584,7 +1592,7 @@ par_sh_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh sh@lo "$myscript" 2>&1 | sort
+  ssh sh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_tcsh_env_parallel() {
@@ -1597,7 +1605,7 @@ par_tcsh_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh tcsh@lo "$myscript" 2>&1 | sort
+  ssh tcsh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_zsh_env_parallel() {
@@ -1621,7 +1629,7 @@ par_zsh_env_parallel() {
 _EOF
   )
   # Order is often different. Dunno why. So sort
-  ssh zsh@lo "$myscript" 2>&1 | sort
+  ssh zsh@lo "$myscript" 2>&1 | LC_ALL=C sort
 }
 
 par_ash_environment_too_big() {
@@ -2595,7 +2603,7 @@ par_bash_parset() {
     echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
     env_parset comma3,comma2,comma1 myfun ::: baz bar foo
     echo "$comma1 $comma2 $comma3"
-    env_parset 'space3 space2 space1' myfum ::: baz bar foo
+    env_parset 'space3 space2 space1' myfun ::: baz bar foo
     echo "$space1 $space2 $space3"
     env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
     echo "$newline1"
@@ -2724,7 +2732,7 @@ par_ksh_parset() {
     echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
     env_parset comma3,comma2,comma1 myfun ::: baz bar foo
     echo "$comma1 $comma2 $comma3"
-    env_parset 'space3 space2 space1' myfum ::: baz bar foo
+    env_parset 'space3 space2 space1' myfun ::: baz bar foo
     echo "$space1 $space2 $space3"
     env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
     echo "$newline1"
@@ -2771,6 +2779,8 @@ par_mksh_parset() {
     echo ${myarray[4]} ${myarray[5]} ${myarray[6]}
 
     echo '### env_parset'
+    # bug in mksh: Alias must be set before
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
     myfun() {
         myecho myfun "$@";
     }
@@ -2782,7 +2792,7 @@ par_mksh_parset() {
     echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
     env_parset comma3,comma2,comma1 myfun ::: baz bar foo
     echo "$comma1 $comma2 $comma3"
-    env_parset 'space3 space2 space1' myfum ::: baz bar foo
+    env_parset 'space3 space2 space1' myfun ::: baz bar foo
     echo "$space1 $space2 $space3"
     env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
     echo "$newline1"
@@ -3256,11 +3266,14 @@ _EOF
 }
 
 export -f $(compgen -A function | grep par_)
+
+# --retries 2 due to ssh_exchange_identification: read: Connection reset by peer
+
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |
-compgen -A function | grep par_ | sort -r |
+compgen -A function | grep par_ | LC_ALL=C sort -r |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
-    parallel --joblog /tmp/jl-`basename $0` -j200% --tag -k '{} 2>&1' |
+    parallel --joblog /tmp/jl-`basename $0` -j200% --retries 2 --tag -k '{} 2>&1' |
     perl -pe 's/line \d\d\d:/line XXX:/;
               s/\d+ >= \d+/XXX >= XXX/;
               s/sh:? \d?\d\d:/sh: XXX:/;

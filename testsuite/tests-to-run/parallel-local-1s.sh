@@ -62,66 +62,66 @@ par_result() {
     echo "### Test --results"
     mkdir -p /tmp/parallel_results_test
     parallel -k --results /tmp/parallel_results_test/testA echo {1} {2} ::: I II ::: III IIII
-    ls /tmp/parallel_results_test/testA/*/*/*/*/*
+    ls /tmp/parallel_results_test/testA/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testA*
 
     echo "### Test --res"
     mkdir -p /tmp/parallel_results_test
     parallel -k --res /tmp/parallel_results_test/testD echo {1} {2} ::: I II ::: III IIII
-    ls /tmp/parallel_results_test/testD/*/*/*/*/*
+    ls /tmp/parallel_results_test/testD/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testD*
 
     echo "### Test --result"
     mkdir -p /tmp/parallel_results_test
     parallel -k --result /tmp/parallel_results_test/testE echo {1} {2} ::: I II ::: III IIII
-    ls /tmp/parallel_results_test/testE/*/*/*/*/*
+    ls /tmp/parallel_results_test/testE/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testE*
 
     echo "### Test --results --header :"
     mkdir -p /tmp/parallel_results_test
     parallel -k --header : --results /tmp/parallel_results_test/testB echo {1} {2} ::: a I II ::: b III IIII
-    ls /tmp/parallel_results_test/testB/*/*/*/*/*
+    ls /tmp/parallel_results_test/testB/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testB*
 
     echo "### Test --results --header : named - a/b swapped"
     mkdir -p /tmp/parallel_results_test
     parallel -k --header : --results /tmp/parallel_results_test/testC echo {a} {b} ::: b III IIII ::: a I II
-    ls /tmp/parallel_results_test/testC/*/*/*/*/*
+    ls /tmp/parallel_results_test/testC/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testC*
 
     echo "### Test --results --header : piped"
     mkdir -p /tmp/parallel_results_test
     (echo Col; perl -e 'print "backslash\\tab\tslash/null\0eof\n"') | parallel  --header : --result /tmp/parallel_results_test/testF true
-    find /tmp/parallel_results_test/testF/*/*/* | sort
+    find /tmp/parallel_results_test/testF/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testF*
 
     echo "### Test --results --header : piped - non-existing column header"
     mkdir -p /tmp/parallel_results_test
     (printf "Col1\t\n"; printf "v1\tv2\tv3\n"; perl -e 'print "backslash\\tab\tslash/null\0eof\n"') |
 	parallel --header : --result /tmp/parallel_results_test/testG true
-    find /tmp/parallel_results_test/testG/ | sort
+    find /tmp/parallel_results_test/testG/ | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testG*
 }
 
 par_result_replace() {
     echo '### bug #49983: --results with {1}'
     parallel --results /tmp/par_{}_49983 -k echo ::: foo bar baz
-    find /tmp/par_*_49983 | sort
+    find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
     parallel --results /tmp/par_{}_49983 -k echo ::: foo bar baz ::: A B C
-    find /tmp/par_*_49983 | sort
+    find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
     parallel --results /tmp/par_{1}-{2}_49983 -k echo ::: foo bar baz ::: A B C
-    find /tmp/par_*_49983 | sort
+    find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
     parallel --results /tmp/par__49983 -k echo ::: foo bar baz ::: A B C
-    find /tmp/par_*_49983 | sort
+    find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
     parallel --results /tmp/par__49983 --header : -k echo ::: foo bar baz ::: A B C
-    find /tmp/par_*_49983 | sort
+    find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
     parallel --results /tmp/par__49983-{}/ --header : -k echo ::: foo bar baz ::: A B C
-    find /tmp/par_*_49983-* | sort
+    find /tmp/par_*_49983-* | LC_ALL=C sort
     rm -rf /tmp/par_*_49983-*
 }
 
@@ -258,7 +258,11 @@ par_pipe_compress_blocks() {
     seq 3 | parallel -k -j2 --compress -N1 -L1 --pipe cat
 }
 
+par_too_long_line_X() {
+    echo 'bug #54869: Long lines break'
+    seq 3000 | parallel -Xj1 'echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} | wc'
+}
 
 export -f $(compgen -A function | grep par_)
-compgen -A function | grep par_ | sort |
+compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

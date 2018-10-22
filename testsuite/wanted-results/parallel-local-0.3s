@@ -1317,6 +1317,8 @@ par_empty_command	bug #54647: parset ignores empty lines
 par_empty_command	
 par_empty_command	Empty:
 par_empty_command	B: B
+par_empty_input_on_stdin	https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910470
+par_empty_input_on_stdin	This should give no output
 par_empty_line	### Test bug: empty line for | sh with -k
 par_empty_line	a
 par_empty_line	b

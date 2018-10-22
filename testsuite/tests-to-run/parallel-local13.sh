@@ -9,7 +9,7 @@ PARALLEL=-j8
 export PARALLEL
 
 stdsort() {
-    "$@" 2>&1 | sort;
+    "$@" 2>&1 | LC_ALL=C sort;
 }
 export -f stdsort
 

@@ -2363,6 +2363,11 @@ open a tty for the job.
 
 You can of course override B<-j1> and B<-u>.
 
+Using B<--tty> unfortunately means that GNU B<parallel> cannot kill
+the jobs (with B<--timeout>, B<--memfree>, or B<--halt>). This is due
+to GNU B<parallel> giving each child its own process group, which is
+then killed. Process groups are dependant on the tty.
+
 
 =item B<--tag>
 
@@ -3052,6 +3057,14 @@ downloads 10 videos in parallel.
 
 B<{=> and B<=}> mark a perl expression. B<pQ> perl-quotes the
 string. B<date +%FT%T> is the date in ISO8601 with time.
+
+=head1 EXAMPLE: Save output in ISO8601 dirs
+
+Save output from B<ps aux> every second into dirs named
+yyyy-mm-ddThh:mm:ss+zz:zz.
+
+  seq 1000 | parallel -N0 -j1 --delay 1 \
+    --results '{= $_=`date -Isec`; chomp=}/' ps aux
 
 
 =head1 EXAMPLE: Digital clock with "blinking" :

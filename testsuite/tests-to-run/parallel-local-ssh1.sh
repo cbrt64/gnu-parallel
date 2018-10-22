@@ -114,8 +114,8 @@ echo '### Test --trc "/tmp/./--- /A" "/tmp/./ ---/B"'
   touch -- '/tmp/./--- /A' '/tmp/ ---/B'; 
   rm -f ./---?/A.a ./?---/B.a; 
   parallel --trc {=s:.*/./::=}.a -S csh@lo,sh@lo touch ./{=s:.*/./::=}.a ::: '/tmp/./--- /A' '/tmp/./ ---/B'; 
-  ls ./---?/A.a ./?---/B.a; 
-  parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--- ./---? || echo OK'; 
+  ls ./---?/A.a ./?---/B.a | LC_ALL=C sort; 
+  parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--- ./---? || echo OK' | LC_ALL=C sort; 
 
 echo '### bug #46519: --onall ignores --transfer'
   touch bug46519.{a,b,c}; rm -f bug46519.?? bug46519.???; 

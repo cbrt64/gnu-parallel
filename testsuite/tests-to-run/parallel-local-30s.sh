@@ -10,7 +10,7 @@ par_sigterm() {
     A=$!
     sleep 29; kill -TERM $A
     wait
-    sort /tmp/parallel$$
+    LC_ALL=C sort /tmp/parallel$$
     rm /tmp/parallel$$
 }
 

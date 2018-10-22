@@ -205,28 +205,23 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20180922 ('Danske') released <<[stable]>>
+Subject: GNU Parallel 20181022 ('peoples vote cumex khashoggi Sulawesi(Palu)') released <<[stable]>>
 
-GNU Parallel 20180922 ('Danske') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20181022 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-  I know I'm late to the party but GNU Parallel is truly amazing!
-    -- Sam Diaz-Munoz @sociovirology
-
 New in this release:
 
-* Minix is supported again.
+* env_parallel.fish: --session support (alpha quality)
 
-* Updated graph showing GNU Parallel's overhead per job for each version. https://www.gnu.org/software/parallel/process-time-j2-1700MHz-3000-1000.pdf
+* GNU Parallel was cited in: High-throughput sequencing of murine immunoglobulin heavy chain repertoires using single side unique molecular identifiers on an Ion Torrent PGM https://doi.org/10.18632/oncotarget.25493
 
-* Intro to Computing at CARC includes introduction to GNU Parallel http://carc.unm.edu/education--training/workshops-and-seminars.html
+* GNU parallel in Japanese Wikipedia https://ja.wikipedia.org/wiki/GNU_parallel
 
-* Fast-GBS uses GNU Parallel https://bitbucket.org/jerlar73/fast-gbs/wiki/Home
-
-* Belgium at 10 m resolution in July 2018 http://www.cesbio.ups-tlse.fr/multitemp/?p=14116
+* Outils de paramétrisation des tâches: lots de tâches, GNU Parallel https://www.eventbrite.ca/e/inscription-outils-de-parametrisation-des-taches-lots-de-taches-gnu-parallel-et-bqtools-midi-conference-de-50271076142
 
 * Bug fixes and man page updates.
 
@@ -253,7 +248,7 @@ Walk through the tutorial (man parallel_tutorial). Your commandline will love yo
 
 When using programs that use GNU Parallel to process data for publication please cite:
 
-O. Tange (2018): GNU Parallel 2018, April 2018, https://doi.org/10.5281/zenodo.1146014.
+O. Tange (2018): GNU Parallel 2018, March 2018, https://doi.org/10.5281/zenodo.1146014.
 
 If you like GNU Parallel:
 

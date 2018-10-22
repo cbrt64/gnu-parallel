@@ -27,7 +27,7 @@ seq 1 13 | parallel echo {} '>' parallel_{}.test
 
 ls parallel_*.test | parallel -j+0 --trc {.}.out --bf my_script \
 -S $SSHLOGIN1,$SSHLOGIN2,: "./my_script {} > {.}.out"
-cat parallel_*.test parallel_*.out
+ls parallel_*.test parallel_*.out | LC_ALL=C sort | xargs cat
 
 ## Broken since 2013-03-23
 ## rm -rf tmp

@@ -129,18 +129,16 @@ par_zsh_man	exit value 2 should be 2
 par_zsh_man	Unknown option: no-such-option
 par_zsh_man	exit value 255 should be 255
 par_zsh_funky	
-par_zsh_funky		
-par_zsh_funky		
-par_zsh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_zsh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_zsh_funky	C-] !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œM-Ÿ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜM-]Şßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_zsh_funky	C-] !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œM-Ÿ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜM-]Şßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
 par_zsh_funky	  space  6  
 par_zsh_funky	  space  6  
 par_zsh_funky	'	'
-par_zsh_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_zsh_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_zsh_funky	3 arg alias_works
 par_zsh_funky	3 arg alias_works_over_ssh
-par_zsh_funky	Funky-
-par_zsh_funky	Funky-
+par_zsh_funky	Funky-	
+par_zsh_funky	Funky-	
 par_zsh_funky	assoc_val_a
 par_zsh_funky	assoc_val_a
 par_zsh_funky	function_works
@@ -587,7 +585,7 @@ par_mksh_parset	foo bar baz
 par_mksh_parset	### env_parset
 par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
-par_mksh_parset	  
+par_mksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_mksh_parset	newline1
 par_mksh_parset	newline2
 par_mksh_parset	1
@@ -798,7 +796,7 @@ par_ksh_parset	foo bar baz
 par_ksh_parset	### env_parset
 par_ksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_ksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
-par_ksh_parset	  
+par_ksh_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_ksh_parset	newline1
 par_ksh_parset	newline2
 par_ksh_parset	1
@@ -1342,8 +1340,8 @@ par_csh_man	arrays
 par_csh_man	arrays
 par_csh_man	cat ... | parallel --pipe [options] [command [arguments]]
 par_csh_man	env_parallel
-par_csh_man	exit value -1 should be 255
 par_csh_man	exit value 2 should be 2
+par_csh_man	exit value 255 should be 255
 par_csh_man	level
 par_csh_man	multi
 par_csh_man	parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...
@@ -1368,15 +1366,18 @@ par_csh_man	work,
 par_csh_man	{3} {3.} {3/} {3/.} {=3 perl code =}    Positional replacement strings
 par_csh_man	{} {.} {/} {/.} {#} {%} {= perl code =} Replacement strings
 par_csh_funky	3 arg alias_works
+par_csh_funky	
 par_csh_funky	myvar  works
 par_csh_funky	space special chars problem
 par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works
 par_csh_funky	func_echo: Command not found.
 par_csh_funky	3 arg alias_works_over_ssh
+par_csh_funky	
 par_csh_funky	myvar  works
 par_csh_funky	space special chars problem
 par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works_over_ssh
 par_csh_funky	func_echo: Command not found.
+par_csh_funky	
 par_csh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
 par_csh_environment_too_big	Not implemented
 par_csh_env_parallel_session	Not implemented
@@ -1429,7 +1430,7 @@ par_bash_parset	foo bar baz
 par_bash_parset	### env_parset
 par_bash_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_bash_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
-par_bash_parset	  
+par_bash_parset	myecho myvar myarr  1 myfun foo myecho myvar myarr  1 myfun bar myecho myvar myarr  1 myfun baz
 par_bash_parset	newline1
 par_bash_parset	newline2
 par_bash_parset	1
@@ -1523,12 +1524,10 @@ par_bash_man	exit value 2 should be 2
 par_bash_man	Unknown option: no-such-option
 par_bash_man	exit value 255 should be 255
 par_bash_funky	
-par_bash_funky	
-par_bash_funky	
 par_bash_funky		
 par_bash_funky		
-par_bash_funky	
-par_bash_funky	
+par_bash_funky	-funkymultiline
+par_bash_funky	-funkymultiline
 par_bash_funky	  space  6  
 par_bash_funky	  space  6  
 par_bash_funky	'	'
@@ -1546,8 +1545,6 @@ par_bash_funky	function_works
 par_bash_funky	function_works_over_ssh
 par_bash_funky	myvar  works
 par_bash_funky	myvar  works
-par_bash_funky	-funkymultiline
-par_bash_funky	-funkymultiline
 par_bash_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
 par_bash_environment_too_big	OK_bigvar
 par_bash_environment_too_big	OK_bigvar_remote

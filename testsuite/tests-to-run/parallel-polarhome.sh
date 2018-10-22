@@ -21,7 +21,7 @@ MASTER=$(parallel -j0 --delay 0.1 --halt now,success=1 $PARALLEL_SSH {} echo {} 
 		  ::: {ubuntu,suse,debian}.polarhome.com)
 
 parallel -j0 --delay 0.1 --retries $RETRIES \
-	 rsync -a /usr/local/bin/{parallel,env_parallel,env_parallel.*[^~],parcat} \
+	 rsync -L /usr/local/bin/{parallel,env_parallel,env_parallel.*[^~],parcat,stdout} \
 	 ::: $MASTER:bin/
 
 doit() {
@@ -32,7 +32,8 @@ doit() {
     export RETRIES
     export MAXPROC
     export RET_TIME_K="-k --retries $RETRIES --timeout $MAXTIME"
-
+    LC_ALL=C
+    
     echo MAXTIME=$MAXTIME RETRIES=$RETRIES MAXPROC=$MAXPROC MAXINNERPROC=$MAXINNERPROC
 
     echo '### Filter out working servers'
@@ -42,7 +43,6 @@ doit() {
     POLAR="`bin/parallel -j0 -k --timeout 10 $PARALLEL_SSH {} echo {} ::: $P`"
     diff <(echo "$POLAR_ALL") <(echo "$POLAR")
     S_POLAR=`bin/parallel -j0 $RET_TIME_K echo -S 1/{} ::: $POLAR`
-    #" -S '1/sshminix minix'"
 
     sshwithpass() {
 	# Minix requires sshpass. The other servers will use ssh-keys
@@ -61,8 +61,13 @@ doit() {
     export -f copy
 
     par_nonall() {
+	sshwithpass() {
+	    # Minix requires sshpass. The other servers will use ssh-keys
+	    sshpass -f ~/.ssh/minix.password ssh -oLogLevel=quiet "$@"
+	}
+	export -f sshwithpass
 	parallel -j$MAXPROC $RET_TIME_K --delay 0.1 --tag \
-		 --nonall $S_POLAR -S "1/sshminix minix" --argsep ,:- \
+		 --nonall $S_POLAR -S "1/sshwithpass minix" --argsep ,:- \
 		 'source setupenv >&/dev/null || . `pwd`/setupenv;' "$@"
     }
     export -f par_nonall

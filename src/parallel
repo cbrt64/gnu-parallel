@@ -1452,8 +1452,8 @@ sub parse_options {
     # Running 'parallel --citation' one single time takes less than 10
     # seconds, and will silence the citation notice for future
     # runs. If that is too much trouble for you, why not use one of
-    # the alternatives instead?  See a list in: 'man
-    # parallel_alternatives'
+    # the alternatives instead?
+    # See a list in: 'man parallel_alternatives'
     citation_notice();
 
     parse_halt();
@@ -1554,7 +1554,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180922;
+    $Global::version = 20180923;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -7156,7 +7156,7 @@ sub total_jobs {
 	    while($record = $record_queue->get()) {
 		push @arg_records, $record;
 	    }
-	    if($opt::shuf) {
+	    if($opt::shuf and @arg_records) {
 		my $i = @arg_records;
 		while (--$i) {
 		    my $j = int rand($i+1);
@@ -10104,7 +10104,7 @@ sub replace_placeholders {
 		# New context group
 		@ctxgroup=();
 	    }
-	    if($t eq "\0spc") {
+	    if($t eq "\0spc" or $t eq " ") {
 		CORE::push @replaced,$t;
 	    } else {
 		CORE::push @ctxgroup,$t;

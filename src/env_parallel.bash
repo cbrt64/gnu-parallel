@@ -363,7 +363,7 @@ _parset_main() {
 	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
 		# var1=`cat tmpfile1; rm tmpfile1`
 		# var2=`cat tmpfile2; rm tmpfile2`
-		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
+		parallel --plain -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
 		    echo "$_parset_NAME" | perl -pe 's/,/ /g'
 			 )
 	    );

@@ -20,7 +20,7 @@ export SMALLDISK
 find /tmp{/*,}/*.{par,tms,tmx} 2>/dev/null -mmin -10 | parallel rm
 
 stdsort() {
-    "$@" 2>&1 | sort;
+    "$@" 2>&1 | LC_ALL=C sort;
 }
 export -f stdsort
 
@@ -602,13 +602,13 @@ par_retries_replacement_string() {
 
 par_tee() {
     export PARALLEL='-k --tee --pipe --tag'
-    seq 1000000 | parallel 'echo {%};LANG=C wc' ::: {1..5} ::: {a..b}
-    seq 300000 | parallel 'grep {1} | LANG=C wc {2}' ::: {1..5} ::: -l -c
+    seq 1000000 | parallel 'echo {%};LC_ALL=C wc' ::: {1..5} ::: {a..b}
+    seq 300000 | parallel 'grep {1} | LC_ALL=C wc {2}' ::: {1..5} ::: -l -c
 }
 
 par_tagstring_pipe() {
     echo 'bug #50228: --pipe --tagstring broken'
-    seq 3000 | parallel -j4 --pipe -N1000 -k --tagstring {%} LANG=C wc
+    seq 3000 | parallel -j4 --pipe -N1000 -k --tagstring {%} LC_ALL=C wc
 }
 
 par_link_files_as_only_arg() {
@@ -706,12 +706,12 @@ par_halt_one_job() {
 
 par_blocking_redir() {
     (
-    echo 'bug #52740: Bash redirection with process substitution blocks'
-    echo Test stdout
-    echo 3 | parallel seq > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
-    echo Test stderr
-    echo nOfilE | parallel ls > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
-    ) 2>&1 | sort
+	echo 'bug #52740: Bash redirection with process substitution blocks'
+	echo Test stdout
+	echo 3 | parallel seq > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
+	echo Test stderr
+	echo nOfilE | parallel ls > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
+    ) 2>&1 | LC_ALL=C sort
 }
 
 par_pipepart_recend_recstart() {
@@ -848,6 +848,12 @@ par_empty_command() {
     echo B: $b
 }
 
+par_empty_input_on_stdin() {
+    echo 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910470'
+    echo 'This should give no output'
+    true | stdout parallel --shuf echo
+}
+
 export -f $(compgen -A function | grep par_)
-compgen -A function | grep par_ | sort |
+compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

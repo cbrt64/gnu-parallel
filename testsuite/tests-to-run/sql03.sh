@@ -92,7 +92,7 @@ par_newline_on_commandline() {
 
 par_showtables() {
     echo "### Test --show-tables"
-    sql --show-tables :oraunittest | sort
+    sql --show-tables :oraunittest | LC_ALL=C sort
 }
 
 par_showdatabases() {

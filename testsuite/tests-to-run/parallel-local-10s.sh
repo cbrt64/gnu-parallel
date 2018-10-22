@@ -4,6 +4,28 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_sem_2jobs() {
+    echo '### Test semaphore 2 jobs running simultaneously'
+    parallel --semaphore --id 2jobs -u -j2 'echo job1a 1; sleep 4; echo job1b 3'
+    sleep 0.5
+    parallel --semaphore --id 2jobs -u -j2 'echo job2a 2; sleep 4; echo job2b 5'
+    sleep 0.5
+    parallel --semaphore --id 2jobs -u -j2 'echo job3a 4; sleep 4; echo job3b 6'
+    parallel --semaphore --id 2jobs --wait
+    echo done
+}
+
+par_semaphore() {
+    echo '### Test if parallel invoked as sem will run parallel --semaphore'
+    sem --id as_sem -u -j2 'echo job1a 1; sleep 3; echo job1b 3'
+    sleep 0.5
+    sem --id as_sem -u -j2 'echo job2a 2; sleep 3; echo job2b 5'
+    sleep 0.5
+    sem --id as_sem -u -j2 'echo job3a 4; sleep 3; echo job3b 6'
+    sem --id as_sem --wait
+    echo done
+}
+
 par_line_buffer() {
     echo "### --line-buffer"
     tmp1=$(tempfile)
@@ -58,7 +80,7 @@ par__pipe_tee() {
 	< /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
 	    head -c 1G;
     }
-    random1G | parallel --pipe --tee cat ::: {1..3} | LANG=C wc -c
+    random1G | parallel --pipe --tee cat ::: {1..3} | LC_ALL=C wc -c
 }
 
 par__pipepart_tee() {
@@ -71,7 +93,7 @@ par__pipepart_tee() {
     }
     tmp=$(mktemp)
     random1G >$tmp
-    parallel --pipepart --tee -a $tmp cat ::: {1..3} | LANG=C wc -c
+    parallel --pipepart --tee -a $tmp cat ::: {1..3} | LC_ALL=C wc -c
     rm $tmp
 }
 
@@ -126,7 +148,7 @@ _EOF
 	echo
     ) | perl -ne 's/\r//g;/\S/ and print' |
 	# Race will cause the order to change
-	sort
+	LC_ALL=C sort
 }
 
 par_k() {
@@ -148,7 +170,7 @@ par_k_linebuffer() {
 par_maxlinelen_m_I() {
     echo "### Test max line length -m -I"
 
-    seq 1 60000 | parallel -I :: -km -j1 echo a::b::c | sort >/tmp/114-a$$;
+    seq 1 60000 | parallel -I :: -km -j1 echo a::b::c | LC_ALL=C sort >/tmp/114-a$$;
     md5sum </tmp/114-a$$;
     export CHAR=$(cat /tmp/114-a$$ | wc -c);
     export LINES=$(cat /tmp/114-a$$ | wc -l);
@@ -159,7 +181,7 @@ par_maxlinelen_m_I() {
 par_maxlinelen_X_I() {
     echo "### Test max line length -X -I"
 
-    seq 1 60000 | parallel -I :: -kX -j1 echo a::b::c | sort >/tmp/114-b$$;
+    seq 1 60000 | parallel -I :: -kX -j1 echo a::b::c | LC_ALL=C sort >/tmp/114-b$$;
     md5sum </tmp/114-b$$;
     export CHAR=$(cat /tmp/114-b$$ | wc -c);
     export LINES=$(cat /tmp/114-b$$ | wc -l);
@@ -191,8 +213,11 @@ par_results_csv() {
 }
 
 par_results_compress() {
-    parallel --results /tmp/ged --compress echo ::: 1 | wc -l
-    parallel --results /tmp/ged echo ::: 1 | wc -l
+    tmp=$(mktemp)
+    rm "$tmp"
+    parallel --results $tmp --compress echo ::: 1 | wc -l
+    parallel --results $tmp echo ::: 1 | wc -l
+    rm -r "$tmp"
 }
 
 par_kill_children_timeout() {
@@ -298,15 +323,6 @@ par_plus_dyn_repl() {
     parallel --plus echo '{-2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
 }
 
-par_linebuffer_tag_slow_output() {
-    echo "Test output tag with mixing halflines"
-    halfline() {
-	perl -e '$| = 1; map { print $ARGV[0]; sleep(2); print "$_\n" } split //, "Half\n"' $1
-    }
-    export -f halfline
-    parallel --delay 1 -j0 --tag --line-buffer halfline ::: a b
-}
-
 par_retries_all_fail() {
     echo "bug #53748: -k --retries 10 + out of filehandles = blocking"
     ulimit -n 30
@@ -340,5 +356,5 @@ par_long_line_remote() {
 
 
 export -f $(compgen -A function | grep par_)
-compgen -A function | grep par_ | sort |
+compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1'

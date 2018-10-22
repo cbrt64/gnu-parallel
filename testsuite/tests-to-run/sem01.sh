@@ -8,24 +8,6 @@ echo '### Test mutex. This should not mix output';
   parallel --semaphore --id mutex --wait; 
   echo done
 
-echo '### Test semaphore 2 jobs running simultaneously'
-  parallel --semaphore --id 2jobs -u -j2 'echo job1a 1; sleep 1; echo job1b 3'; 
-  sleep 0.2; 
-  parallel --semaphore --id 2jobs -u -j2 'echo job2a 2; sleep 1; echo job2b 5'; 
-  sleep 0.2; 
-  parallel --semaphore --id 2jobs -u -j2 'echo job3a 4; sleep 1; echo job3b 6'; 
-  parallel --semaphore --id 2jobs --wait; 
-  echo done
-
-echo '### Test if parallel invoked as sem will run parallel --semaphore'
-  sem --id as_sem -u -j2 'echo job1a 1; sleep 1; echo job1b 3'; 
-  sleep 0.2; 
-  sem --id as_sem -u -j2 'echo job2a 2; sleep 1; echo job2b 5'; 
-  sleep 0.2; 
-  sem --id as_sem -u -j2 'echo job3a 4; sleep 1; echo job3b 6'; 
-  sem --id as_sem --wait; 
-  echo done
-
 echo '### Test similar example as from man page - run 2 jobs simultaneously'
 echo 'Expect done: 1 2 5 3 4'
 for i in 5 1 2 3 4 ; do 

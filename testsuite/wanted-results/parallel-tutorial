@@ -150,9 +150,9 @@ B
   (echo 1; echo; echo 2) | parallel --no-run-if-empty echo
 9
   parallel ::: ls 'echo foo' pwd
-abc-file
 abc0-file
 abc_-file
+abc-file
 def-file
 fixedlen
 num1000000
@@ -389,11 +389,11 @@ pre-A-post
 =ls
   parallel 'set a="{}"; if( { test -d "$a" } ) echo "$a is a dir"' ::: *
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="abc-file"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `set a="abc0-file"; if( { test -d "$a" } ) echo "$a is a dir"'
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `set a="abc_-file"; if( { test -d "$a" } ) echo "$a is a dir"'
+/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/bin/bash: -c: line 0: `set a="abc-file"; if( { test -d "$a" } ) echo "$a is a dir"'
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `set a="def-file"; if( { test -d "$a" } ) echo "$a is a dir"'
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
@@ -574,7 +574,6 @@ Computer:jobs running/jobs completed/%of started jobs/Average seconds to complet
 
   seq 1000 | parallel -j10 --bar '(echo -n {};sleep 0.1)' \
     2> >(zenity --timeout=15 --progress --auto-kill --auto-close)
-BASE64-Message: GtkDialog mapped without a transient parent. This is discouraged.
   parallel --joblog /tmp/log exit  ::: 1 2 3 0
   cat /tmp/log;
   parallel --joblog /tmp/log exit  ::: 1 2 3 0
@@ -826,9 +825,11 @@ foo bar baz
 in my_func baz
   parallel --record-env
   cat ~/.parallel/ignored_vars|sort
+_
 BASH_FUNC_run_once%%
 BASH_FUNC_run_test%%
 COLORFGBG
+COLORTERM
 DBUS_SESSION_BUS_ADDRESS
 DEBEMAIL
 DEBFULLNAME
@@ -845,7 +846,6 @@ HOME
 JAVA_HOME
 JDK_HOME
 KDE_FULL_SESSION
-KDE_MULTIHEAD
 KDE_SESSION_UID
 KDE_SESSION_VERSION
 KONSOLE_DBUS_SERVICE
@@ -867,6 +867,7 @@ MAKE_TERMERR
 MAKE_TERMOUT
 MANDATORY_PATH
 MFLAGS
+OLDPWD
 ORACLE_HOME
 ORACLE_SID
 PARALLEL
@@ -881,8 +882,8 @@ PERL_MM_OPT
 PROFILEHOME
 PWD
 QT_ACCESSIBILITY
-QT_IM_MODULE
-QT_LINUX_ACCESSIBILITY_ALWAYS_ON
+QT_AUTO_SCREEN_SCALE_FACTOR
+S_COLORS
 SERVER1
 SERVER2
 SESSION_MANAGER
@@ -913,7 +914,6 @@ XDG_SESSION_ID
 XDG_SESSION_PATH
 XDG_SESSION_TYPE
 XDG_VTNR
-_
   # The function is only copied if using Bash
   my_func2() {
     echo in my_func2 $VAR $1
@@ -1304,20 +1304,17 @@ cat: num_%header: No such file or directory
 /bin/bash: line 1: foo: command not found
   #!/usr/bin/perl
   print "@ARGV\n"
-Unescaped left brace in regex is deprecated, passed through in regex; marked by <-- HERE in m/%{ <-- HERE (.*?)}/ at /usr/bin/print line 528.
 Error: no such file "@ARGV\n"
   parallel perl_echo ::: foo bar
 /bin/bash: perl_echo: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/perl
   print "@ARGV\n"
-Unescaped left brace in regex is deprecated, passed through in regex; marked by <-- HERE in m/%{ <-- HERE (.*?)}/ at /usr/bin/print line 528.
 Error: no such file "@ARGV\n"
   perl_echo foo bar
 /bin/bash: perl_echo: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/perl
   
   print "Arguments @ARGV\n";
-Unescaped left brace in regex is deprecated, passed through in regex; marked by <-- HERE in m/%{ <-- HERE (.*?)}/ at /usr/bin/print line 528.
 Error: no such file "Arguments @ARGV\n"
   #!/usr/bin/parallel --shebang-wrap /usr/bin/python
   
@@ -1351,7 +1348,6 @@ Arguments
   
   print "Arguments "
   puts ARGV
-Unescaped left brace in regex is deprecated, passed through in regex; marked by <-- HERE in m/%{ <-- HERE (.*?)}/ at /usr/bin/print line 528.
 Error: no such file "Arguments "
 /bin/bash: line 3: puts: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/octave
@@ -1425,6 +1421,7 @@ The second finished running in the foreground
 First started
 First done
   sem --id my_id -u 'echo Second started; sleep 10; echo Second done'
+Second done
   sem --jobs 3 --id my_id -u 'echo Start 1; sleep 5; echo 1 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 2; sleep 6; echo 2 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 3; sleep 7; echo 3 done' &&
@@ -1445,8 +1442,8 @@ Start 4
 Slow started
 Forced running after 1 sec
 Slow ended
-Give up after 2 secs
 parallel: Warning: Semaphore timed out. Stealing the semaphore.
+parallel: Warning: Semaphore timed out. Exiting.
   parallel --help
 Usage:
 
@@ -1541,4 +1538,4 @@ C
 echo A
 echo B
 echo C
-8
+7

@@ -243,19 +243,6 @@ par_kill_children_timeout	      0       0       0
 par_line_buffer	### --line-buffer
 par_line_buffer	     55      55     120
 par_line_buffer	These must diff: 1
-par_linebuffer_tag_slow_output	Test output tag with mixing halflines
-par_linebuffer_tag_slow_output	a	aH
-par_linebuffer_tag_slow_output	b	bH
-par_linebuffer_tag_slow_output	a	aa
-par_linebuffer_tag_slow_output	b	ba
-par_linebuffer_tag_slow_output	a	al
-par_linebuffer_tag_slow_output	b	bl
-par_linebuffer_tag_slow_output	a	af
-par_linebuffer_tag_slow_output	b	bf
-par_linebuffer_tag_slow_output	a	a
-par_linebuffer_tag_slow_output	a	
-par_linebuffer_tag_slow_output	b	b
-par_linebuffer_tag_slow_output	b	
 par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      2       6   30006
 par_long_line_remote	      3      50  250050
@@ -520,6 +507,22 @@ par_retries_all_fail	7
 par_retries_all_fail	8
 par_round_robin_blocks	bug #49664: --round-robin does not complete
 par_round_robin_blocks	8
+par_sem_2jobs	### Test semaphore 2 jobs running simultaneously
+par_sem_2jobs	job1a 1
+par_sem_2jobs	job2a 2
+par_sem_2jobs	job1b 3
+par_sem_2jobs	job3a 4
+par_sem_2jobs	job2b 5
+par_sem_2jobs	job3b 6
+par_sem_2jobs	done
+par_semaphore	### Test if parallel invoked as sem will run parallel --semaphore
+par_semaphore	job1a 1
+par_semaphore	job2a 2
+par_semaphore	job1b 3
+par_semaphore	job3a 4
+par_semaphore	job2b 5
+par_semaphore	job3b 6
+par_semaphore	done
 par_slow_total_jobs	bug #51006: Slow total_jobs() eats job
 par_slow_total_jobs	a
 par_slow_total_jobs	b

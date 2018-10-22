@@ -13,6 +13,16 @@ There are a lot programs with some of the functionality of GNU
 B<parallel>. GNU B<parallel> strives to include the best of the
 functionality without sacrificing ease of use.
 
+B<parallel> has existed since 2002 and as GNU B<parallel> since
+2010. A lot of the alternatives have not had the vitality to survive
+that long, but have come and gone during that time.
+
+GNU B<parallel> is actively maintained with a new release every month
+since 2010. Most other alternatives are fleeting interests of the
+developers with irregular releases and only maintained for a few
+years.
+
+
 =head2 SUMMARY TABLE
 
 The following features are in some of the comparable tools:
@@ -452,15 +462,16 @@ B<dxargs> does not deal well with more simultaneous jobs than SSHD's
 MaxStartups. B<dxargs> is only built for remote run jobs, but does not
 support transferring of files.
 
-http://www.semicomplete.com/blog/geekery/distributed-xargs.html
+https://web.archive.org/web/20120518070250/http://www.semicomplete.com/blog/geekery/distributed-xargs.html
 
 
 =head2 DIFFERENCES BETWEEN mdm/middleman AND GNU Parallel
 
 middleman(mdm) is also a tool for running jobs in parallel.
 
-Here are the shellscripts of http://mdm.berlios.de/usage.html ported
-to GNU B<parallel>:
+Here are the shellscripts of
+https://web.archive.org/web/20110728064735/http://mdm.berlios.de/usage.html
+ported to GNU B<parallel>:
 
   seq 19 | parallel buffon -o - | sort -n > result
   cat files | parallel cmd
@@ -899,6 +910,9 @@ These do something different from GNU B<parallel>
   # Rust parallel does not start before the last argument is read
   (seq 10; sleep 5; echo 2) | time parallel -j2 'sleep 2; echo'
   tail -f /var/log/syslog | parallel echo
+
+Most of the examples from the book GNU Parallel 2018 do not work, thus
+Rust parallel is not close to being a compatible replacement.
 
 Rust parallel has no remote facilities.
 
@@ -1514,9 +1528,202 @@ Here are the 5 examples converted to GNU Parallel:
 https://github.com/soveran/map
 
 
+=head2 DIFFERENCES BETWEEN loop AND GNU Parallel
+
+B<loop> mixes stdout and stderr:
+
+    loop 'ls /no-such-file' >/dev/null
+
+B<loop>'s replacement string B<$ITEM> does not quote strings:
+
+    echo 'two  spaces' | loop 'echo $ITEM'
+
+B<loop> cannot run functions:
+
+    myfunc() { echo joe; }
+    export -f myfunc
+    loop 'myfunc this fails'
+
+Some of the examples from https://github.com/Miserlou/Loop/ can be
+emulated with GNU B<parallel>:
+
+    # A couple of functions will make the code easier to read
+    $ loopy() {
+        yes | parallel -uN0 -j1 "$@"
+      }
+    $ export -f loopy
+    $ time_out() {
+        parallel -uN0 -q --timeout "$@" ::: 1
+      }
+    $ match() {
+        perl -0777 -ne 'grep /'"$1"'/,$_ and print or exit 1'
+      }
+    $ export -f match
+
+    $ loop 'ls' --every 10s
+    $ loopy --delay 10s ls
+
+    $ loop 'touch $COUNT.txt' --count-by 5
+    $ loopy touch '{= $_=seq()*5 =}'.txt
+
+    $ loop --until-contains 200 -- ./get_response_code.sh --site mysite.biz`
+    $ loopy --halt now,success=1 './get_response_code.sh --site mysite.biz |
+        match 200'
+
+    $ loop './poke_server' --for-duration 8h
+    $ time_out 8h loopy ./poke_server
+
+    $ loop './poke_server' --until-success
+    $ loopy --halt now,success=1 ./poke_server
+
+    $ cat files_to_create.txt | loop 'touch $ITEM'
+    $ cat files_to_create.txt | parallel touch {}
+
+    $ loop 'ls' --for-duration 10min --summary
+    # --joblog is somewhat more verbose than --summary
+    $ time_out 10m loopy --joblog my.log ./poke_server; cat my.log
+
+    $ loop 'echo hello'
+    $ loopy echo hello
+
+    $ loop 'echo $COUNT'
+    # GNU Parallel counts from 1
+    $ loopy echo {#}
+    # Counting from 0 can be forced
+    $ loopy echo '{= $_=seq()-1 =}'
+
+    $ loop 'echo $COUNT' --count-by 2
+    $ loopy echo '{= $_=2*(seq()-1) =}'
+
+    $ loop 'echo $COUNT' --count-by 2 --offset 10
+    $ loopy echo '{= $_=10+2*(seq()-1) =}'
+
+    $ loop 'echo $COUNT' --count-by 1.1
+    # GNU Parallel rounds 3.3000000000000003 to 3.3
+    $ loopy echo '{= $_=1.1*(seq()-1) =}'
+
+    $ loop 'echo $COUNT $ACTUALCOUNT' --count-by 2
+    $ loopy echo '{= $_=2*(seq()-1) =} {#}'
+
+    $ loop 'echo $COUNT' --num 3 --summary
+    # --joblog is somewhat more verbose than --summary
+    $ seq 3 | parallel --joblog my.log echo; cat my.log
+
+    $ loop 'ls -foobarbatz' --num 3 --summary
+    # --joblog is somewhat more verbose than --summary
+    $ seq 3 | parallel --joblog my.log -N0 ls -foobarbatz; cat my.log
+
+    $ loop 'echo $COUNT' --count-by 2 --num 50 --only-last
+    # Can be emulated by running 2 jobs
+    $ seq 49 | parallel echo '{= $_=2*(seq()-1) =}' >/dev/null
+    $ echo 50| parallel echo '{= $_=2*(seq()-1) =}'
+
+    $ loop 'date' --every 5s
+    $ loopy --delay 5s date
+
+    $ loop 'date' --for-duration 8s --every 2s
+    $ time_out 8s loopy --delay 2s date
+
+    $ loop 'date -u' --until-time '2018-05-25 20:50:00' --every 5s
+    $ seconds=$((`date -d 2019-05-25T20:50:00 +%s` - `date  +%s`))s
+    $ time_out $seconds loopy --delay 5s date -u
+
+    $ loop 'echo $RANDOM' --until-contains "666"
+    $ loopy --halt now,success=1 'echo $RANDOM | match 666'
+
+    $ loop 'if (( RANDOM % 2 )); then
+              (echo "TRUE"; true);
+            else
+              (echo "FALSE"; false);
+            fi' --until-success
+    $ loopy --halt now,success=1 'if (( $RANDOM % 2 )); then
+                                    (echo "TRUE"; true);
+                                  else
+                                    (echo "FALSE"; false);
+                                  fi'
+
+    $ loop 'if (( RANDOM % 2 )); then
+        (echo "TRUE"; true);
+      else
+        (echo "FALSE"; false);
+      fi' --until-error
+    $ loopy --halt now,fail=1 'if (( $RANDOM % 2 )); then
+                                 (echo "TRUE"; true);
+                               else
+                                 (echo "FALSE"; false);
+                               fi'
+
+    $ loop 'date' --until-match "(\d{4})"
+    $ loopy --halt now,success=1 'date | match [0-9][0-9][0-9][0-9]'
+
+    $ loop 'echo $ITEM' --for red,green,blue
+    $ parallel echo ::: red green blue
+
+    $ cat /tmp/my-list-of-files-to-create.txt | loop 'touch $ITEM'
+    $ cat /tmp/my-list-of-files-to-create.txt | parallel touch
+
+    $ ls | loop 'cp $ITEM $ITEM.bak'; ls
+    $ ls | parallel cp {} {}.bak; ls
+
+    $ loop 'echo $ITEM | tr a-z A-Z' -i
+    $ parallel 'echo {} | tr a-z A-Z'
+    # Or more efficiently:
+    $ parallel --pipe tr a-z A-Z
+
+    $ loop 'echo $ITEM' --for "`ls`"
+    $ parallel echo {} ::: "`ls`"
+
+    $ ls | loop './my_program $ITEM' --until-success;
+    $ ls | parallel --halt now,success=1 ./my_program {}
+
+    $ ls | loop './my_program $ITEM' --until-fail;
+    $ ls | parallel --halt now,fail=1 ./my_program {}
+
+    $ ./deploy.sh;
+      loop 'curl -sw "%{http_code}" http://coolwebsite.biz' \
+        --every 5s --until-contains 200;
+      ./announce_to_slack.sh
+    $ ./deploy.sh;
+      loopy --delay 5s --halt now,success=1 \
+      'curl -sw "%{http_code}" http://coolwebsite.biz | match 200';
+      ./announce_to_slack.sh
+
+    $ loop "ping -c 1 mysite.com" --until-success; ./do_next_thing
+    $ loopy --halt now,success=1 ping -c 1 mysite.com; ./do_next_thing
+
+    $ ./create_big_file -o my_big_file.bin;
+      loop 'ls' --until-contains 'my_big_file.bin';
+      ./upload_big_file my_big_file.bin
+    # inotifywait is a better tool to detect file system changes.
+    # It can even make sure the file is complete
+    # so you are not uploading an incomplete file
+    $ inotifywait -qmre MOVED_TO -e CLOSE_WRITE --format %w%f . |
+        grep my_big_file.bin
+
+    $ ls | loop 'cp $ITEM $ITEM.bak'
+    $ ls | parallel cp {} {}.bak
+
+    $ loop './do_thing.sh' --every 15s --until-success --num 5
+    $ parallel --retries 5 --delay 15s ::: ./do_thing.sh
+
+https://github.com/Miserlou/Loop/ (Last checked: 2018-10)
+
+
+=head2 DIFFERENCES BETWEEN lorikeet AND GNU Parallel
+
+B<lorikeet> can run jobs in parallel. It does this based on a
+dependency graph described in a file, so this is similar to B<make>.
+
+https://github.com/cetra3/lorikeet (Last checked: 2018-10)
+
+
 =head2 Todo
 
 Url for spread
+
+https://github.com/john01dav/spp
+
+https://github.com/amritb/with-this.git
 
 https://github.com/fd0/machma Requires Go >= 1.7.
 

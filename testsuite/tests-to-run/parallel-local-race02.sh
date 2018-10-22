@@ -29,6 +29,28 @@
       echo 1=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
 #}
 
+par_parcat_mixing() {
+    echo 'parcat output should mix: a b a b'
+    mktmpfifo() {
+	tmp=$(tempfile)
+	rm $tmp
+	mkfifo $tmp
+	echo $tmp
+    }
+    slow_output() {
+	string=$1
+	perl -e 'print "'$string'"x9000,"start\n"'
+	sleep 2
+	perl -e 'print "'$string'"x9000,"end\n"'
+    }
+    tmp1=$(mktmpfifo)
+    tmp2=$(mktmpfifo)
+    slow_output a > $tmp1 &
+    sleep 1
+    slow_output b > $tmp2 &
+    parcat $tmp1 $tmp2 | tr -s ab
+}
+
 par_testhalt() {
     testhalt_false() {
 	echo '### testhalt --halt '$1;
@@ -94,6 +116,14 @@ par_tmux_termination() {
     stdout parallel --timeout 120 doit ::: 1
 }
 
+par_linebuffer_tag_slow_output() {
+    echo "Test output tag with mixing halflines"
+    halfline() {
+	perl -e '$| = 1; map { print $ARGV[0]; sleep(1); print "$_\n" } split //, "Half\n"' $1
+    }
+    export -f halfline
+    parallel --delay 0.5 -j0 --tag --line-buffer halfline ::: a b
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
