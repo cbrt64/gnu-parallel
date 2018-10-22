@@ -1554,7 +1554,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20180923;
+    $Global::version = 20181022;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;

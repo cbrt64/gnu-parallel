@@ -1,3 +1,21 @@
+20181022
+
+* env_parallel.fish: --session support (alpha quality)
+
+* GNU Parallel was cited in: High-throughput sequencing of murine
+  immunoglobulin heavy chain repertoires using single side unique
+  molecular identifiers on an Ion Torrent PGM
+  https://doi.org/10.18632/oncotarget.25493
+
+* GNU parallel in Japanese Wikipedia
+  https://ja.wikipedia.org/wiki/GNU_parallel
+
+* Outils de paramétrisation des tâches: lots de tâches, GNU Parallel
+  https://www.eventbrite.ca/e/inscription-outils-de-parametrisation-des-taches-lots-de-taches-gnu-parallel-et-bqtools-midi-conference-de-50271076142
+
+* Bug fixes and man page updates.
+
+
 20180922
 
 * Minix is supported again.
