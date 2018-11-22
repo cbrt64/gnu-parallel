@@ -1716,12 +1716,19 @@ dependency graph described in a file, so this is similar to B<make>.
 
 https://github.com/cetra3/lorikeet (Last checked: 2018-10)
 
+=head2 DIFFERENCES BETWEEN spp AND GNU Parallel
+
+B<spp> can run jobs in parallel. B<spp> does not use a command
+template to generate the jobs, but requires jobs to be in a
+file. Output from the jobs mix.
+
+https://github.com/john01dav/spp
 
 =head2 Todo
 
 Url for spread
 
-https://github.com/john01dav/spp
+
 
 https://github.com/amritb/with-this.git
 

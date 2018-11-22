@@ -24,7 +24,7 @@
 use strict;
 use Getopt::Long;
 $Global::progname="niceload";
-$Global::version = 20181022;
+$Global::version = 20181024;
 Getopt::Long::Configure("bundling","require_order");
 get_options_from_array(\@ARGV) || die_usage();
 if($opt::version) {
@@ -1147,7 +1147,7 @@ sub io_status_linux {
     # throw away all execpt the last Device:-section
     my @iostat;
     for(reverse @iostat_out) {
-	/Device:/ and last;
+	/Device/ and last;
 	push @iostat, (split(/\s+/,$_))[13];
     }
     my $io = ::max(@iostat);

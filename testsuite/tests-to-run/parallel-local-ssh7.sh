@@ -787,6 +787,7 @@ _EOF
 par_fish_underscore() {
   echo '### fish'
   myscript=$(cat <<'_EOF'
+    echo "Fish is broken"
     echo "### Testing of --env _"
 
 #    . `which env_parallel.fish`;
@@ -1212,6 +1213,7 @@ _EOF
 
 par_fish_funky() {
   myscript=$(cat <<'_EOF'
+    echo "Fish is broken"
     env_parallel --session
     set myvar "myvar  works"
     setenv myenvvar "myenvvar  works"
@@ -1509,6 +1511,7 @@ _EOF
 
 par_fish_env_parallel() {
   myscript=$(cat <<'_EOF'
+    echo "Fish is broken"
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
     set OK OK

@@ -16,9 +16,9 @@ MAXINNERPROC=${maxinnerproc:-3}
 
 export PARALLEL_SSH="ssh -oLogLevel=quiet"
 
-# select a running master (suse, ubuntu, or debian)
+# select a running master (debian-ppc, suse, ubuntu, or debian)
 MASTER=$(parallel -j0 --delay 0.1 --halt now,success=1 $PARALLEL_SSH {} echo {} \
-		  ::: {ubuntu,suse,debian}.polarhome.com)
+		  ::: {debian-ppc,ubuntu,debian,suse}.polarhome.com)
 
 parallel -j0 --delay 0.1 --retries $RETRIES \
 	 rsync -L /usr/local/bin/{parallel,env_parallel,env_parallel.*[^~],parcat,stdout} \

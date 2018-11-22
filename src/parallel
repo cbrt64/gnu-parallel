@@ -120,7 +120,7 @@ if($Global::semaphore) {
     $sem = acquire_semaphore();
 }
 $SIG{TERM} = \&start_no_new_jobs;
-start_more_jobs();
+while(start_more_jobs()) {}
 if($opt::tee) {
     # All jobs must be running in parallel for --tee
     $Global::start_no_new_jobs = 1;
@@ -620,6 +620,7 @@ sub spreadstdin {
 	my $sleep =1;
 	while($Global::total_running > 0) {
 	    $sleep = ::reap_usleep($sleep);
+	    start_more_jobs();
 	}
     }
     $Global::start_no_new_jobs ||= 1;
@@ -1554,7 +1555,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20181022;
+    $Global::version = 20181024;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -2668,7 +2669,6 @@ sub init_run_jobs {
 	# Returns:
 	#   $jobs_started = number of jobs started
 	my $jobs_started = 0;
-	my $jobs_started_this_round = 0;
 	if($Global::start_no_new_jobs) {
 	    return $jobs_started;
 	}
@@ -2678,65 +2678,61 @@ sub init_run_jobs {
 	    changed_procs_file();
 	    changed_sshloginfile();
 	}
-	do {
-	    $jobs_started_this_round = 0;
-	    # This will start 1 job on each --sshlogin (if possible)
-	    # thus distribute the jobs on the --sshlogins round robin
-	    for my $sshlogin (values %Global::host) {
-		if($Global::JobQueue->empty() and not $opt::pipe) {
-		    # No more jobs in the queue
-		    last;
-		}
-		debug("run", "Running jobs before on ", $sshlogin->string(), ": ",
-		      $sshlogin->jobs_running(), "\n");
-		if ($sshlogin->jobs_running() < $sshlogin->max_jobs_running()) {
-		    if($opt::delay
-		       and
-		       $opt::delay > ::now() - $Global::newest_starttime) {
-			# It has been too short since last start
-			next;
-		    }
-		    if($opt::load and $sshlogin->loadavg_too_high()) {
-			# The load is too high or unknown
-			next;
-		    }
-		    if($opt::noswap and $sshlogin->swapping()) {
-			# The server is swapping
-			next;
-		    }
-		    if($opt::limit and $sshlogin->limit()) {
-			# Over limit
-			next;
-		    }
-		    if($opt::memfree and $sshlogin->memfree() < $opt::memfree) {
-			# The server has not enough mem free
-			::debug("mem", "Not starting job: not enough mem\n");
-			next;
-		    }
-		    if($sshlogin->too_fast_remote_login()) {
-			# It has been too short since
-			next;
-		    }
-		    debug("run", $sshlogin->string(),
-			  " has ", $sshlogin->jobs_running(),
-			  " out of ", $sshlogin->max_jobs_running(),
-			  " jobs running. Start another.\n");
-		    if(start_another_job($sshlogin) == 0) {
-			# No more jobs to start on this $sshlogin
-			debug("run","No jobs started on ",
-			      $sshlogin->string(), "\n");
-			next;
-		    }
-		    $sshlogin->inc_jobs_running();
-		    $sshlogin->set_last_login_at(::now());
-		    $jobs_started++;
-		    $jobs_started_this_round++;
-		}
-		debug("run","Running jobs after on ", $sshlogin->string(), ": ",
-		      $sshlogin->jobs_running(), " of ",
-		      $sshlogin->max_jobs_running(), "\n");
+	# This will start 1 job on each --sshlogin (if possible)
+	# thus distribute the jobs on the --sshlogins round robin
+	for my $sshlogin (values %Global::host) {
+	    if($Global::JobQueue->empty() and not $opt::pipe) {
+		# No more jobs in the queue
+		last;
 	    }
-	} while($jobs_started_this_round);
+	    debug("run", "Running jobs before on ", $sshlogin->string(), ": ",
+		  $sshlogin->jobs_running(), "\n");
+	    if ($sshlogin->jobs_running() < $sshlogin->max_jobs_running()) {
+		if($opt::delay
+		   and
+		   $opt::delay > ::now() - $Global::newest_starttime) {
+		    # It has been too short since last start
+		    next;
+		}
+		if($opt::load and $sshlogin->loadavg_too_high()) {
+		    # The load is too high or unknown
+		    next;
+		}
+		if($opt::noswap and $sshlogin->swapping()) {
+		    # The server is swapping
+		    next;
+		}
+		if($opt::limit and $sshlogin->limit()) {
+		    # Over limit
+		    next;
+		}
+		if($opt::memfree and $sshlogin->memfree() < $opt::memfree) {
+		    # The server has not enough mem free
+		    ::debug("mem", "Not starting job: not enough mem\n");
+		    next;
+		}
+		if($sshlogin->too_fast_remote_login()) {
+		    # It has been too short since
+		    next;
+		}
+		debug("run", $sshlogin->string(),
+		      " has ", $sshlogin->jobs_running(),
+		      " out of ", $sshlogin->max_jobs_running(),
+		      " jobs running. Start another.\n");
+		if(start_another_job($sshlogin) == 0) {
+		    # No more jobs to start on this $sshlogin
+		    debug("run","No jobs started on ",
+			  $sshlogin->string(), "\n");
+		    next;
+		}
+		$sshlogin->inc_jobs_running();
+		$sshlogin->set_last_login_at(::now());
+		$jobs_started++;
+	    }
+	    debug("run","Running jobs after on ", $sshlogin->string(), ": ",
+		  $sshlogin->jobs_running(), " of ",
+		  $sshlogin->max_jobs_running(), "\n");
+	}
 
 	return $jobs_started;
     }
@@ -2912,8 +2908,8 @@ sub drain_job_queue {
 	    }
 	    # * because of loadavg
 	    # * because of too little time between each ssh login.
-            start_more_jobs();
 	    $sleep = ::reap_usleep($sleep);
+            start_more_jobs();
 	    if($Global::max_jobs_running == 0) {
 		::warning("There are no job slots available. Increase --jobs.");
 	    }
@@ -2921,6 +2917,7 @@ sub drain_job_queue {
 	while($opt::sqlmaster and not $Global::sql->finished()) {
 	    # SQL master
 	    $sleep = ::reap_usleep($sleep);
+            start_more_jobs();
 	    if($Global::start_sqlworker) {
 		# Start an SQL worker as we are now sure there is work to do
 		$Global::start_sqlworker = 0;
@@ -4054,27 +4051,24 @@ sub reaper {
     #   @pids_reaped = PIDs of children finished
     my $stiff;
     my @pids_reaped;
-    my $children_reaped = 0;
+    my $total_reaped;
     debug("run", "Reaper ");
-    # For efficiency surround with BEGIN/COMMIT when using $opt::sqlmaster
-    $opt::sqlmaster and $Global::sql->run("BEGIN;");
-    while (($stiff = waitpid(-1, &WNOHANG)) > 0) {
+    if (($stiff = waitpid(-1, &WNOHANG)) > 0) {
 	# $stiff = pid of dead process
 	if(wantarray) {
 	    push(@pids_reaped,$stiff);
-	} else {
-	    $children_reaped++;
 	}
-        if($Global::sshmaster{$stiff}) {
-            # This is one of the ssh -M: ignore
-            next;
-        }
-        my $job = $Global::running{$stiff};
+	$total_reaped++;
+	if($Global::sshmaster{$stiff}) {
+	    # This is one of the ssh -M: ignore
+	    next;
+	}
+	my $job = $Global::running{$stiff};
 
 	# '-a <(seq 10)' will give us a pid not in %Global::running
-        $job or next;
-        delete $Global::running{$stiff};
-        $Global::total_running--;
+	$job or return 0;
+	delete $Global::running{$stiff};
+	$Global::total_running--;
 	if($job->{'commandline'}{'skip'}) {
 	    # $job->skip() was called
 	    $job->set_exitstatus(-2);
@@ -4084,11 +4078,12 @@ sub reaper {
 	    $job->set_exitsignal($? & 127);
 	}
 
-        debug("run", "seq ",$job->seq()," died (", $job->exitstatus(), ")");
-        $job->set_endtime(::now());
-        my $sshlogin = $job->sshlogin();
-        $sshlogin->dec_jobs_running();
-        if($job->should_be_retried()) {
+	debug("run", "seq ",$job->seq()," died (", $job->exitstatus(), ")");
+	$job->set_endtime(::now());
+	my $sshlogin = $job->sshlogin();
+	$sshlogin->dec_jobs_running();
+	if($job->should_be_retried()) {
+	    # Free up file handles
 	    $job->free_ressources();
 	} else {
 	    # The job is done
@@ -4109,18 +4104,17 @@ sub reaper {
 		::kill_sleep_seq($job->pid());
 		::killall();
 		::wait_and_exit($Global::halt_exitstatus);
-            }
-        }
+	    }
+	}
 	$job->cleanup();
-	start_more_jobs();
+
 	if($opt::progress) {
 	    my %progress = progress();
 	    ::status_no_nl("\r",$progress{'status'});
 	}
     }
-    $opt::sqlmaster and $Global::sql->run("COMMIT;");
     debug("run", "done ");
-    return wantarray ? @pids_reaped : $children_reaped;
+    return wantarray ? @pids_reaped : $total_reaped;
 }
 
 
@@ -5102,6 +5096,7 @@ sub reap_usleep {
     #   $ms*1.1 if no children reaped
     my $ms = shift;
     if(reaper()) {
+	while(reaper()) {}
 	if(not $Global::total_completed % 100) {
 	    if($opt::timeout) {
 		# Force cleaning the timeout queue for every 1000 jobs
@@ -7947,7 +7942,7 @@ sub wrapped {
 	    $command =
 		'cat > $PARALLEL_TMP;'.
 		$command.";". postpone_exit_and_cleanup().
-		'$PARALLEL_TMP';
+					 '$PARALLEL_TMP';
 	} elsif($opt::fifo) {
 	    # Prepend fifo-wrapper. In essence:
 	    #   mkfifo {}
@@ -8280,7 +8275,7 @@ sub sshlogin_wrap {
     my $self = shift;
     my $command = shift;
     # TODO test that *sh -c 'parallel --env' use *sh
-    if(not defined $self->{'sshlogin_wrap'}) {
+    if(not defined $self->{'sshlogin_wrap'}{$command}) {
 	my $sshlogin = $self->sshlogin();
 	my $serverlogin = $sshlogin->serverlogin();
 	my $quoted_remote_command;
@@ -8310,12 +8305,12 @@ sub sshlogin_wrap {
 		   $command =~ /\n/) {
 		    # csh does not deal well with > 1000 chars in one word
 		    # csh does not deal well with $ENV with \n
-		    $self->{'sshlogin_wrap'} = base64_wrap($perl_code);
+		    $self->{'sshlogin_wrap'}{$command} = base64_wrap($perl_code);
 		} else {
-		    $self->{'sshlogin_wrap'} = "perl -e ".::Q($perl_code);
+		    $self->{'sshlogin_wrap'}{$command} = "perl -e ".::Q($perl_code);
 		}
 	    } else {
-		$self->{'sshlogin_wrap'} = $command;
+		$self->{'sshlogin_wrap'}{$command} = $command;
 	    }
 	} else {
 	    my $pwd = "";
@@ -8357,7 +8352,7 @@ sub sshlogin_wrap {
 		# We need to save the exit status of the job
 		$post = '_EXIT_status=$?; ' . $post . ' exit $_EXIT_status;';
 	    }
-	    $self->{'sshlogin_wrap'} =
+	    $self->{'sshlogin_wrap'}{$command} =
 		($pre
 		 . "$sshcmd $serverlogin -- exec "
 		 . $quoted_remote_command
@@ -8365,7 +8360,7 @@ sub sshlogin_wrap {
 		 . $post);
 	}
     }
-    return $self->{'sshlogin_wrap'};
+    return $self->{'sshlogin_wrap'}{$command};
 }
 
 sub transfer {

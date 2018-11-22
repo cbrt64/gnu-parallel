@@ -43,7 +43,6 @@ bin/parallel freebsd	copy freebsd bin/parallel parallel
 bin/parallel debian	copy debian bin/parallel parallel
 bin/parallel hurd	copy hurd bin/parallel parallel
 bin/parallel minix	copy minix bin/parallel parallel
-bin/parallel minix	cat: stdout: no space left on device
 bin/env_parallel qnx	copy qnx bin/env_parallel env_parallel
 bin/env_parallel pidora	copy pidora bin/env_parallel env_parallel
 bin/env_parallel tru64	copy tru64 bin/env_parallel env_parallel
@@ -69,7 +68,6 @@ bin/env_parallel freebsd	copy freebsd bin/env_parallel env_parallel
 bin/env_parallel debian	copy debian bin/env_parallel env_parallel
 bin/env_parallel hurd	copy hurd bin/env_parallel env_parallel
 bin/env_parallel minix	copy minix bin/env_parallel env_parallel
-bin/env_parallel minix	cat: stdout: no space left on device
 bin/env_parallel.ash qnx	copy qnx bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash pidora	copy pidora bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash tru64	copy tru64 bin/env_parallel.ash env_parallel.ash
@@ -95,7 +93,6 @@ bin/env_parallel.ash freebsd	copy freebsd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash debian	copy debian bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash hurd	copy hurd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash minix	copy minix bin/env_parallel.ash env_parallel.ash
-bin/env_parallel.ash minix	cat: stdout: no space left on device
 bin/env_parallel.bash qnx	copy qnx bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash pidora	copy pidora bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash tru64	copy tru64 bin/env_parallel.bash env_parallel.bash
@@ -147,7 +144,6 @@ bin/env_parallel.csh freebsd	copy freebsd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh debian	copy debian bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh hurd	copy hurd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh minix	copy minix bin/env_parallel.csh env_parallel.csh
-bin/env_parallel.csh minix	cat: stdout: no space left on device
 bin/env_parallel.dash qnx	copy qnx bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash pidora	copy pidora bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash tru64	copy tru64 bin/env_parallel.dash env_parallel.dash
@@ -173,7 +169,6 @@ bin/env_parallel.dash freebsd	copy freebsd bin/env_parallel.dash env_parallel.da
 bin/env_parallel.dash debian	copy debian bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash hurd	copy hurd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash minix	copy minix bin/env_parallel.dash env_parallel.dash
-bin/env_parallel.dash minix	cat: stdout: no space left on device
 bin/env_parallel.fish qnx	copy qnx bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish pidora	copy pidora bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish tru64	copy tru64 bin/env_parallel.fish env_parallel.fish
@@ -199,7 +194,6 @@ bin/env_parallel.fish freebsd	copy freebsd bin/env_parallel.fish env_parallel.fi
 bin/env_parallel.fish debian	copy debian bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish hurd	copy hurd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish minix	copy minix bin/env_parallel.fish env_parallel.fish
-bin/env_parallel.fish minix	cat: stdout: no space left on device
 bin/env_parallel.ksh qnx	copy qnx bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh pidora	copy pidora bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh tru64	copy tru64 bin/env_parallel.ksh env_parallel.ksh
@@ -225,7 +219,6 @@ bin/env_parallel.ksh freebsd	copy freebsd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh debian	copy debian bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh hurd	copy hurd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh minix	copy minix bin/env_parallel.ksh env_parallel.ksh
-bin/env_parallel.ksh minix	cat: stdout: no space left on device
 bin/env_parallel.mksh qnx	copy qnx bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh pidora	copy pidora bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh tru64	copy tru64 bin/env_parallel.mksh env_parallel.mksh
@@ -251,7 +244,6 @@ bin/env_parallel.mksh freebsd	copy freebsd bin/env_parallel.mksh env_parallel.mk
 bin/env_parallel.mksh debian	copy debian bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh hurd	copy hurd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh minix	copy minix bin/env_parallel.mksh env_parallel.mksh
-bin/env_parallel.mksh minix	cat: stdout: no space left on device
 bin/env_parallel.pdksh qnx	copy qnx bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh pidora	copy pidora bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh tru64	copy tru64 bin/env_parallel.pdksh env_parallel.pdksh
@@ -277,7 +269,6 @@ bin/env_parallel.pdksh freebsd	copy freebsd bin/env_parallel.pdksh env_parallel.
 bin/env_parallel.pdksh debian	copy debian bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh hurd	copy hurd bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh minix	copy minix bin/env_parallel.pdksh env_parallel.pdksh
-bin/env_parallel.pdksh minix	cat: stdout: no space left on device
 bin/env_parallel.sh qnx	copy qnx bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh pidora	copy pidora bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh tru64	copy tru64 bin/env_parallel.sh env_parallel.sh
@@ -303,7 +294,6 @@ bin/env_parallel.sh freebsd	copy freebsd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh debian	copy debian bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh hurd	copy hurd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh minix	copy minix bin/env_parallel.sh env_parallel.sh
-bin/env_parallel.sh minix	cat: stdout: no space left on device
 bin/env_parallel.tcsh qnx	copy qnx bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh pidora	copy pidora bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh tru64	copy tru64 bin/env_parallel.tcsh env_parallel.tcsh
@@ -329,7 +319,6 @@ bin/env_parallel.tcsh freebsd	copy freebsd bin/env_parallel.tcsh env_parallel.tc
 bin/env_parallel.tcsh debian	copy debian bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh hurd	copy hurd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh minix	copy minix bin/env_parallel.tcsh env_parallel.tcsh
-bin/env_parallel.tcsh minix	cat: stdout: no space left on device
 bin/env_parallel.zsh qnx	copy qnx bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh pidora	copy pidora bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh tru64	copy tru64 bin/env_parallel.zsh env_parallel.zsh
@@ -355,7 +344,6 @@ bin/env_parallel.zsh freebsd	copy freebsd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh debian	copy debian bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh hurd	copy hurd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh minix	copy minix bin/env_parallel.zsh env_parallel.zsh
-bin/env_parallel.zsh minix	cat: stdout: no space left on device
 bin/parcat qnx	copy qnx bin/parcat parcat
 bin/parcat pidora	copy pidora bin/parcat parcat
 bin/parcat tru64	copy tru64 bin/parcat parcat
@@ -381,7 +369,6 @@ bin/parcat freebsd	copy freebsd bin/parcat parcat
 bin/parcat debian	copy debian bin/parcat parcat
 bin/parcat hurd	copy hurd bin/parcat parcat
 bin/parcat minix	copy minix bin/parcat parcat
-bin/parcat minix	cat: stdout: no space left on device
 bin/stdout qnx	copy qnx bin/stdout stdout
 bin/stdout pidora	copy pidora bin/stdout stdout
 bin/stdout tru64	copy tru64 bin/stdout stdout

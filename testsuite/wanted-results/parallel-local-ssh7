@@ -1011,36 +1011,41 @@ par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
 par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
 par_fish_underscore	### fish
+par_fish_underscore	Fish is broken
 par_fish_underscore	### Testing of --env _
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
-par_fish_underscore	variables in aliases and arrays in functions work
-par_fish_underscore	variables in aliases and arrays in functions work
-par_fish_underscore	      ^
-par_fish_underscore	      ^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
+par_fish_underscore	not_copied_alias 'error=OK'
+par_fish_underscore	^
+par_fish_underscore	not_copied_func 'error=OK'
+par_fish_underscore	^
 par_fish_underscore	error=OK
 par_fish_underscore	error=OK
-par_fish_underscore	aliases and arrays in functions work
-par_fish_underscore	aliases and arrays in functions work
-par_fish_underscore	aliases functions work
-par_fish_underscore	aliases functions work
-par_fish_underscore	      ^
-par_fish_underscore	in function 'myfunc'
-par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list 'work'
-par_fish_underscore	
+par_fish_underscore	myfunc work
+par_fish_underscore	^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
-par_fish_underscore	      ^
-par_fish_underscore	in function 'myfunc'
-par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list 'work'
-par_fish_underscore	
+par_fish_underscore	myfunc work
+par_fish_underscore	^
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
-par_fish_underscore	      ^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myfunc
-par_fish_underscore	      ^
+par_fish_underscore	myfunc work
+par_fish_underscore	^
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myfunc
 par_fish_parset	Not implemented
 par_fish_man	### fish
@@ -1089,6 +1094,8 @@ par_fish_man	env_parallel
 par_fish_man	exit value 2 should be 2
 par_fish_man	Unknown option: no-such-option
 par_fish_man	exit value 255 should be 255 `sleep 1`
+par_fish_funky	Fish is broken
+par_fish_funky	setenv: Too many arguments
 par_fish_funky	env_parallel: Warning: ASCII value 1 in variables is not supported
 par_fish_funky	3 arg alias_works
 par_fish_funky	env_parallel: Warning: ASCII value 1 in variables is not supported
@@ -1100,7 +1107,7 @@ par_fish_funky
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	Funky-	   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_fish_funky	Funkyenv-	   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
+par_fish_funky	Funkyenv--funkyenv
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
@@ -1115,7 +1122,7 @@ par_fish_funky
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	Funky-	   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_fish_funky	Funkyenv-	   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
+par_fish_funky	Funkyenv--funkyenv
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
@@ -1123,16 +1130,11 @@ par_fish_funky
 par_fish_funky	'	   !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_fish_environment_too_big	Not implemented
 par_fish_env_parallel_session	Not implemented
+par_fish_env_parallel	Fish is broken
 par_fish_env_parallel	bug #50435: Remote fifo broke in 20150522
 par_fish_env_parallel	TODO fix env_parallel --fifo
-par_fish_env_parallel	'end' outside of a block
-par_fish_env_parallel	fish: end
-par_fish_env_parallel	      ^
-par_fish_env_parallel	data from stdin
-par_fish_env_parallel	OK
-par_fish_env_parallel	$? is not the exit status. In fish, please use $status.
-par_fish_env_parallel	fish: cat $PARALLEL_TMP; and echo $OK;perl -e '$bash=shift;$csh=shift;for(@ARGV){unlink;rmdir;}if($bash=~s/h//){exit$bash;}exit$csh;' "$?h" "$status" $PARALLEL_TMP
-par_fish_env_parallel	                                                                                                                                        ^
+par_fish_env_parallel	parallel: Error: Command line too long (XXX >= XXX) at input 0: $PARALLEL_TMP
+par_fish_env_parallel	parallel: Error: Command line too long (XXX >= XXX) at input 0: $PARALLEL_TMP
 par_dash_underscore	### dash
 par_dash_underscore	### Testing of --env _
 par_dash_underscore	variables in aliases work
