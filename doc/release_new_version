@@ -16,6 +16,7 @@ configure.ac: AC_INIT([parallel], [20100422], [bug-parallel@gnu.org])
 src/parallel: $Global::version = 20100422;
 README: parallel-20130222
 
+YYYYMMDD=$(echo `yyyymmdd`-1 | bc)
 YYYYMMDD=$(echo `yyyymmdd`+1 | bc)
 YYYYMMDD=`yyyymmdd`
 echo $YYYYMMDD

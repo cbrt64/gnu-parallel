@@ -1,3 +1,13 @@
+20181122
+
+* Experimental simpler job flow control.
+
+* 時間がかかるコマンドを GNU parallel で 並列実行する
+  https://qiita.com//grohiro/items/4db3fa951a4778c5c479
+
+* Bug fixes and man page updates.
+
+
 20181022
 
 * env_parallel.fish: --session support (alpha quality)
