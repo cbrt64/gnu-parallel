@@ -206,9 +206,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20181122 ('Kilogram/brexitdeal/Stan Lee/Cesar Sayoc/Tree of Life/Iran') released <<[stable]>>
+Subject: GNU Parallel 20181222 ('Kilogram/brexitdeal/Stan Lee/Cesar Sayoc/Tree of Life/Iran') released <<[stable]>>
 
-GNU Parallel 20181122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20181222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -216,9 +216,7 @@ Quote of the month:
 
 New in this release:
 
-* https://codeday.me/bug/20181015/298447.html
-
-* https://qiita.com//grohiro/items/4db3fa951a4778c5c479
+* https://qiita.com/hana_shin/items/53c3c78525c9c758ae7c
 
 * Bug fixes and man page updates.
 

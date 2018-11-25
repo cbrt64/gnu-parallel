@@ -255,13 +255,13 @@ echo 'Because of -t these lines can be flipped around therefore sort'
 stdout parallel -k -X -s30 -t echo < stairs.xi | sort
 echo '###  -t echo this plus that < space.xi'
 stdout xargs -t echo this plus that < space.xi
-stdout parallel -k -t echo this plus that < space.xi
+stdout parallel -k -t echo this plus that < space.xi | sort
 echo '###  -n1 printf "@%s@\n" < empty.xi'
 stdout xargs -n1 printf "@%s@\n" < empty.xi
 stdout parallel -k -n1 printf "@%s@\n" < empty.xi
 echo '###  -n2 -t echo < foobar.xi'
 stdout xargs -n2 -t echo < foobar.xi
-stdout parallel -k -n2 -t echo < foobar.xi
+stdout parallel -k -n2 -t echo < foobar.xi | sort
 
 EOF
 

@@ -27,7 +27,7 @@ par_path_remote_csh	CSH Path before: /bin:/usr/bin with no parallel
 par_path_remote_csh	parallel: Command not found.
 par_path_remote_csh	^^^^^^^^ Not found is OK
 par_path_remote_csh	parallel: Warning: Removed lo.
-par_path_remote_csh	parallel: Error: There are no hosts left to run on.
+par_path_remote_csh	parallel: Error: Cannot run any jobs.
 par_path_remote_csh	Right now it seems csh does not respect /bin:/usr/bin:/tmp if set from Perl
 par_path_remote_csh	Done
 par_retries_1	### Test of --retries - it should run 13 jobs in total

@@ -120,17 +120,27 @@ if($Global::semaphore) {
     $sem = acquire_semaphore();
 }
 $SIG{TERM} = \&start_no_new_jobs;
-while(start_more_jobs()) {}
+
 if($opt::tee) {
     # All jobs must be running in parallel for --tee
+    while(start_more_jobs()) {}
     $Global::start_no_new_jobs = 1;
+    if(not $Global::JobQueue->empty()) {
+	::error("--tee requres --jobs to be higher. Try --jobs 0.");
+	::wait_and_exit(255);
+    }
 } elsif($opt::pipe and not $opt::pipepart) {
+    # Fill all jobslots
+    while(start_more_jobs()) {}
     spreadstdin();
+} else {
+    # Reap one - start one
+    while(reaper() + start_more_jobs()) {}
 }
 ::debug("init", "Start draining\n");
 drain_job_queue();
 ::debug("init", "Done draining\n");
-reaper();
+reapers();
 ::debug("init", "Done reaping\n");
 if($Global::semaphore) {
     $sem->release();
@@ -186,10 +196,13 @@ sub max_jobs_running {
     # Returns:
     #   $Global::max_jobs_running
     if(not $Global::max_jobs_running) {
-
 	for my $sshlogin (values %Global::host) {
 	    $sshlogin->max_jobs_running();
 	}
+    }
+    if(not $Global::max_jobs_running) {
+	::error("Cannot run any jobs.");
+	wait_and_exit(255);
     }
     return $Global::max_jobs_running;
 }
@@ -461,15 +474,6 @@ sub spreadstdin {
     #   $opt::roundrobin
     #   %Global::running
     # Returns: N/A
-
-    if($opt::tee) {
-	# Spawn all jobs
-	# read a record
-	# Write record to all jobs
-	if(not $Global::JobQueue->empty()) {
-	    ::error("--tee requres --jobs to be higher. Try --jobs 0.");
-	}
-    }
 
     my $buf = "";
     my ($recstart,$recend) = recstartrecend();
@@ -1555,7 +1559,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20181122;
+    $Global::version = 20181124;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -4035,86 +4039,95 @@ sub start_no_new_jobs {
     $Global::start_no_new_jobs ||= 1;
 }
 
+sub reapers {
+    # Run reaper until there are no more left
+    # Returns:
+    #   @pids_reaped = pids of reaped processes
+    my @pids_reaped;
+    my $pid;
+    while($pid = reaper()) {
+	push @pids_reaped, $pid;
+    }
+    return @pids_reaped;
+}
+
 sub reaper {
-    # A job finished.
-    # Print the output.
-    # Start another job
+    # A job finished:
+    # * Set exitstatus, exitsignal, endtime.
+    # * Free ressources for new job
+    # * Update median runtime
+    # * Print output
+    # * If --halt = now: Kill children
+    # * Print progress
     # Uses:
-    #   %Global::sshmaster
     #   %Global::running
     #   $opt::timeout
     #   $Global::timeoutq
-    #   $opt::halt
     #   $opt::keeporder
     #   $Global::total_running
     # Returns:
-    #   @pids_reaped = PIDs of children finished
+    #   $stiff = PID of child finished
     my $stiff;
-    my @pids_reaped;
-    my $total_reaped;
     debug("run", "Reaper ");
-    if (($stiff = waitpid(-1, &WNOHANG)) > 0) {
-	# $stiff = pid of dead process
-	if(wantarray) {
-	    push(@pids_reaped,$stiff);
-	}
-	$total_reaped++;
-	if($Global::sshmaster{$stiff}) {
-	    # This is one of the ssh -M: ignore
-	    next;
-	}
-	my $job = $Global::running{$stiff};
+    if(($stiff = waitpid(-1, &WNOHANG)) <= 0) {
+	# No jobs waiting to be reaped
+	return 0;
+    }
 
-	# '-a <(seq 10)' will give us a pid not in %Global::running
-	$job or return 0;
-	delete $Global::running{$stiff};
-	$Global::total_running--;
-	if($job->{'commandline'}{'skip'}) {
-	    # $job->skip() was called
-	    $job->set_exitstatus(-2);
-	    $job->set_exitsignal(0);
+    # $stiff = pid of dead process
+    my $job = $Global::running{$stiff};
+
+    # '-a <(seq 10)' will give us a pid not in %Global::running
+    # The same will one of the ssh -M: ignore
+    $job or return 0;
+    delete $Global::running{$stiff};
+    $Global::total_running--;
+    if($job->{'commandline'}{'skip'}) {
+	# $job->skip() was called
+	$job->set_exitstatus(-2);
+	$job->set_exitsignal(0);
+    } else {
+	$job->set_exitstatus($? >> 8);
+	$job->set_exitsignal($? & 127);
+    }
+
+    debug("run", "seq ",$job->seq()," died (", $job->exitstatus(), ")");
+    $job->set_endtime(::now());
+    my $sshlogin = $job->sshlogin();
+    $sshlogin->dec_jobs_running();
+    if($job->should_be_retried()) {
+	# Free up file handles
+	$job->free_ressources();
+    } else {
+	# The job is done
+	$sshlogin->inc_jobs_completed();
+	# Free the jobslot
+	$job->free_slot();
+	if($opt::timeout and not $job->exitstatus()) {
+	    # Update average runtime for timeout only for successful jobs
+	    $Global::timeoutq->update_median_runtime($job->runtime());
+	}
+	if($opt::keeporder) {
+	    $job->print_earlier_jobs();
 	} else {
-	    $job->set_exitstatus($? >> 8);
-	    $job->set_exitsignal($? & 127);
+	    $job->print();
 	}
-
-	debug("run", "seq ",$job->seq()," died (", $job->exitstatus(), ")");
-	$job->set_endtime(::now());
-	my $sshlogin = $job->sshlogin();
-	$sshlogin->dec_jobs_running();
-	if($job->should_be_retried()) {
-	    # Free up file handles
-	    $job->free_ressources();
-	} else {
-	    # The job is done
-	    $sshlogin->inc_jobs_completed();
-	    # Free the jobslot
-	    $job->free_slot();
-	    if($opt::timeout and not $job->exitstatus()) {
-		# Update average runtime for timeout only for successful jobs
-		$Global::timeoutq->update_median_runtime($job->runtime());
-	    }
-	    if($opt::keeporder) {
-		$job->print_earlier_jobs();
-	    } else {
-		$job->print();
-	    }
-	    if($job->should_we_halt() eq "now") {
-		# Kill children
-		::kill_sleep_seq($job->pid());
-		::killall();
-		::wait_and_exit($Global::halt_exitstatus);
-	    }
-	}
-	$job->cleanup();
-
-	if($opt::progress) {
-	    my %progress = progress();
-	    ::status_no_nl("\r",$progress{'status'});
+	if($job->should_we_halt() eq "now") {
+	    # Kill children
+	    ::kill_sleep_seq($job->pid());
+	    ::killall();
+	    ::wait_and_exit($Global::halt_exitstatus);
 	}
     }
+    $job->cleanup();
+
+    if($opt::progress) {
+	my %progress = progress();
+	::status_no_nl("\r",$progress{'status'});
+    }
+
     debug("run", "done ");
-    return wantarray ? @pids_reaped : $total_reaped;
+    return $stiff;
 }
 
 
@@ -4123,8 +4136,11 @@ sub __USAGE__ {}
 
 sub killall {
     # Kill all jobs by killing their process groups
-
+    # Uses:
+    #   $Global::start_no_new_jobs = we are stopping
+    #   $Global::killall = Flag to not run reaper
     $Global::start_no_new_jobs ||= 1;
+    # Do not reap killed children: Ignore them instead
     $Global::killall ||= 1;
     kill_sleep_seq(keys %Global::running);
 }
@@ -4145,35 +4161,35 @@ sub kill_sleep_seq {
 }
 
 sub kill_sleep {
+    # Kill pids with a signal and wait a while for them to die
+    # Input:
+    #   $signal = signal to send to @pids
+    #   $sleep_max = number of ms to sleep at most before returning
+    #   @pids = pids to kill (actually process groups)
+    # Uses:
+    #   $Global::killall = set by killall() to avoid calling reaper
+    # Returns:
+    #   @pids = pids still alive
     my ($signal, $sleep_max, @pids) = @_;
     ::debug("kill","kill_sleep $signal ",(join " ",sort @pids),"\n");
     kill $signal, @pids;
     my $sleepsum = 0;
     my $sleep = 0.001;
-    my @dead;
 
     while(@pids and $sleepsum < $sleep_max) {
 	if($Global::killall) {
 	    # Killall => don't run reaper
-	    my $stiff;
-	    while (($stiff = waitpid(-1, &WNOHANG)) > 0) {
-		# remove $stiff from @pids
-		@pids = grep { $_ != $stiff } @pids;
+	    while(waitpid(-1, &WNOHANG) > 0) {
 		$sleep = $sleep/2+0.001;
 	    }
-	} elsif(@dead = reaper()) {
-	    # Remove reaped pids
-	    for my $stiff (@dead) {
-                @pids = grep { $_ != $stiff } @pids;
-	    }
+	} elsif(reapers()) {
 	    $sleep = $sleep/2+0.001;
 	}
-	@pids = grep { kill( 0, $_) } @pids;
 	$sleep *= 1.1;
 	::usleep($sleep);
 	$sleepsum += $sleep;
-	# Remove dead children
-	@pids = grep { kill( 0, $_) } @pids;
+	# Keep only living children
+	@pids = grep { kill(0, $_) } @pids;
     }
     return @pids;
 }
@@ -4188,7 +4204,7 @@ sub wait_and_exit {
 	killall();
     }
     for (keys %Global::unkilled_children) {
-	# Kill any (non-jobs) children
+	# Kill any (non-jobs) children (e.g. reserved processes)
 	kill 9, $_;
         waitpid($_,0);
         delete $Global::unkilled_children{$_};
@@ -5095,8 +5111,7 @@ sub reap_usleep {
     #   $ms/2+0.001 if children reaped
     #   $ms*1.1 if no children reaped
     my $ms = shift;
-    if(reaper()) {
-	while(reaper()) {}
+    if(reapers()) {
 	if(not $Global::total_completed % 100) {
 	    if($opt::timeout) {
 		# Force cleaning the timeout queue for every 1000 jobs
@@ -6302,7 +6317,7 @@ sub simultaneous_sshlogin_limit {
         my $serverlogin = $self->serverlogin();
         ::warning("ssh to $serverlogin only allows ".
 		  "for $ssh_limit simultaneous logins.",
-		  "You may raise this by changing ".
+		  "You may raise this by changing",
 		  "/etc/ssh/sshd_config:MaxStartups and MaxSessions on $serverlogin.",
 		  "You can also try --sshdelay 0.1",
 		  "Using only ".($ssh_limit-1)." connections ".
@@ -6316,9 +6331,12 @@ sub simultaneous_sshlogin_limit {
 sub simultaneous_sshlogin {
     # Using $sshlogin try to see if we can do $wanted_processes
     # simultaneous logins
-    # (ssh host echo simultaneouslogin & ssh host echo simultaneouslogin & ...)|grep simul|wc -l
+    # (ssh host echo simul-login & ssh host echo simul-login & ...) |
+    #   grep simul|wc -l
+    # Input:
+    #   $wanted_processes = Try for this many logins in parallel
     # Returns:
-    #   Number of succesful logins
+    #   $ssh_limit = Number of succesful parallel logins
     local $/ = "\n";
     my $self = shift;
     my $wanted_processes = shift;
@@ -6326,7 +6344,8 @@ sub simultaneous_sshlogin {
     my $serverlogin = $self->serverlogin();
     my $sshdelay = $opt::sshdelay ? "sleep $opt::sshdelay;" : "";
     # TODO sh -c wrapper to work for csh
-    my $cmd = "$sshdelay$sshcmd $serverlogin -- echo simultaneouslogin </dev/null 2>&1 &"x$wanted_processes;
+    my $cmd = ("$sshdelay$sshcmd $serverlogin -- ".
+	       "echo simultaneouslogin </dev/null 2>&1 &")x$wanted_processes;
     ::debug("init", "Trying $wanted_processes logins at $serverlogin\n");
     open (my $simul_fh, "-|", "($cmd)|grep simultaneouslogin | wc -l") or
 	::die_bug("simultaneouslogin");
@@ -6343,8 +6362,10 @@ sub set_ncpus {
 
 sub user_requested_processes {
     # Parse the number of processes that the user asked for using -j
+    # Input:
+    #   $opt_P = string formatted as for -P
     # Returns:
-    #   the number of processes to run on this sshlogin
+    #   $processes = the number of processes to run on this sshlogin
     my $self = shift;
     my $opt_P = shift;
     my $processes;
@@ -6390,6 +6411,11 @@ sub user_requested_processes {
 }
 
 sub ncpus {
+    # Number of CPU threads
+    # --use_sockets_instead_of_threads = count socket instead
+    # --use_cores_instead_of_threads = count physical cores instead
+    # Returns:
+    #   $ncpus = number of cpu (threads) on this sshlogin
     local $/ = "\n";
     my $self = shift;
     if(not defined $self->{'ncpus'}) {
@@ -6886,6 +6912,8 @@ sub sct_tru64() {
 }
 
 sub sshcommand {
+    # Returns:
+    #   $sshcommand = the command (incl options) to run when using ssh
     my $self = shift;
     if (not defined $self->{'sshcommand'}) {
         $self->sshcommand_of_sshlogin();
@@ -6894,6 +6922,8 @@ sub sshcommand {
 }
 
 sub serverlogin {
+    # Returns:
+    #   $sshcommand = the command (incl options) to run when using ssh
     my $self = shift;
     if (not defined $self->{'serverlogin'}) {
         $self->sshcommand_of_sshlogin();
@@ -6902,14 +6932,15 @@ sub serverlogin {
 }
 
 sub sshcommand_of_sshlogin {
+    # Compute ssh command and serverlogin from sshlogin
     # 'server' -> ('ssh -S /tmp/parallel-ssh-RANDOM/host-','server')
     # 'user@server' -> ('ssh','user@server')
     # 'myssh user@server' -> ('myssh','user@server')
     # 'myssh -l user server' -> ('myssh -l user','server')
     # '/usr/bin/myssh -l user server' -> ('/usr/bin/myssh -l user','server')
-    # Returns:
-    #   sshcommand - defaults to 'ssh'
-    #   login@host
+    # Sets:
+    #   $self->{'sshcommand'}
+    #   $self->{'serverlogin'}
     my $self = shift;
     my ($sshcmd, $serverlogin);
     # If $opt::ssh is unset, use $PARALLEL_SSH or 'ssh'
@@ -6963,7 +6994,7 @@ sub sshcommand_of_sshlogin {
 
 sub control_path_dir {
     # Returns:
-    #   path to directory
+    #   $control_path_dir = dir of control path (for -M)
     my $self = shift;
     if(not defined $self->{'control_path_dir'}) {
         $self->{'control_path_dir'} =
@@ -7051,6 +7082,8 @@ sub cleanup_cmd {
     sub rsync {
 	# rsync 3.1.x uses protocol 31 which is unsupported by 2.5.7.
 	# If the version >= 3.1.0: downgrade to protocol 30
+	# Returns:
+	#   $rsync = "rsync" or "rsync --protocol 30"
 	if(not $rsync) {
 	    my @out = `rsync --version`;
 	    for (@out) {
@@ -7117,8 +7150,8 @@ sub unget {
 
 sub empty {
     my $self = shift;
-    my $empty = (not @{$self->{'unget'}})
-	&& $self->{'commandlinequeue'}->empty();
+    my $empty = (not @{$self->{'unget'}}) &&
+	$self->{'commandlinequeue'}->empty();
     ::debug("run", "JobQueue->empty $empty ");
     return $empty;
 }
@@ -7487,7 +7520,7 @@ sub grouped {
 	open(my $fdr,"<", $self->fh($fdno,'name')) ||
 	    ::die_bug("fdr: Cannot open ".$self->fh($fdno,'name'));
 	$self->set_fh($fdno,'r',$fdr);
-	# Unlink if required
+	# Unlink if not debugging
 	$Global::debug or ::rm($self->fh($fdno,"unlink"));
     }
 }
@@ -9993,12 +10026,12 @@ sub replaced {
 
 sub replace_placeholders {
     # Replace foo{}bar with fooargbar
-    # Uses:
-    #   @Arg::arg = arguments as strings to be use in {= =}
     # Input:
     #   $targetref = command as shell words
     #   $quote = should everything be quoted?
     #   $quote_arg = should replaced arguments be quoted?
+    # Uses:
+    #   @Arg::arg = arguments as strings to be use in {= =}
     # Returns:
     #   @target with placeholders replaced
     my $self = shift;
@@ -10524,7 +10557,8 @@ sub unget {
 
 sub empty {
     my $self = shift;
-    my $empty = (not @{$self->{'unget'}}) && $self->{'arg_queue'}->empty();
+    my $empty = (not @{$self->{'unget'}}) &&
+	$self->{'arg_queue'}->empty();
     ::debug("run", "CommandLineQueue->empty $empty");
     return $empty;
 }
@@ -10745,8 +10779,8 @@ sub unget {
 
 sub empty {
     my $self = shift;
-    my $empty = not @{$self->{'unget'}};
-    $empty &&= $self->{'arg_sub_queue'}->empty();
+    my $empty = (not @{$self->{'unget'}}) &&
+	$self->{'arg_sub_queue'}->empty();
     ::debug("run", "RecordQueue->empty $empty");
     return $empty;
 }
@@ -10821,8 +10855,8 @@ sub unget {
 
 sub empty {
     my $self = shift;
-    my $empty = (not @{$self->{'unget'}} and
-		 $self->{'arg_sub_queue'}->empty());
+    my $empty = (not @{$self->{'unget'}}) &&
+	$self->{'arg_sub_queue'}->empty();
     ::debug("run", "RecordColQueue->empty $empty");
     return $empty;
 }
@@ -10907,8 +10941,8 @@ sub unget {
 
 sub empty {
     my $self = shift;
-    my $empty = (not @Global::unget_argv
-		 and not @{$self->{'unget'}});
+    my $empty = (not @Global::unget_argv) &&
+	not @{$self->{'unget'}};
     for my $fh (@{$self->{'fhs'}}) {
 	$empty &&= eof($fh);
     }

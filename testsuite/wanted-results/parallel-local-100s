@@ -372,30 +372,6 @@ par_test_build_and_install	test -d "parallel-00000000" || mkdir "parallel-000000
 par_test_build_and_install	 (cd src && make  top_distdir=../parallel-00000000 distdir=../parallel-00000000/src \
 par_test_build_and_install	     am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)
 par_test_build_and_install	make[0]: Entering directory '~/privat/parallel/src'
-par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./sql > ./sql.1n \
-par_test_build_and_install	&& mv ./sql.1n ./sql.1 \
-par_test_build_and_install	|| echo "Warning: pod2man not found. Using old sql.1"
-par_test_build_and_install	pod2html --title "GNU SQL" ./sql > ./sql.htmln \
-par_test_build_and_install	&& mv ./sql.htmln ./sql.html \
-par_test_build_and_install	|| echo "Warning: pod2html not found. Using old sql.html"
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU niceload" ./niceload.pod > ./niceload.htmln \
-par_test_build_and_install	&& mv ./niceload.htmln ./niceload.html \
-par_test_build_and_install	|| echo "Warning: pod2html not found. Using old niceload.html"
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU parcat" ./parcat.pod > ./parcat.htmln \
-par_test_build_and_install	&& mv ./parcat.htmln ./parcat.html \
-par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parcat.html"
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU parset" ./parset.pod > ./parset.htmln \
-par_test_build_and_install	&& mv ./parset.htmln ./parset.html \
-par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parset.html"
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2texi --output=./sql.texi ./sql \
-par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old sql.texi"
-par_test_build_and_install	pod2pdf --output-file ./sql.pdf ./sql --title "GNU SQL" \
-par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old sql.pdf"
 par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel/src'
 par_test_build_and_install	test -n "" \
 par_test_build_and_install	|| find "parallel-00000000" -type d ! -perm -755 \

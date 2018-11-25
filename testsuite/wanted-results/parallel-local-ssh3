@@ -20,10 +20,6 @@ echo '### bug #45906: {= in header =}'
 ### bug #45906: {= in header =}
   rm -f returnfile45906;   parallel --rpl '{G} $_=lc($_)' -S parallel@lo --return {G} --cleanup echo {G} '>' {G} ::: RETURNFILE45906;   ls returnfile45906
 returnfile45906
-echo '### bug #45907: --header : + --return {header}'
-### bug #45907: --header : + --return {header}
-  rm returnfile45907;   ppar --header : -S parallel@lo --return {G} --cleanup echo {G} '>' {G} ::: G returnfile45907;   ls returnfile45907
-returnfile45907
 echo "### bug #47608: parallel --nonall -S lo 'echo ::: ' blocks"
 ### bug #47608: parallel --nonall -S lo 'echo ::: ' blocks
   parallel --nonall -S lo 'echo ::: '
@@ -39,6 +35,8 @@ echo '### bug #49404: "Max jobs to run" does not equal the number of jobs specif
 should give 10 running jobs
   stdout parallel -S 16/lo --progress true ::: {1..10} | grep /.10
 1:lo / 16 / 10
+par_header_in_return	### bug #45907: --header : + --return {header}
+par_header_in_return	returnfile45907
 par_hostgroup_only_on_args	### Auto add hostgroup if given on on argument
 par_hostgroup_only_on_args	parallel: Warning: Adding hostgroups: sh@lo
 par_hostgroup_only_on_args	sh

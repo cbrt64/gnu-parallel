@@ -314,8 +314,3 @@ bug #34241: --pipe should not spawn unneeded processes - part 2
 2
 No .par should exist
 ls: cannot access '*.par': No such file or directory
-echo "bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'"
-bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'
-  export PARALLEL=" -v" &&  parallel echo ::: 'space in envvar OK'
-echo 'space in envvar OK'
-space in envvar OK

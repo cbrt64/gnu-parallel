@@ -125,6 +125,22 @@ par_linebuffer_tag_slow_output() {
     parallel --delay 0.5 -j0 --tag --line-buffer halfline ::: a b
 }
 
+par_continuous_output() {
+    # After the first batch, each jobs should output when it finishes.
+    # Old versions delayed output by $jobslots jobs
+    doit() {
+	echo "Test delayed output with '$1'"
+	echo "-u is optimal but hard to reach, due to non-mixing"
+	seq 10 |
+	    parallel -j1 $1 --delay 1 -N0 echo |
+	    parallel -j4 $1 -N0 'sleep 0.6;date' |
+	    timestamp -dd |
+	    perl -pe 's/(.).*/$1/'
+    }
+    export -f doit
+    parallel -k doit ::: '' -u
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     #    parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1'

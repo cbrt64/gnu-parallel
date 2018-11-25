@@ -854,6 +854,17 @@ par_empty_input_on_stdin() {
     true | stdout parallel --shuf echo
 }
 
+par_tee_too_many_args() {
+    echo '### Fail if there are more arguments than --jobs'
+    seq 11 |parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
+    seq 11 |parallel -k --tag --pipe -j4 --tee grep {} ::: {1..5}
+}
+
+par_space_envvar() {
+    echo "### bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'"
+    export PARALLEL=" -v" && parallel echo ::: 'space in envvar OK'
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

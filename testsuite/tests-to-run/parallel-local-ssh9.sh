@@ -153,11 +153,25 @@ par_env_parallel_big_env() {
     env_parallel -Slo echo should ::: fail 2>/dev/null || echo OK
 }
 
+par_no_route_to_host() {
+    echo '### no route to host with | and -j0 causes inf loop'
+    via_parallel() {
+	seq 11 | stdout parallel -j0 -S 192.168.1.199 echo
+    }
+    export -f via_parallel
+    raw() {
+	stdout ssh 192.168.1.199 echo
+    }
+    export -f raw
+
+    parallel -k ::: raw via_parallel
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |
 compgen -A function | grep par_ | sort -r |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
-    parallel --joblog /tmp/jl-`basename $0` -j200% --tag -k '{} 2>&1' |
+    parallel --joblog /tmp/jl-`basename $0` --delay 0.1 -j200% --tag -k '{} 2>&1' |
     perl -pe 's/line \d\d\d+:/line XXX:/' |
     perl -pe 's/\[\d\d\d+\]:/[XXX]:/'

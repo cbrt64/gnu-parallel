@@ -151,7 +151,7 @@ par_test_detected_shell() {
 	tmp="/tmp/test_unknown_shell_$shell"
 	cp $(which "$shell") "$tmp"
 	chmod +x "$tmp"
-	$tmp -c 'ppar -Dinit echo ::: 1; true' |
+	$tmp -c 'parallel -Dinit echo ::: 1; true' |
 	    grep Global::shell
 	rm "$tmp"
     }

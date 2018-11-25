@@ -82,6 +82,9 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
 	    s{rsync error: some files/attrs were not transferred .*\n}{};
 	    s{.* GtkDialog .*\n}{};
 ' |
+  perl -ne '/GTK2_RC_FILES/ and next;
+    /GTK_RC_FILES/ and next;
+    print' |
   uniq
 # 3+3 .par files (from --files), 1 .tms-file from tmux attach
 find {$TMPDIR,/var/tmp,/tmp}/{fif,tms,par[^a]}* -mmin -10 2>/dev/null | wc -l
