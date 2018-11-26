@@ -2163,6 +2163,8 @@ sub arrayindex {
     # Input:
     #   $arr_ref1 = ref to @array1 to search in
     #   $arr_ref2 = ref to @array2 to search for
+    # Returns:
+    #   $pos = position of @array1 in @array2, -1 if not found
     my ($arr_ref1,$arr_ref2) = @_;
     my $array1_as_string = join "", map { "\0".$_ } @$arr_ref1;
     my $array2_as_string = join "", map { "\0".$_ } @$arr_ref2;
@@ -2282,8 +2284,8 @@ sub __QUOTING_ARGUMENTS_FOR_SHELL__ {}
 sub shell_quote {
     # Input:
     #   @strings = strings to be quoted
-    # Output:
-    #   @shell_quoted_strings = string quoted with \ as needed by the shell
+    # Returns:
+    #   @shell_quoted_strings = string quoted as needed by the shell
     return wantarray ?
 	(map { Q($_) } @_)
 	: (join" ",map { Q($_) } @_);
@@ -2330,7 +2332,11 @@ sub shell_quote_scalar_csh {
 
 sub shell_quote_scalar_default {
     # Quote for other shells (Bourne compatibles)
-    my ($par) = $_[0];
+    # Inputs:
+    #   $string = string to be quoted
+    # Returns:
+    #   $shell_quoted = string quoted as needed by the shell
+    my $par = $_[0];
     if($par =~ /[^-_.+a-z0-9\/]/i) {
 	$par =~ s/'/'"'"'/g;  # "-quote single quotes
 	$par = "'$par'";      # '-quote entire string
@@ -2424,6 +2430,10 @@ sub pQ {
 
 sub unquote_printf {
     # Convert \t \n \r \000 \0
+    # Inputs:
+    #   $string = string with \t \n \r \num \0
+    # Returns:
+    #   $replaced = string with TAB NEWLINE CR <ascii-num> NUL
     $_ = shift;
     s/\\t/\t/g;
     s/\\n/\n/g;
@@ -10053,8 +10063,8 @@ sub replace_placeholders {
 	    # \257<...\257> or space
 	    $_
 	} else {
-	    # Split each space into a token
-	    split /(?= )|(?<= )/
+	    # Split each space/tab into a token
+	    split /(?=\s)|(?<=\s)/
 	}
     }
     # Split \257< ... \257> into own token
@@ -10091,7 +10101,7 @@ sub replace_placeholders {
 	my @ctxgroup;
 	for my $t (@tokens,"\0end") {
 	    # \0end = last token was end of tokens.
-	    if($t eq " " or $t eq "\0end" or $t eq "\0spc") {
+	    if($t eq "\t" or $t eq " " or $t eq "\0end" or $t eq "\0spc") {
 		# Context group complete: Replace in it
 		if(grep { /^\257</ } @ctxgroup) {
 		    # Context group contains a replacement string:
