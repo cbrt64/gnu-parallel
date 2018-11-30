@@ -81,11 +81,6 @@ par_nice	parallel: SIGTERM received. No new jobs will be started.
 par_nice	parallel: Waiting for these 2 jobs to finish. Send SIGTERM again to stop now.
 par_nice	parallel: bzip2 < /dev/zero
 par_nice	parallel: bzip2 < /dev/zero
-par_parcat_mixing	parcat output should mix: a b a b
-par_parcat_mixing	astart
-par_parcat_mixing	bstart
-par_parcat_mixing	aend
-par_parcat_mixing	bend
 par_pipe_unneeded_procs	### Test bug #34241: --pipe should not spawn unneeded processes
 par_pipe_unneeded_procs	1
 par_pipe_unneeded_procs	2

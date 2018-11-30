@@ -12,6 +12,9 @@ par_lsh	parallel: Warning: Could not figure out number of cpus on lo (). Using 1
 par_lsh	OK
 par_input_loss_pipe	### bug #36595: silent loss of input with --pipe and --sshlogin
 par_input_loss_pipe	      1   10000   48894
+par_env_parallel_onall	bug #54352: env_parallel -Slo --nonall myfunc broken in 20180722
+par_env_parallel_onall	Myfunc works
+par_env_parallel_onall	Myfunc works
 par_controlmaster_eats	bug #36707: --controlmaster eats jobs
 par_controlmaster_eats	OK1
 par_controlmaster_eats	OK2

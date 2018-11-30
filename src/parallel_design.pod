@@ -213,10 +213,10 @@ error (stderr).
 
 GNU B<parallel> pipes output from the command run into the compression
 program which saves to a tmpfile. GNU B<parallel> records the pid of
-the compress program.  At the same time a small perl script (called
+the compress program.  At the same time a small Perl script (called
 B<cattail> above) is started: It basically does B<cat> followed by
 B<tail -f>, but it also removes the tmpfile as soon as the first byte
-is read, and it continously checks if the pid of the compression
+is read, and it continuously checks if the pid of the compression
 program is dead. If the compress program is dead, B<cattail> reads the
 rest of tmpfile and exits.
 
@@ -539,7 +539,7 @@ needs to know how to read the function.
 
 From version 20150122 GNU B<parallel> tries both the ()-version and
 the %%-version, and the function definition works on both pre- and
-post-shellshock versions of B<bash>.
+post-shell shock versions of B<bash>.
 
 
 =head2 The remote system wrapper
@@ -1183,7 +1183,7 @@ software, username, password, host, port, database, and table in a
 single string.
 
 The DBURL must point to a table name. The table will be dropped and
-created. The reason for not reusing an exising table is that the user
+created. The reason for not reusing an existing table is that the user
 may have added more input sources which would require more columns in
 the table. By prepending '+' to the DBURL the table will not be
 dropped.
@@ -1229,9 +1229,11 @@ cost work and which have not been tested are, however, unlikely to be
 prioritized.
 
 Running B<parallel --citation> one single time takes less than 10
-seconds, and will silence the citation notice for future runs. If that
-is too much trouble for you, why not use one of the alternatives
-instead?  See a list in: B<man parallel_alternatives>.
+seconds, and will silence the citation notice for future runs. This is
+comparable to graphical tools where you have to click a checkbox
+saying "Do not show this again". But if that is too much trouble for
+you, why not use one of the alternatives instead?  See a list in:
+B<man parallel_alternatives>.
 
 
 =head1 Ideas for new design
@@ -1239,7 +1241,7 @@ instead?  See a list in: B<man parallel_alternatives>.
 =head2 Multiple processes working together
 
 Open3 is slow. Printing is slow. It would be good if they did not tie
-up ressources, but were run in separate threads.
+up resources, but were run in separate threads.
 
 
 =head2 --rrs on remote using a perl wrapper

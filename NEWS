@@ -1,3 +1,61 @@
+<<<<<<< HEAD
+=======
+20181122
+
+* Experimental simpler job flow control.
+
+* 時間がかかるコマンドを GNU parallel で 並列実行する
+  https://qiita.com//grohiro/items/4db3fa951a4778c5c479
+
+* Bug fixes and man page updates.
+
+
+20181022
+
+* env_parallel.fish: --session support (alpha quality)
+
+* GNU Parallel was cited in: High-throughput sequencing of murine
+  immunoglobulin heavy chain repertoires using single side unique
+  molecular identifiers on an Ion Torrent PGM
+  https://doi.org/10.18632/oncotarget.25493
+
+* GNU parallel in Japanese Wikipedia
+  https://ja.wikipedia.org/wiki/GNU_parallel
+
+* Outils de paramétrisation des tâches: lots de tâches, GNU Parallel
+  https://www.eventbrite.ca/e/inscription-outils-de-parametrisation-des-taches-lots-de-taches-gnu-parallel-et-bqtools-midi-conference-de-50271076142
+
+* Bug fixes and man page updates.
+
+
+20180922
+
+* Minix is supported again.
+
+* Updated graph showing GNU Parallel's overhead per job for each
+  version. https://www.gnu.org/software/parallel/process-time-j2-1700MHz-3000-1000.pdf
+
+* Intro to Computing at CARC includes introduction to GNU Parallel
+  http://carc.unm.edu/education--training/workshops-and-seminars.html
+
+* Fast-GBS uses GNU Parallel https://bitbucket.org/jerlar73/fast-gbs/wiki/Home
+
+* Belgium at 10 m resolution in July 2018 http://www.cesbio.ups-tlse.fr/multitemp/?p=14116
+
+* Bug fixes and man page updates.
+
+
+20180822
+
+* parset sets exit code.
+
+* How to install GNU Parallel
+  https://www.techrepublic.com/videos/how-to-install-gnu-parallel/
+
+* Bug fixes and man page updates.
+
+
+>>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 20180722
 
 * The quoting engine has been changed. Instead of using \-quoting GNU
@@ -24,6 +82,11 @@
 * Parallel download genomic data with GNU-Parallel
   https://digibio.blogspot.com/search/label/GNU-Parallel
 
+<<<<<<< HEAD
+=======
+* Bug fixes and man page updates.
+
+>>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 
 20180622
 

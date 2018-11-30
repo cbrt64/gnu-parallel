@@ -29,6 +29,28 @@
       echo 1=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
 #}
 
+par_parcat_mixing() {
+    echo 'parcat output should mix: a b a b'
+    mktmpfifo() {
+	tmp=$(tempfile)
+	rm $tmp
+	mkfifo $tmp
+	echo $tmp
+    }
+    slow_output() {
+	string=$1
+	perl -e 'print "'$string'"x9000,"start\n"'
+	sleep 2
+	perl -e 'print "'$string'"x9000,"end\n"'
+    }
+    tmp1=$(mktmpfifo)
+    tmp2=$(mktmpfifo)
+    slow_output a > $tmp1 &
+    sleep 1
+    slow_output b > $tmp2 &
+    parcat $tmp1 $tmp2 | tr -s ab
+}
+
 par_testhalt() {
     testhalt_false() {
 	echo '### testhalt --halt '$1;
@@ -94,6 +116,30 @@ par_tmux_termination() {
     stdout parallel --timeout 120 doit ::: 1
 }
 
+par_linebuffer_tag_slow_output() {
+    echo "Test output tag with mixing halflines"
+    halfline() {
+	perl -e '$| = 1; map { print $ARGV[0]; sleep(1); print "$_\n" } split //, "Half\n"' $1
+    }
+    export -f halfline
+    parallel --delay 0.5 -j0 --tag --line-buffer halfline ::: a b
+}
+
+par_continuous_output() {
+    # After the first batch, each jobs should output when it finishes.
+    # Old versions delayed output by $jobslots jobs
+    doit() {
+	echo "Test delayed output with '$1'"
+	echo "-u is optimal but hard to reach, due to non-mixing"
+	seq 10 |
+	    parallel -j1 $1 --delay 1 -N0 echo |
+	    parallel -j4 $1 -N0 'sleep 0.6;date' |
+	    timestamp -dd |
+	    perl -pe 's/(.).*/$1/'
+    }
+    export -f doit
+    parallel -k doit ::: '' -u
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

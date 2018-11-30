@@ -9,6 +9,9 @@ ping -c 1 freebsd7.tange.dk >/dev/null 2>&1
 ssh freebsd7.tange.dk touch .parallel/will-cite
 scp -q .*/src/{parallel,sem,sql,niceload,env_parallel*} freebsd7.tange.dk:bin/
 
+. `which env_parallel.bash`
+env_parallel --session
+
 par_no_more_procs() {
     echo 'bug #40136: FreeBSD: No more processes'
     sem --jobs 3 --id my_id -u 'echo First started; sleep 10; echo The first finished;echo' &&
@@ -59,24 +62,24 @@ par_shebang() {
 }
 
 par_shellshock_bug() {
-    bash -c 'echo bug \#43358: shellshock breaks exporting functions using --env _;
+    bash -c 'echo bug \#43358: shellshock breaks exporting functions using --env name;
       echo Non-shellshock-hardened to non-shellshock-hardened;
       funky() { echo Function $1; };
       export -f funky;
       PARALLEL_SHELL=bash parallel --env funky -S localhost funky ::: non-shellshock-hardened'
 
-    bash -c 'echo bug \#43358: shellshock breaks exporting functions using --env _;
+    bash -c 'echo bug \#43358: shellshock breaks exporting functions using --env name;
       echo Non-shellshock-hardened to shellshock-hardened;
       funky() { echo Function $1; };
       export -f funky;
-      parallel --env funky -S parallel@192.168.1.72 funky ::: shellshock-hardened'
+      PARALLEL_SHELL=bash parallel --env funky -S parallel@192.168.1.72 funky ::: shellshock-hardened'
 }
 
 par_load() {
     echo '### Test --load (must give 1=true)'
     parallel -j0 -N0 --timeout 5 --nice 10 'bzip2 < /dev/zero >/dev/null' ::: 1 2 3 4 5 6 &
     parallel --argsep ,, --joblog - -N0 parallel --load 100% echo ::: 1 ,, 1 |
-	parallel --colsep '\t' --header :  echo '{=4 $_=$_>5=}'
+	parallel -k --colsep '\t' --header :  echo '{=4 $_=$_>5=}'
 }
 
 par_env_parallel() {
@@ -104,7 +107,7 @@ unset TMPDIR
 #   we get 'shopt'-errors and 'declare'-errors.
 #   We can safely ignore those.
 
-env_parallel --env _ -vj9 -k --joblog /tmp/jl-`basename $0` --retries 3 \
+PARALLEL_SHELL=sh env_parallel --env _ -vj9 -k --joblog /tmp/jl-`basename $0` --retries 3 \
 	     -S freebsd7.tange.dk --tag '{} 2>&1' \
 	     ::: $(compgen -A function | grep par_ | sort) \
 	     2> >(grep -Ev 'shopt: not found|declare: not found')

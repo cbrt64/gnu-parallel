@@ -81,7 +81,7 @@ bug #37956: --colsep does not default to '\t' as specified in the man page.
 one 1
 echo '### Test --tollef'
 ### Test --tollef
-  stdout parallel -k --tollef echo -- 1 2 3 ::: a b c | sort
+  stdout parallel -k --tollef echo -- 1 2 3 ::: a b c | LC_ALL=C sort
 parallel: Error: --tollef has been retired.
 parallel: Error: Remove --tollef or use --gnu to override --tollef.
 echo '### Test --tollef --gnu'
@@ -314,8 +314,3 @@ bug #34241: --pipe should not spawn unneeded processes - part 2
 2
 No .par should exist
 ls: cannot access '*.par': No such file or directory
-echo "bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'"
-bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'
-  export PARALLEL=" -v" &&  parallel echo ::: 'space in envvar OK'
-echo 'space in envvar OK'
-space in envvar OK

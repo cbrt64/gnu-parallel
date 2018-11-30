@@ -7,7 +7,7 @@
 # after which 'env_parallel' works
 #
 #
-# Copyright (C) 2016,2017,2018
+# Copyright (C) 2016-2018
 # Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -55,7 +55,7 @@ else
   # Deal with --env _
   cat <<'EOF' > $_tMpscRIpt
             #!/usr/bin/perl
-            
+
             for(@ARGV){
                 $next_is_env and push @envvar, split/,/, $_;
                 $next_is_env=/^--env$/;
@@ -83,6 +83,7 @@ else
   # Make a tmpfile for the variable definitions + alias
   set _tMpaLLfILe=`_tempfile`
   foreach _vARnAmE ($_vARnAmES);
+    # These 3 lines break in csh version 20110502-3
     # if not defined: next
     eval if'(! $?'$_vARnAmE') continue'
     # if $#myvar <= 1 echo scalar_myvar=$var
@@ -125,8 +126,8 @@ else
 #   Quoted: s/\^/\\001alias\ /\;
   alias | \
     perl -ne '/^'"$_grep_REGEXP"'/ or next; /^'"$_ignore_UNDERSCORE"'[^_a-zA-Z]/ and next; print' | \
-    perl -pe s/\\047/\\047\\042\\047\\042\\047/g\;s/\^\(\\S+\)\(\\s+\)\\\(\(.\*\)\\\)/\\1\\2\\3/\;s/\^\(\\S+\)\(\\s+\)\(.\*\)/\\1\\2\\047\\3\\047/\;s/\^/\\001alias\ /\;s/\\\!/\\\\\\\!/g >> $_tMpaLLfILe 
-  
+    perl -pe s/\\047/\\047\\042\\047\\042\\047/g\;s/\^\(\\S+\)\(\\s+\)\\\(\(.\*\)\\\)/\\1\\2\\3/\;s/\^\(\\S+\)\(\\s+\)\(.\*\)/\\1\\2\\047\\3\\047/\;s/\^/\\001alias\ /\;s/\\\!/\\\\\\\!/g >> $_tMpaLLfILe
+
   setenv PARALLEL_ENV "`cat $_tMpaLLfILe; rm $_tMpaLLfILe`";
   unset _tMpaLLfILe;
   # Use $PARALLEL set in calling alias

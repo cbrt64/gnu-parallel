@@ -48,8 +48,8 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
             s/,[a-z]*,\d+.\d+,\d+.\d+/,:,000000000.000,0.000/g;
             # /usr/bin/time -f %e
             s/^(\d+)\.\d+$/$1/;
-            # Base 64 string
-            s:[\\+/a-z0-9=]{50,}:BASE64:ig;
+            # Base 64 string with quotes
+            s:['"'"'"\\+/a-z0-9=]{50,}:BASE64:ig;
             # --workdir ...
             s:parallel/tmp/aspire-\d+-1:TMPWORKDIR:g;
             # + cat ... | (Bash outputs these in random order)
@@ -80,7 +80,11 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
 	    s/cat: input_file: No such file or directory\n//;
 	    s{rsync: link_stat ".*/home/parallel/input_file.out" .*\n}{};
 	    s{rsync error: some files/attrs were not transferred .*\n}{};
+	    s{.* GtkDialog .*\n}{};
 ' |
+  perl -ne '/GTK2_RC_FILES/ and next;
+    /GTK_RC_FILES/ and next;
+    print' |
   uniq
 # 3+3 .par files (from --files), 1 .tms-file from tmux attach
 find {$TMPDIR,/var/tmp,/tmp}/{fif,tms,par[^a]}* -mmin -10 2>/dev/null | wc -l

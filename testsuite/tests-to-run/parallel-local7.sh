@@ -1,5 +1,23 @@
 #!/bin/bash
 
+get_tmux() {
+    # To install tmux in different version run this
+    cd /tmp
+    doit() {
+	wget https://github.com/tmux/tmux/archive/$1.tar.gz
+	tar xvf $1.tar.gz
+	cd tmux-$1
+	./autogen.sh
+	./configure --prefix /tmp/tmux/$1
+	make
+	make install
+	sudo cp /tmp/tmux/$1/bin/tmux /usr/local/bin/tmux-$1
+    }
+
+    . `which env_parallel.bash`
+    seq 1.8 0.1 2.9 | env_parallel --tag --lb doit
+}
+
 par_tmux_filter() {
     # /tmp/parallel-local7/tmsOU2Ig
     perl -pe 's:(/tmp\S+/tms).....:$1XXXXX:;s/ p\d+/pID/;'
@@ -24,7 +42,7 @@ export -f par_tmux
 # echo '### bug #48841: --tmux(pane) --fg should start tmux in foreground'
 # stdout /usr/bin/time -f %e script -q -f -c /tmp/parallel-local7-script /dev/null |  perl -ne '$_ >= 26 and $_ <= 45 and print "OK\n"'
 
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj8 --delay 1 --timeout 100 --retries 1 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj8 --delay 1 --timeout 100 --retries 1 -k --joblog /tmp/jl-`basename $0` -L1 -r
 
 echo '### tmux-1.9'
   seq 0000 10 1000 | PARALLEL_TMUX=tmux-1.9 par_tmux

@@ -20,14 +20,14 @@ export SMALLDISK
 find /tmp{/*,}/*.{par,tms,tmx} 2>/dev/null -mmin -10 | parallel rm
 
 stdsort() {
-    "$@" 2>&1 | sort;
+    "$@" 2>&1 | LC_ALL=C sort;
 }
 export -f stdsort
 
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj13 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj13 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### Test bug #45619: "--halt" erroneous error exit code (should give 0)'; 
   seq 10 | parallel --halt now,fail=1 true; 
   echo $?
@@ -602,13 +602,13 @@ par_retries_replacement_string() {
 
 par_tee() {
     export PARALLEL='-k --tee --pipe --tag'
-    seq 1000000 | parallel 'echo {%};LANG=C wc' ::: {1..5} ::: {a..b}
-    seq 300000 | parallel 'grep {1} | LANG=C wc {2}' ::: {1..5} ::: -l -c
+    seq 1000000 | parallel 'echo {%};LC_ALL=C wc' ::: {1..5} ::: {a..b}
+    seq 300000 | parallel 'grep {1} | LC_ALL=C wc {2}' ::: {1..5} ::: -l -c
 }
 
 par_tagstring_pipe() {
     echo 'bug #50228: --pipe --tagstring broken'
-    seq 3000 | parallel -j4 --pipe -N1000 -k --tagstring {%} LANG=C wc
+    seq 3000 | parallel -j4 --pipe -N1000 -k --tagstring {%} LC_ALL=C wc
 }
 
 par_link_files_as_only_arg() {
@@ -706,12 +706,12 @@ par_halt_one_job() {
 
 par_blocking_redir() {
     (
-    echo 'bug #52740: Bash redirection with process substitution blocks'
-    echo Test stdout
-    echo 3 | parallel seq > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
-    echo Test stderr
-    echo nOfilE | parallel ls > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
-    ) 2>&1 | sort
+	echo 'bug #52740: Bash redirection with process substitution blocks'
+	echo Test stdout
+	echo 3 | parallel seq > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
+	echo Test stderr
+	echo nOfilE | parallel ls > >(echo stdout;wc) 2> >(echo stderr >&2; wc >&2)
+    ) 2>&1 | LC_ALL=C sort
 }
 
 par_pipepart_recend_recstart() {
@@ -837,6 +837,34 @@ par_perlexpr_with_newline() {
     rm *"Dad's \"famous\" 1' pizza"
 }
 
+par_empty_command() {
+    echo 'bug #54647: parset ignores empty lines'
+    # really due to this. Should give an empty line due to -v:
+    parallel -v :::: <(echo)
+    . `which env_parallel.bash`
+    parset a,b,c :::: <(echo echo A; echo; echo echo C)
+    echo Empty: $b
+    parset a,b,c :::: <(echo echo A; echo echo B; echo echo C)
+    echo B: $b
+}
+
+par_empty_input_on_stdin() {
+    echo 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910470'
+    echo 'This should give no output'
+    true | stdout parallel --shuf echo
+}
+
+par_tee_too_many_args() {
+    echo '### Fail if there are more arguments than --jobs'
+    seq 11 |parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
+    seq 11 |parallel -k --tag --pipe -j4 --tee grep {} ::: {1..5}
+}
+
+par_space_envvar() {
+    echo "### bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'"
+    export PARALLEL=" -v" && parallel echo ::: 'space in envvar OK'
+}
+
 export -f $(compgen -A function | grep par_)
-compgen -A function | grep par_ | sort |
+compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

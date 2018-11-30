@@ -1,6 +1,6 @@
 #!/bin/bash
   
-cat <<'EOF' | sed -e 's/;$/; /;' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### -L -n with pipe'
   seq 14 | parallel --pipe -k -L 3 -n 2 'cat;echo 6 Ln line record'
 

@@ -20,7 +20,7 @@ export -f perl5.14parallel
 
 par_2gb_records_N() {
     echo '### bug #44358: 2 GB records cause problems for -N'
-    echo '5 GB version: Eats 12.5 GB'
+    echo '5 GB version: Eats 12.5 GB RAM + 4 GB Swap'
     (gendata 5000MB; echo FOO; 
      gendata 3000MB; echo FOO; 
      gendata 1000MB;) | 
@@ -33,7 +33,7 @@ par_2gb_records_N() {
 	perl5.14parallel --pipe --recend FOO -N2 --block 1g -k LANG=c wc -c
 
     echo '### -L >4GB';
-    echo 'Eats 12.5 GB';
+    echo 'Eats 12.5 GB RAM + 6 GB Swap';
     (head -c 5000MB /dev/zero; echo FOO; 
      head -c 3000MB /dev/zero; echo FOO; 
      head -c 1000MB /dev/zero;) | 

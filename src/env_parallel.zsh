@@ -51,7 +51,7 @@ env_parallel() {
     }
     _ignore_HARDCODED() {
 	# These names cannot be detected
-	echo '([-\?\#\!\$\*\@\_0]|zsh_eval_context|ZSH_EVAL_CONTEXT|LINENO|IFS|commands|functions|options|aliases|EUID|EGID|UID|GID|dis_patchars|patchars|terminfo|galiases|keymaps|parameters|jobdirs|dirstack|functrace|funcsourcetrace|zsh_scheduled_events|dis_aliases|dis_reswords|dis_saliases|modules|reswords|saliases|widgets|userdirs|historywords|nameddirs|termcap|dis_builtins|dis_functions|jobtexts|funcfiletrace|dis_galiases|builtins|history|jobstates|funcstack)'
+	echo '([-\?\#\!\$\*\@\_0]|zsh_eval_context|ZSH_EVAL_CONTEXT|LINENO|IFS|commands|functions|options|aliases|EUID|EGID|UID|GID|dis_patchars|patchars|terminfo|galiases|keymaps|parameters|jobdirs|dirstack|functrace|funcsourcetrace|zsh_scheduled_events|dis_aliases|dis_reswords|dis_saliases|modules|reswords|saliases|widgets|userdirs|historywords|nameddirs|termcap|dis_builtins|dis_functions|jobtexts|funcfiletrace|dis_galiases|builtins|history|jobstates|funcstack|run-help)'
     }
     _ignore_READONLY() {
 	typeset -pr | perl -e '@r = map {
@@ -181,7 +181,7 @@ env_parallel() {
     _error_PAR() {
 	echo "env_parallel: Error: $@" >&2
     }
-    
+
     if _which_PAR parallel >/dev/null; then
 	true parallel found in path
     else
@@ -277,12 +277,12 @@ env_parallel() {
 }
 
 parset() {
-    _parset_parallel_prg=parallel
+    _parset_PARALLEL_PRG=parallel
     _parset_main "$@"
 }
 
 env_parset() {
-    _parset_parallel_prg=env_parallel
+    _parset_PARALLEL_PRG=env_parallel
     _parset_main "$@"
 }
 
@@ -305,15 +305,22 @@ _parset_main() {
     #   parset "var_a4 var_b4 var_c4" echo ::: {1..3}
     #   echo $var_c4
 
-    _parset_name="$1"
-    if [ "$_parset_name" = "" ] ; then
+    _make_TEMP() {
+	# mktemp does not exist on some OS
+	perl -e 'use File::Temp qw(tempfile);
+                 $ENV{"TMPDIR"} ||= "/tmp";
+                 print((tempfile(DIR=>$ENV{"TMPDIR"}, TEMPLATE => "parXXXXX"))[1])'
+    }
+
+    _parset_NAME="$1"
+    if [ "$_parset_NAME" = "" ] ; then
 	echo parset: Error: No destination variable given. >&2
 	echo parset: Error: Try: >&2
 	echo parset: Error: ' ' parset myarray echo ::: foo bar >&2
 	return 255
     fi
     shift
-    echo "$_parset_name" |
+    echo "$_parset_NAME" |
 	perl -ne 'chomp;for (split /[, ]/) {
             # Allow: var_32 var[3]
 	    if(not /^[a-zA-Z_][a-zA-Z_0-9]*(\[\d+\])?$/) {
@@ -324,25 +331,30 @@ _parset_main() {
         }
         exit $exitval;
         ' || return 255
-    if perl -e 'exit not grep /,| /, @ARGV' "$_parset_name" ; then
-	# $_parset_name contains , or space
+    _exit_FILE=`_make_TEMP`
+    if perl -e 'exit not grep /,| /, @ARGV' "$_parset_NAME" ; then
+	# $_parset_NAME contains , or space
 	# Split on , or space to get the names
-	eval "`
+	eval "$(
 	    # Compute results into files
-	    $_parset_parallel_prg --files -k "$@" |
-		# var1= cat tmpfile1; rm tmpfile1
-		# var2= cat tmpfile2; rm tmpfile2
-		parallel -q echo {2}='\`cat {1}; rm {1}\`' :::: - :::+ \`
-		    echo "$_parset_name" |
-			perl -pe 's/,/ /g'
-			 \`
-	    `"
+	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
+		# var1=`cat tmpfile1; rm tmpfile1`
+		# var2=`cat tmpfile2; rm tmpfile2`
+		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
+		    echo "$_parset_NAME" | perl -pe 's/,/ /g'
+			 )
+	    );
+	"
     else
-	# $_parset_name does not contain , or space
-	# => $_parset_name is the name of the array to put data into
+	# $_parset_NAME does not contain , or space
+	# => $_parset_NAME is the name of the array to put data into
 	# Supported in: bash zsh ksh mksh
 	# Arrays do not work in: sh ash dash
-	eval "$_parset_name=( $( $_parset_parallel_prg --files -k "$@" |
-              perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' ) )"
+	eval "$_parset_NAME=( $(
+	    # Compute results into files. Save exit value
+	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
+                perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "'
+            ) )"
     fi
+    return `cat "$_exit_FILE"; rm "$_exit_FILE"`
 }

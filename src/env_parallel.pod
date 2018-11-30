@@ -20,9 +20,6 @@ environment to GNU B<parallel>.
 If the shell function is not loaded, a dummy script will be run
 instead that explains how to install the function.
 
-B<env_parallel> is beta quality and not production ready, but please
-use it for everyday use and report bugs.
-
 B<env_parallel> is 100 ms slower at startup than pure GNU
 B<parallel>, and takes up to 30% longer to start a job (typically 15 ms).
 
@@ -448,7 +445,7 @@ array with the given name. Multiple B<--env>s can be given.
 =back
 
 
-=head2 mksh (alpha testing)
+=head2 mksh
 
 =head3 Installation
 
@@ -744,10 +741,10 @@ If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 
 Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2008,2009,2010 Ole Tange, http://ole.tange.dk
+Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010,2011,2012,2013,2014,2015,2016,2017,2018 Ole Tange,
-http://ole.tange.dk and Free Software Foundation, Inc.
+Copyright (C) 2010-2018 Ole Tange, http://ole.tange.dk and Free
+Software Foundation, Inc.
 
 
 =head1 LICENSE

@@ -13,6 +13,16 @@ There are a lot programs with some of the functionality of GNU
 B<parallel>. GNU B<parallel> strives to include the best of the
 functionality without sacrificing ease of use.
 
+B<parallel> has existed since 2002 and as GNU B<parallel> since
+2010. A lot of the alternatives have not had the vitality to survive
+that long, but have come and gone during that time.
+
+GNU B<parallel> is actively maintained with a new release every month
+since 2010. Most other alternatives are fleeting interests of the
+developers with irregular releases and only maintained for a few
+years.
+
+
 =head2 SUMMARY TABLE
 
 The following features are in some of the comparable tools:
@@ -205,7 +215,7 @@ composed commands and redirection require using B<bash -c>.
   ls | parallel "wc {} >{}.wc"
   ls | parallel "echo {}; ls {}|wc"
 
-becomes (assuming you have 8 cores and that none of the file names
+becomes (assuming you have 8 cores and that none of the filenames
 contain space, " or ').
 
   ls | xargs -d "\n" -P8 -I {} bash -c "wc {} >{}.wc"
@@ -216,9 +226,9 @@ https://www.gnu.org/software/findutils/
 
 =head2 DIFFERENCES BETWEEN find -exec AND GNU Parallel
 
-B<find -exec> offer some of the same possibilities as GNU B<parallel>.
+B<find -exec> offers some of the same possibilities as GNU B<parallel>.
 
-B<find -exec> only works on files. So processing other input (such as
+B<find -exec> only works on files. Processing other input (such as
 hosts or URLs) will require creating these inputs as files. B<find
 -exec> has no support for running commands in parallel.
 
@@ -228,13 +238,13 @@ https://www.gnu.org/software/findutils/
 =head2 DIFFERENCES BETWEEN make -j AND GNU Parallel
 
 B<make -j> can run jobs in parallel, but requires a crafted Makefile
-to do this. That results in extra quoting to get filename containing
-newline to work correctly.
+to do this. That results in extra quoting to get filenames containing
+newlines to work correctly.
 
 B<make -j> computes a dependency graph before running jobs. Jobs run
-by GNU B<parallel> does not depend on eachother.
+by GNU B<parallel> does not depend on each other.
 
-(Very early versions of GNU B<parallel> were coincidently implemented
+(Very early versions of GNU B<parallel> were coincidentally implemented
 using B<make -j>).
 
 https://www.gnu.org/software/make/
@@ -250,10 +260,10 @@ into files.
 
 The argument replace string ($ITEM) cannot be changed. Arguments must
 be quoted - thus arguments containing special characters (space '"&!*)
-may cause problems. More than one argument is not supported. File
-names containing newlines are not processed correctly. When reading
-input from a file null cannot be used as a terminator. B<ppss> needs
-to read the whole input file before starting any jobs.
+may cause problems. More than one argument is not supported. Filenames
+containing newlines are not processed correctly. When reading input
+from a file null cannot be used as a terminator. B<ppss> needs to read
+the whole input file before starting any jobs.
 
 Output and status information is stored in ppss_dir and thus requires
 cleanup when completed. If the dir is not removed before running
@@ -452,15 +462,16 @@ B<dxargs> does not deal well with more simultaneous jobs than SSHD's
 MaxStartups. B<dxargs> is only built for remote run jobs, but does not
 support transferring of files.
 
-http://www.semicomplete.com/blog/geekery/distributed-xargs.html
+https://web.archive.org/web/20120518070250/http://www.semicomplete.com/blog/geekery/distributed-xargs.html
 
 
 =head2 DIFFERENCES BETWEEN mdm/middleman AND GNU Parallel
 
 middleman(mdm) is also a tool for running jobs in parallel.
 
-Here are the shellscripts of http://mdm.berlios.de/usage.html ported
-to GNU B<parallel>:
+Here are the shellscripts of
+https://web.archive.org/web/20110728064735/http://mdm.berlios.de/usage.html
+ported to GNU B<parallel>:
 
   seq 19 | parallel buffon -o - | sort -n > result
   cat files | parallel cmd
@@ -615,7 +626,7 @@ https://github.com/cheusov/paexec
 B<map> sees it as a feature to have less features and in doing so it
 also handles corner cases incorrectly. A lot of GNU B<parallel>'s code
 is to handle corner cases correctly on every platform, so you will not
-get a nasty surprise if a user for example saves a file called: I<My
+get a nasty surprise if a user, for example, saves a file called: I<My
 brother's 12" records.txt>
 
 B<map>'s example showing how to deal with special characters fails on
@@ -624,17 +635,20 @@ special characters:
   echo "The Cure" > My\ brother\'s\ 12\"\ records
 
   ls | \
-    map 'echo -n `gzip < "%" | wc -c`; echo -n '*100/'; wc -c < "%"' | bc
+    map 'echo -n `gzip < "%" | wc -c`; echo -n '*100/'; wc -c < "%"' |
+    bc
 
 It works with GNU B<parallel>:
 
   ls | \
-    parallel 'echo -n `gzip < {} | wc -c`; echo -n '*100/'; wc -c < {}' | bc
+    parallel \
+      'echo -n `gzip < {} | wc -c`; echo -n '*100/'; wc -c < {}' | bc
 
 And you can even get the file name prepended:
 
   ls | \
-    parallel --tag '(echo -n `gzip < {} | wc -c`'*100/'; wc -c < {}) | bc'
+    parallel --tag \
+      '(echo -n `gzip < {} | wc -c`'*100/'; wc -c < {}) | bc'
 
 B<map> has no support for grouping. So this gives the wrong results
 without any warnings:
@@ -655,23 +669,22 @@ completely for certain jobs (and may even be considered less readable):
 
   parallel echo -n {} ::: 1 2 3
 
-  map -p 4 'echo -n % 2>&1 | sed -e "s/^/$$:/"' 1 2 3 | sort | cut -f2- -d:
+  map -p 4 'echo -n % 2>&1 | sed -e "s/^/$$:/"' 1 2 3 | \
+    sort | cut -f2- -d:
 
 B<map>s replacement strings (% %D %B %E) can be simulated in GNU
 B<parallel> by putting this in B<~/.parallel/config>:
 
   --rpl '%'
-  --rpl '%D $_=::shell_quote(::dirname($_));'
+  --rpl '%D $_=Q(::dirname($_));'
   --rpl '%B s:.*/::;s:\.[^/.]+$::;'
   --rpl '%E s:.*\.::'
-
-B<map> cannot handle bundled options: B<map -vp 0 echo this fails>
 
 B<map> does not have an argument separator on the command line, but
 uses the first argument as command. This makes quoting harder which again
 may affect readability. Compare:
 
-  map -p 2 perl\\\ -ne\\\ \\\'/^\\\\S+\\\\s+\\\\S+\\\$/\\\ and\\\ print\\\ \\\$ARGV,\\\"\\\\n\\\"\\\' *
+  map -p 2 'perl -ne '"'"'/^\S+\s+\S+$/ and print $ARGV,"\n"'"'" *
 
   parallel -q perl -ne '/^\S+\s+\S+$/ and print $ARGV,"\n"' ::: *
 
@@ -680,16 +693,11 @@ context replace:
 
   parallel --xargs echo 'BEGIN{'{}'}END' ::: 1 2 3
 
-B<map> does not set exit value according to whether one of the jobs
-failed:
-
-  parallel false ::: 1 || echo Job failed
-
-  map false 1 || echo Never run
+  map "echo 'BEGIN{'%'}END'" 1 2 3
 
 B<map> requires Perl v5.10.0 making it harder to use on old systems.
 
-B<map> has no way of using % in the command (GNU Parallel has -I to
+B<map> has no way of using % in the command (GNU B<parallel> has -I to
 specify another replacement string than B<{}>).
 
 By design B<map> is option incompatible with B<xargs>, it does not
@@ -710,18 +718,23 @@ B<ladon> only works on files and the only way to specify files is
 using a quoted glob string (such as \*.jpg). It is not possible to
 list the files manually.
 
-As replacement strings it uses FULLPATH DIRNAME BASENAME EXT RELDIR RELPATH
+As replacement strings it uses FULLPATH DIRNAME BASENAME EXT RELDIR
+RELPATH
 
-These can be simulated using GNU B<parallel> by putting this in B<~/.parallel/config>:
+These can be simulated using GNU B<parallel> by putting this in
+B<~/.parallel/config>:
 
-    --rpl 'FULLPATH $_=::shell_quote($_);chomp($_=qx{readlink -f $_});'
-    --rpl 'DIRNAME $_=::shell_quote(::dirname($_));chomp($_=qx{readlink -f $_});'
+    --rpl 'FULLPATH $_=Q($_);chomp($_=qx{readlink -f $_});'
+    --rpl 'DIRNAME $_=Q(::dirname($_));chomp($_=qx{readlink -f $_});'
     --rpl 'BASENAME s:.*/::;s:\.[^/.]+$::;'
     --rpl 'EXT s:.*\.::'
-    --rpl 'RELDIR $_=::shell_quote($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;$_=::dirname($_);'
-    --rpl 'RELPATH $_=::shell_quote($_);chomp(($_,$c)=qx{readlink -f $_;pwd});s:\Q$c/\E::;'
+    --rpl 'RELDIR $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
+           s:\Q$c/\E::;$_=::dirname($_);'
+    --rpl 'RELPATH $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
+           s:\Q$c/\E::;'
 
-B<ladon> deals badly with filenames containing " and newline, and it fails for output larger than 200k:
+B<ladon> deals badly with filenames containing " and newline, and it
+fails for output larger than 200k:
 
     ladon '*' -- seq 36000 | wc
 
@@ -755,16 +768,22 @@ B<jobflow> can run multiple jobs in parallel.
 
 Just like B<xargs> output from B<jobflow> jobs running in parallel mix
 together by default. B<jobflow> can buffer into files (placed in
-/run/shm), but these are not cleaned up - not even if B<jobflow> dies
-unexpectently. If the total output is big (in the order of RAM+swap)
-it can cause the system to run out of memory.
+/run/shm), but these are not cleaned up if B<jobflow> dies
+unexpectedly (e.g. by Ctrl-C). If the total output is big (in the
+order of RAM+swap) it can cause the system to slow to a crawl and
+eventually run out of memory.
 
 B<jobflow> gives no error if the command is unknown, and like B<xargs>
-redirection requires wrapping with B<bash -c>.
+redirection and composed commands require wrapping with B<bash -c>.
+
+Input lines can at most be 4096 bytes. You can at most have 16 {}'s in
+the command template. More than that either crashes the program or
+simple does not execute the command.
+
+B<jobflow> has no equivalent for B<--pipe>, or B<--sshlogin>.
 
 B<jobflow> makes it possible to set resource limits on the running
 jobs. This can be emulated by GNU B<parallel> using B<bash>'s B<ulimit>:
-
 
   jobflow -limits=mem=100M,cpu=3,fsize=20M,nofiles=300 myjob
 
@@ -832,7 +851,7 @@ setting SSHPASS and by using B<--ssh "sshpass ssh">.
 
 To make the emulation easier, make a simple alias:
 
-  alias par_emul="parallel -j0 --ssh 'sshpass ssh' --nonall --tag --linebuffer"
+  alias par_emul="parallel -j0 --ssh 'sshpass ssh' --nonall --tag --lb"
 
 If you want to supply a password run:
 
@@ -850,8 +869,10 @@ If the above is set up you can then do:
   orgalorg -o frontend1 -o frontend2 -p -C top -bid 1
   par_emul -S frontend1 -S frontend2 top -bid 1
 
-  orgalorg -o frontend1 -o frontend2 -p -er /tmp -n 'md5sum /tmp/bigfile' -S bigfile
-  par_emul -S frontend1 -S frontend2 --basefile bigfile --workdir /tmp  md5sum /tmp/bigfile
+  orgalorg -o frontend1 -o frontend2 -p -er /tmp -n \
+    'md5sum /tmp/bigfile' -S bigfile
+  par_emul -S frontend1 -S frontend2 --basefile bigfile --workdir /tmp \
+    md5sum /tmp/bigfile
 
 B<orgalorg> has a progress indicator for the transferring of a
 file. GNU B<parallel> does not.
@@ -865,8 +886,6 @@ Rust parallel focuses on speed. It is almost as fast as B<xargs>. It
 implements a few features from GNU B<parallel>, but lacks many
 functions. All these fail:
 
-  # Show what would be executed
-  parallel --dry-run echo ::: a
   # Read arguments from file
   parallel -a file echo
   # Changing the delimiter
@@ -874,8 +893,6 @@ functions. All these fail:
 
 These do something different from GNU B<parallel>
 
-  # Read more arguments at a time -n
-  parallel -n 2 echo ::: 1 a 2 b
   # -q to protect quoted $ and space
   parallel -q perl -e '$a=shift; print "$a"x10000000' ::: a b c
   # Generation of combination of inputs
@@ -885,7 +902,7 @@ These do something different from GNU B<parallel>
   # --pipe
   seq 100000 | parallel --pipe wc
   # linked arguments
-  parallel echo ::: S M L :::+ small medium large ::: R G B :::+ red green blue
+  parallel echo ::: S M L :::+ sml med lrg ::: R G B :::+ red grn blu
   # Run different shell dialects
   zsh -c 'parallel echo \={} ::: zsh && true'
   csh -c 'parallel echo \$\{\} ::: shell && true'
@@ -894,14 +911,25 @@ These do something different from GNU B<parallel>
   (seq 10; sleep 5; echo 2) | time parallel -j2 'sleep 2; echo'
   tail -f /var/log/syslog | parallel echo
 
+Most of the examples from the book GNU Parallel 2018 do not work, thus
+Rust parallel is not close to being a compatible replacement.
+
 Rust parallel has no remote facilities.
 
 It uses /tmp/parallel for tmp files and does not clean up if
-terminated abrubtly. If another user on the system uses Rust parallel,
+terminated abruptly. If another user on the system uses Rust parallel,
 then /tmp/parallel will have the wrong permissions and Rust parallel
 will fail. A malicious user can setup the right permissions and
 symlink the output file to one of the user's files and next time the
 user uses Rust parallel it will overwrite this file.
+
+  attacker$ mkdir /tmp/parallel
+  attacker$ chmod a+rwX /tmp/parallel
+  # Symlink to the file the attacker wants to zero out
+  attacker$ ln -s ~victim/.important-file /tmp/parallel/stderr_1
+  victim$ seq 1000 | parallel echo
+  # This file is now overwritten with stderr from 'echo'
+  victim$ cat ~victim/.important-file
 
 If /tmp/parallel runs full during the run, Rust parallel does not
 report this, but finishes with success - thereby risking data loss.
@@ -1112,7 +1140,7 @@ B<15. Interrupt jobs by `Ctrl-C`, rush will stop unfinished commands and exit.>
   ^C
 
 B<16. Continue/resume jobs (`-c`). When some jobs failed (by
-execution failure, timeout, or cancelling by user with `Ctrl + C`),
+execution failure, timeout, or canceling by user with `Ctrl + C`),
 please switch flag `-c/--continue` on and run again, so that `rush`
 can save successful commands and ignore them in I<NEXT> run.>
 
@@ -1144,7 +1172,7 @@ Multi-line jobs:
 
 B<17. A comprehensive example: downloading 1K+ pages given by
 three URL list files using `phantomjs save_page.js` (some page
-contents are dynamicly generated by Javascript, so `wget` does not
+contents are dynamically generated by Javascript, so `wget` does not
 work). Here I set max jobs number (`-j`) as `20`, each job has a max
 running time (`-t`) of `60` seconds and `3` retry changes
 (`-r`). Continue flag `-c` is also switched on, so we can continue
@@ -1286,7 +1314,8 @@ E.g.
 
 With GNU B<parallel> this can be emulated by:
 
-  echo foosuffix | parallel --plus 'p={%suffix}; echo ${p}_new_suffix'
+  echo foosuffix |
+    parallel --plus 'p={%suffix}; echo ${p}_new_suffix'
 
 Opposite B<rush> GNU B<parallel> works fine if the input contains
 double space, ' and ":
@@ -1298,7 +1327,7 @@ double space, ' and ":
 =item * Commands of multi-lines
 
 While you I<can> use multi-lined commands in GNU B<parallel>, to
-improve readibilty GNU B<parallel> discourages the use of multi-line
+improve readability GNU B<parallel> discourages the use of multi-line
 commands. In most cases it can be written as a function:
 
   seq 1 3 |
@@ -1376,7 +1405,7 @@ It can be emulated with GNU B<parallel> using this Bash function:
     parallel $(_cmds "$@")'|| echo exit status $?' ::: */
   }
 
-This works execpt for the B<--exclude> option.
+This works except for the B<--exclude> option.
 
 
 =head2 DIFFERENCES BETWEEN pyargs AND GNU Parallel
@@ -1432,7 +1461,7 @@ The output is prepended with the job number, and may be incomplete:
   7165
 
 When pretty printing it caches output in memory. Output mixes by using
-test MIX below wether or not output is cached.
+test MIX below whether or not output is cached.
 
 There seems to be no way of making a template command and have
 B<concurrently> fill that with different args. The full commands must
@@ -1457,7 +1486,7 @@ B<map> itself, the output also mixes:
 
   seq 10 | map i 'echo start-$i && sleep 0.$i && echo end-$i &'
 
-The major difference is that GNU B<parallel> is build for parallelization
+The major difference is that GNU B<parallel> is built for parallelization
 and map is not. So GNU B<parallel> has lots of ways of dealing with the
 issues that parallelization raises:
 
@@ -1490,7 +1519,7 @@ Here are the 5 examples converted to GNU Parallel:
 
   4$ printf "1\n1\n1\n" | map t 'sleep $t && say done'
   4$ printf "1\n1\n1\n" | parallel 'sleep {} && say done'
-  4$ paralllel 'sleep {} && say done' ::: 1 1 1
+  4$ parallel 'sleep {} && say done' ::: 1 1 1
 
   5$ printf "1\n1\n1\n" | map t 'sleep $t && say done &'
   5$ printf "1\n1\n1\n" | parallel -j0 'sleep {} && say done'
@@ -1499,11 +1528,211 @@ Here are the 5 examples converted to GNU Parallel:
 https://github.com/soveran/map
 
 
+=head2 DIFFERENCES BETWEEN loop AND GNU Parallel
+
+B<loop> mixes stdout and stderr:
+
+    loop 'ls /no-such-file' >/dev/null
+
+B<loop>'s replacement string B<$ITEM> does not quote strings:
+
+    echo 'two  spaces' | loop 'echo $ITEM'
+
+B<loop> cannot run functions:
+
+    myfunc() { echo joe; }
+    export -f myfunc
+    loop 'myfunc this fails'
+
+Some of the examples from https://github.com/Miserlou/Loop/ can be
+emulated with GNU B<parallel>:
+
+    # A couple of functions will make the code easier to read
+    $ loopy() {
+        yes | parallel -uN0 -j1 "$@"
+      }
+    $ export -f loopy
+    $ time_out() {
+        parallel -uN0 -q --timeout "$@" ::: 1
+      }
+    $ match() {
+        perl -0777 -ne 'grep /'"$1"'/,$_ and print or exit 1'
+      }
+    $ export -f match
+
+    $ loop 'ls' --every 10s
+    $ loopy --delay 10s ls
+
+    $ loop 'touch $COUNT.txt' --count-by 5
+    $ loopy touch '{= $_=seq()*5 =}'.txt
+
+    $ loop --until-contains 200 -- ./get_response_code.sh --site mysite.biz`
+    $ loopy --halt now,success=1 './get_response_code.sh --site mysite.biz |
+        match 200'
+
+    $ loop './poke_server' --for-duration 8h
+    $ time_out 8h loopy ./poke_server
+
+    $ loop './poke_server' --until-success
+    $ loopy --halt now,success=1 ./poke_server
+
+    $ cat files_to_create.txt | loop 'touch $ITEM'
+    $ cat files_to_create.txt | parallel touch {}
+
+    $ loop 'ls' --for-duration 10min --summary
+    # --joblog is somewhat more verbose than --summary
+    $ time_out 10m loopy --joblog my.log ./poke_server; cat my.log
+
+    $ loop 'echo hello'
+    $ loopy echo hello
+
+    $ loop 'echo $COUNT'
+    # GNU Parallel counts from 1
+    $ loopy echo {#}
+    # Counting from 0 can be forced
+    $ loopy echo '{= $_=seq()-1 =}'
+
+    $ loop 'echo $COUNT' --count-by 2
+    $ loopy echo '{= $_=2*(seq()-1) =}'
+
+    $ loop 'echo $COUNT' --count-by 2 --offset 10
+    $ loopy echo '{= $_=10+2*(seq()-1) =}'
+
+    $ loop 'echo $COUNT' --count-by 1.1
+    # GNU Parallel rounds 3.3000000000000003 to 3.3
+    $ loopy echo '{= $_=1.1*(seq()-1) =}'
+
+    $ loop 'echo $COUNT $ACTUALCOUNT' --count-by 2
+    $ loopy echo '{= $_=2*(seq()-1) =} {#}'
+
+    $ loop 'echo $COUNT' --num 3 --summary
+    # --joblog is somewhat more verbose than --summary
+    $ seq 3 | parallel --joblog my.log echo; cat my.log
+
+    $ loop 'ls -foobarbatz' --num 3 --summary
+    # --joblog is somewhat more verbose than --summary
+    $ seq 3 | parallel --joblog my.log -N0 ls -foobarbatz; cat my.log
+
+    $ loop 'echo $COUNT' --count-by 2 --num 50 --only-last
+    # Can be emulated by running 2 jobs
+    $ seq 49 | parallel echo '{= $_=2*(seq()-1) =}' >/dev/null
+    $ echo 50| parallel echo '{= $_=2*(seq()-1) =}'
+
+    $ loop 'date' --every 5s
+    $ loopy --delay 5s date
+
+    $ loop 'date' --for-duration 8s --every 2s
+    $ time_out 8s loopy --delay 2s date
+
+    $ loop 'date -u' --until-time '2018-05-25 20:50:00' --every 5s
+    $ seconds=$((`date -d 2019-05-25T20:50:00 +%s` - `date  +%s`))s
+    $ time_out $seconds loopy --delay 5s date -u
+
+    $ loop 'echo $RANDOM' --until-contains "666"
+    $ loopy --halt now,success=1 'echo $RANDOM | match 666'
+
+    $ loop 'if (( RANDOM % 2 )); then
+              (echo "TRUE"; true);
+            else
+              (echo "FALSE"; false);
+            fi' --until-success
+    $ loopy --halt now,success=1 'if (( $RANDOM % 2 )); then
+                                    (echo "TRUE"; true);
+                                  else
+                                    (echo "FALSE"; false);
+                                  fi'
+
+    $ loop 'if (( RANDOM % 2 )); then
+        (echo "TRUE"; true);
+      else
+        (echo "FALSE"; false);
+      fi' --until-error
+    $ loopy --halt now,fail=1 'if (( $RANDOM % 2 )); then
+                                 (echo "TRUE"; true);
+                               else
+                                 (echo "FALSE"; false);
+                               fi'
+
+    $ loop 'date' --until-match "(\d{4})"
+    $ loopy --halt now,success=1 'date | match [0-9][0-9][0-9][0-9]'
+
+    $ loop 'echo $ITEM' --for red,green,blue
+    $ parallel echo ::: red green blue
+
+    $ cat /tmp/my-list-of-files-to-create.txt | loop 'touch $ITEM'
+    $ cat /tmp/my-list-of-files-to-create.txt | parallel touch
+
+    $ ls | loop 'cp $ITEM $ITEM.bak'; ls
+    $ ls | parallel cp {} {}.bak; ls
+
+    $ loop 'echo $ITEM | tr a-z A-Z' -i
+    $ parallel 'echo {} | tr a-z A-Z'
+    # Or more efficiently:
+    $ parallel --pipe tr a-z A-Z
+
+    $ loop 'echo $ITEM' --for "`ls`"
+    $ parallel echo {} ::: "`ls`"
+
+    $ ls | loop './my_program $ITEM' --until-success;
+    $ ls | parallel --halt now,success=1 ./my_program {}
+
+    $ ls | loop './my_program $ITEM' --until-fail;
+    $ ls | parallel --halt now,fail=1 ./my_program {}
+
+    $ ./deploy.sh;
+      loop 'curl -sw "%{http_code}" http://coolwebsite.biz' \
+        --every 5s --until-contains 200;
+      ./announce_to_slack.sh
+    $ ./deploy.sh;
+      loopy --delay 5s --halt now,success=1 \
+      'curl -sw "%{http_code}" http://coolwebsite.biz | match 200';
+      ./announce_to_slack.sh
+
+    $ loop "ping -c 1 mysite.com" --until-success; ./do_next_thing
+    $ loopy --halt now,success=1 ping -c 1 mysite.com; ./do_next_thing
+
+    $ ./create_big_file -o my_big_file.bin;
+      loop 'ls' --until-contains 'my_big_file.bin';
+      ./upload_big_file my_big_file.bin
+    # inotifywait is a better tool to detect file system changes.
+    # It can even make sure the file is complete
+    # so you are not uploading an incomplete file
+    $ inotifywait -qmre MOVED_TO -e CLOSE_WRITE --format %w%f . |
+        grep my_big_file.bin
+
+    $ ls | loop 'cp $ITEM $ITEM.bak'
+    $ ls | parallel cp {} {}.bak
+
+    $ loop './do_thing.sh' --every 15s --until-success --num 5
+    $ parallel --retries 5 --delay 15s ::: ./do_thing.sh
+
+https://github.com/Miserlou/Loop/ (Last checked: 2018-10)
+
+
+=head2 DIFFERENCES BETWEEN lorikeet AND GNU Parallel
+
+B<lorikeet> can run jobs in parallel. It does this based on a
+dependency graph described in a file, so this is similar to B<make>.
+
+https://github.com/cetra3/lorikeet (Last checked: 2018-10)
+
+=head2 DIFFERENCES BETWEEN spp AND GNU Parallel
+
+B<spp> can run jobs in parallel. B<spp> does not use a command
+template to generate the jobs, but requires jobs to be in a
+file. Output from the jobs mix.
+
+https://github.com/john01dav/spp
+
 =head2 Todo
 
-Url for map, spread
+Url for spread
 
-machma. Requires Go >= 1.7.
+
+
+https://github.com/amritb/with-this.git
+
+https://github.com/fd0/machma Requires Go >= 1.7.
 
 https://github.com/k-bx/par requires Haskell to work. This limits the
 number of platforms this can work on.
@@ -1517,6 +1746,8 @@ https://github.com/kou1okada/lesser-parallel
 https://github.com/Julian/Verge
 
 https://github.com/amattn/paral
+
+https://github.com/mmstick/concurr
 
 pyargs
 
@@ -1559,7 +1790,8 @@ This test stresses whether output mixes.
   chmod +x mycommand
 
   # Run 30 jobs in parallel
-  seq 30 | $paralleltool ./mycommand > >(tr -s abcdef) 2> >(tr -s abcdef >&2)
+  seq 30 |
+    $paralleltool ./mycommand > >(tr -s abcdef) 2> >(tr -s abcdef >&2)
 
   # 'a c e' and 'b d f' should always stay together
   # and there should only be a single line per job
@@ -1673,6 +1905,18 @@ Some tools can only insert the argument once.
   echo bar | $paralleltool echo {} foo {}
 
 
+=head2 INPUTSIZE: Length of input should not be limited
+
+Some tools limit the length of the input lines artificially with no good
+reason. GNU B<parallel> does not:
+
+  perl -e 'print "foo."."x"x100_000_000' | parallel echo {.}
+
+GNU B<parallel> limits the command to run to 128 KB due to execve(1):
+
+  perl -e 'print "x"x131_000' | parallel echo {} | wc
+
+
 =head2 NUMWORDS: Speed depends on number of words
 
 Some tools become very slow if output lines have many words.
@@ -1705,10 +1949,10 @@ If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 
 Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2008,2009,2010 Ole Tange, http://ole.tange.dk
+Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010,2011,2012,2013,2014,2015,2016,2017,2018 Ole Tange,
-http://ole.tange.dk and Free Software Foundation, Inc.
+Copyright (C) 2010-2018 Ole Tange, http://ole.tange.dk and Free
+Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by
 the manual of B<xargs> from GNU findutils 4.4.2.
@@ -1716,8 +1960,7 @@ the manual of B<xargs> from GNU findutils 4.4.2.
 
 =head1 LICENSE
 
-Copyright (C) 2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018
-Free Software Foundation, Inc.
+Copyright (C) 2007-2018 Free Software Foundation, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

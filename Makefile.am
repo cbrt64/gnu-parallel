@@ -120,6 +120,7 @@ monitorman:
 	inotifywait -qmre MOVED_TO -e CLOSE_WRITE --format %w%f . | parallel -uj1 'echo {=/\.pod$$/ or skip()=};make -j && sudo make install; pdfman {/.} &'
 
 testurls:
-	grep -h -Po 'https?://[^ $$<>")}]+' src/* | perl -pe 's/(&gt|\{).*//;s/\\//g;s/&amp;/&/g;s/&#.*//;'"s/'.*//" | sort -u | parallel -j0 --tag 'wget -qm -l1 -Q1 {}; echo $$?'
+	mkdir -p urls
+	cd urls && grep -v '(dead)' ../src/* | grep -h -Po 'https?://[^ $$<>")}]+' | perl -pe 's/(&gt|\{).*//;s/\\-/-/g;s/\\n//g;s/&amp;/&/g;s/&#.*//;'"s/'.*//" | sort -u | egrep -v 'example.com|##|\*\(' | parallel -j0 --timeout 33 --bar --tag --retries 3 neno wget -m -l1 -Q1 '{=$$_=Q($$_)=}'
 
 EXTRA_DIST = CITATION CREDITS cc-by-sa.txt fdl.txt

@@ -10,7 +10,7 @@ par_sigterm() {
     A=$!
     sleep 29; kill -TERM $A
     wait
-    sort /tmp/parallel$$
+    LC_ALL=C sort /tmp/parallel$$
     rm /tmp/parallel$$
 }
 
@@ -151,7 +151,7 @@ par_test_detected_shell() {
 	tmp="/tmp/test_unknown_shell_$shell"
 	cp $(which "$shell") "$tmp"
 	chmod +x "$tmp"
-	$tmp -c 'ppar -Dinit echo ::: 1; true' |
+	$tmp -c 'parallel -Dinit echo ::: 1; true' |
 	    grep Global::shell
 	rm "$tmp"
     }

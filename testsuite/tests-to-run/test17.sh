@@ -8,7 +8,7 @@ SSHLOGIN2=parallel@$SERVER2
 export PARALLEL=-j0
 #export PARALLEL="--sshdelay 0.3"
 # Make sure sort order is the same
-export LANG=C
+export LC_ALL=C
 
 echo '### Test --transfer --return --cleanup'
 

@@ -619,3 +619,6 @@ par_test_XI_mI	a7 b1 2 3 4 5 6 7
 par_test_XI_mI	a8 b1 2 3 4 5 6 7 8
 par_test_XI_mI	a9 b1 2 3 4 5 6 7 8 9
 par_test_XI_mI	a10 b1 2 3 4 5 6 7 8 9 10
+par_too_long_line_X	bug #54869: Long lines break
+par_too_long_line_X	      1   29302  131012
+par_too_long_line_X	      1   12698   63490

@@ -7,7 +7,7 @@ export XAP
 NICEPAR="nice nice parallel"
 export NICEPAR
 
-cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | stdout parallel -vj4 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | stdout parallel -vj4 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo 'bug #41412: --timeout + --delay causes deadlock';
   seq 10 | parallel -j10 --timeout 1 --delay 0.3 echo;
   parallel -j3 --timeout 1 --delay 2 echo ::: 1 2 3;

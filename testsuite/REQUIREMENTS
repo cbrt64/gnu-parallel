@@ -100,8 +100,9 @@ parallel       -j3 --timeout 3 --retries 10 --tag ssh_a_to_b ::: $shellsplus :::
   # Remove env_parallel from .profile
   ssh nopathbash@lo 'perl -i.bak -pe s/.*env_parallel.*// .profile .bashrc'
   ssh nopathcsh@lo 'echo >> .cshrc setenv PATH /bin:/usr/bin'
-  ssh nopathbash@lo 'echo $PATH'
-  ssh nopathcsh@lo 'echo $PATH'
+  ssh nopathbash@lo 'echo $PATH; echo 1 | parallel echo' || echo Should FAIL
+  ssh nopathcsh@lo 'echo $PATH; echo 1 | parallel echo' || echo Should FAIL
+
 )
 
 ssh-copy-id localhost
@@ -132,3 +133,9 @@ echo
 echo Add to /etc/ssh/sshd_config
 echo Ciphers aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc
 echo KexAlgorithms diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,curve25519-sha256@libssh.org,diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1
+echo
+echo If you get:
+echo Unable to negotiate with server port 22: no matching cipher found. Their offer: aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
+echo add this to .ssh/config
+echo   Ciphers +aes256-cbc 
+

@@ -120,8 +120,11 @@ par_empty() {
     true;
 }
 
+hostname=`hostname`
 export -f $(compgen -A function | egrep 'p_|par_')
 # Tested that -j0 in parallel is fastest (up to 15 jobs)
 compgen -A function | grep par_ | sort |
   stdout parallel -vj5 -k --tag --joblog /tmp/jl-`basename $0` p_wrapper \
-    :::: - ::: \$MYSQL \$PG \$SQLITE | perl -pe 's/tbl\d+/TBL99999/gi'
+	 :::: - ::: \$MYSQL \$PG \$SQLITE | perl -pe 's/tbl\d+/TBL99999/gi;' |
+  perl -pe 's/(from TBL99999 order) .*/$1/g' |
+  perl -pe "s/$hostname/hostname/g"

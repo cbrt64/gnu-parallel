@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | parallel -vj10 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | parallel -vj10 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### Test of --eta'
   seq 1 10 | stdout parallel --eta "sleep 1; echo {}" | wc -l
 

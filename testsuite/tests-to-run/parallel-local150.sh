@@ -7,7 +7,7 @@ median() { perl -e '@a=sort {$a<=>$b} <>;print $a[$#a/2]';}
 export -f median
 
 # -L1 will join lines ending in ' '
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### bug #41565: Print happens in blocks - not after each job complete'
 echo 'The timing here is important: a full second between each'
   perl -e 'for(1..30){print("$_\n");`sleep 1`}' | parallel -j3  'echo {#}' | timestamp -dd | perl -pe '$_=int($_+0.3)."\n"' | median

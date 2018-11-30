@@ -16,6 +16,7 @@ configure.ac: AC_INIT([parallel], [20100422], [bug-parallel@gnu.org])
 src/parallel: $Global::version = 20100422;
 README: parallel-20130222
 
+YYYYMMDD=$(echo `yyyymmdd`-1 | bc)
 YYYYMMDD=$(echo `yyyymmdd`+1 | bc)
 YYYYMMDD=`yyyymmdd`
 echo $YYYYMMDD
@@ -205,86 +206,21 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
+Subject: GNU Parallel 20181222 ('Kilogram/brexitdeal/Stan Lee/Cesar Sayoc/Tree of Life/Iran') released <<[stable]>>
 
-Subject: GNU Parallel 20180722 ('Crimson Hexagon') released [alpha] <<[stable]>>
+GNU Parallel 20181222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
-GNU Parallel 20180722 ('Crimson Hexagon') [alpha] <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
-
-This release has signficant changes and is considered alpha quality.
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-  I've been using GNU Parallel very much and effectively lately.
-  Such an easy way to get huge speed-ups with my simple bash/Perl/Python
-  programs -- parallelize them!
-    -- Ken Youens-Clark @kycl4rk@twitter
-
 New in this release:
 
-* The quoting engine has been changed. Instead of using \-quoting GNU Parallel now uses '-quoting in bash/ash/dash/ksh. This should improve compatibility with different locales. This is a big change causing this release to be alpha quality.
-
-* The CPU calculation has changed. By default GNU Parallel uses the number of CPU threads as the number of CPUs. This can be change to the number of CPU cores or number of CPU sockets with --use-cores-instead-of-threads or --use-sockets-instead-of-threads.
-
-* The detected number of sockets, cores, and threads can be shown with --number-of-sockets, --number-of-cores, and --number-of-threads.
-
-* env_parallel now support mksh using env_parallel.mksh.
-
-* GNU Parallel is distributed as part of Snippy https://github.com/tseemann/snippy
-
-* GNU Parallel: Ejecutar comandos simultáneamente en Linux https://esgeeks.com/gnu-parallel-ejecutar-comandos-simultaneo-linux/
-
-* Parallel download genomic data with GNU-Parallel https://digibio.blogspot.com/search/label/GNU-Parallel
-
-<<Citation not OK: BAMClipper: removing primers from alignments to minimize false-negative mutations in amplicon next-generation sequencing https://www.nature.com/articles/s41598-017-01703-6>>
-
-<<Wrong citation https://iris.sissa.it/retrieve/handle/20.500.11767/36149/10823/And%C3%B2_tesi.pdf>>
-
-<<Wrong citation http://www.cell.com/cms/attachment/2095201602/2077415979/mmc1.pdf>>
-
-<<Down http://www.nature.com/nprot/journal/v12/n5/full/nprot.2017.022.html?WT.feed_name=subjects_biotechnology>>
-
-<<Citation not ok: https://arxiv.org/pdf/1704.08997.pdf>>
-
-<<Citation needed: https://sdstrowes.co.uk/publications/sdstrowes-rdns-aaaa.pdf>>
-
-<<Citation not ok: https://www.nature.com/articles/s41598-017-01703-6>>
-
-<<Probably http://www.sciencedirect.com/science/article/pii/S0044848616312194>>
-
-<<Possibly http://link.springer.com/chapter/10.1007%2F978-3-319-22053-6_46>>
-
-<<Possibly http://link.springer.com/article/10.1007/s12021-015-9290-5>>
-
-<<Possibly http://link.springer.com/protocol/10.1007/978-1-4939-3578-9_14>>
-
-<<kontakt GNU Parallel was used (unfortunately without citation) in: Instrumentation and Trace Analysis for Ad-hoc Python Workflows in Cloud Environments http://ieeexplore.ieee.org/xpl/articleDetails.jsp?arnumber=7214035>>
-
-<<Har angiveligt submittet ny version - afventer opdatering>> GNU Parallel was used (unfortunately without citation) in: MUGBAS: a species free gene-based programme suite for post-GWAS analysis http://www.ncbi.nlm.nih.gov/pubmed/25765345
-
-<<Afventer updateret publisering>> GNU Parallel was used in: Large Scale Author Name Disambiguation in Digital Libraries http://ieeexplore.ieee.org/xpl/abstractReferences.jsp?tp=&arnumber=7004487&url=http%3A%2F%2Fieeexplore.ieee.org%2Fxpls%2Fabs_all.jsp%3Farnumber%3D7004487
-
-<<kontaktet 2015-06-22 Afventer svar fra journal>> GNU Parallel was used (unfortunately with wrong citation) in: TADSim: Discrete Event-Based Performance Prediction for Temperature-Accelerated Dynamics http://vruehle.de/publications/2015c.pdf
-http://www.researchgate.net/profile/Christoph_Junghans/publication/276178326_TADSim_Discrete_Event-Based_Performance_Prediction_for_Temperature-Accelerated_Dynamics/links/55562b6708ae980ca60c8369.pdf
-
-<< Update forventet juni Rachel har lige svaret >> GNU Parallel was used in: SISRS: Site Identification from Short Read Sequences https://github.com/rachelss/SISRS/
-
-<<Citation needed: A Cache- and Memory-Aware Mapping Algorithm
-for Big Data Applications https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7323015>>
-
-<<Citation needed: Introspecting for RSA Key Material to Assist Intrusion Detection http://ieeexplore.ieee.org/xpl/login.jsp?tp=&arnumber=7331177&url=http%3A%2F%2Fieeexplore.ieee.org%2Fxpls%2Fabs_all.jsp%3Farnumber%3D7331177>>
-
-<<Citation needed: 3D-GNOME: an integrated web service for structural modeling of the 3D genome http://nar.oxfordjournals.org/content/early/2016/05/16/nar.gkw437.full.pdf+html>>
-
-<<link No citation: Next-generation TCP for ns-3 simulator http://www.sciencedirect.com/science/article/pii/S1569190X15300939>>
-
-<<link No citation: Scalable metagenomics alignment research tool (SMART): a scalable, rapid, and complete search heuristic for the classification of metagenomic sequences from complex sequence populations http://bmcbioinformatics.biomedcentral.com/articles/10.1186/s12859-016-1159-6#Bib1>>
-
-<<No citation: Argumentation Models for Cyber Attribution http://arxiv.org/pdf/1607.02171.pdf>>
-
-<<Possible: http://link.springer.com/article/10.1007/s12021-015-9290-5 http://link.springer.com/protocol/10.1007/978-1-4939-3578-9_14>>
+* https://qiita.com/hana_shin/items/53c3c78525c9c758ae7c
 
 * Bug fixes and man page updates.
+
+Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
 GNU Parallel - For people who live life in the parallel lane.
 
@@ -307,7 +243,7 @@ Walk through the tutorial (man parallel_tutorial). Your commandline will love yo
 
 When using programs that use GNU Parallel to process data for publication please cite:
 
-O. Tange (2018): GNU Parallel 2018, April 2018, https://doi.org/10.5281/zenodo.1146014.
+O. Tange (2018): GNU Parallel 2018, March 2018, https://doi.org/10.5281/zenodo.1146014.
 
 If you like GNU Parallel:
 

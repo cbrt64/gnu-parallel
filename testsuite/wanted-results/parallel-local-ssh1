@@ -28,36 +28,12 @@ echo '### Stop if all hosts are filtered and there are no hosts left to run on'
 ### Stop if all hosts are filtered and there are no hosts left to run on
   stdout parallel --filter-hosts -S no-such.host echo ::: 1
 parallel: Warning: Removed no-such.host.
-parallel: Error: There are no hosts left to run on.
+parallel: Error: Cannot run any jobs.
 echo '### Can csh propagate a variable containing \n';   export A=$(seq 3); parallel -S csh@lo --env A bash -c \''echo "$A"'\' ::: dummy
 ### Can csh propagate a variable containing \n
 1
 2
 3
-echo '### bug #41805: Idea: propagate --env for parallel --number-of-cores'
-### bug #41805: Idea: propagate --env for parallel --number-of-cores
-  echo '** test_zsh'
-** test_zsh
-  FOO=test_zsh parallel --env FOO,HOME -S zsh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-FOO=test_zsh
-HOME=~
-  echo '** test_zsh_filter'
-** test_zsh_filter
-  FOO=test_zsh_filter parallel --filter-hosts --env FOO,HOME -S zsh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-FOO=test_zsh_filter
-HOME=~
-  echo '** test_csh'
-** test_csh
-  FOO=test_csh parallel --env FOO,HOME -S csh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-FOO=test_csh
-HOME=~
-  echo '** test_csh_filter'
-** test_csh_filter
-  FOO=test_csh_filter parallel --filter-hosts --env FOO,HOME -S csh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-FOO=test_csh_filter
-HOME=~
-  echo '** bug #41805 done'
-** bug #41805 done
 echo '### Test bug #34241: --pipe should not spawn unneeded processes'
 ### Test bug #34241: --pipe should not spawn unneeded processes
   seq 5 | ssh csh@lo parallel -k --block 5 --pipe -j10 cat\\\;echo Block_end
@@ -171,7 +147,7 @@ ls: No match.
 ls: cannot access './--?.a': No such file or directory
 echo '### Test --trc "/tmp/./--- /A" "/tmp/./ ---/B"'
 ### Test --trc "/tmp/./--- /A" "/tmp/./ ---/B"
-  mkdir -p '/tmp/./--- '   '/tmp/ ---';   touch -- '/tmp/./--- /A' '/tmp/ ---/B';   rm -f ./---?/A.a ./?---/B.a;   parallel --trc {=s:.*/./::=}.a -S csh@lo,sh@lo touch ./{=s:.*/./::=}.a ::: '/tmp/./--- /A' '/tmp/./ ---/B';   ls ./---?/A.a ./?---/B.a;   parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--- ./---? || echo OK'; echo '### bug #46519: --onall ignores --transfer'
+  mkdir -p '/tmp/./--- '   '/tmp/ ---';   touch -- '/tmp/./--- /A' '/tmp/ ---/B';   rm -f ./---?/A.a ./?---/B.a;   parallel --trc {=s:.*/./::=}.a -S csh@lo,sh@lo touch ./{=s:.*/./::=}.a ::: '/tmp/./--- /A' '/tmp/./ ---/B';   ls ./---?/A.a ./?---/B.a | LC_ALL=C sort;   parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--- ./---? || echo OK' | LC_ALL=C sort; echo '### bug #46519: --onall ignores --transfer'
 ./ ---/B.a
 ./--- /A.a
 OK

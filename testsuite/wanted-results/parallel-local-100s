@@ -6,182 +6,182 @@ par_exit_code	# but fish 2.4.0 returns 1 while X.X.X returns 0
 par_exit_code	ash /tmp/mysleep 100	137
 par_exit_code	ash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	ash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	ash parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	ash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	ash parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	ash true;/tmp/mysleep 100	137
 par_exit_code	ash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	ash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	ash parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	ash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	ash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	bash /tmp/mysleep 100	0
 par_exit_code	bash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	bash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	bash parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	bash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	bash parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	bash true;/tmp/mysleep 100	137
 par_exit_code	bash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	bash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	bash parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	bash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	bash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	csh /tmp/mysleep 100	137
 par_exit_code	csh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	csh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	csh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	csh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	csh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	csh true;/tmp/mysleep 100	137
 par_exit_code	csh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	csh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	csh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	csh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	csh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	dash /tmp/mysleep 100	137
 par_exit_code	dash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	dash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	dash parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	dash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	dash parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	dash true;/tmp/mysleep 100	137
 par_exit_code	dash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	dash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	dash parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	dash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	dash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	fish /tmp/mysleep 100	137
 par_exit_code	fish parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	fish parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	fish parallel --halt-on-error now,done=1 true ::: 100	1
+par_exit_code	fish parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	fish parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	fish true;/tmp/mysleep 100	137
 par_exit_code	fish parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	fish parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	fish parallel --halt-on-error now,done=1 "true;true" ::: 100	1
+par_exit_code	fish parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	fish parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	mksh /tmp/mysleep 100	0
 par_exit_code	mksh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	mksh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	mksh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	mksh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	mksh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	mksh true;/tmp/mysleep 100	137
 par_exit_code	mksh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	mksh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	mksh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	mksh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	mksh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	posh /tmp/mysleep 100	137
 par_exit_code	posh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	posh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	posh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	posh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	posh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	posh true;/tmp/mysleep 100	137
 par_exit_code	posh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	posh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	posh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	posh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	posh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	rc /tmp/mysleep 100	1
 par_exit_code	rc parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	1
 par_exit_code	rc parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	1
-par_exit_code	rc parallel --halt-on-error now,done=1 true ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 /bin/true ::: 100	1
 par_exit_code	rc parallel --halt-on-error now,done=1 exit ::: 100	1
 par_exit_code	rc true;/tmp/mysleep 100	1
 par_exit_code	rc parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	1
 par_exit_code	rc parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	1
-par_exit_code	rc parallel --halt-on-error now,done=1 "true;true" ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	1
 par_exit_code	rc parallel --halt-on-error now,done=1 "true;exit" ::: 100	1
 par_exit_code	sash /tmp/mysleep 100	255
 par_exit_code	sash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	255
 par_exit_code	sash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	255
-par_exit_code	sash parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	sash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	sash parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	sash true;/tmp/mysleep 100	0
 par_exit_code	sash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	0
 par_exit_code	sash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	0
-par_exit_code	sash parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	sash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	sash parallel --halt-on-error now,done=1 "true;exit" ::: 100	0
 par_exit_code	sh /tmp/mysleep 100	137
 par_exit_code	sh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	sh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	sh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	sh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	sh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	sh true;/tmp/mysleep 100	137
 par_exit_code	sh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	sh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	sh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	sh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	sh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	static-sh /tmp/mysleep 100	137
 par_exit_code	static-sh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	static-sh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	static-sh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	static-sh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	static-sh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	static-sh true;/tmp/mysleep 100	137
 par_exit_code	static-sh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	static-sh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	static-sh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	static-sh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	static-sh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	tcsh /tmp/mysleep 100	137
 par_exit_code	tcsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	tcsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	tcsh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	tcsh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	tcsh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	tcsh true;/tmp/mysleep 100	137
 par_exit_code	tcsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	tcsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	tcsh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	tcsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	tcsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	fdsh /tmp/mysleep 100	137
 par_exit_code	fdsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	2
 par_exit_code	fdsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	2
-par_exit_code	fdsh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	fdsh parallel --halt-on-error now,done=1 /bin/true ::: 100	2
 par_exit_code	fdsh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	fdsh true;/tmp/mysleep 100	137
 par_exit_code	fdsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	2
 par_exit_code	fdsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	2
-par_exit_code	fdsh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	fdsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	2
 par_exit_code	fdsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	fizsh /tmp/mysleep 100	137
 par_exit_code	fizsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	fizsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	fizsh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	fizsh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	fizsh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	fizsh true;/tmp/mysleep 100	137
 par_exit_code	fizsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	fizsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	fizsh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	fizsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	fizsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	ksh /tmp/mysleep 100	0
 par_exit_code	ksh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	ksh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	ksh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	ksh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	ksh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	ksh true;/tmp/mysleep 100	0
 par_exit_code	ksh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	ksh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	ksh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	ksh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	ksh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	ksh93 /tmp/mysleep 100	0
 par_exit_code	ksh93 parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	ksh93 parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	ksh93 parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	ksh93 parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	ksh93 true;/tmp/mysleep 100	0
 par_exit_code	ksh93 parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	ksh93 parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	ksh93 parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	ksh93 parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	yash /tmp/mysleep 100	0
 par_exit_code	yash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	yash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	yash parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	yash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	yash parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	yash true;/tmp/mysleep 100	0
 par_exit_code	yash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	yash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	yash parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	yash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	yash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	zsh /tmp/mysleep 100	0
 par_exit_code	zsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	zsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	zsh parallel --halt-on-error now,done=1 true ::: 100	0
+par_exit_code	zsh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	zsh parallel --halt-on-error now,done=1 exit ::: 100	100
 par_exit_code	zsh true;/tmp/mysleep 100	0
 par_exit_code	zsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
 par_exit_code	zsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
-par_exit_code	zsh parallel --halt-on-error now,done=1 "true;true" ::: 100	0
+par_exit_code	zsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
 par_exit_code	zsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
 par_exit_code	parallel: This job finished:
 par_exit_code	runit
@@ -380,7 +380,7 @@ par_test_build_and_install	  ! -type d ! -perm -444 -links 1 -exec chmod a+r {} 
 par_test_build_and_install	  ! -type d ! -perm -400 -exec chmod a+r {} \; -o \
 par_test_build_and_install	  ! -type d ! -perm -444 -exec /bin/bash ~/privat/parallel/install-sh -c -m a+r {} {} \; \
 par_test_build_and_install	|| chmod -R a+r "parallel-00000000"
-par_test_build_and_install	tardir=parallel-00000000 && ${TAR-tar} chof - "$tardir" | GZIP=--best gzip -c >parallel-00000000.tar.gz
+par_test_build_and_install	tardir=parallel-00000000 && ${TAR-tar} chof - "$tardir" | eval GZIP= gzip --best -c >parallel-00000000.tar.gz
 par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel'
 par_test_build_and_install	if test -d "parallel-00000000"; then find "parallel-00000000" -type d ! -perm -200 -exec chmod u+w {} ';' && rm -rf "parallel-00000000" || { sleep 5 && rm -rf "parallel-00000000"; }; else :; fi
 par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel'

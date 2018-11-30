@@ -11,6 +11,30 @@ Control case: Burn for 2.9 seconds
 
 stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | \grep -q CPUTIME=1
 1=OK 1
+par_continuous_output	Test delayed output with ''
+par_continuous_output	-u is optimal but hard to reach, due to non-mixing
+par_continuous_output	4
+par_continuous_output	0
+par_continuous_output	0
+par_continuous_output	0
+par_continuous_output	1
+par_continuous_output	1
+par_continuous_output	1
+par_continuous_output	1
+par_continuous_output	1
+par_continuous_output	0
+par_continuous_output	Test delayed output with '-u'
+par_continuous_output	-u is optimal but hard to reach, due to non-mixing
+par_continuous_output	4
+par_continuous_output	0
+par_continuous_output	0
+par_continuous_output	0
+par_continuous_output	0
+par_continuous_output	1
+par_continuous_output	1
+par_continuous_output	1
+par_continuous_output	1
+par_continuous_output	1
 par_hostgroup	### --hostgroup force ncpu
 par_hostgroup	parallel
 par_hostgroup	parallel
@@ -80,6 +104,24 @@ par_hostgroup	tange
 par_hostgroup	tange
 par_hostgroup	tcsh
 par_hostgroup	tcsh
+par_linebuffer_tag_slow_output	Test output tag with mixing halflines
+par_linebuffer_tag_slow_output	a	aH
+par_linebuffer_tag_slow_output	b	bH
+par_linebuffer_tag_slow_output	a	aa
+par_linebuffer_tag_slow_output	b	ba
+par_linebuffer_tag_slow_output	a	al
+par_linebuffer_tag_slow_output	b	bl
+par_linebuffer_tag_slow_output	a	af
+par_linebuffer_tag_slow_output	b	bf
+par_linebuffer_tag_slow_output	a	a
+par_linebuffer_tag_slow_output	a	
+par_linebuffer_tag_slow_output	b	b
+par_linebuffer_tag_slow_output	b	
+par_parcat_mixing	parcat output should mix: a b a b
+par_parcat_mixing	astart
+par_parcat_mixing	bstart
+par_parcat_mixing	aend
+par_parcat_mixing	bend
 par_testhalt	now fail 0 true	### testhalt --halt now,fail=0
 par_testhalt	now fail 0 true	job 1
 par_testhalt	now fail 0 true	parallel: This job failed:

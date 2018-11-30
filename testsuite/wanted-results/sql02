@@ -37,7 +37,7 @@ bytes
 3072
 Current command: sqlite3
 foo
-sqltest.sqlite3: SQLite 3.x database
+sqltest.sqlite3: SQLite 3.x database, last written using SQLite version 3022000
 n|t
 1|Line 1
 2|Line 2
@@ -70,6 +70,6 @@ n	t
 <TD>Line 2</TD>
 </TR>
 bytes
-2048
+8192
 bytes
-2048
+8192

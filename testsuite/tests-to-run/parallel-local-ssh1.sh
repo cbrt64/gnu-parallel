@@ -6,7 +6,7 @@ mkdir tmp
 cd tmp
 unset run_test
 
-cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | stdout parallel -vj300% -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | stdout parallel -vj300% -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### Test --load remote'
   ssh parallel@lo 'seq 10 | parallel --nice 19 --timeout 15 -j0 -qN0 perl -e while\(1\)\{\ \}' & 
   sleep 1; 
@@ -19,17 +19,6 @@ echo '### Stop if all hosts are filtered and there are no hosts left to run on'
 
 echo '### Can csh propagate a variable containing \n'; 
   export A=$(seq 3); parallel -S csh@lo --env A bash -c \''echo "$A"'\' ::: dummy
-
-echo '### bug #41805: Idea: propagate --env for parallel --number-of-cores'
-  echo '** test_zsh'
-  FOO=test_zsh parallel --env FOO,HOME -S zsh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-  echo '** test_zsh_filter'
-  FOO=test_zsh_filter parallel --filter-hosts --env FOO,HOME -S zsh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-  echo '** test_csh'
-  FOO=test_csh parallel --env FOO,HOME -S csh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-  echo '** test_csh_filter'
-  FOO=test_csh_filter parallel --filter-hosts --env FOO,HOME -S csh@lo -N0 env ::: "" |sort|egrep 'FOO|^HOME'
-  echo '** bug #41805 done'
 
 echo '### Test bug #34241: --pipe should not spawn unneeded processes'
   seq 5 | ssh csh@lo parallel -k --block 5 --pipe -j10 cat\\\;echo Block_end
@@ -125,8 +114,8 @@ echo '### Test --trc "/tmp/./--- /A" "/tmp/./ ---/B"'
   touch -- '/tmp/./--- /A' '/tmp/ ---/B'; 
   rm -f ./---?/A.a ./?---/B.a; 
   parallel --trc {=s:.*/./::=}.a -S csh@lo,sh@lo touch ./{=s:.*/./::=}.a ::: '/tmp/./--- /A' '/tmp/./ ---/B'; 
-  ls ./---?/A.a ./?---/B.a; 
-  parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--- ./---? || echo OK'; 
+  ls ./---?/A.a ./?---/B.a | LC_ALL=C sort; 
+  parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--- ./---? || echo OK' | LC_ALL=C sort; 
 
 echo '### bug #46519: --onall ignores --transfer'
   touch bug46519.{a,b,c}; rm -f bug46519.?? bug46519.???; 

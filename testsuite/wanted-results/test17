@@ -115,10 +115,10 @@ OK
 ls: /tmp/parallel.file*: No such file or directory
 OK
 ### --transfer --cleanup - multiple argument files
-cat /tmp/parallel.file\>fire.file tmp/parallel.file\>fire.file
+cat '/tmp/parallel.file>fire.file' 'tmp/parallel.file>fire.file'
 file>fire
 file>fire
-cat /tmp/parallel.file\ :\ \&\ \)\ \\n\*.jpg.file tmp/parallel.file\ :\ \&\ \)\ \\n\*.jpg.file
+cat '/tmp/parallel.file : & ) \n*.jpg.file' 'tmp/parallel.file : & ) \n*.jpg.file'
 file : & ) \n*.jpg
 file : & ) \n*.jpg
 ls: /tmp/parallel.file*: No such file or directory

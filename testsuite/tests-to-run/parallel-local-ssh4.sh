@@ -5,7 +5,7 @@ unset run_once
 
 # SSH only allowed to localhost/lo
 # --retries if ssh dies
-cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | parallel -vj4 --retries 2 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/ | parallel -vj4 --retries 2 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### --env _'
   fUbAr="OK FUBAR" parallel -S parallel@lo --env _ echo '$fUbAr $DEBEMAIL' ::: test
   fUbAr="OK FUBAR" parallel -S csh@lo --env _ echo '$fUbAr $DEBEMAIL' ::: test

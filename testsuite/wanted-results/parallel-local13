@@ -1342,9 +1342,9 @@ echo '###  -t echo this plus that < space.xi'
 stdout xargs -t echo this plus that < space.xi
 echo this plus that 
 this plus that
-stdout parallel -k -t echo this plus that < space.xi
-echo this plus that ''
+stdout parallel -k -t echo this plus that < space.xi | sort
 echo this plus that ' 	'
+echo this plus that ''
 this plus that 
 this plus that  	
 echo '###  -n1 printf "@%s@\n" < empty.xi'
@@ -1365,7 +1365,7 @@ echo foo bar
 foo bar
 echo baz ugh 
 baz ugh
-stdout parallel -k -n2 -t echo < foobar.xi
+stdout parallel -k -n2 -t echo < foobar.xi | sort
 echo 'foo bar' 'baz '
 echo ugh
 foo bar baz 

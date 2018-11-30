@@ -81,15 +81,7 @@ echo '### Test tmux works on different shells'
 0
 4
 # command is currently too long for csh. Maybe it can be fixed?
-Word too long.
-Word too long.
-Word too long.
-Word too long.
-4
-Word too long.
-Word too long.
-Word too long.
-Word too long.
+0
 4
 echo '### works'
 ### works

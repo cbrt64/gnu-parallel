@@ -2,7 +2,7 @@
 
 
 # SSH only allowed to localhost/lo
-cat <<'EOF' | parallel -vj100% --retries 3 -k --joblog /tmp/jl-`basename $0` -L1
+cat <<'EOF' | parallel -vj100% --retries 3 -k --joblog /tmp/jl-`basename $0` -L1 -r
 echo '### trailing space in sshlogin'
   echo 'sshlogin trailing space' | parallel  --sshlogin "ssh -l parallel localhost " echo
 
@@ -40,11 +40,6 @@ echo '### bug #45906: {= in header =}'
   parallel --rpl '{G} $_=lc($_)' -S parallel@lo --return {G} --cleanup echo {G} '>' {G} ::: RETURNFILE45906; 
   ls returnfile45906
 
-echo '### bug #45907: --header : + --return {header}'
-  rm returnfile45907; 
-  ppar --header : -S parallel@lo --return {G} --cleanup echo {G} '>' {G} ::: G returnfile45907; 
-  ls returnfile45907
-
 echo "### bug #47608: parallel --nonall -S lo 'echo ::: ' blocks"
   parallel --nonall -S lo 'echo ::: '
 
@@ -58,6 +53,13 @@ echo '### bug #49404: "Max jobs to run" does not equal the number of jobs specif
   echo should give 10 running jobs
   stdout parallel -S 16/lo --progress true ::: {1..10} | grep /.10
 EOF
+
+par_header_in_return() {
+    echo '### bug #45907: --header : + --return {header}'
+    rm returnfile45907
+    parallel --header : -S parallel@lo --return {G} --cleanup echo {G} '>' {G} ::: G returnfile45907
+    ls returnfile45907
+}
 
 par_trc_with_space() {
     echo '### Test --trc with space added in filename'

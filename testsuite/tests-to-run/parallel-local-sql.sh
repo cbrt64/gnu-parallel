@@ -147,6 +147,11 @@ par_no_table() {
 export -f $(compgen -A function | egrep 'p_|par_')
 # Tested that -j0 in parallel is fastest (up to 15 jobs)
 # more than 3 jobs: sqlite locks
+<<<<<<< HEAD
 compgen -A function | grep par_ | sort |
   stdout parallel --timeout 250 -vj40% -k --tag --joblog /tmp/jl-`basename $0` p_wrapper \
+=======
+compgen -A function | grep par_ | LC_ALL=C sort |
+  stdout parallel --timeout 200 -vj3 -k --tag --joblog /tmp/jl-`basename $0` p_wrapper \
+>>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
     :::: - ::: \$MYSQL \$PG \$SQLITE

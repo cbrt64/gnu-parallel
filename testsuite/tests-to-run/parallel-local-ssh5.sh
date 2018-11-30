@@ -48,6 +48,14 @@ par_pipe_retries() {
     stdout parallel --retries 2 --roundrobin echo ::: should fail
 }
 
+par_env_parallel_onall() {
+    echo "bug #54352: env_parallel -Slo --nonall myfunc broken in 20180722"
+    . `which env_parallel.bash`
+    doit() { echo Myfunc "$@"; }
+    env_parallel -Slo --onall doit ::: works
+    env_parallel -Slo --nonall doit works
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort -r |
     parallel --joblog /tmp/jl-`basename $0` -j3 --tag -k --delay 0.1 --retries 3 '{} 2>&1'
