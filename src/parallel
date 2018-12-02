@@ -6575,28 +6575,38 @@ sub sct_gnu_linux() {
     #     'active' => #taskset_threads }
     my $cpu;
     local $/ = "\n"; # If delimiter is set, then $/ will be wrong
-    if(-e "/proc/cpuinfo") {
+    if($ENV{'PARALLEL_CPUINFO'} or -e "/proc/cpuinfo") {
 	$cpu->{'sockets'} = 0;
 	$cpu->{'cores'} = 0;
 	$cpu->{'threads'} = 0;
 	my %seen;
 	my %phy_seen;
+	my @cpuinfo;
+	my $physicalid;
 	if(open(my $in_fh, "<", "/proc/cpuinfo")) {
-	    while(<$in_fh>) {
-		if(/^physical id.*[:](.*)/ and not $phy_seen{$1}++) {
+	    @cpuinfo = <$in_fh>;
+	    close $in_fh;
+	}
+	if($ENV{'PARALLEL_CPUINFO'}) {
+	    # Use CPUINFO from environment - used for testing only
+	    @cpuinfo = split/(?<=\n)/,$ENV{'PARALLEL_CPUINFO'};
+	}
+	for(@cpuinfo) {
+	    if(/^physical id.*[:](.*)/) {
+		$physicalid=$1;
+		if(not $phy_seen{$1}++) {
 		    $cpu->{'sockets'}++;
 		}
-		if(/^core id.*[:](.*)/ and not $seen{$1}++) {
-		    $cpu->{'cores'}++;
-		}
-		/^processor.*[:]/i and $cpu->{'threads'}++;
 	    }
-	    close $in_fh;
+	    if(/^core id.*[:](.*)/ and not $seen{$physicalid,$1}++) {
+		$cpu->{'cores'}++;
+	    }
+	    /^processor.*[:]/i and $cpu->{'threads'}++;
 	}
 	$cpu->{'sockets'} ||= 1;
 	$cpu->{'cores'} ||= $cpu->{'threads'};
     }
-    if(-e "/proc/self/status") {
+    if(-e "/proc/self/status" and not $ENV{'PARALLEL_CPUINFO'}) {
 	# if 'taskset' is used to limit number of threads
 	if(open(my $in_fh, "<", "/proc/self/status")) {
 	    while(<$in_fh>) {
