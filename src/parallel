@@ -526,10 +526,16 @@ sub spreadstdin {
 	      # (?!negative lookahead) is needed to avoid backtracking
 	      # See: https://unix.stackexchange.com/questions/439356/
 	      while($buf =~
-		    /# From start up till recend
-		    ^((?:(?!$recend$recstart).)*?$recend
+		    /(
+		    # Either recstart or at least one char from start
+		    ^(?: $recstart | .)
+		    # followed something
+		    (?:(?!$recend$recstart).)*?
+		    # and then recend
+		    $recend
 		    # Then n-1 times recstart.*recend
-		    (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines})
+		    (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines}
+		    )
 		    # Followed by recstart
 		    (?=$recstart)/osx) {
 		  $anything_written +=
@@ -1559,7 +1565,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20181124;
+    $Global::version = 20181202;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;

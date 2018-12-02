@@ -664,7 +664,9 @@ par_X_eta_div_zero() {
     # We do not care how long it took
     seq 2 | stdout parallel -X --eta echo |
 	grep -E -v 'ETA:.*AVG' |
-	perl -pe 's/\d+/0/g'
+	perl -pe 's/\d+/0/g' |
+	perl -pe 's/Comp.* to complete//' |
+	perl -ne '/../ and print'
 }
 
 par_parcat_args_stdin() {
@@ -777,7 +779,12 @@ par_slow_pipe_regexp() {
     echo "### bug #53718: --pipe --regexp -N blocks"
     echo This should take a few ms, but took more than 2 hours
     seq 54000 80000 |
-	timeout -k 1 60 parallel -N1000 --regexp --pipe --recstart 4 --recend 5 -k wc
+	parallel -N1000 --regexp --pipe --recstart 4 --recend 5 -k wc
+    echo "### These should give same output"
+    seq 54000 80000 |
+	parallel -N1000 --regexp --pipe --recstart 4 --recend 5 -k cat |
+	md5sum
+    seq 54000 80000 | md5sum
 }
 
 par_results() {
@@ -865,7 +872,15 @@ par_space_envvar() {
     export PARALLEL=" -v" && parallel echo ::: 'space in envvar OK'
 }
 
+par_pipe_N1_regexp() {
+    echo 'bug #55131: --regexp --recstart hangs'
+    echo "These should give the same"
+    printf 'begin\n%send\n' '' a b c |
+        parallel -kN1 --recstart 'begin\n' --pipe --regexp echo JOB{#}\;cat\;echo END
+    printf 'begin\n%send\n' '' a b c |
+        parallel -kN1 --recstart 'begin\n' --pipe          echo JOB{#}\;cat\;echo END
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'
+    parallel --timeout 20 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'
