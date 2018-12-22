@@ -1,3 +1,20 @@
+20181222
+
+* Better /proc/cpuinfo parser.
+
+* Simpler job scheduling flow.
+
+* MPGI Workshop: Job Parallelization with Task Arrays and GNU Parallel https://www.msi.umn.edu/tutorials/mpgi-workshop-module-4
+
+* CONCOCT uses GNU Parallel https://media.readthedocs.org/pdf/concoct/latest/concoct.pdf
+
+* If you use SLURM read https://wiki.hpc.uconn.edu/index.php/Advanced_SLURM
+
+* すぐ忘れてしまう、仕事で使う技 https://qiita.com/hana_shin/items/53c3c78525c9c758ae7c
+
+* Bug fixes and man page updates.
+
+
 20181122
 
 * Experimental simpler job flow control.

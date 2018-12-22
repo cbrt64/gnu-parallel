@@ -1235,6 +1235,11 @@ saying "Do not show this again". But if that is too much trouble for
 you, why not use one of the alternatives instead?  See a list in:
 B<man parallel_alternatives>.
 
+As the request for citation is not a legal requirement this is
+acceptable under GPLv3 and cleared with Richard M. Stallman
+himself. Thus it does not fall under this:
+https://www.gnu.org/licenses/gpl-faq.en.html#RequireCitation
+
 
 =head1 Ideas for new design
 

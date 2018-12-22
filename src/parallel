@@ -1083,6 +1083,8 @@ sub options_hash {
 	 "gnu" => \$opt::gnu,
 	 "link|xapply" => \$opt::link,
 	 "linkinputsource|xapplyinputsource=i" => \@opt::linkinputsource,
+	 # Before changing this line, please read
+         # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 "bibtex|citation" => \$opt::citation,
 	 "wc|willcite|will-cite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
@@ -1186,6 +1188,8 @@ sub parse_options {
     my @argv_before = @ARGV;
     @ARGV = read_options();
 
+    # Before changing this line, please read
+    # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
     if(defined $opt::citation) {
 	citation(\@argv_before,\@ARGV);
 	wait_and_exit(0);
@@ -1465,6 +1469,8 @@ sub parse_options {
     # runs. If that is too much trouble for you, why not use one of
     # the alternatives instead?
     # See a list in: 'man parallel_alternatives'
+    #
+    # Please read the above before changing this line.
     citation_notice();
 
     parse_halt();
@@ -1565,7 +1571,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-    $Global::version = 20181202;
+    $Global::version = 20181222;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -4275,6 +4281,8 @@ sub usage {
 	 "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
 	 "  DOI https://doi.org/10.5281/zenodo.1146014",
 	 "",
+	 # Before changing this line, please read
+         # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	 "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	 "",
@@ -4303,6 +4311,8 @@ sub citation_notice {
 	     "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
 	     "  DOI https://doi.org/10.5281/zenodo.1146014",
 	     "",
+	     # Before changing this line, please read
+	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	     "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	     "",
@@ -4423,6 +4433,8 @@ sub citation {
 	"",
 	"(Feel free to use \\nocite{tange_ole_2018_1146014})",
 	"",
+	# Before changing this line, please read
+	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	"This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	"If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	"",

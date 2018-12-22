@@ -654,9 +654,9 @@ echo X; exit X
 completed 1
 completed 2
 completed 0
-tried 1
+
 tried 0
-tried 1
+
   show_signals() {
     perl -e 'for(keys %SIG) {
         $SIG{$_} = eval "sub { print \"Got $_\\n\"; }";
@@ -1440,8 +1440,8 @@ Start 4
 Slow started
 Forced running after 1 sec
 Slow ended
+Give up after 2 secs
 parallel: Warning: Semaphore timed out. Stealing the semaphore.
-parallel: Warning: Semaphore timed out. Exiting.
   parallel --help
 Usage:
 
