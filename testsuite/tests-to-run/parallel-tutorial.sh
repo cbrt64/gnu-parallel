@@ -81,6 +81,7 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
 	    s{rsync: link_stat ".*/home/parallel/input_file.out" .*\n}{};
 	    s{rsync error: some files/attrs were not transferred .*\n}{};
 	    s{.* GtkDialog .*\n}{};
+	    s{tried 1}{};
 ' |
   perl -ne '/GTK2_RC_FILES/ and next;
     /GTK_RC_FILES/ and next;

@@ -1054,7 +1054,7 @@ to see the difference:
 If used with B<--onall> or B<--nonall> the output will grouped by
 sshlogin in sorted order.
 
-If used with B<--pipe --round-robin> and the same input, the jobslots
+If used with B<--pipe --roundrobin> and the same input, the jobslots
 will get the same blocks in the same order in every run.
 
 
@@ -1460,32 +1460,20 @@ on remote computers).
 Print the number of physical CPU cores and exit.
 
 
-<<<<<<< HEAD
-=item B<--number-of-cores> (beta testing)
-=======
 =item B<--number-of-cores>
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 
 Print the number of physical CPU cores and exit (used by GNU B<parallel> itself
 to determine the number of physical CPU cores on remote computers).
 
 
-<<<<<<< HEAD
-=item B<--number-of-sockets> (beta testing)
-=======
 =item B<--number-of-sockets>
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 
 Print the number of filled CPU sockets and exit (used by GNU
 B<parallel> itself to determine the number of filled CPU sockets on
 remote computers).
 
 
-<<<<<<< HEAD
-=item B<--number-of-threads> (beta testing)
-=======
 =item B<--number-of-threads>
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 
 Print the number of hyperthreaded CPU cores and exit (used by GNU
 B<parallel> itself to determine the number of hyperthreaded CPU cores
@@ -1896,8 +1884,6 @@ with B<--sshlogin>.
 =item B<--round-robin>
 
 =item B<--round>
-
-=item B<--rr>
 
 Normally B<--pipe> will give a single block to each instance of the
 command. With B<--round-robin> all blocks will at random be written to
@@ -2590,15 +2576,9 @@ Use the replacement string I<replace-str> instead of B<{.}> for input
 line without extension.
 
 
-<<<<<<< HEAD
-=item B<--use-sockets-instead-of-threads> (beta testing)
-
-=item B<--use-cores-instead-of-threads> (beta testing)
-=======
 =item B<--use-sockets-instead-of-threads>
 
 =item B<--use-cores-instead-of-threads>
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 
 =item B<--use-cpus-instead-of-cores> (obsolete)
 
@@ -4897,7 +4877,7 @@ Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
 Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010-2018 Ole Tange,
+Copyright (C) 2010-2019 Ole Tange,
 http://ole.tange.dk and Free Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by
@@ -4905,8 +4885,6 @@ the manual of B<xargs> from GNU findutils 4.4.2.
 
 
 =head1 LICENSE
-
-Copyright (C) 2007-2018 Free Software Foundation, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

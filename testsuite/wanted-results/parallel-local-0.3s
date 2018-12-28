@@ -1251,7 +1251,6 @@ par_PARALLEL_ENV	OK as file
 par_PARALLEL_ENV	### PARALLEL_ENV as fifo
 par_PARALLEL_ENV	OK as fifo
 par_X_eta_div_zero	### bug #34422: parallel -X --eta crashes with div by zero
-par_X_eta_div_zero	0
 par_X_eta_div_zero	Computers / CPU cores / Max jobs to run
 par_X_eta_div_zero	0:local / 0 / 0
 par_append_joblog	### can you append to a joblog using +
@@ -1391,6 +1390,40 @@ par_parcat_rm	bug #51691: parcat --rm remove fifo when opened
 par_parcat_rm	OK1
 par_parcat_rm	OK file removed
 par_perlexpr_with_newline	Perl expression spanning 2 lines
+par_pipe_N1_regexp	bug #55131: --regexp --recstart hangs
+par_pipe_N1_regexp	These should give the same
+par_pipe_N1_regexp	JOB1
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	end
+par_pipe_N1_regexp	END
+par_pipe_N1_regexp	JOB2
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	aend
+par_pipe_N1_regexp	END
+par_pipe_N1_regexp	JOB3
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	bend
+par_pipe_N1_regexp	END
+par_pipe_N1_regexp	JOB4
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	cend
+par_pipe_N1_regexp	END
+par_pipe_N1_regexp	JOB1
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	end
+par_pipe_N1_regexp	END
+par_pipe_N1_regexp	JOB2
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	aend
+par_pipe_N1_regexp	END
+par_pipe_N1_regexp	JOB3
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	bend
+par_pipe_N1_regexp	END
+par_pipe_N1_regexp	JOB4
+par_pipe_N1_regexp	begin
+par_pipe_N1_regexp	cend
+par_pipe_N1_regexp	END
 par_pipe_no_command	### --pipe without command
 par_pipe_no_command	parallel: Error: --pipe/--pipepart must have a command to pipe into (e.g. 'cat').
 par_pipe_recend	bug #54328: --pipe --recend  blocks
@@ -1481,8 +1514,11 @@ par_retries_replacement_string	33
 par_retries_replacement_string	33
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
-par_slow_pipe_regexp	    979     980    5875
-par_slow_pipe_regexp	  25022   25022  150131
+par_slow_pipe_regexp	    980     981    5881
+par_slow_pipe_regexp	  25021   25021  150125
+par_slow_pipe_regexp	### These should give same output
+par_slow_pipe_regexp	6e72d7f86f6a423b9a7fa97630587815  -
+par_slow_pipe_regexp	6e72d7f86f6a423b9a7fa97630587815  -
 par_space_envvar	### bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'
 par_space_envvar	echo 'space in envvar OK'
 par_space_envvar	space in envvar OK

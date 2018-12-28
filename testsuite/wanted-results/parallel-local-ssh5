@@ -4,7 +4,7 @@ par_pipe_retries	 165668  165668 1048571
 par_pipe_retries	localhost-:
 par_pipe_retries	 134362  134362  940534
 par_pipe_retries	localhost-:
-par_pipe_retries	parallel: Error: --retries cannot be combined with --round-robin.
+par_pipe_retries	parallel: Error: --retries cannot be combined with --roundrobin.
 par_lsh	### --ssh lsh
 par_lsh	parallel: Warning: Could not figure out number of cpus on lo (). Using 1.
 par_lsh	OK

@@ -1728,7 +1728,7 @@ https://github.com/john01dav/spp
 
 Url for spread
 
-
+https://github.com/xuchenCN/go-pssh
 
 https://github.com/amritb/with-this.git
 
@@ -1951,7 +1951,7 @@ Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
 Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010-2018 Ole Tange, http://ole.tange.dk and Free
+Copyright (C) 2010-2019 Ole Tange, http://ole.tange.dk and Free
 Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by
@@ -1959,8 +1959,6 @@ the manual of B<xargs> from GNU findutils 4.4.2.
 
 
 =head1 LICENSE
-
-Copyright (C) 2007-2018 Free Software Foundation, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

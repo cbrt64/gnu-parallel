@@ -3139,7 +3139,7 @@ https://my.fsf.org/donate/
 
 =back
 
-(C) 2013-2018 Ole Tange, GPLv3
+(C) 2013-2019 Ole Tange, FDLv1.3 (See fdl.txt)
 
 
 =cut

@@ -206,17 +206,19 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20181222 ('Kilogram/brexitdeal/Stan Lee/Cesar Sayoc/Tree of Life/Iran') released <<[stable]>>
+Subject: GNU Parallel 20190122 ('Indonesia=Tanjung Lesung=Sunda ') released <<[stable]>>
 
-GNU Parallel 20181222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
+  <<>>
+
 New in this release:
 
-* https://qiita.com/hana_shin/items/53c3c78525c9c758ae7c
+* 
 
 * Bug fixes and man page updates.
 
@@ -235,11 +237,12 @@ GNU Parallel makes sure output from the commands is the same output as you would
 
 You can find more about GNU Parallel at: http://www.gnu.org/s/parallel/
 
-You can install GNU Parallel in just 10 seconds with: (wget -O - pi.dk/3 || curl pi.dk/3/) | bash
+You can install GNU Parallel in just 10 seconds with:
+(wget -O - pi.dk/3 || curl pi.dk/3/ || fetch -o - http://pi.dk/3) | bash
 
 Watch the intro video on http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
 
-Walk through the tutorial (man parallel_tutorial). Your commandline will love you for it.
+Walk through the tutorial (man parallel_tutorial). Your command line will love you for it.
 
 When using programs that use GNU Parallel to process data for publication please cite:
 

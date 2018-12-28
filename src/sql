@@ -339,14 +339,12 @@ When using GNU B<sql> for a publication please cite:
 O. Tange (2011): GNU SQL - A Command Line Tool for Accessing Different
 Databases Using DBURLs, ;login: The USENIX Magazine, April 2011:29-32.
 
-Copyright (C) 2008,2009,2010 Ole Tange http://ole.tange.dk
+Copyright (C) 2008-2010 Ole Tange http://ole.tange.dk
 
-Copyright (C) 2010,2011,2012,2013,2014,2015,2016,2017,2018 Ole Tange,
-http://ole.tange.dk and Free Software Foundation, Inc.
+Copyright (C) 2010-2019 Ole Tange, http://ole.tange.dk and Free
+Software Foundation, Inc.
 
 =head1 LICENSE
-
-Copyright (C) 2007,2008,2009,2010,2011 Free Software Foundation, Inc.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -576,11 +574,7 @@ $Global::Initfile && unlink $Global::Initfile;
 exit ($err);
 
 sub parse_options {
-<<<<<<< HEAD
-    $Global::version = 20180723;
-=======
-    $Global::version = 20181124;
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
+    $Global::version = 20181223;
     $Global::progname = 'sql';
 
     # This must be done first as this may exec myself

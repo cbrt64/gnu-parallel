@@ -7,7 +7,7 @@
 # after which 'env_parallel' works
 #
 #
-# Copyright (C) 2016,2017,2018
+# Copyright (C) 2016-2019
 # Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -136,7 +136,7 @@ function env_parallel
       #
       begin;
         for v in (set -n | \
-          grep -Ev '^(PARALLEL_TMP|PARALLEL_ENV)$' | \
+          grep -Ev '^(PARALLEL_TMP)$' | \
           grep -E "^$_grep_REGEXP\$" | grep -vE "^$_ignore_UNDERSCORE\$");
           # Separate variables with the string: \000
 	  # array_name1 val1\0
@@ -158,15 +158,15 @@ function env_parallel
         # Ignore read-only vars
         $name=~/^(HOME|USER|COLUMNS|FISH_VERSION|LINES|PWD|SHLVL|_|
                   history|status|version)$/x and next;
-        # Quote $val
-        $val=~s/[\002-\011\013-\032\\\#\?\`\(\)\{\}\[\]\^\*\<\=\>\~
-                 \|\; \"\!\$\&\202-\377]/\\\$&/gox;
-        # Quote single quote
-        $val=~s/'"'"'/\\\$&/go;
-        # Quote newline as '\n'
-        $val =~ s/[\n]/\\\n/go;
- 	# Empty value => 2 single quotes = \047\047
-	$val=~s/^$/\047\047/o;
+        # Single quote $val
+	if($val =~ /[^-_.+a-z0-9\/]/i) {
+	  $val =~ s/\047/\047"\047"\047/g;  # "-quote single quotes
+  	  $val = "\047$val\047";            # single-quote entire string
+	  $val =~ s/^\047\047|\047\047$//g; # Remove unneeded '' at ends
+	} elsif ($val eq "") {
+	  $val = "\047\047";
+	}
+
         if($name ne $last and $last) {
           # The $name is different, so this is a new variable.
           # Print the last one.
@@ -183,16 +183,8 @@ function env_parallel
           s/\n/\001/g'
     end;
     )
-  # --session
-  perl -e 'exit grep { /^--session$/ } @ARGV' -- $argv; or begin;
-    setenv PARALLEL_IGNORED_NAMES (
-      functions -n | perl -ne 's/,/\n/g; /^(env_parallel)$/ and next; print';
-      set -n;
-    )
-  end;
-
-  # If --record-env or --session: exit
-  perl -e 'exit grep { /^(--record-env|--session)$/ } @ARGV' -- $argv; and parallel $argv;
+  # If --record-env: exit
+  perl -e 'exit grep { /^--record-env$/ } @ARGV' -- $argv; and parallel $argv;
   set _parallel_exit_CODE $status
   set -e PARALLEL_ENV
   return $_parallel_exit_CODE

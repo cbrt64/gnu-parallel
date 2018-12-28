@@ -791,6 +791,7 @@ par_fish_underscore() {
     echo "### Testing of --env _"
 
 #    . `which env_parallel.fish`;
+    true > ~/.parallel/ignored_vars;
 
     alias not_copied_alias="echo BAD"
     function not_copied_func
@@ -818,7 +819,7 @@ par_fish_underscore() {
     env_parallel --env _ -S server echo \$not_copied_var ::: error=OK;
     env_parallel --env _ -S server echo \$not_copied_array ::: error=OK;
 
-    echo myvar >> ~/.parallel/ignored_vars;
+    echo myvar > ~/.parallel/ignored_vars;
     env_parallel --env _ myfunc ::: work;
     env_parallel --env _ -S server myfunc ::: work;
     echo myarray >> ~/.parallel/ignored_vars;
@@ -1213,13 +1214,13 @@ _EOF
 
 par_fish_funky() {
   myscript=$(cat <<'_EOF'
-    echo "Fish is broken"
     env_parallel --session
     set myvar "myvar  works"
     setenv myenvvar "myenvvar  works"
 
     set funky (perl -e "print pack \"c*\", 1..255")
-    setenv funkyenv (perl -e "print pack \"c*\", 1..255")
+    # 10 and 30 cause problems
+    setenv funkyenv (perl -e "print pack \"c*\", 1..9,11..29,31..255")
 
     set myarray "" array_val2 3 "" 5 "  space  6  "
 
@@ -1511,7 +1512,6 @@ _EOF
 
 par_fish_env_parallel() {
   myscript=$(cat <<'_EOF'
-    echo "Fish is broken"
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
     set OK OK

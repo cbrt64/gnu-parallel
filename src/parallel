@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Copyright (C) 2007-2018 Ole Tange and Free Software Foundation, Inc.
+# Copyright (C) 2007-2019 Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -526,10 +526,16 @@ sub spreadstdin {
 	      # (?!negative lookahead) is needed to avoid backtracking
 	      # See: https://unix.stackexchange.com/questions/439356/
 	      while($buf =~
-		    /# From start up till recend
-		    ^((?:(?!$recend$recstart).)*?$recend
+		    /(
+		    # Either recstart or at least one char from start
+		    ^(?: $recstart | .)
+		    # followed something
+		    (?:(?!$recend$recstart).)*?
+		    # and then recend
+		    $recend
 		    # Then n-1 times recstart.*recend
-		    (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines})
+		    (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines}
+		    )
 		    # Followed by recstart
 		    (?=$recstart)/osx) {
 		  $anything_written +=
@@ -1066,7 +1072,7 @@ sub options_hash {
 	 "plain" => \$opt::plain,
 	 "profile|J=s" => \@opt::profile,
 	 "pipe|spreadstdin" => \$opt::pipe,
-	 "rr|robin|round-robin|roundrobin" => \$opt::roundrobin,
+	 "robin|round-robin|roundrobin" => \$opt::roundrobin,
 	 "recstart=s" => \$opt::recstart,
 	 "recend=s" => \$opt::recend,
 	 "regexp|regex" => \$opt::regexp,
@@ -1077,6 +1083,8 @@ sub options_hash {
 	 "gnu" => \$opt::gnu,
 	 "link|xapply" => \$opt::link,
 	 "linkinputsource|xapplyinputsource=i" => \@opt::linkinputsource,
+	 # Before changing this line, please read
+         # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 "bibtex|citation" => \$opt::citation,
 	 "wc|willcite|will-cite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
@@ -1180,6 +1188,8 @@ sub parse_options {
     my @argv_before = @ARGV;
     @ARGV = read_options();
 
+    # Before changing this line, please read
+    # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
     if(defined $opt::citation) {
 	citation(\@argv_before,\@ARGV);
 	wait_and_exit(0);
@@ -1283,11 +1293,8 @@ sub parse_options {
     }
     $opt::memfree = multiply_binary_prefix($opt::memfree);
     check_invalid_option_combinations();
-    if((defined $opt::fifo or defined $opt::cat
-	or
-	defined $opt::roundrobin)
+    if((defined $opt::fifo or defined $opt::cat)
        and not $opt::pipepart) {
-	# --fifo, --cat, and --round-robin => --pipe if not --pipepart
 	$opt::pipe = 1;
     }
     if(defined $opt::minversion) {
@@ -1421,14 +1428,7 @@ sub parse_options {
     #
     # This problem has been covered by others - though no solution has
     # been found:
-    #
-    # "Is it alright to compromise or even deliberately ignore the
-    # happiness of the maintainers so that we can enjoy free and open
-    # source software?"
-    # Slide 8 from:
     # https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
-    #
-    # NumPy has long not had funding:
     # https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
     #
     # Before implementing the citation notice it was discussed with
@@ -1469,20 +1469,19 @@ sub parse_options {
     # runs. If that is too much trouble for you, why not use one of
     # the alternatives instead?
     # See a list in: 'man parallel_alternatives'
+    #
+    # Please read the above before changing this line.
     citation_notice();
 
     parse_halt();
 
-    if(defined $ENV{'PARALLEL_ENV'}) {
+    if($ENV{'PARALLEL_ENV'}) {
 	# Read environment and set $Global::parallel_env
 	# Must be done before is_acceptable_command_line_length()
 	my $penv = $ENV{'PARALLEL_ENV'};
-	if(not ($opt::onall or $opt::nonall)) {
-	    # unset $PARALLEL_ENV: It should not be given to children
-	    # because it takes up a lot of env space
-	    # Except when --(n)onall/nonall is set
-#	    delete $ENV{'PARALLEL_ENV'};
-	}
+	# unset $PARALLEL_ENV: It should not be given to children
+	# because it takes up a lot of env space
+	delete $ENV{'PARALLEL_ENV'};
 	if(-e $penv) {
 	    # This is a file/fifo: Replace envvar with content of file
 	    open(my $parallel_env, "<", $penv) ||
@@ -1528,7 +1527,7 @@ sub check_invalid_option_combinations {
 	::wait_and_exit(255);
     }
     if(defined $opt::retries and defined $opt::roundrobin) {
-	::error("--retries cannot be combined with --round-robin.");
+	::error("--retries cannot be combined with --roundrobin.");
 	::wait_and_exit(255);
     }
     if(defined $opt::pipepart and
@@ -1572,11 +1571,7 @@ sub check_invalid_option_combinations {
 
 sub init_globals {
     # Defaults:
-<<<<<<< HEAD
-    $Global::version = 20180723;
-=======
-    $Global::version = 20181124;
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
+    $Global::version = 20181223;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -2180,6 +2175,8 @@ sub arrayindex {
     # Input:
     #   $arr_ref1 = ref to @array1 to search in
     #   $arr_ref2 = ref to @array2 to search for
+    # Returns:
+    #   $pos = position of @array1 in @array2, -1 if not found
     my ($arr_ref1,$arr_ref2) = @_;
     my $array1_as_string = join "", map { "\0".$_ } @$arr_ref1;
     my $array2_as_string = join "", map { "\0".$_ } @$arr_ref2;
@@ -2299,8 +2296,8 @@ sub __QUOTING_ARGUMENTS_FOR_SHELL__ {}
 sub shell_quote {
     # Input:
     #   @strings = strings to be quoted
-    # Output:
-    #   @shell_quoted_strings = string quoted with \ as needed by the shell
+    # Returns:
+    #   @shell_quoted_strings = string quoted as needed by the shell
     return wantarray ?
 	(map { Q($_) } @_)
 	: (join" ",map { Q($_) } @_);
@@ -2347,7 +2344,11 @@ sub shell_quote_scalar_csh {
 
 sub shell_quote_scalar_default {
     # Quote for other shells (Bourne compatibles)
-    my ($par) = $_[0];
+    # Inputs:
+    #   $string = string to be quoted
+    # Returns:
+    #   $shell_quoted = string quoted as needed by the shell
+    my $par = $_[0];
     if($par =~ /[^-_.+a-z0-9\/]/i) {
 	$par =~ s/'/'"'"'/g;  # "-quote single quotes
 	$par = "'$par'";      # '-quote entire string
@@ -2441,6 +2442,10 @@ sub pQ {
 
 sub unquote_printf {
     # Convert \t \n \r \000 \0
+    # Inputs:
+    #   $string = string with \t \n \r \num \0
+    # Returns:
+    #   $replaced = string with TAB NEWLINE CR <ascii-num> NUL
     $_ = shift;
     s/\\t/\t/g;
     s/\\n/\n/g;
@@ -4276,6 +4281,8 @@ sub usage {
 	 "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
 	 "  DOI https://doi.org/10.5281/zenodo.1146014",
 	 "",
+	 # Before changing this line, please read
+         # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	 "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	 "",
@@ -4304,6 +4311,8 @@ sub citation_notice {
 	     "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
 	     "  DOI https://doi.org/10.5281/zenodo.1146014",
 	     "",
+	     # Before changing this line, please read
+	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	     "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	     "",
@@ -4384,7 +4393,7 @@ sub version {
     print join
 	("\n",
 	 "GNU $Global::progname $Global::version",
-	 "Copyright (C) 2007-2018 Ole Tange and Free Software Foundation, Inc.",
+	 "Copyright (C) 2007-2019 Ole Tange and Free Software Foundation, Inc.",
 	 "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>",
 	 "This is free software: you are free to change and redistribute it.",
 	 "GNU $Global::progname comes with no warranty.",
@@ -4424,6 +4433,8 @@ sub citation {
 	"",
 	"(Feel free to use \\nocite{tange_ole_2018_1146014})",
 	"",
+	# Before changing this line, please read
+	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	"This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	"If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	"",
@@ -4504,7 +4515,7 @@ sub embed {
 	}
 	print "#!$Global::shell
 
-# Copyright (C) 2007-2018 $user, Ole Tange and Free Software
+# Copyright (C) 2007-2019 $user, Ole Tange and Free Software
 # Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -6582,28 +6593,38 @@ sub sct_gnu_linux() {
     #     'active' => #taskset_threads }
     my $cpu;
     local $/ = "\n"; # If delimiter is set, then $/ will be wrong
-    if(-e "/proc/cpuinfo") {
+    if($ENV{'PARALLEL_CPUINFO'} or -e "/proc/cpuinfo") {
 	$cpu->{'sockets'} = 0;
 	$cpu->{'cores'} = 0;
 	$cpu->{'threads'} = 0;
 	my %seen;
 	my %phy_seen;
+	my @cpuinfo;
+	my $physicalid;
 	if(open(my $in_fh, "<", "/proc/cpuinfo")) {
-	    while(<$in_fh>) {
-		if(/^physical id.*[:](.*)/ and not $phy_seen{$1}++) {
+	    @cpuinfo = <$in_fh>;
+	    close $in_fh;
+	}
+	if($ENV{'PARALLEL_CPUINFO'}) {
+	    # Use CPUINFO from environment - used for testing only
+	    @cpuinfo = split/(?<=\n)/,$ENV{'PARALLEL_CPUINFO'};
+	}
+	for(@cpuinfo) {
+	    if(/^physical id.*[:](.*)/) {
+		$physicalid=$1;
+		if(not $phy_seen{$1}++) {
 		    $cpu->{'sockets'}++;
 		}
-		if(/^core id.*[:](.*)/ and not $seen{$1}++) {
-		    $cpu->{'cores'}++;
-		}
-		/^processor.*[:]/i and $cpu->{'threads'}++;
 	    }
-	    close $in_fh;
+	    if(/^core id.*[:](.*)/ and not $seen{$physicalid,$1}++) {
+		$cpu->{'cores'}++;
+	    }
+	    /^processor.*[:]/i and $cpu->{'threads'}++;
 	}
 	$cpu->{'sockets'} ||= 1;
 	$cpu->{'cores'} ||= $cpu->{'threads'};
     }
-    if(-e "/proc/self/status") {
+    if(-e "/proc/self/status" and not $ENV{'PARALLEL_CPUINFO'}) {
 	# if 'taskset' is used to limit number of threads
 	if(open(my $in_fh, "<", "/proc/self/status")) {
 	    while(<$in_fh>) {
@@ -8010,12 +8031,10 @@ sub wrapped {
 	    # --pipepart: prepend:
 	    # < /tmp/foo perl -e 'while(@ARGV) {
 	    #   sysseek(STDIN,shift,0) || die; $left = shift;
-	    #   while($read =
-	    #         sysread(STDIN,$buf,
-	    #                 ($left > 131072 ? 131072 : $left))) {
+	    #   while($read = sysread(STDIN,$buf, ($left > 131072 ? 131072 : $left))){
 	    #     $left -= $read; syswrite(STDOUT,$buf);
 	    #   }
-	    # }' 0 0 0 11 |
+	    # }'  0 0 0 11 |
 	    #
 	    # --pipepart --tee: prepend:
 	    #   < dash-a-file
@@ -8142,7 +8161,7 @@ sub base64_zip_eval {
 	}
 	wait;
 	$SIG{CHLD} = $chld;
-        eval $eval;
+	eval $eval;
 			     });
     ::debug("base64",$script,"\n");
     return $script;
@@ -8203,16 +8222,14 @@ sub sshlogin_wrap {
 	if(not $monitor_parent_sshd_script) {
 	    $monitor_parent_sshd_script =
 		# This will be packed in ', so only use "
-		::spacefree(0,'$shell = "'.($ENV{'PARALLEL_SHELL'}
-					    || '$ENV{SHELL}').'";'.
-			    '$tmpdir = "'.::pQ($ENV{'TMPDIR'}).'";'.
+		::spacefree(0,'$shell = "'.($ENV{'PARALLEL_SHELL'} || '$ENV{SHELL}').'";'.
+			    '$tmpdir = "'.::perl_quote_scalar($ENV{'TMPDIR'}).'";'.
 			    '$nice = '.$opt::nice.';'.
 			    q{
 		# Set $PARALLEL_TMP to a non-existent file name in $TMPDIR
 		do {
 		    $ENV{PARALLEL_TMP} = $tmpdir."/par".
-			join"", map
-			    { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
+			join"", map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
 		} while(-e $ENV{PARALLEL_TMP});
                 $SIG{CHLD} = sub { $done = 1; };
 		$pid = fork;
@@ -8259,8 +8276,7 @@ sub sshlogin_wrap {
 	    local $/ = "\n";
 	    # --env _
 	    # Include all vars that are not in a clean environment
-	    if(open(my $vars_fh,
-		    "<", $Global::config_dir . "/ignored_vars")) {
+	    if(open(my $vars_fh, "<", $Global::config_dir . "/ignored_vars")) {
 		my @ignore = <$vars_fh>;
 		chomp @ignore;
 		my %ignore;
@@ -8274,10 +8290,8 @@ sub sshlogin_wrap {
 		::wait_and_exit(255);
 	    }
 	}
-	# Duplicate vars as BASH functions to include
-	# post-shellshock functions (v1+v2)
-	# So --env myfunc should look for
-	# BASH_FUNC_myfunc() and BASH_FUNC_myfunc%%
+	# Duplicate vars as BASH functions to include post-shellshock functions (v1+v2)
+	# So --env myfunc should look for BASH_FUNC_myfunc() and BASH_FUNC_myfunc%%
 	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ",
 	     map { ("BASH_FUNC_$_()", "BASH_FUNC_$_%%") } @vars);
 	# Keep only defined variables
@@ -8308,19 +8322,17 @@ sub sshlogin_wrap {
 	if(@bashfunc) {
 	    # Functions are not supported for all shells
 	    if($Global::shell !~ m:(bash|rbash|zsh|rzsh|dash|ksh):) {
-		::warning("Shell functions may not be supported in ".
-			  "$Global::shell.");
+		::warning("Shell functions may not be supported in $Global::shell.");
 	    }
 	    $bashfuncset =
 		'@bash_functions=qw('."@bash_functions".");".
-		::spacefree(1,'$shell="'.($ENV{'PARALLEL_SHELL'} ||
-					  '$ENV{SHELL}').'";'.q{
+		::spacefree(1,'$shell="'.($ENV{'PARALLEL_SHELL'} || '$ENV{SHELL}').'";'.q{
 		    if($shell=~/csh/) {
 			print STDERR "CSH/TCSH DO NOT SUPPORT newlines IN VARIABLES/FUNCTIONS. Unset @bash_functions\n";
 			exec "false";
 		    }
 			    }).
-				"\n".'$bashfunc = "'.::pQ("@bashfunc").'";';
+				"\n".'$bashfunc = "'.::perl_quote_scalar("@bashfunc").'";';
 	} else {
 	    $bashfuncset = '$bashfunc = "";'
 	}
@@ -8352,13 +8364,11 @@ sub sshlogin_wrap {
 		$command = "cd ".::Q($wd)." || exit 255; ".$command;
 	    }
 	    if(@opt::env) {
-		# Prepend with environment setter,
-		# which sets functions in zsh
+		# Prepend with environment setter, which sets functions in zsh
 		my ($csh_friendly,$envset,$bashfuncset) = env_as_eval();
 		my $perl_code = $envset.$bashfuncset.
-		    ('@ARGV="'.::pQ($command).'";'.
-		     'exec"'.$Global::shell.'",'.
-		     '"-c",($bashfunc."@ARGV");die"exec:$!\n";');
+		    '@ARGV="'.::perl_quote_scalar($command).'";'.
+		    "exec\"$Global::shell\",\"-c\",\(\$bashfunc.\"\@ARGV\"\)\;die\"exec:\$\!\\n\"\;";
 		if(length $perl_code > 999
 		   or
 		   not $csh_friendly
@@ -8368,11 +8378,7 @@ sub sshlogin_wrap {
 		    # csh does not deal well with $ENV with \n
 		    $self->{'sshlogin_wrap'}{$command} = base64_wrap($perl_code);
 		} else {
-<<<<<<< HEAD
-		    $self->{'sshlogin_wrap'} = "perl -e ".::Q($perl_code);
-=======
 		    $self->{'sshlogin_wrap'}{$command} = "perl -e ".::Q($perl_code);
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 		}
 	    } else {
 		$self->{'sshlogin_wrap'}{$command} = $command;
@@ -8383,17 +8389,12 @@ sub sshlogin_wrap {
 		# Create remote workdir if needed. Then cd to it.
 	        my $wd = ::pQ($self->workdir());
 		$pwd = qq{system("mkdir","-p","--","$wd"); chdir "$wd" ||}.
-		    qq{print(STDERR "parallel: Cannot chdir to $wd\\n") &&}.
-		    qq{exit 255;};
+		    qq{print(STDERR "parallel: Cannot chdir to $wd\\n") && exit 255;};
 	    }
 	    my ($csh_friendly,$envset,$bashfuncset) = env_as_eval();
 	    my $remote_command = $pwd.$envset.$bashfuncset.
-<<<<<<< HEAD
-		'@ARGV="'.::pQ($command).'";'. monitor_parent_sshd_script();
-=======
 		'@ARGV="'.::perl_quote_scalar($command).'";'.
 		monitor_parent_sshd_script();
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 	    $quoted_remote_command = "perl -e ". ::Q($remote_command);
 	    my $dq_remote_command = ::Q($quoted_remote_command);
 	    if(length $dq_remote_command > 999
@@ -8405,11 +8406,7 @@ sub sshlogin_wrap {
 		# csh does not deal well with $ENV with \n
 		$quoted_remote_command =
 		    "perl -e ". ::Q(::Q(base64_zip_eval()))." ".
-<<<<<<< HEAD
-		    join" ", ::shell_quote(::shell_quote(string_zip_base64($remote_command)));
-=======
 		    join" ",::shell_quote(::shell_quote(string_zip_base64($remote_command)));
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 	    } else {
 		$quoted_remote_command = $dq_remote_command;
 	    }
@@ -8523,24 +8520,17 @@ sub sshreturn {
     my $sshlogin = $self->sshlogin();
     my $sshcmd = $sshlogin->sshcommand();
     my $serverlogin = $sshlogin->serverlogin();
-<<<<<<< HEAD
-    my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}." -e".::Q($sshcmd);
-=======
     my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}. " -e". ::Q($sshcmd);
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
     my $pre = "";
     for my $file ($self->return()) {
-	# Remove ./ if any
-	$file =~ s:^\./::g;
-	# Is the path relative or /./?
-	my $relpath = ($file !~ m:^/:) || ($file =~ m:/\./:);
+	$file =~ s:^\./::g; # Remove ./ if any
+	my $relpath = ($file !~ m:^/:) || ($file =~ m:/\./:); # Is the path relative or /./?
 	my $cd = "";
 	my $wd = "";
 	if($relpath) {
 	    #   rsync -avR /foo/./bar/baz.c remote:/tmp/
 	    # == (on old systems)
-	    #   rsync -avR --rsync-path="cd /foo; rsync"
-	    #         remote:bar/baz.c /tmp/
+	    #   rsync -avR --rsync-path="cd /foo; rsync" remote:bar/baz.c /tmp/
 	    $wd = ::shell_quote_file($self->workdir()."/");
 	}
 	# Only load File::Basename if actually needed
@@ -8552,12 +8542,7 @@ sub sshreturn {
 	$nobasedir =~ s:.*/\./::;
 	$cd = ::shell_quote_file(::dirname($nobasedir));
 	my $rsync_cd = '--rsync-path='.::Q("cd $wd$cd; rsync");
-<<<<<<< HEAD
-	my $basename =
-	    ::shell_quote_scalar(::shell_quote_file(::basename($file)));
-=======
 	my $basename = ::Q(::shell_quote_file(::basename($file)));
->>>>>>> 8286e771ec57e60ee17aee87741fe96790880db7
 	# --return
 	#   mkdir -p /home/tange/dir/subdir/;
         #   rsync (--protocol 30) -rlDzR
@@ -8582,7 +8567,6 @@ sub sshcleanup {
     my $cleancmd = "";
 
     for my $file ($self->remote_cleanup()) {
-	# TODO @subworkdirs not used?
 	my @subworkdirs = parentdirs_of($file);
 	$cleancmd .= $sshlogin->cleanup_cmd($file,$workdir).";";
     }
@@ -8631,9 +8615,7 @@ sub workdir {
 			$part eq "" and next;
 			$parent .= "/".$part;
 			my ($parent_dev, $parent_ino) = (stat($parent))[0,1];
-			if($parent_dev == $home_dev
-			   and
-			   $parent_ino == $home_ino) {
+			if($parent_dev == $home_dev and $parent_ino == $home_ino) {
 			    # dev and ino is the same: We found the homedir.
 			    $workdir = join("/",@dir_parts);
 			    last;
@@ -8698,8 +8680,7 @@ sub start {
 	# The eval is needed to catch exception from open3
 	eval {
 	    if(not $pid = ::open3($stdin_fh, ">&OUT", ">&ERR", "-")) {
-		# Each child gets its own process group
-		# to make it safe to killall
+		# Each child gets its own process group to make it safe to killall
 		eval{ setpgrp(0,0) };
 		eval{ setpriority(0,0,$opt::nice) };
 		exec($Global::shell,"-c",$command)
@@ -8731,8 +8712,7 @@ sub start {
 	     "exec '$Global::shell', '-c', \@ARGV");
 	# The eval is needed to catch exception from open3
 	eval {
-	    $pid = ::open3($stdin_fh, ">&OUT", ">&ERR",
-			   @setpgrp_wrap, $command)
+	    $pid = ::open3($stdin_fh, ">&OUT", ">&ERR", @setpgrp_wrap, $command)
 		|| ::die_bug("open3-$stdin_fh");
 	    1;
 	};
@@ -9075,7 +9055,7 @@ sub print {
 	    if($Global::joblog and defined $self->{'exitstatus'}) {
 		# Add to joblog when finished
 		$self->print_joblog();
-		# Printing is only relevant for grouped/--line-buffer output
+		# Printing is only relevant for grouped/--line-buffer output.
 		$opt::ungroup and return;
 	    }
 	}
@@ -9096,8 +9076,7 @@ sub print {
 	    }
 	    next;
 	}
-	::debug("print",
-		"File descriptor $fdno (", $self->fh($fdno,"name"), "):\n");
+	::debug("print", "File descriptor $fdno (", $self->fh($fdno,"name"), "):\n");
 	if($opt::linebuffer) {
 	    # Line buffered print out
 	    $self->print_linebuffer($fdno,$in_fh,$out_fd);
@@ -9158,8 +9137,7 @@ sub print {
 	    print $Global::csv_fh
 		(map { $$_ }
 		 combine_ref("Seq", "Host", "Starttime", "JobRuntime",
-			     "Send", "Receive", "Exitval", "Signal",
-			     "Command",
+			     "Send", "Receive", "Exitval", "Signal", "Command",
 			     @V,
 			     "Stdout","Stderr"
 		 )),"\n";
@@ -9565,8 +9543,7 @@ sub set_exitsignal {
 			# --halt now,fail=X% or soon,fail=X%
 			# --halt now,done=X% or soon,done=X%
 			$Global::halt_exitstatus =
-			    ::ceil($Global::total_failed / $total_jobs
-				   * 100);
+			    ::ceil($Global::total_failed / $total_jobs * 100);
 		    } elsif($Global::halt_count) {
 			# --halt now,fail=X or soon,fail=X
 			# --halt now,done=X or soon,done=X
@@ -9580,8 +9557,7 @@ sub set_exitsignal {
 			$Global::halt_exitstatus =
 			    ($job->exitstatus()
 			     or
-			     $job->exitsignal() ?
-			     $job->exitsignal() + 128 : 0);
+			     $job->exitsignal() ? $job->exitsignal() + 128 : 0);
 		    }
 		}
 		::debug("halt","Pct: ",$Global::halt_pct,
@@ -9731,8 +9707,7 @@ sub slot {
 	    }
 
 	    if(defined $self->{'max_number_of_args'}) {
-		if($self->number_of_args() >=
-		   $self->{'max_number_of_args'}) {
+		if($self->number_of_args() >= $self->{'max_number_of_args'}) {
 		    last;
 		}
 	    }
@@ -9744,13 +9719,11 @@ sub slot {
 	    $already_spread ||= 1;
 	    if($self->number_of_args() > 1) {
 		$self->{'max_number_of_args'} =
-		    ::ceil($self->number_of_args() /
-			   $Global::max_jobs_running);
+		    ::ceil($self->number_of_args()/$Global::max_jobs_running);
 		$Global::JobQueue->{'commandlinequeue'}->{'max_number_of_args'} =
 		    $self->{'max_number_of_args'};
 		$self->{'arg_queue'}->unget($self->pop_all());
-		while($self->number_of_args() <
-		      $self->{'max_number_of_args'}) {
+		while($self->number_of_args() < $self->{'max_number_of_args'}) {
 		    $self->push($self->{'arg_queue'}->get());
 		}
 	    }
@@ -9758,8 +9731,7 @@ sub slot {
 	}
 
 	if($opt::sqlmaster) {
-	    # Insert the V1..Vn for this $seq in SQL table
-	    # instead of generating one
+	    # Insert the V1..Vn for this $seq in SQL table instead of generating one
 	    $Global::sql->insert_records($self->seq(), $self->{'command'},
 					 $self->{'arg_list_flat_orig'});
 	}
@@ -10119,8 +10091,8 @@ sub replace_placeholders {
 	    # \257<...\257> or space
 	    $_
 	} else {
-	    # Split each space into a token
-	    split /(?= )|(?<= )/
+	    # Split each space/tab into a token
+	    split /(?=\s)|(?<=\s)/
 	}
     }
     # Split \257< ... \257> into own token
@@ -10157,7 +10129,7 @@ sub replace_placeholders {
 	my @ctxgroup;
 	for my $t (@tokens,"\0end") {
 	    # \0end = last token was end of tokens.
-	    if($t eq " " or $t eq "\0end" or $t eq "\0spc") {
+	    if($t eq "\t" or $t eq " " or $t eq "\0end" or $t eq "\0spc") {
 		# Context group complete: Replace in it
 		if(grep { /^\257</ } @ctxgroup) {
 		    # Context group contains a replacement string:
