@@ -886,6 +886,12 @@ par_sem_quote() {
     sem --fg --quote -v echo
 }
 
+par_halt_on_error_division_by_zero() {
+    echo '### --halt-on-error soon,fail=100% with no input should not give division by zero'
+    stdout parallel --halt-on-error soon,fail=100% echo </dev/null
+    echo $?
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 20 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

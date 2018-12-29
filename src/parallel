@@ -216,7 +216,7 @@ sub halt {
 	    if($Global::halt_pct) {
 		$Global::halt_exitstatus =
 		    ::ceil($Global::total_failed /
-			   $Global::total_started * 100);
+			   ($Global::total_started || 1) * 100);
 	    } elsif($Global::halt_count) {
 		$Global::halt_exitstatus =
 		    ::min(undef_as_zero($Global::total_failed),101);

@@ -1326,6 +1326,8 @@ par_file_ending_in_newline	### Hans found a bug giving unitialized variable
 par_file_ending_in_newline	gzip /tmp/parallel_f1
 par_file_ending_in_newline	gzip '/tmp/parallel_f2
 par_file_ending_in_newline	'
+par_halt_on_error_division_by_zero	### --halt-on-error soon,fail=100% with no input should not give division by zero
+par_halt_on_error_division_by_zero	0
 par_halt_one_job	# Halt soon if there is a single job
 par_halt_one_job	should run 0 1 = job 1 2
 par_halt_one_job	1
