@@ -11817,10 +11817,10 @@ sub insert_records {
     my $table = $self->table();
     # For SQL encode the command with \257 space as split points
     my $command = join("\257 ",@$command_ref);
-    my $v_cols = join ",", map { "V$_" } (1..$self->max_number_of_args());
+    my @v_cols = map { ", V$_" } (1..$self->max_number_of_args());
     # Two extra value due to $seq, Exitval, Send
     my $v_vals = join ",", map { "?" } (1..$self->max_number_of_args()+4);
-    $self->run("INSERT INTO $table (Seq,Command,Exitval,Send,$v_cols) ".
+    $self->run("INSERT INTO $table (Seq,Command,Exitval,Send @v_cols) ".
 	       "VALUES ($v_vals);", $seq, $command, -1000,
 	       0, @$record_ref[1..$#$record_ref]);
 }
@@ -11829,8 +11829,8 @@ sub get_record {
     my $self = shift;
     my @retval;
     my $table = $self->table();
-    my $v_cols = join ",", map { "V$_" } (1..$self->max_number_of_args());
-    my $v = $self->get("SELECT Seq, Command, $v_cols FROM $table ".
+    my @v_cols = map { ", V$_" } (1..$self->max_number_of_args());
+    my $v = $self->get("SELECT Seq, Command @v_cols FROM $table ".
 		       "WHERE Exitval = -1000 ORDER BY Seq LIMIT 1;");
     if($v->[0]) {
 	my $val_ref = $v->[0];

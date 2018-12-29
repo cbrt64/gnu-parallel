@@ -36,7 +36,7 @@ short:	testlocalshort
 	true
 
 testlocalshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
-	time bash Start.sh local mem'|'100s
+	TRIES=1 time bash Start.sh local mem'|'100s
 
 prereqlocal: installparallel
 	tcsh -c echo tcsh installed || (echo tcsh is required for testsuite; /bin/false)

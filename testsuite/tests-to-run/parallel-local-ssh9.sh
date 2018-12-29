@@ -147,7 +147,7 @@ par_propagate_env() {
 par_env_parallel_big_env() {
     echo '### bug #54128: command too long when exporting big env'
     . `which env_parallel.bash`
-    a=`rand | perl -pe 's/\0//g'| head -c 75000`
+    a=`rand | perl -pe 's/\0//g'| head -c 70000`
     env_parallel -Slo echo should not ::: fail 2>&1
     a=`rand | perl -pe 's/\0//g'| head -c 80000`
     env_parallel -Slo echo should ::: fail 2>/dev/null || echo OK
@@ -156,15 +156,39 @@ par_env_parallel_big_env() {
 par_no_route_to_host() {
     echo '### no route to host with | and -j0 causes inf loop'
     via_parallel() {
-	seq 11 | stdout parallel -j0 -S 192.168.1.199 echo
+	seq 11 | stdout parallel -j0 -S $1 echo
     }
     export -f via_parallel
     raw() {
-	stdout ssh 192.168.1.199 echo
+	stdout ssh $1 echo
     }
     export -f raw
 
-    parallel -k ::: raw via_parallel
+    # Random hosts that there is no route to
+    findhosts() {
+	ip='$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256))'
+	stdout parallel --timeout 2 -j0 ssh $ip echo ::: {1..10000} |
+	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
+    }
+
+    # Retry if really fails this fast
+    filterhosts() {
+	stdout parallel --timeout 2 -j5 ssh {} echo |
+	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
+    }
+
+    (
+	# Cache a list of hosts that fail fast with 'No route'
+	renice 10 -p $$ >/dev/null
+	findhosts | filterhosts | filterhosts |
+	    filterhosts | filterhosts | head > /tmp/filtered.$$
+	mv /tmp/filtered.$$ /tmp/filtered.hosts
+    ) &
+    (
+	# We just need one to complete
+	stdout parallel --halt now,done=1 -j0 raw :::: /tmp/filtered.hosts
+	stdout parallel --halt now,done=1 -j0 via_parallel :::: /tmp/filtered.hosts
+    ) | perl -pe 's/(\d+\.\d+\.\d+\.\d+)/i.p.n.r/' | puniq
 }
 
 export -f $(compgen -A function | grep par_)

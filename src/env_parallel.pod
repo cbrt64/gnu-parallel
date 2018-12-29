@@ -113,6 +113,8 @@ E.g. by doing:
 B<--env> is supported to export only the variable, or alias with the
 given name. Multiple B<--env>s can be given.
 
+B<--session> is supported.
+
 =over 8
 
 =item aliases
@@ -164,6 +166,8 @@ E.g. by doing:
 
 B<--env> is supported to export only the variable, alias, function, or
 array with the given name. Multiple B<--env>s can be given.
+
+B<--session> is supported.
 
 =over 8
 
@@ -289,6 +293,8 @@ E.g. by doing:
 B<--env> is supported to export only the variable, or alias with the
 given name. Multiple B<--env>s can be given.
 
+B<--session> is supported.
+
 =over 8
 
 =item aliases
@@ -342,6 +348,8 @@ E.g. by doing:
 
 B<--env> is supported to export only the variable, alias, function, or
 array with the given name. Multiple B<--env>s can be given.
+
+B<--session> is supported.
 
 =over 8
 
@@ -399,6 +407,8 @@ E.g. by doing:
 
 B<--env> is supported to export only the variable, alias, function, or
 array with the given name. Multiple B<--env>s can be given.
+
+B<--session> is supported.
 
 =over 8
 
@@ -462,6 +472,8 @@ E.g. by doing:
 B<--env> is supported to export only the variable, alias, function, or
 array with the given name. Multiple B<--env>s can be given.
 
+B<--session> is supported.
+
 =over 8
 
 =item aliases
@@ -524,6 +536,8 @@ E.g. by doing:
 B<--env> is supported to export only the variable, alias, function, or
 array with the given name. Multiple B<--env>s can be given.
 
+B<--session> is supported.
+
 =over 8
 
 =item aliases
@@ -578,6 +592,8 @@ E.g. by doing:
 
 B<--env> is supported to export only the variable, or alias with the
 given name. Multiple B<--env>s can be given.
+
+B<--session> is supported.
 
 =over 8
 
@@ -678,6 +694,8 @@ E.g. by doing:
 
 B<--env> is supported to export only the variable, alias, function, or
 array with the given name. Multiple B<--env>s can be given.
+
+B<--session> is supported.
 
 =over 8
 

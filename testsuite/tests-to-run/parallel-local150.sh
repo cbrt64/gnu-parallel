@@ -108,7 +108,7 @@ echo '### Must not quote';
 
 echo '### Test bug #35820: sem breaks if $HOME is not writable'
   echo 'Workaround: use another writable dir'; 
-  rm -rf /tmp/.parallel; 
+  rm -rf /tmp/.parallel || echo /tmp/.parallel wrong owner?; 
   HOME=/tmp sem echo OK; 
   HOME=/tmp sem --wait; 
   ssh lo 'HOME=/usr/this/should/fail stdout sem echo should fail'

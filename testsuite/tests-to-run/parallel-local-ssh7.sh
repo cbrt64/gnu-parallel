@@ -1,8 +1,6 @@
 #!/bin/bash
 
-echo '### test --env _'
-echo 'Both test that variables are copied,'
-echo 'but also that they are NOT copied, if ignored'
+echo '### test --env _, env_parallel for different shells'
 
 #
 ## par_*_man = tests from the man page
@@ -516,6 +514,7 @@ par_tcsh_man() {
     env_parallel -k --env myarray echo \$'{myarray[{}]}' ::: 1 2 3 4
     env_parallel -k --env myarray -S server echo \$'{myarray[{}]}' ::: 1 2 3 4
 
+    echo 'Segmentation faults? Are you running bsd-csh version 20110502-3?'
     env_parallel --argsep --- env_parallel -k echo ::: multi level --- env_parallel
 
     env_parallel ::: true false true false
@@ -1705,118 +1704,6 @@ _EOF
   ssh ash@lo "$myscript"
 }
 
-__ash_environment_too_big() {
-  myscript=$(cat <<'_EOF'
-    echo 'bug #50815: env_parallel should warn if the environment is too big'
-    . `which env_parallel.ash`;
-
-    bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: OK_bigvar
-    bigvar="$(perl -e 'print "x"x65000')"
-    env_parallel -S lo echo ::: OK_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x65000')"
-    env_parallel echo ::: OK_bigvar_quote
-    bigvar="$(perl -e 'print "\""x32000')"
-    env_parallel -S lo echo ::: OK_bigvar_quote_remote
-
-#    Functions not supported in ash
-#    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
-#    env_parallel echo ::: OK_bigfunc
-#    env_parallel -S lo echo ::: OK_bigfunc_remote
-#
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
-#    env_parallel echo ::: OK_bigfunc_quote
-#    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
-#    bigfunc() { true; }
-
-    echo Rest should fail
-
-    bigvar="$(perl -e 'print "x"x131000')"
-    env_parallel echo ::: fail_bigvar
-    bigvar="$(perl -e 'print "x"x65000')"
-    env_parallel -S lo echo ::: fail_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x66000')"
-    env_parallel echo ::: fail_bigvar_quote
-    bigvar="$(perl -e 'print "\""x33000')"
-    env_parallel -S lo echo ::: fail_bigvar_quote_remote
-
-#    Functions not supported in ash
-#    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
-#    env_parallel echo ::: fail_bigfunc
-#    env_parallel -S lo echo ::: fail_bigfunc_remote
-#
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
-#    env_parallel echo ::: fail_bigfunc_quote
-#    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
-#
-#    bigfunc() { true; }
-_EOF
-  )
-  ssh ash@lo "$myscript"
-}
-
-__bash_environment_too_big() {
-  myscript=$(cat <<'_EOF'
-    echo 'bug #50815: env_parallel should warn if the environment is too big'
-    . `which env_parallel.bash`;
-
-    repeat() {
-      
-    bigvar="$(perl -e 'print "x"x110000')"
-    env_parallel echo ::: OK_bigvar
-    bigvar="$(perl -e 'print "x"x55000')"
-    env_parallel -S lo echo ::: OK_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x55000')"
-    env_parallel echo ::: OK_bigvar_quote
-    bigvar="$(perl -e 'print "\""x27000')"
-    env_parallel -S lo echo ::: OK_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x110000')"'"; };'
-    env_parallel echo ::: OK_bigfunc
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x55000')"'"; };'
-    env_parallel -S lo echo ::: OK_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x110000')"'"; };'
-    env_parallel echo ::: OK_bigfunc_quote
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x55000')"'"; };'
-    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
-    bigfunc() { true; }
-
-    echo Rest should fail
-
-    bigvar="$(perl -e 'print "x"x127000')"
-    env_parallel echo ::: fail_bigvar
-    bigvar="$(perl -e 'print "x"x64000')"
-    env_parallel -S lo echo ::: fail_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x64000')"
-    env_parallel echo ::: fail_bigvar_quote
-    bigvar="$(perl -e 'print "\""x32000')"
-    env_parallel -S lo echo ::: fail_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
-    env_parallel echo ::: fail_bigfunc
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x61000')"'"; };'
-    env_parallel -S lo echo ::: fail_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x127000')"'"; };'
-    env_parallel echo ::: fail_bigfunc_quote
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x64000')"'"; };'
-    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
-
-    bigfunc() { true; }
-_EOF
-  )
-  ssh bash@lo "$myscript"
-}
-
 par_bash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
@@ -1961,60 +1848,6 @@ _EOF
   ssh dash@lo "$myscript"
 }
 
-__dash_environment_too_big() {
-  myscript=$(cat <<'_EOF'
-    echo 'bug #50815: env_parallel should warn if the environment is too big'
-    . `which env_parallel.dash`;
-
-    bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: OK_bigvar
-    bigvar="$(perl -e 'print "x"x65000')"
-    env_parallel -S lo echo ::: OK_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x65000')"
-    env_parallel echo ::: OK_bigvar_quote
-    bigvar="$(perl -e 'print "\""x32000')"
-    env_parallel -S lo echo ::: OK_bigvar_quote_remote
-
-#    Functions not supported
-#    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
-#    env_parallel echo ::: OK_bigfunc
-#    env_parallel -S lo echo ::: OK_bigfunc_remote
-#
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
-#    env_parallel echo ::: OK_bigfunc_quote
-#    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
-#    bigfunc() { true; }
-
-    echo Rest should fail
-
-    bigvar="$(perl -e 'print "x"x131000')"
-    env_parallel echo ::: fail_bigvar
-    bigvar="$(perl -e 'print "x"x65000')"
-    env_parallel -S lo echo ::: fail_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x66000')"
-    env_parallel echo ::: fail_bigvar_quote
-    bigvar="$(perl -e 'print "\""x33000')"
-    env_parallel -S lo echo ::: fail_bigvar_quote_remote
-
-#    Functions not supported
-#    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
-#    env_parallel echo ::: fail_bigfunc
-#    env_parallel -S lo echo ::: fail_bigfunc_remote
-#
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
-#    env_parallel echo ::: fail_bigfunc_quote
-#    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
-#
-#    bigfunc() { true; }
-_EOF
-  )
-  ssh dash@lo "$myscript"
-}
-
 par_fish_environment_too_big() {
     echo Not implemented
 }
@@ -2090,124 +1923,6 @@ _EOF
   ssh ksh@lo "$myscript"
 }
 
-__ksh_environment_too_big() {
-  myscript=$(cat <<'_EOF'
-    echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+50-25
-    len_var_remote=100-50+25+12+6+3
-    len_var_quote=100-50+25-12-6+3-2
-    len_var_quote_remote=100-50-25+12+6-3
-    len_fun=100+50+25+12+6-3
-    len_fun_remote=100-50+25+12-6+3
-    len_fun_quote=100+50-25-12
-    len_fun_quote_remote=100-50+25+12-6
-    
-    . `which env_parallel.ksh`;
-
-    repeat() {
-      # Repeat input string n*1000 times
-      perl -e 'print ((shift)x(eval "1000*(".shift.")"))' "$@"
-    }
-
-    bigvar=$(repeat x $len_var)
-    env_parallel echo ::: OK_bigvar
-    bigvar=$(repeat x $len_var_remote)
-    env_parallel -S lo echo ::: OK_bigvar_remote
-
-    bigvar=$(repeat \" $len_var_quote)
-    env_parallel echo ::: OK_bigvar_quote
-    bigvar=$(repeat \" $len_var_quote_remote)
-    env_parallel -S lo echo ::: OK_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(repeat x $len_fun)"'"; };'
-    env_parallel echo ::: OK_bigfunc
-    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote)"'"; };'
-    env_parallel -S lo echo ::: OK_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote)"'"; };'
-    env_parallel echo ::: OK_bigfunc_quote
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote_remote)"'"; };'
-    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
-    bigfunc() { true; }
-
-    echo Rest should fail
-
-    bigvar=$(repeat x $len_var+10)
-    env_parallel echo ::: fail_bigvar
-    bigvar=$(repeat x $len_var_remote+10)
-    env_parallel -S lo echo ::: fail_bigvar_remote
-
-    bigvar=$(repeat \" $len_var_quote+10)
-    env_parallel echo ::: fail_bigvar_quote
-    bigvar=$(repeat \" $len_var_quote_remote+10)
-    env_parallel -S lo echo ::: fail_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(repeat x $len_fun+10)"'"; };'
-    env_parallel echo ::: fail_bigfunc
-    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote+10)"'"; };'
-    env_parallel -S lo echo ::: fail_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
-    env_parallel echo ::: fail_bigfunc_quote
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
-    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
-
-    bigfunc() { true; }
-_EOF
-  )
-  ssh ksh@lo "$myscript"
-}
-
-__ksh_environment_too_big() {
-  myscript=$(cat <<'_EOF'
-    echo 'bug #50815: env_parallel should warn if the environment is too big'
-    . `which env_parallel.ksh`;
-
-    bigvar="$(perl -e 'print "x"x119000')"
-    env_parallel echo ::: OK_bigvar
-    env_parallel -S lo echo ::: OK_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x119000')"
-    env_parallel echo ::: OK_bigvar_quote
-    env_parallel -S lo echo ::: OK_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x119000')"'"; };'
-    env_parallel echo ::: OK_bigfunc
-    env_parallel -S lo echo ::: OK_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x119000')"'"; };'
-    env_parallel echo ::: OK_bigfunc_quote
-    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
-    bigfunc() { true; }
-
-    echo Rest should fail
-
-    bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: fail_bigvar
-    env_parallel -S lo echo ::: fail_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x128000')"
-    env_parallel echo ::: fail_bigvar_quote
-    env_parallel -S lo echo ::: fail_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x129000')"'"; };'
-    env_parallel echo ::: fail_bigfunc
-    env_parallel -S lo echo ::: fail_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x130000')"'"; };'
-    env_parallel echo ::: fail_bigfunc_quote
-    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
-
-    bigfunc() { true; }
-_EOF
-  )
-  ssh ksh@lo "$myscript"
-}
-
 par_mksh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
@@ -2251,23 +1966,24 @@ par_mksh_environment_too_big() {
 
     echo Rest should fail
 
-    bigvar=$(repeat x $len_var+10)
+    # Add 10 or 100. It differs a bit from system to system
+    bigvar=$(repeat x $len_var+20)
     env_parallel echo ::: fail_bigvar
     bigvar=$(repeat x $len_var_remote+10)
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar=$(repeat \" $len_var_quote+10)
+    bigvar=$(repeat \" $len_var_quote+20)
     env_parallel echo ::: fail_bigvar_quote
-    bigvar=$(repeat \" $len_var_quote_remote+10)
+    bigvar=$(repeat \" $len_var_quote_remote+20)
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(repeat x $len_fun+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat x $len_fun+20)"'"; };'
     env_parallel echo ::: fail_bigfunc
-    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote+20)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
     eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
@@ -2278,105 +1994,6 @@ _EOF
   ssh mksh@lo "$myscript"
 }
 
-__mksh_environment_too_big() {
-  myscript=$(cat <<'_EOF'
-    echo 'bug #50815: env_parallel should warn if the environment is too big'
-    . `which env_parallel.mksh`;
-
-    bigvar="$(perl -e 'print "x"x110000')"
-    env_parallel echo ::: OK_bigvar
-    env_parallel -S lo echo ::: OK_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x110000')"
-    env_parallel echo ::: OK_bigvar_quote
-    env_parallel -S lo echo ::: OK_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x110000')"'"; };'
-    env_parallel echo ::: OK_bigfunc
-    env_parallel -S lo echo ::: OK_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x110000')"'"; };'
-    env_parallel echo ::: OK_bigfunc_quote
-    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
-    bigfunc() { true; }
-
-    echo Rest should fail
-
-    bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: fail_bigvar
-    env_parallel -S lo echo ::: fail_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x130000')"
-    env_parallel echo ::: fail_bigvar_quote
-    env_parallel -S lo echo ::: fail_bigvar_quote_remote
-
-    bigvar=u
-    eval 'bigfunc() { a="'"$(perl -e 'print "x"x129000')"'"; };'
-    env_parallel echo ::: fail_bigfunc
-    env_parallel -S lo echo ::: fail_bigfunc_remote
-
-    eval 'bigfunc() { a="'"$(perl -e 'print "\""x130000')"'"; };'
-    env_parallel echo ::: fail_bigfunc_quote
-    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
-
-    bigfunc() { true; }
-_EOF
-  )
-  ssh mksh@lo "$myscript"
-}
-
-__sh_environment_too_big() {
-  myscript=$(cat <<'_EOF'
-    echo 'bug #50815: env_parallel should warn if the environment is too big'
-    . `which env_parallel.sh`;
-
-    bigvar="$(perl -e 'print "x"x130000')"
-    env_parallel echo ::: OK_bigvar
-    bigvar="$(perl -e 'print "x"x90000')"
-    env_parallel -S lo echo ::: OK_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x65000')"
-    env_parallel echo ::: OK_bigvar_quote
-    bigvar="$(perl -e 'print "\""x45000')"
-    env_parallel -S lo echo ::: OK_bigvar_quote_remote
-
-#    Functions not supported
-#    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x122000')"'"; };'
-#    env_parallel echo ::: OK_bigfunc
-#    env_parallel -S lo echo ::: OK_bigfunc_remote
-#
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x122000')"'"; };'
-#    env_parallel echo ::: OK_bigfunc_quote
-#    env_parallel -S lo echo ::: OK_bigfunc_quote_remote
-#    bigfunc() { true; }
-
-    echo Rest should fail
-
-    bigvar="$(perl -e 'print "x"x131000')"
-    env_parallel echo ::: fail_bigvar
-    env_parallel -S lo echo ::: fail_bigvar_remote
-
-    bigvar="$(perl -e 'print "\""x66000')"
-    env_parallel echo ::: fail_bigvar_quote
-    env_parallel -S lo echo ::: fail_bigvar_quote_remote
-
-#    Functions not supported
-#    bigvar=u
-#    eval 'bigfunc() { a="'"$(perl -e 'print "x"x1230000')"'"; };'
-#    env_parallel echo ::: fail_bigfunc
-#    env_parallel -S lo echo ::: fail_bigfunc_remote
-#
-#    eval 'bigfunc() { a="'"$(perl -e 'print "\""x123000')"'"; };'
-#    env_parallel echo ::: fail_bigfunc_quote
-#    env_parallel -S lo echo ::: fail_bigfunc_quote_remote
-#
-#    bigfunc() { true; }
-_EOF
-  )
-  ssh sh@lo "$myscript"
-}
 par_sh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
@@ -3104,7 +2721,45 @@ _EOF
 }
 
 par_fish_env_parallel_session() {
-    echo Not implemented
+  myscript=$(cat <<'_EOF'
+    . (which env_parallel.fish)
+
+    echo '### Test env_parallel --session'
+
+    alias aliasbefore='echo before'
+    set varbefore 'before'
+    function funcbefore
+      echo 'before' "$argv"
+    end
+    set arraybefore array before
+    env_parallel --session
+    # stuff defined
+    env_parallel aliasbefore ::: must_fail
+    env_parallel -S lo aliasbefore ::: must_fail
+    env_parallel funcbefore ::: must_fail
+    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel echo '$varbefore' ::: no_before
+    env_parallel -S lo echo '$varbefore' ::: no_before
+    env_parallel echo '$arraybefore' ::: no_before
+    env_parallel -S lo echo '$arraybefore' ::: no_before
+    alias aliasafter='echo after'
+    set varafter 'after'
+    function funcafter
+      echo 'after' "$argv"
+    end
+    set arrayafter array after
+    env_parallel aliasafter ::: aliasafter_OK
+    env_parallel -S lo aliasafter ::: aliasafter_OK
+    env_parallel funcafter ::: funcafter_OK
+    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel echo '$varafter' ::: varafter_OK
+    env_parallel -S lo echo '$varafter' ::: varafter_OK
+    env_parallel echo '$arrayafter' ::: arrayafter_OK
+    env_parallel -S lo echo '$arrayafter' ::: arrayafter_OK
+    set -e PARALLEL_IGNORED_NAMES
+_EOF
+  )
+  ssh fish@lo "$myscript"
 }
 
 par_ksh_env_parallel_session() {

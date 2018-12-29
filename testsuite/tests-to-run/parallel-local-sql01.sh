@@ -127,4 +127,6 @@ compgen -A function | grep par_ | sort |
   stdout parallel -vj5 -k --tag --joblog /tmp/jl-`basename $0` p_wrapper \
 	 :::: - ::: \$MYSQL \$PG \$SQLITE | perl -pe 's/tbl\d+/TBL99999/gi;' |
   perl -pe 's/(from TBL99999 order) .*/$1/g' |
-  perl -pe "s/$hostname/hostname/g"
+  perl -pe 's/ *\b'"$hostname"'\b */hostname/g' | 
+  grep -v -- --------------- |
+  perl -pe 's/ *\bhost\b */host/g'
