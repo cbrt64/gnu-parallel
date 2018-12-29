@@ -10229,13 +10229,14 @@ sub replace_placeholders {
     my @quotegroup;
     my @quoted;
     for (map { $_ eq "\0empty" ? "" : $_ }
-	 grep { $_ ne "\0ign" }
-	 grep { $_ !~ /\0noarg/ }
+	 grep { $_ ne "\0ign" and $_ ne "\0noarg" and $_ ne "'\0noarg'" }
 	 @replaced, "\0end") {
 	if($_ eq "\0spc" or $_ eq "\0end") {
 	    # \0spc splits quotable groups
 	    if($quote) {
-		CORE::push @quoted, ::Q(join"",@quotegroup);
+		if(@quotegroup) {
+		    CORE::push @quoted, ::Q(join"",@quotegroup);
+		}
 	    } else {
 		CORE::push @quoted, join"",@quotegroup;
 	    }

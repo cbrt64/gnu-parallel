@@ -67,32 +67,34 @@ par_pipe_line_buffer_compress() {
 
 par__pipepart_spawn() {
     echo '### bug #46214: Using --pipepart doesnt spawn multiple jobs in version 20150922'
-    seq 1000000 > /tmp/num1000000;
-    stdout nice parallel --pipepart --progress -a /tmp/num1000000 --block 10k -j0 true |
-    grep 1:local | perl -pe 's/\d\d\d/999/g; s/[2-9]/2+/g;'
+    seq 1000000 > /tmp/num1000000
+    stdout parallel --pipepart --progress -a /tmp/num1000000 --block 10k -j0 true |
+	grep 1:local | perl -pe 's/\d\d\d/999/g; s/[2-9]/2+/g;'
 }
 
 par__pipe_tee() {
     echo 'bug #45479: --pipe/--pipepart --tee'
     echo '--pipe --tee'
 
-    random1G() {
+    random100M() {
 	< /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
-	    head -c 1G;
+	    head -c 100M;
     }
-    random1G | parallel --pipe --tee cat ::: {1..3} | LC_ALL=C wc -c
+    random100M | parallel --pipe --tee cat ::: {1..3} | LC_ALL=C wc -c
 }
 
 par__pipepart_tee() {
     echo 'bug #45479: --pipe/--pipepart --tee'
     echo '--pipepart --tee'
 
-    random1G() {
+    export TMPDIR=/dev/shm/parallel
+    mkdir -p $TMPDIR
+    random100M() {
 	< /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
-	    head -c 1G;
+	    head -c 100M;
     }
     tmp=$(mktemp)
-    random1G >$tmp
+    random100M >$tmp
     parallel --pipepart --tee -a $tmp cat ::: {1..3} | LC_ALL=C wc -c
     rm $tmp
 }
@@ -193,8 +195,8 @@ par_maxlinelen_X_I() {
 
 par_compress_fail() {
     echo "### bug #41609: --compress fails"
-    seq 12 | parallel --compress --compress-program bzip2 -k seq {} 1000000 | md5sum
-    seq 12 | parallel --compress -k seq {} 1000000 | md5sum
+    seq 12 | parallel --compress --compress-program gzip -k seq {} 10000 | md5sum
+    seq 12 | parallel --compress -k seq {} 10000 | md5sum
 }
 
 par_round_robin_blocks() {

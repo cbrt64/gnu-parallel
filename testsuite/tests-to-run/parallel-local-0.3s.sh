@@ -881,6 +881,11 @@ par_pipe_N1_regexp() {
         parallel -kN1 --recstart 'begin\n' --pipe          echo JOB{#}\;cat\;echo END
 }
 
+par_sem_quote() {
+    echo '### sem --quote should not add empty argument'
+    sem --fg --quote -v echo
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 20 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

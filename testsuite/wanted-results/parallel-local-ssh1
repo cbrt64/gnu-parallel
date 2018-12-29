@@ -3,25 +3,25 @@ echo '### Test --load remote'
   ssh parallel@lo 'seq 10 | parallel --nice 19 --timeout 15 -j0 -qN0 perl -e while\(1\)\{\ \}' &   sleep 1;   stdout /usr/bin/time -f %e parallel -S parallel@lo --load 10 sleep ::: 1 | perl -ne '$_ > 10 and print "OK\n"'
 OK
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }' ''
+parallel: Warning: perl -e 'while(1){ }'
 echo '**'
 **
 echo '### Stop if all hosts are filtered and there are no hosts left to run on'

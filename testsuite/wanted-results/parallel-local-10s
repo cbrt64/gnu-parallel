@@ -5,15 +5,15 @@ par__memleak	Test if memory consumption(300 jobs) < memory consumption(30 jobs) 
 par__memleak	1
 par__pipe_tee	bug #45479: --pipe/--pipepart --tee
 par__pipe_tee	--pipe --tee
-par__pipe_tee	3221225472
+par__pipe_tee	314572800
 par__pipepart_spawn	### bug #46214: Using --pipepart doesnt spawn multiple jobs in version 20150922
 par__pipepart_spawn	1:local / 2+ / 2+2+2+
 par__pipepart_tee	bug #45479: --pipe/--pipepart --tee
 par__pipepart_tee	--pipepart --tee
-par__pipepart_tee	3221225472
+par__pipepart_tee	314572800
 par_compress_fail	### bug #41609: --compress fails
-par_compress_fail	24812dd0f24a26d08a780f988b9d5ad2  -
-par_compress_fail	24812dd0f24a26d08a780f988b9d5ad2  -
+par_compress_fail	f1a751b1283e99e7dda40f63f1225f74  -
+par_compress_fail	f1a751b1283e99e7dda40f63f1225f74  -
 par_interactive	### Test -p --interactive
 par_interactive	opt--interactive 1
 par_interactive	opt--interactive 3
