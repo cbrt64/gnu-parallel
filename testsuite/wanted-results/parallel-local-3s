@@ -177,6 +177,8 @@ par_sqlworker_hostname	host
 par_sqlworker_hostname	<hostname>
 par_sqlworker_hostname	<hostname>
 par_sqlworker_hostname	<hostname>
+par_test_diff_roundrobin_k	### test there is difference on -k
+par_test_diff_roundrobin_k	OK
 par_wrong_slot_rpl_resume	### bug #47644: Wrong slot number replacement when resuming
 par_wrong_slot_rpl_resume	1 0
 par_wrong_slot_rpl_resume	2 1

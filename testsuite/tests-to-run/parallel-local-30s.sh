@@ -251,4 +251,4 @@ par_macron() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
-    parallel -j0 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --delay 0.3 -j0 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

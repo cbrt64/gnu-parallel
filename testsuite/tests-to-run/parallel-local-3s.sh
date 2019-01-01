@@ -245,6 +245,31 @@ par_nice() {
     parallel --retries 10 '! kill -TERM' ::: $pid 2>/dev/null
 }
 
+par_test_diff_roundrobin_k() {
+    echo '### test there is difference on -k'
+    . $(which env_parallel.bash)
+    mytest() {
+	K=$1
+	doit() {
+	    perl -ne 'select(undef, undef, undef, rand()/10000);print' |
+		md5sum
+	}
+	export -f doit
+	seq 100000 | parallel --block 2k --pipe $K --roundrobin doit | sort
+    }
+    export -f mytest
+    parset a,b,c mytest ::: -k -k ''
+    # a == b and a != c or error
+    if [ "$a" == "$b" ]; then
+	if [ "$a" != "$c" ]; then
+	    echo OK
+	else
+	    echo error
+	fi
+    else
+	echo error
+    fi
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort | parallel -j6 --tag -k '{} 2>&1'

@@ -155,6 +155,8 @@ par_env_parallel_big_env() {
 
 par_no_route_to_host() {
     echo '### no route to host with | and -j0 causes inf loop'
+    # Broken in parallel-20121122 .. parallel-20181022
+    # parallel-20181022 -j0 -S 185.75.195.218 echo ::: {1..11}
     via_parallel() {
 	seq 11 | stdout parallel -j0 -S $1 echo
     }
