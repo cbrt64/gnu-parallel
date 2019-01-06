@@ -1690,3 +1690,7 @@ par_wd_3dot_local	OK
 par_wd_3dot_local	~/privat/parallel/testsuite
 par_wd_3dot_local	~/privat/parallel/testsuite
 par_wd_3dot_local	OK
+par_wd_dotdotdot	### parallel --wd ... should clean up
+par_wd_dotdotdot	1 == 1
+par_wd_dotdotdot	### $OLDPWD should be the dir in which parallel starts
+par_wd_dotdotdot	/tmp foo

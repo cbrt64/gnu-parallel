@@ -1516,6 +1516,7 @@ sub init_globals() {
     $Global::max_jobs_running = 0;
     $Global::job_already_run = '';
     $ENV{'TMPDIR'} ||= "/tmp";
+    $ENV{'OLDPWD'} = $ENV{'PWD'};
     if(not $ENV{HOME}) {
 	# $ENV{HOME} is sometimes not set if called from PHP
 	::warning("\$HOME not set. Using /tmp.");
@@ -2165,7 +2166,6 @@ sub cleanup() {
 
 sub __QUOTING_ARGUMENTS_FOR_SHELL__() {}
 
-
 sub shell_quote(@) {
     # Input:
     #   @strings = strings to be quoted
@@ -2285,7 +2285,7 @@ sub shell_quote_file($) {
     return Q($a);
 }
 
-sub shell_words() {
+sub shell_words(@) {
     # Input:
     #   $string = shell line
     # Returns:
@@ -2307,6 +2307,7 @@ sub perl_quote_scalar($) {
     return $a;
 }
 
+# -w complains about prototype
 sub pQ($) {
     # pQ alias for ::perl_quote_scalar
     *pQ = \&::perl_quote_scalar;
@@ -5007,6 +5008,7 @@ sub usleep($) {
     select(undef, undef, undef, $ms/1000);
 }
 
+sub __KILLER_REAPER__() {}
 sub reap_usleep() {
     # Reap dead children.
     # If no dead children: Sleep specified amount with exponential backoff
@@ -6955,7 +6957,7 @@ sub rsync_transfer_cmd($) {
 	rsync()." $rsync_opts $file $serverlogin:$rsync_destdir";
 }
 
-sub cleanup_cmd($) {
+sub cleanup_cmd($$$) {
     # Command to run to remove the remote file
     # Input:
     #   $file = filename to remove
@@ -8233,13 +8235,19 @@ sub sshlogin_wrap($) {
 	if($serverlogin eq ":") {
 	    if($opt::workdir) {
 		# Create workdir if needed. Then cd to it.
-	        my $wd = $self->workdir();
+		my $wd = $self->workdir();
 		if($opt::workdir eq "." or $opt::workdir eq "...") {
 		    # If $wd does not start with '/': Prepend $HOME
 		    $wd =~ s:^([^/]):$ENV{'HOME'}/$1:;
 		}
 		::mkdir_or_die($wd);
-		$command = "cd ".::Q($wd)." || exit 255; ".$command;
+		my $post = "";
+		if($opt::workdir eq "...") {
+		    $post = ";".exitstatuswrapper("rm -rf ".::Q($wd).";");
+
+		}
+		$command = "cd ".::Q($wd)." || exit 255; " .
+		    $command . $post;;
 	    }
 	    if(@opt::env) {
 		# Prepend with environment setter, which sets functions in zsh
@@ -8299,7 +8307,7 @@ sub sshlogin_wrap($) {
 	    $post .= $self->sshcleanup();
 	    if($post) {
 		# We need to save the exit status of the job
-		$post = '_EXIT_status=$?; ' . $post . ' exit $_EXIT_status;';
+		$post = exitstatuswrapper($post);
 	    }
 	    $self->{'sshlogin_wrap'}{$command} =
 		($pre
@@ -8449,7 +8457,7 @@ sub sshcleanup($) {
 	$cleancmd .= $sshlogin->cleanup_cmd($file,$workdir).";";
     }
     if(defined $opt::workdir and $opt::workdir eq "...") {
-	$cleancmd .= "$sshcmd $serverlogin -- rm -rf " . ::Q($workdir).';';
+       $cleancmd .= "$sshcmd $serverlogin -- rm -rf " . ::Q($workdir).';';
     }
     return $cleancmd;
 }
@@ -8466,6 +8474,19 @@ sub remote_cleanup($) {
 	return ();
     }
 }
+
+sub exitstatuswrapper(@) {
+    if($Global::cshell) {
+	return ('set _EXIT_status=$status; ' .
+		join(" ",@_).
+		'exit $_EXIT_status;');
+    } else {
+	return ('_EXIT_status=$?; ' .
+		join(" ",@_).
+		'exit $_EXIT_status;');
+    }
+}
+
 
 sub workdir($) {
     # Returns:
@@ -10824,14 +10845,14 @@ package MultifileQueue;
 
 @Global::unget_argv=();
 
-sub new($) {
+sub new($$) {
     my $class = shift;
     my $fhs = shift;
     for my $fh (@$fhs) {
 	if(-t $fh and -t ($Global::status_fd || *STDERR)) {
 	    ::warning("Input is read from the terminal. You either know what you",
 		      "are doing (in which case: YOU ARE AWESOME!) or you forgot",
-		      "::: or :::: or to pipe data into parallel. If so",
+		      "::: or :::: or -a or to pipe data into parallel. If so",
 		      "consider going through the tutorial: man parallel_tutorial",
 		      "Press CTRL-D to exit.");
 	}

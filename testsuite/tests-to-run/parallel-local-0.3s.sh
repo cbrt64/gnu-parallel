@@ -892,6 +892,15 @@ par_halt_on_error_division_by_zero() {
     echo $?
 }
 
+par_wd_dotdotdot() {
+    echo '### parallel --wd ... should clean up'
+    parallel --wd ... 'pwd;true' ::: foo | parallel ls 2>/dev/null
+    echo $? == 1
+    echo '### $OLDPWD should be the dir in which parallel starts'
+    cd /tmp
+    parallel --wd ... 'echo $OLDPWD' ::: foo
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 20 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

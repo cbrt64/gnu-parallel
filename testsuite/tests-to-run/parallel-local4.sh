@@ -20,10 +20,10 @@ echo '### bug #39572: --tty and --joblog do not work'
   seq 1 | parallel --joblog - -u true | tr '0-9' 'X'
 
 echo '### How do we deal with missing $HOME'
-   unset HOME; stdout perl -w $(which parallel) -k echo ::: 1 2 3
+   unset HOME; stdout perl $(which parallel) -k echo ::: 1 2 3
 
 echo '### How do we deal with missing $SHELL'
-   unset SHELL; stdout perl -w $(which parallel) -k echo ::: 1 2 3
+   unset SHELL; stdout perl $(which parallel) -k echo ::: 1 2 3
 
 echo '### Test if length is computed correctly - first should give one line, second 2 lines each'
   seq 4 | parallel -s 29 -X -kj1 echo a{}b{}c

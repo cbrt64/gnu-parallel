@@ -91,24 +91,14 @@ Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
 X	:	XXXXXXXXXX.XXX	     X.XXX	X	X	X	X	true X
 echo '### How do we deal with missing $HOME'
 ### How do we deal with missing $HOME
-   unset HOME; stdout perl -w $(which parallel) -k echo ::: 1 2 3
-main::shell_quote_scalar() called too early to check prototype at /usr/local/bin/parallel line 2299.
-main::Q() called too early to check prototype at /usr/local/bin/parallel line 2306.
-main::pQ() called too early to check prototype at /usr/local/bin/parallel line 2353.
-Arg::Q() called too early to check prototype at /usr/local/bin/parallel line 11163.
-Arg::pQ() called too early to check prototype at /usr/local/bin/parallel line 11169.
+   unset HOME; stdout perl $(which parallel) -k echo ::: 1 2 3
 parallel: Warning: $HOME not set. Using /tmp.
 1
 2
 3
 echo '### How do we deal with missing $SHELL'
 ### How do we deal with missing $SHELL
-   unset SHELL; stdout perl -w $(which parallel) -k echo ::: 1 2 3
-main::shell_quote_scalar() called too early to check prototype at /usr/local/bin/parallel line 2299.
-main::Q() called too early to check prototype at /usr/local/bin/parallel line 2306.
-main::pQ() called too early to check prototype at /usr/local/bin/parallel line 2353.
-Arg::Q() called too early to check prototype at /usr/local/bin/parallel line 11163.
-Arg::pQ() called too early to check prototype at /usr/local/bin/parallel line 11169.
+   unset SHELL; stdout perl $(which parallel) -k echo ::: 1 2 3
 1
 2
 3
