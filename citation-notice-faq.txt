@@ -1,0 +1,132 @@
+== Citation notice FAQ ==
+
+> Why does GNU Parallel show a citation notice?
+
+GNU Parallel is indirectly funded through citations. It is therefore important for the long term survival of GNU Parallel that it is cited. The citation notice makes users aware of this.
+
+See also: https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
+
+
+> Is the citation notice compatible with GPLv3?
+
+Yes. The wording has been cleared by Richard M. Stallman to be compatible with GPLv3. This is because the citation notice is not part of the license, but part of academic tradition.
+
+Therefore the notice is not adding a term that would require citation as mentioned on: https://www.gnu.org/licenses/gpl-faq.en.html#RequireCitation
+
+
+> Do automated scripts break if the notice is not silenced?
+
+No. Not a single time has that happened. This is due to the notice only being printed, if the output is to the screen - not if the output is to a file or a pipe.
+
+
+> How do I silence the citation notice?
+
+Run this once:
+
+  parallel --citation
+
+It takes less than 10 seconds to do and is thus comparable to an 'OK. Do not show this again'-dialog box seen in Firefox and similar programs.
+
+It is even optional to run this, as GNU Parallel will work without having 'parallel --citation' run first (in other words it is _not_ comparable to a clickwrap license, that must be accepted before the program will run). However, not running it does not change that academic tradition requires you to cite in scientific articles. That tradition requires you to cite even if there had been no notice.
+
+
+> I do not write scientific articles. Does the notice apply to me?
+
+No. The notice only applies if you write scientific articles.
+
+
+> What shows citing software is an academic tradition?
+
+These links say: Yes, you should cite software, and if the author suggests a way of citing, use that.
+
+* https://blog.apastyle.org/apastyle/2015/01/how-to-cite-software-in-apa-style.html
+* https://libguides.mit.edu/c.php?g=551454&p=3900280
+* https://www.software.ac.uk/how-cite-software
+* https://aut.ac.nz.libguides.com/APA6th/software
+* https://libguides.rgu.ac.uk/c.php?g=380081&p=2983956
+* https://journals.aas.org/policy-statement-on-software/
+* https://guides.lib.monash.edu/c.php?g=219786&p=1454293
+* https://www.maxqda.com/how-to-cite-maxqda
+
+If you feel the benefit from using GNU Parallel is too small to warrant a citation, then prove that by simply using another tool. If you replace your use of GNU Parallel with another tool, you obviously do not have to cite GNU Parallel. If it is too much work replacing the use of GNU Parallel, then it is a good indication that the benefit is big enough to warrant a citation.
+
+
+> Do other software show how to cite?
+
+Here are other examples of software showing how to cite. Some of these refer to peer-reviewed articles - others do not:
+
+* https://www.scipy.org/citing.html
+* https://octave.org/doc/interpreter/Citing-Octave-in-Publications.html
+  (Octave has citation for individual packages, too)
+* https://stat.ethz.ch/pipermail/r-help/2008-May/161481.html
+* https://stat.ethz.ch/R-manual/R-devel/library/utils/html/citation.html
+  (R has citation for individual packages, too)
+* http://www.partek.com/citing-partek-software-in-a-publication/
+* http://www.fluortools.com/misc/cite
+* https://www.maxqda.com/how-to-cite-maxqda
+* https://www.open-mpi.org/papers/
+* https://www.tensorflow.org/about/bib
+* http://www.fon.hum.uva.nl/paul/praat.html
+
+
+> I do not like the notice. Can I fork GNU Parallel and remove it?
+
+Yes. GNU Parallel is released under GNU GPLv3 and thus you are allowed to fork the code. But you have to make sure that your forked version cannot be confused with the original, so for one thing you cannot call it anything similar to GNU Parallel as that would cause confusion between your forked version and the original. This is also why we have CentOS (and not RedHat Free), and IceCat (and not Firefox Free). This is also covered in DFSG ("The license may require derived works to carry a different name or version number from the original software").
+
+This principle has even been tested in court:
+http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
+https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
+
+Also know that if you fork GNU Parallel and remove the notice, you are not helping to fund further develpment. So if you like GNU Parallel and want it to be maintained in the future, then this is a bad idea, as it will give less funding.
+
+
+> How important is the notice for the survival of GNU Parallel?
+
+Citations is what indirectly funds maintaining GNU Parallel. Before the citation notice was implemented hardly anyone cited GNU Parallel, and that would not have been sustainable in the long term. Funding development aligns well with "We will give back to the free software community" and "To accelerate innovation and underpin operations".
+
+Therefore it is more important to keep the notice than to be included in different distributions. Specifically, it will be preferable to be moved from Debian main to Debian non-free over having the notice removed (and staying in main).
+
+In other words: It is preferable having fewer users, who all know they should cite, over having many users, who do not know they should cite.
+
+If the goal had been to get more users, then the license would have been public domain.
+
+This is because a long term survival with funding is more important than short term gains in popularity that can be achieved by being distributed as part of a distribution.
+
+
+> Is there another way I can get rid of the citation notice?
+
+Yes. Find a way to finance future development of GNU Parallel. If you pay me a normal salary, I will be happy to remove the citation notice.
+
+The citation notice is about (indirect) funding - nothing else.
+
+
+> I do not think it is fair having to cite
+
+If the inconvenience of having to cite is too big for you, then you should use another tool.
+
+If you do not want to help fund GNU Parallel, then you will not be a happy GNU Parallel user, and thus you using another tool is the best solution for all parties. Here is a list of parallelizing tools to help you find an alternative: https://www.gnu.org/software/parallel/parallel_alternatives.html
+
+
+> I do not want to run 'parallel --citation'
+
+If the inconvenience of running 'parallel --citation' one single time after installing GNU Parallel is too big, then you do not have to do it. You only need to do that if you do not want to see the citation notice.
+
+But it really only takes 10 seconds to run.
+
+
+> I do not want to see the citation notice at every run
+
+You do not have to. Spend 10 seconds on running 'parallel --citation' and the notice is silenced. This is similar to clicking 'OK. Do not show this again' in a dialog box seen in Firefox and similar programs.
+
+If GNU Parallel does not save you more than 10 seconds, then you should probably not be using it anyway.
+
+
+> I do not want my users to see the citation notice and I do not want to finance the development
+
+If you care so little about GNU Parallel that you do not want to help finance development, then you should contemplate whether GNU Parallel is really the right tool for you.
+
+It is, however, doable (e.g. by forking and changing the code). But you will be going against the wishes of the author, because you make it harder to make a living, thus you will be making it harder to justify producing more free software. If you like GNU Parallel and want to see it maintained in the future, then this is not the way to go.
+
+Maybe it is you Nadia Eghbal addresses in https://www.slideshare.net/NadiaEghbal/consider-the-maintainer:
+
+"Is it alright to compromise, or even deliberately ignore, the happiness of maintainers so we that can enjoy free and open source software?"

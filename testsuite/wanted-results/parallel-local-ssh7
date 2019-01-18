@@ -153,7 +153,7 @@ par_zsh_environment_too_big	OK_bigfunc_remote
 par_zsh_environment_too_big	OK_bigfunc_quote
 par_zsh_environment_too_big	OK_bigfunc_quote_remote
 par_zsh_environment_too_big	Rest should fail
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -163,7 +163,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -173,7 +173,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -183,7 +183,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -193,7 +193,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -203,7 +203,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -213,7 +213,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -223,7 +223,7 @@ par_zsh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_zsh_environment_too_big	_which_PAR:12: argument list too long: perl
+par_zsh_environment_too_big	_which_PAR:XXX: argument list too long: perl
 par_zsh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_zsh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_zsh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -234,10 +234,102 @@ par_zsh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_zsh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_zsh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_zsh_env_parallel_session	### Test env_parallel --session
-par_zsh_env_parallel_session	(eval):1: command not found: aliasbefore
-par_zsh_env_parallel_session	(eval):1: command not found: aliasbefore
-par_zsh_env_parallel_session	(eval):1: command not found: funcbefore
-par_zsh_env_parallel_session	(eval):1: command not found: funcbefore
+par_zsh_env_parallel_session	### level0 should be hidden, level1 should be transferred
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level0func
+par_zsh_env_parallel_session	(eval):1: command not found: level0alias
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level0func
+par_zsh_env_parallel_session	(eval):1: command not found: level0alias
+par_zsh_env_parallel_session	l1var
+par_zsh_env_parallel_session	l1func
+par_zsh_env_parallel_session	l1alias
+par_zsh_env_parallel_session	level1 array OK
+par_zsh_env_parallel_session	l1var
+par_zsh_env_parallel_session	l1func
+par_zsh_env_parallel_session	l1alias
+par_zsh_env_parallel_session	level1 array OK
+par_zsh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level0func
+par_zsh_env_parallel_session	(eval):1: command not found: level0alias
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level0func
+par_zsh_env_parallel_session	(eval):1: command not found: level0alias
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level1func
+par_zsh_env_parallel_session	(eval):1: command not found: level1alias
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level1func
+par_zsh_env_parallel_session	(eval):1: command not found: level1alias
+par_zsh_env_parallel_session	l2var
+par_zsh_env_parallel_session	l2func
+par_zsh_env_parallel_session	l2alias
+par_zsh_env_parallel_session	level2 array OK
+par_zsh_env_parallel_session	l2var
+par_zsh_env_parallel_session	l2func
+par_zsh_env_parallel_session	l2alias
+par_zsh_env_parallel_session	level2 array OK
+par_zsh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level0func
+par_zsh_env_parallel_session	(eval):1: command not found: level0alias
+par_zsh_env_parallel_session	
+par_zsh_env_parallel_session	fail
+par_zsh_env_parallel_session	(eval):1: command not found: level0func
+par_zsh_env_parallel_session	(eval):1: command not found: level0alias
+par_zsh_env_parallel_session	l1var
+par_zsh_env_parallel_session	l1func
+par_zsh_env_parallel_session	l1alias
+par_zsh_env_parallel_session	level1 array OK
+par_zsh_env_parallel_session	l1var
+par_zsh_env_parallel_session	l1func
+par_zsh_env_parallel_session	l1alias
+par_zsh_env_parallel_session	level1 array OK
+par_zsh_env_parallel_session	l2var
+par_zsh_env_parallel_session	l2func
+par_zsh_env_parallel_session	l2alias
+par_zsh_env_parallel_session	level2 array OK
+par_zsh_env_parallel_session	l2var
+par_zsh_env_parallel_session	l2func
+par_zsh_env_parallel_session	l2alias
+par_zsh_env_parallel_session	level2 array OK
+par_zsh_env_parallel_session	### level0+1+2 should be transferred
+par_zsh_env_parallel_session	l0var
+par_zsh_env_parallel_session	l0func
+par_zsh_env_parallel_session	l0alias
+par_zsh_env_parallel_session	level0 array OK
+par_zsh_env_parallel_session	l0var
+par_zsh_env_parallel_session	l0func
+par_zsh_env_parallel_session	l0alias
+par_zsh_env_parallel_session	level0 array OK
+par_zsh_env_parallel_session	l1var
+par_zsh_env_parallel_session	l1func
+par_zsh_env_parallel_session	l1alias
+par_zsh_env_parallel_session	level1 array OK
+par_zsh_env_parallel_session	l1var
+par_zsh_env_parallel_session	l1func
+par_zsh_env_parallel_session	l1alias
+par_zsh_env_parallel_session	level1 array OK
+par_zsh_env_parallel_session	l2var
+par_zsh_env_parallel_session	l2func
+par_zsh_env_parallel_session	l2alias
+par_zsh_env_parallel_session	level2 array OK
+par_zsh_env_parallel_session	l2var
+par_zsh_env_parallel_session	l2func
+par_zsh_env_parallel_session	l2alias
+par_zsh_env_parallel_session	level2 array OK
+par_zsh_env_parallel_session	zsh:1: command not found: aliasbefore
+par_zsh_env_parallel_session	zsh:1: command not found: aliasbefore
+par_zsh_env_parallel_session	zsh:1: command not found: funcbefore
+par_zsh_env_parallel_session	zsh:1: command not found: funcbefore
 par_zsh_env_parallel_session	no_before
 par_zsh_env_parallel_session	no_before
 par_zsh_env_parallel_session	no_before
@@ -516,12 +608,108 @@ par_sh_environment_too_big	fail_bigfunc_remote-not-supported
 par_sh_environment_too_big	fail_bigfunc_quote-not-supported
 par_sh_environment_too_big	fail_bigfunc_quote_remote-not-supported
 par_sh_env_parallel_session	### Test env_parallel --session
-par_sh_env_parallel_session	/bin/sh: XXX: aliasbefore: not found
-par_sh_env_parallel_session	/bin/sh: XXX: aliasbefore: not found
+par_sh_env_parallel_session	### level0 should be hidden, level1 should be transferred
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l1var
+par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l1var
+par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: 2: level0func: not found
+par_sh_env_parallel_session	/bin/sh: 2: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: 2: level0func: not found
+par_sh_env_parallel_session	/bin/sh: 2: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: 2: level1func: not found
+par_sh_env_parallel_session	/bin/sh: 2: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: 2: level1func: not found
+par_sh_env_parallel_session	/bin/sh: 2: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	l2var
+par_sh_env_parallel_session	/bin/sh: 2: level2func: not found
+par_sh_env_parallel_session	/bin/sh: 2: level2alias: not found
+par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	l2var
+par_sh_env_parallel_session	/bin/sh: 2: level2func: not found
+par_sh_env_parallel_session	/bin/sh: 2: level2alias: not found
+par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	
+par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l1var
+par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l1var
+par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l2var
+par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l2var
+par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	### level0+1+2 should be transferred
+par_sh_env_parallel_session	l0var
+par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l0var
+par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l1var
+par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l1var
+par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l2var
+par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	l2var
+par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
+par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
+par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	/bin/sh: 1: aliasbefore: not found
+par_sh_env_parallel_session	/bin/sh: 1: aliasbefore: not found
+par_sh_env_parallel_session	/bin/sh: 1: funcbefore: not found
+par_sh_env_parallel_session	/bin/sh: 1: funcbefore: not found
 par_sh_env_parallel_session	no_before
 par_sh_env_parallel_session	no_before
 par_sh_env_parallel_session	after aliasafter_OK
 par_sh_env_parallel_session	after aliasafter_OK
+par_sh_env_parallel_session	/bin/sh: 3: funcafter: not found
+par_sh_env_parallel_session	/bin/sh: 3: funcafter: not found
 par_sh_env_parallel_session	after varafter_OK
 par_sh_env_parallel_session	after varafter_OK
 par_sh_env_parallel	OK
@@ -743,6 +931,98 @@ par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote_remote
 par_mksh_env_parallel_session	### Test env_parallel --session
+par_mksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level0func: not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level0func: not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	l1var
+par_mksh_env_parallel_session	l1func
+par_mksh_env_parallel_session	l1alias
+par_mksh_env_parallel_session	level1 array OK
+par_mksh_env_parallel_session	l1var
+par_mksh_env_parallel_session	l1func
+par_mksh_env_parallel_session	l1alias
+par_mksh_env_parallel_session	level1 array OK
+par_mksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level0func: not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level0func: not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level1func: not found
+par_mksh_env_parallel_session	/bin/mksh: level1alias: not found
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level1func: not found
+par_mksh_env_parallel_session	/bin/mksh: level1alias: not found
+par_mksh_env_parallel_session	l2var
+par_mksh_env_parallel_session	l2func
+par_mksh_env_parallel_session	l2alias
+par_mksh_env_parallel_session	level2 array OK
+par_mksh_env_parallel_session	l2var
+par_mksh_env_parallel_session	l2func
+par_mksh_env_parallel_session	l2alias
+par_mksh_env_parallel_session	level2 array OK
+par_mksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level0func: not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	
+par_mksh_env_parallel_session	fail
+par_mksh_env_parallel_session	/bin/mksh: level0func: not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	l1var
+par_mksh_env_parallel_session	l1func
+par_mksh_env_parallel_session	l1alias
+par_mksh_env_parallel_session	level1 array OK
+par_mksh_env_parallel_session	l1var
+par_mksh_env_parallel_session	l1func
+par_mksh_env_parallel_session	l1alias
+par_mksh_env_parallel_session	level1 array OK
+par_mksh_env_parallel_session	l2var
+par_mksh_env_parallel_session	l2func
+par_mksh_env_parallel_session	l2alias
+par_mksh_env_parallel_session	level2 array OK
+par_mksh_env_parallel_session	l2var
+par_mksh_env_parallel_session	l2func
+par_mksh_env_parallel_session	l2alias
+par_mksh_env_parallel_session	level2 array OK
+par_mksh_env_parallel_session	### level0+1+2 should be transferred
+par_mksh_env_parallel_session	l0var
+par_mksh_env_parallel_session	l0func
+par_mksh_env_parallel_session	l0alias
+par_mksh_env_parallel_session	level0 array OK
+par_mksh_env_parallel_session	l0var
+par_mksh_env_parallel_session	l0func
+par_mksh_env_parallel_session	l0alias
+par_mksh_env_parallel_session	level0 array OK
+par_mksh_env_parallel_session	l1var
+par_mksh_env_parallel_session	l1func
+par_mksh_env_parallel_session	l1alias
+par_mksh_env_parallel_session	level1 array OK
+par_mksh_env_parallel_session	l1var
+par_mksh_env_parallel_session	l1func
+par_mksh_env_parallel_session	l1alias
+par_mksh_env_parallel_session	level1 array OK
+par_mksh_env_parallel_session	l2var
+par_mksh_env_parallel_session	l2func
+par_mksh_env_parallel_session	l2alias
+par_mksh_env_parallel_session	level2 array OK
+par_mksh_env_parallel_session	l2var
+par_mksh_env_parallel_session	l2func
+par_mksh_env_parallel_session	l2alias
+par_mksh_env_parallel_session	level2 array OK
 par_mksh_env_parallel_session	/bin/mksh: aliasbefore: not found
 par_mksh_env_parallel_session	/bin/mksh: aliasbefore: not found
 par_mksh_env_parallel_session	/bin/mksh: funcbefore: not found
@@ -916,9 +1196,9 @@ par_ksh_man	work,
 par_ksh_man	too
 par_ksh_man	This may never work
 par_ksh_man	https://unix.stackexchange.com/questions/457031/extract-full-function-definitions
-par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `{' unmatched
-par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `{' unmatched
-par_ksh_man	/usr/bin/ksh: line 21: syntax error at line XXX: `{' unmatched
+par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
+par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
+par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
 par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255
@@ -1003,10 +1283,102 @@ par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_ksh_env_parallel_session	### Test env_parallel --session
-par_ksh_env_parallel_session	/usr/bin/ksh: line 4: aliasbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 4: aliasbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 4: funcbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 4: funcbefore: not found
+par_ksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	l1var
+par_ksh_env_parallel_session	l1func
+par_ksh_env_parallel_session	l1alias
+par_ksh_env_parallel_session	level1 array OK
+par_ksh_env_parallel_session	l1var
+par_ksh_env_parallel_session	l1func
+par_ksh_env_parallel_session	l1alias
+par_ksh_env_parallel_session	level1 array OK
+par_ksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1alias: not found [No such file or directory]
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1alias: not found [No such file or directory]
+par_ksh_env_parallel_session	l2var
+par_ksh_env_parallel_session	l2func
+par_ksh_env_parallel_session	l2alias
+par_ksh_env_parallel_session	level2 array OK
+par_ksh_env_parallel_session	l2var
+par_ksh_env_parallel_session	l2func
+par_ksh_env_parallel_session	l2alias
+par_ksh_env_parallel_session	level2 array OK
+par_ksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	
+par_ksh_env_parallel_session	fail
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	l1var
+par_ksh_env_parallel_session	l1func
+par_ksh_env_parallel_session	l1alias
+par_ksh_env_parallel_session	level1 array OK
+par_ksh_env_parallel_session	l1var
+par_ksh_env_parallel_session	l1func
+par_ksh_env_parallel_session	l1alias
+par_ksh_env_parallel_session	level1 array OK
+par_ksh_env_parallel_session	l2var
+par_ksh_env_parallel_session	l2func
+par_ksh_env_parallel_session	l2alias
+par_ksh_env_parallel_session	level2 array OK
+par_ksh_env_parallel_session	l2var
+par_ksh_env_parallel_session	l2func
+par_ksh_env_parallel_session	l2alias
+par_ksh_env_parallel_session	level2 array OK
+par_ksh_env_parallel_session	### level0+1+2 should be transferred
+par_ksh_env_parallel_session	l0var
+par_ksh_env_parallel_session	l0func
+par_ksh_env_parallel_session	l0alias
+par_ksh_env_parallel_session	level0 array OK
+par_ksh_env_parallel_session	l0var
+par_ksh_env_parallel_session	l0func
+par_ksh_env_parallel_session	l0alias
+par_ksh_env_parallel_session	level0 array OK
+par_ksh_env_parallel_session	l1var
+par_ksh_env_parallel_session	l1func
+par_ksh_env_parallel_session	l1alias
+par_ksh_env_parallel_session	level1 array OK
+par_ksh_env_parallel_session	l1var
+par_ksh_env_parallel_session	l1func
+par_ksh_env_parallel_session	l1alias
+par_ksh_env_parallel_session	level1 array OK
+par_ksh_env_parallel_session	l2var
+par_ksh_env_parallel_session	l2func
+par_ksh_env_parallel_session	l2alias
+par_ksh_env_parallel_session	level2 array OK
+par_ksh_env_parallel_session	l2var
+par_ksh_env_parallel_session	l2func
+par_ksh_env_parallel_session	l2alias
+par_ksh_env_parallel_session	level2 array OK
+par_ksh_env_parallel_session	/usr/bin/ksh: line 3: aliasbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 3: aliasbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 3: funcbefore: not found
+par_ksh_env_parallel_session	/usr/bin/ksh: line 3: funcbefore: not found
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
@@ -1321,8 +1693,100 @@ par_dash_environment_too_big	fail_bigfunc_remote-not-supported
 par_dash_environment_too_big	fail_bigfunc_quote-not-supported
 par_dash_environment_too_big	fail_bigfunc_quote_remote-not-supported
 par_dash_env_parallel_session	### Test env_parallel --session
-par_dash_env_parallel_session	/bin/dash: XXX: aliasbefore: not found
-par_dash_env_parallel_session	/bin/dash: XXX: aliasbefore: not found
+par_dash_env_parallel_session	### level0 should be hidden, level1 should be transferred
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l1var
+par_dash_env_parallel_session	l1alias
+par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l1var
+par_dash_env_parallel_session	l1alias
+par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: 3: level0func: not found
+par_dash_env_parallel_session	/bin/dash: 3: level0alias: not found
+par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: 3: level0func: not found
+par_dash_env_parallel_session	/bin/dash: 3: level0alias: not found
+par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: 3: level1func: not found
+par_dash_env_parallel_session	/bin/dash: 3: level1alias: not found
+par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: 3: level1func: not found
+par_dash_env_parallel_session	/bin/dash: 3: level1alias: not found
+par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	l2var
+par_dash_env_parallel_session	l2alias
+par_dash_env_parallel_session	/bin/dash: 3: level2func: not found
+par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	l2var
+par_dash_env_parallel_session	l2alias
+par_dash_env_parallel_session	/bin/dash: 3: level2func: not found
+par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	
+par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l1var
+par_dash_env_parallel_session	l1alias
+par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l1var
+par_dash_env_parallel_session	l1alias
+par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l2var
+par_dash_env_parallel_session	l2alias
+par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l2var
+par_dash_env_parallel_session	l2alias
+par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	### level0+1+2 should be transferred
+par_dash_env_parallel_session	l0var
+par_dash_env_parallel_session	l0alias
+par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l0var
+par_dash_env_parallel_session	l0alias
+par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l1var
+par_dash_env_parallel_session	l1alias
+par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l1var
+par_dash_env_parallel_session	l1alias
+par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l2var
+par_dash_env_parallel_session	l2alias
+par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	l2var
+par_dash_env_parallel_session	l2alias
+par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
+par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	/bin/dash: 1: aliasbefore: not found
+par_dash_env_parallel_session	/bin/dash: 1: aliasbefore: not found
 par_dash_env_parallel_session	no_before
 par_dash_env_parallel_session	no_before
 par_dash_env_parallel_session	after aliasafter_OK
@@ -1676,23 +2140,115 @@ par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean
 par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_env_parallel_session	### Test env_parallel --session
-par_bash_env_parallel_session	/bin/bash: line XXX: aliasbefore: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: aliasbefore: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: funcbefore: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: funcbefore: command not found
+par_bash_env_parallel_session	### Test env_parallel --session / --end-session
+par_bash_env_parallel_session	### level0 should be hidden, level1 should be transferred
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	l1var
+par_bash_env_parallel_session	l1func
+par_bash_env_parallel_session	l1alias
+par_bash_env_parallel_session	level1 array OK
+par_bash_env_parallel_session	l1var
+par_bash_env_parallel_session	l1func
+par_bash_env_parallel_session	l1alias
+par_bash_env_parallel_session	level1 array OK
+par_bash_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level1func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level1alias: command not found
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level1func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level1alias: command not found
+par_bash_env_parallel_session	l2var
+par_bash_env_parallel_session	l2func
+par_bash_env_parallel_session	l2alias
+par_bash_env_parallel_session	level2 array OK
+par_bash_env_parallel_session	l2var
+par_bash_env_parallel_session	l2func
+par_bash_env_parallel_session	l2alias
+par_bash_env_parallel_session	level2 array OK
+par_bash_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	
+par_bash_env_parallel_session	fail
+par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	l1var
+par_bash_env_parallel_session	l1func
+par_bash_env_parallel_session	l1alias
+par_bash_env_parallel_session	level1 array OK
+par_bash_env_parallel_session	l1var
+par_bash_env_parallel_session	l1func
+par_bash_env_parallel_session	l1alias
+par_bash_env_parallel_session	level1 array OK
+par_bash_env_parallel_session	l2var
+par_bash_env_parallel_session	l2func
+par_bash_env_parallel_session	l2alias
+par_bash_env_parallel_session	level2 array OK
+par_bash_env_parallel_session	l2var
+par_bash_env_parallel_session	l2func
+par_bash_env_parallel_session	l2alias
+par_bash_env_parallel_session	level2 array OK
+par_bash_env_parallel_session	### level0+1+2 should be transferred
+par_bash_env_parallel_session	l0var
+par_bash_env_parallel_session	l0func
+par_bash_env_parallel_session	l0alias
+par_bash_env_parallel_session	level0 array OK
+par_bash_env_parallel_session	l0var
+par_bash_env_parallel_session	l0func
+par_bash_env_parallel_session	l0alias
+par_bash_env_parallel_session	level0 array OK
+par_bash_env_parallel_session	l1var
+par_bash_env_parallel_session	l1func
+par_bash_env_parallel_session	l1alias
+par_bash_env_parallel_session	level1 array OK
+par_bash_env_parallel_session	l1var
+par_bash_env_parallel_session	l1func
+par_bash_env_parallel_session	l1alias
+par_bash_env_parallel_session	level1 array OK
+par_bash_env_parallel_session	l2var
+par_bash_env_parallel_session	l2func
+par_bash_env_parallel_session	l2alias
+par_bash_env_parallel_session	level2 array OK
+par_bash_env_parallel_session	l2var
+par_bash_env_parallel_session	l2func
+par_bash_env_parallel_session	l2alias
+par_bash_env_parallel_session	level2 array OK
+par_bash_env_parallel_session	/bin/bash: line XXX: aliasl0: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: aliasl0: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: funcl0: command not found
+par_bash_env_parallel_session	/bin/bash: line XXX: funcl0: command not found
 par_bash_env_parallel_session	no_before
 par_bash_env_parallel_session	no_before
 par_bash_env_parallel_session	no_before
 par_bash_env_parallel_session	no_before
-par_bash_env_parallel_session	after aliasafter_OK
-par_bash_env_parallel_session	after aliasafter_OK
-par_bash_env_parallel_session	after funcafter_OK
-par_bash_env_parallel_session	after funcafter_OK
-par_bash_env_parallel_session	after varafter_OK
-par_bash_env_parallel_session	after varafter_OK
-par_bash_env_parallel_session	array after arrayafter_OK
-par_bash_env_parallel_session	array after arrayafter_OK
+par_bash_env_parallel_session	l1 aliasl1_OK
+par_bash_env_parallel_session	l1 aliasl1_OK
+par_bash_env_parallel_session	l1 funcl1_OK
+par_bash_env_parallel_session	l1 funcl1_OK
+par_bash_env_parallel_session	l1 varl1_OK
+par_bash_env_parallel_session	l1 varl1_OK
+par_bash_env_parallel_session	array l1 arrayl1_OK
+par_bash_env_parallel_session	array l1 arrayl1_OK
 par_bash_env_parallel	OK
 par_bash_env_parallel	OK
 par_bash_env_parallel	alias line 1
@@ -1833,8 +2389,100 @@ par_ash_environment_too_big	fail_bigfunc_remote-not-supported
 par_ash_environment_too_big	fail_bigfunc_quote-not-supported
 par_ash_environment_too_big	fail_bigfunc_quote_remote-not-supported
 par_ash_env_parallel_session	### Test env_parallel --session
-par_ash_env_parallel_session	/bin/ash: XXX: aliasbefore: not found
-par_ash_env_parallel_session	/bin/ash: XXX: aliasbefore: not found
+par_ash_env_parallel_session	### level0 should be hidden, level1 should be transferred
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l1var
+par_ash_env_parallel_session	l1alias
+par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l1var
+par_ash_env_parallel_session	l1alias
+par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: 3: level0func: not found
+par_ash_env_parallel_session	/bin/ash: 3: level0alias: not found
+par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: 3: level0func: not found
+par_ash_env_parallel_session	/bin/ash: 3: level0alias: not found
+par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: 3: level1func: not found
+par_ash_env_parallel_session	/bin/ash: 3: level1alias: not found
+par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: 3: level1func: not found
+par_ash_env_parallel_session	/bin/ash: 3: level1alias: not found
+par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	l2var
+par_ash_env_parallel_session	l2alias
+par_ash_env_parallel_session	/bin/ash: 3: level2func: not found
+par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	l2var
+par_ash_env_parallel_session	l2alias
+par_ash_env_parallel_session	/bin/ash: 3: level2func: not found
+par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	
+par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l1var
+par_ash_env_parallel_session	l1alias
+par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l1var
+par_ash_env_parallel_session	l1alias
+par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l2var
+par_ash_env_parallel_session	l2alias
+par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l2var
+par_ash_env_parallel_session	l2alias
+par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	### level0+1+2 should be transferred
+par_ash_env_parallel_session	l0var
+par_ash_env_parallel_session	l0alias
+par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l0var
+par_ash_env_parallel_session	l0alias
+par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l1var
+par_ash_env_parallel_session	l1alias
+par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l1var
+par_ash_env_parallel_session	l1alias
+par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l2var
+par_ash_env_parallel_session	l2alias
+par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	l2var
+par_ash_env_parallel_session	l2alias
+par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
+par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	/bin/ash: 1: aliasbefore: not found
+par_ash_env_parallel_session	/bin/ash: 1: aliasbefore: not found
 par_ash_env_parallel_session	no_before
 par_ash_env_parallel_session	no_before
 par_ash_env_parallel_session	after aliasafter_OK

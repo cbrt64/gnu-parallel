@@ -205,7 +205,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190122 ('Indonesia=Tanjung Lesung=Sunda') released <<[stable]>>
+Subject: GNU Parallel 20190122 ('Shutdown/Indonesia=Tanjung Lesung=Sunda') released <<[stable]>>
 
 GNU Parallel 20190122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -218,6 +218,8 @@ Quote of the month:
 New in this release:
 
 * Using GNU Parallel in pentesting https://youtu.be/mZ0OUJmkIlA?t=873
+
+* Supercomputer Workshop: Feb 1&7 http://www.ece.unm.edu/featured-students/supercomputer-workshop-feb-17.html
 
 * Bug fixes and man page updates.
 

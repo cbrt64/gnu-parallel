@@ -22,7 +22,8 @@ run_test() {
     export TMPDIR=/tmp/"$base"-tmpdir
     mkdir -p "$TMPDIR"
     # Clean before. May be owned by other users
-    sudo rm -f /tmp/*.{tmx,pac,arg,all,log,swp,loa,ssh,df,pip,tmb,chr,tms,par}
+    sudo rm -f /tmp/*.{tmx,pac,arg,all,log,swp,loa,ssh,df,pip,tmb,chr,tms,par} ||
+	printf "%s\0" /tmp/*.par | sudo parallel -0 -X rm
     # Force running once
     echo >> actual-results/"$base"
     if [ "$TRIES" = "3" ] ; then

@@ -7,7 +7,7 @@ par_zsh_embed	code
 par_zsh_embed	here
 par_zsh_embed	parallel_OK
 par_zsh_embed	env_parallel --env OK
-par_zsh_embed	_which_PAR:12: argument list too long: perl
+par_zsh_embed	_which_PAR:13: argument list too long: perl
 par_zsh_embed	env_parallel: Error: Your environment is too big.
 par_zsh_embed	env_parallel: Error: You can try 3 different approaches:
 par_zsh_embed	env_parallel: Error: 1. Run 'env_parallel --session' before you set

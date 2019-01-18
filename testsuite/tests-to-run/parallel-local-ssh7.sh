@@ -1707,7 +1707,7 @@ _EOF
 par_bash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+50-25-12+6-3+2
+    len_var=100+50-25-12+6-3+2-1
     len_var_remote=100-50+25+12-6+3
     len_var_quote=100-50+25-12-6+3-2
     len_var_quote_remote=100-50-25+12+6-3
@@ -2594,6 +2594,62 @@ par_ash_env_parallel_session() {
     . `which env_parallel.ash`
     echo '### Test env_parallel --session'
 
+    level0var=l0var
+# Arrays and functions not supported
+#   level0arr=(level0 array)
+#   level0func() { echo l0func; }
+    alias level0alias='echo l0alias'
+
+    env_parallel --session
+
+    level1var=l1var
+# Arrays and functions not supported
+#    level1arr=(level1 array)
+#    level1func() { echo l1func; }
+    alias level1alias='echo l1alias'
+
+    echo '### level0 should be hidden, level1 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+
+    env_parallel --session
+
+    level2var=l2var
+# Arrays and functions not supported
+#    level2arr=(level2 array)
+#    level2func() { echo l2func; }
+    alias level2alias='echo l2alias'
+
+    echo '### level0+1 should be hidden, level2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0 should be hidden, level1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0+1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
     alias aliasbefore='echo before'
 # Functions not supported
 #    varbefore='before'
@@ -2636,35 +2692,90 @@ _EOF
 
 par_bash_env_parallel_session() {
   myscript=$(cat <<'_EOF'
-    echo '### Test env_parallel --session'
+    echo '### Test env_parallel --session / --end-session'
     . `which env_parallel.bash`
 
-    alias aliasbefore='echo before'
-    varbefore='before'
-    funcbefore() { echo 'before' "$@"; }
-    arraybefore=(array before)
+    level0var=l0var
+    level0arr=(level0 array)
+    level0func() { echo l0func; }
+    alias level0alias='echo l0alias'
+
+    env_parallel --session
+
+    level1var=l1var
+    level1arr=(level1 array)
+    level1func() { echo l1func; }
+    alias level1alias='echo l1alias'
+
+    echo '### level0 should be hidden, level1 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+
+    env_parallel --session
+
+    level2var=l2var
+    level2arr=(level2 array)
+    level2func() { echo l2func; }
+    alias level2alias='echo l2alias'
+
+    echo '### level0+1 should be hidden, level2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0 should be hidden, level1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0+1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    alias aliasl0='echo l0'
+    varl0='l0'
+    funcl0() { echo 'l0' "$@"; }
+    arrayl0=(array l0)
     env_parallel --session
     # stuff defined
-    env_parallel aliasbefore ::: must_fail
-    env_parallel -S lo aliasbefore ::: must_fail
-    env_parallel funcbefore ::: must_fail
-    env_parallel -S lo funcbefore ::: must_fail
-    env_parallel echo '$varbefore' ::: no_before
-    env_parallel -S lo echo '$varbefore' ::: no_before
-    env_parallel echo '${arraybefore[*]}' ::: no_before
-    env_parallel -S lo echo '${arraybefore[*]}' ::: no_before
-    alias aliasafter='echo after'
-    varafter='after'
-    funcafter() { echo 'after' "$@"; }
-    arrayafter=(array after)
-    env_parallel aliasafter ::: aliasafter_OK
-    env_parallel -S lo aliasafter ::: aliasafter_OK
-    env_parallel funcafter ::: funcafter_OK
-    env_parallel -S lo funcafter ::: funcafter_OK
-    env_parallel echo '$varafter' ::: varafter_OK
-    env_parallel -S lo echo '$varafter' ::: varafter_OK
-    env_parallel echo '${arrayafter[*]}' ::: arrayafter_OK
-    env_parallel -S lo echo '${arrayafter[*]}' ::: arrayafter_OK
+    env_parallel aliasl0 ::: must_fail
+    env_parallel -S lo aliasl0 ::: must_fail
+    env_parallel funcl0 ::: must_fail
+    env_parallel -S lo funcl0 ::: must_fail
+    env_parallel echo '$varl0' ::: no_before
+    env_parallel -S lo echo '$varl0' ::: no_before
+    env_parallel echo '${arrayl0[*]}' ::: no_before
+    env_parallel -S lo echo '${arrayl0[*]}' ::: no_before
+    alias aliasl1='echo l1'
+    varl1='l1'
+    funcl1() { echo 'l1' "$@"; }
+    arrayl1=(array l1)
+    env_parallel aliasl1 ::: aliasl1_OK
+    env_parallel -S lo aliasl1 ::: aliasl1_OK
+    env_parallel funcl1 ::: funcl1_OK
+    env_parallel -S lo funcl1 ::: funcl1_OK
+    env_parallel echo '$varl1' ::: varl1_OK
+    env_parallel -S lo echo '$varl1' ::: varl1_OK
+    env_parallel echo '${arrayl1[*]}' ::: arrayl1_OK
+    env_parallel -S lo echo '${arrayl1[*]}' ::: arrayl1_OK
+
+
     unset PARALLEL_IGNORED_NAMES
 _EOF
   )
@@ -2679,6 +2790,62 @@ par_dash_env_parallel_session() {
   myscript=$(cat <<'_EOF'
     . `which env_parallel.dash`
     echo '### Test env_parallel --session'
+
+    level0var=l0var
+# Arrays and functions not supported
+#   level0arr=(level0 array)
+#   level0func() { echo l0func; }
+    alias level0alias='echo l0alias'
+
+    env_parallel --session
+
+    level1var=l1var
+# Arrays and functions not supported
+#    level1arr=(level1 array)
+#    level1func() { echo l1func; }
+    alias level1alias='echo l1alias'
+
+    echo '### level0 should be hidden, level1 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+
+    env_parallel --session
+
+    level2var=l2var
+# Arrays and functions not supported
+#    level2arr=(level2 array)
+#    level2func() { echo l2func; }
+    alias level2alias='echo l2alias'
+
+    echo '### level0+1 should be hidden, level2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0 should be hidden, level1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0+1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
 
     alias aliasbefore='echo before'
     varbefore='before'
@@ -2767,6 +2934,59 @@ par_ksh_env_parallel_session() {
     . `which env_parallel.ksh`
     echo '### Test env_parallel --session'
 
+    level0var=l0var
+    level0arr=(level0 array)
+    level0func() { echo l0func; }
+    alias level0alias='echo l0alias'
+
+    env_parallel --session
+
+    level1var=l1var
+    level1arr=(level1 array)
+    level1func() { echo l1func; }
+    alias level1alias='echo l1alias'
+
+    echo '### level0 should be hidden, level1 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+
+    env_parallel --session
+
+    level2var=l2var
+    level2arr=(level2 array)
+    level2func() { echo l2func; }
+    alias level2alias='echo l2alias'
+
+    echo '### level0+1 should be hidden, level2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0 should be hidden, level1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0+1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
     alias aliasbefore='echo before'
     varbefore='before'
     funcbefore() { echo 'before' "$@"; }
@@ -2803,6 +3023,59 @@ par_mksh_env_parallel_session() {
   myscript=$(cat <<'_EOF'
     . `which env_parallel.mksh`
     echo '### Test env_parallel --session'
+
+    level0var=l0var
+    level0arr=(level0 array)
+    level0func() { echo l0func; }
+    alias level0alias='echo l0alias'
+
+    env_parallel --session
+
+    level1var=l1var
+    level1arr=(level1 array)
+    level1func() { echo l1func; }
+    alias level1alias='echo l1alias'
+
+    echo '### level0 should be hidden, level1 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+
+    env_parallel --session
+
+    level2var=l2var
+    level2arr=(level2 array)
+    level2func() { echo l2func; }
+    alias level2alias='echo l2alias'
+
+    echo '### level0+1 should be hidden, level2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0 should be hidden, level1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0+1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
 
     alias aliasbefore='echo before'
     varbefore='before'
@@ -2841,19 +3114,70 @@ par_sh_env_parallel_session() {
     . `which env_parallel.sh`
     echo '### Test env_parallel --session'
 
+    level0var=l0var
+#    level0arr=(level0 array)
+    level0func() { echo l0func; }
+#    alias level0alias='echo l0alias'
+
+    env_parallel --session
+
+    level1var=l1var
+#    level1arr=(level1 array)
+    level1func() { echo l1func; }
+#    alias level1alias='echo l1alias'
+
+    echo '### level0 should be hidden, level1 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+
+    env_parallel --session
+
+    level2var=l2var
+#    level2arr=(level2 array)
+    level2func() { echo l2func; }
+#    alias level2alias='echo l2alias'
+
+    echo '### level0+1 should be hidden, level2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0 should be hidden, level1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0+1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
     alias aliasbefore='echo before'
     varbefore='before'
-# Functions not supported
-#    funcbefore() { echo 'before' "$@"; }
+    funcbefore() { echo 'before' "$@"; }
 #    Arrays not supported
 #    arraybefore=(array before)
     env_parallel --session
     # stuff defined
     env_parallel aliasbefore ::: must_fail
     env_parallel -S lo aliasbefore ::: must_fail
-# Functions not supported
-#    env_parallel funcbefore ::: must_fail
-#    env_parallel -S lo funcbefore ::: must_fail
+    env_parallel funcbefore ::: must_fail
+    env_parallel -S lo funcbefore ::: must_fail
     env_parallel echo '$varbefore' ::: no_before
     env_parallel -S lo echo '$varbefore' ::: no_before
 #    Arrays not supported
@@ -2866,9 +3190,8 @@ par_sh_env_parallel_session() {
 #    arrayafter=(array after)
     env_parallel aliasafter ::: aliasafter_OK
     env_parallel -S lo aliasafter ::: aliasafter_OK
-# Functions not supported
-#    env_parallel funcafter ::: funcafter_OK
-#    env_parallel -S lo funcafter ::: funcafter_OK
+    env_parallel funcafter ::: funcafter_OK
+    env_parallel -S lo funcafter ::: funcafter_OK
     env_parallel echo '$varafter' ::: varafter_OK
     env_parallel -S lo echo '$varafter' ::: varafter_OK
 #    Arrays not supported
@@ -2889,6 +3212,59 @@ par_zsh_env_parallel_session() {
     . `which env_parallel.zsh`
     eval "`cat <<"_EOS";
     echo '### Test env_parallel --session'
+
+    level0var=l0var
+    level0arr=(level0 array)
+    level0func() { echo l0func; }
+    alias level0alias='echo l0alias'
+
+    env_parallel --session
+
+    level1var=l1var
+    level1arr=(level1 array)
+    level1func() { echo l1func; }
+    alias level1alias='echo l1alias'
+
+    echo '### level0 should be hidden, level1 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+
+    env_parallel --session
+
+    level2var=l2var
+    level2arr=(level2 array)
+    level2func() { echo l2func; }
+    alias level2alias='echo l2alias'
+
+    echo '### level0+1 should be hidden, level2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0 should be hidden, level1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: fail
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+
+    env_parallel --endsession
+
+    echo '### level0+1+2 should be transferred'
+    env_parallel -Slo 'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel      'echo $level0var; level0func; level0alias; echo ${level0arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel      'echo $level1var; level1func; level1alias; echo ${level1arr[*]}' ::: OK
+    env_parallel -Slo 'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
+    env_parallel      'echo $level2var; level2func; level2alias; echo ${level2arr[*]}' ::: OK
 
     alias aliasbefore='echo before'
     varbefore='before'
@@ -2932,7 +3308,8 @@ export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort -r |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
     parallel --joblog /tmp/jl-`basename $0` -j200% --retries 2 --tag -k '{} 2>&1' |
-    perl -pe 's/line \d\d\d:/line XXX:/;
+    perl -pe 's/line \d?\d\d:/line XXX:/g;
               s/\d+ >= \d+/XXX >= XXX/;
               s/sh:? \d?\d\d:/sh: XXX:/;
+              s/:\d?\d\d:/:XXX:/;
               s/sh\[\d+\]/sh[XXX]/;'

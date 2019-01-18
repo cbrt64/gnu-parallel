@@ -229,13 +229,37 @@ env_parallel() {
     if [ "`perl -e 'exit grep { /^--session$/ } @ARGV' -- "$@"; echo $?`" == 0 ] ; then
 	true skip
     else
-	PARALLEL_IGNORED_NAMES="`_names_of_ALIASES;
-	 _names_of_FUNCTIONS;
-	 _names_of_VARIABLES`"
+	# Insert ::: between each level of session
+	# so you can pop off the last ::: at --end-session
+	PARALLEL_IGNORED_NAMES="`echo \"$PARALLEL_IGNORED_NAMES\";
+          echo :::;
+          (_names_of_ALIASES;
+	   _names_of_FUNCTIONS;
+	   _names_of_VARIABLES) | perl -ne '
+	    BEGIN{
+	      map { $ignored_vars{$_}++ }
+                split/\s+/, $ENV{PARALLEL_IGNORED_NAMES};
+	    }
+	    chomp;
+	    for(split/\s+/) {
+	      if(not $ignored_vars{$_}) {
+	        print $_,\"\\n\";
+	      }
+            }
+	    '`"
 	export PARALLEL_IGNORED_NAMES
 	return 0
     fi
-
+    if [ "`perl -e 'exit grep { /^--end.?session$/ } @ARGV' -- "$@"; echo $?`" == 0 ] ; then
+	true skip
+    else
+	# Pop off last ::: from PARALLEL_IGNORED_NAMES
+	PARALLEL_IGNORED_NAMES="`perl -e '
+          $ENV{PARALLEL_IGNORED_NAMES} =~ s/(.*):::.*?$/$1/s;
+	  print $ENV{PARALLEL_IGNORED_NAMES}
+        '`"
+	return 0
+    fi
     # Grep alias names
     _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES | xargs echo`"
     _list_alias_BODIES="_bodies_of_ALIASES $_alias_NAMES"

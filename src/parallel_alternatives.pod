@@ -232,7 +232,7 @@ B<find -exec> only works on files. Processing other input (such as
 hosts or URLs) will require creating these inputs as files. B<find
 -exec> has no support for running commands in parallel.
 
-https://www.gnu.org/software/findutils/
+https://www.gnu.org/software/findutils/ (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN make -j AND GNU Parallel
@@ -247,7 +247,7 @@ by GNU B<parallel> does not depend on each other.
 (Very early versions of GNU B<parallel> were coincidentally implemented
 using B<make -j>).
 
-https://www.gnu.org/software/make/
+https://www.gnu.org/software/make/ (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN ppss AND GNU Parallel
@@ -429,7 +429,7 @@ cat /var/run/my_named_pipe | parallel &
 echo unzip 1.zip >> /var/run/my_named_pipe;
 echo tar cf /backup/myhome.tar /home/me >> /var/run/my_named_pipe
 
-http://www.maier-komor.de/xjobs.html
+http://www.maier-komor.de/xjobs.html (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN prll AND GNU Parallel
@@ -451,7 +451,7 @@ using GNU B<parallel>:
   prll -s 'mogrify -flip $1' *.jpg
   parallel mogrify -flip ::: *.jpg
 
-https://github.com/exzombie/prll
+https://github.com/exzombie/prll (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN dxargs AND GNU Parallel
@@ -462,7 +462,7 @@ B<dxargs> does not deal well with more simultaneous jobs than SSHD's
 MaxStartups. B<dxargs> is only built for remote run jobs, but does not
 support transferring of files.
 
-https://web.archive.org/web/20120518070250/http://www.semicomplete.com/blog/geekery/distributed-xargs.html
+https://web.archive.org/web/20120518070250/http://www.semicomplete.com/blog/geekery/distributed-xargs.html (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN mdm/middleman AND GNU Parallel
@@ -477,7 +477,7 @@ ported to GNU B<parallel>:
   cat files | parallel cmd
   find dir -execdir sem cmd {} \;
 
-https://github.com/cklin/mdm
+https://github.com/cklin/mdm (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN xapply AND GNU Parallel
@@ -570,7 +570,7 @@ B</usr/joe>, enter:
   apply 'ln %1 /usr/joe' *
   parallel ln {} /usr/joe ::: *
 
-https://www.ibm.com/support/knowledgecenter/en/ssw_aix_61/com.ibm.aix.cmds1/apply.htm
+https://www-01.ibm.com/support/knowledgecenter/ssw_aix_71/com.ibm.aix.cmds1/apply.htm (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN paexec AND GNU Parallel
@@ -759,7 +759,7 @@ B<4> ladon "~/Music/*.wav" -- lame -V 2 FULLPATH DIRNAME/BASENAME.mp3
 
 B<4> parallel lame -V 2 FULLPATH DIRNAME/BASENAME.mp3 ::: ~/Music/*.wav
 
-https://github.com/danielgtaylor/ladon
+https://github.com/danielgtaylor/ladon (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN jobflow AND GNU Parallel
@@ -1407,6 +1407,8 @@ It can be emulated with GNU B<parallel> using this Bash function:
 
 This works except for the B<--exclude> option.
 
+(Last checked: 2017-11)
+
 
 =head2 DIFFERENCES BETWEEN pyargs AND GNU Parallel
 
@@ -1471,7 +1473,7 @@ There is also no way of controlling how many jobs should be run in
 parallel at a time - i.e. "number of jobslots". Instead all jobs are
 simply started in parallel.
 
-https://github.com/kimmobrunfeldt/concurrently
+https://github.com/kimmobrunfeldt/concurrently (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN map(soveran) AND GNU Parallel
@@ -1487,7 +1489,7 @@ B<map> itself, the output also mixes:
   seq 10 | map i 'echo start-$i && sleep 0.$i && echo end-$i &'
 
 The major difference is that GNU B<parallel> is built for parallelization
-and map is not. So GNU B<parallel> has lots of ways of dealing with the
+and B<map> is not. So GNU B<parallel> has lots of ways of dealing with the
 issues that parallelization raises:
 
 =over 4
@@ -1525,7 +1527,7 @@ Here are the 5 examples converted to GNU Parallel:
   5$ printf "1\n1\n1\n" | parallel -j0 'sleep {} && say done'
   5$ parallel -j0 'sleep {} && say done' ::: 1 1 1
 
-https://github.com/soveran/map
+https://github.com/soveran/map (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN loop AND GNU Parallel

@@ -9,7 +9,8 @@ env_parallel - export environment to GNU parallel
 
 =head1 SYNOPSIS
 
-B<env_parallel> [options for GNU Parallel]
+B<env_parallel> [--record-env|--session|--end-session]
+  [options for GNU Parallel]
 
 
 =head1 DESCRIPTION
@@ -66,7 +67,6 @@ In B<csh> B<--session> is not supported:
   # Use --env _ to only transfer the names not in the "empty" environment
   env_parallel --env _ -S localhost myalias ::: Yay,
 
-
 =head2 Environment space
 
 By default B<env_parallel> will export all environment variables,
@@ -91,7 +91,47 @@ DESCRIPTION.
 
 =head1 OPTIONS
 
-Same as GNU B<parallel>.
+Same as GNU B<parallel> in addition to these:
+
+=over 4
+
+=item B<--end-session>
+
+Undo last B<--session>
+
+=item B<--record-env>
+
+Record all names currently defined to be ignored every time running
+B<env_parallel> in the future.
+
+
+=item B<--session>
+
+Ignore all names currently defined. Aliases, variables, arrays, and
+functions currently defined will not be transferred.
+
+But names defined I<after> running B<parallel --session> I<will> be
+transferred.
+
+This is only valid in the running shell, and can be undone with
+B<parallel --end-session>.
+
+You can run multiple B<--session> inside each other:
+
+  env_parallel --session
+  var=not
+  # var is transferred
+  env_parallel -Slocalhost 'echo var is $var' ::: ignored
+  env_parallel --session
+  # var is not transferred
+  env_parallel -Slocalhost 'echo var is $var' ::: ignored
+  env_parallel --end-session
+  # var is transferred again
+  env_parallel -Slocalhost 'echo var is $var' ::: ignored
+
+
+
+=back
 
 
 =head1 SUPPORTED SHELLS
