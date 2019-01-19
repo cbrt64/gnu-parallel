@@ -3014,7 +3014,7 @@ sub progress() {
 
 {
 
-    my ($total, $first_completed, $smoothed_avg_time, $last_eta);
+    my ($first_completed, $smoothed_avg_time, $last_eta);
 
     sub compute_eta {
 	# Calculate important numbers for ETA
@@ -3025,13 +3025,14 @@ sub progress() {
 	#   $pctcomplete = percent of jobs completed
 	#   $avgtime = averaged time
 	#   $eta = smoothed eta
-	$total = $Global::JobQueue->total_jobs();
 	my $completed = $Global::total_completed;
+	# In rare cases with -X will $completed > total_jobs()
+	my $total = ::max($Global::JobQueue->total_jobs(),$completed);
 	my $left = $total - $completed;
 	if(not $completed) {
 	    return($total, $completed, $left, 0, 0, 0);
 	}
-	my $pctcomplete = $completed / $total;
+	my $pctcomplete = ::min($completed / $total,100);
 	$first_completed ||= time;
 	my $timepassed = (time - $first_completed);
 	my $avgtime = $timepassed / $completed;
@@ -3771,6 +3772,7 @@ sub onall($@) {
     # -P should only go to the first, and -S should not be copied at all.
     my $options =
 	join(" ",
+	     ((defined $opt::memfree) ? "--memfree ".$opt::memfree : ""),
 	     ((defined $opt::D) ? "-D $opt::D" : ""),
 	     ((defined $opt::group) ? "-g" : ""),
 	     ((defined $opt::jobs) ? "-P $opt::jobs" : ""),
@@ -5748,8 +5750,13 @@ sub set_last_login_at($$) {
 sub loadavg_too_high($) {
     my $self = shift;
     my $loadavg = $self->loadavg();
-    return (not defined $loadavg or
-            $loadavg > $self->max_loadavg());
+    if(defined $loadavg) {
+	::debug("load", "Load $loadavg > ",$self->max_loadavg());
+	return $loadavg >= $self->max_loadavg();
+    } else {
+	# Unknown load: Assume load is too high
+	return 1;
+    }
 }
 
 {
@@ -5878,7 +5885,7 @@ sub loadavg($) {
 	}
         # As the command can take long to run if run remote
         # save it to a tmp file before moving it to the correct file
-        ::debug("load", "Cmd: ", $cmd,"\n");
+        ::debug("load", "Update load\n");
         my $file = $self->{'loadavg_file'};
 	# tmpfile on same filesystem as $file
         my $tmpfile = $file.$$;
@@ -7110,11 +7117,16 @@ sub total_jobs($) {
 		}
 	    }
 	    $record_queue->unget(@arg_records);
-	    $self->{'total_jobs'} =
-		::ceil((1+$#arg_records+$self->{'this_job_no'})
-		       / ::max($Global::max_number_of_args,1));
+	    # $#arg_records = number of args - 1
+	    # We have read one @arg_record for this job (so add 1 more)
+	    my $num_args = $#arg_records + 2;
+	    # This jobs is not started so -1
+	    my $started_jobs = $self->{'this_job_no'} - 1;
+	    my $max_args = ::max($Global::max_number_of_args,1);
+	    $self->{'total_jobs'} = ::ceil($num_args / $max_args)
+		+ $started_jobs;
 	    ::debug("init","Total jobs: ".$self->{'total_jobs'}.
-		    " (".(1+$#arg_records)."+".$self->{'this_job_no'}.")\n");
+		    " ($num_args/$max_args + $started_jobs)\n");
 	}
     }
     return $self->{'total_jobs'};
@@ -7123,6 +7135,7 @@ sub total_jobs($) {
 sub flush_total_jobs($) {
     # Unset total_jobs to force recomputing
     my $self = shift;
+    ::debug("init","flush Total jobs: ");
     $self->{'total_jobs'} = undef;
 }
 
@@ -9181,7 +9194,9 @@ sub print_linebuffer($) {
 	    my $outputlength = 0;
 	    my $halfline_ref = $self->{'halfline'}{$fdno};
 	    my ($buf,$i,$rv);
-	    while($rv = sysread($in_fh, $buf, 131072)) {
+	    # 1310720 gives 1.2 GB/s
+	    # 131072  gives 0.9 GB/s
+	    while($rv = sysread($in_fh, $buf,1310720)) {
 		$outputlength += $rv;
 		# TODO --recend
 		# Treat both \n and \r as line end
@@ -9191,7 +9206,7 @@ sub print_linebuffer($) {
 		    if($opt::tag or defined $opt::tagstring) {
 			# Replace ^ with $tag within the full line
 			my $tag = $self->tag();
-			# TODO --recend
+			# TODO --recend that can be partially in @$halfline_ref
 			substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
 			# The length changed, so find the new ending pos
 			$i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
@@ -10712,7 +10727,7 @@ sub get($) {
 
 sub unget($) {
     my $self = shift;
-    ::debug("run", "RecordQueue-unget '@_'\n");
+    ::debug("run", "RecordQueue-unget\n");
     $self->{'arg_number'} -= @_;
     unshift @{$self->{'unget'}}, @_;
 }

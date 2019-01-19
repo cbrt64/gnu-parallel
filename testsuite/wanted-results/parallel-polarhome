@@ -1,4 +1,4 @@
-MAXTIME=50 RETRIES=2 MAXPROC=11 MAXINNERPROC=3
+MAXTIME=50 RETRIES=3 MAXPROC=100 MAXINNERPROC=3
 ### Filter out working servers
 1d0
 < openstep
@@ -453,7 +453,7 @@ hpux	Works on hpux64
 hpux-ia64	Works on hpux-ia64
 hurd	Works on hurd
 irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2458.
+irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
 macosx	Works on macosx.polarhome.com
 mandriva	Works on mandriva.polarhome.com
 miros	Works on miros.polarhome.com
@@ -499,8 +499,8 @@ hpux-ia64	1
 hurd	
 hurd	1
 irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2458.
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2458.
+irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
+irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
 macosx	2
 macosx	2
 mandriva	1
@@ -557,8 +557,8 @@ hpux-ia64	1
 hurd	1
 hurd	1
 irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2458.
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2458.
+irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
+irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
 macosx	2
 macosx	2
 mandriva	1
@@ -656,7 +656,7 @@ scosysv	OK readonly tmp
 solaris	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 solaris	 at /home/t/tange/bin/parallel line 0000
 solaris	OK readonly tmp
-solaris-x86	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/tange/bin/parallel line 0000
+solaris-x86	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 solaris-x86	OK readonly tmp
 suse	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 suse	OK readonly tmp
@@ -1043,15 +1043,15 @@ solaris	     /home/t/tange/.cshrc
 solaris	     /home/t/tange/.tcshrc
 solaris	install-OK
 solaris-x86	Installed env_parallel in:
-solaris-x86	     /home/tange/.bashrc
-solaris-x86	     /home/tange/.shrc
-solaris-x86	     /home/tange/.zshenv
-solaris-x86	     /home/tange/.config/fish/config.fish
-solaris-x86	     /home/tange/.kshrc
-solaris-x86	     /home/tange/.mkshrc
-solaris-x86	     /home/tange/.profile
-solaris-x86	     /home/tange/.cshrc
-solaris-x86	     /home/tange/.tcshrc
+solaris-x86	     ~/.bashrc
+solaris-x86	     ~/.shrc
+solaris-x86	     ~/.zshenv
+solaris-x86	     ~/.config/fish/config.fish
+solaris-x86	     ~/.kshrc
+solaris-x86	     ~/.mkshrc
+solaris-x86	     ~/.profile
+solaris-x86	     ~/.cshrc
+solaris-x86	     ~/.tcshrc
 solaris-x86	install-OK
 sshwithpass minix	Installed env_parallel in:
 sshwithpass minix	     /home/t/tange/.bashrc

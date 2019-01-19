@@ -10,7 +10,7 @@ P="$P_ALL"
 
 # tru64 takes 22s to run 4 parallels
 MAXTIME=50
-RETRIES=2
+RETRIES=3
 MAXPROC=${maxproc:-11}
 MAXINNERPROC=${maxinnerproc:-3}
 
@@ -31,16 +31,17 @@ doit() {
     export MAXTIME
     export RETRIES
     export MAXPROC
-    export RET_TIME_K="-k --retries $RETRIES --timeout $MAXTIME"
+    export RET_TIME_K="--memfree 150m -k --retries $RETRIES --timeout $MAXTIME"
     LC_ALL=C
     
+    MAXPROC=$(echo $(seq 300 | parallel -j0 echo {%} | sort -n | tail -n1) /$MAXINNERPROC | bc)
     echo MAXTIME=$MAXTIME RETRIES=$RETRIES MAXPROC=$MAXPROC MAXINNERPROC=$MAXINNERPROC
 
     echo '### Filter out working servers'
     # syllable often gives false positive
     parallel --timeout $MAXTIME -j10 ssh syllable true ::: {1..10} 2>/dev/null >/dev/null &
-    POLAR_ALL="`bin/parallel -j0 -k --timeout 10 echo {} ::: $P`"
-    POLAR="`bin/parallel -j0 -k --timeout 10 $PARALLEL_SSH {} echo {} ::: $P`"
+    POLAR_ALL="`bin/parallel --memfree 200m -j0 -k --timeout 10 echo {} ::: $P`"
+    POLAR="`bin/parallel --memfree 200m -j0 -k --timeout 10 $PARALLEL_SSH {} echo {} ::: $P`"
     diff <(echo "$POLAR_ALL") <(echo "$POLAR")
     S_POLAR=`bin/parallel -j0 $RET_TIME_K echo -S 1/{} ::: $POLAR`
 
@@ -73,8 +74,9 @@ doit() {
     export -f par_nonall
 
     echo '### Copy commands to servers'
+    # Dont copy stdout - it depends on /bin/bash
     env_parallel -vj$MAXPROC $RET_TIME_K --delay 0.03 --tag copy {2} {1} {1/} \
-	     ::: bin/{parallel,env_parallel,env_parallel.*[^~],parcat,stdout} \
+	     ::: bin/{parallel,env_parallel,env_parallel.*[^~],parcat} \
 	     ::: $POLAR minix
     echo Done copying
 
