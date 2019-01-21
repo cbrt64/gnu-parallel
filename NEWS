@@ -1,3 +1,16 @@
+20190122
+
+* 'env_parallel --end-session' makes it possible to nest 'env_parallel
+  --session'
+
+* Using GNU Parallel in pentesting https://youtu.be/mZ0OUJmkIlA?t=873
+
+* Supercomputer Workshop: Feb 1&7
+  http://www.ece.unm.edu/featured-students/supercomputer-workshop-feb-17.html
+
+* Bug fixes and man page updates.
+
+
 20181222
 
 * Better /proc/cpuinfo parser.

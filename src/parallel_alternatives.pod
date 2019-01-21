@@ -1389,7 +1389,7 @@ Output can be buffered by using B<-d>. Output is buffered in memory,
 so big output can cause swapping and therefore be terrible slow or
 even cause out of memory.
 
-https://github.com/gdm85/coshell
+https://github.com/gdm85/coshell (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN spread AND GNU Parallel
@@ -1416,8 +1416,7 @@ B<pyargs> deals badly with input containing spaces. It buffers stdout,
 but not stderr. It buffers in RAM. {} does not work as replacement
 string. It does not support running functions.
 
-B<pyargs> does not support composed commands if run with B<--lines>,
-and fails on B<pyargs traceroute gnu.org fsf.org>.
+B<pyargs> does not support composed commands if run with B<--lines>.
 
 =head3 Examples
 
@@ -1450,7 +1449,7 @@ and fails on B<pyargs traceroute gnu.org fsf.org>.
   # Similar, but not exactly the same
   parallel seq ::: 1 2 3 4 5 6
 
-https://github.com/robertblackwell/pyargs
+https://github.com/robertblackwell/pyargs (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN concurrently AND GNU Parallel
@@ -1718,17 +1717,31 @@ dependency graph described in a file, so this is similar to B<make>.
 
 https://github.com/cetra3/lorikeet (Last checked: 2018-10)
 
+
 =head2 DIFFERENCES BETWEEN spp AND GNU Parallel
 
 B<spp> can run jobs in parallel. B<spp> does not use a command
 template to generate the jobs, but requires jobs to be in a
 file. Output from the jobs mix.
 
-https://github.com/john01dav/spp
+https://github.com/john01dav/spp (Last checked: 2019-01)
+
 
 =head2 Todo
 
 Url for spread
+
+https://github.com/reggi/pkgrun
+
+https://github.com/benoror/better-npm-run
+
+https://github.com/bahmutov/with-package
+
+https://github.com/spion/npm-parallel
+
+https://github.com/royriojas/shell-executor
+
+https://github.com/darkguy2008/parallelshell
 
 https://github.com/xuchenCN/go-pssh
 
@@ -1750,8 +1763,6 @@ https://github.com/Julian/Verge
 https://github.com/amattn/paral
 
 https://github.com/mmstick/concurr
-
-pyargs
 
 
 =head1 TESTING OTHER TOOLS

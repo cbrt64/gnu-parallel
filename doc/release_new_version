@@ -213,9 +213,13 @@ GNU Parallel 20190122 ('') <<[stable]>> has been released. It is available for d
 
 Quote of the month:
 
-  <<>>
+  Ok! GNU Parallel is one of the best things out there. Almost as good as vanilla ice cream.
+    -- @coffe@mastodon.art
+
 
 New in this release:
+
+* 'env_parallel --end-session' makes it possible to nest 'env_parallel --session'
 
 * Using GNU Parallel in pentesting https://youtu.be/mZ0OUJmkIlA?t=873
 

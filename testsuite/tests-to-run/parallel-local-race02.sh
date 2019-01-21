@@ -29,50 +29,6 @@
       echo 1=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
 #}
 
-par_parcat_mixing() {
-    echo 'parcat output should mix: a b a b'
-    mktmpfifo() {
-	tmp=$(tempfile)
-	rm $tmp
-	mkfifo $tmp
-	echo $tmp
-    }
-    slow_output() {
-	string=$1
-	perl -e 'print "'$string'"x9000,"start\n"'
-	sleep 2
-	perl -e 'print "'$string'"x9000,"end\n"'
-    }
-    tmp1=$(mktmpfifo)
-    tmp2=$(mktmpfifo)
-    slow_output a > $tmp1 &
-    sleep 1
-    slow_output b > $tmp2 &
-    parcat $tmp1 $tmp2 | tr -s ab
-}
-
-par_testhalt() {
-    testhalt_false() {
-	echo '### testhalt --halt '$1;
-	(yes 0 | head -n 10; seq 10) |
-	    stdout parallel -kj4 --delay 0.27 --halt $1 \
-		   'echo job {#}; sleep {= $_=0.3*($_+1+seq()) =}; exit {}'; echo $?;
-    }
-    testhalt_true() {
-	echo '### testhalt --halt '$1;
-	(seq 10; yes 0 | head -n 10) |
-	    stdout parallel -kj4 --delay 0.17 --halt $1 \
-		   'echo job {#}; sleep {= $_=0.3*($_+1+seq()) =}; exit {}'; echo $?;
-    };
-    export -f testhalt_false;
-    export -f testhalt_true;
-
-    stdout parallel -kj0 --delay 0.11 --tag testhalt_{4} {1},{2}={3} \
-	::: now soon ::: fail success done ::: 0 1 2 30% 70% ::: true false |
-	# Remove lines that only show up now and then
-	perl -ne '/Starting no more jobs./ or print'
-}
-
 par_hostgroup() {
     echo '### --hostgroup force ncpu'
     parallel --delay 0.1 --hgrp -S @g1/1/parallel@lo -S @g2/3/lo whoami\;sleep 0.4{} ::: {1..8} | sort
@@ -105,24 +61,26 @@ par_hostgroup() {
     parallel -S @g1+g2 -S @g1/1/tcsh@lo -S @g1/1/localhost -S @g2/1/parallel@lo whoami\;true ::: {1..6} | sort
 }
 
-par_tmux_termination() {
-    echo '### --tmux test - check termination'
-    doit() {
-	perl -e 'map {printf "$_%o%c\n",$_,$_}1..255' |
-	    stdout parallel --tmux 'sleep 0.2;echo {}' :::: - ::: a b |
-	    perl -pe 's:(/tmp\S*/tms).....:$1XXXXX:;'
+par_testhalt() {
+    testhalt_false() {
+	echo '### testhalt --halt '$1;
+	(yes 0 | head -n 10; seq 10) |
+	    stdout parallel -kj4 --delay 0.27 --halt $1 \
+		   'echo job {#}; sleep {= $_=0.3*($_+1+seq()) =}; exit {}'; echo $?;
     }
-    export -f doit
-    stdout parallel --timeout 120 doit ::: 1
-}
+    testhalt_true() {
+	echo '### testhalt --halt '$1;
+	(seq 10; yes 0 | head -n 10) |
+	    stdout parallel -kj4 --delay 0.17 --halt $1 \
+		   'echo job {#}; sleep {= $_=0.3*($_+1+seq()) =}; exit {}'; echo $?;
+    };
+    export -f testhalt_false;
+    export -f testhalt_true;
 
-par_linebuffer_tag_slow_output() {
-    echo "Test output tag with mixing halflines"
-    halfline() {
-	perl -e '$| = 1; map { print $ARGV[0]; sleep(1); print "$_\n" } split //, "Half\n"' $1
-    }
-    export -f halfline
-    parallel --delay 0.5 -j0 --tag --line-buffer halfline ::: a b
+    stdout parallel -kj0 --delay 0.11 --tag testhalt_{4} {1},{2}={3} \
+	::: now soon ::: fail success done ::: 0 1 2 30% 70% ::: true false |
+	# Remove lines that only show up now and then
+	perl -ne '/Starting no more jobs./ or print'
 }
 
 par_continuous_output() {

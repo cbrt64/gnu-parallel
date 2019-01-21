@@ -1,5 +1,47 @@
 #!/bin/bash
 
+par_parcat_mixing() {
+    echo 'parcat output should mix: a b a b'
+    mktmpfifo() {
+	tmp=$(tempfile)
+	rm $tmp
+	mkfifo $tmp
+	echo $tmp
+    }
+    slow_output() {
+	string=$1
+	perl -e 'print "'$string'"x9000,"start\n"'
+	sleep 2
+	perl -e 'print "'$string'"x9000,"end\n"'
+    }
+    tmp1=$(mktmpfifo)
+    tmp2=$(mktmpfifo)
+    slow_output a > $tmp1 &
+    sleep 1
+    slow_output b > $tmp2 &
+    parcat $tmp1 $tmp2 | tr -s ab
+}
+
+par_tmux_termination() {
+    echo '### --tmux test - check termination'
+    doit() {
+	perl -e 'map {printf "$_%o%c\n",$_,$_}1..255' |
+	    stdout parallel --tmux 'sleep 0.2;echo {}' :::: - ::: a b |
+	    perl -pe 's:(/tmp\S*/tms).....:$1XXXXX:;'
+    }
+    export -f doit
+    stdout parallel --timeout 120 doit ::: 1
+}
+
+par_linebuffer_tag_slow_output() {
+    echo "Test output tag with mixing halflines"
+    halfline() {
+	perl -e '$| = 1; map { print $ARGV[0]; sleep(1); print "$_\n" } split //, "Half\n"' $1
+    }
+    export -f halfline
+    parallel --delay 0.5 -j0 --tag --line-buffer halfline ::: a b
+}
+
 par_distribute_input_by_ability() {
     echo "### bug #48290: round-robin does not distribute data based on business"
     echo "### Distribute input to jobs that are ready"

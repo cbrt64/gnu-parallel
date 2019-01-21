@@ -173,7 +173,7 @@ par_no_route_to_host() {
 	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
     }
 
-    # Retry if really fails this fast
+    # Retry if the hosts really fails this fast
     filterhosts() {
 	stdout parallel --timeout 2 -j5 ssh {} echo |
 	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
@@ -181,6 +181,7 @@ par_no_route_to_host() {
 
     (
 	# Cache a list of hosts that fail fast with 'No route'
+	# Filter the list 4 times to make sure to get good hosts
 	renice 10 -p $$ >/dev/null
 	findhosts | filterhosts | filterhosts |
 	    filterhosts | filterhosts | head > /tmp/filtered.$$

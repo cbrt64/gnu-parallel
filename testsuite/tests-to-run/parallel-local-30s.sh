@@ -82,7 +82,7 @@ linebuffer_matters() {
 	    # Ignore certain warnings
 	    # parallel: Warning: Starting 11 processes took > 2 sec.
 	    # parallel: Warning: Consider adjusting -j. Press CTRL-C to stop.
-	    grep -v '^parallel: Warning: (Starting|Consider)'
+	    grep -v '^parallel: Warning: (Starting|Consider)' >&2
 	}
 
 	parallel -j0 $linebuffer --compress $TAG \
@@ -171,7 +171,7 @@ par_test_detected_shell() {
     }
     export -f test_known_shell_pipe
 
-    stdout parallel -j0 --tag -k \
+    stdout parallel -j2 --tag -k \
 	   ::: test_unknown_shell test_known_shell_c test_known_shell_pipe \
 	   ::: $shells |
 	grep -Ev 'parallel: Warning: (Starting .* processes took|Consider adjusting)'
@@ -195,7 +195,7 @@ par_linebuffer_files() {
 	rm -rf "/tmp/par48658-$compress"
     }
     export -f doit
-    parallel --tag -k doit ::: zstd pzstd clzip lz4 lzop pigz pxz gzip plzip pbzip2 lzma xz lzip bzip2 lbzip2 lrz
+    parallel -j1 --tag -k doit ::: zstd pzstd clzip lz4 lzop pigz pxz gzip plzip pbzip2 lzma xz lzip bzip2 lbzip2 lrz
 }
 
 par_no_newline_compress() {
@@ -217,7 +217,7 @@ par_no_newline_compress() {
 	echo "K"
     }
     export -f nopipe_doit
-    parallel -qk --header : {pipe}_doit {tagstring} {compress} \
+    parallel -j1 -qk --header : {pipe}_doit {tagstring} {compress} \
 	     ::: tagstring '--tagstring {#}' -k \
 	     ::: compress --compress -k \
 	     ::: pipe pipe nopipe

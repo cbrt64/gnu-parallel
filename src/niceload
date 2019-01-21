@@ -23,7 +23,7 @@
 use strict;
 use Getopt::Long;
 $Global::progname="niceload";
-$Global::version = 20181223;
+$Global::version = 20190122;
 Getopt::Long::Configure("bundling","require_order");
 get_options_from_array(\@ARGV) || die_usage();
 if($opt::version) {

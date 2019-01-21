@@ -32,7 +32,7 @@ It is even optional to run this, as GNU Parallel will work without having 'paral
 
 > I do not write scientific articles. Does the notice apply to me?
 
-No. The notice only applies if you write scientific articles.
+The notice is only relevant if you write scientific articles.
 
 
 > What shows citing software is an academic tradition?
@@ -51,7 +51,7 @@ These links say: Yes, you should cite software, and if the author suggests a way
 If you feel the benefit from using GNU Parallel is too small to warrant a citation, then prove that by simply using another tool. If you replace your use of GNU Parallel with another tool, you obviously do not have to cite GNU Parallel. If it is too much work replacing the use of GNU Parallel, then it is a good indication that the benefit is big enough to warrant a citation.
 
 
-> Do other software show how to cite?
+> Do other software tools show how to cite?
 
 Here are other examples of software showing how to cite. Some of these refer to peer-reviewed articles - others do not:
 
@@ -77,7 +77,7 @@ This principle has even been tested in court:
 http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
 https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
 
-Also know that if you fork GNU Parallel and remove the notice, you are not helping to fund further develpment. So if you like GNU Parallel and want it to be maintained in the future, then this is a bad idea, as it will give less funding.
+Also know that if you fork GNU Parallel and remove the notice, you are not helping to fund further develpment. So if you like GNU Parallel and want it to be maintained in the future, then this is a bad idea, as it will lead to less funding.
 
 
 > How important is the notice for the survival of GNU Parallel?
