@@ -26,9 +26,9 @@
 # Fifth Floor, Boston, MA 02110-1301 USA
 
 set _parallel_exit_CODE=0
-if ("`alias env_parallel`" == '' || ! $?PARALLEL) then
+if ("`alias env_parallel`" == '' || ! $?PARALLEL_CSH) then
   # Activate alias
-  alias env_parallel '(setenv PARALLEL "\!*"; source `which env_parallel.csh`)'
+  alias env_parallel '(setenv PARALLEL_CSH "\!*"; source `which env_parallel.csh`)'
 else
   # Get the --env variables if set
   # --env _ should be ignored
@@ -50,7 +50,7 @@ else
             $vars = join "|",map { quotemeta $_ } @envvar;
             print $vars ? "($vars)" : "(.*)";
 'EOF'
-  set _grep_REGEXP="`perl $_tMpscRIpt -- $PARALLEL`"
+  set _grep_REGEXP="`perl $_tMpscRIpt -- $PARALLEL_CSH`"
 
   # Deal with --env _
   cat <<'EOF' > $_tMpscRIpt
@@ -71,7 +71,7 @@ else
                 }
             }
 'EOF'
-  set _ignore_UNDERSCORE="`perl $_tMpscRIpt -- $PARALLEL`"
+  set _ignore_UNDERSCORE="`perl $_tMpscRIpt -- $PARALLEL_CSH`"
   rm $_tMpscRIpt
 
   # Get the scalar and array variable names
@@ -92,7 +92,7 @@ else
     eval if'(${#'$_vARnAmE'} > 1) echo array_'$_vARnAmE'="$'$_vARnAmE'"' >> $_tMpvARfILe;
   end
   unset _vARnAmE _vARnAmES
-  # shell quote variables (--plain needed due to $PARALLEL abuse)
+  # shell quote variables (--plain needed due to ignore if $PARALLEL is set)
   # Convert 'scalar_myvar=...' to 'set myvar=...'
   # Convert 'array_myvar=...' to 'set array=(...)'
   cat $_tMpvARfILe | parallel --plain --shellquote |  perl -pe 's/^scalar_(\S+).=/set $1=/ or s/^array_(\S+).=(.*)/set $1=($2)/ && s/\\ / /g;' > $_tMpaLLfILe
@@ -130,10 +130,10 @@ else
 
   setenv PARALLEL_ENV "`cat $_tMpaLLfILe; rm $_tMpaLLfILe`";
   unset _tMpaLLfILe;
-  # Use $PARALLEL set in calling alias
+  # Use $PARALLEL_CSH set in calling alias
   parallel
   set _parallel_exit_CODE=$status
   setenv PARALLEL_ENV
-  setenv PARALLEL
+  setenv PARALLEL_CSH
 endif
 (exit $_parallel_exit_CODE)

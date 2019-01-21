@@ -1444,7 +1444,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20181223;
+    $Global::version = 20190122;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -2028,7 +2028,11 @@ sub read_options() {
 	}
 	# Add options from shell variable $PARALLEL
 	if($ENV{'PARALLEL'}) {
-	    @ARGV_env = shell_words($ENV{'PARALLEL'});
+	    push @ARGV_env, shell_words($ENV{'PARALLEL'});
+	}
+	# Add options from env_parallel.csh via $PARALLEL_CSH
+	if($ENV{'PARALLEL_CSH'}) {
+	    push @ARGV_env, shell_words($ENV{'PARALLEL_CSH'});
 	}
     }
     Getopt::Long::Configure("bundling","require_order");
