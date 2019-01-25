@@ -133,6 +133,7 @@ YYYYMMDD=`yyyymmdd`
 TAG=MyTag
 echo "Released as $YYYYMMDD ('$TAG')." | grep MyTag && (STOP;STOP;STOP)
 echo "$TAG" | grep ' ' && (STOP;STOP;STOP)
+echo "Released as $YYYYMMDD ('$TAG')."
 
 git commit -a -m "Released as $YYYYMMDD ('$TAG')"
 git tag -s -u 88888888 -m "Released as $YYYYMMDD ('$TAG')" $TAG
@@ -148,6 +149,7 @@ git push origin $YYYYMMDD
 Update version number + 1
 
 YYYYMMDD=$(echo `yyyymmdd`+1 | bc)
+echo $YYYYMMDD
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/parallel
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload

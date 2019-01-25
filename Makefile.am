@@ -121,6 +121,6 @@ monitorman:
 
 testurls:
 	mkdir -p urls
-	cd urls && grep -v '(dead)' ../src/* | grep -h -Po 'https?://[^ $$<>")}]+' | perl -pe 's/(&gt|\{).*//;s/\\-/-/g;s/\\n//g;s/&amp;/&/g;s/&#.*//;'"s/'.*//" | sort -u | egrep -v 'example.com|##|\*\(' | parallel -j0 --timeout 33 --bar --tag --retries 3 neno wget -m -l1 -Q1 '{=$$_=Q($$_)=}'
+	cd urls && grep -v '(dead)' ../src/* | grep -h -Po 'https?://[^ $$<>")}]+' | perl -pe 's/(&gt|\{).*//;s/\\-/-/g;s/\\n//g;s/&amp;/&/g;s/&#.*//;'"s/'.*//" | grep -Ev 'parallel-(20)?$$|coolwebsite.biz' | sort -u | egrep -v 'example.com|##|\*\(' | parallel -j0 --timeout 33 --bar --tag --joblog joblog --retries 3 neno wget -m -l1 -Q1 '{=$$_=Q($$_)=}'
 
 EXTRA_DIST = CITATION CREDITS cc-by-sa.txt fdl.txt

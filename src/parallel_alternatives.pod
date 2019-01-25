@@ -535,6 +535,7 @@ B<11> xapply -f '[ -f %1 ] && echo %1' List | ...
 
 B<11> parallel '[ -f {} ] && echo {}' < List | ...
 
+https://web.archive.org/web/20160702211113/
 http://carrera.databits.net/~ksb/msrc/local/bin/xapply/xapply.html
 
 
@@ -545,8 +546,8 @@ very much like GNU B<parallel>. B<apply> does not run jobs in
 parallel. B<apply> does not use an argument separator (like B<:::>);
 instead the template must be the first argument.
 
-Here are the examples from
-https://www-01.ibm.com/support/knowledgecenter/ssw_aix_71/com.ibm.aix.cmds1/apply.htm
+Here are the examples from IBM's Knowledge Center and the
+corresponding command using GNU B<parallel>:
 
 1. To obtain results similar to those of the B<ls> command, enter:
 
@@ -1727,6 +1728,144 @@ file. Output from the jobs mix.
 https://github.com/john01dav/spp (Last checked: 2019-01)
 
 
+=head2 DIFFERENCES BETWEEN paral AND GNU Parallel
+
+B<paral> prints a lot of status information and stores the output from
+the commands run into files. This means it cannot be used the middle
+of a pipe like this
+
+  paral "echo this" "echo does not" "echo work" | wc
+
+Instead it puts the output into files named like
+B<out_#_I<command>.out.log>. To get a very similar behaviour with GNU
+B<parallel> use B<--results
+'out_{#}_{=s/[^\sa-z_0-9]//g;s/\s+/_/g=}.log' --eta>
+
+B<paral> only takes arguments on the command line and each argument
+should be a full command. Thus it does not use command templates.
+
+This limits how many jobs it can run in total, because they all need
+to fit on a single command line.
+
+B<paral> has no support for running jobs remotely.
+
+The examples from B<README.markdown> and the corresponding command run
+with GNU B<parallel> (B<--results
+'out_{#}_{=s/[^\sa-z_0-9]//g;s/\s+/_/g=}.log' --eta> is omitted from
+the GNU B<parallel> command):
+
+  paral "command 1" "command 2 --flag" "command arg1 arg2"
+  parallel ::: "command 1" "command 2 --flag" "command arg1 arg2"
+
+  paral "sleep 1 && echo c1" "sleep 2 && echo c2" \
+    "sleep 3 && echo c3" "sleep 4 && echo c4"  "sleep 5 && echo c5"
+  parallel ::: "sleep 1 && echo c1" "sleep 2 && echo c2" \
+    "sleep 3 && echo c3" "sleep 4 && echo c4"  "sleep 5 && echo c5"
+  # Or shorter:
+  parallel "sleep {} && echo c{}" ::: {1..5}
+
+  paral -n=0 "sleep 5 && echo c5" "sleep 4 && echo c4" \
+    "sleep 3 && echo c3" "sleep 2 && echo c2" "sleep 1 && echo c1"
+  parallel ::: "sleep 5 && echo c5" "sleep 4 && echo c4" \
+    "sleep 3 && echo c3" "sleep 2 && echo c2" "sleep 1 && echo c1"
+  # Or shorter:
+  parallel -j0 "sleep {} && echo c{}" ::: 5 4 3 2 1
+
+  paral -n=1 "sleep 5 && echo c5" "sleep 4 && echo c4" \
+    "sleep 3 && echo c3" "sleep 2 && echo c2" "sleep 1 && echo c1"
+  parallel -j1 "sleep {} && echo c{}" ::: 5 4 3 2 1
+
+  paral -n=2 "sleep 5 && echo c5" "sleep 4 && echo c4" \
+    "sleep 3 && echo c3" "sleep 2 && echo c2" "sleep 1 && echo c1"
+  parallel -j2 "sleep {} && echo c{}" ::: 5 4 3 2 1
+
+  paral -n=5 "sleep 5 && echo c5" "sleep 4 && echo c4" \
+    "sleep 3 && echo c3" "sleep 2 && echo c2" "sleep 1 && echo c1"
+  parallel -j5 "sleep {} && echo c{}" ::: 5 4 3 2 1
+
+  paral -n=1 "echo a && sleep 0.5 && echo b && sleep 0.5 && \
+    echo c && sleep 0.5 && echo d && sleep 0.5 && \
+    echo e && sleep 0.5 && echo f && sleep 0.5 && \
+    echo g && sleep 0.5 && echo h"
+  parallel ::: "echo a && sleep 0.5 && echo b && sleep 0.5 && \
+    echo c && sleep 0.5 && echo d && sleep 0.5 && \
+    echo e && sleep 0.5 && echo f && sleep 0.5 && \
+    echo g && sleep 0.5 && echo h"
+
+https://github.com/amattn/paral (Last checked: 2019-01)
+
+
+=head2 DIFFERENCES BETWEEN concurr AND GNU Parallel
+
+B<concurr> is built to run jobs in parallel using a client/server
+model.
+
+The examples from B<README.md>:
+
+  concurr 'echo job {#} on slot {%}: {}' : arg1 arg2 arg3 arg4
+  parallel 'echo job {#} on slot {%}: {}' ::: arg1 arg2 arg3 arg4
+
+  concurr 'echo job {#} on slot {%}: {}' :: file1 file2 file3
+  parallel 'echo job {#} on slot {%}: {}' :::: file1 file2 file3
+
+  concurr 'echo {}' < input_file
+  parallel 'echo {}' < input_file
+
+  cat file | concurr 'echo {}'
+  cat file | parallel 'echo {}'
+
+B<concurr> deals badly empty input files and with output larger than
+64 KB.
+
+https://github.com/mmstick/concurr (Last checked: 2019-01)
+
+
+=head2 DIFFERENCES BETWEEN lesser-parallel AND GNU Parallel
+
+B<lesser-parallel> is the inspiration for B<parallel --embed>. Both
+B<lesser-parallel> and B<parallel --embed> define bash functions that
+can be included as part of a bash script to run jobs in parallel.
+
+B<lesser-parallel> implements a few of the replacement strings, but
+hardly any options, whereas B<parallel --embed> gives you the full
+GNU B<parallel> experience.
+
+https://github.com/kou1okada/lesser-parallel (Last checked: 2019-01)
+
+
+=head2 DIFFERENCES BETWEEN npm-parallel AND GNU Parallel
+
+B<npm-parallel> can run npm tasks in parallel.
+
+There are no examples and very little documentation, so it is hard to
+compare to GNU B<parallel>.
+
+https://github.com/spion/npm-parallel (Last checked: 2019-01)
+
+
+=head2 DIFFERENCES BETWEEN machma AND GNU Parallel
+
+B<machma> runs tasks in parallel. It gives time stamped
+output. It buffers in RAM. The examples from README.md:
+
+  find . -iname '*.jpg' | machma --  mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' | parallel mogrify -resize 1200x1200 -filter Lanczos {}
+
+  cat /tmp/ips | machma -p 2 -- ping -c 2 -q {}
+  cat /tmp/ips | parallel -j 2 --tag --line-buffer ping -c 2 -q {}
+
+  cat /tmp/ips | machma -- sh -c 'ping -c 2 -q $0 > /dev/null && echo alive' {}
+  cat /tmp/ips | parallel --tag 'ping -c 2 -q {} > /dev/null && echo alive'
+
+  find . -iname '*.jpg' | machma --timeout 5s --  mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' | parallel --timeout 5s  mogrify -resize 1200x1200 -filter Lanczos {}
+
+  find . -iname '*.jpg' -print0 | machma --null --  mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' -print0 | parallel --null mogrify -resize 1200x1200 -filter Lanczos {}
+
+https://github.com/fd0/machma (Last checked: 2019-01)
+
+
 =head2 Todo
 
 Url for spread
@@ -1756,13 +1895,7 @@ https://github.com/otonvm/Parallel
 
 https://github.com/flesler/parallel
 
-https://github.com/kou1okada/lesser-parallel
-
 https://github.com/Julian/Verge
-
-https://github.com/amattn/paral
-
-https://github.com/mmstick/concurr
 
 
 =head1 TESTING OTHER TOOLS
