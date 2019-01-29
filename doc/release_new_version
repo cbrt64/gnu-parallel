@@ -207,25 +207,27 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190122 ('Shutdown/Indonesia=Tanjung Lesung=Sunda') released <<[stable]>>
+Subject: GNU Parallel 20190222 ('') released <<[stable]>>
 
-GNU Parallel 20190122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-  Ok! GNU Parallel is one of the best things out there. Almost as good as vanilla ice cream.
-    -- @coffe@mastodon.art
-
+  <<>>
+  
 
 New in this release:
 
-* 'env_parallel --end-session' makes it possible to nest 'env_parallel --session'
+* blog.cogneurostats.com/?p=148
 
-* Using GNU Parallel in pentesting https://youtu.be/mZ0OUJmkIlA?t=873
+https://www.neurotrivial.com/2019/01/24/freesurfer-recon-all/
+https://pigrecoinfinito.wordpress.com/2018/12/22/come-ridimensionare-10k-foto-con-la-riga-di-comando/
+https://codeday.me/bug/20190122/552902.html
+https://www.kwbtblog.com/entry/2019/01/12/020423
 
-* Supercomputer Workshop: Feb 1&7 http://www.ece.unm.edu/featured-students/supercomputer-workshop-feb-17.html
+* https://www.youtube.com/watch?v=XHN2tm3tNaw
 
 * Bug fixes and man page updates.
 

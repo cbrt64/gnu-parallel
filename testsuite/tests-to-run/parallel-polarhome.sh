@@ -6,12 +6,15 @@ unset TIMEOUT
 env_parallel --session
 
 P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix irix hurd beaglebone cubieboard2"
+# Skip irix until Perl is upgraded
+P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix hurd beaglebone cubieboard2"
 P="$P_ALL"
 
 # tru64 takes 22s to run 4 parallels
 MAXTIME=50
 RETRIES=3
-MAXPROC=${maxproc:-11}
+# 11 too much for debian
+MAXPROC=${maxproc:-9}
 MAXINNERPROC=${maxinnerproc:-3}
 
 export PARALLEL_SSH="ssh -oLogLevel=quiet"
@@ -47,10 +50,19 @@ doit() {
 
     sshwithpass() {
 	# Minix requires sshpass. The other servers will use ssh-keys
-	sshpass -f ~/.ssh/minix.password ssh -oLogLevel=quiet "$@"
+	host="$1"
+	shift
+	if [ "$host" == "minix" ] ; then
+	    q="$(parallel --shellquote ::: "$@")"
+	    # This only works from suse and redhat
+	    ssh -T -oLogLevel=quiet suse \
+		sshpass -f ~/.ssh/minix.password ssh -T -oLogLevel=quiet $host $q
+	else
+	    ssh -oLogLevel=quiet $host "$@"
+	fi
     }
     export -f sshwithpass
-
+    
     copy() {
 	# scp, but atomic (avoid half files if disconnected)
 	host=$1
@@ -62,14 +74,14 @@ doit() {
     export -f copy
 
     par_nonall() {
-	sshwithpass() {
-	    # Minix requires sshpass. The other servers will use ssh-keys
-	    sshpass -f ~/.ssh/minix.password ssh -oLogLevel=quiet "$@"
-	}
-	export -f sshwithpass
 	parallel -j$MAXPROC $RET_TIME_K --delay 0.1 --tag \
 		 --nonall $S_POLAR -S "1/sshwithpass minix" --argsep ,:- \
 		 'source setupenv >&/dev/null || . `pwd`/setupenv;' "$@"
+	# setupenv contains something like this (adapted to the local path and shell)
+	#
+	# PATH=$HOME/bin:$PATH:/usr/local/bin
+	# export PATH
+	# . bin/env_parallel.sh
     }
     export -f par_nonall
 
@@ -110,7 +122,7 @@ doit() {
             cat <(echo bash only A)
         }
         export -f funcA;
-        bin/parallel funcA ::: 1' 2>&1
+        bin/parallel funcA ::: 1' 2>&1 | sort
 
     echo
     echo '### Does PARALLEL_SHELL help exporting a bash function'

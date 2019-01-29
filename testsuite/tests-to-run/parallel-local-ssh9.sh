@@ -169,13 +169,13 @@ par_no_route_to_host() {
     # Random hosts that there is no route to
     findhosts() {
 	ip='$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256))'
-	stdout parallel --timeout 2 -j0 ssh $ip echo ::: {1..10000} |
+	stdout parallel --timeout 2 -j0 ssh -o PasswordAuthentication=no $ip echo ::: {1..10000} |
 	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
     }
 
     # Retry if the hosts really fails this fast
     filterhosts() {
-	stdout parallel --timeout 2 -j5 ssh {} echo |
+	stdout parallel --timeout 2 -j5 ssh -o PasswordAuthentication=no {} echo |
 	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
     }
 

@@ -251,11 +251,15 @@ par_test_diff_roundrobin_k() {
     mytest() {
 	K=$1
 	doit() {
-	    perl -ne 'select(undef, undef, undef, rand()/10000);print' |
+	    # Sleep random time ever 10k line
+	    # to mix up which process gets the next block
+	    perl -ne '$t++ % 10000 or select(undef, undef, undef, rand()/1000);print' |
 		md5sum
 	}
 	export -f doit
-	seq 100000 | parallel --block 2k --pipe $K --roundrobin doit | sort
+	seq 1000000 |
+	    parallel --block 65K --pipe $K --roundrobin doit |
+	    sort
     }
     export -f mytest
     parset a,b,c mytest ::: -k -k ''
@@ -264,12 +268,13 @@ par_test_diff_roundrobin_k() {
 	if [ "$a" != "$c" ]; then
 	    echo OK
 	else
-	    echo error
+	    echo error a c
 	fi
     else
-	echo error
+	echo error a b
     fi
 }
 
 export -f $(compgen -A function | grep par_)
-compgen -A function | grep par_ | LC_ALL=C sort | parallel -j6 --tag -k '{} 2>&1'
+compgen -A function | grep par_ | LC_ALL=C sort |
+    parallel -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

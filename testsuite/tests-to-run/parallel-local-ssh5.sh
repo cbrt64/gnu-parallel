@@ -56,6 +56,25 @@ par_env_parallel_onall() {
     env_parallel -Slo --nonall doit works
 }
 
+par_command_len_shellquote() {
+    echo '### test quoting will not cause a crash if too long'
+    # echo "'''" | parallel --shellquote --shellquote --shellquote --shellquote
+
+    testlen() {
+	echo "$1" | parallel $2 | wc
+    }
+    export -f testlen
+
+    outer() {
+	export PARALLEL="--env testlen -k --tag"
+	parallel $@ testlen '{=2 $_="$arg[1]"x$_ =}' '{=3 $_=" --shellquote"x$_ =}' \
+	     ::: '"' "'" ::: {1..10} ::: {1..10}
+    }
+    export -f outer
+
+    parallel --tag -k outer ::: '-Slo -j10' ''
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort -r |
     parallel --joblog /tmp/jl-`basename $0` -j3 --tag -k --delay 0.1 --retries 3 '{} 2>&1'

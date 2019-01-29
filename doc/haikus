@@ -1,0 +1,211 @@
+Quote of the month:
+
+It's really powerful for smallish data processing scripts
+-- João Veiga @jcsvveiga@twitter
+
+It's the MapReduce of our generation!
+  -- Mathias Meyer @roidrage@twitter
+
+  GNU parallel is a seriously powerful flexible and tool.
+    -- Greg Hurrell @wincent
+
+  [socat is] top3 on my "crazy and powerful" list (the other two being
+  gnu parallel and emacs).
+    -- Peter Kjellström @nsccap@twitter
+
+
+  GNU/Parallel umm... tempting.
+    -- k-leb k @dcatdemon@twitter
+
+  Ain't that a dirty hack ;-)
+    -- ./hans
+
+  Not sure if it counts as an "alt" tool but GNU parallel really took my shell scripting game to the next level.
+    -- @alinajaf@twitter
+
+
+=== Used ===
+  Ok! GNU Parallel is one of the best things out there. Almost as good as vanilla ice cream.
+    -- @coffe@mastodon.art
+
+HOLY STUFF I LOVE GNU PARALLEL
+  -- Nick (but spookier) @NickInfoSec@twitter
+
+
+What this country needs is a president with a strong understanding of GNU Parallel, Awk, Sed, Grep, and Diff
+-- Gregg Housh @GreggHoush
+
+I know I'm late to the party but GNU Parallel is truly amazing!
+-- Sam Diaz-Munoz @sociovirology
+
+GNU parallel is a thing of magic.
+-- Josh Meyer @joshmeyerphd@twitter 
+
+I've been using GNU Parallel very much and effectively lately.
+Such an easy way to get huge speed-ups with my simple bash/Perl/Python
+programs -- parallelize them!
+-- Ken Youens-Clark @kycl4rk@twitter
+
+Alias and vars
+export them more easily
+With env_parallel
+-- Ole Tange
+
+You know what?
+GNU Parallel is cool.
+Concurrency, but in the Unix-philosophy style,
+without the Enterprise wankeriness.
+-- NickM‏ bokkiedog@twitter
+
+An ode to GNU parallel
+An ode to GNU parallel
+An ode to GNU parallel
+An ode to GNU parallel
+An ode to GNU parallel
+An ode to GNU parallel
+  -- Adam Stuckert PoisonEcology@twitter
+
+--limit can
+limit jobs dynamic'ly
+given a command
+  --ole-tange
+
+--line-buffer
+touches files on disk no more
+faster than before
+  -- Ole Tange
+
+Always test your script
+using a --dry-run
+or --dr
+  -- Ole Tange 
+
+--rpl
+used to be a static string
+Now it can take args
+  --ole-tange
+
+--tee will pipe
+all data to all the jobs
+used with --pipe
+  --ole-tange
+
+Speed is good for you
+Multi speed is better still
+Use GNU Parallel
+  -- Ole Tange
+  
+Want to monitor
+many job outputs at once:
+--tmuxpane
+  --ole-tange
+
+Pipes are fast and good.
+Use them in your programs, too.
+Use GNU Parallel
+  -- Ole Tange
+
+Programs using net
+only spare capacity
+niceload dash dash net
+  -- Ole Tange
+
+xapply too strict?
+:::+
+is just made for you
+  -- Ole Tange
+
+Save environment
+Functions, vars and other stuff
+Try env_parallel
+  -- Ole Tange
+
+Many jobs to sort.
+SQL would help a lot.
+Dash dash sql
+  -- Ole Tange
+
+Dash dash pipe too slow?
+Dash dash pipepart is your friend.
+Use GNU Parallel
+  -- Ole Tange
+
+|||||
+|||||||
+Use GNU Parallel
+  -- Malcolm Cook
+
+UNIX pipe too tight?
+You should then learn dash dash pipe.
+Use GNU Parallel
+  -- Ole Tange
+
+In parallel land
+everything is quick and fast
+Use GNU Parallel.
+  -- Ole Tange
+
+Jobs in parallel
+faster run than single jobs
+Use GNU Parallel.
+  -- Ole Tange
+
+Multi core I see.
+Doing nothing. I say no!
+Use GNU Parallel.
+  -- Ole Tange
+
+Programs very slow.
+Multiple can run at once.
+Use GNU Parallel.
+  -- Ole Tange
+
+Many jobs to run.
+Idle cores is not your thing.
+Use GNU Parallel.
+  -- Ole Tange
+
+SSH set up?
+Instant cluster needed now?
+Use GNU Parallel.
+  -- Ole Tange
+
+xargs' space and quote
+headache causing behaviour.
+Use GNU Parallel
+  -- Ole Tange
+
+If not enough time:
+Run jobs using Parallel.
+Keeps CPUs warm.
+  -- Ole Tange
+
+Hadoop bit too much?
+Want a simpler syntax now?
+Use GNU Parallel.
+  -- Ole Tange
+
+Shellshock pain hits us.
+Dash dash env is affected.
+Upgrade Parallel.
+  -- Ole Tange
+
+  goodbye to xargs
+  quoting is still a black art
+  welcome parallel
+    -- Malcolm Cook
+
+bash for loops vanquished 
+jobs fan out over network 
+collated results!
+    -- Malcolm Cook
+
+code fork headache blues? 
+option P is your new friend 
+`man parallel` now! 
+-- Malcolm Cook
+
+Are you tired of 
+inflexible replacements? 
+Use Perl expressions. 
+-- Ole Tange 

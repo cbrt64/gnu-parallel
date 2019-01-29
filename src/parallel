@@ -899,7 +899,7 @@ sub options_hash() {
 	 "use-cores-instead-of-threads"
 	 => \$opt::use_cores_instead_of_threads,
 	 "use-cpus-instead-of-cores" => \$opt::use_cpus_instead_of_cores,
-	 "shellquote|shell_quote|shell-quote" => \$opt::shellquote,
+	 "shellquote|shell_quote|shell-quote" => \@opt::shellquote,
 	 "nice=i" => \$opt::nice,
 	 "tag" => \$opt::tag,
 	 "tagstring|tag-string=s" => \$opt::tagstring,
@@ -4871,7 +4871,7 @@ sub which(@) {
 		# csh and tcsh disguise themselves as -sh/-csh
 		# E.g.: ssh -tt csh@lo 'ps aux;true' |egrep ^csh
 		# but sh also disguise itself as -sh
-		# (When?)
+		# (TODO When does that happen?)
 		"-sh" => ["sh"],
 		"-csh" => ["tcsh", "csh"],
 		# ash disguises itself as -ash
@@ -4880,7 +4880,7 @@ sub which(@) {
 		"-dash" => ["dash", "ash", "sh"],
 		# bash disguises itself as -bash
 		"-bash" => ["bash", "sh"],
-		# ksh disguises itself as -ash
+		# ksh disguises itself as -ksh
 		"-ksh" => ["ksh", "sh"],
 		# zsh disguises itself as -zsh
 		"-zsh" => ["zsh", "sh"],
@@ -7864,7 +7864,7 @@ sub wrapped($) {
     # * --nice/--cat/--fifo should be done on the remote machine
     # * --pipepart/--pipe should be done on the local machine inside --tmux
     # Uses:
-    #   $opt::shellquote
+    #   @opt::shellquote
     #   $opt::nice
     #   $Global::shell
     #   $opt::cat
@@ -7881,11 +7881,16 @@ sub wrapped($) {
 	# This will force them to run correctly, but will fail in
 	# tcsh so we do not do it.
 	# $command .= "\n\n";
-	if($opt::shellquote) {
-	    # Prepend /bin/echo (echo no-/bin is wrong in csh)
-	    # and quote twice
-	    $command = "/bin/echo " .
-		::Q(::Q($command));
+	if(@opt::shellquote) {
+	    # Quote one time for each --shellquote
+	    my $c = $command;
+	    for(@opt::shellquote) {
+		$c = ::Q($c);
+	    }
+	    # Prepend "echo" (it is written in perl because
+	    # quoting '-e' causes problem in some versions and
+	    # csh's version does something wrong)
+	    $command = q(perl -e '$,=" "; print "@ARGV\n";' -- ) . ::Q($c);
 	}
 	if($Global::parallel_env) {
 	    # If $PARALLEL_ENV set, put that in front of the command
@@ -9892,7 +9897,7 @@ sub header_indexes_sorted($) {
 
 sub len($) {
     # Uses:
-    #   $opt::shellquote
+    #   @opt::shellquote
     # The length of the command line with args substituted
     my $self = shift;
     my $len = 0;
@@ -9936,13 +9941,18 @@ sub len($) {
     }
     if($Global::quoting) {
 	# Pessimistic length if -q is set
-	# Worse than worst case: every char needs to be quoted with \
-	$len *= 2;
+	# Worse than worst case: ' => "'" + " => '"'
+	# TODO can we count the number of expanding chars?
+	#   and count them in arguments, too?
+	$len *= 3;
     }
-    if($opt::shellquote) {
+    if(@opt::shellquote) {
 	# Pessimistic length if --shellquote is set
-	# Worse than worst case: every char needs to be quoted with \ twice
-	$len *= 4;
+	# Worse than worst case: ' => "'"
+	for(@opt::shellquote) {
+	    $len *= 3;
+	}
+	$len *= 5;
     }
     if(@opt::sshlogin) {
 	# Pessimistic length if remote

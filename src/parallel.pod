@@ -2129,10 +2129,14 @@ E.g.
 B<--shebang-wrap> must be set as the first option.
 
 
-=item B<--shellquote>
+=item B<--shellquote> (alpha testing)
 
 Does not run the command but quotes it. Useful for making quoted
 composed commands for GNU B<parallel>.
+
+Multiple B<--shellquote> with quote the string multiple times, so
+B<parallel --shellquote | parallel --shellquote> can be written as
+B<parallel --shellquote --shellquote>.
 
 
 =item B<--shuf>

@@ -1,4 +1,4 @@
-MAXTIME=50 RETRIES=3 MAXPROC=100 MAXINNERPROC=3
+MAXTIME=50 RETRIES=3 MAXPROC=84 MAXINNERPROC=3
 ### Filter out working servers
 1d0
 < openstep
@@ -6,12 +6,12 @@ MAXTIME=50 RETRIES=3 MAXPROC=100 MAXINNERPROC=3
 < alpha
 7d4
 < syllable
-28,29d24
+28,31d24
 < dragonfly
 < vax
-31d25
+< ultrix
 < minix
-34,35d27
+33,34d25
 < beaglebone
 < cubieboard2
 ### Copy commands to servers
@@ -39,8 +39,6 @@ bin/parallel netbsd	copy netbsd bin/parallel parallel
 bin/parallel openbsd	copy openbsd bin/parallel parallel
 bin/parallel freebsd	copy freebsd bin/parallel parallel
 bin/parallel debian	copy debian bin/parallel parallel
-bin/parallel ultrix	copy ultrix bin/parallel parallel
-bin/parallel irix	copy irix bin/parallel parallel
 bin/parallel hurd	copy hurd bin/parallel parallel
 bin/parallel minix	copy minix bin/parallel parallel
 bin/env_parallel qnx	copy qnx bin/env_parallel env_parallel
@@ -67,8 +65,6 @@ bin/env_parallel netbsd	copy netbsd bin/env_parallel env_parallel
 bin/env_parallel openbsd	copy openbsd bin/env_parallel env_parallel
 bin/env_parallel freebsd	copy freebsd bin/env_parallel env_parallel
 bin/env_parallel debian	copy debian bin/env_parallel env_parallel
-bin/env_parallel ultrix	copy ultrix bin/env_parallel env_parallel
-bin/env_parallel irix	copy irix bin/env_parallel env_parallel
 bin/env_parallel hurd	copy hurd bin/env_parallel env_parallel
 bin/env_parallel minix	copy minix bin/env_parallel env_parallel
 bin/env_parallel.ash qnx	copy qnx bin/env_parallel.ash env_parallel.ash
@@ -95,8 +91,6 @@ bin/env_parallel.ash netbsd	copy netbsd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash openbsd	copy openbsd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash freebsd	copy freebsd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash debian	copy debian bin/env_parallel.ash env_parallel.ash
-bin/env_parallel.ash ultrix	copy ultrix bin/env_parallel.ash env_parallel.ash
-bin/env_parallel.ash irix	copy irix bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash hurd	copy hurd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash minix	copy minix bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.bash qnx	copy qnx bin/env_parallel.bash env_parallel.bash
@@ -123,8 +117,6 @@ bin/env_parallel.bash netbsd	copy netbsd bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash openbsd	copy openbsd bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash freebsd	copy freebsd bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash debian	copy debian bin/env_parallel.bash env_parallel.bash
-bin/env_parallel.bash ultrix	copy ultrix bin/env_parallel.bash env_parallel.bash
-bin/env_parallel.bash irix	copy irix bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash hurd	copy hurd bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash minix	copy minix bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.csh qnx	copy qnx bin/env_parallel.csh env_parallel.csh
@@ -151,8 +143,6 @@ bin/env_parallel.csh netbsd	copy netbsd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh openbsd	copy openbsd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh freebsd	copy freebsd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh debian	copy debian bin/env_parallel.csh env_parallel.csh
-bin/env_parallel.csh ultrix	copy ultrix bin/env_parallel.csh env_parallel.csh
-bin/env_parallel.csh irix	copy irix bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh hurd	copy hurd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh minix	copy minix bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.dash qnx	copy qnx bin/env_parallel.dash env_parallel.dash
@@ -179,8 +169,6 @@ bin/env_parallel.dash netbsd	copy netbsd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash openbsd	copy openbsd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash freebsd	copy freebsd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash debian	copy debian bin/env_parallel.dash env_parallel.dash
-bin/env_parallel.dash ultrix	copy ultrix bin/env_parallel.dash env_parallel.dash
-bin/env_parallel.dash irix	copy irix bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash hurd	copy hurd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash minix	copy minix bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.fish qnx	copy qnx bin/env_parallel.fish env_parallel.fish
@@ -207,8 +195,6 @@ bin/env_parallel.fish netbsd	copy netbsd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish openbsd	copy openbsd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish freebsd	copy freebsd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish debian	copy debian bin/env_parallel.fish env_parallel.fish
-bin/env_parallel.fish ultrix	copy ultrix bin/env_parallel.fish env_parallel.fish
-bin/env_parallel.fish irix	copy irix bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish hurd	copy hurd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish minix	copy minix bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.ksh qnx	copy qnx bin/env_parallel.ksh env_parallel.ksh
@@ -235,8 +221,6 @@ bin/env_parallel.ksh netbsd	copy netbsd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh openbsd	copy openbsd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh freebsd	copy freebsd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh debian	copy debian bin/env_parallel.ksh env_parallel.ksh
-bin/env_parallel.ksh ultrix	copy ultrix bin/env_parallel.ksh env_parallel.ksh
-bin/env_parallel.ksh irix	copy irix bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh hurd	copy hurd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh minix	copy minix bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.mksh qnx	copy qnx bin/env_parallel.mksh env_parallel.mksh
@@ -263,8 +247,6 @@ bin/env_parallel.mksh netbsd	copy netbsd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh openbsd	copy openbsd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh freebsd	copy freebsd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh debian	copy debian bin/env_parallel.mksh env_parallel.mksh
-bin/env_parallel.mksh ultrix	copy ultrix bin/env_parallel.mksh env_parallel.mksh
-bin/env_parallel.mksh irix	copy irix bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh hurd	copy hurd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh minix	copy minix bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.pdksh qnx	copy qnx bin/env_parallel.pdksh env_parallel.pdksh
@@ -291,8 +273,6 @@ bin/env_parallel.pdksh netbsd	copy netbsd bin/env_parallel.pdksh env_parallel.pd
 bin/env_parallel.pdksh openbsd	copy openbsd bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh freebsd	copy freebsd bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh debian	copy debian bin/env_parallel.pdksh env_parallel.pdksh
-bin/env_parallel.pdksh ultrix	copy ultrix bin/env_parallel.pdksh env_parallel.pdksh
-bin/env_parallel.pdksh irix	copy irix bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh hurd	copy hurd bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh minix	copy minix bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.sh qnx	copy qnx bin/env_parallel.sh env_parallel.sh
@@ -319,8 +299,6 @@ bin/env_parallel.sh netbsd	copy netbsd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh openbsd	copy openbsd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh freebsd	copy freebsd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh debian	copy debian bin/env_parallel.sh env_parallel.sh
-bin/env_parallel.sh ultrix	copy ultrix bin/env_parallel.sh env_parallel.sh
-bin/env_parallel.sh irix	copy irix bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh hurd	copy hurd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh minix	copy minix bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.tcsh qnx	copy qnx bin/env_parallel.tcsh env_parallel.tcsh
@@ -347,8 +325,6 @@ bin/env_parallel.tcsh netbsd	copy netbsd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh openbsd	copy openbsd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh freebsd	copy freebsd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh debian	copy debian bin/env_parallel.tcsh env_parallel.tcsh
-bin/env_parallel.tcsh ultrix	copy ultrix bin/env_parallel.tcsh env_parallel.tcsh
-bin/env_parallel.tcsh irix	copy irix bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh hurd	copy hurd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh minix	copy minix bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.zsh qnx	copy qnx bin/env_parallel.zsh env_parallel.zsh
@@ -375,8 +351,6 @@ bin/env_parallel.zsh netbsd	copy netbsd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh openbsd	copy openbsd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh freebsd	copy freebsd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh debian	copy debian bin/env_parallel.zsh env_parallel.zsh
-bin/env_parallel.zsh ultrix	copy ultrix bin/env_parallel.zsh env_parallel.zsh
-bin/env_parallel.zsh irix	copy irix bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh hurd	copy hurd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh minix	copy minix bin/env_parallel.zsh env_parallel.zsh
 bin/parcat qnx	copy qnx bin/parcat parcat
@@ -403,38 +377,8 @@ bin/parcat netbsd	copy netbsd bin/parcat parcat
 bin/parcat openbsd	copy openbsd bin/parcat parcat
 bin/parcat freebsd	copy freebsd bin/parcat parcat
 bin/parcat debian	copy debian bin/parcat parcat
-bin/parcat ultrix	copy ultrix bin/parcat parcat
-bin/parcat irix	copy irix bin/parcat parcat
 bin/parcat hurd	copy hurd bin/parcat parcat
 bin/parcat minix	copy minix bin/parcat parcat
-bin/stdout qnx	copy qnx bin/stdout stdout
-bin/stdout pidora	copy pidora bin/stdout stdout
-bin/stdout tru64	copy tru64 bin/stdout stdout
-bin/stdout hpux-ia64	copy hpux-ia64 bin/stdout stdout
-bin/stdout raspbian	copy raspbian bin/stdout stdout
-bin/stdout solaris	copy solaris bin/stdout stdout
-bin/stdout openindiana	copy openindiana bin/stdout stdout
-bin/stdout aix	copy aix bin/stdout stdout
-bin/stdout hpux	copy hpux bin/stdout stdout
-bin/stdout debian-ppc	copy debian-ppc bin/stdout stdout
-bin/stdout suse	copy suse bin/stdout stdout
-bin/stdout solaris-x86	copy solaris-x86 bin/stdout stdout
-bin/stdout mandriva	copy mandriva bin/stdout stdout
-bin/stdout ubuntu	copy ubuntu bin/stdout stdout
-bin/stdout scosysv	copy scosysv bin/stdout stdout
-bin/stdout unixware	copy unixware bin/stdout stdout
-bin/stdout centos	copy centos bin/stdout stdout
-bin/stdout miros	copy miros bin/stdout stdout
-bin/stdout macosx	copy macosx bin/stdout stdout
-bin/stdout redhat	copy redhat bin/stdout stdout
-bin/stdout netbsd	copy netbsd bin/stdout stdout
-bin/stdout openbsd	copy openbsd bin/stdout stdout
-bin/stdout freebsd	copy freebsd bin/stdout stdout
-bin/stdout debian	copy debian bin/stdout stdout
-bin/stdout ultrix	copy ultrix bin/stdout stdout
-bin/stdout irix	copy irix bin/stdout stdout
-bin/stdout hurd	copy hurd bin/stdout stdout
-bin/stdout minix	copy minix bin/stdout stdout
 Done copying
 
     echo
@@ -452,8 +396,6 @@ freebsd	Syntax error: Bad fd number
 hpux	Works on hpux64
 hpux-ia64	Works on hpux-ia64
 hurd	Works on hurd
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
 macosx	Works on macosx.polarhome.com
 mandriva	Works on mandriva.polarhome.com
 miros	Works on miros.polarhome.com
@@ -498,9 +440,6 @@ hpux-ia64	1
 hpux-ia64	1
 hurd	
 hurd	1
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
 macosx	2
 macosx	2
 mandriva	1
@@ -556,9 +495,6 @@ hpux-ia64	2
 hpux-ia64	1
 hurd	1
 hurd	1
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
-irix	Unknown open() mode '>&' at /home/t/tange/bin/parallel line 2358.
 macosx	2
 macosx	2
 mandriva	1
@@ -625,8 +561,6 @@ hpux-ia64	 at /home/t/tange/bin/parallel line 0000
 hpux-ia64	OK readonly tmp
 hurd	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 hurd	OK readonly tmp
-irix	Undefined subroutine &main::decode_base64 called at -e line 1.
-irix	open3: exec of bzip2 -dc failed at -e line 1
 macosx	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /Users/tange/bin/parallel line 0000
 macosx	OK readonly tmp
 mandriva	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
@@ -656,8 +590,9 @@ scosysv	OK readonly tmp
 solaris	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 solaris	 at /home/t/tange/bin/parallel line 0000
 solaris	OK readonly tmp
-solaris-x86	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
+solaris-x86	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/tange/bin/parallel line 0000
 solaris-x86	OK readonly tmp
+sshwithpass minix	OKreadonlytmp
 suse	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 suse	OK readonly tmp
 tru64	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
@@ -665,9 +600,9 @@ tru64	 at /home/t/tange/bin/parallel line 0000
 tru64	OK readonly tmp
 ubuntu	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
 ubuntu	OK readonly tmp
-ultrix	open3: wtr should not be null at -e line 1
+unixware	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+unixware	OK readonly tmp
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
-unixware	UX:env: ERROR: No such file or directory: bash
     echo
     echo '### Does exporting a bash function make parallel fail?'
     echo 'If login shell is not bash compatible it fails'
@@ -678,68 +613,65 @@ unixware	UX:env: ERROR: No such file or directory: bash
             cat <(echo bash only A)
         }
         export -f funcA;
-        bin/parallel funcA ::: 1' 2>&1
+        bin/parallel funcA ::: 1' 2>&1 | sort
 
 ### Does exporting a bash function make parallel fail?
 If login shell is not bash compatible it fails
 
-aix	test funcA
 aix	bash only A
-centos	test funcA
+aix	test funcA
 centos	bash only A
-debian	test funcA
+centos	test funcA
 debian	bash only A
-debian-ppc	test funcA
+debian	test funcA
 debian-ppc	bash only A
+debian-ppc	test funcA
 freebsd	Syntax error: Bad fd number
-hpux	test funcA
 hpux	bash only A
-hpux-ia64	test funcA
+hpux	test funcA
 hpux-ia64	bash only A
-hurd	test funcA
+hpux-ia64	test funcA
 hurd	bash only A
-irix	Undefined subroutine &main::decode_base64 called at -e line 1.
-irix	open3: exec of bzip2 -dc failed at -e line 1
-macosx	test funcA
+hurd	test funcA
 macosx	bash only A
-mandriva	test funcA
+macosx	test funcA
 mandriva	bash only A
-miros	test funcA
+mandriva	test funcA
 miros	bash only A
-netbsd	test funcA
+miros	test funcA
 netbsd	Badly placed ()'s.
 netbsd	Missing name for redirect.
-netbsd	}: Command not found.
 netbsd	export: Command not found.
 netbsd	funcA: Command not found.
-openbsd	test funcA
+netbsd	test funcA
+netbsd	}: Command not found.
 openbsd	bash only A
-openindiana	test funcA
+openbsd	test funcA
 openindiana	bash only A
-pidora	test funcA
+openindiana	test funcA
 pidora	bash only A
+pidora	test funcA
 qnx	/bin/sh: syntax error: `(' unexpected
-raspbian	test funcA
 raspbian	bash only A
-redhat	test funcA
+raspbian	test funcA
 redhat	bash only A
-scosysv	test funcA
+redhat	test funcA
 scosysv	bash only A
-solaris	test funcA
+scosysv	test funcA
 solaris	bash only A
-solaris-x86	test funcA
+solaris	test funcA
 solaris-x86	bash only A
+solaris-x86	test funcA
 sshwithpass minix	test funcA
-suse	test funcA
 suse	bash only A
-tru64	test funcA
+suse	test funcA
 tru64	bash only A
-ubuntu	test funcA
+tru64	test funcA
 ubuntu	bash only A
-ultrix	open3: wtr should not be null at -e line 1
-unixware	test funcA
-unixware	UX:sh (/bin/sh): ERROR: source: Not found
+ubuntu	test funcA
 unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 3: `(' unexpected
+unixware	UX:sh (/bin/sh): ERROR: source: Not found
+unixware	test funcA
     echo
     echo '### Does PARALLEL_SHELL help exporting a bash function'
     echo 'If login shell is not bash compatible it should work'
@@ -775,8 +707,6 @@ hpux-ia64	test funcB
 hpux-ia64	bash only B
 hurd	test funcB
 hurd	bash only B
-irix	Undefined subroutine &main::decode_base64 called at -e line 1.
-irix	open3: exec of bzip2 -dc failed at -e line 1
 macosx	test funcB
 macosx	bash only B
 mandriva	test funcB
@@ -812,7 +742,6 @@ tru64	test funcB
 tru64	bash only B
 ubuntu	test funcB
 ubuntu	bash only B
-ultrix	open3: wtr should not be null at -e line 1
 unixware	test funcB
 unixware	bash only B
     echo
@@ -907,8 +836,6 @@ hurd	     /home/t/tange/.profile
 hurd	     /home/t/tange/.cshrc
 hurd	     /home/t/tange/.tcshrc
 hurd	install-OK
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	env: bash: No such file or directory
 macosx	Installed env_parallel in:
 macosx	     /Users/tange/.bashrc
 macosx	     /Users/tange/.shrc
@@ -1043,15 +970,15 @@ solaris	     /home/t/tange/.cshrc
 solaris	     /home/t/tange/.tcshrc
 solaris	install-OK
 solaris-x86	Installed env_parallel in:
-solaris-x86	     ~/.bashrc
-solaris-x86	     ~/.shrc
-solaris-x86	     ~/.zshenv
-solaris-x86	     ~/.config/fish/config.fish
-solaris-x86	     ~/.kshrc
-solaris-x86	     ~/.mkshrc
-solaris-x86	     ~/.profile
-solaris-x86	     ~/.cshrc
-solaris-x86	     ~/.tcshrc
+solaris-x86	     /home/tange/.bashrc
+solaris-x86	     /home/tange/.shrc
+solaris-x86	     /home/tange/.zshenv
+solaris-x86	     /home/tange/.config/fish/config.fish
+solaris-x86	     /home/tange/.kshrc
+solaris-x86	     /home/tange/.mkshrc
+solaris-x86	     /home/tange/.profile
+solaris-x86	     /home/tange/.cshrc
+solaris-x86	     /home/tange/.tcshrc
 solaris-x86	install-OK
 sshwithpass minix	Installed env_parallel in:
 sshwithpass minix	     /home/t/tange/.bashrc
@@ -1097,8 +1024,18 @@ ubuntu	     /home/t/tange/.profile
 ubuntu	     /home/t/tange/.cshrc
 ubuntu	     /home/t/tange/.tcshrc
 ubuntu	install-OK
+unixware	Installed env_parallel in:
+unixware	     /home/t/tange/.bashrc
+unixware	     /home/t/tange/.shrc
+unixware	     /home/t/tange/.zshenv
+unixware	     /home/t/tange/.config/fish/config.fish
+unixware	     /home/t/tange/.kshrc
+unixware	     /home/t/tange/.mkshrc
+unixware	     /home/t/tange/.profile
+unixware	     /home/t/tange/.cshrc
+unixware	     /home/t/tange/.tcshrc
+unixware	install-OK
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
-unixware	UX:env: ERROR: No such file or directory: bash
 aix	env_parallel run-OK
 centos	env_parallel run-OK
 debian	env_parallel run-OK
@@ -1107,8 +1044,6 @@ freebsd	Syntax error: Bad fd number
 hpux	env_parallel run-OK
 hpux-ia64	env_parallel run-OK
 hurd	env_parallel run-OK
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	env: bash: No such file or directory
 macosx	env_parallel run-OK
 mandriva	env_parallel run-OK
 miros	env_parallel run-OK
@@ -1134,8 +1069,6 @@ tru64	env_parallel run-OK
 ubuntu	env_parallel run-OK
 unixware	env_parallel run-OK
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
-parallel: Warning: Starting 11 processes took > 2 sec.
-parallel: Warning: Consider adjusting -j. Press CTRL-C to stop.
 aix	reading from process substitution OK
 centos	reading from process substitution OK
 debian	reading from process substitution OK
@@ -1144,8 +1077,6 @@ freebsd	Syntax error: "(" unexpected (expecting word)
 hpux	reading from process substitution OK
 hpux-ia64	reading from process substitution OK
 hurd	reading from process substitution OK
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	env: bash: No such file or directory
 macosx	reading from process substitution OK
 mandriva	reading from process substitution OK
 miros	reading from process substitution OK
@@ -1165,7 +1096,6 @@ sshwithpass minix	reading from process substitution OK
 suse	reading from process substitution OK
 tru64	reading from process substitution OK
 ubuntu	reading from process substitution OK
-ultrix	Missing name for redirect.
 unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `(' unexpected
     # Test empty command name in process list
     test_empty_cmd() {
@@ -1194,8 +1124,6 @@ hpux-ia64	### Test if empty command name in process list causes problems
 hpux-ia64	OK_with_empty_cmd
 hurd	### Test if empty command name in process list causes problems
 hurd	OK_with_empty_cmd
-irix	open3: exec of bzip2 -dc failed at -e line 1
-irix	Undefined subroutine &main::decode_base64 called at -e line 1.
 macosx	### Test if empty command name in process list causes problems
 macosx	OK_with_empty_cmd
 mandriva	### Test if empty command name in process list causes problems
@@ -1231,7 +1159,6 @@ tru64	### Test if empty command name in process list causes problems
 tru64	OK_with_empty_cmd
 ubuntu	### Test if empty command name in process list causes problems
 ubuntu	OK_with_empty_cmd
-ultrix	open3: wtr should not be null at -e line 1
 unixware	### Test if empty command name in process list causes problems
 unixware	OK_with_empty_cmd
     echo
@@ -1253,9 +1180,6 @@ freebsd	Syntax error: Bad fd number
 hpux	
 hpux-ia64	1 2 1 2 3 1 2 3 4
 hurd	1 2 1 2 3 1 2 3 4
-irix	
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	/usr/freeware/bin/bash: line 1: parset: command not found
 macosx	1 2 1 2 3 1 2 3 4
 mandriva	1 2 1 2 3 1 2 3 4
 miros	1 2 1 2 3 1 2 3 4
@@ -1288,9 +1212,6 @@ freebsd	Syntax error: Bad fd number
 hpux	
 hpux-ia64	1 2 1 2 1 2
 hurd	2 2 3 2 3 4
-irix	
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	/usr/freeware/bin/bash: line 1: env_parset: command not found
 macosx	2 2 3 2 3 4
 mandriva	2 2 3 2 3 4
 miros	1 2 1 2 1 2
@@ -1338,9 +1259,6 @@ freebsd	Syntax error: Bad fd number
 hpux	,,
 hpux-ia64	1 2,1 2 3,1 2 3 4
 hurd	1 2,1 2 3,1 2 3 4
-irix	,,
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	/usr/freeware/bin/bash: line 1: parset: command not found
 macosx	1 2,1 2 3,1 2 3 4
 mandriva	1 2,1 2 3,1 2 3 4
 miros	1 2,1 2 3,1 2 3 4
@@ -1362,7 +1280,7 @@ sshwithpass minix	1 2,1 2 3,1 2 3 4
 suse	1 2,1 2 3,1 2 3 4
 tru64	1 2,1 2 3,1 2 3 4
 ubuntu	1 2,1 2 3,1 2 3 4
-unixware	,,
+unixware	1 2,1 2 3,1 2 3 4
 unixware	UX:sh (/bin/sh): ERROR: source: Not found
 ### env_parset var1,var2,var3 seq ::: 2 3 4
 aix	2,2 3,2 3 4
@@ -1373,9 +1291,6 @@ freebsd	Syntax error: Bad fd number
 hpux	,,
 hpux-ia64	1 2,1 2,1 2
 hurd	2,2 3,2 3 4
-irix	,,
-irix	/usr/freeware/bin/bash: line 1: /home/t/tange/setupenv: No such file or directory
-irix	/usr/freeware/bin/bash: line 1: env_parset: command not found
 macosx	2,2 3,2 3 4
 mandriva	2,2 3,2 3 4
 miros	1 2,1 2,1 2

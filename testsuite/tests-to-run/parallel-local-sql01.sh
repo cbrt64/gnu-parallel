@@ -129,4 +129,6 @@ compgen -A function | grep par_ | sort |
   perl -pe 's/(from TBL99999 order) .*/$1/g' |
   perl -pe 's/ *\b'"$hostname"'\b */hostname/g' | 
   grep -v -- --------------- |
-  perl -pe 's/ *\bhost\b */host/g'
+  perl -pe 's/ *\bhost\b */host/g' |
+  perl -pe 's/ +/ /g'
+

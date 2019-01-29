@@ -18,6 +18,527 @@ par_env_parallel_onall	Myfunc works
 par_controlmaster_eats	bug #36707: --controlmaster eats jobs
 par_controlmaster_eats	OK1
 par_controlmaster_eats	OK2
+par_command_len_shellquote	### test quoting will not cause a crash if too long
+par_command_len_shellquote	-Slo -j10	" 1 1	      1       1       4
+par_command_len_shellquote	-Slo -j10	" 1 2	      1       1      10
+par_command_len_shellquote	-Slo -j10	" 1 3	      1       1      28
+par_command_len_shellquote	-Slo -j10	" 1 4	      1       1      82
+par_command_len_shellquote	-Slo -j10	" 1 5	      1       1     244
+par_command_len_shellquote	-Slo -j10	" 1 6	      1       1     730
+par_command_len_shellquote	-Slo -j10	" 1 7	      1       1    2188
+par_command_len_shellquote	-Slo -j10	" 1 8	      1       1    6562
+par_command_len_shellquote	-Slo -j10	" 1 9	      1       1   19684
+par_command_len_shellquote	-Slo -j10	" 1 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 2 1	      1       1       5
+par_command_len_shellquote	-Slo -j10	" 2 2	      1       1      11
+par_command_len_shellquote	-Slo -j10	" 2 3	      1       1      29
+par_command_len_shellquote	-Slo -j10	" 2 4	      1       1      83
+par_command_len_shellquote	-Slo -j10	" 2 5	      1       1     245
+par_command_len_shellquote	-Slo -j10	" 2 6	      1       1     731
+par_command_len_shellquote	-Slo -j10	" 2 7	      1       1    2189
+par_command_len_shellquote	-Slo -j10	" 2 8	      1       1    6563
+par_command_len_shellquote	-Slo -j10	" 2 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 2 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 3 1	      1       1       6
+par_command_len_shellquote	-Slo -j10	" 3 2	      1       1      12
+par_command_len_shellquote	-Slo -j10	" 3 3	      1       1      30
+par_command_len_shellquote	-Slo -j10	" 3 4	      1       1      84
+par_command_len_shellquote	-Slo -j10	" 3 5	      1       1     246
+par_command_len_shellquote	-Slo -j10	" 3 6	      1       1     732
+par_command_len_shellquote	-Slo -j10	" 3 7	      1       1    2190
+par_command_len_shellquote	-Slo -j10	" 3 8	      1       1    6564
+par_command_len_shellquote	-Slo -j10	" 3 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 3 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 4 1	      1       1       7
+par_command_len_shellquote	-Slo -j10	" 4 2	      1       1      13
+par_command_len_shellquote	-Slo -j10	" 4 3	      1       1      31
+par_command_len_shellquote	-Slo -j10	" 4 4	      1       1      85
+par_command_len_shellquote	-Slo -j10	" 4 5	      1       1     247
+par_command_len_shellquote	-Slo -j10	" 4 6	      1       1     733
+par_command_len_shellquote	-Slo -j10	" 4 7	      1       1    2191
+par_command_len_shellquote	-Slo -j10	" 4 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 4 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 4 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 5 1	      1       1       8
+par_command_len_shellquote	-Slo -j10	" 5 2	      1       1      14
+par_command_len_shellquote	-Slo -j10	" 5 3	      1       1      32
+par_command_len_shellquote	-Slo -j10	" 5 4	      1       1      86
+par_command_len_shellquote	-Slo -j10	" 5 5	      1       1     248
+par_command_len_shellquote	-Slo -j10	" 5 6	      1       1     734
+par_command_len_shellquote	-Slo -j10	" 5 7	      1       1    2192
+par_command_len_shellquote	-Slo -j10	" 5 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 5 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 5 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 6 1	      1       1       9
+par_command_len_shellquote	-Slo -j10	" 6 2	      1       1      15
+par_command_len_shellquote	-Slo -j10	" 6 3	      1       1      33
+par_command_len_shellquote	-Slo -j10	" 6 4	      1       1      87
+par_command_len_shellquote	-Slo -j10	" 6 5	      1       1     249
+par_command_len_shellquote	-Slo -j10	" 6 6	      1       1     735
+par_command_len_shellquote	-Slo -j10	" 6 7	      1       1    2193
+par_command_len_shellquote	-Slo -j10	" 6 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 6 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 6 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 7 1	      1       1      10
+par_command_len_shellquote	-Slo -j10	" 7 2	      1       1      16
+par_command_len_shellquote	-Slo -j10	" 7 3	      1       1      34
+par_command_len_shellquote	-Slo -j10	" 7 4	      1       1      88
+par_command_len_shellquote	-Slo -j10	" 7 5	      1       1     250
+par_command_len_shellquote	-Slo -j10	" 7 6	      1       1     736
+par_command_len_shellquote	-Slo -j10	" 7 7	      1       1    2194
+par_command_len_shellquote	-Slo -j10	" 7 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 7 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 7 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 8 1	      1       1      11
+par_command_len_shellquote	-Slo -j10	" 8 2	      1       1      17
+par_command_len_shellquote	-Slo -j10	" 8 3	      1       1      35
+par_command_len_shellquote	-Slo -j10	" 8 4	      1       1      89
+par_command_len_shellquote	-Slo -j10	" 8 5	      1       1     251
+par_command_len_shellquote	-Slo -j10	" 8 6	      1       1     737
+par_command_len_shellquote	-Slo -j10	" 8 7	      1       1    2195
+par_command_len_shellquote	-Slo -j10	" 8 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 8 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 8 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 9 1	      1       1      12
+par_command_len_shellquote	-Slo -j10	" 9 2	      1       1      18
+par_command_len_shellquote	-Slo -j10	" 9 3	      1       1      36
+par_command_len_shellquote	-Slo -j10	" 9 4	      1       1      90
+par_command_len_shellquote	-Slo -j10	" 9 5	      1       1     252
+par_command_len_shellquote	-Slo -j10	" 9 6	      1       1     738
+par_command_len_shellquote	-Slo -j10	" 9 7	      1       1    2196
+par_command_len_shellquote	-Slo -j10	" 9 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 9 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 9 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 10 1	      1       1      13
+par_command_len_shellquote	-Slo -j10	" 10 2	      1       1      19
+par_command_len_shellquote	-Slo -j10	" 10 3	      1       1      37
+par_command_len_shellquote	-Slo -j10	" 10 4	      1       1      91
+par_command_len_shellquote	-Slo -j10	" 10 5	      1       1     253
+par_command_len_shellquote	-Slo -j10	" 10 6	      1       1     739
+par_command_len_shellquote	-Slo -j10	" 10 7	      1       1    2197
+par_command_len_shellquote	-Slo -j10	" 10 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 10 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 10 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 1 1	      1       1       4
+par_command_len_shellquote	-Slo -j10	' 1 2	      1       1      10
+par_command_len_shellquote	-Slo -j10	' 1 3	      1       1      28
+par_command_len_shellquote	-Slo -j10	' 1 4	      1       1      82
+par_command_len_shellquote	-Slo -j10	' 1 5	      1       1     244
+par_command_len_shellquote	-Slo -j10	' 1 6	      1       1     730
+par_command_len_shellquote	-Slo -j10	' 1 7	      1       1    2188
+par_command_len_shellquote	-Slo -j10	' 1 8	      1       1    6562
+par_command_len_shellquote	-Slo -j10	' 1 9	      1       1   19684
+par_command_len_shellquote	-Slo -j10	' 1 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 2 1	      1       1       9
+par_command_len_shellquote	-Slo -j10	' 2 2	      1       1      27
+par_command_len_shellquote	-Slo -j10	' 2 3	      1       1      81
+par_command_len_shellquote	-Slo -j10	' 2 4	      1       1     243
+par_command_len_shellquote	-Slo -j10	' 2 5	      1       1     729
+par_command_len_shellquote	-Slo -j10	' 2 6	      1       1    2187
+par_command_len_shellquote	-Slo -j10	' 2 7	      1       1    6561
+par_command_len_shellquote	-Slo -j10	' 2 8	      1       1   19683
+par_command_len_shellquote	-Slo -j10	' 2 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 2 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 3 1	      1       1      14
+par_command_len_shellquote	-Slo -j10	' 3 2	      1       1      44
+par_command_len_shellquote	-Slo -j10	' 3 3	      1       1     134
+par_command_len_shellquote	-Slo -j10	' 3 4	      1       1     404
+par_command_len_shellquote	-Slo -j10	' 3 5	      1       1    1214
+par_command_len_shellquote	-Slo -j10	' 3 6	      1       1    3644
+par_command_len_shellquote	-Slo -j10	' 3 7	      1       1   10934
+par_command_len_shellquote	-Slo -j10	' 3 8	      1       1   32804
+par_command_len_shellquote	-Slo -j10	' 3 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 3 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 4 1	      1       1      19
+par_command_len_shellquote	-Slo -j10	' 4 2	      1       1      61
+par_command_len_shellquote	-Slo -j10	' 4 3	      1       1     187
+par_command_len_shellquote	-Slo -j10	' 4 4	      1       1     565
+par_command_len_shellquote	-Slo -j10	' 4 5	      1       1    1699
+par_command_len_shellquote	-Slo -j10	' 4 6	      1       1    5101
+par_command_len_shellquote	-Slo -j10	' 4 7	      1       1   15307
+par_command_len_shellquote	-Slo -j10	' 4 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 4 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 4 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 5 1	      1       1      24
+par_command_len_shellquote	-Slo -j10	' 5 2	      1       1      78
+par_command_len_shellquote	-Slo -j10	' 5 3	      1       1     240
+par_command_len_shellquote	-Slo -j10	' 5 4	      1       1     726
+par_command_len_shellquote	-Slo -j10	' 5 5	      1       1    2184
+par_command_len_shellquote	-Slo -j10	' 5 6	      1       1    6558
+par_command_len_shellquote	-Slo -j10	' 5 7	      1       1   19680
+par_command_len_shellquote	-Slo -j10	' 5 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 5 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 5 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 6 1	      1       1      29
+par_command_len_shellquote	-Slo -j10	' 6 2	      1       1      95
+par_command_len_shellquote	-Slo -j10	' 6 3	      1       1     293
+par_command_len_shellquote	-Slo -j10	' 6 4	      1       1     887
+par_command_len_shellquote	-Slo -j10	' 6 5	      1       1    2669
+par_command_len_shellquote	-Slo -j10	' 6 6	      1       1    8015
+par_command_len_shellquote	-Slo -j10	' 6 7	      1       1   24053
+par_command_len_shellquote	-Slo -j10	' 6 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 6 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 6 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 7 1	      1       1      34
+par_command_len_shellquote	-Slo -j10	' 7 2	      1       1     112
+par_command_len_shellquote	-Slo -j10	' 7 3	      1       1     346
+par_command_len_shellquote	-Slo -j10	' 7 4	      1       1    1048
+par_command_len_shellquote	-Slo -j10	' 7 5	      1       1    3154
+par_command_len_shellquote	-Slo -j10	' 7 6	      1       1    9472
+par_command_len_shellquote	-Slo -j10	' 7 7	      1       1   28426
+par_command_len_shellquote	-Slo -j10	' 7 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 7 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 7 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 8 1	      1       1      39
+par_command_len_shellquote	-Slo -j10	' 8 2	      1       1     129
+par_command_len_shellquote	-Slo -j10	' 8 3	      1       1     399
+par_command_len_shellquote	-Slo -j10	' 8 4	      1       1    1209
+par_command_len_shellquote	-Slo -j10	' 8 5	      1       1    3639
+par_command_len_shellquote	-Slo -j10	' 8 6	      1       1   10929
+par_command_len_shellquote	-Slo -j10	' 8 7	      1       1   32799
+par_command_len_shellquote	-Slo -j10	' 8 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 8 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 8 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 9 1	      1       1      44
+par_command_len_shellquote	-Slo -j10	' 9 2	      1       1     146
+par_command_len_shellquote	-Slo -j10	' 9 3	      1       1     452
+par_command_len_shellquote	-Slo -j10	' 9 4	      1       1    1370
+par_command_len_shellquote	-Slo -j10	' 9 5	      1       1    4124
+par_command_len_shellquote	-Slo -j10	' 9 6	      1       1   12386
+par_command_len_shellquote	-Slo -j10	' 9 7	      1       1   37172
+par_command_len_shellquote	-Slo -j10	' 9 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 9 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 9 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 10 1	      1       1      49
+par_command_len_shellquote	-Slo -j10	' 10 2	      1       1     163
+par_command_len_shellquote	-Slo -j10	' 10 3	      1       1     505
+par_command_len_shellquote	-Slo -j10	' 10 4	      1       1    1531
+par_command_len_shellquote	-Slo -j10	' 10 5	      1       1    4609
+par_command_len_shellquote	-Slo -j10	' 10 6	      1       1   13843
+par_command_len_shellquote	-Slo -j10	' 10 7	      1       1   41545
+par_command_len_shellquote	-Slo -j10	' 10 8	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 10 9	      0       0       0
+par_command_len_shellquote	-Slo -j10	' 10 10	      0       0       0
+par_command_len_shellquote	-Slo -j10	" 1 10	parallel: Error: Command line too long (295245 >= 131049) at input 0: "
+par_command_len_shellquote	-Slo -j10	" 2 9	parallel: Error: Command line too long (196830 >= 131049) at input 0: ""
+par_command_len_shellquote	-Slo -j10	" 2 10	parallel: Error: Command line too long (590490 >= 131049) at input 0: ""
+par_command_len_shellquote	-Slo -j10	" 3 9	parallel: Error: Command line too long (295245 >= 131049) at input 0: """
+par_command_len_shellquote	-Slo -j10	" 3 10	parallel: Error: Command line too long (885735 >= 131049) at input 0: """
+par_command_len_shellquote	-Slo -j10	" 4 8	parallel: Error: Command line too long (131220 >= 131049) at input 0: """"
+par_command_len_shellquote	-Slo -j10	" 4 9	parallel: Error: Command line too long (393660 >= 131049) at input 0: """"
+par_command_len_shellquote	-Slo -j10	" 4 10	parallel: Error: Command line too long (1180980 >= 131049) at input 0: """"
+par_command_len_shellquote	-Slo -j10	" 5 8	parallel: Error: Command line too long (164025 >= 131049) at input 0: """""
+par_command_len_shellquote	-Slo -j10	" 5 9	parallel: Error: Command line too long (492075 >= 131049) at input 0: """""
+par_command_len_shellquote	-Slo -j10	" 5 10	parallel: Error: Command line too long (1476225 >= 131049) at input 0: """""
+par_command_len_shellquote	-Slo -j10	" 6 8	parallel: Error: Command line too long (196830 >= 131049) at input 0: """"""
+par_command_len_shellquote	-Slo -j10	" 6 9	parallel: Error: Command line too long (590490 >= 131049) at input 0: """"""
+par_command_len_shellquote	-Slo -j10	" 6 10	parallel: Error: Command line too long (1771470 >= 131049) at input 0: """"""
+par_command_len_shellquote	-Slo -j10	" 7 8	parallel: Error: Command line too long (229635 >= 131049) at input 0: """""""
+par_command_len_shellquote	-Slo -j10	" 7 9	parallel: Error: Command line too long (688905 >= 131049) at input 0: """""""
+par_command_len_shellquote	-Slo -j10	" 7 10	parallel: Error: Command line too long (2066715 >= 131049) at input 0: """""""
+par_command_len_shellquote	-Slo -j10	" 8 8	parallel: Error: Command line too long (262440 >= 131049) at input 0: """"""""
+par_command_len_shellquote	-Slo -j10	" 8 9	parallel: Error: Command line too long (787320 >= 131049) at input 0: """"""""
+par_command_len_shellquote	-Slo -j10	" 8 10	parallel: Error: Command line too long (2361960 >= 131049) at input 0: """"""""
+par_command_len_shellquote	-Slo -j10	" 9 8	parallel: Error: Command line too long (295245 >= 131049) at input 0: """""""""
+par_command_len_shellquote	-Slo -j10	" 9 9	parallel: Error: Command line too long (885735 >= 131049) at input 0: """""""""
+par_command_len_shellquote	-Slo -j10	" 9 10	parallel: Error: Command line too long (2657205 >= 131049) at input 0: """""""""
+par_command_len_shellquote	-Slo -j10	" 10 8	parallel: Error: Command line too long (328050 >= 131049) at input 0: """"""""""
+par_command_len_shellquote	-Slo -j10	" 10 9	parallel: Error: Command line too long (984150 >= 131049) at input 0: """"""""""
+par_command_len_shellquote	-Slo -j10	" 10 10	parallel: Error: Command line too long (2952450 >= 131049) at input 0: """"""""""
+par_command_len_shellquote	-Slo -j10	' 1 10	parallel: Error: Command line too long (295245 >= 131049) at input 0: '
+par_command_len_shellquote	-Slo -j10	' 2 9	parallel: Error: Command line too long (196830 >= 131049) at input 0: ''
+par_command_len_shellquote	-Slo -j10	' 2 10	parallel: Error: Command line too long (590490 >= 131049) at input 0: ''
+par_command_len_shellquote	-Slo -j10	' 3 9	parallel: Error: Command line too long (295245 >= 131049) at input 0: '''
+par_command_len_shellquote	-Slo -j10	' 3 10	parallel: Error: Command line too long (885735 >= 131049) at input 0: '''
+par_command_len_shellquote	-Slo -j10	' 4 8	parallel: Error: Command line too long (131220 >= 131049) at input 0: ''''
+par_command_len_shellquote	-Slo -j10	' 4 9	parallel: Error: Command line too long (393660 >= 131049) at input 0: ''''
+par_command_len_shellquote	-Slo -j10	' 4 10	parallel: Error: Command line too long (1180980 >= 131049) at input 0: ''''
+par_command_len_shellquote	-Slo -j10	' 5 8	parallel: Error: Command line too long (164025 >= 131049) at input 0: '''''
+par_command_len_shellquote	-Slo -j10	' 5 9	parallel: Error: Command line too long (492075 >= 131049) at input 0: '''''
+par_command_len_shellquote	-Slo -j10	' 5 10	parallel: Error: Command line too long (1476225 >= 131049) at input 0: '''''
+par_command_len_shellquote	-Slo -j10	' 6 8	parallel: Error: Command line too long (196830 >= 131049) at input 0: ''''''
+par_command_len_shellquote	-Slo -j10	' 6 9	parallel: Error: Command line too long (590490 >= 131049) at input 0: ''''''
+par_command_len_shellquote	-Slo -j10	' 6 10	parallel: Error: Command line too long (1771470 >= 131049) at input 0: ''''''
+par_command_len_shellquote	-Slo -j10	' 7 8	parallel: Error: Command line too long (229635 >= 131049) at input 0: '''''''
+par_command_len_shellquote	-Slo -j10	' 7 9	parallel: Error: Command line too long (688905 >= 131049) at input 0: '''''''
+par_command_len_shellquote	-Slo -j10	' 7 10	parallel: Error: Command line too long (2066715 >= 131049) at input 0: '''''''
+par_command_len_shellquote	-Slo -j10	' 8 8	parallel: Error: Command line too long (262440 >= 131049) at input 0: ''''''''
+par_command_len_shellquote	-Slo -j10	' 8 9	parallel: Error: Command line too long (787320 >= 131049) at input 0: ''''''''
+par_command_len_shellquote	-Slo -j10	' 8 10	parallel: Error: Command line too long (2361960 >= 131049) at input 0: ''''''''
+par_command_len_shellquote	-Slo -j10	' 9 8	parallel: Error: Command line too long (295245 >= 131049) at input 0: '''''''''
+par_command_len_shellquote	-Slo -j10	' 9 9	parallel: Error: Command line too long (885735 >= 131049) at input 0: '''''''''
+par_command_len_shellquote	-Slo -j10	' 9 10	parallel: Error: Command line too long (2657205 >= 131049) at input 0: '''''''''
+par_command_len_shellquote	-Slo -j10	' 10 8	parallel: Error: Command line too long (328050 >= 131049) at input 0: ''''''''''
+par_command_len_shellquote	-Slo -j10	' 10 9	parallel: Error: Command line too long (984150 >= 131049) at input 0: ''''''''''
+par_command_len_shellquote	-Slo -j10	' 10 10	parallel: Error: Command line too long (2952450 >= 131049) at input 0: ''''''''''
+par_command_len_shellquote		" 1 1	      1       2       6
+par_command_len_shellquote		" 1 2	      1       2      12
+par_command_len_shellquote		" 1 3	      1       2      30
+par_command_len_shellquote		" 1 4	      1       2      84
+par_command_len_shellquote		" 1 5	      1       2     246
+par_command_len_shellquote		" 1 6	      1       2     732
+par_command_len_shellquote		" 1 7	      1       2    2190
+par_command_len_shellquote		" 1 8	      1       2    6564
+par_command_len_shellquote		" 1 9	      0       0       0
+par_command_len_shellquote		" 1 10	      0       0       0
+par_command_len_shellquote		" 2 1	      1       2       8
+par_command_len_shellquote		" 2 2	      1       2      14
+par_command_len_shellquote		" 2 3	      1       2      32
+par_command_len_shellquote		" 2 4	      1       2      86
+par_command_len_shellquote		" 2 5	      1       2     248
+par_command_len_shellquote		" 2 6	      1       2     734
+par_command_len_shellquote		" 2 7	      1       2    2192
+par_command_len_shellquote		" 2 8	      0       0       0
+par_command_len_shellquote		" 2 9	      0       0       0
+par_command_len_shellquote		" 2 10	      0       0       0
+par_command_len_shellquote		" 3 1	      1       2      10
+par_command_len_shellquote		" 3 2	      1       2      16
+par_command_len_shellquote		" 3 3	      1       2      34
+par_command_len_shellquote		" 3 4	      1       2      88
+par_command_len_shellquote		" 3 5	      1       2     250
+par_command_len_shellquote		" 3 6	      1       2     736
+par_command_len_shellquote		" 3 7	      1       2    2194
+par_command_len_shellquote		" 3 8	      0       0       0
+par_command_len_shellquote		" 3 9	      0       0       0
+par_command_len_shellquote		" 3 10	      0       0       0
+par_command_len_shellquote		" 4 1	      1       2      12
+par_command_len_shellquote		" 4 2	      1       2      18
+par_command_len_shellquote		" 4 3	      1       2      36
+par_command_len_shellquote		" 4 4	      1       2      90
+par_command_len_shellquote		" 4 5	      1       2     252
+par_command_len_shellquote		" 4 6	      1       2     738
+par_command_len_shellquote		" 4 7	      1       2    2196
+par_command_len_shellquote		" 4 8	      0       0       0
+par_command_len_shellquote		" 4 9	      0       0       0
+par_command_len_shellquote		" 4 10	      0       0       0
+par_command_len_shellquote		" 5 1	      1       2      14
+par_command_len_shellquote		" 5 2	      1       2      20
+par_command_len_shellquote		" 5 3	      1       2      38
+par_command_len_shellquote		" 5 4	      1       2      92
+par_command_len_shellquote		" 5 5	      1       2     254
+par_command_len_shellquote		" 5 6	      1       2     740
+par_command_len_shellquote		" 5 7	      1       2    2198
+par_command_len_shellquote		" 5 8	      0       0       0
+par_command_len_shellquote		" 5 9	      0       0       0
+par_command_len_shellquote		" 5 10	      0       0       0
+par_command_len_shellquote		" 6 1	      1       2      16
+par_command_len_shellquote		" 6 2	      1       2      22
+par_command_len_shellquote		" 6 3	      1       2      40
+par_command_len_shellquote		" 6 4	      1       2      94
+par_command_len_shellquote		" 6 5	      1       2     256
+par_command_len_shellquote		" 6 6	      1       2     742
+par_command_len_shellquote		" 6 7	      0       0       0
+par_command_len_shellquote		" 6 8	      0       0       0
+par_command_len_shellquote		" 6 9	      0       0       0
+par_command_len_shellquote		" 6 10	      0       0       0
+par_command_len_shellquote		" 7 1	      1       2      18
+par_command_len_shellquote		" 7 2	      1       2      24
+par_command_len_shellquote		" 7 3	      1       2      42
+par_command_len_shellquote		" 7 4	      1       2      96
+par_command_len_shellquote		" 7 5	      1       2     258
+par_command_len_shellquote		" 7 6	      1       2     744
+par_command_len_shellquote		" 7 7	      0       0       0
+par_command_len_shellquote		" 7 8	      0       0       0
+par_command_len_shellquote		" 7 9	      0       0       0
+par_command_len_shellquote		" 7 10	      0       0       0
+par_command_len_shellquote		" 8 1	      1       2      20
+par_command_len_shellquote		" 8 2	      1       2      26
+par_command_len_shellquote		" 8 3	      1       2      44
+par_command_len_shellquote		" 8 4	      1       2      98
+par_command_len_shellquote		" 8 5	      1       2     260
+par_command_len_shellquote		" 8 6	      1       2     746
+par_command_len_shellquote		" 8 7	      0       0       0
+par_command_len_shellquote		" 8 8	      0       0       0
+par_command_len_shellquote		" 8 9	      0       0       0
+par_command_len_shellquote		" 8 10	      0       0       0
+par_command_len_shellquote		" 9 1	      1       2      22
+par_command_len_shellquote		" 9 2	      1       2      28
+par_command_len_shellquote		" 9 3	      1       2      46
+par_command_len_shellquote		" 9 4	      1       2     100
+par_command_len_shellquote		" 9 5	      1       2     262
+par_command_len_shellquote		" 9 6	      1       2     748
+par_command_len_shellquote		" 9 7	      0       0       0
+par_command_len_shellquote		" 9 8	      0       0       0
+par_command_len_shellquote		" 9 9	      0       0       0
+par_command_len_shellquote		" 9 10	      0       0       0
+par_command_len_shellquote		" 10 1	      1       2      24
+par_command_len_shellquote		" 10 2	      1       2      30
+par_command_len_shellquote		" 10 3	      1       2      48
+par_command_len_shellquote		" 10 4	      1       2     102
+par_command_len_shellquote		" 10 5	      1       2     264
+par_command_len_shellquote		" 10 6	      1       2     750
+par_command_len_shellquote		" 10 7	      0       0       0
+par_command_len_shellquote		" 10 8	      0       0       0
+par_command_len_shellquote		" 10 9	      0       0       0
+par_command_len_shellquote		" 10 10	      0       0       0
+par_command_len_shellquote		' 1 1	      1       2       6
+par_command_len_shellquote		' 1 2	      1       2      12
+par_command_len_shellquote		' 1 3	      1       2      30
+par_command_len_shellquote		' 1 4	      1       2      84
+par_command_len_shellquote		' 1 5	      1       2     246
+par_command_len_shellquote		' 1 6	      1       2     732
+par_command_len_shellquote		' 1 7	      1       2    2190
+par_command_len_shellquote		' 1 8	      1       2    6564
+par_command_len_shellquote		' 1 9	      0       0       0
+par_command_len_shellquote		' 1 10	      0       0       0
+par_command_len_shellquote		' 2 1	      1       2      12
+par_command_len_shellquote		' 2 2	      1       2      30
+par_command_len_shellquote		' 2 3	      1       2      84
+par_command_len_shellquote		' 2 4	      1       2     246
+par_command_len_shellquote		' 2 5	      1       2     732
+par_command_len_shellquote		' 2 6	      1       2    2190
+par_command_len_shellquote		' 2 7	      1       2    6564
+par_command_len_shellquote		' 2 8	      0       0       0
+par_command_len_shellquote		' 2 9	      0       0       0
+par_command_len_shellquote		' 2 10	      0       0       0
+par_command_len_shellquote		' 3 1	      1       2      18
+par_command_len_shellquote		' 3 2	      1       2      48
+par_command_len_shellquote		' 3 3	      1       2     138
+par_command_len_shellquote		' 3 4	      1       2     408
+par_command_len_shellquote		' 3 5	      1       2    1218
+par_command_len_shellquote		' 3 6	      1       2    3648
+par_command_len_shellquote		' 3 7	      1       2   10938
+par_command_len_shellquote		' 3 8	      0       0       0
+par_command_len_shellquote		' 3 9	      0       0       0
+par_command_len_shellquote		' 3 10	      0       0       0
+par_command_len_shellquote		' 4 1	      1       2      24
+par_command_len_shellquote		' 4 2	      1       2      66
+par_command_len_shellquote		' 4 3	      1       2     192
+par_command_len_shellquote		' 4 4	      1       2     570
+par_command_len_shellquote		' 4 5	      1       2    1704
+par_command_len_shellquote		' 4 6	      1       2    5106
+par_command_len_shellquote		' 4 7	      1       2   15312
+par_command_len_shellquote		' 4 8	      0       0       0
+par_command_len_shellquote		' 4 9	      0       0       0
+par_command_len_shellquote		' 4 10	      0       0       0
+par_command_len_shellquote		' 5 1	      1       2      30
+par_command_len_shellquote		' 5 2	      1       2      84
+par_command_len_shellquote		' 5 3	      1       2     246
+par_command_len_shellquote		' 5 4	      1       2     732
+par_command_len_shellquote		' 5 5	      1       2    2190
+par_command_len_shellquote		' 5 6	      1       2    6564
+par_command_len_shellquote		' 5 7	      1       2   19686
+par_command_len_shellquote		' 5 8	      0       0       0
+par_command_len_shellquote		' 5 9	      0       0       0
+par_command_len_shellquote		' 5 10	      0       0       0
+par_command_len_shellquote		' 6 1	      1       2      36
+par_command_len_shellquote		' 6 2	      1       2     102
+par_command_len_shellquote		' 6 3	      1       2     300
+par_command_len_shellquote		' 6 4	      1       2     894
+par_command_len_shellquote		' 6 5	      1       2    2676
+par_command_len_shellquote		' 6 6	      1       2    8022
+par_command_len_shellquote		' 6 7	      0       0       0
+par_command_len_shellquote		' 6 8	      0       0       0
+par_command_len_shellquote		' 6 9	      0       0       0
+par_command_len_shellquote		' 6 10	      0       0       0
+par_command_len_shellquote		' 7 1	      1       2      42
+par_command_len_shellquote		' 7 2	      1       2     120
+par_command_len_shellquote		' 7 3	      1       2     354
+par_command_len_shellquote		' 7 4	      1       2    1056
+par_command_len_shellquote		' 7 5	      1       2    3162
+par_command_len_shellquote		' 7 6	      1       2    9480
+par_command_len_shellquote		' 7 7	      0       0       0
+par_command_len_shellquote		' 7 8	      0       0       0
+par_command_len_shellquote		' 7 9	      0       0       0
+par_command_len_shellquote		' 7 10	      0       0       0
+par_command_len_shellquote		' 8 1	      1       2      48
+par_command_len_shellquote		' 8 2	      1       2     138
+par_command_len_shellquote		' 8 3	      1       2     408
+par_command_len_shellquote		' 8 4	      1       2    1218
+par_command_len_shellquote		' 8 5	      1       2    3648
+par_command_len_shellquote		' 8 6	      1       2   10938
+par_command_len_shellquote		' 8 7	      0       0       0
+par_command_len_shellquote		' 8 8	      0       0       0
+par_command_len_shellquote		' 8 9	      0       0       0
+par_command_len_shellquote		' 8 10	      0       0       0
+par_command_len_shellquote		' 9 1	      1       2      54
+par_command_len_shellquote		' 9 2	      1       2     156
+par_command_len_shellquote		' 9 3	      1       2     462
+par_command_len_shellquote		' 9 4	      1       2    1380
+par_command_len_shellquote		' 9 5	      1       2    4134
+par_command_len_shellquote		' 9 6	      1       2   12396
+par_command_len_shellquote		' 9 7	      0       0       0
+par_command_len_shellquote		' 9 8	      0       0       0
+par_command_len_shellquote		' 9 9	      0       0       0
+par_command_len_shellquote		' 9 10	      0       0       0
+par_command_len_shellquote		' 10 1	      1       2      60
+par_command_len_shellquote		' 10 2	      1       2     174
+par_command_len_shellquote		' 10 3	      1       2     516
+par_command_len_shellquote		' 10 4	      1       2    1542
+par_command_len_shellquote		' 10 5	      1       2    4620
+par_command_len_shellquote		' 10 6	      1       2   13854
+par_command_len_shellquote		' 10 7	      0       0       0
+par_command_len_shellquote		' 10 8	      0       0       0
+par_command_len_shellquote		' 10 9	      0       0       0
+par_command_len_shellquote		' 10 10	      0       0       0
+par_command_len_shellquote		" 1 9	parallel: Error: Command line too long (196830 >= 131049) at input 0: "
+par_command_len_shellquote		" 1 10	parallel: Error: Command line too long (590490 >= 131049) at input 0: "
+par_command_len_shellquote		" 2 8	parallel: Error: Command line too long (131220 >= 131049) at input 0: ""
+par_command_len_shellquote		" 2 9	parallel: Error: Command line too long (393660 >= 131049) at input 0: ""
+par_command_len_shellquote		" 2 10	parallel: Error: Command line too long (1180980 >= 131049) at input 0: ""
+par_command_len_shellquote		" 3 8	parallel: Error: Command line too long (196830 >= 131049) at input 0: """
+par_command_len_shellquote		" 3 9	parallel: Error: Command line too long (590490 >= 131049) at input 0: """
+par_command_len_shellquote		" 3 10	parallel: Error: Command line too long (1771470 >= 131049) at input 0: """
+par_command_len_shellquote		" 4 8	parallel: Error: Command line too long (262440 >= 131049) at input 0: """"
+par_command_len_shellquote		" 4 9	parallel: Error: Command line too long (787320 >= 131049) at input 0: """"
+par_command_len_shellquote		" 4 10	parallel: Error: Command line too long (2361960 >= 131049) at input 0: """"
+par_command_len_shellquote		" 5 8	parallel: Error: Command line too long (328050 >= 131049) at input 0: """""
+par_command_len_shellquote		" 5 9	parallel: Error: Command line too long (984150 >= 131049) at input 0: """""
+par_command_len_shellquote		" 5 10	parallel: Error: Command line too long (2952450 >= 131049) at input 0: """""
+par_command_len_shellquote		" 6 7	parallel: Error: Command line too long (131220 >= 131049) at input 0: """"""
+par_command_len_shellquote		" 6 8	parallel: Error: Command line too long (393660 >= 131049) at input 0: """"""
+par_command_len_shellquote		" 6 9	parallel: Error: Command line too long (1180980 >= 131049) at input 0: """"""
+par_command_len_shellquote		" 6 10	parallel: Error: Command line too long (3542940 >= 131049) at input 0: """"""
+par_command_len_shellquote		" 7 7	parallel: Error: Command line too long (153090 >= 131049) at input 0: """""""
+par_command_len_shellquote		" 7 8	parallel: Error: Command line too long (459270 >= 131049) at input 0: """""""
+par_command_len_shellquote		" 7 9	parallel: Error: Command line too long (1377810 >= 131049) at input 0: """""""
+par_command_len_shellquote		" 7 10	parallel: Error: Command line too long (4133430 >= 131049) at input 0: """""""
+par_command_len_shellquote		" 8 7	parallel: Error: Command line too long (174960 >= 131049) at input 0: """"""""
+par_command_len_shellquote		" 8 8	parallel: Error: Command line too long (524880 >= 131049) at input 0: """"""""
+par_command_len_shellquote		" 8 9	parallel: Error: Command line too long (1574640 >= 131049) at input 0: """"""""
+par_command_len_shellquote		" 8 10	parallel: Error: Command line too long (4723920 >= 131049) at input 0: """"""""
+par_command_len_shellquote		" 9 7	parallel: Error: Command line too long (196830 >= 131049) at input 0: """""""""
+par_command_len_shellquote		" 9 8	parallel: Error: Command line too long (590490 >= 131049) at input 0: """""""""
+par_command_len_shellquote		" 9 9	parallel: Error: Command line too long (1771470 >= 131049) at input 0: """""""""
+par_command_len_shellquote		" 9 10	parallel: Error: Command line too long (5314410 >= 131049) at input 0: """""""""
+par_command_len_shellquote		" 10 7	parallel: Error: Command line too long (218700 >= 131049) at input 0: """"""""""
+par_command_len_shellquote		" 10 8	parallel: Error: Command line too long (656100 >= 131049) at input 0: """"""""""
+par_command_len_shellquote		" 10 9	parallel: Error: Command line too long (1968300 >= 131049) at input 0: """"""""""
+par_command_len_shellquote		" 10 10	parallel: Error: Command line too long (5904900 >= 131049) at input 0: """"""""""
+par_command_len_shellquote		' 1 9	parallel: Error: Command line too long (196830 >= 131049) at input 0: '
+par_command_len_shellquote		' 1 10	parallel: Error: Command line too long (590490 >= 131049) at input 0: '
+par_command_len_shellquote		' 2 8	parallel: Error: Command line too long (131220 >= 131049) at input 0: ''
+par_command_len_shellquote		' 2 9	parallel: Error: Command line too long (393660 >= 131049) at input 0: ''
+par_command_len_shellquote		' 2 10	parallel: Error: Command line too long (1180980 >= 131049) at input 0: ''
+par_command_len_shellquote		' 3 8	parallel: Error: Command line too long (196830 >= 131049) at input 0: '''
+par_command_len_shellquote		' 3 9	parallel: Error: Command line too long (590490 >= 131049) at input 0: '''
+par_command_len_shellquote		' 3 10	parallel: Error: Command line too long (1771470 >= 131049) at input 0: '''
+par_command_len_shellquote		' 4 8	parallel: Error: Command line too long (262440 >= 131049) at input 0: ''''
+par_command_len_shellquote		' 4 9	parallel: Error: Command line too long (787320 >= 131049) at input 0: ''''
+par_command_len_shellquote		' 4 10	parallel: Error: Command line too long (2361960 >= 131049) at input 0: ''''
+par_command_len_shellquote		' 5 8	parallel: Error: Command line too long (328050 >= 131049) at input 0: '''''
+par_command_len_shellquote		' 5 9	parallel: Error: Command line too long (984150 >= 131049) at input 0: '''''
+par_command_len_shellquote		' 5 10	parallel: Error: Command line too long (2952450 >= 131049) at input 0: '''''
+par_command_len_shellquote		' 6 7	parallel: Error: Command line too long (131220 >= 131049) at input 0: ''''''
+par_command_len_shellquote		' 6 8	parallel: Error: Command line too long (393660 >= 131049) at input 0: ''''''
+par_command_len_shellquote		' 6 9	parallel: Error: Command line too long (1180980 >= 131049) at input 0: ''''''
+par_command_len_shellquote		' 6 10	parallel: Error: Command line too long (3542940 >= 131049) at input 0: ''''''
+par_command_len_shellquote		' 7 7	parallel: Error: Command line too long (153090 >= 131049) at input 0: '''''''
+par_command_len_shellquote		' 7 8	parallel: Error: Command line too long (459270 >= 131049) at input 0: '''''''
+par_command_len_shellquote		' 7 9	parallel: Error: Command line too long (1377810 >= 131049) at input 0: '''''''
+par_command_len_shellquote		' 7 10	parallel: Error: Command line too long (4133430 >= 131049) at input 0: '''''''
+par_command_len_shellquote		' 8 7	parallel: Error: Command line too long (174960 >= 131049) at input 0: ''''''''
+par_command_len_shellquote		' 8 8	parallel: Error: Command line too long (524880 >= 131049) at input 0: ''''''''
+par_command_len_shellquote		' 8 9	parallel: Error: Command line too long (1574640 >= 131049) at input 0: ''''''''
+par_command_len_shellquote		' 8 10	parallel: Error: Command line too long (4723920 >= 131049) at input 0: ''''''''
+par_command_len_shellquote		' 9 7	parallel: Error: Command line too long (196830 >= 131049) at input 0: '''''''''
+par_command_len_shellquote		' 9 8	parallel: Error: Command line too long (590490 >= 131049) at input 0: '''''''''
+par_command_len_shellquote		' 9 9	parallel: Error: Command line too long (1771470 >= 131049) at input 0: '''''''''
+par_command_len_shellquote		' 9 10	parallel: Error: Command line too long (5314410 >= 131049) at input 0: '''''''''
+par_command_len_shellquote		' 10 7	parallel: Error: Command line too long (218700 >= 131049) at input 0: ''''''''''
+par_command_len_shellquote		' 10 8	parallel: Error: Command line too long (656100 >= 131049) at input 0: ''''''''''
+par_command_len_shellquote		' 10 9	parallel: Error: Command line too long (1968300 >= 131049) at input 0: ''''''''''
+par_command_len_shellquote		' 10 10	parallel: Error: Command line too long (5904900 >= 131049) at input 0: ''''''''''
 par_basefile_cleanup	### bug #46520: --basefile cleans up without --cleanup
 par_basefile_cleanup	bug_46520
 par_basefile_cleanup	bug_46520
