@@ -207,7 +207,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190222 ('') released <<[stable]>>
+Subject: GNU Parallel 20190222 ('Al-Baghuz Fawqani') released <<[stable]>>
 
 GNU Parallel 20190222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -219,6 +219,12 @@ Quote of the month:
   
 
 New in this release:
+
+https://medium.freecodecamp.org/how-to-supercharge-your-bash-workflows-with-gnu-parallel-53aab0aea141
+
+* GNU Parallel is available in Termux https://github.com/termux/termux-packages/tree/master/packages/parallel
+
+https://www.youtube.com/watch?v=LHb29uW_KyI
 
 * blog.cogneurostats.com/?p=148
 

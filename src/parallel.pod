@@ -3286,18 +3286,15 @@ This also works if the input file is a file with columns:
 GNU B<parallel> makes all combinations when given two lists.
 
 To make all combinations in a single list with unique values, you
-repeat the list and use replacement string with a Perl expression that
-skips the job if the value from input source 1 is greater than or
-equal to the value from input source 2:
+repeat the list and use replacement string B<{choose_k}>:
 
-  parallel echo {= 'if($arg[1] ge $arg[2]) { skip() }' =} \
-    ::: A B C D ::: A B C D
+  parallel --plus echo {choose_k} ::: A B C D ::: A B C D
 
-Or more generally:
+  parallel --plus echo arg2 {2choose_k} arg1 {1choose_k} ::: A B C D ::: A B C D
 
-  parallel echo \
-    '{= for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } } =}' \
-    ::: A B C D ::: A B C D ::: A B C D
+B<choose_k> works for any number of input sources:
+
+  parallel --plus echo {choose_k} ::: A B C D ::: A B C D ::: A B C D
 
 
 =head1 EXAMPLE: From a to b and b to c

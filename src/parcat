@@ -122,7 +122,9 @@ do {
 			    # Nothing read, but would not block:
 			    # This file is done
 			    $s->remove($infh);
-			    syswrite($Global::fh{$outfd},"@{$buffer{$infh}{$outfd}}");
+			    for(@{$buffer{$infh}{$outfd}}) {
+				syswrite($Global::fh{$outfd},$_);
+			    }
 			    delete $buffer{$infh};
 			    # Closing the $infh causes it to block
 			    # close $infh;

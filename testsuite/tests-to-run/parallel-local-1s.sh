@@ -264,6 +264,7 @@ par_too_long_line_X() {
 }
 
 par_test_cpu_detection() {
+    # Xeon 8 core server in Germany
     cpuinfo1="
 processor	: 0
 vendor_id	: GenuineIntel
@@ -465,6 +466,7 @@ cache_alignment	: 64
 address sizes	: 38 bits physical, 48 bits virtual
 power management:
 ";
+    # Core i7 Acer laptop
     cpuinfo2="
 processor	: 0
 vendor_id	: GenuineIntel
@@ -682,6 +684,7 @@ cache_alignment	: 64
 address sizes	: 36 bits physical, 48 bits virtual
 power management:
 ";
+    # Core i5 laptop firewall
     cpuinfo3="
 processor	: 0
 vendor_id	: GenuineIntel
@@ -791,6 +794,7 @@ cache_alignment	: 64
 address sizes	: 36 bits physical, 48 bits virtual
 power management:
 ";
+    #
     cpuinfo4="
 processor	: 0
 vendor_id	: AuthenticAMD
@@ -2083,6 +2087,7 @@ cache_alignment	: 64
 address sizes	: 46 bits physical, 48 bits virtual
 power management:
 ";
+    # HP Laptop Compaq 6530b
     cpuinfo6="
 processor	: 0
 vendor_id	: GenuineIntel
@@ -2139,6 +2144,81 @@ address sizes	: 36 bits physical, 48 bits virtual
 power management:
 
 ";
+    # Huawei P Smart Octa-core (4x2.36 GHz Cortex-A53 & 4x1.7 GHz Cortex-A53)
+    cpuinfo7="
+processor	: 0
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+processor	: 1
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+processor	: 2
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+processor	: 3
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+processor	: 4
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+processor	: 5
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+processor	: 6
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+processor	: 7
+BogoMIPS	: 3.84
+Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
+CPU implementer	: 0x41
+CPU architecture: 8
+CPU variant	: 0x0
+CPU part	: 0xd03
+CPU revision	: 4
+
+";
     test_one() {
 	export PARALLEL_CPUINFO="$1"
 	echo $(ppar --number-of-sockets) \
@@ -2148,8 +2228,8 @@ power management:
     }
     export -f test_one
     ppar -j0 -0 -k --tagstring {2} test_one {1} \
-	 :::  "$cpuinfo1" "$cpuinfo2" "$cpuinfo3" "$cpuinfo4" "$cpuinfo5" "$cpuinfo6" \
-	 :::+ "2-8-8-8" "1-4-8-4" "1-2-4-2" "1-2-2-2" "2-24-48-24" "1-2-2-2"
+	 :::  "$cpuinfo1" "$cpuinfo2" "$cpuinfo3" "$cpuinfo4" "$cpuinfo5" "$cpuinfo6" "$cpuinfo7" \
+	 :::+ "2-8-8-8" "1-4-8-4" "1-2-4-2" "1-2-2-2" "2-24-48-24" "1-2-2-2" "1-8-8-8"
 }
 
 export -f $(compgen -A function | grep par_)

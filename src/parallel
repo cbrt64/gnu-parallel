@@ -5406,6 +5406,13 @@ sub memfree_recompute() {
 		q[   awk '/^((Swap)?Cached|MemFree|Buffers):/ ].
 		q[     { sum += \$2} END { print sum }' ].
 		q[   /proc/meminfo } ],
+		# Android uses same code as GNU/Linux
+		"android" =>
+		q[ print 1024 * qx{ ].
+		q[   awk '/^((Swap)?Cached|MemFree|Buffers):/ ].
+		q[     { sum += \$2} END { print sum }' ].
+		q[   /proc/meminfo } ],
+
 		# $ vmstat 1 1
 		#     procs           memory                   page                              faults       cpu
 		# r     b     w      avm    free   re   at    pi   po    fr   de    sr     in     sy    cs  us sy id
@@ -5800,8 +5807,9 @@ sub loadavg_too_high($) {
                     awk '{print $2,$1}' };
 		$dummy="echo S COMMAND;echo R dummy";
 		%ps=(
-		    # TODO Find better code for AIX
+		    # TODO Find better code for AIX/Android
 		    'aix' => "uptime",
+		    'android' => "uptime",
 		    'cygwin' => $cygwin,
 		    'darwin' => $bsd,
 		    'dec_osf' => $sysv2,
@@ -5814,13 +5822,13 @@ sub loadavg_too_high($) {
 		    'minix' => "ps el|awk '{print \$1,\$11}'",
 		    'mirbsd' => $bsd,
 		    'msys' => $cygwin,
-	            'MSWin32' => $sysv,
 		    'netbsd' => $bsd,
 		    'nto' => $dummy,
 		    'openbsd' => $bsd,
 		    'solaris' => $sysv,
 		    'svr5' => $psel,
 		    'ultrix' => "ps -ax | awk '{print \$3,\$5}'",
+	            'MSWin32' => $sysv,
 		    );
 		print `$ps{$^O}`;
 	    });
@@ -6408,6 +6416,8 @@ sub socket_core_thread() {
 
     if ($^O eq 'linux') {
 	$cpu = sct_gnu_linux();
+    } elsif ($^O eq 'android') {
+        $cpu = sct_android();
     } elsif ($^O eq 'freebsd') {
         $cpu = sct_freebsd();
     } elsif ($^O eq 'netbsd') {
@@ -6433,8 +6443,9 @@ sub socket_core_thread() {
     } elsif ($^O eq 'dec_osf') {
         $cpu = sct_tru64();
     } else {
-	# Try all methods until you find something that works
+	# Try all methods until we find something that works
 	$cpu = (sct_gnu_linux()
+		|| sct_android()
 		|| sct_freebsd()
 		|| sct_netbsd()
 		|| sct_openbsd()
@@ -6533,6 +6544,16 @@ sub sct_gnu_linux() {
     } else {
 	return undef;
     }
+}
+
+sub sct_android() {
+    # Returns:
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    # Use GNU/Linux
+    return sct_gnu_linux();
 }
 
 sub sct_freebsd() {
