@@ -901,6 +901,11 @@ par_wd_dotdotdot() {
     parallel --wd ... 'echo $OLDPWD' ::: foo
 }
 
+par_demux() {
+    echo '### --demux'
+    seq 100000 | parallel --pipe --demux 1 -j5  'echo {#}; cat' | wc
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 20 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

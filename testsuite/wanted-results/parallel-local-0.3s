@@ -1299,6 +1299,8 @@ par_csv_pipe	11000"
 par_csv_pipe	More records in single block
 par_csv_pipe	9000"
 par_csv_pipe	11000"
+par_demux	### --demux
+par_demux	 100005  100005  588905
 par_dryrun_append_joblog	--dry-run should not append to joblog
 par_dryrun_append_joblog	1
 par_dryrun_append_joblog	2

@@ -196,6 +196,63 @@ sub pipe_tee_setup() {
     @Global::cat_appends = map { ") < $_" } @fifos;
 }
 
+sub pipe_demultiplex_setup() {
+    # Create temporary fifos
+    # Run 'demux.pl sep col fifo1 fifo2 fifo3 ... fifoN' in the background
+    # This will spread the input to fifos
+    # Generate commands that reads from fifo1..N:
+    #   cat fifo | user_command
+    # Changes:
+    #   @Global::cat_prepends
+    my @fifos;
+    # TODO $opt::jobs should be evaluated (100%)
+    for(1..$opt::jobs) {
+	push @fifos, tmpfifo();
+    }
+    my $script = ::spacefree(1,q{
+    BEGIN {
+	use B;
+	# Which columns to demultiplex on (count from 1)
+	$col = (shift) - 1;
+	$bins = @ARGV;
+	# Open fifos for writing, fh{0..$bins}
+	my $t = 0;
+	for(@ARGV) {
+	    open $fh{$t++}, ">", $_;
+	    # open blocks until it is opened by reader
+	    # so unlink only happens when it is ready
+	    unlink $_;
+	}
+	# the -n wrapper should read from STDIN - not files
+	@ARGV = ();
+    };
+    # Wrapped in while(<>) due to -n
+    $fh = $fh{ hex(B::hash($F[$col]))%$bins };
+    print $fh $_;
+    END {
+	# Close all open fifos
+	close values %fh;
+    }
+			     });
+    # cat foo | demuxer sep col fifo1 fifo2 fifo3 ... fifoN
+    ::debug("demux",'perl', '-F', $opt::colsep,
+	    '-ane', $script, $opt::demultiplex, @fifos);
+    if(not fork()){
+	# Let the demuxer inherit our stdin
+	# and redirect stdout to null
+	open STDOUT, ">","/dev/null";
+	exec 'perl', "-F".($opt::colsep || ","),
+	    '-ane', $script, $opt::demultiplex, @fifos;
+    }
+    # For each fifo
+    #   (rm fifo1; grep 1) < fifo1
+    #   (rm fifo2; grep 2) < fifo2
+    #   (rm fifo3; grep 3) < fifo3
+    # Remove the tmpfifo as soon as it is open
+    @Global::cat_prepends = map { "(true $_;" } @fifos;
+    @Global::cat_appends = map { ") < $_" } @fifos;
+}
+
 sub pipe_part_files(@) {
     # Given the bigfile
     # find header and split positions
@@ -1008,6 +1065,7 @@ sub options_hash() {
 	 "fifo" => \$opt::fifo,
 	 "pipepart|pipe-part" => \$opt::pipepart,
 	 "tee" => \$opt::tee,
+	 "demultiplex|demux=s" => \$opt::demultiplex,
 	 "hgrp|hostgrp|hostgroup|hostgroups" => \$opt::hostgroups,
 	 "embed" => \$opt::embed,
 	);
@@ -7964,6 +8022,9 @@ sub wrapped($) {
 	    #
 	    # --pipe --tee: wrap:
 	    #   (rm fifo; ... ) < fifo
+	    #
+	    # --pipe --demux X:
+	    #   (rm fifo; ... ) < fifo
 	    $command = (shift @Global::cat_prepends). "($command)".
 		(shift @Global::cat_appends);
 	} elsif($opt::pipe) {
@@ -8735,7 +8796,7 @@ sub start($) {
 	    ::set_fh_non_blocking($stdin_fh);
 	}
 	$job->set_fh(0,"w",$stdin_fh);
-	if($opt::tee) { $job->set_virgin(0); }
+	if($opt::tee or $opt::demultiplex) { $job->set_virgin(0); }
     } elsif ($opt::tty and -c "/dev/tty" and
 	     open(my $devtty_fh, "<", "/dev/tty")) {
 	# Give /dev/tty to the command if no one else is using it
@@ -12144,6 +12205,8 @@ sub main() {
 	pipepart_setup();
     } elsif($opt::pipe and $opt::tee) {
 	pipe_tee_setup();
+    } elsif($opt::pipe and $opt::demultiplex) {
+	pipe_demultiplex_setup();
     }
 
     if($opt::eta or $opt::bar or $opt::shuf or $Global::halt_pct) {
@@ -12163,7 +12226,7 @@ sub main() {
     }
     $SIG{TERM} = \&start_no_new_jobs;
 
-    if($opt::tee) {
+    if($opt::tee or $opt::demultiplex) {
 	# All jobs must be running in parallel for --tee
 	while(start_more_jobs()) {}
 	$Global::start_no_new_jobs = 1;

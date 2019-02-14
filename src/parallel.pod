@@ -620,6 +620,7 @@ Even quoted newlines are parsed correctly:
 
 When used with B<--pipe> only pass full CSV-records.
 
+
 =item B<--delimiter> I<delim>
 
 =item B<-d> I<delim>
@@ -631,6 +632,22 @@ specified delimiter may be characters, C-style character escapes such
 as \n, or octal or hexadecimal escape codes.  Octal and hexadecimal
 escape codes are understood as for the printf command.  Multibyte
 characters are not supported.
+
+
+=item B<--demux> I<col> (alpha testing)
+
+=item B<--demultiplex> I<col> (alpha testing)
+
+Demultiplex input on column number I<col>. Input is split using
+B<--colsep>. The value in the column is hashed so that all lines of a
+given value is given to the same job slot.
+
+This is a bit similar to B<--roundrobin> in that all data is given to
+a limited number of jobs, but opposite B<--roundrobin> data is given
+to a specific job slot based on the value in a column.
+
+The performance is in the order of 1M rows per second.
+
 
 =item B<--dirnamereplace> I<replace-str>
 
