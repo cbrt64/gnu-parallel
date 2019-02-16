@@ -901,9 +901,28 @@ par_wd_dotdotdot() {
     parallel --wd ... 'echo $OLDPWD' ::: foo
 }
 
-par_demux() {
-    echo '### --demux'
-    seq 100000 | parallel --pipe --demux 1 -j5  'echo {#}; cat' | wc
+par_shard() {
+    echo '### --shard'
+    # Each of the 5 lines should match:
+    #   ##### ##### ######
+    seq 100000 | parallel --pipe --shard 1 -j5  wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Data should be sharded to all processes
+    shard_on_col() {
+	col=$1
+	seq 10 99 | shuf | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard $col -j2 --colsep "\t" sort -k$col |
+	    field $col | uniq -c | sort
+    }
+    shard_on_col 1
+    shard_on_col 2
+    echo '*** broken'
+    # Shorthand for --pipe -j+0
+    seq 100000 | parallel --shard 1 wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Combine with arguments
+    seq 100000 | parallel --shard 1 echo {}\;wc ::: {1..5} ::: a b |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
 }
 
 export -f $(compgen -A function | grep par_)

@@ -9,15 +9,28 @@ real world.
 
 =head2 Reader's guide
 
-Start by watching the intro videos for a quick introduction:
+If you prefer reading a book buy B<GNU Parallel 2018> at
+http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
+or download it at: https://doi.org/10.5281/zenodo.1146014
+
+Otherwise start by watching the intro videos for a quick introduction:
 http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
 
-Then look at the B<EXAMPLE>s after the list of B<OPTIONS> in B<man
-parallel> (Use B<LESS=+/EXAMPLE: man parallel>). That will give you
-an idea of what GNU B<parallel> is capable of.
+Then browse through the B<EXAMPLE>s after the list of B<OPTIONS> in
+B<man parallel> (Use B<LESS=+/EXAMPLE: man parallel>). That will give
+you an idea of what GNU B<parallel> is capable of.
 
-Then spend a couple of hours walking through this tutorial (B<man
-parallel_tutorial>). Your command line will love you for it.
+If you want to dive even deeper: spend a couple of hours walking
+through the tutorial (B<man parallel_tutorial>). Your command line
+will love you for it.
+
+Finally you may want to look at the rest of the manual (B<man
+parallel>) if you have special needs not already covered.
+
+If you want to know the design decisions behind GNU B<parallel>, try:
+B<man parallel_design>. This is also a good intro if you intend to
+change GNU B<parallel>.
+
 
 
 =head1 Prerequisites

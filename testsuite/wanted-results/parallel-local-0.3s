@@ -1299,8 +1299,6 @@ par_csv_pipe	11000"
 par_csv_pipe	More records in single block
 par_csv_pipe	9000"
 par_csv_pipe	11000"
-par_demux	### --demux
-par_demux	 100005  100005  588905
 par_dryrun_append_joblog	--dry-run should not append to joblog
 par_dryrun_append_joblog	1
 par_dryrun_append_joblog	2
@@ -1519,6 +1517,33 @@ par_retries_replacement_string	33
 par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
+par_shard	### --shard
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
+par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	    980     981    5881
