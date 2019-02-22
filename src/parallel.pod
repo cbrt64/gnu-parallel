@@ -3311,7 +3311,7 @@ repeat the list and use replacement string B<{choose_k}>:
 
   parallel --plus echo arg2 {2choose_k} arg1 {1choose_k} ::: A B C D ::: A B C D
 
-B<choose_k> works for any number of input sources:
+B<{choose_k}> works for any number of input sources:
 
   parallel --plus echo {choose_k} ::: A B C D ::: A B C D ::: A B C D
 

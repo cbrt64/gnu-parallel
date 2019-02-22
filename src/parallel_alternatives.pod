@@ -1879,10 +1879,10 @@ https://github.com/fd0/machma (Last checked: 2019-01)
 
 B<interlace> is built for network analysis to run network tools in parallel.
 
-B<interface> does not buffer output, so output mixes.
+B<interface> does not buffer output, so output from different jobs mixes.
 
-Using B<prips> the examples from https://github.com/codingo/Interlace
-can be run with GNU B<parallel>:
+Using B<prips> most of the examples from
+https://github.com/codingo/Interlace can be run with GNU B<parallel>:
 
   interlace -tL ./targets.txt -threads 5 \
     -c "nikto --host _target_ > ./_target_-nikto.txt" -v

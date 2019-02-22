@@ -867,7 +867,6 @@ MFLAGS
 OLDPWD
 ORACLE_HOME
 ORACLE_SID
-
 PARALLEL
 PARALLEL_HOME
 PARALLEL_PID
@@ -1419,7 +1418,6 @@ The second finished running in the foreground
 First started
 First done
   sem --id my_id -u 'echo Second started; sleep 10; echo Second done'
-Second done
   sem --jobs 3 --id my_id -u 'echo Start 1; sleep 5; echo 1 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 2; sleep 6; echo 2 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 3; sleep 7; echo 3 done' &&
@@ -1440,8 +1438,8 @@ Start 4
 Slow started
 Forced running after 1 sec
 Slow ended
+Give up after 2 secs
 parallel: Warning: Semaphore timed out. Stealing the semaphore.
-parallel: Warning: Semaphore timed out. Exiting.
   parallel --help
 Usage:
 
