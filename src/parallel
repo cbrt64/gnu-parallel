@@ -9040,12 +9040,16 @@ sub interactive_start($) {
     my $self = shift;
     my $command = $self->wrapped();
     if($Global::interactive) {
+	my $answer;
 	::status_no_nl("$command ?...");
-	open(my $tty_fh, "<", "/dev/tty") || ::die_bug("interactive-tty");
-	my $answer = <$tty_fh>;
-	close $tty_fh;
-	my $run_yes = ($answer =~ /^\s*y/i);
-	if (not $run_yes) {
+	do{
+	    open(my $tty_fh, "<", "/dev/tty") || ::die_bug("interactive-tty");
+	    $answer = <$tty_fh>;
+	    close $tty_fh;
+	    # Sometime we get an empty string (not even \n)
+	    # Do not know why, so let us just ignore it and try again
+	} while(length $answer < 1);
+	if (not ($answer =~ /^\s*y/i)) {
 	    $self->{'commandline'}->skip();
 	}
     } else {

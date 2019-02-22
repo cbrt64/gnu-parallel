@@ -28,55 +28,11 @@ export -f stdsort
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
 cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj13 -k --joblog /tmp/jl-`basename $0` -L1 -r
-echo '### Test bug #45619: "--halt" erroneous error exit code (should give 0)'; 
-  seq 10 | parallel --halt now,fail=1 true; 
-  echo $?
-
-echo '**'
-
-echo '### Test exit val - true'; 
-  echo true | parallel; 
-  echo $?
-
-echo '**'
-
-echo '### Test exit val - false'; 
-  echo false | parallel; 
-  echo $?
-
-echo '**'
-
-echo '### Test bug #43284: {%} and {#} with --xapply'; 
-  parallel --xapply 'echo {1} {#} {%} {2}' ::: a ::: b; 
-  parallel -N2 'echo {%}' ::: a b
-
-echo '**'
-
-echo '### bug #47501: --xapply for some input sources'
-  # Wrapping does not work yet
-  parallel -k echo ::: a b c aWRAP :::+ aa bb cc ::: A B :::+ AA BB AAwrap
-
-echo '**'
-
 echo '### Test bug #43376: {%} and {#} with --pipe'
   echo foo | parallel -q --pipe -k echo {#}
   echo foo | parallel --pipe -k echo {%}
   echo foo | parallel -q --pipe -k echo {%}
   echo foo | parallel --pipe -k echo {#}
-
-echo '**'
-
-echo '### {= and =} in different groups separated by space'
-  parallel echo {= s/a/b/ =} ::: a
-  parallel echo {= s/a/b/=} ::: a
-  parallel echo {= s/a/b/=}{= s/a/b/=} ::: a
-  parallel echo {= s/a/b/=}{=s/a/b/=} ::: a
-  parallel echo {= s/a/b/=}{= {= s/a/b/=} ::: a
-  parallel echo {= s/a/b/=}{={=s/a/b/=} ::: a
-  parallel echo {= s/a/b/ =} {={==} ::: a
-  parallel echo {={= =} ::: a
-  parallel echo {= {= =} ::: a
-  parallel echo {= {= =} =} ::: a
 
 echo '**'
 
@@ -112,12 +68,6 @@ cat /dev/zero >$SMALLDISK/out;
 
 echo '**'
 
-echo '### bug #44614: --pipepart --header off by one'
-  seq 10 >/tmp/parallel_44616; 
-    parallel --pipepart -a /tmp/parallel_44616 -k --block 5 'echo foo; cat'; 
-    parallel --pipepart -a /tmp/parallel_44616 -k --block 2 --regexp --recend 3'\n' 'echo foo; cat'; 
-    rm /tmp/parallel_44616
-
 echo '### PARALLEL_TMUX not found'
   PARALLEL_TMUX=not-existing parallel --tmux echo ::: 1
 
@@ -129,69 +79,9 @@ parallel -k echo {#} ::: 1 2 ::: 1 2
 
 echo '**'
 
-echo '### bug #45769: --round-robin --pipepart gives wrong results'
-
-seq 10000 >/tmp/seq10000; 
-  parallel -j2 --pipepart -a /tmp/seq10000 --block 14 --round-robin wc | wc -l; 
-  rm /tmp/seq10000
-
-echo '**'
-
-echo '### bug #45842: Do not evaluate {= =} twice'
-
-  parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004}
-  parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004}
-  parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004} ::: {a..c}
-  parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004} ::: {a..c}
-
-echo '**'
-
-echo '### bug #45939: {2} in {= =} fails'
-
-  parallel echo '{= s/O{2}//=}' ::: OOOK
-  parallel echo '{2}-{=1 s/O{2}//=}' ::: OOOK ::: OK
-
-echo '**'
-
-echo '### bug #45998: --pipe to function broken'
-
-  myfunc() { echo $1; cat; }; 
-    export -f myfunc; 
-    echo pipefunc OK | parallel --pipe myfunc {#}; 
-    echo pipefunc and more OK | parallel --pipe 'myfunc {#};echo and more OK'
-
-echo '**'
-
 echo 'bug #46016: --joblog should not log when --dryrun'
 
   parallel --dryrun --joblog - echo ::: Only_this
-
-echo '**'
-
-echo 'bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken'
-
-  parallel --bar -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-  parallel --halt now,fail=10% -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e
-  parallel --eta -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-  parallel --shuf -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-
-echo '**'
-
-echo 'bug #46231: {%} with --pipepart broken. Should give 1+2'
-
-  seq 10000 > /tmp/num10000; 
-  parallel -k --pipepart -ka /tmp/num10000 --block 10k -j2 --delay 0.05 echo {%}; 
-  rm /tmp/num10000
-
-echo '**'
-
-echo '{##} bug #45841: Replacement string for total no of jobs'
-
-  parallel -k --plus echo {##} ::: {a..j};
-  parallel -k 'echo {= $::G++ > 3 and ($_=$Global::JobQueue->total_jobs());=}' ::: {1..10}
-  parallel -k -N7 --plus echo {#} {##} ::: {1..14}
-  parallel -k -N7 --plus echo {#} {##} ::: {1..15}
-  parallel -k -S 8/: -X --plus echo {#} {##} ::: {1..15}
 
 echo '**'
 
@@ -201,150 +91,16 @@ echo 'bug #47002: --tagstring with -d \n\n'
 
 echo '**'
 
-echo 'bug #47086: [PATCH] Initialize total_completed from joblog'
-
-  rm -f /tmp/parallel-47086; 
-  parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1          echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0; 
-  parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1 --resume echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
-
-echo '**'
-
 echo 'bug #47290: xargs: Warning: a NUL character occurred in the input'
 
   perl -e 'print "foo\0not printed"' | parallel echo
 
 echo '**'
-
-echo xargs compatibility
-
-echo '### Test -L -l and --max-lines'
-
-  (echo a_b;echo c) | parallel -km -L2 echo
-  (echo a_b;echo c) | parallel -k -L2 echo
-  (echo a_b;echo c) | xargs -L2 echo
-
-echo '### xargs -L1 echo'
-
-  (echo a_b;echo c) | parallel -km -L1 echo
-  (echo a_b;echo c) | parallel -k -L1 echo
-  (echo a_b;echo c) | xargs -L1 echo
-  echo 'Lines ending in space should continue on next line'
-
-echo '### xargs -L1 echo'
-
-  (echo a_b' ';echo c;echo d) | parallel -km -L1 echo
-  (echo a_b' ';echo c;echo d) | parallel -k -L1 echo
-  (echo a_b' ';echo c;echo d) | xargs -L1 echo
-  
-echo '### xargs -L2 echo'
-
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km -L2 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k -L2 echo
-  (echo a_b' ';echo c;echo d;echo e) | xargs -L2 echo
-  
-echo '### xargs -l echo'
-
-  (echo a_b' ';echo c;echo d;echo e) | parallel -l -km echo # This behaves wrong
-  (echo a_b' ';echo c;echo d;echo e) | parallel -l -k echo # This behaves wrong
-  (echo a_b' ';echo c;echo d;echo e) | xargs -l echo
-  
-echo '### xargs -l2 echo'
-
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km -l2 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k -l2 echo
-  (echo a_b' ';echo c;echo d;echo e) | xargs -l2 echo
-  
-echo '### xargs -l1 echo'
-
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km -l1 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k -l1 echo
-  (echo a_b' ';echo c;echo d;echo e) | xargs -l1 echo
-  
-echo '### xargs --max-lines=2 echo'
-
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km --max-lines 2 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k --max-lines 2 echo
-  (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines=2 echo
-  
-echo '### xargs --max-lines echo'
-
-  (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -km echo # This behaves wrong
-  (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -k echo # This behaves wrong
-  (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines echo
-  
-echo '### test too long args'
-
-  perl -e 'print "z"x1000000' | parallel echo 2>&1
-  perl -e 'print "z"x1000000' | xargs echo 2>&1
-  (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
-  (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort xargs -s 10 echo
-  (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -kX -s 10 echo
-  
-echo '### Test -x'
-
-  (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
-  (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
-  (seq 1 10; echo 12345; seq 12 15) | stdsort xargs -s 10 -x echo
-  (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
-  (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
-  (seq 1 10; echo 1234;  seq 12 15) | stdsort xargs -s 10 -x echo
-  
-echo '### Test -a and --arg-file: Read input from file instead of stdin'
-
-  seq 1 10 >/tmp/parallel_$$-1; parallel -k -a /tmp/parallel_$$-1 echo; rm /tmp/parallel_$$-1
-  seq 1 10 >/tmp/parallel_$$-2; parallel -k --arg-file /tmp/parallel_$$-2 echo; rm /tmp/parallel_$$-2
-  
-echo '### Test -i and --replace: Replace with argument'
-
-  (echo a; echo END; echo b) | parallel -k -i -eEND echo repl{}ce
-  (echo a; echo END; echo b) | parallel -k --replace -eEND echo repl{}ce
-  (echo a; echo END; echo b) | parallel -k -i+ -eEND echo repl+ce
-  (echo e; echo END; echo b) | parallel -k -i'*' -eEND echo r'*'plac'*'
-  (echo a; echo END; echo b) | parallel -k --replace + -eEND echo repl+ce
-  (echo a; echo END; echo b) | parallel -k --replace== -eEND echo repl=ce
-  (echo a; echo END; echo b) | parallel -k --replace = -eEND echo repl=ce
-  (echo a; echo END; echo b) | parallel -k --replace=^ -eEND echo repl^ce
-  (echo a; echo END; echo b) | parallel -k -I^ -eEND echo repl^ce
-  
-echo '### Test -E: Artificial end-of-file'
-
-  (echo include this; echo END; echo not this) | parallel -k -E END echo
-  (echo include this; echo END; echo not this) | parallel -k -EEND echo
-  
-echo '### Test -e and --eof: Artificial end-of-file'
-
-  (echo include this; echo END; echo not this) | parallel -k -e END echo
-  (echo include this; echo END; echo not this) | parallel -k -eEND echo
-  (echo include this; echo END; echo not this) | parallel -k --eof=END echo
-  (echo include this; echo END; echo not this) | parallel -k --eof END echo
-  
-echo '### Test -n and --max-args: Max number of args per line (only with -X and -m)'
-
-  (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -m echo
-  (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -m echo
-  (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -X echo
-  (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -X echo
-  (echo line 1;echo line 2;echo line 3) | parallel -k -n1 echo
-  (echo line 1;echo line 1;echo line 2) | parallel -k -n2 echo
-  (echo line 1;echo line 2;echo line 3) | parallel -k --max-args=1 -X echo
-  (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 -X echo
-  (echo line 1;echo line 1;echo line 2) | parallel -k --max-args=2 -X echo
-  (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 -X echo
-  (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 echo
-  (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 echo
   
 echo '### Test --max-procs and -P: Number of processes'
 
   seq 1 10 | parallel -k --max-procs +0 echo max proc
   seq 1 10 | parallel -k -P 200% echo 200% proc
-  
-echo '### Test --delimiter and -d: Delimiter instead of newline'
-
-  echo '# Yes there is supposed to be an extra newline for -d N'
-  echo line 1Nline 2Nline 3 | parallel -k -d N echo This is
-  echo line 1Nline 2Nline 3 | parallel -k --delimiter N echo This is
-  printf "delimiter NUL line 1\0line 2\0line 3" | parallel -k -d '\0' echo
-  printf "delimiter TAB line 1\tline 2\tline 3" | parallel -k --delimiter '\t' echo
   
 echo '### Test --max-chars and -s: Max number of chars in a line'
 
@@ -376,32 +132,6 @@ echo '### Test --show-limits'
   (echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
   (echo b; echo c; echo f) | parallel -j1 -kX --show-limits -s 100 echo {}ar
   
-echo '### Test empty line as input'
-
-  echo | parallel echo empty input line
-  
-echo '### Tests if (cat | sh) works'
-
-  perl -e 'for(1..25) {print "echo a $_; echo b $_\n"}' | parallel 2>&1 | sort
-  
-echo '### Test if xargs-mode works'
-
-  perl -e 'for(1..25) {print "a $_\nb $_\n"}' | parallel echo 2>&1 | sort
-  
-echo '### Test -q'
-
-  parallel -kq perl -e '$ARGV[0]=~/^\S+\s+\S+$/ and print $ARGV[0],"\n"' ::: "a b" c "d e f" g "h i"
-  
-echo '### Test -q {#}'
-
-  parallel -kq echo {#} ::: a b
-  parallel -kq echo {\#} ::: a b
-  parallel -kq echo {\\#} ::: a b
-  
-echo '### Test long commands do not take up all memory'
-
-  seq 1 100 | parallel -j0 -qv perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 2>/dev/null | sort
-  
 echo '### Test 0-arguments'
 
   seq 1 2 | parallel -k -n0 echo n0
@@ -423,71 +153,357 @@ echo '### Test arguments on commandline'
 echo '### Test --nice locally'
 
   parallel --nice 1 -vv 'PAR=a bash -c "echo  \$PAR {}"' ::: b
-  
-echo '### Test distribute arguments at EOF to 2 jobslots'
-
-  seq 1 92 | parallel -j2 -kX -s 100 echo
-  
-echo '### Test distribute arguments at EOF to 5 jobslots'
-
-  seq 1 92 | parallel -j5 -kX -s 100 echo
-  
-echo '### Test distribute arguments at EOF to infinity jobslots'
-
-  seq 1 92 | parallel -j0 -kX -s 100 echo 2>/dev/null
-  
-echo '### Test -N is not broken by distribution - single line'
-
-  seq 9 | parallel  -N 10  echo
-  
-echo '### Test -N is not broken by distribution - two lines'
-
-  seq 19 | parallel -k -N 10  echo
-  
-echo '### Test -N context replace'
-
-  seq 19 | parallel -k -N 10  echo a{}b
-  
-echo '### Test -L context replace'
-
-  seq 19 | parallel -k -L 10  echo a{}b
-  
-echo '**'
-
-echo '### Test {} multiple times in different commands'
-
-  seq 10 | parallel -v -Xj1 echo {} \; echo {}
-
-echo '### Test of -X {1}-{2} with multiple input sources'
-
-  parallel -j1 -kX  echo {1}-{2} ::: a ::: b
-  parallel -j2 -kX  echo {1}-{2} ::: a b ::: c d
-  parallel -j2 -kX  echo {1}-{2} ::: a b c ::: d e f
-  parallel -j0 -kX  echo {1}-{2} ::: a b c ::: d e f
-
-echo '### Test of -X {}-{.} with multiple input sources'
-
-  parallel -j1 -kX  echo {}-{.} ::: a ::: b
-  parallel -j2 -kX  echo {}-{.} ::: a b ::: c d
-  parallel -j2 -kX  echo {}-{.} ::: a b c ::: d e f
-  parallel -j0 -kX  echo {}-{.} ::: a b c ::: d e f
-
-echo '### Test of -r with --pipe - the first should give an empty line. The second should not.'
-
-  echo | parallel  -j2 -N1 --pipe cat | wc -l
-  echo | parallel -r -j2 -N1 --pipe cat | wc -l
-
-echo '### Test --tty'
-
-  seq 0.1 0.1 0.5 | parallel -j1 --tty tty\;sleep
-
-
 EOF
 echo '### 1 .par file from --files expected'
 find /tmp{/*,}/*.{par,tms,tmx} 2>/dev/null -mmin -10 | wc -l
 find /tmp{/*,}/*.{par,tms,tmx} 2>/dev/null -mmin -10 | parallel rm
 
 sudo umount -l /tmp/smalldisk.img
+
+par_delimiter() {
+    echo '### Test --delimiter and -d: Delimiter instead of newline'
+
+    echo '# Yes there is supposed to be an extra newline for -d N'
+    echo line 1Nline 2Nline 3 | parallel -k -d N echo This is
+    echo line 1Nline 2Nline 3 | parallel -k --delimiter N echo This is
+    printf "delimiter NUL line 1\0line 2\0line 3" | parallel -k -d '\0' echo
+    printf "delimiter TAB line 1\tline 2\tline 3" | parallel -k --delimiter '\t' echo
+}
+
+par_argfile() {
+    echo '### Test -a and --arg-file: Read input from file instead of stdin'
+
+    seq 1 10 >/tmp/parallel_$$-1; parallel -k -a /tmp/parallel_$$-1 echo; rm /tmp/parallel_$$-1
+    seq 1 10 >/tmp/parallel_$$-2; parallel -k --arg-file /tmp/parallel_$$-2 echo; rm /tmp/parallel_$$-2
+}
+
+par_pipe_to_func() {
+    echo '### bug #45998: --pipe to function broken'
+
+    myfunc() { echo $1; cat; }; 
+    export -f myfunc; 
+    echo pipefunc OK | parallel --pipe myfunc {#}; 
+    echo pipefunc and more OK | parallel --pipe 'myfunc {#};echo and more OK'
+}
+
+par_pipepart_roundrobin() {
+    echo '### bug #45769: --round-robin --pipepart gives wrong results'
+
+    seq 10000 >/tmp/seq10000
+    parallel -j2 --pipepart -a /tmp/seq10000 --block 14 --round-robin wc | wc -l
+    rm /tmp/seq10000
+}
+
+par_pipepart_header() {
+    echo '### bug #44614: --pipepart --header off by one'
+
+    seq 10 >/tmp/parallel_44616
+    parallel --pipepart -a /tmp/parallel_44616 -k --block 5 'echo foo; cat'
+    parallel --pipepart -a /tmp/parallel_44616 -k --block 2 --regexp --recend 3'\n' 'echo foo; cat'
+    rm /tmp/parallel_44616
+}
+
+par_maxargs() {
+    echo '### Test -n and --max-args: Max number of args per line (only with -X and -m)'
+
+    (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -m echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -m echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -X echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -X echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k -n1 echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k -n2 echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k --max-args=1 -X echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 -X echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k --max-args=2 -X echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 -X echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 echo
+}
+
+par_quote() {
+    echo '### Test -q'
+
+    parallel -kq perl -e '$ARGV[0]=~/^\S+\s+\S+$/ and print $ARGV[0],"\n"' ::: "a b" c "d e f" g "h i"
+    
+    echo '### Test -q {#}'
+
+    parallel -kq echo {#} ::: a b
+    parallel -kq echo {\#} ::: a b
+    parallel -kq echo {\\#} ::: a b
+}
+
+par_read_from_stdin() {
+    echo '### Test empty line as input'
+
+    echo | parallel echo empty input line
+    
+    echo '### Tests if (cat | sh) works'
+
+    perl -e 'for(1..25) {print "echo a $_; echo b $_\n"}' | parallel 2>&1 | sort
+    
+    echo '### Test if xargs-mode works'
+
+    perl -e 'for(1..25) {print "a $_\nb $_\n"}' | parallel echo 2>&1 | sort
+}
+
+par_totaljob_repl() {
+    echo '{##} bug #45841: Replacement string for total no of jobs'
+
+    parallel -k --plus echo {##} ::: {a..j};
+    parallel -k 'echo {= $::G++ > 3 and ($_=$Global::JobQueue->total_jobs());=}' ::: {1..10}
+    parallel -k -N7 --plus echo {#} {##} ::: {1..14}
+    parallel -k -N7 --plus echo {#} {##} ::: {1..15}
+    parallel -k -S 8/: -X --plus echo {#} {##} ::: {1..15}
+}
+
+par_jobslot_repl() {
+    echo 'bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken'
+
+    parallel --bar -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
+    parallel --halt now,fail=10% -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e
+    parallel --eta -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
+    parallel --shuf -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
+
+    echo 'bug #46231: {%} with --pipepart broken. Should give 1+2'
+
+    seq 10000 > /tmp/num10000
+    parallel -k --pipepart -ka /tmp/num10000 --block 10k -j2 --delay 0.05 echo {%}
+    rm /tmp/num10000
+}
+ 
+par_total_from_joblog() {
+    echo 'bug #47086: [PATCH] Initialize total_completed from joblog'
+
+    rm -f /tmp/parallel-47086
+
+    parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1          echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
+    parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1 --resume echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
+}
+
+par_xapply() {
+    echo '### Test bug #43284: {%} and {#} with --xapply'; 
+    parallel --xapply 'echo {1} {#} {%} {2}' ::: a ::: b; 
+    parallel -N2 'echo {%}' ::: a b
+
+    echo '### bug #47501: --xapply for some input sources'
+    # Wrapping does not work yet
+    parallel -k echo ::: a b c aWRAP :::+ aa bb cc ::: A B :::+ AA BB AAwrap
+}    
+
+par_perlexpr_repl() {
+    echo '### {= and =} in different groups separated by space'
+    parallel echo {= s/a/b/ =} ::: a
+    parallel echo {= s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{= s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{=s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{= {= s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{={=s/a/b/=} ::: a
+    parallel echo {= s/a/b/ =} {={==} ::: a
+    parallel echo {={= =} ::: a
+    parallel echo {= {= =} ::: a
+    parallel echo {= {= =} =} ::: a
+
+    echo '### bug #45842: Do not evaluate {= =} twice'
+
+    parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004}
+    parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004}
+    parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004} ::: {a..c}
+    parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004} ::: {a..c}
+
+    echo '### bug #45939: {2} in {= =} fails'
+
+    parallel echo '{= s/O{2}//=}' ::: OOOK
+    parallel echo '{2}-{=1 s/O{2}//=}' ::: OOOK ::: OK
+}
+
+par_END() {
+    echo '### Test -i and --replace: Replace with argument'
+
+    (echo a; echo END; echo b) | parallel -k -i -eEND echo repl{}ce
+    (echo a; echo END; echo b) | parallel -k --replace -eEND echo repl{}ce
+    (echo a; echo END; echo b) | parallel -k -i+ -eEND echo repl+ce
+    (echo e; echo END; echo b) | parallel -k -i'*' -eEND echo r'*'plac'*'
+    (echo a; echo END; echo b) | parallel -k --replace + -eEND echo repl+ce
+    (echo a; echo END; echo b) | parallel -k --replace== -eEND echo repl=ce
+    (echo a; echo END; echo b) | parallel -k --replace = -eEND echo repl=ce
+    (echo a; echo END; echo b) | parallel -k --replace=^ -eEND echo repl^ce
+    (echo a; echo END; echo b) | parallel -k -I^ -eEND echo repl^ce
+
+    echo '### Test -E: Artificial end-of-file'
+
+    (echo include this; echo END; echo not this) | parallel -k -E END echo
+    (echo include this; echo END; echo not this) | parallel -k -EEND echo
+
+    echo '### Test -e and --eof: Artificial end-of-file'
+
+    (echo include this; echo END; echo not this) | parallel -k -e END echo
+    (echo include this; echo END; echo not this) | parallel -k -eEND echo
+    (echo include this; echo END; echo not this) | parallel -k --eof=END echo
+    (echo include this; echo END; echo not this) | parallel -k --eof END echo
+}
+
+par_exit_val() {
+    echo '### Test bug #45619: "--halt" erroneous error exit code (should give 0)'; 
+    seq 10 | parallel --halt now,fail=1 true; 
+    echo $?
+
+    echo '### Test exit val - true'; 
+    echo true | parallel; 
+    echo $?
+
+    echo '### Test exit val - false'; 
+    echo false | parallel; 
+    echo $?
+}
+
+par_xargs_compat() {
+    echo xargs compatibility
+
+    echo '### Test -L -l and --max-lines'
+
+    (echo a_b;echo c) | parallel -km -L2 echo
+    (echo a_b;echo c) | parallel -k -L2 echo
+    (echo a_b;echo c) | xargs -L2 echo
+
+    echo '### xargs -L1 echo'
+
+    (echo a_b;echo c) | parallel -km -L1 echo
+    (echo a_b;echo c) | parallel -k -L1 echo
+    (echo a_b;echo c) | xargs -L1 echo
+    echo 'Lines ending in space should continue on next line'
+
+    echo '### xargs -L1 echo'
+
+    (echo a_b' ';echo c;echo d) | parallel -km -L1 echo
+    (echo a_b' ';echo c;echo d) | parallel -k -L1 echo
+    (echo a_b' ';echo c;echo d) | xargs -L1 echo
+    
+    echo '### xargs -L2 echo'
+
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km -L2 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k -L2 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs -L2 echo
+    
+    echo '### xargs -l echo'
+
+    (echo a_b' ';echo c;echo d;echo e) | parallel -l -km echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | parallel -l -k echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | xargs -l echo
+    
+    echo '### xargs -l2 echo'
+
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km -l2 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k -l2 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs -l2 echo
+    
+    echo '### xargs -l1 echo'
+
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km -l1 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k -l1 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs -l1 echo
+    
+    echo '### xargs --max-lines=2 echo'
+
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km --max-lines 2 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k --max-lines 2 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines=2 echo
+    
+    echo '### xargs --max-lines echo'
+
+    (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -km echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -k echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines echo
+    
+    echo '### test too long args'
+
+    perl -e 'print "z"x1000000' | parallel echo 2>&1
+    perl -e 'print "z"x1000000' | xargs echo 2>&1
+    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
+    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort xargs -s 10 echo
+    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -kX -s 10 echo
+    
+    echo '### Test -x'
+
+    (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
+    (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
+    (seq 1 10; echo 12345; seq 12 15) | stdsort xargs -s 10 -x echo
+    (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
+    (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
+    (seq 1 10; echo 1234;  seq 12 15) | stdsort xargs -s 10 -x echo
+}
+
+par_long_cmd_mem_use() {
+    echo '### Test long commands do not take up all memory'
+
+    seq 1 100 |
+	parallel -j0 -qv perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 2>/dev/null |
+	sort
+}
+
+par_distribute_args_at_EOF() {
+    echo '### Test distribute arguments at EOF to 2 jobslots'
+
+    seq 1 92 | parallel -j2 -kX -s 100 echo
+  
+    echo '### Test distribute arguments at EOF to 5 jobslots'
+
+    seq 1 92 | parallel -j5 -kX -s 100 echo
+  
+    echo '### Test distribute arguments at EOF to infinity jobslots'
+
+    seq 1 92 | parallel -j0 -kX -s 100 echo 2>/dev/null
+  
+    echo '### Test -N is not broken by distribution - single line'
+
+    seq 9 | parallel  -N 10  echo
+  
+    echo '### Test -N is not broken by distribution - two lines'
+
+    seq 19 | parallel -k -N 10  echo
+}    
+
+par_test_L_context_replace() {
+    echo '### Test -N context replace'
+
+    seq 19 | parallel -k -N 10  echo a{}b
+
+    echo '### Test -L context replace'
+
+    seq 19 | parallel -k -L 10  echo a{}b
+}
+
+par_test_X_with_multiple_source() {
+    echo '### Test {} multiple times in different commands'
+
+    seq 10 | parallel -v -Xj1 echo {} \; echo {}
+
+    echo '### Test of -X {1}-{2} with multiple input sources'
+
+    parallel -j1 -kX  echo {1}-{2} ::: a ::: b
+    parallel -j2 -kX  echo {1}-{2} ::: a b ::: c d
+    parallel -j2 -kX  echo {1}-{2} ::: a b c ::: d e f
+    parallel -j0 -kX  echo {1}-{2} ::: a b c ::: d e f
+
+    echo '### Test of -X {}-{.} with multiple input sources'
+
+    parallel -j1 -kX  echo {}-{.} ::: a ::: b
+    parallel -j2 -kX  echo {}-{.} ::: a b ::: c d
+    parallel -j2 -kX  echo {}-{.} ::: a b c ::: d e f
+    parallel -j0 -kX  echo {}-{.} ::: a b c ::: d e f
+}
+
+par_test_r_with_pipe() {
+    echo '### Test of -r with --pipe - the first should give an empty line. The second should not.'
+
+    echo | parallel  -j2 -N1 --pipe cat | wc -l
+    echo | parallel -r -j2 -N1 --pipe cat | wc -l
+}
+
+par_test_tty() {
+    echo '### Test --tty'
+
+    seq 0.1 0.1 0.5 | parallel -j1 --tty tty\;sleep
+}
 
 par_no_command_given() {
     echo '### Test bugfix if no command given'
@@ -863,8 +879,8 @@ par_empty_input_on_stdin() {
 
 par_tee_too_many_args() {
     echo '### Fail if there are more arguments than --jobs'
-    seq 11 |parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
-    seq 11 |parallel -k --tag --pipe -j4 --tee grep {} ::: {1..5}
+    seq 11 | parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
+    seq 11 | parallel -k --tag --pipe -j4 --tee grep {} ::: {1..5}
 }
 
 par_space_envvar() {
@@ -927,4 +943,4 @@ par_shard() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel --timeout 20 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'
+    parallel --timeout 30 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

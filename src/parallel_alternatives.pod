@@ -1849,23 +1849,115 @@ https://github.com/spion/npm-parallel (Last checked: 2019-01)
 B<machma> runs tasks in parallel. It gives time stamped
 output. It buffers in RAM. The examples from README.md:
 
-  find . -iname '*.jpg' | machma --  mogrify -resize 1200x1200 -filter Lanczos {}
-  find . -iname '*.jpg' | parallel mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' |
+    machma --  mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' |
+    parallel mogrify -resize 1200x1200 -filter Lanczos {}
 
   cat /tmp/ips | machma -p 2 -- ping -c 2 -q {}
   cat /tmp/ips | parallel -j 2 --tag --line-buffer ping -c 2 -q {}
 
-  cat /tmp/ips | machma -- sh -c 'ping -c 2 -q $0 > /dev/null && echo alive' {}
-  cat /tmp/ips | parallel --tag 'ping -c 2 -q {} > /dev/null && echo alive'
+  cat /tmp/ips |
+    machma -- sh -c 'ping -c 2 -q $0 > /dev/null && echo alive' {}
+  cat /tmp/ips |
+    parallel --tag 'ping -c 2 -q {} > /dev/null && echo alive'
 
-  find . -iname '*.jpg' | machma --timeout 5s --  mogrify -resize 1200x1200 -filter Lanczos {}
-  find . -iname '*.jpg' | parallel --timeout 5s  mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' |
+    machma --timeout 5s --  mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' |
+    parallel --timeout 5s  mogrify -resize 1200x1200 -filter Lanczos {}
 
-  find . -iname '*.jpg' -print0 | machma --null --  mogrify -resize 1200x1200 -filter Lanczos {}
-  find . -iname '*.jpg' -print0 | parallel --null mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' -print0 |
+    machma --null --  mogrify -resize 1200x1200 -filter Lanczos {}
+  find . -iname '*.jpg' -print0 |
+    parallel --null mogrify -resize 1200x1200 -filter Lanczos {}
 
 https://github.com/fd0/machma (Last checked: 2019-01)
 
+
+=head2 DIFFERENCES BETWEEN interlace AND GNU Parallel
+
+B<interlace> is built for network analysis to run network tools in parallel.
+
+B<interface> does not buffer output, so output mixes.
+
+Using B<prips> the examples from https://github.com/codingo/Interlace
+can be run with GNU B<parallel>:
+
+  interlace -tL ./targets.txt -threads 5 \
+    -c "nikto --host _target_ > ./_target_-nikto.txt" -v
+  parallel -a targets.txt -P5 nikto --host {} > ./{}_-nikto.txt
+
+  interlace -tL ./targets.txt -threads 5 -c \
+    "nikto --host _target_:_port_ > ./_target_-_port_-nikto.txt" \
+    -p 80,443 -v
+  parallel -P5 nikto --host {1}:{2} > ./{1}-{2}-nikto.txt \
+    :::: targets.txt ::: 80 443
+
+  commands.txt:
+    nikto --host _target_:_port_ > _output_/_target_-nikto.txt
+    sslscan _target_:_port_ >  _output_/_target_-sslscan.txt
+    testssl.sh _target_:_port_ > _output_/_target_-testssl.txt
+  interlace -t example.com -o ~/Engagements/example/ \
+    -cL ./commands.txt -p 80,443
+
+  _nikto() {
+    nikto --host "$1:$2"
+  }
+  _sslscan() {
+    sslscan "$1:$2"
+  }
+  _testssl() {
+    testssl.sh "$1:$2"
+  }
+  export -f _nikto
+  export -f _sslscan
+  export -f _testssl
+  parallel --results ~/Engagements/example/{2}:{3}{1} \
+    ::: _nikto _sslscan _testssl ::: example.com ::: 80 443
+
+  interlace -t 192.168.12.0/24 -c "vhostscan _target_ \
+    -oN _output_/_target_-vhosts.txt" -o ~/scans/ -threads 50
+  prips 192.168.12.0/24 |
+    parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
+
+  interlace -t 192.168.12.* -c "vhostscan _target_ \
+    -oN _output_/_target_-vhosts.txt" -o ~/scans/ -threads 50
+  # Glob is not supported in prips
+  prips 192.168.12.0/24 |
+    parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
+
+  interlace -t 192.168.12.1-15 -c \
+    "vhostscan _target_ -oN _output_/_target_-vhosts.txt" \
+    -o ~/scans/ -threads 50
+  # Dash notation is not supported in prips
+  prips 192.168.12.1 192.168.12.15 |
+    parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
+
+  interlace -tL ./target-list.txt -c \
+    "vhostscan -t _target_ -oN _output_/_target_-vhosts.txt" \
+    -o ~/scans/ -threads 50
+  cat ./target-list.txt |
+    parallel -P50 vhostscan -t {} -oN ~/scans/{}-vhosts.txt
+
+  ./vhosts-commands.txt -tL ./target-list.txt:
+    vhostscan -t $target -oN _output_/_target_-vhosts.txt
+  interlace -cL ./vhosts-commands.txt -tL ./target-list.txt \
+    -threads 50 -o ~/scans
+
+  ./vhosts-commands.txt -tL ./target-list.txt:
+    vhostscan -t "$1" -oN "$2"
+  parallel -P50 ./vhosts-commands.txt {} ~/scans/{} \
+    :::: ./target-list.txt
+
+  interlace -t 192.168.12.0/24 -e 192.168.12.0/26 -c \
+    "vhostscan _target_ -oN _output_/_target_-vhosts.txt" \
+    -o ~/scans/ -threads 50
+  prips 192.168.12.0/24 | grep -xv -Ff <(prips 192.168.12.0/26) |
+    parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
+
+
+https://github.com/codingo/Interlace (Last checked: 2019-02)
 
 =head2 Todo
 

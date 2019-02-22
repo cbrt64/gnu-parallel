@@ -1,36 +1,3 @@
-echo '### Test bug #45619: "--halt" erroneous error exit code (should give 0)';   seq 10 | parallel --halt now,fail=1 true;   echo $?
-### Test bug #45619: "--halt" erroneous error exit code (should give 0)
-0
-echo '**'
-**
-echo '### Test exit val - true';   echo true | parallel;   echo $?
-### Test exit val - true
-0
-echo '**'
-**
-echo '### Test exit val - false';   echo false | parallel;   echo $?
-### Test exit val - false
-1
-echo '**'
-**
-echo '### Test bug #43284: {%} and {#} with --xapply';   parallel --xapply 'echo {1} {#} {%} {2}' ::: a ::: b;   parallel -N2 'echo {%}' ::: a b
-### Test bug #43284: {%} and {#} with --xapply
-a 1 1 b
-1
-echo '**'
-**
-echo '### bug #47501: --xapply for some input sources'
-### bug #47501: --xapply for some input sources
-  # Wrapping does not work yet
-  parallel -k echo ::: a b c aWRAP :::+ aa bb cc ::: A B :::+ AA BB AAwrap
-a aa A AA
-a aa B BB
-b bb A AA
-b bb B BB
-c cc A AA
-c cc B BB
-echo '**'
-**
 echo '### Test bug #43376: {%} and {#} with --pipe'
 ### Test bug #43376: {%} and {#} with --pipe
   echo foo | parallel -q --pipe -k echo {#}
@@ -41,30 +8,6 @@ echo '### Test bug #43376: {%} and {#} with --pipe'
 1
   echo foo | parallel --pipe -k echo {#}
 1
-echo '**'
-**
-echo '### {= and =} in different groups separated by space'
-### {= and =} in different groups separated by space
-  parallel echo {= s/a/b/ =} ::: a
-b
-  parallel echo {= s/a/b/=} ::: a
-b
-  parallel echo {= s/a/b/=}{= s/a/b/=} ::: a
-bb
-  parallel echo {= s/a/b/=}{=s/a/b/=} ::: a
-bb
-  parallel echo {= s/a/b/=}{= {= s/a/b/=} ::: a
-b{= b
-  parallel echo {= s/a/b/=}{={=s/a/b/=} ::: a
-b{=b
-  parallel echo {= s/a/b/ =} {={==} ::: a
-b {=a
-  parallel echo {={= =} ::: a
-{=a
-  parallel echo {= {= =} ::: a
-{= a
-  parallel echo {= {= =} =} ::: a
-{= a =}
 echo '**'
 **
 echo '### {} as part of the command'
@@ -120,35 +63,6 @@ parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
 Warning: unable to close filehandle properly: No space left on device during global destruction.
 echo '**'
 **
-echo '### bug #44614: --pipepart --header off by one'
-### bug #44614: --pipepart --header off by one
-  seq 10 >/tmp/parallel_44616;     parallel --pipepart -a /tmp/parallel_44616 -k --block 5 'echo foo; cat';     parallel --pipepart -a /tmp/parallel_44616 -k --block 2 --regexp --recend 3'\n' 'echo foo; cat';     rm /tmp/parallel_44616
-foo
-1
-2
-3
-foo
-4
-5
-6
-foo
-7
-8
-9
-foo
-10
-foo
-1
-2
-3
-foo
-4
-5
-6
-7
-8
-9
-10
 echo '### PARALLEL_TMUX not found'
 ### PARALLEL_TMUX not found
   PARALLEL_TMUX=not-existing parallel --tmux echo ::: 1
@@ -164,157 +78,10 @@ parallel -k echo {#} ::: 1 2 ::: 1 2
 4
 echo '**'
 **
-echo '### bug #45769: --round-robin --pipepart gives wrong results'
-### bug #45769: --round-robin --pipepart gives wrong results
-seq 10000 >/tmp/seq10000;   parallel -j2 --pipepart -a /tmp/seq10000 --block 14 --round-robin wc | wc -l;   rm /tmp/seq10000
-2
-echo '**'
-**
-echo '### bug #45842: Do not evaluate {= =} twice'
-### bug #45842: Do not evaluate {= =} twice
-  parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004}
-1
-2
-3
-4
-  parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004}
-1
-2
-3
-4
-  parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004} ::: {a..c}
-1 2
-3 4
-5 6
-7 8
-9 10
-11 12
-13 14
-15 16
-17 18
-19 20
-21 22
-23 24
-  parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004} ::: {a..c}
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-echo '**'
-**
-echo '### bug #45939: {2} in {= =} fails'
-### bug #45939: {2} in {= =} fails
-  parallel echo '{= s/O{2}//=}' ::: OOOK
-OK
-  parallel echo '{2}-{=1 s/O{2}//=}' ::: OOOK ::: OK
-OK-OK
-echo '**'
-**
-echo '### bug #45998: --pipe to function broken'
-### bug #45998: --pipe to function broken
-  myfunc() { echo $1; cat; };     export -f myfunc;     echo pipefunc OK | parallel --pipe myfunc {#};     echo pipefunc and more OK | parallel --pipe 'myfunc {#};echo and more OK'
-1
-pipefunc OK
-1
-pipefunc and more OK
-and more OK
-echo '**'
-**
 echo 'bug #46016: --joblog should not log when --dryrun'
 bug #46016: --joblog should not log when --dryrun
   parallel --dryrun --joblog - echo ::: Only_this
 echo Only_this
-echo '**'
-**
-echo 'bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken'
-bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken
-  parallel --bar -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-1
-2
-1
-2
-1
-2
-  parallel --halt now,fail=10% -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e
-1
-2
-1
-2
-1
-2
-  parallel --eta -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-1
-2
-1
-2
-1
-2
-  parallel --shuf -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-1
-2
-1
-2
-1
-2
-echo '**'
-**
-echo 'bug #46231: {%} with --pipepart broken. Should give 1+2'
-bug #46231: {%} with --pipepart broken. Should give 1+2
-  seq 10000 > /tmp/num10000;   parallel -k --pipepart -ka /tmp/num10000 --block 10k -j2 --delay 0.05 echo {%};   rm /tmp/num10000
-1
-2
-1
-2
-1
-echo '**'
-**
-echo '{##} bug #45841: Replacement string for total no of jobs'
-{##} bug #45841: Replacement string for total no of jobs
-  parallel -k --plus echo {##} ::: {a..j};   parallel -k 'echo {= $::G++ > 3 and ($_=$Global::JobQueue->total_jobs());=}' ::: {1..10}
-10
-10
-10
-10
-10
-10
-10
-10
-10
-10
-1
-2
-3
-4
-10
-10
-10
-10
-10
-10
-  parallel -k -N7 --plus echo {#} {##} ::: {1..14}
-1 2 2 2 2 2 2 2
-2 2 2 2 2 2 2 2
-  parallel -k -N7 --plus echo {#} {##} ::: {1..15}
-1 3 3 3 3 3 3 3
-2 3 3 3 3 3 3 3
-3 3
-  parallel -k -S 8/: -X --plus echo {#} {##} ::: {1..15}
-1 15 15
-2 14 14
-3 14 14
-4 14 14
-5 14 14
-6 14 14
-7 14 14
-8 14
 echo '**'
 **
 echo 'bug #47002: --tagstring with -d \n\n'
@@ -332,19 +99,6 @@ bug #47002: --tagstring with -d \n\n
 2	
 echo '**'
 **
-echo 'bug #47086: [PATCH] Initialize total_completed from joblog'
-bug #47086: [PATCH] Initialize total_completed from joblog
-  rm -f /tmp/parallel-47086;   parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1          echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0;   parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1 --resume echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
-0
-1
-2
-3
-4
-5
-parallel: This job failed:
-echo 3;exit 1
-echo '**'
-**
 echo 'bug #47290: xargs: Warning: a NUL character occurred in the input'
 bug #47290: xargs: Warning: a NUL character occurred in the input
   perl -e 'print "foo\0not printed"' | parallel echo
@@ -354,302 +108,6 @@ parallel: Warning: NUL cannot be passed through in the argument list.
 parallel: Warning: Did you mean to use the --null option?
 echo '**'
 **
-echo xargs compatibility
-xargs compatibility
-echo '### Test -L -l and --max-lines'
-### Test -L -l and --max-lines
-  (echo a_b;echo c) | parallel -km -L2 echo
-a_b
-c
-  (echo a_b;echo c) | parallel -k -L2 echo
-a_b c
-  (echo a_b;echo c) | xargs -L2 echo
-a_b c
-echo '### xargs -L1 echo'
-### xargs -L1 echo
-  (echo a_b;echo c) | parallel -km -L1 echo
-a_b
-c
-  (echo a_b;echo c) | parallel -k -L1 echo
-a_b
-c
-  (echo a_b;echo c) | xargs -L1 echo
-a_b
-c
-  echo 'Lines ending in space should continue on next line'
-Lines ending in space should continue on next line
-echo '### xargs -L1 echo'
-### xargs -L1 echo
-  (echo a_b' ';echo c;echo d) | parallel -km -L1 echo
-a_b c
-d
-  (echo a_b' ';echo c;echo d) | parallel -k -L1 echo
-a_b c
-d
-  (echo a_b' ';echo c;echo d) | xargs -L1 echo
-a_b c
-d
-echo '### xargs -L2 echo'
-### xargs -L2 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km -L2 echo
-a_b c d
-e
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k -L2 echo
-a_b c d
-e
-  (echo a_b' ';echo c;echo d;echo e) | xargs -L2 echo
-a_b c d
-e
-echo '### xargs -l echo'
-### xargs -l echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -l -km echo # This behaves wrong
-a_b c
-d
-e
-  (echo a_b' ';echo c;echo d;echo e) | parallel -l -k echo # This behaves wrong
-a_b c
-d
-e
-  (echo a_b' ';echo c;echo d;echo e) | xargs -l echo
-a_b c
-d
-e
-echo '### xargs -l2 echo'
-### xargs -l2 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km -l2 echo
-a_b c d
-e
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k -l2 echo
-a_b c d
-e
-  (echo a_b' ';echo c;echo d;echo e) | xargs -l2 echo
-a_b c d
-e
-echo '### xargs -l1 echo'
-### xargs -l1 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km -l1 echo
-a_b c
-d
-e
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k -l1 echo
-a_b c
-d
-e
-  (echo a_b' ';echo c;echo d;echo e) | xargs -l1 echo
-a_b c
-d
-e
-echo '### xargs --max-lines=2 echo'
-### xargs --max-lines=2 echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel -km --max-lines 2 echo
-a_b c d
-e
-  (echo a_b' ';echo c;echo d;echo e) | parallel -k --max-lines 2 echo
-a_b c d
-e
-  (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines=2 echo
-a_b c d
-e
-echo '### xargs --max-lines echo'
-### xargs --max-lines echo
-  (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -km echo # This behaves wrong
-a_b c
-d
-e
-  (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -k echo # This behaves wrong
-a_b c
-d
-e
-  (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines echo
-a_b c
-d
-e
-echo '### test too long args'
-### test too long args
-  perl -e 'print "z"x1000000' | parallel echo 2>&1
-parallel: Error: Command line too long (1000005 >= 131049) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
-  perl -e 'print "z"x1000000' | xargs echo 2>&1
-xargs: argument line too long
-  (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
-1 2
-3 4
-5 6
-7 8
-9 10
-parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
-  (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort xargs -s 10 echo
-1 2
-3 4
-5 6
-7 8
-9 10
-xargs: argument line too long
-  (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -kX -s 10 echo
-1 2
-3 4
-5 6
-7 8
-9 10
-parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
-echo '### Test -x'
-### Test -x
-  (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
-1 2
-3 4
-5 6
-7 8
-9 10
-parallel: Error: Command line too long (10 >= 10) at input 0: 12345
-  (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
-1 2
-3 4
-5 6
-7 8
-9 10
-parallel: Error: Command line too long (10 >= 10) at input 0: 12345
-  (seq 1 10; echo 12345; seq 12 15) | stdsort xargs -s 10 -x echo
-1 2
-3 4
-5 6
-7 8
-xargs: argument line too long
-  (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
-1 2
-12
-1234
-13
-14
-15
-3 4
-5 6
-7 8
-9 10
-  (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
-1 2
-12
-1234
-13
-14
-15
-3 4
-5 6
-7 8
-9 10
-  (seq 1 10; echo 1234;  seq 12 15) | stdsort xargs -s 10 -x echo
-1 2
-12
-1234
-13
-14
-15
-3 4
-5 6
-7 8
-9 10
-echo '### Test -a and --arg-file: Read input from file instead of stdin'
-### Test -a and --arg-file: Read input from file instead of stdin
-  seq 1 10 >/tmp/parallel_$$-1; parallel -k -a /tmp/parallel_$$-1 echo; rm /tmp/parallel_$$-1
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-  seq 1 10 >/tmp/parallel_$$-2; parallel -k --arg-file /tmp/parallel_$$-2 echo; rm /tmp/parallel_$$-2
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-echo '### Test -i and --replace: Replace with argument'
-### Test -i and --replace: Replace with argument
-  (echo a; echo END; echo b) | parallel -k -i -eEND echo repl{}ce
-replace
-  (echo a; echo END; echo b) | parallel -k --replace -eEND echo repl{}ce
-replace
-  (echo a; echo END; echo b) | parallel -k -i+ -eEND echo repl+ce
-replace
-  (echo e; echo END; echo b) | parallel -k -i'*' -eEND echo r'*'plac'*'
-replace
-  (echo a; echo END; echo b) | parallel -k --replace + -eEND echo repl+ce
-replace
-  (echo a; echo END; echo b) | parallel -k --replace== -eEND echo repl=ce
-replace
-  (echo a; echo END; echo b) | parallel -k --replace = -eEND echo repl=ce
-replace
-  (echo a; echo END; echo b) | parallel -k --replace=^ -eEND echo repl^ce
-replace
-  (echo a; echo END; echo b) | parallel -k -I^ -eEND echo repl^ce
-replace
-echo '### Test -E: Artificial end-of-file'
-### Test -E: Artificial end-of-file
-  (echo include this; echo END; echo not this) | parallel -k -E END echo
-include this
-  (echo include this; echo END; echo not this) | parallel -k -EEND echo
-include this
-echo '### Test -e and --eof: Artificial end-of-file'
-### Test -e and --eof: Artificial end-of-file
-  (echo include this; echo END; echo not this) | parallel -k -e END echo
-include this
-  (echo include this; echo END; echo not this) | parallel -k -eEND echo
-include this
-  (echo include this; echo END; echo not this) | parallel -k --eof=END echo
-include this
-  (echo include this; echo END; echo not this) | parallel -k --eof END echo
-include this
-echo '### Test -n and --max-args: Max number of args per line (only with -X and -m)'
-### Test -n and --max-args: Max number of args per line (only with -X and -m)
-  (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -m echo
-line 1
-line 2
-line 3
-  (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -m echo
-line 1 line 1
-line 2
-  (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -X echo
-line 1
-line 2
-line 3
-  (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -X echo
-line 1 line 1
-line 2
-  (echo line 1;echo line 2;echo line 3) | parallel -k -n1 echo
-line 1
-line 2
-line 3
-  (echo line 1;echo line 1;echo line 2) | parallel -k -n2 echo
-line 1 line 1
-line 2
-  (echo line 1;echo line 2;echo line 3) | parallel -k --max-args=1 -X echo
-line 1
-line 2
-line 3
-  (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 -X echo
-line 1
-line 2
-line 3
-  (echo line 1;echo line 1;echo line 2) | parallel -k --max-args=2 -X echo
-line 1 line 1
-line 2
-  (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 -X echo
-line 1 line 1
-line 2
-  (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 echo
-line 1
-line 2
-line 3
-  (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 echo
-line 1 line 1
-line 2
 echo '### Test --max-procs and -P: Number of processes'
 ### Test --max-procs and -P: Number of processes
   seq 1 10 | parallel -k --max-procs +0 echo max proc
@@ -674,28 +132,6 @@ max proc 10
 200% proc 8
 200% proc 9
 200% proc 10
-echo '### Test --delimiter and -d: Delimiter instead of newline'
-### Test --delimiter and -d: Delimiter instead of newline
-  echo '# Yes there is supposed to be an extra newline for -d N'
-# Yes there is supposed to be an extra newline for -d N
-  echo line 1Nline 2Nline 3 | parallel -k -d N echo This is
-This is line 1
-This is line 2
-This is line 3
-
-  echo line 1Nline 2Nline 3 | parallel -k --delimiter N echo This is
-This is line 1
-This is line 2
-This is line 3
-
-  printf "delimiter NUL line 1\0line 2\0line 3" | parallel -k -d '\0' echo
-delimiter NUL line 1
-line 2
-line 3
-  printf "delimiter TAB line 1\tline 2\tline 3" | parallel -k --delimiter '\t' echo
-delimiter TAB line 1
-line 2
-line 3
 echo '### Test --max-chars and -s: Max number of chars in a line'
 ### Test --max-chars and -s: Max number of chars in a line
   (echo line 1;echo line 1;echo line 2) | parallel -k --max-chars 25 -X echo
@@ -750,335 +186,6 @@ Execution of  will continue now, and it will try to read its input
 and run commands; if this is not what you wanted to happen, please
 press CTRL-D or CTRL-C
 bar car far
-echo '### Test empty line as input'
-### Test empty line as input
-  echo | parallel echo empty input line
-empty input line 
-echo '### Tests if (cat | sh) works'
-### Tests if (cat | sh) works
-  perl -e 'for(1..25) {print "echo a $_; echo b $_\n"}' | parallel 2>&1 | sort
-a 1
-a 10
-a 11
-a 12
-a 13
-a 14
-a 15
-a 16
-a 17
-a 18
-a 19
-a 2
-a 20
-a 21
-a 22
-a 23
-a 24
-a 25
-a 3
-a 4
-a 5
-a 6
-a 7
-a 8
-a 9
-b 1
-b 10
-b 11
-b 12
-b 13
-b 14
-b 15
-b 16
-b 17
-b 18
-b 19
-b 2
-b 20
-b 21
-b 22
-b 23
-b 24
-b 25
-b 3
-b 4
-b 5
-b 6
-b 7
-b 8
-b 9
-echo '### Test if xargs-mode works'
-### Test if xargs-mode works
-  perl -e 'for(1..25) {print "a $_\nb $_\n"}' | parallel echo 2>&1 | sort
-a 1
-a 10
-a 11
-a 12
-a 13
-a 14
-a 15
-a 16
-a 17
-a 18
-a 19
-a 2
-a 20
-a 21
-a 22
-a 23
-a 24
-a 25
-a 3
-a 4
-a 5
-a 6
-a 7
-a 8
-a 9
-b 1
-b 10
-b 11
-b 12
-b 13
-b 14
-b 15
-b 16
-b 17
-b 18
-b 19
-b 2
-b 20
-b 21
-b 22
-b 23
-b 24
-b 25
-b 3
-b 4
-b 5
-b 6
-b 7
-b 8
-b 9
-echo '### Test -q'
-### Test -q
-  parallel -kq perl -e '$ARGV[0]=~/^\S+\s+\S+$/ and print $ARGV[0],"\n"' ::: "a b" c "d e f" g "h i"
-a b
-h i
-echo '### Test -q {#}'
-### Test -q {#}
-  parallel -kq echo {#} ::: a b
-1
-2
-  parallel -kq echo {\#} ::: a b
-1
-2
-  parallel -kq echo {\\#} ::: a b
-{\#} a
-{\#} b
-echo '### Test long commands do not take up all memory'
-### Test long commands do not take up all memory
-  seq 1 100 | parallel -j0 -qv perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 2>/dev/null | sort
-1
-10
-100
-11
-12
-13
-14
-15
-16
-17
-18
-19
-2
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-3
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-4
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-5
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-6
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-7
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-8
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-9
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 1
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 10
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 100
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 11
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 12
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 13
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 14
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 15
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 16
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 17
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 18
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 19
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 2
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 20
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 21
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 22
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 23
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 24
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 25
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 26
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 27
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 28
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 29
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 3
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 30
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 31
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 32
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 33
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 34
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 35
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 36
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 37
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 38
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 39
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 4
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 40
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 41
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 42
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 43
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 44
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 45
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 46
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 47
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 48
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 49
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 5
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 50
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 51
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 52
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 53
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 54
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 55
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 56
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 57
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 58
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 59
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 6
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 60
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 61
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 62
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 63
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 64
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 65
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 66
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 67
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 68
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 69
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 7
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 70
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 71
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 72
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 73
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 74
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 75
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 76
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 77
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 78
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 79
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 8
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 80
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 81
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 82
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 83
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 84
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 85
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 86
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 87
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 88
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 89
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 9
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 90
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 91
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 92
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 93
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 94
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 95
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 96
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 97
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 98
-perl -e '$r=rand(shift);for($f=0;$f<$r;$f++){$a="a"x100};print shift,"\n"' 10000 99
 echo '### Test 0-arguments'
 ### Test 0-arguments
   seq 1 2 | parallel -k -n0 echo n0
@@ -1110,140 +217,28 @@ echo '### Test --nice locally'
   parallel --nice 1 -vv 'PAR=a bash -c "echo  \$PAR {}"' ::: b
 PAR=a bash -c "echo  \$PAR b"
 a b
-echo '### Test distribute arguments at EOF to 2 jobslots'
-### Test distribute arguments at EOF to 2 jobslots
-  seq 1 92 | parallel -j2 -kX -s 100 echo
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-66 67 68 69 70 71 72 73 74 75 76 77 78 79
-80 81 82 83 84 85 86 87 88 89 90 91 92
-echo '### Test distribute arguments at EOF to 5 jobslots'
-### Test distribute arguments at EOF to 5 jobslots
-  seq 1 92 | parallel -j5 -kX -s 100 echo
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-66 67 68 69 70 71
-72 73 74 75 76 77
-78 79 80 81 82 83
-84 85 86 87 88 89
-90 91 92
-echo '### Test distribute arguments at EOF to infinity jobslots'
-### Test distribute arguments at EOF to infinity jobslots
-  seq 1 92 | parallel -j0 -kX -s 100 echo 2>/dev/null
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-echo '### Test -N is not broken by distribution - single line'
-### Test -N is not broken by distribution - single line
-  seq 9 | parallel  -N 10  echo
-1 2 3 4 5 6 7 8 9
-echo '### Test -N is not broken by distribution - two lines'
-### Test -N is not broken by distribution - two lines
-  seq 19 | parallel -k -N 10  echo
-1 2 3 4 5 6 7 8 9 10
-11 12 13 14 15 16 17 18 19
-echo '### Test -N context replace'
-### Test -N context replace
-  seq 19 | parallel -k -N 10  echo a{}b
-a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
-a11b a12b a13b a14b a15b a16b a17b a18b a19b
-echo '### Test -L context replace'
-### Test -L context replace
-  seq 19 | parallel -k -L 10  echo a{}b
-a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
-a11b a12b a13b a14b a15b a16b a17b a18b a19b
-echo '**'
-**
-echo '### Test {} multiple times in different commands'
-### Test {} multiple times in different commands
-  seq 10 | parallel -v -Xj1 echo {} \; echo {}
-echo 1 2 3 4 5 6 7 8 9 10 ; echo 1 2 3 4 5 6 7 8 9 10
-1 2 3 4 5 6 7 8 9 10
-1 2 3 4 5 6 7 8 9 10
-echo '### Test of -X {1}-{2} with multiple input sources'
-### Test of -X {1}-{2} with multiple input sources
-  parallel -j1 -kX  echo {1}-{2} ::: a ::: b
-a-b
-  parallel -j2 -kX  echo {1}-{2} ::: a b ::: c d
-a-c
-b-c
-  parallel -j2 -kX  echo {1}-{2} ::: a b c ::: d e f
-a-d
-b-f
-  parallel -j0 -kX  echo {1}-{2} ::: a b c ::: d e f
-a-d
-a-e
-a-f
-b-d
-b-e
-b-f
-c-d
-c-e
-c-f
-echo '### Test of -X {}-{.} with multiple input sources'
-### Test of -X {}-{.} with multiple input sources
-  parallel -j1 -kX  echo {}-{.} ::: a ::: b
-a-a b-b
-  parallel -j2 -kX  echo {}-{.} ::: a b ::: c d
-a-a c-c a-a d-d
-b-b c-c b-b d-d
-  parallel -j2 -kX  echo {}-{.} ::: a b c ::: d e f
-a-a d-d a-a e-e a-a f-f b-b d-d b-b e-e
-b-b f-f c-c d-d c-c e-e c-c f-f
-  parallel -j0 -kX  echo {}-{.} ::: a b c ::: d e f
-a-a d-d
-a-a e-e
-a-a f-f
-b-b d-d
-b-b e-e
-b-b f-f
-c-c d-d
-c-c e-e
-c-c f-f
-echo '### Test of -r with --pipe - the first should give an empty line. The second should not.'
-### Test of -r with --pipe - the first should give an empty line. The second should not.
-  echo | parallel  -j2 -N1 --pipe cat | wc -l
-1
-  echo | parallel -r -j2 -N1 --pipe cat | wc -l
-0
-echo '### Test --tty'
-### Test --tty
-  seq 0.1 0.1 0.5 | parallel -j1 --tty tty\;sleep
-/dev/tty
-/dev/tty
-/dev/tty
-/dev/tty
-/dev/tty
 ### 1 .par file from --files expected
 0
 par_0_no_newline	A single zero without \n should not be ignored
 par_0_no_newline	0
+par_END	### Test -i and --replace: Replace with argument
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	### Test -E: Artificial end-of-file
+par_END	include this
+par_END	include this
+par_END	### Test -e and --eof: Artificial end-of-file
+par_END	include this
+par_END	include this
+par_END	include this
+par_END	include this
 par_PARALLEL_ENV	### PARALLEL_ENV as variable
 par_PARALLEL_ENV	OK as variable
 par_PARALLEL_ENV	### PARALLEL_ENV as file
@@ -1257,6 +252,27 @@ par_append_joblog	### can you append to a joblog using +
 par_append_joblog	1
 par_append_joblog	1
 par_append_joblog	3 /tmp/parallel_append_joblog
+par_argfile	### Test -a and --arg-file: Read input from file instead of stdin
+par_argfile	1
+par_argfile	2
+par_argfile	3
+par_argfile	4
+par_argfile	5
+par_argfile	6
+par_argfile	7
+par_argfile	8
+par_argfile	9
+par_argfile	10
+par_argfile	1
+par_argfile	2
+par_argfile	3
+par_argfile	4
+par_argfile	5
+par_argfile	6
+par_argfile	7
+par_argfile	8
+par_argfile	9
+par_argfile	10
 par_basic_halt	parallel: This job failed:
 par_basic_halt	false
 par_basic_halt	parallel: This job succeeded:
@@ -1299,6 +315,70 @@ par_csv_pipe	11000"
 par_csv_pipe	More records in single block
 par_csv_pipe	9000"
 par_csv_pipe	11000"
+par_delimiter	### Test --delimiter and -d: Delimiter instead of newline
+par_delimiter	# Yes there is supposed to be an extra newline for -d N
+par_delimiter	This is line 1
+par_delimiter	This is line 2
+par_delimiter	This is line 3
+par_delimiter	
+par_delimiter	This is line 1
+par_delimiter	This is line 2
+par_delimiter	This is line 3
+par_delimiter	
+par_delimiter	delimiter NUL line 1
+par_delimiter	line 2
+par_delimiter	line 3
+par_delimiter	delimiter TAB line 1
+par_delimiter	line 2
+par_delimiter	line 3
+par_distribute_args_at_EOF	### Test distribute arguments at EOF to 2 jobslots
+par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+par_distribute_args_at_EOF	35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
+par_distribute_args_at_EOF	66 67 68 69 70 71 72 73 74 75 76 77 78 79
+par_distribute_args_at_EOF	80 81 82 83 84 85 86 87 88 89 90 91 92
+par_distribute_args_at_EOF	### Test distribute arguments at EOF to 5 jobslots
+par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+par_distribute_args_at_EOF	35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
+par_distribute_args_at_EOF	66 67 68 69 70 71
+par_distribute_args_at_EOF	72 73 74 75 76 77
+par_distribute_args_at_EOF	78 79 80 81 82 83
+par_distribute_args_at_EOF	84 85 86 87 88 89
+par_distribute_args_at_EOF	90 91 92
+par_distribute_args_at_EOF	### Test distribute arguments at EOF to infinity jobslots
+par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
+par_distribute_args_at_EOF	35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
+par_distribute_args_at_EOF	66
+par_distribute_args_at_EOF	67
+par_distribute_args_at_EOF	68
+par_distribute_args_at_EOF	69
+par_distribute_args_at_EOF	70
+par_distribute_args_at_EOF	71
+par_distribute_args_at_EOF	72
+par_distribute_args_at_EOF	73
+par_distribute_args_at_EOF	74
+par_distribute_args_at_EOF	75
+par_distribute_args_at_EOF	76
+par_distribute_args_at_EOF	77
+par_distribute_args_at_EOF	78
+par_distribute_args_at_EOF	79
+par_distribute_args_at_EOF	80
+par_distribute_args_at_EOF	81
+par_distribute_args_at_EOF	82
+par_distribute_args_at_EOF	83
+par_distribute_args_at_EOF	84
+par_distribute_args_at_EOF	85
+par_distribute_args_at_EOF	86
+par_distribute_args_at_EOF	87
+par_distribute_args_at_EOF	88
+par_distribute_args_at_EOF	89
+par_distribute_args_at_EOF	90
+par_distribute_args_at_EOF	91
+par_distribute_args_at_EOF	92
+par_distribute_args_at_EOF	### Test -N is not broken by distribution - single line
+par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9
+par_distribute_args_at_EOF	### Test -N is not broken by distribution - two lines
+par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10
+par_distribute_args_at_EOF	11 12 13 14 15 16 17 18 19
 par_dryrun_append_joblog	--dry-run should not append to joblog
 par_dryrun_append_joblog	1
 par_dryrun_append_joblog	2
@@ -1319,6 +399,12 @@ par_empty_input_on_stdin	This should give no output
 par_empty_line	### Test bug: empty line for | sh with -k
 par_empty_line	a
 par_empty_line	b
+par_exit_val	### Test bug #45619: "--halt" erroneous error exit code (should give 0)
+par_exit_val	0
+par_exit_val	### Test exit val - true
+par_exit_val	0
+par_exit_val	### Test exit val - false
+par_exit_val	1
 par_expansion_in_colsep	### bug #36260: {n} expansion in --colsep files fails for empty fields if all following fields are also empty
 par_expansion_in_colsep	AB
 par_extglob	env_parallel
@@ -1368,6 +454,37 @@ par_inefficient_L	    200     200    1000
 par_inefficient_L	FOO
 par_inefficient_L	    184     184     920
 par_inefficient_L	FOO
+par_jobslot_repl	bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	bug #46231: {%} with --pipepart broken. Should give 1+2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
+par_jobslot_repl	2
+par_jobslot_repl	1
 par_linebuffer_files	### bug #48658: --linebuffer --files
 par_linebuffer_files	10
 par_link_files_as_only_arg	bug #50685: single ::::+ does not work
@@ -1379,6 +496,238 @@ par_locale_quoting	£`/tmp/test£`
 par_locale_quoting	$LC_ALL £`/tmp/test£`
 par_locale_quoting	echo $LC_ALL '£`/tmp/test£`'
 par_locale_quoting	zh_HK.big5hkscs £`/tmp/test£`
+par_long_cmd_mem_use	### Test long commands do not take up all memory
+par_long_cmd_mem_use	1
+par_long_cmd_mem_use	10
+par_long_cmd_mem_use	100
+par_long_cmd_mem_use	11
+par_long_cmd_mem_use	12
+par_long_cmd_mem_use	13
+par_long_cmd_mem_use	14
+par_long_cmd_mem_use	15
+par_long_cmd_mem_use	16
+par_long_cmd_mem_use	17
+par_long_cmd_mem_use	18
+par_long_cmd_mem_use	19
+par_long_cmd_mem_use	2
+par_long_cmd_mem_use	20
+par_long_cmd_mem_use	21
+par_long_cmd_mem_use	22
+par_long_cmd_mem_use	23
+par_long_cmd_mem_use	24
+par_long_cmd_mem_use	25
+par_long_cmd_mem_use	26
+par_long_cmd_mem_use	27
+par_long_cmd_mem_use	28
+par_long_cmd_mem_use	29
+par_long_cmd_mem_use	3
+par_long_cmd_mem_use	30
+par_long_cmd_mem_use	31
+par_long_cmd_mem_use	32
+par_long_cmd_mem_use	33
+par_long_cmd_mem_use	34
+par_long_cmd_mem_use	35
+par_long_cmd_mem_use	36
+par_long_cmd_mem_use	37
+par_long_cmd_mem_use	38
+par_long_cmd_mem_use	39
+par_long_cmd_mem_use	4
+par_long_cmd_mem_use	40
+par_long_cmd_mem_use	41
+par_long_cmd_mem_use	42
+par_long_cmd_mem_use	43
+par_long_cmd_mem_use	44
+par_long_cmd_mem_use	45
+par_long_cmd_mem_use	46
+par_long_cmd_mem_use	47
+par_long_cmd_mem_use	48
+par_long_cmd_mem_use	49
+par_long_cmd_mem_use	5
+par_long_cmd_mem_use	50
+par_long_cmd_mem_use	51
+par_long_cmd_mem_use	52
+par_long_cmd_mem_use	53
+par_long_cmd_mem_use	54
+par_long_cmd_mem_use	55
+par_long_cmd_mem_use	56
+par_long_cmd_mem_use	57
+par_long_cmd_mem_use	58
+par_long_cmd_mem_use	59
+par_long_cmd_mem_use	6
+par_long_cmd_mem_use	60
+par_long_cmd_mem_use	61
+par_long_cmd_mem_use	62
+par_long_cmd_mem_use	63
+par_long_cmd_mem_use	64
+par_long_cmd_mem_use	65
+par_long_cmd_mem_use	66
+par_long_cmd_mem_use	67
+par_long_cmd_mem_use	68
+par_long_cmd_mem_use	69
+par_long_cmd_mem_use	7
+par_long_cmd_mem_use	70
+par_long_cmd_mem_use	71
+par_long_cmd_mem_use	72
+par_long_cmd_mem_use	73
+par_long_cmd_mem_use	74
+par_long_cmd_mem_use	75
+par_long_cmd_mem_use	76
+par_long_cmd_mem_use	77
+par_long_cmd_mem_use	78
+par_long_cmd_mem_use	79
+par_long_cmd_mem_use	8
+par_long_cmd_mem_use	80
+par_long_cmd_mem_use	81
+par_long_cmd_mem_use	82
+par_long_cmd_mem_use	83
+par_long_cmd_mem_use	84
+par_long_cmd_mem_use	85
+par_long_cmd_mem_use	86
+par_long_cmd_mem_use	87
+par_long_cmd_mem_use	88
+par_long_cmd_mem_use	89
+par_long_cmd_mem_use	9
+par_long_cmd_mem_use	90
+par_long_cmd_mem_use	91
+par_long_cmd_mem_use	92
+par_long_cmd_mem_use	93
+par_long_cmd_mem_use	94
+par_long_cmd_mem_use	95
+par_long_cmd_mem_use	96
+par_long_cmd_mem_use	97
+par_long_cmd_mem_use	98
+par_long_cmd_mem_use	99
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 1
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 10
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 100
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 11
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 12
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 13
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 14
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 15
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 16
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 17
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 18
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 19
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 2
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 20
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 21
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 22
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 23
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 24
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 25
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 26
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 27
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 28
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 29
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 3
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 30
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 31
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 32
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 33
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 34
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 35
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 36
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 37
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 38
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 39
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 4
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 40
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 41
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 42
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 43
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 44
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 45
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 46
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 47
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 48
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 49
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 5
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 50
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 51
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 52
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 53
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 54
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 55
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 56
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 57
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 58
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 59
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 6
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 60
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 61
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 62
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 63
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 64
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 65
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 66
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 67
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 68
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 69
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 7
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 70
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 71
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 72
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 73
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 74
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 75
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 76
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 77
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 78
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 79
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 8
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 80
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 81
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 82
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 83
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 84
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 85
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 86
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 87
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 88
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 89
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 9
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 90
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 91
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 92
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 93
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 94
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 95
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 96
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 97
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 98
+par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 99
+par_maxargs	### Test -n and --max-args: Max number of args per line (only with -X and -m)
+par_maxargs	line 1
+par_maxargs	line 2
+par_maxargs	line 3
+par_maxargs	line 1 line 1
+par_maxargs	line 2
+par_maxargs	line 1
+par_maxargs	line 2
+par_maxargs	line 3
+par_maxargs	line 1 line 1
+par_maxargs	line 2
+par_maxargs	line 1
+par_maxargs	line 2
+par_maxargs	line 3
+par_maxargs	line 1 line 1
+par_maxargs	line 2
+par_maxargs	line 1
+par_maxargs	line 2
+par_maxargs	line 3
+par_maxargs	line 1
+par_maxargs	line 2
+par_maxargs	line 3
+par_maxargs	line 1 line 1
+par_maxargs	line 2
+par_maxargs	line 1 line 1
+par_maxargs	line 2
+par_maxargs	line 1
+par_maxargs	line 2
+par_maxargs	line 3
+par_maxargs	line 1 line 1
+par_maxargs	line 2
 par_newline_in_command	Command with newline and positional replacement strings
 par_newline_in_command	O K
 par_no_command_given	### Test bugfix if no command given
@@ -1391,6 +740,53 @@ par_parcat_args_stdin	OK2
 par_parcat_rm	bug #51691: parcat --rm remove fifo when opened
 par_parcat_rm	OK1
 par_parcat_rm	OK file removed
+par_perlexpr_repl	### {= and =} in different groups separated by space
+par_perlexpr_repl	b
+par_perlexpr_repl	b
+par_perlexpr_repl	bb
+par_perlexpr_repl	bb
+par_perlexpr_repl	b{= b
+par_perlexpr_repl	b{=b
+par_perlexpr_repl	b {=a
+par_perlexpr_repl	{=a
+par_perlexpr_repl	{= a
+par_perlexpr_repl	{= a =}
+par_perlexpr_repl	### bug #45842: Do not evaluate {= =} twice
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	1 2
+par_perlexpr_repl	3 4
+par_perlexpr_repl	5 6
+par_perlexpr_repl	7 8
+par_perlexpr_repl	9 10
+par_perlexpr_repl	11 12
+par_perlexpr_repl	13 14
+par_perlexpr_repl	15 16
+par_perlexpr_repl	17 18
+par_perlexpr_repl	19 20
+par_perlexpr_repl	21 22
+par_perlexpr_repl	23 24
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	5
+par_perlexpr_repl	6
+par_perlexpr_repl	7
+par_perlexpr_repl	8
+par_perlexpr_repl	9
+par_perlexpr_repl	10
+par_perlexpr_repl	11
+par_perlexpr_repl	12
+par_perlexpr_repl	### bug #45939: {2} in {= =} fails
+par_perlexpr_repl	OK
+par_perlexpr_repl	OK-OK
 par_perlexpr_with_newline	Perl expression spanning 2 lines
 par_pipe_N1_regexp	bug #55131: --regexp --recstart hangs
 par_pipe_N1_regexp	These should give the same
@@ -1472,8 +868,41 @@ par_pipe_tag_v	foo	1
 par_pipe_tag_v	foo	2
 par_pipe_tag_v	foo	3
 par_pipe_tag_v	foo	/tmp/tmpfile.par
+par_pipe_to_func	### bug #45998: --pipe to function broken
+par_pipe_to_func	1
+par_pipe_to_func	pipefunc OK
+par_pipe_to_func	1
+par_pipe_to_func	pipefunc and more OK
+par_pipe_to_func	and more OK
 par_pipepart_block_bigger_2G	### Test that --pipepart can have blocks > 2GB
 par_pipepart_block_bigger_2G	      1       1       4
+par_pipepart_header	### bug #44614: --pipepart --header off by one
+par_pipepart_header	foo
+par_pipepart_header	1
+par_pipepart_header	2
+par_pipepart_header	3
+par_pipepart_header	foo
+par_pipepart_header	4
+par_pipepart_header	5
+par_pipepart_header	6
+par_pipepart_header	foo
+par_pipepart_header	7
+par_pipepart_header	8
+par_pipepart_header	9
+par_pipepart_header	foo
+par_pipepart_header	10
+par_pipepart_header	foo
+par_pipepart_header	1
+par_pipepart_header	2
+par_pipepart_header	3
+par_pipepart_header	foo
+par_pipepart_header	4
+par_pipepart_header	5
+par_pipepart_header	6
+par_pipepart_header	7
+par_pipepart_header	8
+par_pipepart_header	9
+par_pipepart_header	10
 par_pipepart_recend_recstart	bug #52343: --recend/--recstart does wrong thing with --pipepart
 par_pipepart_recend_recstart	a
 par_pipepart_recend_recstart	1
@@ -1503,7 +932,123 @@ par_pipepart_recend_recstart	7
 par_pipepart_recend_recstart	8
 par_pipepart_recend_recstart	9
 par_pipepart_recend_recstart	10
+par_pipepart_roundrobin	### bug #45769: --round-robin --pipepart gives wrong results
+par_pipepart_roundrobin	2
 par_python_children	### bug #49970: Python child process dies if --env is used
+par_quote	### Test -q
+par_quote	a b
+par_quote	h i
+par_quote	### Test -q {#}
+par_quote	1
+par_quote	2
+par_quote	1
+par_quote	2
+par_quote	{\#} a
+par_quote	{\#} b
+par_read_from_stdin	### Test empty line as input
+par_read_from_stdin	empty input line 
+par_read_from_stdin	### Tests if (cat | sh) works
+par_read_from_stdin	a 1
+par_read_from_stdin	a 10
+par_read_from_stdin	a 11
+par_read_from_stdin	a 12
+par_read_from_stdin	a 13
+par_read_from_stdin	a 14
+par_read_from_stdin	a 15
+par_read_from_stdin	a 16
+par_read_from_stdin	a 17
+par_read_from_stdin	a 18
+par_read_from_stdin	a 19
+par_read_from_stdin	a 2
+par_read_from_stdin	a 20
+par_read_from_stdin	a 21
+par_read_from_stdin	a 22
+par_read_from_stdin	a 23
+par_read_from_stdin	a 24
+par_read_from_stdin	a 25
+par_read_from_stdin	a 3
+par_read_from_stdin	a 4
+par_read_from_stdin	a 5
+par_read_from_stdin	a 6
+par_read_from_stdin	a 7
+par_read_from_stdin	a 8
+par_read_from_stdin	a 9
+par_read_from_stdin	b 1
+par_read_from_stdin	b 10
+par_read_from_stdin	b 11
+par_read_from_stdin	b 12
+par_read_from_stdin	b 13
+par_read_from_stdin	b 14
+par_read_from_stdin	b 15
+par_read_from_stdin	b 16
+par_read_from_stdin	b 17
+par_read_from_stdin	b 18
+par_read_from_stdin	b 19
+par_read_from_stdin	b 2
+par_read_from_stdin	b 20
+par_read_from_stdin	b 21
+par_read_from_stdin	b 22
+par_read_from_stdin	b 23
+par_read_from_stdin	b 24
+par_read_from_stdin	b 25
+par_read_from_stdin	b 3
+par_read_from_stdin	b 4
+par_read_from_stdin	b 5
+par_read_from_stdin	b 6
+par_read_from_stdin	b 7
+par_read_from_stdin	b 8
+par_read_from_stdin	b 9
+par_read_from_stdin	### Test if xargs-mode works
+par_read_from_stdin	a 1
+par_read_from_stdin	a 10
+par_read_from_stdin	a 11
+par_read_from_stdin	a 12
+par_read_from_stdin	a 13
+par_read_from_stdin	a 14
+par_read_from_stdin	a 15
+par_read_from_stdin	a 16
+par_read_from_stdin	a 17
+par_read_from_stdin	a 18
+par_read_from_stdin	a 19
+par_read_from_stdin	a 2
+par_read_from_stdin	a 20
+par_read_from_stdin	a 21
+par_read_from_stdin	a 22
+par_read_from_stdin	a 23
+par_read_from_stdin	a 24
+par_read_from_stdin	a 25
+par_read_from_stdin	a 3
+par_read_from_stdin	a 4
+par_read_from_stdin	a 5
+par_read_from_stdin	a 6
+par_read_from_stdin	a 7
+par_read_from_stdin	a 8
+par_read_from_stdin	a 9
+par_read_from_stdin	b 1
+par_read_from_stdin	b 10
+par_read_from_stdin	b 11
+par_read_from_stdin	b 12
+par_read_from_stdin	b 13
+par_read_from_stdin	b 14
+par_read_from_stdin	b 15
+par_read_from_stdin	b 16
+par_read_from_stdin	b 17
+par_read_from_stdin	b 18
+par_read_from_stdin	b 19
+par_read_from_stdin	b 2
+par_read_from_stdin	b 20
+par_read_from_stdin	b 21
+par_read_from_stdin	b 22
+par_read_from_stdin	b 23
+par_read_from_stdin	b 24
+par_read_from_stdin	b 25
+par_read_from_stdin	b 3
+par_read_from_stdin	b 4
+par_read_from_stdin	b 5
+par_read_from_stdin	b 6
+par_read_from_stdin	b 7
+par_read_from_stdin	b 8
+par_read_from_stdin	b 9
 par_results	### --results test.csv
 par_results	a
 par_results	b
@@ -1542,6 +1087,7 @@ par_shard	      9 6
 par_shard	      9 7
 par_shard	      9 8
 par_shard	      9 9
+par_shard	*** broken
 par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
 par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
@@ -1596,6 +1142,55 @@ par_tee_too_many_args	2	2
 par_tee_too_many_args	3	3
 par_tee_too_many_args	4	4
 par_tee_too_many_args	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
+par_test_L_context_replace	### Test -N context replace
+par_test_L_context_replace	a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
+par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b
+par_test_L_context_replace	### Test -L context replace
+par_test_L_context_replace	a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
+par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b
+par_test_X_with_multiple_source	### Test {} multiple times in different commands
+par_test_X_with_multiple_source	echo 1 2 3 4 5 6 7 8 9 10 ; echo 1 2 3 4 5 6 7 8 9 10
+par_test_X_with_multiple_source	1 2 3 4 5 6 7 8 9 10
+par_test_X_with_multiple_source	1 2 3 4 5 6 7 8 9 10
+par_test_X_with_multiple_source	### Test of -X {1}-{2} with multiple input sources
+par_test_X_with_multiple_source	a-b
+par_test_X_with_multiple_source	a-c
+par_test_X_with_multiple_source	b-c
+par_test_X_with_multiple_source	a-d
+par_test_X_with_multiple_source	b-f
+par_test_X_with_multiple_source	a-d
+par_test_X_with_multiple_source	a-e
+par_test_X_with_multiple_source	a-f
+par_test_X_with_multiple_source	b-d
+par_test_X_with_multiple_source	b-e
+par_test_X_with_multiple_source	b-f
+par_test_X_with_multiple_source	c-d
+par_test_X_with_multiple_source	c-e
+par_test_X_with_multiple_source	c-f
+par_test_X_with_multiple_source	### Test of -X {}-{.} with multiple input sources
+par_test_X_with_multiple_source	a-a b-b
+par_test_X_with_multiple_source	a-a c-c a-a d-d
+par_test_X_with_multiple_source	b-b c-c b-b d-d
+par_test_X_with_multiple_source	a-a d-d a-a e-e a-a f-f b-b d-d b-b e-e
+par_test_X_with_multiple_source	b-b f-f c-c d-d c-c e-e c-c f-f
+par_test_X_with_multiple_source	a-a d-d
+par_test_X_with_multiple_source	a-a e-e
+par_test_X_with_multiple_source	a-a f-f
+par_test_X_with_multiple_source	b-b d-d
+par_test_X_with_multiple_source	b-b e-e
+par_test_X_with_multiple_source	b-b f-f
+par_test_X_with_multiple_source	c-c d-d
+par_test_X_with_multiple_source	c-c e-e
+par_test_X_with_multiple_source	c-c f-f
+par_test_r_with_pipe	### Test of -r with --pipe - the first should give an empty line. The second should not.
+par_test_r_with_pipe	1
+par_test_r_with_pipe	0
+par_test_tty	### Test --tty
+par_test_tty	/dev/tty
+par_test_tty	/dev/tty
+par_test_tty	/dev/tty
+par_test_tty	/dev/tty
+par_test_tty	/dev/tty
 par_testquote	ash	"#&/
 par_testquote	ash	()*=?'
 par_testquote	bash	"#&/
@@ -1636,6 +1231,49 @@ par_testquote	yash	"#&/
 par_testquote	yash	()*=?'
 par_testquote	zsh	"#&/
 par_testquote	zsh	()*=?'
+par_total_from_joblog	bug #47086: [PATCH] Initialize total_completed from joblog
+par_total_from_joblog	0
+par_total_from_joblog	1
+par_total_from_joblog	2
+par_total_from_joblog	3
+par_total_from_joblog	parallel: This job failed:
+par_total_from_joblog	echo 3;exit 1
+par_total_from_joblog	4
+par_total_from_joblog	5
+par_totaljob_repl	{##} bug #45841: Replacement string for total no of jobs
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	1
+par_totaljob_repl	2
+par_totaljob_repl	3
+par_totaljob_repl	4
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	10
+par_totaljob_repl	1 2 2 2 2 2 2 2
+par_totaljob_repl	2 2 2 2 2 2 2 2
+par_totaljob_repl	1 3 3 3 3 3 3 3
+par_totaljob_repl	2 3 3 3 3 3 3 3
+par_totaljob_repl	3 3
+par_totaljob_repl	1 15 15
+par_totaljob_repl	2 14 14
+par_totaljob_repl	3 14 14
+par_totaljob_repl	4 14 14
+par_totaljob_repl	5 14 14
+par_totaljob_repl	6 14 14
+par_totaljob_repl	7 14 14
+par_totaljob_repl	8 14
 par_tricolonplus	### bug #48745: :::+ bug
 par_tricolonplus	11 1 21 a aa
 par_tricolonplus	11 1 21 b bb
@@ -1721,3 +1359,154 @@ par_wd_dotdotdot	### parallel --wd ... should clean up
 par_wd_dotdotdot	1 == 1
 par_wd_dotdotdot	### $OLDPWD should be the dir in which parallel starts
 par_wd_dotdotdot	/tmp foo
+par_xapply	### Test bug #43284: {%} and {#} with --xapply
+par_xapply	a 1 1 b
+par_xapply	1
+par_xapply	### bug #47501: --xapply for some input sources
+par_xapply	a aa A AA
+par_xapply	a aa B BB
+par_xapply	b bb A AA
+par_xapply	b bb B BB
+par_xapply	c cc A AA
+par_xapply	c cc B BB
+par_xargs_compat	xargs compatibility
+par_xargs_compat	### Test -L -l and --max-lines
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	a_b c
+par_xargs_compat	a_b c
+par_xargs_compat	### xargs -L1 echo
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	Lines ending in space should continue on next line
+par_xargs_compat	### xargs -L1 echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	### xargs -L2 echo
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	### xargs -l echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	### xargs -l2 echo
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	### xargs -l1 echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	### xargs --max-lines=2 echo
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	### xargs --max-lines echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	### test too long args
+par_xargs_compat	parallel: Error: Command line too long (1000005 >= 131049) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	xargs: argument line too long
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	xargs: argument line too long
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	### Test -x
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	parallel: Error: Command line too long (10 >= 10) at input 0: 12345
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	parallel: Error: Command line too long (10 >= 10) at input 0: 12345
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	xargs: argument line too long
+par_xargs_compat	1 2
+par_xargs_compat	12
+par_xargs_compat	1234
+par_xargs_compat	13
+par_xargs_compat	14
+par_xargs_compat	15
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	1 2
+par_xargs_compat	12
+par_xargs_compat	1234
+par_xargs_compat	13
+par_xargs_compat	14
+par_xargs_compat	15
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	1 2
+par_xargs_compat	12
+par_xargs_compat	1234
+par_xargs_compat	13
+par_xargs_compat	14
+par_xargs_compat	15
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
