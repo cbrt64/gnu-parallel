@@ -1959,6 +1959,46 @@ https://github.com/codingo/Interlace can be run with GNU B<parallel>:
 
 https://github.com/codingo/Interlace (Last checked: 2019-02)
 
+
+=head2 DIFFERENCES BETWEEN otonvm Parallel AND GNU Parallel
+
+I have been unable to get the code to run at all. It seems unfinished.
+
+https://github.com/otonvm/Parallel (Last checked: 2019-02)
+
+
+=head2 DIFFERENCES BETWEEN k-bx par AND GNU Parallel
+
+B<par> requires Haskell to work. This limits the number of platforms
+this can work on.
+
+B<par> does line buffering in memory. The memory usage is 3x the
+longest line (compared to 1x for B<parallel --lb>). Commands must be
+given as arguments. There is no template.
+
+These are the examples from https://github.com/k-bx/par with the
+corresponding GNU B<parallel> command.
+
+  par "echo foo; sleep 1; echo foo; sleep 1; echo foo" \
+      "echo bar; sleep 1; echo bar; sleep 1; echo bar" && echo "success"
+  parallel --lb ::: "echo foo; sleep 1; echo foo; sleep 1; echo foo" \
+      "echo bar; sleep 1; echo bar; sleep 1; echo bar" && echo "success"
+
+  par "echo foo; sleep 1; foofoo" \
+      "echo bar; sleep 1; echo bar; sleep 1; echo bar" && echo "success"
+  parallel --lb --halt 1 ::: "echo foo; sleep 1; foofoo" \
+      "echo bar; sleep 1; echo bar; sleep 1; echo bar" && echo "success"
+
+  par "PARPREFIX=[fooechoer] echo foo" "PARPREFIX=[bar] echo bar"
+  parallel --lb --colsep , --tagstring {1} {2} \
+    ::: "[fooechoer],echo foo" "[bar],echo bar"
+
+  par --succeed "foo" "bar" && echo 'wow'
+  parallel "foo" "bar"; true && echo 'wow'
+
+https://github.com/k-bx/par (Last checked: 2019-02)
+
+
 =head2 Todo
 
 Url for spread
@@ -1978,13 +2018,6 @@ https://github.com/darkguy2008/parallelshell
 https://github.com/xuchenCN/go-pssh
 
 https://github.com/amritb/with-this.git
-
-https://github.com/fd0/machma Requires Go >= 1.7.
-
-https://github.com/k-bx/par requires Haskell to work. This limits the
-number of platforms this can work on.
-
-https://github.com/otonvm/Parallel
 
 https://github.com/flesler/parallel
 

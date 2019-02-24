@@ -275,6 +275,27 @@ par_test_diff_roundrobin_k() {
     fi
 }
 
+par_lb_mem_usage() {
+    long_line() {
+	perl -e 'print "x"x100_000_000'
+    }
+    export -f long_line
+    memusage() {
+	round=$1
+	shift
+	/usr/bin/time -v "$@" 2>&1 >/dev/null |
+	    perl -ne '/Maximum resident set size .kbytes.: (\d+)/ and print $1,"\n"' |
+	    perl -pe '$_ = int($_/'$round')."\n"'
+    }
+    # 1 line - RAM usage 1 x 100 MB
+    memusage 100000 parallel --lb ::: long_line
+    # 2 lines - RAM usage 1 x 100 MB
+    memusage 100000 parallel --lb ::: 'long_line; echo; long_line'
+    # 1 double length line - RAM usage 2 x 100 MB
+    memusage 100000 parallel --lb ::: 'long_line; long_line'
+}
+
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

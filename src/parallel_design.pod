@@ -20,6 +20,14 @@ a single file: No need to mess around with environment variables like
 PERL5LIB.
 
 
+=head2 Interpreted language
+
+GNU B<parallel> is designed to be able to run on old systems. That
+means that it cannot depend on a compiler being installed - and
+especially not a compiler for a language that is younger than 20 years
+old.
+
+
 =head2 Old Perl style 
 
 GNU B<parallel> uses some old, deprecated constructs. This is due to a
@@ -525,6 +533,63 @@ up the tmpfile and keep the exit code of the command.
 The real killer comes when you try to combine several of these: Doing
 that correctly for all corner cases is next to impossible to do by
 hand.
+
+=head2 --shard
+
+The simple way to implement sharding would be to:
+
+=over 5
+
+=item 1
+
+start n jobs,
+
+=item 2
+
+split each line into columns,
+
+=item 3
+
+select the data from the relevant column
+
+=item 4
+
+compute a hash value from the data
+
+=item 5
+
+take the modulo n of the hash value
+
+=item 6
+
+pass the full line to the jobslot that has the computed value
+
+=back
+
+Unfortunately Perl is rather slow at computing the hash value (and
+somewhat slow at splitting into columns).
+
+One solution is to use a compiled language for the splitting and
+hashing, but that would go against the design criteria of not
+depending on a compiler.
+
+Luckily those tasks can be parallelized. So GNU B<parallel> starts n
+sharders that do step 2-6, and passes blocks of 100k to each of those
+in a round robin manner. To make sure these sharders compute the hash
+the same way, $PERL_HASH_SEED is set to the same value for all sharders.
+
+Running n sharders poses a new problem: Instead of having n outputs
+(one for each computed value) you now have n outputs for each of the n
+values, so in total n*n outputs; and you need to merge these n*n
+outputs together into n outputs.
+
+This can be done by simply running 'parallel -j0 --lb cat :::
+outputs_for_one_value', but that is rather inefficient, as it spawns a
+process for each file. Instead the core code from 'parcat' is run,
+which is also a bit faster.
+
+All the sharders and parcats communicate through named pipes that are
+unlinked as soon as they are opened.
 
 
 =head2 Shell shock

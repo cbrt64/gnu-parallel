@@ -27,8 +27,8 @@ par_interactive	sleep 0.1; echo opt-p 2 ?...n
 par_interactive	sleep 0.1; echo opt-p 3 ?...y
 par_interactive	spawn /tmp/parallel-script-for-expect
 par_k	### Test -k
-par_k	parallel: Warning: Only enough file handles to run 8 jobs in parallel.
-par_k	parallel: Warning: Running 'parallel -j0 -N 8 --pipe parallel -j0' or
+par_k	parallel: Warning: Only enough file handles to run 9 jobs in parallel.
+par_k	parallel: Warning: Running 'parallel -j0 -N 9 --pipe parallel -j0' or
 par_k	parallel: Warning: raising 'ulimit -n' or 'nofile' in /etc/security/limits.conf
 par_k	parallel: Warning: or /proc/sys/fs/file-max may help.
 par_k	begin

@@ -200,13 +200,10 @@ sub pipe_tee_setup() {
 sub parcat_script() {
     # TODO if script fails: Use parallel -j0 --plain --lb cat ::: fifos
     my $script = q'{
-	use Symbol qw(gensym);
-	use IPC::Open3;
 	use POSIX qw(:errno_h);
 	use IO::Select;
 	use strict;
 	use threads;
-	use threads::shared;
 	use Thread::Queue;
 	use Fcntl qw(:DEFAULT :flock);
 
@@ -369,7 +366,7 @@ sub parcat_script() {
 	    fcntl($fh, &F_SETFL, $flags) || die $!; # Set the flags on the filehandle
 	}
     }';
-    return ::spacefree(1, $script);
+    return ::spacefree(3, $script);
 }
 
 sub sharder_script() {
@@ -432,7 +429,7 @@ sub pipe_shard_setup() {
 	open STDOUT, ">","/dev/null";
 	# The PERL_HASH_SEED must be the same for all sharders
 	# so B::hash will return the same value for any given input
-	$ENV{PERL_HASH_SEED} = $$;
+	$ENV{'PERL_HASH_SEED'} = $$;
 	exec qw(parallel --block 100k -q --pipe -j), $njobs,
 	    qw(--roundrobin -u perl -e), $script, ($opt::colsep || ","),
 	    $opt::shard, '{}', (map { (':::+', @{$_}) } @parcatfifos);
@@ -1698,7 +1695,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190222;
+    $Global::version = 20190223;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -5054,6 +5051,10 @@ sub spacefree($$) {
 	# Keep newlines
 	$s =~ s/\n\n+/\n/sg;
 	$s =~ s/[ \t]+/ /mg;
+    } elsif(3 == $spaces) {
+	# Keep perl code required space
+	$s =~ s{([^a-zA-Z0-9/])\s+}{$1}sg;
+	$s =~ s{([a-zA-Z0-9/])\s+([^:a-zA-Z0-9/])}{$1$2}sg;
     } else {
 	$s =~ s/\s//mg;
     }
@@ -8516,7 +8517,7 @@ sub sshlogin_wrap($) {
 	} else {
 	    $bashfuncset = '$bashfunc = "";'
 	}
-	if($ENV{"parallel_bash_environment"}) {
+	if($ENV{'parallel_bash_environment'}) {
 	    $bashfuncset .= '$bashfunc .= "eval\ \"\$parallel_bash_environment\"\;";';
 	}
 	::debug("base64",$envset,$bashfuncset,"\n");
@@ -9527,7 +9528,11 @@ sub print_linebuffer($) {
 		# read remaining
 		my $halfline_ref = $self->{'halfline'}{$fdno};
 		if(grep /./, @$halfline_ref) {
-		    $self->add_returnsize(length join("",@$halfline_ref));
+		    my $returnsize = 0;
+		    for(@{$self->{'halfline'}{$fdno}}) {
+			$returnsize += length $_;
+		    }
+		    $self->add_returnsize($returnsize);
 		    if($opt::tag or defined $opt::tagstring) {
 			# Prepend $tag the the remaining half line
 			unshift @$halfline_ref, $self->tag();
