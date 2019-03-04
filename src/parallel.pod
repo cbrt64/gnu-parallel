@@ -1060,6 +1060,9 @@ sshlogin in sorted order.
 If used with B<--pipe --roundrobin> and the same input, the jobslots
 will get the same blocks in the same order in every run.
 
+B<-k> only affects the order in which the output is printed - not the
+order in which jobs are run.
+
 
 =item B<-L> I<recsize>
 

@@ -1998,6 +1998,74 @@ corresponding GNU B<parallel> command.
 
 https://github.com/k-bx/par (Last checked: 2019-02)
 
+=head2 DIFFERENCES BETWEEN parallelshell AND GNU Parallel
+
+B<parallelshell> does not allow for composed commands:
+
+  # This does not work
+  parallelshell 'echo foo;echo bar' 'echo baz;echo quuz'
+
+Instead you have to wrap that in a shell:
+
+  parallelshell 'sh -c "echo foo;echo bar"' 'sh -c "echo baz;echo quuz"'
+
+It buffers output in RAM. All commands must be given on the command
+line and all commands are started in parallel at the same time. This
+will cause the system to freeze if there are so many jobs that there
+is not enough memory to run them all at the same time.
+
+https://github.com/keithamus/parallelshell (Last checked: 2019-02)
+
+https://github.com/darkguy2008/parallelshell (Last checked: 2019-03)
+
+
+=head2 DIFFERENCES BETWEEN shell-executor AND GNU Parallel
+
+B<shell-executor> does not allow for composed commands:
+
+  # This does not work
+  sx 'echo foo;echo bar' 'echo baz;echo quuz'
+
+Instead you have to wrap that in a shell:
+
+  sx 'sh -c "echo foo;echo bar"' 'sh -c "echo baz;echo quuz"'
+
+It buffers output in RAM. All commands must be given on the command
+line and all commands are started in parallel at the same time. This
+will cause the system to freeze if there are so many jobs that there
+is not enough memory to run them all at the same time.
+
+https://github.com/royriojas/shell-executor (Last checked: 2019-02)
+
+
+=head2 DIFFERENCES BETWEEN non-GNU par AND GNU Parallel
+
+B<par> buffers in memory to avoid mixing of jobs. It takes 1s per 1
+million output lines.
+
+B<par> needs to have all commands before starting the first job. The
+jobs are read from stdin (standard input) so any quoting will have to
+be done by the user.
+
+Stdout (standard output) is prepended with o:. Stderr (standard error)
+is sendt to stdout (standard output) and prepended with e:.
+
+For short jobs with little output B<par> is 20% faster than GNU B<parallel>.
+
+http://savannah.nongnu.org/projects/par (Last checked: 2019-02)
+
+
+=head2 DIFFERENCES BETWEEN fd AND GNU Parallel
+
+B<fd> does not support composed commands, so commands must be wrapped
+in B<sh -c>.
+
+It buffers output in RAM. 
+
+It only takes file names from the filesystem as input (similar to B<find>).
+
+https://github.com/sharkdp/fd (Last checked: 2019-02)
+
 
 =head2 Todo
 
@@ -2005,15 +2073,9 @@ Url for spread
 
 https://github.com/reggi/pkgrun
 
-https://github.com/benoror/better-npm-run
+https://github.com/benoror/better-npm-run - not obvious how to use
 
 https://github.com/bahmutov/with-package
-
-https://github.com/spion/npm-parallel
-
-https://github.com/royriojas/shell-executor
-
-https://github.com/darkguy2008/parallelshell
 
 https://github.com/xuchenCN/go-pssh
 
@@ -2028,7 +2090,7 @@ https://github.com/Julian/Verge
 
 There are certain issues that are very common on parallelizing
 tools. Here are a few stress tests. Be warned: If the tool is badly
-coded it may overload you machine.
+coded it may overload your machine.
 
 
 =head2 MIX: Output mixes
@@ -2067,6 +2129,33 @@ This test stresses whether output mixes.
 
   # 'a c e' and 'b d f' should always stay together
   # and there should only be a single line per job
+
+
+=head2 STDERRMERGE: Stderr is merged with stdout
+
+Output from stdout and stderr should not be merged, but kept separated.
+
+This test shows whether stdout is mixed with stderr.
+
+  #!/bin/bash
+
+  paralleltool="parallel -j0"
+
+  cat <<-EOF > mycommand
+  #!/bin/bash
+
+  echo stdout
+  echo stderr >&2
+  echo stdout
+  echo stderr >&2
+  EOF
+  chmod +x mycommand
+
+  # Run one job
+  echo |
+    $paralleltool ./mycommand > stdout 2> stderr
+  cat stdout
+  cat stderr
 
 
 =head2 RAM: Output limited by RAM

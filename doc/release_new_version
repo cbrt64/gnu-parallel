@@ -207,7 +207,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190222 ('INF/Al-Baghuz Fawqani') released <<[stable]>>
+Subject: GNU Parallel 20190222 ('indien pakistan Kashmir') released <<[stable]>>
 
 GNU Parallel 20190222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -220,29 +220,9 @@ Quote of the month:
 
 New in this release:
 
-* --shard makes it possible to send input to a the same jobslot based on the value in one column of the input. It is similar to sharding in databases.
+https://calendar.colorado.edu/event/high_throughput_computing_on_rmacc_summit_and_beyond#.XH2NBhB7mV4
 
-* --shellquote --shellquote will shell quote the input twice.
-
-* GNU Parallel is available in Termux https://github.com/termux/termux-packages/tree/master/packages/parallel
-
-* Linux, command line & MetaCentrum https://trapa.cz/sites/default/files/linux_bash_metacentrum_course_4.pdf
-
-* How to supercharge your bash workflows with GNU parallel https://medium.freecodecamp.org/how-to-supercharge-your-bash-workflows-with-gnu-parallel-53aab0aea141
-
-* GNU Parallel Spring 2017 https://www.youtube.com/watch?v=LHb29uW_KyI
-
-* Parallelizing Freesurfer blog.cogneurostats.com/?p=148
-
-* FreeSurfer #4: Running recon-all in Parallel https://www.youtube.com/watch?v=XHN2tm3tNaw
-
-* FreeSurfer: recon-all https://www.neurotrivial.com/2019/01/24/freesurfer-recon-all/
-
-* Come ridimensionare 10k foto con la riga di comando https://pigrecoinfinito.wordpress.com/2018/12/22/come-ridimensionare-10k-foto-con-la-riga-di-comando/
-
-* 并行处理 – Gnu Parallel：嵌套并行 https://codeday.me/bug/20190122/552902.html
-
-* シェルスクリプトでコマンドを並列実行する方法https://www.kwbtblog.com/entry/2019/01/12/020423
+https://www.cheatography.com/cpriest/cheat-sheets/gnu-parallel/
 
 * Bug fixes and man page updates.
 
