@@ -4184,10 +4184,10 @@ sub start_no_new_jobs() {
     #    %Global::unlink
     #    $Global::start_no_new_jobs
     # Returns: N/A
-    $SIG{TERM} = $Global::original_sig{TERM};
+#    $SIG{TERM} = $Global::original_sig{TERM};
     unlink keys %Global::unlink;
     ::status
-        ("$Global::progname: SIGTERM received. No new jobs will be started.",
+        ("$Global::progname: SIGHUP received. No new jobs will be started.",
          "$Global::progname: Waiting for these ".(keys %Global::running).
          " jobs to finish. Send SIGTERM to stop now.");
     list_running_jobs();
@@ -12436,7 +12436,8 @@ sub main() {
     if($Global::semaphore) {
 	$sem = acquire_semaphore();
     }
-    $SIG{TERM} = \&start_no_new_jobs;
+    $SIG{TERM} = $Global::original_sig{TERM};
+    $SIG{HUP} = \&start_no_new_jobs;
 
     if($opt::tee or $opt::shard) {
 	# All jobs must be running in parallel for --tee/--shard
