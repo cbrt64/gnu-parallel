@@ -207,9 +207,10 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190222 ('indien pakistan Kashmir') released <<[stable]>>
+Subject: GNU Parallel 20190322 (climatestrike FridayforFuture
+Christchurch 'Max 8' fly i etiopien 737Max 8 indien pakistan Kashmir') released <<[stable]>>
 
-GNU Parallel 20190222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190322 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -220,7 +221,7 @@ Quote of the month:
 
 New in this release:
 
-* GNU Parallel now includes a cheat sheet:
+* GNU Parallel now includes a cheat sheet: parallel_cheat.pdf
 
 https://calendar.colorado.edu/event/high_throughput_computing_on_rmacc_summit_and_beyond#.XH2NBhB7mV4
 

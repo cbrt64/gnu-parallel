@@ -186,6 +186,7 @@ env_parallel() {
 	#   myfunc is a shell function (in zsh)
 	#   which is /usr/bin/which (in sh, bash)
 	#   which is hashed (/usr/bin/which)
+	#   gi is aliased to `grep -i' (in bash)
 	#   aliased to `alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
 	# Return 0 if found, 1 otherwise
 	LANG=C type "$@" |

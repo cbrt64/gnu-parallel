@@ -2395,13 +2395,13 @@ Output (the order may be different):
 
 GNU B<parallel> treats each line as a record. If the order of records
 is unimportant (e.g. you need all lines processed, but you do not care
-which is processed first), then you can use B<--round-robin>. Without
-B<--round-robin> GNU B<parallel> will start a command per block; with
-B<--round-robin> only the requested number of jobs will be started
+which is processed first), then you can use B<--roundrobin>. Without
+B<--roundrobin> GNU B<parallel> will start a command per block; with
+B<--roundrobin> only the requested number of jobs will be started
 (B<--jobs>). The records will then be distributed between the running
 jobs:
 
-  cat num1000000 | parallel --pipe -j4 --round-robin wc
+  cat num1000000 | parallel --pipe -j4 --roundrobin wc
 
 Output will be similar to:
 

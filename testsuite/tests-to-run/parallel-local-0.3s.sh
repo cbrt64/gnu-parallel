@@ -941,6 +941,11 @@ par_shard() {
 	perl -pe 's/(.*\d{5,}){3}/OK/'
 }
 
+par_fish() {
+    echo '### https://github.com/fish-shell/fish-shell/issues/5582'
+    echo OK | stdout fish -c 'parallel --pipe cat'
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 30 -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

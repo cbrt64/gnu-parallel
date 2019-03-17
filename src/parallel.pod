@@ -30,22 +30,23 @@ STOP!
 Read the B<Reader's guide> below if you are new to GNU B<parallel>.
 
 GNU B<parallel> is a shell tool for executing jobs in parallel using
-one or more computers. A job can be a single command or a small
-script that has to be run for each of the lines in the input. The
-typical input is a list of files, a list of hosts, a list of users, a
-list of URLs, or a list of tables. A job can also be a command that
-reads from a pipe. GNU B<parallel> can then split the input into
-blocks and pipe a block into each command in parallel.
+one or more computers. A job can be a single command or a small script
+that has to be run for each of the lines in the input. The typical
+input is a list of files, a list of hosts, a list of users, a list of
+URLs, or a list of tables. A job can also be a command that reads from
+a pipe. GNU B<parallel> can then split the input into blocks and pipe
+a block into each command in parallel.
 
-If you use xargs and tee today you will find GNU B<parallel> very easy to
-use as GNU B<parallel> is written to have the same options as xargs. If
-you write loops in shell, you will find GNU B<parallel> may be able to
-replace most of the loops and make them run faster by running several
-jobs in parallel.
+If you use xargs and tee today you will find GNU B<parallel> very easy
+to use as GNU B<parallel> is written to have the same options as
+xargs. If you write loops in shell, you will find GNU B<parallel> may
+be able to replace most of the loops and make them run faster by
+running several jobs in parallel.
 
-GNU B<parallel> makes sure output from the commands is the same output as
-you would get had you run the commands sequentially. This makes it
-possible to use output from GNU B<parallel> as input for other programs.
+GNU B<parallel> makes sure output from the commands is the same output
+as you would get had you run the commands sequentially. This makes it
+possible to use output from GNU B<parallel> as input for other
+programs.
 
 For each line of input GNU B<parallel> will execute I<command> with
 the line as arguments. If no I<command> is given, the line of input is
@@ -121,8 +122,8 @@ replacement string; then the string is not quoted.
 
 Input line without extension. This replacement string will be replaced
 by the input with the extension removed. If the input line contains
-B<.> after the last B</>, the last B<.> until the end of the string will
-be removed and B<{.}> will be replaced with the
+B<.> after the last B</>, the last B<.> until the end of the string
+will be removed and B<{.}> will be replaced with the
 remaining. E.g. I<foo.jpg> becomes I<foo>, I<subdir/foo.jpg> becomes
 I<subdir/foo>, I<sub.dir/foo.jpg> becomes I<sub.dir/foo>,
 I<sub.dir/bar> remains I<sub.dir/bar>. If the input line does not
@@ -522,7 +523,7 @@ this will run 10*5 = 50 jobs in total:
 
   parallel --pipepart -a myfile --block -10 -j5 wc
 
-This is an efficient alternative to B<--round-robin> because data is
+This is an efficient alternative to B<--roundrobin> because data is
 never read by GNU B<parallel>, but you can still have very few
 jobslots process a large amount of data.
 
@@ -1892,14 +1893,14 @@ with B<--sshlogin>.
 =item B<--round>
 
 Normally B<--pipe> will give a single block to each instance of the
-command. With B<--round-robin> all blocks will at random be written to
+command. With B<--roundrobin> all blocks will at random be written to
 commands already running. This is useful if the command takes a long
 time to initialize.
 
-B<--keep-order> will not work with B<--round-robin> as it is
+B<--keep-order> will not work with B<--roundrobin> as it is
 impossible to track which input block corresponds to which output.
 
-B<--round-robin> implies B<--pipe>, except if B<--pipepart> is given.
+B<--roundrobin> implies B<--pipe>, except if B<--pipepart> is given.
 
 
 =item B<--rpl> 'I<tag> I<perl expression>'
@@ -2741,6 +2742,17 @@ FUBAR in all files in this dir and subdirs:
 Note B<-q> is needed because of the space in 'FOO BAR'.
 
 
+=head1 EXAMPLE: Simple network scanner
+
+B<prips> can generate IP-addresses from CIDR notation. With GNU
+B<parallel> you can build a simple network scanner to see which
+addresses respond to B<ping>:
+
+  prips 130.229.16.0/20 | \
+    parallel --timeout 2 -j0 \
+      'ping -c 1 {} >/dev/null && echo {}' 2>/dev/null
+
+
 =head1 EXAMPLE: Reading arguments from command line
 
 GNU B<parallel> can take the arguments from command line instead of
@@ -3069,11 +3081,11 @@ B<youtube-dl> is an excellent tool to download videos. It can,
 however, not download videos in parallel. This takes a playlist and
 downloads 10 videos in parallel.
 
-  url='https://youtu.be/watch?v=0wOf2Fgi3DE&list=UU_cznB5YZZmvAmeq7Y3EriQ'
+  url='youtu.be/watch?v=0wOf2Fgi3DE&list=UU_cznB5YZZmvAmeq7Y3EriQ'
   export url
-  youtube-dl --flat-playlist "$url" |
+  youtube-dl --flat-playlist "https://$url" |
     parallel --tagstring {#} --lb -j10 \
-      youtube-dl --playlist-start {#} --playlist-end {#} '"$url"'
+      youtube-dl --playlist-start {#} --playlist-end {#} '"https://$url"'
 
 
 =head1 EXAMPLE: Prepend last modified date (ISO8601) to file name
@@ -3312,7 +3324,7 @@ repeat the list and use replacement string B<{choose_k}>:
 
   parallel --plus echo {choose_k} ::: A B C D ::: A B C D
 
-  parallel --plus echo arg2 {2choose_k} arg1 {1choose_k} ::: A B C D ::: A B C D
+  parallel --plus echo 2{2choose_k} 1{1choose_k} ::: A B C D ::: A B C D
 
 B<{choose_k}> works for any number of input sources:
 
@@ -3342,7 +3354,8 @@ If the input is in the file in.txt:
 
 If the input is in the array $a here are two solutions:
 
-  seq $((${#a[@]}-1)) | env_parallel --env a echo '${a[{=$_--=}]} - ${a[{}]}'
+  seq $((${#a[@]}-1)) | \
+    env_parallel --env a echo '${a[{=$_--=}]} - ${a[{}]}'
   parallel echo {1} - {2} ::: "${a[@]::${#a[@]}-1}" :::+ "${a[@]:1}"
 
 
@@ -3370,7 +3383,7 @@ significant. Compare the speed of these:
 If your program cannot take multiple arguments, then you can use GNU
 B<parallel> to spawn multiple GNU B<parallel>s:
 
-  seq -w 0 9999999 |
+  seq -w 0 9999999 | \
     parallel -j10 -q -I,, --pipe parallel -j0 touch pict{}.jpg
 
 If B<-j0> normally spawns 252 jobs, then the above will try to spawn
@@ -3465,7 +3478,8 @@ Check the uptime of the servers in I<~/.parallel/sshloginfile>:
 Give each job a new color. Most terminals support ANSI colors with the
 escape code "\033[30;3Xm" where 0 <= X <= 7:
 
-    parallel --tagstring '\033[30;3{=$_=++$::color%8=}m' seq {} ::: {1..10}
+    seq 10 | \
+      parallel --tagstring '\033[30;3{=$_=++$::color%8=}m' seq {}
     parallel --rpl '{color} $_="\033[30;3".(++$::color%8)."m"' \
       --tagstring {color} seq {} ::: {1..10}
 
@@ -3587,7 +3601,7 @@ is much faster.
 
 If it still does not fit in memory you can do this:
 
-  parallel --pipepart -a regexps.txt --block 1M grep -Ff - -n bigfile |
+  parallel --pipepart -a regexps.txt --block 1M grep -Ff - -n bigfile | \
     sort -un | perl -pe 's/^\d+://'
 
 The 1M should be your free memory divided by the number of CPU threads and
@@ -3599,7 +3613,7 @@ GNU/Linux you can do:
   percpu=$((free / 200 / $(parallel --number-of-threads)))k
 
   parallel --pipepart -a regexps.txt --block $percpu --compress \
-    grep -F -f - -n bigfile |
+    grep -F -f - -n bigfile | \
     sort -un | perl -pe 's/^\d+://'
 
 If you can live with duplicated lines and wrong order, it is faster to do:
@@ -3612,8 +3626,8 @@ If you can live with duplicated lines and wrong order, it is faster to do:
 If the CPU is the limiting factor parallelization should be done on
 the regexps:
 
-  cat regexp.txt | parallel --pipe -L1000 --round-robin --compress \
-    grep -f - -n bigfile |
+  cat regexp.txt | parallel --pipe -L1000 --roundrobin --compress \
+    grep -f - -n bigfile | \
     sort -un | perl -pe 's/^\d+://'
 
 The command will start one B<grep> per CPU and read I<bigfile> one
@@ -3633,7 +3647,7 @@ these chunks. To parallelize both reading of I<bigfile> and I<regexp.txt>
 combine the two using B<--fifo>:
 
   parallel --pipepart --block 100M -a bigfile --fifo cat regexp.txt \
-    \| parallel --pipe -L1000 --round-robin grep -f - {}
+    \| parallel --pipe -L1000 --roundrobin grep -f - {}
 
 If a line matches multiple regexps, the line may be duplicated.
 
@@ -3672,7 +3686,7 @@ To run B<echo> on B<server.example.com>:
 
 To run commands on more than one remote computer run:
 
-  seq 10 | parallel --sshlogin server.example.com,server2.example.net echo
+  seq 10 | parallel --sshlogin s1.example.com,s2.example.net echo
 
 Or:
 
@@ -3985,7 +3999,8 @@ is even faster:
   DBURL=pg://user:pass@host/mydb
   DBTABLEURL=$DBURL/mytable
   parallel --sqlandworker $DBTABLEURL seq ::: {1..10}
-  sql $DBURL "COPY (SELECT * FROM mytable) TO stdout DELIMITER ',' CSV HEADER;"
+  sql $DBURL \
+    "COPY (SELECT * FROM mytable) TO stdout DELIMITER ',' CSV HEADER;"
 
 Or MySQL:
 
@@ -4015,11 +4030,11 @@ can read into R or LibreCalc, then you can use B<--results>:
 The show Aflyttet on Radio 24syv publishes an RSS feed with their audio
 podcasts on: http://arkiv.radio24syv.dk/audiopodcast/channel/4466232
 
-Using B<xpath> you can extract the URLs for 2016 and download them
+Using B<xpath> you can extract the URLs for 2019 and download them
 using GNU B<parallel>:
 
-  wget -O - http://arkiv.radio24syv.dk/audiopodcast/channel/4466232 |
-    xpath -e "//ancestor::pubDate[contains(text(),'2016')]/../enclosure/@url" |
+  wget -O - http://arkiv.radio24syv.dk/audiopodcast/channel/4466232 | \
+    xpath -e "//pubDate[contains(text(),'2019')]/../enclosure/@url" | \
     parallel -u wget '{= s/ url="//; s/"//; =}'
 
 
@@ -4124,7 +4139,8 @@ separator before each customer (column 2 = $F[1]). Here we first make
 a 50 character random string, which we then use as the separator:
 
   sep=`perl -e 'print map { ("a".."z","A".."Z")[rand(52)] } (1..50);'`
-  cat my.csv | perl -ape '$F[1] ne $l and print "'$sep'"; $l = $F[1]' |
+  cat my.csv | \
+     perl -ape '$F[1] ne $l and print "'$sep'"; $l = $F[1]' | \
      parallel --recend $sep --rrs --pipe -N1 wc
 
 If your program can process multiple customers replace B<-N1> with a
@@ -4141,13 +4157,13 @@ process. That means that if you just spawn more GNU B<parallel>s then
 each of them can run 250 jobs. This will spawn up to 2500 jobs:
 
   cat myinput |\
-    parallel --pipe -N 50 --round-robin -j50 parallel -j50 your_prg
+    parallel --pipe -N 50 --roundrobin -j50 parallel -j50 your_prg
 
 This will spawn up to 62500 jobs (use with caution - you need 64 GB
 RAM to do this, and you may need to increase /proc/sys/kernel/pid_max):
 
   cat myinput |\
-    parallel --pipe -N 250 --round-robin -j250 parallel -j250 your_prg
+    parallel --pipe -N 250 --roundrobin -j250 parallel -j250 your_prg
 
 
 =head1 EXAMPLE: Working as mutex and counting semaphore

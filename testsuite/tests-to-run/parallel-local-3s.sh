@@ -46,8 +46,8 @@ par_slow_args_generation() {
     seq 1 3 | parallel -j1 "sleep 2; echo {}" | parallel -kj2 echo
 }
 
-par_kill_term_twice() {
-    echo '### Are children killed if GNU Parallel receives TERM twice? There should be no sleep at the end'
+par_kill_term() {
+    echo '### Are children killed if GNU Parallel receives TERM? There should be no sleep at the end'
 
     parallel -q bash -c 'sleep 120 & pid=$!; wait $pid' ::: 1 &
     T=$!
@@ -56,8 +56,17 @@ par_kill_term_twice() {
     kill -TERM $T
     sleep 1
     pstree $$
-    kill -TERM $T
-    sleep 1
+}
+
+par_kill_hup() {
+    echo '### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end'
+
+    parallel -j 2 -q bash -c 'sleep {} & pid=$!; wait $pid' ::: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 &
+    T=$!
+    sleep 2
+    pstree $$
+    kill -HUP $T
+    sleep 2
     pstree $$
 }
 

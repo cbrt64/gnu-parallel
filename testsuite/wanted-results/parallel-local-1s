@@ -172,6 +172,13 @@ par_incomplete_linebuffer	7
 par_incomplete_linebuffer	8
 par_incomplete_linebuffer	9
 par_incomplete_linebuffer	10
+par_null_resume	### --null --resume --jl
+par_null_resume	a
+par_null_resume	b
+par_null_resume	c
+par_null_resume	A
+par_null_resume	B
+par_null_resume	C
 par_parset	### test parset
 par_parset	Put output into $myarray
 par_parset	10

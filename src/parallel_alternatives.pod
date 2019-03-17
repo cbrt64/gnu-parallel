@@ -2050,7 +2050,8 @@ be done by the user.
 Stdout (standard output) is prepended with o:. Stderr (standard error)
 is sendt to stdout (standard output) and prepended with e:.
 
-For short jobs with little output B<par> is 20% faster than GNU B<parallel>.
+For short jobs with little output B<par> is 20% faster than GNU
+B<parallel> and 60% slower than B<xargs>.
 
 http://savannah.nongnu.org/projects/par (Last checked: 2019-02)
 
@@ -2060,11 +2061,129 @@ http://savannah.nongnu.org/projects/par (Last checked: 2019-02)
 B<fd> does not support composed commands, so commands must be wrapped
 in B<sh -c>.
 
-It buffers output in RAM. 
+It buffers output in RAM.
 
 It only takes file names from the filesystem as input (similar to B<find>).
 
 https://github.com/sharkdp/fd (Last checked: 2019-02)
+
+
+=head2 DIFFERENCES BETWEEN lateral AND GNU Parallel
+
+B<lateral> is very similar to B<sem>: It takes a single command and
+runs it in the background. The design means that output from parallel
+running jobs may mix. If it dies unexpectly it leaves a socket in
+~/.lateral/socket.PID.
+
+B<lateral> deals badly with too long command lines. This makes the
+B<lateral> server crash:
+
+  lateral run echo `seq 100000| head -c 1000k`
+
+Any options will be read by B<lateral> so this does not work
+(B<lateral> interprets the B<-l>):
+
+  lateral run ls -l
+
+Composed commands do not work:
+
+  lateral run pwd ';' ls
+
+Functions do not work:
+
+  myfunc() { echo a; }
+  export -f myfunc
+  lateral run myfunc
+
+Running B<emacs> in the terminal causes the parent shell to die:
+
+  echo '#!/bin/bash' > mycmd
+  echo emacs -nw >> mycmd
+  chmod +x mycmd
+  lateral start
+  lateral run ./mycmd
+
+Here are the examples from https://github.com/akramer/lateral with the
+corresponding GNU B<sem> and GNU B<parallel> commands:
+
+  1$ lateral start
+  1$ for i in $(cat /tmp/names); do
+  1$   lateral run -- some_command $i
+  1$ done
+  1$ lateral wait
+  1$
+  1$ for i in $(cat /tmp/names); do
+  1$   sem some_command $i
+  1$ done
+  1$ sem --wait
+  1$
+  1$ parallel some_command :::: /tmp/names
+
+  2$ lateral start
+  2$ for i in $(seq 1 100); do
+  2$   lateral run -- my_slow_command < workfile$i > /tmp/logfile$i
+  2$ done
+  2$ lateral wait
+  2$
+  2$ for i in $(seq 1 100); do
+  2$   sem my_slow_command < workfile$i > /tmp/logfile$i
+  2$ done
+  2$ sem --wait
+  2$
+  2$ parallel 'my_slow_command < workfile{} > /tmp/logfile{}' \
+       ::: {1..100}
+
+  3$ lateral start -p 0 # yup, it will just queue tasks
+  3$ for i in $(seq 1 100); do
+  3$   lateral run -- command_still_outputs_but_wont_spam inputfile$i
+  3$ done
+  3$ lateral config -p 10; lateral wait # command output spam can commence
+  3$
+  3$ for i in $(seq 1 100); do
+  3$   echo "command inputfile$i" >> joblist
+  3$ done
+  3$ parallel -j 10 :::: joblist
+  3$
+  3$ echo 1 > /tmp/njobs
+  3$ parallel -j /tmp/njobs command inputfile{} \
+       ::: {1..100} &
+  3$ echo 10 >/tmp/njobs
+  3$ wait
+
+https://github.com/akramer/lateral (Last checked: 2019-03)
+
+
+=head2 DIFFERENCES BETWEEN with-this AND GNU Parallel
+
+The examples from https://github.com/amritb/with-this.git and the
+corresponding GNU B<parallel> command:
+
+  with -v "$(cat myurls.txt)" "curl -L this"
+  parallel curl -L ::: myurls.txt
+
+  with -v "$(cat myregions.txt)" \
+    "aws --region=this ec2 describe-instance-status"
+  parallel aws --region={} ec2 describe-instance-status \
+    :::: myregions.txt
+
+  with -v "$(ls)" "kubectl --kubeconfig=this get pods"
+  ls | parallel kubectl --kubeconfig={} get pods
+
+  with -v "$(ls | grep config)" "kubectl --kubeconfig=this get pods"
+  ls | grep config | parallel kubectl --kubeconfig={} get pods
+
+  with -v "$(echo {1..10})" "echo 123"
+  parallel -N0 echo 123 ::: {1..10}
+
+Stderr is merged with stdout. B<with-this> buffers in RAM. It uses 3x
+the output size, so you cannot have output larger than 1/3rd the
+amount of RAM. The input values cannot contain spaces. Composed
+commands do not work.
+
+B<with-this> gives some additional information, so the output has to
+be cleaned before piping it to the next command.
+
+https://github.com/amritb/with-this.git (Last checked: 2019-03)
 
 
 =head2 Todo
@@ -2078,8 +2197,6 @@ https://github.com/benoror/better-npm-run - not obvious how to use
 https://github.com/bahmutov/with-package
 
 https://github.com/xuchenCN/go-pssh
-
-https://github.com/amritb/with-this.git
 
 https://github.com/flesler/parallel
 

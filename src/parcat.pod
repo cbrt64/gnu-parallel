@@ -44,7 +44,7 @@ the files.
 
 =head2 Simple line buffered output
 
-GNU Parallel saves output to tempfiles. If the amount of data is
+GNU B<parallel> saves output to tempfiles. If the amount of data is
 bigger than the free disk space, then you can use this technique to do
 line buffering without saving to disk:
 

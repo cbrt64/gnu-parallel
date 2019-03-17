@@ -275,7 +275,7 @@ EXTRA_DIST = parallel sem sql niceload parcat parset env_parallel	\
 	env_parallel.tcsh env_parallel.zsh parcat.pod parset.pod	\
 	sem.pod parallel.pod env_parallel.pod niceload.pod		\
 	parallel_tutorial.pod parallel_book.pod parallel_design.pod	\
-	parallel_alternatives.pod $(DISTCLEANFILES)
+	parallel_alternatives.pod parallel_cheat.fodt $(DISTCLEANFILES)
 
 all: all-am
 

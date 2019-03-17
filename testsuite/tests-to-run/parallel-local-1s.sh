@@ -2232,6 +2232,19 @@ CPU revision	: 4
 	 :::+ "2-8-8-8" "1-4-8-4" "1-2-4-2" "1-2-2-2" "2-24-48-24" "1-2-2-2" "1-8-8-8"
 }
 
+par_null_resume() {
+    echo '### --null --resume --jl'
+    log=/tmp/null-resume-$$.log
+
+    true > "$log"
+    printf "%s\n" a b c | parallel --resume -k --jl $log echo
+    printf "%s\n" a b c | parallel --resume -k --jl $log echo
+    true > "$log"
+    printf "%s\0" A B C | parallel --null --resume -k --jl $log echo
+    printf "%s\0" A B C | parallel --null --resume -k --jl $log echo
+    rm "$log"
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'

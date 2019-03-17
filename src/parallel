@@ -2009,6 +2009,8 @@ sub open_joblog() {
 	if($opt::resume || $opt::resume_failed || $opt::retry_failed) {
 	    if(open(my $joblog_fh, "<", $opt::joblog)) {
 		# Read the joblog
+		# Override $/ with \n because -d might be set
+		local $/ = "\n";
 		# If there is a header: Open as append later
 		$append = <$joblog_fh>;
 		my $joblog_regexp;
@@ -2017,22 +2019,19 @@ sub open_joblog() {
 		    # 4 host 1360490623.067 3.445 1023 1222 0 0 command
 		    $joblog_regexp='^(\d+)(?:\t[^\t]+){5}\t0\t0\t';
 		    my @group;
-		    {
-			local $/ = "\n";
-			while(<$joblog_fh>) {
-			    if(/$joblog_regexp/o) {
-				# This is 30% faster than set_job_already_run($1);
-				vec($Global::job_already_run,($1||0),1) = 1;
-				$Global::total_completed++;
-				$group[$1-1] = "true";
-			    } elsif(/(\d+)\s+\S+(\s+[-0-9.]+){6}\s+(.*)$/) {
-				# Grab out the command
-				$group[$1-1] = $3;
-			    } else {
-				chomp;
-				::error("Format of '$opt::joblog' is wrong: $_");
-				::wait_and_exit(255);
-			    }
+		    while(<$joblog_fh>) {
+			if(/$joblog_regexp/o) {
+			    # This is 30% faster than set_job_already_run($1);
+			    vec($Global::job_already_run,($1||0),1) = 1;
+			    $Global::total_completed++;
+			    $group[$1-1] = "true";
+			} elsif(/(\d+)\s+\S+(\s+[-0-9.]+){6}\s+(.*)$/) {
+			    # Grab out the command
+			    $group[$1-1] = $3;
+			} else {
+			    chomp;
+			    ::error("Format of '$opt::joblog' is wrong: $_");
+			    ::wait_and_exit(255);
 			}
 		    }
 		    if(@group) {
@@ -2077,6 +2076,8 @@ sub open_joblog() {
 		}
 		close $joblog_fh;
 	    }
+	    # $opt::null may be set if the commands contain \n
+	    if($opt::null) { $/ = "\0"; }
 	}
 	if($opt::dryrun) {
 	    # Do not write to joblog in a dry-run
@@ -2426,9 +2427,7 @@ sub shell_quote(@) {
     #   @strings = strings to be quoted
     # Returns:
     #   @shell_quoted_strings = string quoted as needed by the shell
-    return wantarray ?
-	(map { Q($_) } @_)
-	: (join" ",map { Q($_) } @_);
+    return wantarray ? (map { Q($_) } @_) : (join" ",map { Q($_) } @_);
 }
 
 sub shell_quote_scalar_rc($) {
@@ -4190,7 +4189,7 @@ sub start_no_new_jobs() {
     ::status
         ("$Global::progname: SIGTERM received. No new jobs will be started.",
          "$Global::progname: Waiting for these ".(keys %Global::running).
-         " jobs to finish. Send SIGTERM again to stop now.");
+         " jobs to finish. Send SIGTERM to stop now.");
     list_running_jobs();
     $Global::start_no_new_jobs ||= 1;
 }
@@ -4569,11 +4568,14 @@ sub citation() {
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	# https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	"This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	"If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	"",
 	"More about funding GNU Parallel and the citation notice:",
+	"https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html",
 	"https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice",
+	"https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt",
 	"",
 	"If you send a copy of your published article to tange\@gnu.org, it will be",
 	"mentioned in the release notes of next version of GNU Parallel.",
@@ -4591,8 +4593,13 @@ sub citation() {
 		close $fh;
 		::status(
 		    "",
-		    "Thank you for your support. It is much appreciated. The citation",
-		    "notice is now silenced.",
+		    "Thank you for your support: You are the reason why there is funding to",
+		    "continue maintaining GNU Parallel. On behalf of future versions of",
+		    "GNU Parallel, which would not exist without your support:",
+		    "",
+		    "  THANK YOU SO MUCH",
+		    "",
+		    "It is really appreciated. The citation notice is now silenced.",
 		    "");
 	    } else {
 		::status(
@@ -11166,8 +11173,8 @@ sub new($$) {
     my $fhs = shift;
     for my $fh (@$fhs) {
 	if(-t $fh and -t ($Global::status_fd || *STDERR)) {
-	    ::warning("Input is read from the terminal. You either know what you",
-		      "are doing (in which case: YOU ARE AWESOME!) or you forgot",
+	    ::warning("Input is read from the terminal. You are either an expert",
+		      "(in which case: YOU ARE AWESOME!) or maybe you forgot",
 		      "::: or :::: or -a or to pipe data into parallel. If so",
 		      "consider going through the tutorial: man parallel_tutorial",
 		      "Press CTRL-D to exit.");
