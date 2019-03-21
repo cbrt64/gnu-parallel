@@ -207,25 +207,27 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190322 (climatestrike FridayforFuture
-Christchurch 'Max 8' fly i etiopien 737Max 8 indien pakistan Kashmir') released <<[stable]>>
+Subject: GNU Parallel 20190322 ('FridayforFuture') released <<[stable]>>
 
-GNU Parallel 20190322 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190322 ('FridayforFuture') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
-<<No new functionality was introduced so this is a good candidate for a stable release.>>
+The change in signalling makes this release experimental for users that send SIGTERM to GNU Parallel.
 
 Quote of the month:
 
-  <<>>
+  There are so many things to love about GNU parallel. You could honestly teach a whole parallel computing course with it and never have to leave it for a real language.
+    -- Aubrey Bailey @DNAvinci@twitter
   
 
 New in this release:
 
 * GNU Parallel now includes a cheat sheet: parallel_cheat.pdf
 
-https://calendar.colorado.edu/event/high_throughput_computing_on_rmacc_summit_and_beyond#.XH2NBhB7mV4
+* High Throughput Computing on RMACC Summit and Beyond https://calendar.colorado.edu/event/high_throughput_computing_on_rmacc_summit_and_beyond#.XH2NBhB7mV4
 
-https://www.cheatography.com/cpriest/cheat-sheets/gnu-parallel/
+* GNU Parallel Cheat Sheet by cpriest https://www.cheatography.com/cpriest/cheat-sheets/gnu-parallel/
+
+* Use Multiple CPU Cores(Parallelize) with Single Threaded Linux Commands http://xensoft.com/use-multiple-cpu-cores-parallelize-with-single-threaded-linux-commands/
 
 * Bug fixes and man page updates.
 

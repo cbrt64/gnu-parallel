@@ -1,3 +1,26 @@
+20190322
+
+* SIGTERM is changed to SIGHUP, so sending SIGHUP will make GNU
+  Parallel start no more jobs, but wait for running jobs to finish.
+
+* SIGTERM SIGTERM is changed to SIGTERM, so sending SIGTERM will make
+  GNU Parallel kill all running jobs.
+
+* GNU Parallel now includes a cheat sheet: parallel_cheat.pdf
+
+* High Throughput Computing on RMACC Summit and Beyond
+  https://calendar.colorado.edu/event/high_throughput_computing_on_rmacc_summit_and_beyond#.XH2NBhB7mV4
+
+* GNU Parallel Cheat Sheet by cpriest
+  https://www.cheatography.com/cpriest/cheat-sheets/gnu-parallel/
+
+* Use Multiple CPU Cores(Parallelize) with Single Threaded Linux
+  Commands
+  http://xensoft.com/use-multiple-cpu-cores-parallelize-with-single-threaded-linux-commands/
+
+* Bug fixes and man page updates.
+
+
 20190222
 
 * --shard makes it possible to send input to a the same jobslot based

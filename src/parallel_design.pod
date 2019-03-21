@@ -495,7 +495,8 @@ B<--pipepart>/B<--pipe> should be done on the local machine inside B<--tmux>
 
 
 =head2 Convenience options --nice --basefile --transfer --return
---cleanup --tmux --group --compress --cat --fifo --workdir
+--cleanup --tmux --group --compress --cat --fifo --workdir --tag
+--tagstring
 
 These are all convenience options that make it easier to do a
 task. But more importantly: They are tested to work on corner cases,

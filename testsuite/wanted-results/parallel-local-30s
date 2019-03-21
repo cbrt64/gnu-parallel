@@ -204,24 +204,24 @@ par_shellquote	csh	\\\\\\\\	"\
 par_shellquote	csh	"\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
 par_shellquote	tcsh	\\\\\\\\	"\
 par_shellquote	tcsh	"\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
-par_sigterm	### Test SIGTERM
-par_sigterm	1
-par_sigterm	10
-par_sigterm	2
-par_sigterm	3
-par_sigterm	4
-par_sigterm	5
-par_sigterm	6
-par_sigterm	7
-par_sigterm	8
-par_sigterm	9
-par_sigterm	parallel: SIGTERM received. No new jobs will be started.
-par_sigterm	parallel: Waiting for these 5 jobs to finish. Send SIGTERM again to stop now.
-par_sigterm	parallel: sleep 15; echo 10
-par_sigterm	parallel: sleep 15; echo 6
-par_sigterm	parallel: sleep 15; echo 7
-par_sigterm	parallel: sleep 15; echo 8
-par_sigterm	parallel: sleep 15; echo 9
+par_sighup	### Test SIGHUP
+par_sighup	1
+par_sighup	10
+par_sighup	2
+par_sighup	3
+par_sighup	4
+par_sighup	5
+par_sighup	6
+par_sighup	7
+par_sighup	8
+par_sighup	9
+par_sighup	parallel: SIGHUP received. No new jobs will be started.
+par_sighup	parallel: Waiting for these 5 jobs to finish. Send SIGTERM to stop now.
+par_sighup	parallel: sleep 15; echo 10
+par_sighup	parallel: sleep 15; echo 6
+par_sighup	parallel: sleep 15; echo 7
+par_sighup	parallel: sleep 15; echo 8
+par_sighup	parallel: sleep 15; echo 9
 par_test_detected_shell	### bug #42913: Dont use $SHELL but the shell currently running
 par_test_detected_shell	test_unknown_shell ash	Global::shell /bin/bash
 par_test_detected_shell	test_unknown_shell bash	Global::shell /bin/bash

@@ -1,3 +1,304 @@
+=head1 GNU Parallel 10 year anniversery - 2020-04-22
+
+"""
+Author: Ole Tange <ole@tange.dk>
+Date:   Thu Apr 22 01:23:00 2010 +0200
+
+    Name change: Parallel is now GNU Parallel.
+    Basic structure for sshlogin and sshloginfile.
+"""
+
+Wow. It has been 10 years since my parallel program was officially
+renamed GNU Parallel. It has been quite a ride.
+
+So it is a probably a good time to take stock.
+
+
+=head2 The design
+
+The user interface of GNU Parallel has changed very little during the
+last 10 years. In total around 10 things have changed in a way that
+was not backwards compatible - most of them corner cases that very few
+use.
+
+
+=head2 Videos
+
+In 2010 one of the competitors was PPSS. My colleague, Hans Schou,
+saw louwrentius' video showing off PPSS
+(https://www.youtube.com/watch?v=32PwsARbePw) and nudged me to make my
+own videos and most of the information in those still applies to the
+newest version.
+
+
+=head2 Complete rewrite
+
+Before GNU Parallel was a GNU tool, it started as a wrapper around
+`make -j`. But GNU Parallel grew, and was no longer just a small
+hack. To make the code easier to maintain it was rewritten to object
+orientation.
+
+This would not have been possible if the test suite had not been so
+thorough: It made it much easier to see if 
+
+
+=head2 --tollef
+
+Tollef's parallel from moreutils was a headache: Before Tollef's
+parallel was adopted by moreutils I tried getting Parallel adopted in
+moreutils. So it was a bit of a disappointment seeing another program
+called exactly the same included some months later.
+
+--tollef was added to make GNU Parallel compatible with Tollef's
+parallel, so that if you depended on Tollef's parallel, then you could
+drop in GNU Parallel as a replacement.
+
+I honestly don't think anyone used this. Ever. But it silenced the
+argument that GNU Parallel would break existing usage.
+
+Unfortunately distributions enabled --tollef by default and did not
+stress this to the user. So users experienced no end of frustration
+when the examples from GNU Parallel's man page did not work.
+
+moreutils is now generally packaged with Tollef's parallel split off
+into a separate package, and the frustration seems to be lower today.
+
+
+=head2 GNU Paralel on NASA Pleiades supercomputer
+
+In 2013 I stumbled on a happy surprise: NASA seemed to have installed
+GNU Parallel on their Pleiades supercomputer.
+
+https://web.archive.org/web/20130221072030/https://www.nas.nasa.gov/hecc/support/kb/using-gnu-parallel-to-package-multiple-jobs-in-a-single-pbs-job_303.html
+
+"""On Pleiades, a copy of GNU parallel is available under /usr/bin."""
+
+Pleiades was 16th on top500.org in 2013.
+
+I have the feeling that GNU Parallel is also used on some of the
+bigger supercomputers, but I have found no confirmation of that.
+
+
+=head2 GNU Parallel on Termux and OpenWRT
+
+At the other end of the system size is Termux on Android and OpenWRT
+for accesspoints. GNU Parallel runs on both of them, and while I can
+see why you might run GNU Parallel on an access point I still do not
+know why you would do it on an Android device.
+
+It is still cool that it can be done at all.
+
+
+=head2 Attack on funding
+
+A sad chapter is the attack on the funding of GNU Parallel.
+
+You would think such an attack would come from non-free competitors, but
+this attack was from packagers that packaged GNU Parallel for Debian
+and SuSE.
+
+GNU Parallel is funded by me having a job. It is easier to get a well
+paid job that will allow for maintaining GNU Parallel if GNU Parallel
+is cited, because that proves the tool is useful for serious work.
+
+I saw GNU Parallel being used in scientific articles, which was great,
+but without being cited, which was not ideal. So we discussed on the
+email list how to make users aware that citing is how GNU Parallel is
+financed and why this is important.
+
+So it was decided to make a notice similar to a do-show-this-again box
+known from e.g. Firefox. The notice could be silenced in less than 10
+seconds.
+
+Unfortunately in a misguided act of short term gain in popularity SuSE
+and Debian did a disservice to free software and disabled this notice
+in the version they currently distribute.
+
+As GNU Parallel is free software they are allowed to fork the
+software, but only if they make sure the forked version cannot be
+mistaken for GNU Parallel. We have court cases showing this is the
+case, but still Debian and SuSE refuse to back down, so the problem
+still not resolved.
+
+If you would like to see GNU Parallel maintained in the future, please
+help by raising this issue with SuSE and Debian. Their current stance
+hurts free software by making it harder to justify spending time on
+maintaining GNU Parallel. Not having GNU Parallel distributed by
+Debian and SuSE is actually preferable to the current situation,
+though, the best outcome would be if they distributed the non-modified
+version.
+
+For users who are unwiling to spend the 10 seconds on silencing the
+notice there is an easy solution: "Don't like it? Don't use it." A
+considerable amount of time has been spent on mapping the
+alternatives, so there is really no excuse. See `man
+parallel_alternatives`.
+
+
+=head2 The GNU Parallel 2018 book
+
+Hans Schou teased me by calling the man page "the book". In 2018 I
+took the consequence of that and wrote a book. The book is available
+online (https://doi.org/10.5281/zenodo.1146014) and in print
+(http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html).
+
+
+=head2 Cheatsheet
+
+A lot of hours has been put into documentation, but the problem with
+having a lot of documentation is that is can make some people think
+the program is hard to use giving rise to the myth that "You have to
+read a full book to be able to use GNU Parallel".
+
+Several people noted that GNU Parallel was missing a cheat sheet. So
+in 2019 a one page cheat sheet was included in the package. 
+
+=head2 Why all the options?
+
+Instead of crappy wrapper scripts.
+
+=head2 Convenience options --nice --basefile --transfer --return
+--cleanup --tmux --group --compress --cat --fifo --workdir --tag
+
+
+=head2 The May 1st incident
+
+I was at a May 1st event for computer professionals where I sat at a
+long table opposite a guy. At some point the discussion turned to
+parallelism.
+
+"I have found the brilliant program," he said. "It does everything if
+you want to parallelize."
+
+The more he explained the more certain was I that I knew this program
+quite intimately.
+
+"And it is written by a Dane," he said excited.
+
+"Oh. Are you aware that the author is sitting on my side of the table?"
+
+We were the only ones sitting at the table, but we had had a few
+beers, so it took a while before it dawned to him, who I was.
+
+
+
+=head2 Underappreciated functionality
+
+=head3 env_parallel
+
+When I was shown you could encode variables into a single variable and
+move that to a remote system I was intrigued. But why stop at
+variables? Why not include aliases, functions, and arrays?
+
+env_parallel started out as a technical challenge: How much can be
+copied transparently?
+
+But it quickly got a more practical side: Why should you not be able
+to use the variables, aliases and functions defined on the local
+system just because you want to run jobs on a remote system?
+
+
+=head3 parset
+
+Some of GNU Parallel functionality is inspired by other people
+problems: How could this problem be solved in general?
+
+parset is one of those. It was inpired by a user who needed the output
+from different jobs to be stored in different variables. The jobs were
+slow and could be run in parallel. So while the running of the jobs
+were clearly a task for GNU Parallel, the storing in variables was not
+so clear.
+
+It was fairly easy to code something that would work if the output was
+a single line with no spaces, but GNU Parallel tries hard not to set
+artifical limits: It is much preferable to a bit slower if the outcome
+is predictable - whether the output is a single word or some binary
+data.
+
+
+=head3 --embed
+
+Some of the functionality is inspired by other tools. --embed is one
+of those.
+
+--embed was inspired by Lesser Parallel that in turn was inspired by
+GNU Parallel. The major feature of Lesser Parallel is to be embedded
+in any bash script. The developer will embed the code into his own
+bash script and distribute this script.
+
+So with --embed the users of the script will not have to install GNU
+Parallel to run it.
+
+
+=head3 --pipepart with --fifo
+
+=head3 --bar
+
+I see people using --bar too rarely. It is one of the easiest ways to
+get a visual representation of when all the jobs are expected done.
+
+
+=head3 Combining ::: with :::+
+
+
+=head3 --rpl with dynamic replacement strings
+
+=head3 --results with replacement strings
+
+=head3 --tagstring with replacement strings
+
+
+=head2 Feedback
+
+Best ever
+
+
+=head2 Live strong 
+
+On average there has been a new release of GNU Parallel every month
+since 2010-04-24.
+
+In the autumn of 2010 Henrik Sandklef teased me that he knew when the
+next release would be. GNU Parallel just happened to have been
+released twice in the 22nd, so he assumed the next release would also
+be on the 22nd. And why not? A few releases were not in line with
+this, but since 2011 there has been a release every month around the
+22nd.
+
+The fixed release cycle means there has been more than 100 releases
+making GNU Parallel in the top 5 of GNU tools with the most releases.
+
+
+=head3 Naming releases
+
+At the presenatation at FOSDEM (20110205) I found it might be fun to
+give each release code name, so this release was named FOSDEM. After
+the Japan release a naming convention started to emerge. And since
+then each release has had a name related to an event in the past
+month.
+
+I will be honest: Some releases were easier to name than others.
+
+Since the events are not always happy events, the names have now and
+then stirred a bit of controversy. But if you want happier names, go
+make a happier world :)
+
+=head3 Competitors
+
+Apart from xargs no competitor has had the strength to live for 10
+years. And even xargs has not had a steady release cycle with a new
+release every month.
+
+
+=head2 The next 10 years
+
+Parallization has come to stay, and there are a lot of competitors to
+GNU Parallel that do specialized tasks better. But I have a feeling
+that there is room for a generalized tool like GNU Parallel also in 10
+years.
+
+
+
 =head1 top photos
 
 http://www.flickr.com/photos/dexxus/5499821986/in/photostream/

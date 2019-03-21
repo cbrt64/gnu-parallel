@@ -49,19 +49,22 @@ par_exitval_signal	exitval=128+6 OK
 par_exitval_signal	signal OK
 par_keeporder_roundrobin	bug #50081: --keep-order --round-robin should give predictable results
 par_keeporder_roundrobin	OK
+par_kill_hup	### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end
+par_kill_hup	bash-+-perl---2*[bash---sleep]
+par_kill_hup	     `-pstree
+par_kill_hup	parallel: SIGHUP received. No new jobs will be started.
+par_kill_hup	parallel: Waiting for these 2 jobs to finish. Send SIGTERM to stop now.
+par_kill_hup	parallel: bash -c 'sleep 1 & pid=$!; wait $pid'
+par_kill_hup	parallel: bash -c 'sleep 1 & pid=$!; wait $pid'
+par_kill_hup	bash---pstree
 par_kill_int_twice	### Are children killed if GNU Parallel receives INT twice? There should be no sleep at the end
 par_kill_int_twice	bash-+-perl---bash---sleep
 par_kill_int_twice	     `-pstree
 par_kill_int_twice	bash---pstree
-par_kill_term_twice	### Are children killed if GNU Parallel receives TERM twice? There should be no sleep at the end
-par_kill_term_twice	bash-+-perl---bash---sleep
-par_kill_term_twice	     `-pstree
-par_kill_term_twice	parallel: SIGTERM received. No new jobs will be started.
-par_kill_term_twice	parallel: Waiting for these 1 jobs to finish. Send SIGTERM again to stop now.
-par_kill_term_twice	parallel: bash -c 'sleep 120 & pid=$!; wait $pid' 1
-par_kill_term_twice	bash-+-perl---bash---sleep
-par_kill_term_twice	     `-pstree
-par_kill_term_twice	bash---pstree
+par_kill_term	### Are children killed if GNU Parallel receives TERM? There should be no sleep at the end
+par_kill_term	bash-+-perl---bash---sleep
+par_kill_term	     `-pstree
+par_kill_term	bash---pstree
 par_lb_mem_usage	1
 par_lb_mem_usage	1
 par_lb_mem_usage	2
@@ -80,10 +83,6 @@ par_nice	Check that --nice works
 par_nice	load_10
 par_nice	bzip2            18
 par_nice	bzip2            18
-par_nice	parallel: SIGTERM received. No new jobs will be started.
-par_nice	parallel: Waiting for these 2 jobs to finish. Send SIGTERM again to stop now.
-par_nice	parallel: bzip2 < /dev/zero
-par_nice	parallel: bzip2 < /dev/zero
 par_pipe_unneeded_procs	### Test bug #34241: --pipe should not spawn unneeded processes
 par_pipe_unneeded_procs	1
 par_pipe_unneeded_procs	2

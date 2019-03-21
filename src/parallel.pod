@@ -2076,7 +2076,7 @@ Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
 See also B<--env>, B<--record-env>.
 
 
-=item B<--shard> I<shardkey> (alpha testing)
+=item B<--shard> I<shardkey> (beta testing)
 
 Use column I<shardkey> as shard key and shard input to the jobs.
 
@@ -2152,7 +2152,7 @@ E.g.
 B<--shebang-wrap> must be set as the first option.
 
 
-=item B<--shellquote> (beta testing)
+=item B<--shellquote>
 
 Does not run the command but quotes it. Useful for making quoted
 composed commands for GNU B<parallel>.
@@ -4513,9 +4513,9 @@ GNU B<parallel> will then print the currently running jobs on stderr
 
 If you regret starting a lot of jobs you can simply break GNU B<parallel>,
 but if you want to make sure you do not have half-completed jobs you
-should send the signal B<SIGTERM> to GNU B<parallel>:
+should send the signal B<SIGHUP> to GNU B<parallel>:
 
-  killall -TERM parallel
+  killall -HUP parallel
 
 This will tell GNU B<parallel> to not start any new jobs, but wait until
 the currently running jobs are finished before exiting.
@@ -4540,7 +4540,7 @@ shell.
 
 B<Example:> If each of the jobs tests a solution and one of jobs finds
 the solution the job can tell GNU B<parallel> not to start more jobs
-by: B<kill -TERM $PARALLEL_PID>. This only works on the local
+by: B<kill -HUP $PARALLEL_PID>. This only works on the local
 computer.
 
 
