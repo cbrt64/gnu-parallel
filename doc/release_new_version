@@ -206,68 +206,24 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190422 ('Invitation Assange') released <<[stable]>>
+Subject: GNU Parallel 20190522 ('') released <<[stable]>>
 
-GNU Parallel 20190422 ('Invitation') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190522 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
-No new functionality was introduced so this is a good candidate for a stable release.
+<<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 GNU Parallel is 10 years old in a year on 2020-04-22. You are here by invited to a reception on Friday 2020-04-17.
 
-The primary reception will be held in Copenhagen, DK. Please reserve the date and email happybirthdaygnuparallel@tange.dk if you want to join.
-
-If you cannot make it, you are encouraged to host a parallel party.
-
-So far we hope to have parallel parties at:
-
-+verbatim+
-  PROSA
-  Vester Farimagsgade 37A
-  DK-1606 København V
-  RSVP: happybirthdaygnuparallel@tange.dk
-
-  PROSA
-  Søren Frichs Vej 38 K th
-  DK-8230 Åbyhøj
-  RSVP: To be determined
-  
-  PROSA
-  Overgade 54
-  DK-5000 Odense C
-  RSVP: To be determined
--verbatim-
-
-If you want to host a party held in parallel (either in this or in a parallel universe), please let me know, so it can be announced.
-
-If you have parallel ideas for how to celebrate GNU Parallel, please post on the email list parallel@gnu.org. So far we have the following ideas:
-
-* Use GNU Parallel logo (the café wall illusion) as decoration everywhere – preferably in a moving version where the bars slide. Maybe we can borrow this https://www.youtube.com/watch?v=_XFDnFLqRFE or make an animation in javascript based on https://bl.ocks.org/Fil/13177d3c911fb8943cb0013086469b87? Other illusions might be fun, too.
-* Only serve beverages in parallel (2 or more), which may or may not be the same kind of beverage, and may or may not be served to the same person, and may or may not be served by multiple waiters in parallel
-* Let people drink in parallel with straws (2 or more straws)
-* Serve popcorn as snack (funny because cores and kernels are the same word in Danish, and GNU Parallel keeps cores hot)
-* Serve saltstænger and similar parallel snacks.
-* Serve (snack friendly) cereal in parallel bowls.
-* Live parallel streaming from parallel parties
-* Play songs in parallel that use the same 4 chords: https://www.youtube.com/watch?v=5pidokakU4I
-* Play songs named parallel, serial, mutex, race condition and similar
-* Have RC racing cars to demonstrate race condition
-* Put a counting semaphore on the toilets
-* Only let people leave one at a time to simulate serialized output – UNLESS they swap some clothing (to simulate half line mixing)
-
-If you have interesting stories about or uses of GNU Parallel, please post them, so can be part of the anniversary update.
-
+See https://savannah.gnu.org/forum/forum.php?forum_id=9422
 
 Quote of the month:
 
-  Y'all need some GNU parallel in your lives
-    -- ChaKu @ChaiLovesChai@twitter
+<<>>
 
 
 New in this release:
 
-* Invitation to the 10 years anniversary next year.
-
-* The Austin Linux Meetup: KVM as Hypervisor and GNU Parallel https://www.meetup.com/linuxaustin/events/jbxcnqyzgbpb/
+* Introducing Parallel into Shell https://petelawson.com/post/parallel-in-shell/
 
 * Bug fixes and man page updates.
 

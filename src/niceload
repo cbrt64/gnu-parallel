@@ -1140,10 +1140,10 @@ sub io_status {
 
 
 sub io_status_linux {
-    # Device: rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
+    # Device rrqm/s   wrqm/s     r/s     w/s    rkB/s    wkB/s avgrq-sz avgqu-sz   await r_await w_await  svctm  %util
     # sda       0.00     0.00    0.00    0.00     0.00     0.00     0.00     0.00    0.00    0.00    0.00   0.00   0.00
     my @iostat_out = `LANG=C iostat -x 1 2`;
-    # throw away all execpt the last Device:-section
+    # throw away all execpt the last Device-section
     my @iostat;
     for(reverse @iostat_out) {
 	/Device/ and last;
