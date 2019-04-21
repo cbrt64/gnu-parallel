@@ -1,7 +1,7 @@
 
 Summary:	Shell tool for executing jobs in parallel
 Name: 		parallel
-Version: 	20190322
+Version: 	20190422
 Release: 	1.2
 License: 	GPL
 Group: 		Productivity/File utilities

@@ -1,3 +1,10 @@
+20190422
+
+* Invitation to the 10 years anniversary next year.
+
+* Bug fixes and man page updates.
+
+
 20190322
 
 * SIGTERM is changed to SIGHUP, so sending SIGHUP will make GNU

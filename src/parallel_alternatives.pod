@@ -27,7 +27,7 @@ years.
 
 The following features are in some of the comparable tools:
 
-Inputs
+B<Inputs>
  I1. Arguments can be read from stdin
  I2. Arguments can be read from a file
  I3. Arguments can be read from multiple files
@@ -36,7 +36,7 @@ Inputs
  I6. Arguments can be read from the same file using #! (shebang)
  I7. Line oriented input as default (Quoting of special chars not needed)
 
-Manipulation of input
+B<Manipulation of input>
  M1. Composed command
  M2. Multiple arguments can fill up an execution line
  M3. Arguments can be put anywhere in the execution line
@@ -44,15 +44,18 @@ Manipulation of input
  M5. Arguments can be replaced with context
  M6. Input can be treated as the complete command line
 
-Outputs
+B<Outputs>
  O1. Grouping output so output from different jobs do not mix
  O2. Send stderr (standard error) to stderr (standard error)
  O3. Send stdout (standard output) to stdout (standard output)
  O4. Order of output can be same as order of input
  O5. Stdout only contains stdout (standard output) from the command
  O6. Stderr only contains stderr (standard error) from the command
+ O7. Buffering on disk
+ O8. Cleanup of file if killed
+ O9. Test if disk runs full during run
 
-Execution
+B<Execution>
  E1. Running jobs in parallel
  E2. List running jobs
  E3. Finish running jobs, but do not start new jobs
@@ -60,7 +63,7 @@ Execution
  E5. Finish running jobs, but do not start new jobs after first failure
  E6. Number of running jobs can be adjusted while running
 
-Remote execution
+B<Remote execution>
  R1. Jobs can be run on remote computers
  R2. Basefiles can be transferred
  R3. Argument files can be transferred
@@ -71,11 +74,11 @@ Remote execution
  R8. Configurable SSH command
  R9. Retry if connection breaks occasionally
 
-Semaphore
+B<Semaphore>
  S1. Possibility to work as a mutex
  S2. Possibility to work as a counting semaphore
 
-Legend
+B<Legend>
  - = no
  x = not applicable
  ID = yes
@@ -87,7 +90,7 @@ BUGS).
 parallel:
 I1 I2 I3 I4 I5 I6 I7
 M1 M2 M3 M4 M5 M6
-O1 O2 O3 O4 O5 O6
+O1 O2 O3 O4 O5 O6 O7 O8 O9
 E1 E2 E3 E4 E5 E6
 R1 R2 R3 R4 R5 R6 R7 R8 R9
 S1 S2
@@ -1569,9 +1572,10 @@ emulated with GNU B<parallel>:
     $ loop 'touch $COUNT.txt' --count-by 5
     $ loopy touch '{= $_=seq()*5 =}'.txt
 
-    $ loop --until-contains 200 -- ./get_response_code.sh --site mysite.biz`
-    $ loopy --halt now,success=1 './get_response_code.sh --site mysite.biz |
-        match 200'
+    $ loop --until-contains 200 -- \
+        ./get_response_code.sh --site mysite.biz`
+    $ loopy --halt now,success=1 \
+        './get_response_code.sh --site mysite.biz | match 200'
 
     $ loop './poke_server' --for-duration 8h
     $ time_out 8h loopy ./poke_server
@@ -2137,7 +2141,8 @@ corresponding GNU B<sem> and GNU B<parallel> commands:
   3$ for i in $(seq 1 100); do
   3$   lateral run -- command_still_outputs_but_wont_spam inputfile$i
   3$ done
-  3$ lateral config -p 10; lateral wait # command output spam can commence
+  3$ # command output spam can commence
+  3$ lateral config -p 10; lateral wait
   3$
   3$ for i in $(seq 1 100); do
   3$   echo "command inputfile$i" >> joblist

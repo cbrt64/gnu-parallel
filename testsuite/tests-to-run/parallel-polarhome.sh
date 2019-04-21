@@ -6,8 +6,9 @@ unset TIMEOUT
 env_parallel --session
 
 P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix irix hurd beaglebone cubieboard2"
-# Skip irix until Perl is upgraded
-P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax ultrix minix hurd beaglebone cubieboard2"
+# Skip ultrix
+# Skip irix until Perl is upgraded (I cannot due to too small disk quota)
+P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax minix hurd beaglebone cubieboard2"
 P="$P_ALL"
 
 # tru64 takes 22s to run 4 parallels

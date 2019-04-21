@@ -1205,7 +1205,7 @@ parallel: Error: echo is not a valid DBURL
   cat num1000000 | parallel --pipe --block 2M wc
  999999  999999 9999999
   85349   85349  597444
-  cat num1000000 | parallel --pipe -j4 --round-robin wc
+  cat num1000000 | parallel --pipe -j4 --roundrobin wc
  999999  999999 9999999
   cat num1000000 | parallel --pipe -N140000 wc
  140000  140000  868895
@@ -1418,6 +1418,7 @@ The second finished running in the foreground
 First started
 First done
   sem --id my_id -u 'echo Second started; sleep 10; echo Second done'
+Second done
   sem --jobs 3 --id my_id -u 'echo Start 1; sleep 5; echo 1 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 2; sleep 6; echo 2 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 3; sleep 7; echo 3 done' &&
@@ -1438,8 +1439,8 @@ Start 4
 Slow started
 Forced running after 1 sec
 Slow ended
-Give up after 2 secs
 parallel: Warning: Semaphore timed out. Stealing the semaphore.
+parallel: Warning: Semaphore timed out. Exiting.
   parallel --help
 Usage:
 
@@ -1515,7 +1516,9 @@ This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 
 More about funding GNU Parallel and the citation notice:
+https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
 https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 
 If you send a copy of your published article to tange@gnu.org, it will be
 mentioned in the release notes of next version of GNU Parallel.

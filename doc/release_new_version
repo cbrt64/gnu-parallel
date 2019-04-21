@@ -5,7 +5,7 @@
 Check that documentation is updated (compare to web):
 
 git grep -E '(alpha|beta) testing' | cat
-git diff last-release-commit
+git diff $(date --date="last month" +%Y%m22)
 Unmodified beta since last version => production
 Unmodified alpha since last version => beta
 Modified => alpha
@@ -76,8 +76,6 @@ make alphaupload
 == Update OpenSUSE build system ==
 
 cd ~/privat/parallel/packager/obs
-# Update version number
-em home:tange/parallel/parallel.spec
 
 find home:tange/parallel/* -type f | grep -v parallel.spec | parallel -Xj1 osc rm {}
 # This should not create new files
@@ -119,8 +117,9 @@ cp src/*.pdf src/*.html  ../parallel-web/parallel
 cp src/parallel.html  ../parallel-web/parallel/man.html
 
 pushd ../parallel-web/parallel
-cvs up
-cvs ci -m "New release"
+# Bug at Savannah makes this take 30 seconds
+torsocks cvs up
+torsocks cvs ci -m "New release"
 pushd
 
 == Commit released version ==
@@ -139,9 +138,9 @@ git commit -a -m "Released as $YYYYMMDD ('$TAG')"
 git tag -s -u 88888888 -m "Released as $YYYYMMDD ('$TAG')" $TAG
 git tag -s -u 88888888 -m "Released as $YYYYMMDD ('$TAG')" $YYYYMMDD
 
-git push
-git push origin $TAG
-git push origin $YYYYMMDD
+torsocks git push
+torsocks git push origin $TAG
+torsocks git push origin $YYYYMMDD
 
 
 == Update documentation ==
@@ -207,27 +206,68 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190322 ('FridayforFuture') released <<[stable]>>
+Subject: GNU Parallel 20190422 ('Invitation Assange') released <<[stable]>>
 
-GNU Parallel 20190322 ('FridayforFuture') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190422 ('Invitation') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
-The change in signalling makes this release experimental for users that send SIGTERM to GNU Parallel.
+No new functionality was introduced so this is a good candidate for a stable release.
+
+GNU Parallel is 10 years old in a year on 2020-04-22. You are here by invited to a reception on Friday 2020-04-17.
+
+The primary reception will be held in Copenhagen, DK. Please reserve the date and email happybirthdaygnuparallel@tange.dk if you want to join.
+
+If you cannot make it, you are encouraged to host a parallel party.
+
+So far we hope to have parallel parties at:
+
++verbatim+
+  PROSA
+  Vester Farimagsgade 37A
+  DK-1606 København V
+  RSVP: happybirthdaygnuparallel@tange.dk
+
+  PROSA
+  Søren Frichs Vej 38 K th
+  DK-8230 Åbyhøj
+  RSVP: To be determined
+  
+  PROSA
+  Overgade 54
+  DK-5000 Odense C
+  RSVP: To be determined
+-verbatim-
+
+If you want to host a party held in parallel (either in this or in a parallel universe), please let me know, so it can be announced.
+
+If you have parallel ideas for how to celebrate GNU Parallel, please post on the email list parallel@gnu.org. So far we have the following ideas:
+
+* Use GNU Parallel logo (the café wall illusion) as decoration everywhere – preferably in a moving version where the bars slide. Maybe we can borrow this https://www.youtube.com/watch?v=_XFDnFLqRFE or make an animation in javascript based on https://bl.ocks.org/Fil/13177d3c911fb8943cb0013086469b87? Other illusions might be fun, too.
+* Only serve beverages in parallel (2 or more), which may or may not be the same kind of beverage, and may or may not be served to the same person, and may or may not be served by multiple waiters in parallel
+* Let people drink in parallel with straws (2 or more straws)
+* Serve popcorn as snack (funny because cores and kernels are the same word in Danish, and GNU Parallel keeps cores hot)
+* Serve saltstænger and similar parallel snacks.
+* Serve (snack friendly) cereal in parallel bowls.
+* Live parallel streaming from parallel parties
+* Play songs in parallel that use the same 4 chords: https://www.youtube.com/watch?v=5pidokakU4I
+* Play songs named parallel, serial, mutex, race condition and similar
+* Have RC racing cars to demonstrate race condition
+* Put a counting semaphore on the toilets
+* Only let people leave one at a time to simulate serialized output – UNLESS they swap some clothing (to simulate half line mixing)
+
+If you have interesting stories about or uses of GNU Parallel, please post them, so can be part of the anniversary update.
+
 
 Quote of the month:
 
-  There are so many things to love about GNU parallel. You could honestly teach a whole parallel computing course with it and never have to leave it for a real language.
-    -- Aubrey Bailey @DNAvinci@twitter
-  
+  Y'all need some GNU parallel in your lives
+    -- ChaKu @ChaiLovesChai@twitter
+
 
 New in this release:
 
-* GNU Parallel now includes a cheat sheet: parallel_cheat.pdf
+* Invitation to the 10 years anniversary next year.
 
-* High Throughput Computing on RMACC Summit and Beyond https://calendar.colorado.edu/event/high_throughput_computing_on_rmacc_summit_and_beyond#.XH2NBhB7mV4
-
-* GNU Parallel Cheat Sheet by cpriest https://www.cheatography.com/cpriest/cheat-sheets/gnu-parallel/
-
-* Use Multiple CPU Cores(Parallelize) with Single Threaded Linux Commands http://xensoft.com/use-multiple-cpu-cores-parallelize-with-single-threaded-linux-commands/
+* The Austin Linux Meetup: KVM as Hypervisor and GNU Parallel https://www.meetup.com/linuxaustin/events/jbxcnqyzgbpb/
 
 * Bug fixes and man page updates.
 

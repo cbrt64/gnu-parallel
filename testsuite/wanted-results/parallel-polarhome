@@ -1,4 +1,4 @@
-MAXTIME=50 RETRIES=3 MAXPROC=84 MAXINNERPROC=3
+MAXTIME=50 RETRIES=3 MAXPROC=100 MAXINNERPROC=3
 ### Filter out working servers
 1d0
 < openstep
@@ -6,10 +6,10 @@ MAXTIME=50 RETRIES=3 MAXPROC=84 MAXINNERPROC=3
 < alpha
 7d4
 < syllable
-28,31d24
+28,29d24
 < dragonfly
 < vax
-< ultrix
+31,34d25
 < minix
 33,34d25
 < beaglebone
@@ -618,6 +618,16 @@ unixware	UX:sh (/bin/sh): ERROR: source: Not found
 ### Does exporting a bash function make parallel fail?
 If login shell is not bash compatible it fails
 
+            cat <(echo bash only A)
+            cat <(echo bash only A)
+        bin/parallel funcA ::: 1 
+        bin/parallel funcA ::: 1 
+        export -f funcA;
+        export -f funcA;
+        funcA() {
+        funcA() {
+        }
+        }
 aix	bash only A
 aix	test funcA
 centos	bash only A

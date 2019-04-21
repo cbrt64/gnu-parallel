@@ -161,7 +161,8 @@ par_k() {
 	 parallel -j1 -kq echo "sleep 1; echo {}";
      echo "echo end") |
 	stdout nice parallel -k -j0 |
-	grep -Ev 'No more file handles.|Raising ulimit -n'
+	grep -Ev 'No more file handles.|Raising ulimit -n' |
+	perl -pe '/parallel:/ and s/\d/X/g'
 }
 
 par_k_linebuffer() {

@@ -1,5 +1,7 @@
 =head1 GNU Parallel 10 year anniversery - 2020-04-22
 
+Git log entry 2010-04-22:
+
 """
 Author: Ole Tange <ole@tange.dk>
 Date:   Thu Apr 22 01:23:00 2010 +0200
@@ -11,7 +13,8 @@ Date:   Thu Apr 22 01:23:00 2010 +0200
 Wow. It has been 10 years since my parallel program was officially
 renamed GNU Parallel. It has been quite a ride.
 
-So it is a probably a good time to take stock.
+Not all software is maintained for 10 full years, so it is a probably
+a good time to take stock.
 
 
 =head2 The design
@@ -93,13 +96,29 @@ It is still cool that it can be done at all.
 
 A sad chapter is the attack on the funding of GNU Parallel.
 
-You would think such an attack would come from non-free competitors, but
-this attack was from packagers that packaged GNU Parallel for Debian
-and SuSE.
+You would think such an attack would come from non-free competitors,
+but this attack was from packagers that packaged GNU Parallel.  Didier
+Raboud <odyx@debian.org> (Debian and by inheritance Ubuntu), Andreas
+Stieger <astieger@suse.com> (SuSE) and Johannes Löthberg
+<johannes@kyriasis.com> (Arch). These are all people sitting in jobs,
+where they are paid to use free software, and you would think they
+would understand the importance of getting paid.
 
-GNU Parallel is funded by me having a job. It is easier to get a well
-paid job that will allow for maintaining GNU Parallel if GNU Parallel
-is cited, because that proves the tool is useful for serious work.
+<<Check before sending
+  https://www.linkedin.com/in/didierraboud/
+  https://www.linkedin.com/in/andreas-stieger-74b68a72/
+  https://www.linkedin.com/in/johanneslothberg?originalSubdomain=se
+Maintainer today:
+Jan Engelhardt <jengelh@inai.de>
+<<debian>>
+<johannes@kyriasis.com>
+
+>>
+
+GNU Parallel is funded by me having a job. It is easier to get a paid
+job that will allow for maintaining GNU Parallel if GNU Parallel is
+cited, because that proves the tool is useful for serious work. This
+is especially true in academia.
 
 I saw GNU Parallel being used in scientific articles, which was great,
 but without being cited, which was not ideal. So we discussed on the
@@ -110,23 +129,27 @@ So it was decided to make a notice similar to a do-show-this-again box
 known from e.g. Firefox. The notice could be silenced in less than 10
 seconds.
 
-Unfortunately in a misguided act of short term gain in popularity SuSE
-and Debian did a disservice to free software and disabled this notice
-in the version they currently distribute.
+Unfortunately in a misguided act of short term gain in popularity
+SuSE, Debian, and Arch did a disservice to free software and disabled
+this notice in the version they currently distribute.
 
 As GNU Parallel is free software they are allowed to fork the
 software, but only if they make sure the forked version cannot be
 mistaken for GNU Parallel. We have court cases showing this is the
-case, but still Debian and SuSE refuse to back down, so the problem
-still not resolved.
+case, but still Didier Raboud <odyx@debian.org> (Debian and by
+inheritance Ubuntu), Andreas Stieger <astieger@suse.com> (SUSE) and
+Johannes Löthberg <johannes@kyriasis.com> (Arch) refuse to back down,
+so the problem still not resolved.
 
 If you would like to see GNU Parallel maintained in the future, please
-help by raising this issue with SuSE and Debian. Their current stance
-hurts free software by making it harder to justify spending time on
-maintaining GNU Parallel. Not having GNU Parallel distributed by
-Debian and SuSE is actually preferable to the current situation,
-though, the best outcome would be if they distributed the non-modified
-version.
+help by raising this issue with SUSE (current maintainer: Jan
+Engelhardt <jengelh@inai.de>), Debian/Ubuntu (current maintainer:
+<<>>), and Arch (current maintainer: Johannes Löthberg
+<johannes@kyriasis.com>). Their current stance hurts free software by
+making it harder to justify spending time on maintaining GNU
+Parallel. Not having GNU Parallel distributed by Debian/Ubuntu, Arch,
+and SUSE is actually preferable to the current situation, though, the
+best outcome would be if they distributed the non-modified version.
 
 For users who are unwiling to spend the 10 seconds on silencing the
 notice there is an easy solution: "Don't like it? Don't use it." A
@@ -153,12 +176,38 @@ read a full book to be able to use GNU Parallel".
 Several people noted that GNU Parallel was missing a cheat sheet. So
 in 2019 a one page cheat sheet was included in the package. 
 
-=head2 Why all the options?
 
-Instead of crappy wrapper scripts.
+=head2 Why so many options?
+
+GNU B<parallel> has a lot of options. A good part of them could be
+written as wrapper scripts.
+
+Normally it would not be in the UNIX philosophy to merge the wrapper
+scripts into the tool itself. But experience showed that people could
+not write these wrapper scripts without bugs.
+
+By having them part of GNU B<parallel> the code will be tested by more
+people and will in general be of better quality than code that was
+just thrown together in a couple of hours.
+
+An example of this is B<--nice>: For running local jobs the option is
+not needed, you simply B<nice> everything:
+
+  nice parallel ...
+
+But as soon as you run composed commands on remote systems,
+it becomes much harder:
+
+  parallel -S .. nice bash -c "'cmd1; cmd2'"
+
+When you combine that with other wrapper scripts (such as
+B<--return>), it quickly becomes tricky to get right for all cases.
+
 
 =head2 Convenience options --nice --basefile --transfer --return
 --cleanup --tmux --group --compress --cat --fifo --workdir --tag
+
+
 
 
 =head2 The May 1st incident
@@ -175,7 +224,8 @@ quite intimately.
 
 "And it is written by a Dane," he said excited.
 
-"Oh. Are you aware that the author is sitting on my side of the table?"
+"Oh. Are you aware that the author is sitting on my side of the
+table?"
 
 We were the only ones sitting at the table, but we had had a few
 beers, so it took a while before it dawned to him, who I was.
@@ -183,6 +233,10 @@ beers, so it took a while before it dawned to him, who I was.
 
 
 =head2 Underappreciated functionality
+
+There is some functionality I am particularly proud of, but which is
+currently not in wide use.
+
 
 =head3 env_parallel
 
@@ -203,11 +257,11 @@ system just because you want to run jobs on a remote system?
 Some of GNU Parallel functionality is inspired by other people
 problems: How could this problem be solved in general?
 
-parset is one of those. It was inpired by a user who needed the output
-from different jobs to be stored in different variables. The jobs were
-slow and could be run in parallel. So while the running of the jobs
-were clearly a task for GNU Parallel, the storing in variables was not
-so clear.
+B<parset> is one of those. It was inpired by a user who needed the
+output from different jobs to be stored in different variables. The
+jobs were slow and could be run in parallel. So while the running of
+the jobs were clearly a task for GNU Parallel, the storing in
+variables was not so clear.
 
 It was fairly easy to code something that would work if the output was
 a single line with no spaces, but GNU Parallel tries hard not to set
@@ -218,24 +272,24 @@ data.
 
 =head3 --embed
 
-Some of the functionality is inspired by other tools. --embed is one
+Some of the functionality is inspired by other tools. B<--embed> is one
 of those.
 
---embed was inspired by Lesser Parallel that in turn was inspired by
-GNU Parallel. The major feature of Lesser Parallel is to be embedded
-in any bash script. The developer will embed the code into his own
-bash script and distribute this script.
+B<--embed> was inspired by Lesser Parallel that in turn was inspired
+by GNU Parallel. The major feature of Lesser Parallel is to be
+embedded in any bash script. The developer will embed the code into
+his own bash script and distribute this script.
 
-So with --embed the users of the script will not have to install GNU
-Parallel to run it.
+So with B<--embed> the users of the script will not have to install
+GNU Parallel to run it.
 
 
 =head3 --pipepart with --fifo
 
 =head3 --bar
 
-I see people using --bar too rarely. It is one of the easiest ways to
-get a visual representation of when all the jobs are expected done.
+I see people using B<--bar> too rarely. It is one of the easiest ways
+to get a visual representation of when all the jobs are expected done.
 
 
 =head3 Combining ::: with :::+
@@ -253,7 +307,7 @@ get a visual representation of when all the jobs are expected done.
 Best ever
 
 
-=head2 Live strong 
+=head2 Vitality
 
 On average there has been a new release of GNU Parallel every month
 since 2010-04-24.
@@ -261,8 +315,8 @@ since 2010-04-24.
 In the autumn of 2010 Henrik Sandklef teased me that he knew when the
 next release would be. GNU Parallel just happened to have been
 released twice in the 22nd, so he assumed the next release would also
-be on the 22nd. And why not? A few releases were not in line with
-this, but since 2011 there has been a release every month around the
+be on the 22nd. And why not? A few releases were not in line with this
+rule, but since 2011 there has been a release every month around the
 22nd.
 
 The fixed release cycle means there has been more than 100 releases
@@ -282,6 +336,7 @@ I will be honest: Some releases were easier to name than others.
 Since the events are not always happy events, the names have now and
 then stirred a bit of controversy. But if you want happier names, go
 make a happier world :)
+
 
 =head3 Competitors
 

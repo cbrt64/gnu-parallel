@@ -466,7 +466,7 @@ cache_alignment	: 64
 address sizes	: 38 bits physical, 48 bits virtual
 power management:
 ";
-    # Core i7 Acer laptop
+    # Core i7-3632QM Acer laptop
     cpuinfo2="
 processor	: 0
 vendor_id	: GenuineIntel
@@ -684,7 +684,7 @@ cache_alignment	: 64
 address sizes	: 36 bits physical, 48 bits virtual
 power management:
 ";
-    # Core i5 laptop firewall
+    # Core i5-2410M laptop firewall
     cpuinfo3="
 processor	: 0
 vendor_id	: GenuineIntel
@@ -2221,13 +2221,13 @@ CPU revision	: 4
 ";
     test_one() {
 	export PARALLEL_CPUINFO="$1"
-	echo $(ppar --number-of-sockets) \
-	     $(ppar --number-of-cores) \
-	     $(ppar --number-of-threads) \
-	     $(ppar --number-of-cpus)
+	echo $(parallel --number-of-sockets) \
+	     $(parallel --number-of-cores) \
+	     $(parallel --number-of-threads) \
+	     $(parallel --number-of-cpus)
     }
     export -f test_one
-    ppar -j0 -0 -k --tagstring {2} test_one {1} \
+    parallel -j0 -0 -k --tagstring {2} test_one {1} \
 	 :::  "$cpuinfo1" "$cpuinfo2" "$cpuinfo3" "$cpuinfo4" "$cpuinfo5" "$cpuinfo6" "$cpuinfo7" \
 	 :::+ "2-8-8-8" "1-4-8-4" "1-2-4-2" "1-2-2-2" "2-24-48-24" "1-2-2-2" "1-8-8-8"
 }

@@ -1,10 +1,14 @@
 Quote of the month:
 
+GNU parallel really changed how I do a lot of data processing stuff
+  -- Brendan Dolan-Gavitt @moyix@twitter
+
+It is, beyond absolutely any doubt whatsoever, the single most
+important tool I use in making me a productive bioinformatician.
+-- A-N-Other@reddit.com
+
 Parallel is a life send, what an awesome piece of software.
 -- Blaze9@reddit.com
-
-Y'all need some GNU parallel in your lives
--- ChaKu @ChaiLovesChai@twitter
 
 It's really powerful for smallish data processing scripts
 -- João Veiga @jcsvveiga@twitter
@@ -31,6 +35,10 @@ It's the MapReduce of our generation!
 
 
 === Used ===
+Y'all need some GNU parallel in your lives
+-- ChaKu @ChaiLovesChai@twitter
+
+
 There are so many things to love about GNU parallel. You could honestly teach a whole parallel computing course with it and never have to leave it for a real language.
 -- Aubrey Bailey @DNAvinci@twitter
 
