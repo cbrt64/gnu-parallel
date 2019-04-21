@@ -1555,6 +1555,18 @@ sub parse_options(@) {
     # https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
     # https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
     #
+    # If you want GNU Parallel to be maintained in the future, and not
+    # just wither away like so many other free software tools, you
+    # need to help finance the development.
+    #
+    # The citation notice is a simple way of doing so, as citations
+    # makes it possible to me to get a job where I can maintain GNU
+    # Parallel as part of the job.
+    #
+    # This means you can help financing development
+    #
+    #   WITHOUT PAYING A SINGLE CENT!
+    #
     # Before implementing the citation notice it was discussed with
     # the users:
     # https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
@@ -1571,9 +1583,10 @@ sub parse_options(@) {
     #
     # Please note that GPL version 3 gives you the right to fork GNU
     # Parallel under a new name, but it does not give you the right to
-    # distribute modified copies with the citation notice disabled
-    # under the name GNU Parallel. To do that you need to be the owner
-    # of the GNU Parallel trademark. The xt:Commerce case shows this.
+    # distribute modified copies with the citation notice disabled in
+    # a way where the software can be confused with GNU Parallel. To
+    # do that you need to be the owner of the GNU Parallel
+    # trademark. The xt:Commerce case shows this.
     #
     # Description of the xt:Commerce case in OLG Duesseldorf
     # http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
@@ -1594,7 +1607,8 @@ sub parse_options(@) {
     # the alternatives instead?
     # See a list in: 'man parallel_alternatives'
     #
-    # Please read the above before changing this line.
+    # If you are an honest person please read the above before
+    # changing this line.
     citation_notice();
 
     parse_halt();
@@ -1695,7 +1709,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190322;
+    $Global::version = 20190422;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -3540,7 +3554,7 @@ sub parse_sshlogin() {
             }
         }
     }
-    $Global::minimal_command_line_length = 8_000_000;
+    $Global::minimal_command_line_length = 100_000_000;
     my @allowed_hostgroups;
     for my $ncpu_sshlogin_string (::uniq(@login)) {
 	my $sshlogin = SSHLogin->new($ncpu_sshlogin_string);
@@ -3742,7 +3756,7 @@ sub filter_hosts() {
     delete @Global::host{@$down_hosts_ref};
     @$down_hosts_ref and ::warning("Removed @$down_hosts_ref.");
 
-    $Global::minimal_command_line_length = 8_000_000;
+    $Global::minimal_command_line_length = 100_000_000;
     while (my ($sshlogin, $obj) = each %Global::host) {
 	if($sshlogin eq ":") { next }
 	$nsockets_ref->{$sshlogin} or
@@ -10068,7 +10082,7 @@ sub results_out($) {
 	#   $Global::max_file_length
 	my $testdir = shift;
 
-	my $upper = 8_000_000;
+	my $upper = 100_000_000;
 	# Dir length of 8 chars is supported everywhere
 	my $len = 8;
 	my $dir = "x"x$len;
@@ -10367,18 +10381,18 @@ sub replace_placeholders($$$$) {
 			    $a =~
 				s{\257<(-?\d+)?(.*)\257>}
 			    {
-			    if($1) {
-			    # Positional replace
-			    # Find the relevant arg and replace it
-			    ($argref->[$1 > 0 ? $1-1 : $n+$1] ? # If defined: replace
-			     $argref->[$1 > 0 ? $1-1 : $n+$1]->
-			     replace($2,$quote_arg,$self)
-			     : "");
-			    } else {
-			    # Normal replace
-			    $normal_replace ||= 1;
-			    ($arg ? $arg->replace($2,$quote_arg,$self) : "");
-			    }
+				if($1) {
+				    # Positional replace
+				    # Find the relevant arg and replace it
+				    ($argref->[$1 > 0 ? $1-1 : $n+$1] ? # If defined: replace
+				     $argref->[$1 > 0 ? $1-1 : $n+$1]->
+				     replace($2,$quote_arg,$self)
+				     : "");
+				} else {
+				    # Normal replace
+				    $normal_replace ||= 1;
+				    ($arg ? $arg->replace($2,$quote_arg,$self) : "");
+				}
 			    }sgxe;
 			    $a
 			} @ctxgroup;
@@ -10412,18 +10426,19 @@ sub replace_placeholders($$$$) {
 		    $a =~
 			s{\257<(-?\d+)?(.*)\257>}
 		    {
-		    if($1) {
-		    # Positional replace
-		    # Find the relevant arg and replace it
-		    ($argref->[$1 > 0 ? $1-1 : $n+$1] ? # If defined: replace
-		     $argref->[$1 > 0 ? $1-1 : $n+$1]->
-		     replace($2,$quote_arg,$self)
-		     : "");
-		    } else {
-		    # Normal replace
-		    $normal_replace ||= 1;
-		    ($arg ? $arg->replace($2,$quote_arg,$self) : "");
-		    }
+			if($1) {
+			    # Positional replace
+			    # Find the relevant arg and replace it
+			    ($argref->[$1 > 0 ? $1-1 : $n+$1] ?
+			     # If defined: replace
+			     $argref->[$1 > 0 ? $1-1 : $n+$1]->
+			     replace($2,$quote_arg,$self)
+			     : "");
+			} else {
+			    # Normal replace
+			    $normal_replace ||= 1;
+			    ($arg ? $arg->replace($2,$quote_arg,$self) : "");
+			}
 		    }sgxe;
 		    CORE::push @replaced, $space, $a;
 		    $normal_replace or last;
@@ -10882,9 +10897,10 @@ sub real_max_length($) {
     # Find the max_length of a command line
     # Returns:
     #   The maximal command line length
-    # Use an upper bound of 8 MB if the shell allows for infinite long lengths
-    my $upper = 8_000_000;
-    my $len = 8;
+    # Use an upper bound of 100 MB if the shell allows for infinite long lengths
+    my $upper = 100_000_000;
+    # 268 makes the search faster on CygWin - 1000 is supported everywhere
+    my $len = 268;
     do {
 	if($len > $upper) { return $len };
 	$len *= 16;
@@ -10902,7 +10918,7 @@ sub binary_find_max_length($$) {
     my ($lower, $upper) = (@_);
     if($lower == $upper or $lower == $upper-1) { return $lower; }
     my $middle = int (($upper-$lower)/2 + $lower);
-    ::debug("init", "Maxlen: $lower,$upper,$middle : ");
+    ::debug("init", "Maxlen: $lower<$middle<$upper: ");
     if (is_acceptable_command_line_length($middle)) {
 	return binary_find_max_length($middle,$upper);
     } else {
