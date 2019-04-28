@@ -2524,14 +2524,15 @@ sub shell_quote_scalar($) {
 	*shell_quote_scalar = \&shell_quote_scalar_default;
     }
     # The sub is now redefined. Call it
-    return shell_quote_scalar(@_);
+    return shell_quote_scalar($_[0]);
 }
 
 sub Q($) {
     # Q alias for ::shell_quote_scalar
+    my $ret = shell_quote_scalar($_[0]);
     no warnings 'redefine';
     *Q = \&::shell_quote_scalar;
-    return Q(@_);
+    return $ret;
 }
 
 sub shell_quote_file($) {
@@ -2578,8 +2579,9 @@ sub perl_quote_scalar($) {
 # -w complains about prototype
 sub pQ($) {
     # pQ alias for ::perl_quote_scalar
+    my $ret = perl_quote_scalar($_[0]);
     *pQ = \&::perl_quote_scalar;
-    return pQ(@_);
+    return $ret;
 }
 
 sub unquote_printf() {
@@ -10899,8 +10901,9 @@ sub real_max_length($) {
     #   The maximal command line length
     # Use an upper bound of 100 MB if the shell allows for infinite long lengths
     my $upper = 100_000_000;
-    # 268 makes the search faster on CygWin - 1000 is supported everywhere
-    my $len = 268;
+    # 1000 is supported everywhere, so the search can start anywhere 1..999
+    # 324 makes the search much faster on CygWin, so let us use that
+    my $len = 324;
     do {
 	if($len > $upper) { return $len };
 	$len *= 16;
@@ -11483,15 +11486,18 @@ sub new($) {
 
 sub Q($) {
     # Q alias for ::shell_quote_scalar
+    my $ret = ::Q($_[0]);
     no warnings 'redefine';
-    *Q = \&::shell_quote_scalar;
-    return Q(@_);
+    *Q = \&::Q;
+    return $ret;
 }
 
 sub pQ($) {
     # pQ alias for ::perl_quote_scalar
-    *pQ = \&::perl_quote_scalar;
-    return pQ(@_);
+    my $ret = ::pQ($_[0]);
+    no warnings 'redefine';
+    *pQ = \&::pQ;
+    return $ret;
 }
 
 sub total_jobs() {

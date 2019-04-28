@@ -62,9 +62,13 @@ or download it at: https://doi.org/10.5281/zenodo.1146014
 Otherwise start by watching the intro videos for a quick introduction:
 http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
 
-Then browse through the B<EXAMPLE>s after the list of B<OPTIONS> in
-B<man parallel> (Use B<LESS=+/EXAMPLE: man parallel>). That will give
-you an idea of what GNU B<parallel> is capable of.
+If you need a one page printable cheat sheet you can find it on:
+https://www.gnu.org/software/parallel/parallel_cheat.pdf
+
+You can find a lot of B<EXAMPLE>s of use after the list of B<OPTIONS>
+in B<man parallel> (Use B<LESS=+/EXAMPLE: man parallel>). That will
+give you an idea of what GNU B<parallel> is capable of, and you may
+find a solution you can simply adapt to your situation.
 
 If you want to dive even deeper: spend a couple of hours walking
 through the tutorial (B<man parallel_tutorial>). Your command line
@@ -663,11 +667,11 @@ equivalent: B<--delay 100000> and B<--delay 1d3.5h16.6m4s>.
 =item B<--dry-run>
 
 Print the job to run on stdout (standard output), but do not run the
-job. Use B<-v -v> to include the wrapping that GNU Parallel generates
-(for remote jobs, B<--tmux>, B<--nice>, B<--pipe>, B<--pipepart>,
-B<--fifo> and B<--cat>). Do not count on this literally, though, as the
-job may be scheduled on another computer or the local computer if : is
-in the list.
+job. Use B<-v -v> to include the wrapping that GNU B<parallel>
+generates (for remote jobs, B<--tmux>, B<--nice>, B<--pipe>,
+B<--pipepart>, B<--fifo> and B<--cat>). Do not count on this
+literally, though, as the job may be scheduled on another computer or
+the local computer if : is in the list.
 
 
 =item B<--eof>[=I<eof-str>]
@@ -3391,6 +3395,27 @@ If B<-j0> normally spawns 252 jobs, then the above will try to spawn
 this technique with no problems. To raise the 32000 jobs limit raise
 /proc/sys/kernel/pid_max to 4194303.
 
+If you do not need GNU B<parallel> to have control over each job (so
+no need for B<--retries> or B<--joblog> or similar), then it can be
+even faster if you can generate the command lines and pipe those to a
+shell. So if you can do this:
+
+  mygenerator | sh
+
+Then that can be parallelized like this:
+
+  mygenerator | parallel --pipe --block 10M sh
+
+E.g.
+
+  mygenerator() {
+    seq 10000000 | perl -pe 'print "echo This is fast job number "';
+  }
+  mygenerator | parallel --pipe --block 10M sh
+
+The overhead is 100000 times smaller namely around 100 nanoseconds per
+job.
+
 
 =head1 EXAMPLE: Using shell variables
 
@@ -4308,7 +4333,7 @@ In some cases you can run on more CPUs and computers during the night:
   cp night_server_list ~/.parallel/sshloginfile
   tail -n+0 -f jobqueue | parallel --jobs jobfile -S ..
 
-GNU Parallel discovers if B<jobfile> or B<~/.parallel/sshloginfile>
+GNU B<parallel> discovers if B<jobfile> or B<~/.parallel/sshloginfile>
 changes.
 
 There is a a small issue when using GNU B<parallel> as queue
@@ -4346,8 +4371,8 @@ If the files to be processed are in a tar file then unpacking one file
 and processing it immediately may be faster than first unpacking all
 files. Set up the dir processor as above and unpack into the dir.
 
-Using GNU Parallel as dir processor has the same limitations as using
-GNU Parallel as queue system/batch manager.
+Using GNU B<parallel> as dir processor has the same limitations as
+using GNU B<parallel> as queue system/batch manager.
 
 
 =head1 EXAMPLE: Locate the missing package
@@ -4551,7 +4576,7 @@ Options to pass on to B<rsync>. Defaults to: -rlDzR.
 
 =item $PARALLEL_SHELL
 
-Use this shell for the commands run by GNU Parallel:
+Use this shell for the commands run by GNU B<parallel>:
 
 =over 2
 
@@ -4561,7 +4586,7 @@ $PARALLEL_SHELL. If undefined use:
 
 =item *
 
-The shell that started GNU Parallel. If that cannot be determined:
+The shell that started GNU B<parallel>. If that cannot be determined:
 
 =item *
 
