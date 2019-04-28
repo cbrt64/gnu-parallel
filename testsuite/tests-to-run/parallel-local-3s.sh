@@ -170,6 +170,14 @@ par_sqlworker_hostname() {
 	perl -pe "s/$hostname/<hostname>/g"
 }
 
+par_sqlandworker_uninstalled_dbd() {
+    echo 'bug #56096: dbi-csv no such column'
+    sudo mv /usr/share/perl5/DBD/CSV.pm /usr/share/perl5/DBD/CSV.pm.gone
+    parallel --sqlandworker csv:////%2Ftmp%2Flog.csv echo ::: must fail
+    sudo cp /usr/share/perl5/DBD/CSV.pm.gone /usr/share/perl5/DBD/CSV.pm
+    parallel --sqlandworker csv:////%2Ftmp%2Flog.csv echo ::: works
+}
+    
 par_commandline_with_newline() {
     echo 'bug #51299: --retry-failed with command with newline'
     echo 'The format must remain the same'

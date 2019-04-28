@@ -11729,9 +11729,14 @@ sub new($) {
     my $dsn = "DBI:$driver:dbname=$database$host$port";
     my $userid = $options{'user'};
     my $password = $options{'password'};;
+    if(not grep /$driver/, DBI->available_drivers) {
+	::error("$driver not supported. Are you missing a perl DBD::$driver module?");
+	::wait_and_exit(255);
+    }
     my $dbh = DBI->connect($dsn, $userid, $password,
 			   { RaiseError => 1, AutoInactiveDestroy => 1 })
 	or die $DBI::errstr;
+
     $dbh->{'PrintWarn'} = $Global::debug || 0;
     $dbh->{'PrintError'} = $Global::debug || 0;
     $dbh->{'RaiseError'} = 1;

@@ -171,6 +171,9 @@ par_slow_args_generation	### Test slow arguments generation - https://savannah.g
 par_slow_args_generation	1
 par_slow_args_generation	2
 par_slow_args_generation	3
+par_sqlandworker_uninstalled_dbd	bug #56096: dbi-csv no such column
+par_sqlandworker_uninstalled_dbd	parallel: Error: CSV not supported. Are you missing a perl DBD::CSV module?
+par_sqlandworker_uninstalled_dbd	works
 par_sqlworker_hostname	bug #50901: --sqlworker should use hostname in the joblog instead of :
 par_sqlworker_hostname	1
 par_sqlworker_hostname	2
