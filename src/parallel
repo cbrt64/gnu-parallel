@@ -53,9 +53,9 @@ sub set_input_source_header($$) {
 	    for my $s (split /$delimiter/o, $line) {
 		::debug("init", "Colname: '$s'");
 		# Replace {colname} with {2}
-		for(@$command_ref,@Global::ret_files,@Global::transfer_files,
-		    $opt::tagstring, $opt::workdir, $opt::results,
-		    $opt::retries) {
+		for(@$command_ref, @Global::ret_files,
+		    @Global::transfer_files, $opt::tagstring,
+		    $opt::workdir, $opt::results, $opt::retries) {
 		    # Skip if undefined
 		    $_ or next;
 		  s:\{$s(|/|//|\.|/\.)\}:\{$id$1\}:g;
@@ -480,17 +480,20 @@ sub find_header($$) {
     # Uses:
     #   $opt::header
     #   $Global::blocksize
+    #   $Global::header
     # Returns:
     #   $header string
     my ($buf_ref, $fh) = @_;
     my $header = "";
+    # $Global::header may be set in group_by_loop()
+    if($Global::header) { return $Global::header }
     if($opt::header) {
 	if($opt::header eq ":") { $opt::header = "(.*\n)"; }
 	# Number = number of lines
 	$opt::header =~ s/^(\d+)$/"(.*\n)"x$1/e;
 	while(read($fh,substr($$buf_ref,length $$buf_ref,0),
 		   $Global::blocksize)) {
-	    if($$buf_ref=~s/^($opt::header)//) {
+	    if($$buf_ref =~ s/^($opt::header)//) {
 		$header = $1;
 		last;
 	    }
@@ -595,6 +598,88 @@ sub cat_partial($@) {
 	 });
     return "<". Q($file) .
 	" perl -e '$script' @start_len |";
+}
+
+sub group_by_loop($) {
+    # Generate perl code for group-by loop
+    # Insert a $recsep when the column value changes
+    # The column value can be computed with $perexpr
+    my($recsep) = @_;
+    my $groupby = $opt::groupby;
+    my ($col,$perlexpr);
+    if($groupby =~ /^[a-z0-9_]+(\s|$)/i) {
+	# Column name/number (possibly prefix)
+	if($groupby =~ s/^(\d+)\s*//) {
+	    # Column number (possibly prefix)
+	    $col = $1-1;
+	} elsif($groupby =~ s/^([a-z0-9_]+)\s*//) {
+	    # Column name (possibly prefix)
+	    my $colname = $1;
+	    my($read,$char,@line,$header);
+	    # A full line, but nothing more (the rest must be read by the child)
+	    do {
+		$read = sysread(STDIN,$char,1);
+		push @line, $char;
+	    } while($read and $char ne "\n");
+	    # $Global::header used to prepend block to each job
+	    $Global::header = join "", @line;
+	    # Split on --copsep pattern
+	    my @headers = split/$opt::colsep/, $Global::header;
+	    my %headers;
+	    # Numbered 0..n-1 due to being used by $F[n]
+	    @headers{@headers} = (0..$#headers);
+	    $col = $headers{$colname};
+	    if(not defined $col) {
+		::error("Column '$colname' $opt::colsep not found in header",keys %headers);
+		::wait_and_exit(255);
+	    }
+	}
+    }
+    # What is left of $groupby is $perlexpr
+    $perlexpr = $groupby;
+
+    my $loop = ::spacefree(0,'{
+	local $_=COLVALUE;
+	PERLEXPR;
+	if(! defined $last) { $last = $_ }
+	if(($last) ne $_) {
+	    print "RECSEP";
+	    $last = $_;
+	}
+    }');
+
+    if(defined $col) {
+	$loop =~ s/COLVALUE/\$F[$col]/g;
+    } else {
+	$loop =~ s/COLVALUE/\$_/g;
+    }
+    $loop =~ s/PERLEXPR/$perlexpr/g;
+    $loop =~ s/RECSEP/$recsep/g;
+    return $loop;
+}
+
+sub group_by_stdin_filter() {
+    # Record separator with 119 bit random value
+    $opt::recend = '';
+    $opt::recstart =
+	join "", map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..20);
+    $opt::remove_rec_sep = 1;
+    my @filter;
+    push @filter, "perl";
+    if($opt::groupby =~ /^[a-z0-9_]+(\s|$)/i) {
+	# This is column number/name
+	# Use -a (auto-split)
+	push @filter, "-a";
+	$opt::colsep ||= "\t";
+	my $sep = $opt::colsep;
+	$sep =~ s/\t/\\t/g;
+	$sep =~ s/\"/\\"/g;
+	push @filter, "-F$sep";
+    }
+    push @filter, "-pe";
+    push @filter, group_by_loop($opt::recstart);
+    ::debug("init", "@filter\n");
+    open(STDIN, '-|', @filter) || die ("Cannot start @filter");
 }
 
 sub spreadstdin() {
@@ -1259,6 +1344,7 @@ sub options_hash() {
 	 "pipepart|pipe-part" => \$opt::pipepart,
 	 "tee" => \$opt::tee,
 	 "shard=s" => \$opt::shard,
+	 "groupby|group-by=s" => \$opt::groupby,
 	 "hgrp|hostgrp|hostgroup|hostgroups" => \$opt::hostgroups,
 	 "embed" => \$opt::embed,
 	);
@@ -1705,11 +1791,34 @@ sub check_invalid_option_combinations() {
 		    "--noctrlc has been retired.");
             ::wait_and_exit(255);
     }
+    if($opt::groupby) {
+	if(not $opt::pipe) {
+	    $opt::pipe = 1;
+	}
+	if($opt::remove_rec_sep) {
+	    ::error("--remove-rec-sep is not compatible with --groupby");
+            ::wait_and_exit(255);
+	}
+	if($opt::recstart) {
+	    ::error("--recstart is not compatible with --groupby");
+            ::wait_and_exit(255);
+	}
+	if($opt::recend ne "\n") {
+	    ::error("--recend is not compatible with --groupby");
+            ::wait_and_exit(255);
+	}
+	if($opt::pipepart) {
+	    # TODO This may be possible to do later
+	    # Finding split points might be a bitch though
+	    ::error("--pipepart is not compatible with --groupby");
+            ::wait_and_exit(255);
+	}
+    }
 }
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190422;
+    $Global::version = 20190504;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -10811,7 +10920,7 @@ sub get($) {
 					$self->{'len'},
 	    );
 	$cmd_line->populate();
-	::debug("init","cmd_line->number_of_args ",
+	::debug("run","cmd_line->number_of_args ",
 		$cmd_line->number_of_args(), "\n");
 	if(not $Global::no_more_input and ($opt::pipe or $opt::pipepart)) {
 	    if($cmd_line->replaced() eq "") {
@@ -12449,6 +12558,9 @@ sub main() {
 	pipe_shard_setup();
     }
 
+    if($opt::groupby) {
+	group_by_stdin_filter();
+    }
     if($opt::eta or $opt::bar or $opt::shuf or $Global::halt_pct) {
 	# Count the number of jobs or shuffle all jobs
 	# before starting any.

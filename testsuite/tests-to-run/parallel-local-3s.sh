@@ -312,6 +312,79 @@ par_lb_mem_usage() {
     memusage 100000 parallel --lb ::: 'long_line; long_line'
 }
 
+par_groupby() {
+    tsv() {
+	printf "%s\t" a1 b1 c1; echo
+	printf "%s\t" 2 2 2; echo
+	printf "%s\t" 3 2 2; echo
+	printf "%s\t" 3 3 2; echo
+	printf "%s\t" 3 2 4; echo
+	printf "%s\t" 3 2 2; echo
+	printf "%s\t" 3 2 3; echo
+    }
+    export -f tsv
+
+    ssv() {
+	# space separated
+	printf "%s\t" a1 b1 c1; echo
+	printf "%s " 2 2 2; echo
+	printf "%s \t" 3 2 2; echo
+	printf "%s\t " 3 3 2; echo
+	printf "%s  " 3 2 4; echo
+	printf "%s\t\t" 3 2 2; echo
+	printf "%s\t  \t" 3 2 3; echo
+    }
+    export -f ssv
+
+    cssv() {
+	# , + space separated
+	printf "%s,\t" a1 b1 c1; echo
+	printf "%s ," 2 2 2; echo
+	printf "%s  ,\t" 3 2 2; echo
+	printf "%s\t, " 3 3 2; echo
+	printf "%s,," 3 2 4; echo
+	printf "%s\t,,, " 3 2 2; echo
+	printf "%s\t" 3 2 3; echo
+    }
+    export -f cssv
+
+    csv() {
+	# , separated
+	printf "%s," a1 b1 c1; echo
+	printf "%s," 2 2 2; echo
+	printf "%s," 3 2 2; echo
+	printf "%s," 3 3 2; echo
+	printf "%s," 3 2 4; echo
+	printf "%s," 3 2 2; echo
+	printf "%s," 3 2 3; echo
+    }
+    export -f csv
+
+    tester() {
+	block="$1"
+	groupby="$2"
+	generator="$3"
+	colsep="$4"
+	echo "### test $generator | --colsep $colsep --groupby $groupby $block"
+	$generator |
+	    parallel --pipe --colsep "$colsep" --groupby "$groupby" -k $block 'echo NewRec; cat'
+    }
+    export -f tester
+    parallel --tag -k tester \
+	     ::: -N1 '--block 20' \
+	     ::: '3 $_%=2' 3 's/^(.).*/$1/' c1 'c1 $_%=2' \
+	     ::: tsv ssv cssv csv \
+	     :::+ '\t' '\s+' '[\s,]+' ',' \
+
+    # Test --colsep char
+    # Test --colsep pattern
+    # Test --colsep -N1
+    # Test --colsep --block 20
+    # Test --groupby col
+    # Test --groupby 'col perl'
+    # Test space sep --colsep '\s'
+    # Test --colsep --header :
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
