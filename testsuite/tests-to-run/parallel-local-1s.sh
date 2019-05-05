@@ -125,47 +125,6 @@ par_result_replace() {
     rm -rf /tmp/par_*_49983-*
 }
 
-par_parset() {
-    echo '### test parset'
-    . `which env_parallel.bash`
-
-    echo 'Put output into $myarray'
-    parset myarray -k seq 10 ::: 14 15 16
-    echo "${myarray[1]}"
-
-    echo 'Put output into vars "$seq, $pwd, $ls"'
-    parset "seq pwd ls" -k ::: "seq 10" pwd ls
-    echo "$seq"
-
-    echo 'Put output into vars ($seq, $pwd, $ls)':
-    into_vars=(seq pwd ls)
-    parset "${into_vars[*]}" -k ::: "seq 5" pwd ls
-    echo "$seq"
-
-    echo 'The commands to run can be an array'
-    cmd=("echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
-    parset data -k ::: "${cmd[@]}"
-    echo "${data[0]}"
-    echo "${data[1]}"
-
-    echo 'You cannot pipe into parset, but must use a tempfile'
-    seq 10 > /tmp/parset_input_$$
-    parset res -k echo :::: /tmp/parset_input_$$
-    echo "${res[0]}"
-    echo "${res[9]}"
-    rm /tmp/parset_input_$$
-
-    echo 'or process substitution'
-    parset res -k echo :::: <(seq 0 10)
-    echo "${res[0]}"
-    echo "${res[9]}"
-
-    echo 'Commands with newline require -0'
-    parset var -k -0 ::: 'echo "line1
-line2"' 'echo "command2"'
-    echo "${var[0]}"
-}
-
 par_incomplete_linebuffer() {
     echo 'bug #51337: --lb does not kill jobs at sigpipe'
     cat > /tmp/parallel--lb-test <<'_EOF'
@@ -190,55 +149,6 @@ par_header_parens() {
     parallel --header : echo {var/.} ::: var sub/dir/file.ext
     parallel --header : echo {var/} ::: var sub/dir/file.ext
     parallel --header : echo {var.} ::: var sub/dir/file.ext
-}
-
-par_parset2() {
-    . `which env_parallel.bash`
-    echo '### parset into array'
-    parset arr1 echo ::: foo bar baz
-    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
-
-    echo '### parset into vars with comma'
-    parset comma3,comma2,comma1 echo ::: baz bar foo
-    echo $comma1 $comma2 $comma3
-
-    echo '### parset into vars with space'
-    parset 'space3 space2 space1' echo ::: baz bar foo
-    echo $space1 $space2 $space3
-
-    echo '### parset with newlines'
-    parset 'newline3 newline2 newline1' seq ::: 3 2 1
-    echo "$newline1"
-    echo "$newline2"
-    echo "$newline3"
-
-    echo '### parset into indexed array vars'
-    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
-    echo ${myarray[*]}
-    echo ${myarray[4]} ${myarray[5]} ${myarray[5]}
-
-    echo '### env_parset'
-    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
-    myvar="myvar"
-    myarr=("myarr  0" "myarr  1" "myarr  2")
-    mynewline="`echo newline1;echo newline2;`"
-    env_parset arr1 myecho ::: foo bar baz
-    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
-    env_parset comma3,comma2,comma1 myecho ::: baz bar foo
-    echo "$comma1 $comma2 $comma3"
-    env_parset 'space3 space2 space1' myecho ::: baz bar foo
-    echo "$space1 $space2 $space3"
-    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
-    echo "$newline1"
-    echo "$newline2"
-    echo "$newline3"
-    env_parset 'myarray[6],myarray[5],myarray[4]' myecho ::: baz bar foo
-    echo "${myarray[*]}"
-    echo "${myarray[4]} ${myarray[5]} ${myarray[5]}"
-
-    echo 'bug #52507: parset arr1 -v echo ::: fails'
-    parset arr1 -v seq ::: 1 2 3
-    echo "${arr1[2]}"
 }
 
 par_pipe_compress_blocks() {
@@ -2247,4 +2157,4 @@ par_null_resume() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel -j6 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'
+    parallel -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

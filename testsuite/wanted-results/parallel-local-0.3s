@@ -1,244 +1,5 @@
-echo '### Test bug #43376: {%} and {#} with --pipe'
-### Test bug #43376: {%} and {#} with --pipe
-  echo foo | parallel -q --pipe -k echo {#}
-1
-  echo foo | parallel --pipe -k echo {%}
-1
-  echo foo | parallel -q --pipe -k echo {%}
-1
-  echo foo | parallel --pipe -k echo {#}
-1
-echo '**'
-**
-echo '### {} as part of the command'
-### {} as part of the command
-  echo p /bin/ls | parallel l{= s/p/s/ =}
-/bin/ls
-  echo /bin/ls-p | parallel --colsep '-' l{=2 s/p/s/ =} {1}
-/bin/ls
-  echo s /bin/ls | parallel l{}
-/bin/ls
-  echo /bin/ls | parallel ls {}
-/bin/ls
-  echo ls /bin/ls | parallel {}
-/bin/ls
-  echo ls /bin/ls | parallel
-/bin/ls
-echo '**'
-**
-echo '### bug #43817: Some JP char cause problems in positional replacement strings'
-### bug #43817: Some JP char cause problems in positional replacement strings
-  parallel -k echo ::: '�<�>' '�<1 $_=2�>' 'ワ'
-�<�>
-�<1 $_=2�>
-ワ
-  parallel -k echo {1} ::: '�<�>' '�<1 $_=2�>' 'ワ'
-�<�>
-�<1 $_=2�>
-ワ
-  parallel -Xj1 echo ::: '�<�>' '�<1 $_=2�>' 'ワ'
-�<�> �<1 $_=2�> ワ
-  parallel -Xj1 echo {1} ::: '�<�>' '�<1 $_=2�>' 'ワ'
-�<�>
-echo '**'
-**
-echo '### --rpl % that is a substring of longer --rpl %D'
-### --rpl % that is a substring of longer --rpl %D
-parallel --rpl '{+.} s:.*\.::' --rpl '%'   --rpl '%D $_=::shell_quote(::dirname($_));' --rpl '%B s:.*/::;s:\.[^/.]+$::;' --rpl '%E s:.*\.::'   'echo {}=%;echo %D={//};echo %B={/.};echo %E={+.};echo %D/%B.%E={}' ::: a.b/c.d/e.f
-a.b/c.d/e.f=a.b/c.d/e.f
-a.b/c.d=a.b/c.d
-e=e
-f=f
-a.b/c.d/e.f=a.b/c.d/e.f
-echo '**'
-**
-echo '### Disk full'
-### Disk full
-cat /dev/zero >$SMALLDISK/out;   parallel --tmpdir $SMALLDISK echo ::: OK;   rm $SMALLDISK/out
-cat: write error: No space left on device
-parallel: Error: Output is incomplete.
-parallel: Error: Cannot append to buffer file in /mnt/ram.
-parallel: Error: Is the disk full?
-parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
-Warning: unable to close filehandle properly: No space left on device during global destruction.
-echo '**'
-**
-echo '### PARALLEL_TMUX not found'
-### PARALLEL_TMUX not found
-  PARALLEL_TMUX=not-existing parallel --tmux echo ::: 1
-parallel: Error: not-existing not found in $PATH.
-echo '**'
-**
-echo '### bug #44995: parallel echo {#} ::: 1 2 ::: 1 2'
-### bug #44995: parallel echo {#} ::: 1 2 ::: 1 2
-parallel -k echo {#} ::: 1 2 ::: 1 2
-1
-2
-3
-4
-echo '**'
-**
-echo 'bug #46016: --joblog should not log when --dryrun'
-bug #46016: --joblog should not log when --dryrun
-  parallel --dryrun --joblog - echo ::: Only_this
-echo Only_this
-echo '**'
-**
-echo 'bug #47002: --tagstring with -d \n\n'
-bug #47002: --tagstring with -d \n\n
-  (seq 3;echo;seq 4) | parallel -k -d '\n\n' --tagstring {%} echo ABC';'echo
-1	ABC
-1	1
-1	2
-1	3
-2	ABC
-2	1
-2	2
-2	3
-2	4
-2	
-echo '**'
-**
-echo 'bug #47290: xargs: Warning: a NUL character occurred in the input'
-bug #47290: xargs: Warning: a NUL character occurred in the input
-  perl -e 'print "foo\0not printed"' | parallel echo
-foo\0not printed
-parallel: Warning: A NUL character in the input was replaced with \0.
-parallel: Warning: NUL cannot be passed through in the argument list.
-parallel: Warning: Did you mean to use the --null option?
-echo '**'
-**
-echo '### Test --max-procs and -P: Number of processes'
-### Test --max-procs and -P: Number of processes
-  seq 1 10 | parallel -k --max-procs +0 echo max proc
-max proc 1
-max proc 2
-max proc 3
-max proc 4
-max proc 5
-max proc 6
-max proc 7
-max proc 8
-max proc 9
-max proc 10
-  seq 1 10 | parallel -k -P 200% echo 200% proc
-200% proc 1
-200% proc 2
-200% proc 3
-200% proc 4
-200% proc 5
-200% proc 6
-200% proc 7
-200% proc 8
-200% proc 9
-200% proc 10
-echo '### Test --max-chars and -s: Max number of chars in a line'
-### Test --max-chars and -s: Max number of chars in a line
-  (echo line 1;echo line 1;echo line 2) | parallel -k --max-chars 25 -X echo
-line 1 line 1
-line 2
-  (echo line 1;echo line 1;echo line 2) | parallel -k -s 25 -X echo
-line 1 line 1
-line 2
-echo '### Test --no-run-if-empty and -r: This should give no output'
-### Test --no-run-if-empty and -r: This should give no output
-  echo "  " | parallel -r echo
-  echo "  " | parallel --no-run-if-empty echo
-echo '### Test --help and -h: Help output (just check we get the same amount of lines)'
-### Test --help and -h: Help output (just check we get the same amount of lines)
-  echo Output from -h and --help
-Output from -h and --help
-  parallel -h | wc -l
-37
-  parallel --help | wc -l
-37
-echo '### Test --version: Version output (just check we get the same amount of lines)'
-### Test --version: Version output (just check we get the same amount of lines)
-  parallel --version | wc -l
-10
-echo '### Test --verbose and -t'
-### Test --verbose and -t
-  (echo b; echo c; echo f) | parallel -k -t echo {}ar 2>&1 >/dev/null
-echo bar
-echo car
-echo far
-  (echo b; echo c; echo f) | parallel -k --verbose echo {}ar 2>&1 >/dev/null
-echo bar
-echo car
-echo far
-echo '### Test --show-limits'
-### Test --show-limits
-  (echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
-Maximal size of command: 131049
-Maximal used size of command: 131049
-
-Execution of  will continue now, and it will try to read its input
-and run commands; if this is not what you wanted to happen, please
-press CTRL-D or CTRL-C
-bar
-car
-far
-  (echo b; echo c; echo f) | parallel -j1 -kX --show-limits -s 100 echo {}ar
-Maximal size of command: 131049
-Maximal used size of command: 100
-
-Execution of  will continue now, and it will try to read its input
-and run commands; if this is not what you wanted to happen, please
-press CTRL-D or CTRL-C
-bar car far
-echo '### Test 0-arguments'
-### Test 0-arguments
-  seq 1 2 | parallel -k -n0 echo n0
-n0
-n0
-  seq 1 2 | parallel -k -L0 echo L0
-L0
-L0
-  seq 1 2 | parallel -k -N0 echo N0
-N0
-N0
-echo '### Because of --tollef -l, then -l0 == -l1, sorry'
-### Because of --tollef -l, then -l0 == -l1, sorry
-  seq 1 2 | parallel -k -l0 echo l0
-l0 1
-l0 2
-echo '### Test replace {}'
-### Test replace {}
-  seq 1 2 | parallel -k -N0 echo replace {} curlies
-replace curlies
-replace curlies
-echo '### Test arguments on commandline'
-### Test arguments on commandline
-  parallel -k -N0 echo args on cmdline ::: 1 2
-args on cmdline
-args on cmdline
-echo '### Test --nice locally'
-### Test --nice locally
-  parallel --nice 1 -vv 'PAR=a bash -c "echo  \$PAR {}"' ::: b
-PAR=a bash -c "echo  \$PAR b"
-a b
-### 1 .par file from --files expected
-0
 par_0_no_newline	A single zero without \n should not be ignored
 par_0_no_newline	0
-par_END	### Test -i and --replace: Replace with argument
-par_END	replace
-par_END	replace
-par_END	replace
-par_END	replace
-par_END	replace
-par_END	replace
-par_END	replace
-par_END	replace
-par_END	replace
-par_END	### Test -E: Artificial end-of-file
-par_END	include this
-par_END	include this
-par_END	### Test -e and --eof: Artificial end-of-file
-par_END	include this
-par_END	include this
-par_END	include this
-par_END	include this
 par_PARALLEL_ENV	### PARALLEL_ENV as variable
 par_PARALLEL_ENV	OK as variable
 par_PARALLEL_ENV	### PARALLEL_ENV as file
@@ -273,6 +34,9 @@ par_argfile	7
 par_argfile	8
 par_argfile	9
 par_argfile	10
+par_arguments_on_cmdline	### Test arguments on commandline
+par_arguments_on_cmdline	args on cmdline
+par_arguments_on_cmdline	args on cmdline
 par_basic_halt	parallel: This job failed:
 par_basic_halt	false
 par_basic_halt	parallel: This job succeeded:
@@ -331,54 +95,13 @@ par_delimiter	line 3
 par_delimiter	delimiter TAB line 1
 par_delimiter	line 2
 par_delimiter	line 3
-par_distribute_args_at_EOF	### Test distribute arguments at EOF to 2 jobslots
-par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-par_distribute_args_at_EOF	35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-par_distribute_args_at_EOF	66 67 68 69 70 71 72 73 74 75 76 77 78 79
-par_distribute_args_at_EOF	80 81 82 83 84 85 86 87 88 89 90 91 92
-par_distribute_args_at_EOF	### Test distribute arguments at EOF to 5 jobslots
-par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-par_distribute_args_at_EOF	35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-par_distribute_args_at_EOF	66 67 68 69 70 71
-par_distribute_args_at_EOF	72 73 74 75 76 77
-par_distribute_args_at_EOF	78 79 80 81 82 83
-par_distribute_args_at_EOF	84 85 86 87 88 89
-par_distribute_args_at_EOF	90 91 92
-par_distribute_args_at_EOF	### Test distribute arguments at EOF to infinity jobslots
-par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
-par_distribute_args_at_EOF	35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
-par_distribute_args_at_EOF	66
-par_distribute_args_at_EOF	67
-par_distribute_args_at_EOF	68
-par_distribute_args_at_EOF	69
-par_distribute_args_at_EOF	70
-par_distribute_args_at_EOF	71
-par_distribute_args_at_EOF	72
-par_distribute_args_at_EOF	73
-par_distribute_args_at_EOF	74
-par_distribute_args_at_EOF	75
-par_distribute_args_at_EOF	76
-par_distribute_args_at_EOF	77
-par_distribute_args_at_EOF	78
-par_distribute_args_at_EOF	79
-par_distribute_args_at_EOF	80
-par_distribute_args_at_EOF	81
-par_distribute_args_at_EOF	82
-par_distribute_args_at_EOF	83
-par_distribute_args_at_EOF	84
-par_distribute_args_at_EOF	85
-par_distribute_args_at_EOF	86
-par_distribute_args_at_EOF	87
-par_distribute_args_at_EOF	88
-par_distribute_args_at_EOF	89
-par_distribute_args_at_EOF	90
-par_distribute_args_at_EOF	91
-par_distribute_args_at_EOF	92
-par_distribute_args_at_EOF	### Test -N is not broken by distribution - single line
-par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9
-par_distribute_args_at_EOF	### Test -N is not broken by distribution - two lines
-par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10
-par_distribute_args_at_EOF	11 12 13 14 15 16 17 18 19
+par_disk_full	### Disk full
+par_disk_full	cat: write error: No space left on device
+par_disk_full	parallel: Error: Output is incomplete.
+par_disk_full	parallel: Error: Cannot append to buffer file in /mnt/ram.
+par_disk_full	parallel: Error: Is the disk full?
+par_disk_full	parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
+par_disk_full	Warning: unable to close filehandle properly: No space left on device during global destruction.
 par_dryrun_append_joblog	--dry-run should not append to joblog
 par_dryrun_append_joblog	1
 par_dryrun_append_joblog	2
@@ -388,6 +111,11 @@ par_dryrun_append_joblog	echo 2
 par_dryrun_append_joblog	echo 3
 par_dryrun_append_joblog	echo 4
 par_dryrun_append_joblog	4
+par_echo_jobseq	### bug #44995: parallel echo {#} ::: 1 2 ::: 1 2
+par_echo_jobseq	1
+par_echo_jobseq	2
+par_echo_jobseq	3
+par_echo_jobseq	4
 par_empty	bug #:
 par_empty	true
 par_empty_command	bug #54647: parset ignores empty lines
@@ -437,6 +165,10 @@ par_halt_one_job	1
 par_halt_one_job	parallel: This job failed:
 par_halt_one_job	echo 1;exit 1
 par_halt_one_job	parallel: Starting no more jobs. Waiting for 0 jobs to finish.
+par_help	### Test --help and -h: Help output (just check we get the same amount of lines)
+par_help	Output from -h and --help
+par_help	37
+par_help	37
 par_inefficient_L	bug #37325: Inefficiency of --pipe -L
 par_inefficient_L	    276     276     996
 par_inefficient_L	FOO
@@ -456,37 +188,23 @@ par_inefficient_L	    200     200    1000
 par_inefficient_L	FOO
 par_inefficient_L	    184     184     920
 par_inefficient_L	FOO
-par_jobslot_repl	bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	bug #46231: {%} with --pipepart broken. Should give 1+2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
-par_jobslot_repl	2
-par_jobslot_repl	1
+par_japanese_chars_in_replacement_string	### bug #43817: Some JP char cause problems in positional replacement strings
+par_japanese_chars_in_replacement_string	�<�>
+par_japanese_chars_in_replacement_string	�<1 $_=2�>
+par_japanese_chars_in_replacement_string	ワ
+par_japanese_chars_in_replacement_string	�<�>
+par_japanese_chars_in_replacement_string	�<1 $_=2�>
+par_japanese_chars_in_replacement_string	ワ
+par_japanese_chars_in_replacement_string	�<�> �<1 $_=2�> ワ
+par_japanese_chars_in_replacement_string	�<�>
+par_jobslot_jobnumber_pipe	### Test bug #43376: {%} and {#} with --pipe
+par_jobslot_jobnumber_pipe	1
+par_jobslot_jobnumber_pipe	1
+par_jobslot_jobnumber_pipe	1
+par_jobslot_jobnumber_pipe	1
+par_l0_is_l1	### Because of --tollef -l, then -l0 == -l1, sorry
+par_l0_is_l1	l0 1
+par_l0_is_l1	l0 2
 par_linebuffer_files	### bug #48658: --linebuffer --files
 par_linebuffer_files	10
 par_link_files_as_only_arg	bug #50685: single ::::+ does not work
@@ -699,96 +417,50 @@ par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "
 par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 97
 par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 98
 par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 99
-par_maxargs	### Test -n and --max-args: Max number of args per line (only with -X and -m)
-par_maxargs	line 1
-par_maxargs	line 2
-par_maxargs	line 3
-par_maxargs	line 1 line 1
-par_maxargs	line 2
-par_maxargs	line 1
-par_maxargs	line 2
-par_maxargs	line 3
-par_maxargs	line 1 line 1
-par_maxargs	line 2
-par_maxargs	line 1
-par_maxargs	line 2
-par_maxargs	line 3
-par_maxargs	line 1 line 1
-par_maxargs	line 2
-par_maxargs	line 1
-par_maxargs	line 2
-par_maxargs	line 3
-par_maxargs	line 1
-par_maxargs	line 2
-par_maxargs	line 3
-par_maxargs	line 1 line 1
-par_maxargs	line 2
-par_maxargs	line 1 line 1
-par_maxargs	line 2
-par_maxargs	line 1
-par_maxargs	line 2
-par_maxargs	line 3
-par_maxargs	line 1 line 1
-par_maxargs	line 2
+par_maxchar_s	### Test --max-chars and -s: Max number of chars in a line
+par_maxchar_s	line 1 line 1
+par_maxchar_s	line 2
+par_maxchar_s	line 1 line 1
+par_maxchar_s	line 2
+par_maxproc	### Test --max-procs and -P: Number of processes
+par_maxproc	max proc 1
+par_maxproc	max proc 2
+par_maxproc	max proc 3
+par_maxproc	max proc 4
+par_maxproc	max proc 5
+par_maxproc	max proc 6
+par_maxproc	max proc 7
+par_maxproc	max proc 8
+par_maxproc	max proc 9
+par_maxproc	max proc 10
+par_maxproc	200% proc 1
+par_maxproc	200% proc 2
+par_maxproc	200% proc 3
+par_maxproc	200% proc 4
+par_maxproc	200% proc 5
+par_maxproc	200% proc 6
+par_maxproc	200% proc 7
+par_maxproc	200% proc 8
+par_maxproc	200% proc 9
+par_maxproc	200% proc 10
 par_newline_in_command	Command with newline and positional replacement strings
 par_newline_in_command	O K
+par_nice_locally	### Test --nice locally
+par_nice_locally	PAR=a bash -c "echo  \$PAR b"
+par_nice_locally	a b
 par_no_command_given	### Test bugfix if no command given
 par_no_command_given	1 2
 par_no_command_given	/bin/bash: 3: command not found
 par_no_command_given	parallel: Error: Command line too long (1000002 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_no_joblog_with_dryrun	bug #46016: --joblog should not log when --dryrun
+par_no_joblog_with_dryrun	echo Only_this
+par_no_run_if_empty	### Test --no-run-if-empty and -r: This should give no output
 par_parcat_args_stdin	bug #51690: parcat: read args from stdin
 par_parcat_args_stdin	OK1
 par_parcat_args_stdin	OK2
 par_parcat_rm	bug #51691: parcat --rm remove fifo when opened
 par_parcat_rm	OK1
 par_parcat_rm	OK file removed
-par_perlexpr_repl	### {= and =} in different groups separated by space
-par_perlexpr_repl	b
-par_perlexpr_repl	b
-par_perlexpr_repl	bb
-par_perlexpr_repl	bb
-par_perlexpr_repl	b{= b
-par_perlexpr_repl	b{=b
-par_perlexpr_repl	b {=a
-par_perlexpr_repl	{=a
-par_perlexpr_repl	{= a
-par_perlexpr_repl	{= a =}
-par_perlexpr_repl	### bug #45842: Do not evaluate {= =} twice
-par_perlexpr_repl	1
-par_perlexpr_repl	2
-par_perlexpr_repl	3
-par_perlexpr_repl	4
-par_perlexpr_repl	1
-par_perlexpr_repl	2
-par_perlexpr_repl	3
-par_perlexpr_repl	4
-par_perlexpr_repl	1 2
-par_perlexpr_repl	3 4
-par_perlexpr_repl	5 6
-par_perlexpr_repl	7 8
-par_perlexpr_repl	9 10
-par_perlexpr_repl	11 12
-par_perlexpr_repl	13 14
-par_perlexpr_repl	15 16
-par_perlexpr_repl	17 18
-par_perlexpr_repl	19 20
-par_perlexpr_repl	21 22
-par_perlexpr_repl	23 24
-par_perlexpr_repl	1
-par_perlexpr_repl	2
-par_perlexpr_repl	3
-par_perlexpr_repl	4
-par_perlexpr_repl	5
-par_perlexpr_repl	6
-par_perlexpr_repl	7
-par_perlexpr_repl	8
-par_perlexpr_repl	9
-par_perlexpr_repl	10
-par_perlexpr_repl	11
-par_perlexpr_repl	12
-par_perlexpr_repl	### bug #45939: {2} in {= =} fails
-par_perlexpr_repl	OK
-par_perlexpr_repl	OK-OK
 par_perlexpr_with_newline	Perl expression spanning 2 lines
 par_pipe_N1_regexp	bug #55131: --regexp --recstart hangs
 par_pipe_N1_regexp	These should give the same
@@ -876,6 +548,11 @@ par_pipe_to_func	pipefunc OK
 par_pipe_to_func	1
 par_pipe_to_func	pipefunc and more OK
 par_pipe_to_func	and more OK
+par_pipe_unneeded_procs	### Test bug #34241: --pipe should not spawn unneeded processes
+par_pipe_unneeded_procs	1
+par_pipe_unneeded_procs	2
+par_pipe_unneeded_procs	3
+par_pipe_unneeded_procs	o
 par_pipepart_block_bigger_2G	### Test that --pipepart can have blocks > 2GB
 par_pipepart_block_bigger_2G	      1       1       4
 par_pipepart_header	### bug #44614: --pipepart --header off by one
@@ -1051,47 +728,55 @@ par_read_from_stdin	b 6
 par_read_from_stdin	b 7
 par_read_from_stdin	b 8
 par_read_from_stdin	b 9
+par_replace_replacementstring	### Test replace {}
+par_replace_replacementstring	replace curlies
+par_replace_replacementstring	replace curlies
+par_replacement_string_as_part_of_command	### {} as part of the command
+par_replacement_string_as_part_of_command	/bin/ls
+par_replacement_string_as_part_of_command	/bin/ls
+par_replacement_string_as_part_of_command	/bin/ls
+par_replacement_string_as_part_of_command	/bin/ls
+par_replacement_string_as_part_of_command	/bin/ls
+par_replacement_string_as_part_of_command	/bin/ls
 par_results	### --results test.csv
 par_results	a
 par_results	b
 par_results	c
+par_results_arg_256	### bug #42089: --results with arg > 256 chars (should be 1 char shorter)
+par_results_arg_256	1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
+par_results_arg_256	123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345
 par_retries_replacement_string	11
 par_retries_replacement_string	22
 par_retries_replacement_string	22
 par_retries_replacement_string	33
 par_retries_replacement_string	33
 par_retries_replacement_string	33
+par_rpl_that_is_substring_of_longer_rpl	### --rpl % that is a substring of longer --rpl %D
+par_rpl_that_is_substring_of_longer_rpl	a.b/c.d/e.f=a.b/c.d/e.f
+par_rpl_that_is_substring_of_longer_rpl	a.b/c.d=a.b/c.d
+par_rpl_that_is_substring_of_longer_rpl	e=e
+par_rpl_that_is_substring_of_longer_rpl	f=f
+par_rpl_that_is_substring_of_longer_rpl	a.b/c.d/e.f=a.b/c.d/e.f
 par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
-par_shard	### --shard
-par_shard	OK
-par_shard	OK
-par_shard	OK
-par_shard	OK
-par_shard	OK
-par_shard	     10 1
-par_shard	     10 2
-par_shard	     10 3
-par_shard	     10 4
-par_shard	     10 5
-par_shard	     10 6
-par_shard	     10 7
-par_shard	     10 8
-par_shard	     10 9
-par_shard	      9 0
-par_shard	      9 1
-par_shard	      9 2
-par_shard	      9 3
-par_shard	      9 4
-par_shard	      9 5
-par_shard	      9 6
-par_shard	      9 7
-par_shard	      9 8
-par_shard	      9 9
-par_shard	*** broken
-par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
-par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
+par_show_limits	### Test --show-limits
+par_show_limits	Maximal size of command: 131049
+par_show_limits	Maximal used size of command: 131049
+par_show_limits	
+par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	and run commands; if this is not what you wanted to happen, please
+par_show_limits	press CTRL-D or CTRL-C
+par_show_limits	bar
+par_show_limits	car
+par_show_limits	far
+par_show_limits	Maximal size of command: 131049
+par_show_limits	Maximal used size of command: 100
+par_show_limits	
+par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	and run commands; if this is not what you wanted to happen, please
+par_show_limits	press CTRL-D or CTRL-C
+par_show_limits	bar car far
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	    980     981    5881
@@ -1106,6 +791,17 @@ par_tagstring_pipe	bug #50228: --pipe --tagstring broken
 par_tagstring_pipe	1	   1000    1000    3893
 par_tagstring_pipe	2	   1000    1000    5000
 par_tagstring_pipe	3	   1000    1000    5000
+par_tagstring_with_d	bug #47002: --tagstring with -d \n\n
+par_tagstring_with_d	1	ABC
+par_tagstring_with_d	1	1
+par_tagstring_with_d	1	2
+par_tagstring_with_d	1	3
+par_tagstring_with_d	2	ABC
+par_tagstring_with_d	2	1
+par_tagstring_with_d	2	2
+par_tagstring_with_d	2	3
+par_tagstring_with_d	2	4
+par_tagstring_with_d	2	
 par_tee	1 a	1
 par_tee	1 a	1000000 1000000 6888896
 par_tee	1 b	2
@@ -1150,40 +846,6 @@ par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b
 par_test_L_context_replace	### Test -L context replace
 par_test_L_context_replace	a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
 par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b
-par_test_X_with_multiple_source	### Test {} multiple times in different commands
-par_test_X_with_multiple_source	echo 1 2 3 4 5 6 7 8 9 10 ; echo 1 2 3 4 5 6 7 8 9 10
-par_test_X_with_multiple_source	1 2 3 4 5 6 7 8 9 10
-par_test_X_with_multiple_source	1 2 3 4 5 6 7 8 9 10
-par_test_X_with_multiple_source	### Test of -X {1}-{2} with multiple input sources
-par_test_X_with_multiple_source	a-b
-par_test_X_with_multiple_source	a-c
-par_test_X_with_multiple_source	b-c
-par_test_X_with_multiple_source	a-d
-par_test_X_with_multiple_source	b-f
-par_test_X_with_multiple_source	a-d
-par_test_X_with_multiple_source	a-e
-par_test_X_with_multiple_source	a-f
-par_test_X_with_multiple_source	b-d
-par_test_X_with_multiple_source	b-e
-par_test_X_with_multiple_source	b-f
-par_test_X_with_multiple_source	c-d
-par_test_X_with_multiple_source	c-e
-par_test_X_with_multiple_source	c-f
-par_test_X_with_multiple_source	### Test of -X {}-{.} with multiple input sources
-par_test_X_with_multiple_source	a-a b-b
-par_test_X_with_multiple_source	a-a c-c a-a d-d
-par_test_X_with_multiple_source	b-b c-c b-b d-d
-par_test_X_with_multiple_source	a-a d-d a-a e-e a-a f-f b-b d-d b-b e-e
-par_test_X_with_multiple_source	b-b f-f c-c d-d c-c e-e c-c f-f
-par_test_X_with_multiple_source	a-a d-d
-par_test_X_with_multiple_source	a-a e-e
-par_test_X_with_multiple_source	a-a f-f
-par_test_X_with_multiple_source	b-b d-d
-par_test_X_with_multiple_source	b-b e-e
-par_test_X_with_multiple_source	b-b f-f
-par_test_X_with_multiple_source	c-c d-d
-par_test_X_with_multiple_source	c-c e-e
-par_test_X_with_multiple_source	c-c f-f
 par_test_r_with_pipe	### Test of -r with --pipe - the first should give an empty line. The second should not.
 par_test_r_with_pipe	1
 par_test_r_with_pipe	0
@@ -1193,6 +855,13 @@ par_test_tty	/dev/tty
 par_test_tty	/dev/tty
 par_test_tty	/dev/tty
 par_test_tty	/dev/tty
+par_test_zero_args	### Test 0-arguments
+par_test_zero_args	n0
+par_test_zero_args	n0
+par_test_zero_args	L0
+par_test_zero_args	L0
+par_test_zero_args	N0
+par_test_zero_args	N0
 par_testquote	ash	"#&/
 par_testquote	ash	()*=?'
 par_testquote	bash	"#&/
@@ -1233,6 +902,8 @@ par_testquote	yash	"#&/
 par_testquote	yash	()*=?'
 par_testquote	zsh	"#&/
 par_testquote	zsh	()*=?'
+par_tmux_command_not_found	### PARALLEL_TMUX not found
+par_tmux_command_not_found	parallel: Error: not-existing not found in $PATH.
 par_total_from_joblog	bug #47086: [PATCH] Initialize total_completed from joblog
 par_total_from_joblog	0
 par_total_from_joblog	1
@@ -1242,40 +913,6 @@ par_total_from_joblog	parallel: This job failed:
 par_total_from_joblog	echo 3;exit 1
 par_total_from_joblog	4
 par_total_from_joblog	5
-par_totaljob_repl	{##} bug #45841: Replacement string for total no of jobs
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	1
-par_totaljob_repl	2
-par_totaljob_repl	3
-par_totaljob_repl	4
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	1 2 2 2 2 2 2 2
-par_totaljob_repl	2 2 2 2 2 2 2 2
-par_totaljob_repl	1 3 3 3 3 3 3 3
-par_totaljob_repl	2 3 3 3 3 3 3 3
-par_totaljob_repl	3 3
-par_totaljob_repl	1 15 15
-par_totaljob_repl	2 14 14
-par_totaljob_repl	3 14 14
-par_totaljob_repl	4 14 14
-par_totaljob_repl	5 14 14
-par_totaljob_repl	6 14 14
-par_totaljob_repl	7 14 14
-par_totaljob_repl	8 14
 par_tricolonplus	### bug #48745: :::+ bug
 par_tricolonplus	11 1 21 a aa
 par_tricolonplus	11 1 21 b bb
@@ -1340,6 +977,15 @@ par_tricolonplus	3 22 b cc
 par_tricolonplus	3 23 c aa
 par_tricolonplus	3 23 c bb
 par_tricolonplus	3 23 c cc
+par_verbose_t	### Test --verbose and -t
+par_verbose_t	echo bar
+par_verbose_t	echo car
+par_verbose_t	echo far
+par_verbose_t	echo bar
+par_verbose_t	echo car
+par_verbose_t	echo far
+par_version	### Test --version: Version output (just check we get the same amount of lines)
+par_version	10
 par_wd_3dot_local	bug #45993: --wd ... should also work when run locally
 par_wd_3dot_local	parallel: Error: Cannot change into non-executable dir /bi: No such file or directory
 par_wd_3dot_local	/bin
@@ -1371,144 +1017,8 @@ par_xapply	b bb A AA
 par_xapply	b bb B BB
 par_xapply	c cc A AA
 par_xapply	c cc B BB
-par_xargs_compat	xargs compatibility
-par_xargs_compat	### Test -L -l and --max-lines
-par_xargs_compat	a_b
-par_xargs_compat	c
-par_xargs_compat	a_b c
-par_xargs_compat	a_b c
-par_xargs_compat	### xargs -L1 echo
-par_xargs_compat	a_b
-par_xargs_compat	c
-par_xargs_compat	a_b
-par_xargs_compat	c
-par_xargs_compat	a_b
-par_xargs_compat	c
-par_xargs_compat	Lines ending in space should continue on next line
-par_xargs_compat	### xargs -L1 echo
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	### xargs -L2 echo
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	### xargs -l echo
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	### xargs -l2 echo
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	### xargs -l1 echo
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	### xargs --max-lines=2 echo
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	a_b c d
-par_xargs_compat	e
-par_xargs_compat	### xargs --max-lines echo
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	a_b c
-par_xargs_compat	d
-par_xargs_compat	e
-par_xargs_compat	### test too long args
-par_xargs_compat	parallel: Error: Command line too long (1000005 >= 131049) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
-par_xargs_compat	xargs: argument line too long
-par_xargs_compat	1 2
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
-par_xargs_compat	parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
-par_xargs_compat	1 2
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
-par_xargs_compat	xargs: argument line too long
-par_xargs_compat	1 2
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
-par_xargs_compat	parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
-par_xargs_compat	### Test -x
-par_xargs_compat	1 2
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
-par_xargs_compat	parallel: Error: Command line too long (10 >= 10) at input 0: 12345
-par_xargs_compat	1 2
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
-par_xargs_compat	parallel: Error: Command line too long (10 >= 10) at input 0: 12345
-par_xargs_compat	1 2
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	xargs: argument line too long
-par_xargs_compat	1 2
-par_xargs_compat	12
-par_xargs_compat	1234
-par_xargs_compat	13
-par_xargs_compat	14
-par_xargs_compat	15
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
-par_xargs_compat	1 2
-par_xargs_compat	12
-par_xargs_compat	1234
-par_xargs_compat	13
-par_xargs_compat	14
-par_xargs_compat	15
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
-par_xargs_compat	1 2
-par_xargs_compat	12
-par_xargs_compat	1234
-par_xargs_compat	13
-par_xargs_compat	14
-par_xargs_compat	15
-par_xargs_compat	3 4
-par_xargs_compat	5 6
-par_xargs_compat	7 8
-par_xargs_compat	9 10
+par_xargs_nul_char_in_input	bug #47290: xargs: Warning: a NUL character occurred in the input
+par_xargs_nul_char_in_input	parallel: Warning: A NUL character in the input was replaced with \0.
+par_xargs_nul_char_in_input	parallel: Warning: NUL cannot be passed through in the argument list.
+par_xargs_nul_char_in_input	parallel: Warning: Did you mean to use the --null option?
+par_xargs_nul_char_in_input	foo\0not printed

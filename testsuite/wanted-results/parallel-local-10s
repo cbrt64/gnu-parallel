@@ -1,3 +1,21 @@
+par_END	### Test -i and --replace: Replace with argument
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	replace
+par_END	### Test -E: Artificial end-of-file
+par_END	include this
+par_END	include this
+par_END	### Test -e and --eof: Artificial end-of-file
+par_END	include this
+par_END	include this
+par_END	include this
+par_END	include this
 par__memleak	### Test memory consumption stays (almost) the same for 30 and 300 jobs
 par__memleak	should give 1 == true
 par__memleak	Memory use should not depend very much on the total number of jobs run\n
@@ -252,75 +270,134 @@ par_maxlinelen_X_I	Chars per line (817788/7): 116826
 par_maxlinelen_m_I	### Test max line length -m -I
 par_maxlinelen_m_I	c78bd0799bc23d8946732f8b3ae3c94e  -
 par_maxlinelen_m_I	Chars per line (697800/6): 116300
+par_parset	### test parset
+par_parset	Put output into $myarray
+par_parset	10
+par_parset	11
+par_parset	12
+par_parset	13
+par_parset	14
+par_parset	15
+par_parset	Put output into vars "$seq, $pwd, $ls"
+par_parset	1
+par_parset	2
+par_parset	3
+par_parset	4
+par_parset	5
+par_parset	6
+par_parset	7
+par_parset	8
+par_parset	9
+par_parset	10
+par_parset	Put output into vars ($seq, $pwd, $ls):
+par_parset	1
+par_parset	2
+par_parset	3
+par_parset	4
+par_parset	5
+par_parset	The commands to run can be an array
+par_parset	<<joe  "double  space"  cartoon>>
+par_parset	~/privat/parallel/testsuite
+par_parset	You cannot pipe into parset, but must use a tempfile
+par_parset	1
+par_parset	10
+par_parset	or process substitution
+par_parset	0
+par_parset	9
+par_parset	Commands with newline require -0
+par_parset	line1
+par_parset	line2
+par_parset2	### parset into array
+par_parset2	foo bar baz
+par_parset2	### parset into vars with comma
+par_parset2	foo bar baz
+par_parset2	### parset into vars with space
+par_parset2	foo bar baz
+par_parset2	### parset with newlines
+par_parset2	1
+par_parset2	1
+par_parset2	2
+par_parset2	1
+par_parset2	2
+par_parset2	3
+par_parset2	### parset into indexed array vars
+par_parset2	foo bar baz
+par_parset2	foo bar bar
+par_parset2	### env_parset
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	newline1
+par_parset2	newline2
+par_parset2	1
+par_parset2	newline1
+par_parset2	newline2
+par_parset2	1
+par_parset2	2
+par_parset2	newline1
+par_parset2	newline2
+par_parset2	1
+par_parset2	2
+par_parset2	3
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 baz
+par_parset2	myecho myvar myarr  1 foo myecho myvar myarr  1 bar myecho myvar myarr  1 bar
+par_parset2	bug #52507: parset arr1 -v echo ::: fails
+par_parset2	seq 3
+par_parset2	1
+par_parset2	2
+par_parset2	3
+par_perlexpr_repl	### {= and =} in different groups separated by space
+par_perlexpr_repl	b
+par_perlexpr_repl	b
+par_perlexpr_repl	bb
+par_perlexpr_repl	bb
+par_perlexpr_repl	b{= b
+par_perlexpr_repl	b{=b
+par_perlexpr_repl	b {=a
+par_perlexpr_repl	{=a
+par_perlexpr_repl	{= a
+par_perlexpr_repl	{= a =}
+par_perlexpr_repl	### bug #45842: Do not evaluate {= =} twice
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	1 2
+par_perlexpr_repl	3 4
+par_perlexpr_repl	5 6
+par_perlexpr_repl	7 8
+par_perlexpr_repl	9 10
+par_perlexpr_repl	11 12
+par_perlexpr_repl	13 14
+par_perlexpr_repl	15 16
+par_perlexpr_repl	17 18
+par_perlexpr_repl	19 20
+par_perlexpr_repl	21 22
+par_perlexpr_repl	23 24
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	5
+par_perlexpr_repl	6
+par_perlexpr_repl	7
+par_perlexpr_repl	8
+par_perlexpr_repl	9
+par_perlexpr_repl	10
+par_perlexpr_repl	11
+par_perlexpr_repl	12
+par_perlexpr_repl	### bug #45939: {2} in {= =} fails
+par_perlexpr_repl	OK
+par_perlexpr_repl	OK-OK
 par_pipe_line_buffer	### --pipe --line-buffer
 par_pipe_line_buffer	    200     400    1202
 par_pipe_line_buffer	These must diff: 1
 par_pipe_line_buffer_compress	### --pipe --line-buffer --compress
 par_pipe_line_buffer_compress	    200     400    1202
-par_plus_dyn_repl	Dynamic replacement strings defined by --plus
-par_plus_dyn_repl	myval
-par_plus_dyn_repl	myval
-par_plus_dyn_repl	myval
-par_plus_dyn_repl	myval
-par_plus_dyn_repl	myval
-par_plus_dyn_repl	cAaAdef
-par_plus_dyn_repl	cAaAdef
-par_plus_dyn_repl	cAaAdef
-par_plus_dyn_repl	cAaAdef
-par_plus_dyn_repl	cAaAdef
-par_plus_dyn_repl	cAa
-par_plus_dyn_repl	cAa
-par_plus_dyn_repl	cAa
-par_plus_dyn_repl	cAa
-par_plus_dyn_repl	cAa
-par_plus_dyn_repl	9
-par_plus_dyn_repl	9
-par_plus_dyn_repl	1
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	AaAdef
-par_plus_dyn_repl	AaAdef
-par_plus_dyn_repl	AaAdef
-par_plus_dyn_repl	AaAdef
-par_plus_dyn_repl	AaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaA
-par_plus_dyn_repl	abcAaA
-par_plus_dyn_repl	abcAaA
-par_plus_dyn_repl	abcAaA
-par_plus_dyn_repl	abcAaA
-par_plus_dyn_repl	abcAaAghi
-par_plus_dyn_repl	abcAaAghi
-par_plus_dyn_repl	abcAaAghi
-par_plus_dyn_repl	abcAaAghi
-par_plus_dyn_repl	abcAaAghi
-par_plus_dyn_repl	AbcAaAdef
-par_plus_dyn_repl	AbcAaAdef
-par_plus_dyn_repl	AbcAaAdef
-par_plus_dyn_repl	AbcAaAdef
-par_plus_dyn_repl	AbcAaAdef
-par_plus_dyn_repl	AbcAAAdef
-par_plus_dyn_repl	AbcAAAdef
-par_plus_dyn_repl	AbcAAAdef
-par_plus_dyn_repl	AbcAAAdef
-par_plus_dyn_repl	AbcAAAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcAaAdef
-par_plus_dyn_repl	abcaaadef
-par_plus_dyn_repl	abcaaadef
-par_plus_dyn_repl	abcaaadef
-par_plus_dyn_repl	abcaaadef
-par_plus_dyn_repl	abcaaadef
 par_results_compress	0
 par_results_compress	1
 par_results_csv	bug #: --results csv
@@ -505,8 +582,6 @@ par_retries_all_fail	5
 par_retries_all_fail	6
 par_retries_all_fail	7
 par_retries_all_fail	8
-par_round_robin_blocks	bug #49664: --round-robin does not complete
-par_round_robin_blocks	8
 par_sem_2jobs	### Test semaphore 2 jobs running simultaneously
 par_sem_2jobs	job1a 1
 par_sem_2jobs	job2a 2
@@ -541,3 +616,88 @@ par_sockets_cores_threads	Threads should complete first on machines with less th
 par_tmux_fg	bug #50107: --tmux --fg should also write how to access it
 par_tmux_fg	See output with: tmux -S tmp attach
 par_tmux_fg	open terminal failed: not a terminal
+par_xargs_compat	xargs compatibility
+par_xargs_compat	### Test -L -l and --max-lines
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	a_b c
+par_xargs_compat	a_b c
+par_xargs_compat	### xargs -L1 echo
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	a_b
+par_xargs_compat	c
+par_xargs_compat	Lines ending in space should continue on next line
+par_xargs_compat	### xargs -L1 echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	### xargs -L2 echo
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	### xargs -l echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	### xargs -l2 echo
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	### xargs -l1 echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	### xargs --max-lines=2 echo
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	a_b c d
+par_xargs_compat	e
+par_xargs_compat	### xargs --max-lines echo
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	a_b c
+par_xargs_compat	d
+par_xargs_compat	e
+par_xargs_compat	### test too long args
+par_xargs_compat	parallel: Error: Command line too long (1000005 >= 131049) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	xargs: argument line too long
+par_xargs_compat	environment: line 109: stdsort: command not found
+par_xargs_compat	environment: line 112: stdsort: command not found
+par_xargs_compat	environment: line 115: stdsort: command not found
+par_xargs_compat	### Test -x
+par_xargs_compat	environment: line 119: stdsort: command not found
+par_xargs_compat	environment: line 122: stdsort: command not found
+par_xargs_compat	environment: line 125: stdsort: command not found
+par_xargs_compat	environment: line 128: stdsort: command not found
+par_xargs_compat	environment: line 131: stdsort: command not found
+par_xargs_compat	environment: line 134: stdsort: command not found

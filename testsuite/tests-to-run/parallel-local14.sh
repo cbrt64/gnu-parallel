@@ -1,36 +1,41 @@
 #!/bin/bash
 
-# Assume /dev/shm is easy to fill up
-SHM=/tmp/shm/parallel
+# Make a dir that is easy to fill up
+SHM=/tmp/shm/parallel-local14
 mkdir -p $SHM
-sudo umount -l $SHM
-sudo mount -t tmpfs -o size=10% none $SHM
 
-echo '3 x terminated is OK' >&2
-echo '### Test $TMPDIR'
-TMPDIR=$SHM stdout timeout -k 1 6 parallel pv -qL10m {} ::: /dev/zero >/dev/null &
-PID=$!
-seq 1 200 | parallel -N0 -I // -j1 "df $SHM | parallel -k --colsep ' +' echo {4}|tail -n 1;sleep 0.1" \
-| stdout timeout -k 1 10 perl -ne 'BEGIN{$a=<>} $b=<>; 
-if ($a-1000 > $b) { print "More than 1 MB gone. Good!\n";exit }'
-kill $PID
-wait
-sleep 0.1
+check_disk_is_filling() {
+    # Run df every 0.1 second for 20 seconds
+    seq 1 200 |
+	parallel --delay 0.1 -N0 -I // -j1 df $SHM |
+	grep --line-buffer $SHM |
+#	tee /dev/tty |
+	perl -a -F'\s+' -ne '$a ||=$F[3]; $b=$F[3];
+    	   if ($a-1000 > $b) { print "More than 1 MB gone. Good!\n";exit }'
+}
+
+mytest() {
+    # '' or TMPDIR=$SHM or TMPDIR=/tmp
+    env="$1"
+    # '' or --tmpdir $SHM
+    arg="$2"
+
+    sudo umount -l $SHM 2>/dev/null
+    sudo mount -t tmpfs -o size=10% none $SHM
+    eval export $env
+    parallel --timeout 15 $arg pv -qL10m {} ::: /dev/zero >/dev/null &
+    PID=$!
+    TMPDIR=/tmp
+    check_disk_is_filling
+    kill -TERM $PID
+    sudo umount -l $SHM
+}
 
 echo '### Test --tmpdir'
-stdout timeout -k 1 6 parallel --tmpdir $SHM pv -qL10m {} ::: /dev/zero >/dev/null &
-PID=$!
-seq 1 200 | parallel -N0 -I // -j1 "df $SHM | parallel -k --colsep ' +' echo {4}|tail -n 1;sleep 0.1" \
-| stdout timeout -k 1 10 perl -ne 'BEGIN{$a=<>} $b=<>; if ($a-1000 > $b) { print "More than 1 MB gone. Good!\n"; exit }'
-kill $PID
-wait
-sleep 0.1
+mytest 'Dummy=dummy' "--tmpdir $SHM"
+
+echo '### Test $TMPDIR'
+mytest TMPDIR=$SHM ""
 
 echo '### Test $TMPDIR and --tmpdir'
-TMPDIR=/tmp stdout timeout -k 1 6 parallel --tmpdir $SHM pv -qL10m {} ::: /dev/zero >/dev/null &
-PID=$!
-seq 1 200 | parallel -N0 -I // -j1 "df $SHM | parallel -k --colsep ' +' echo {4}|tail -n 1;sleep 0.1" \
-| stdout timeout -k 1 10 perl -ne 'BEGIN{$a=<>} $b=<>; if ($a-1000 > $b) { print "More than 1 MB gone. Good!\n"; exit }'
-kill $PID
-wait
-sleep 0.1
+mytest TMPDIR=/tmp "--tmpdir $SHM"

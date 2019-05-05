@@ -4,6 +4,208 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_parset() {
+    echo '### test parset'
+    . `which env_parallel.bash`
+
+    echo 'Put output into $myarray'
+    parset myarray -k seq 10 ::: 14 15 16
+    echo "${myarray[1]}"
+
+    echo 'Put output into vars "$seq, $pwd, $ls"'
+    parset "seq pwd ls" -k ::: "seq 10" pwd ls
+    echo "$seq"
+
+    echo 'Put output into vars ($seq, $pwd, $ls)':
+    into_vars=(seq pwd ls)
+    parset "${into_vars[*]}" -k ::: "seq 5" pwd ls
+    echo "$seq"
+
+    echo 'The commands to run can be an array'
+    cmd=("echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
+    parset data -k ::: "${cmd[@]}"
+    echo "${data[0]}"
+    echo "${data[1]}"
+
+    echo 'You cannot pipe into parset, but must use a tempfile'
+    seq 10 > /tmp/parset_input_$$
+    parset res -k echo :::: /tmp/parset_input_$$
+    echo "${res[0]}"
+    echo "${res[9]}"
+    rm /tmp/parset_input_$$
+
+    echo 'or process substitution'
+    parset res -k echo :::: <(seq 0 10)
+    echo "${res[0]}"
+    echo "${res[9]}"
+
+    echo 'Commands with newline require -0'
+    parset var -k -0 ::: 'echo "line1
+line2"' 'echo "command2"'
+    echo "${var[0]}"
+}
+
+par_parset2() {
+    . `which env_parallel.bash`
+    echo '### parset into array'
+    parset arr1 echo ::: foo bar baz
+    echo ${arr1[0]} ${arr1[1]} ${arr1[2]}
+
+    echo '### parset into vars with comma'
+    parset comma3,comma2,comma1 echo ::: baz bar foo
+    echo $comma1 $comma2 $comma3
+
+    echo '### parset into vars with space'
+    parset 'space3 space2 space1' echo ::: baz bar foo
+    echo $space1 $space2 $space3
+
+    echo '### parset with newlines'
+    parset 'newline3 newline2 newline1' seq ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+
+    echo '### parset into indexed array vars'
+    parset 'myarray[6],myarray[5],myarray[4]' echo ::: baz bar foo
+    echo ${myarray[*]}
+    echo ${myarray[4]} ${myarray[5]} ${myarray[5]}
+
+    echo '### env_parset'
+    alias myecho='echo myecho "$myvar" "${myarr[1]}"'
+    myvar="myvar"
+    myarr=("myarr  0" "myarr  1" "myarr  2")
+    mynewline="`echo newline1;echo newline2;`"
+    env_parset arr1 myecho ::: foo bar baz
+    echo "${arr1[0]} ${arr1[1]} ${arr1[2]}"
+    env_parset comma3,comma2,comma1 myecho ::: baz bar foo
+    echo "$comma1 $comma2 $comma3"
+    env_parset 'space3 space2 space1' myecho ::: baz bar foo
+    echo "$space1 $space2 $space3"
+    env_parset 'newline3 newline2 newline1' 'echo "$mynewline";seq' ::: 3 2 1
+    echo "$newline1"
+    echo "$newline2"
+    echo "$newline3"
+    env_parset 'myarray[6],myarray[5],myarray[4]' myecho ::: baz bar foo
+    echo "${myarray[*]}"
+    echo "${myarray[4]} ${myarray[5]} ${myarray[5]}"
+
+    echo 'bug #52507: parset arr1 -v echo ::: fails'
+    parset arr1 -v seq ::: 1 2 3
+    echo "${arr1[2]}"
+}
+
+par_perlexpr_repl() {
+    echo '### {= and =} in different groups separated by space'
+    parallel echo {= s/a/b/ =} ::: a
+    parallel echo {= s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{= s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{=s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{= {= s/a/b/=} ::: a
+    parallel echo {= s/a/b/=}{={=s/a/b/=} ::: a
+    parallel echo {= s/a/b/ =} {={==} ::: a
+    parallel echo {={= =} ::: a
+    parallel echo {= {= =} ::: a
+    parallel echo {= {= =} =} ::: a
+
+    echo '### bug #45842: Do not evaluate {= =} twice'
+    parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004}
+    parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004}
+    parallel -k echo '{=  $_=++$::G =}' ::: {1001..1004} ::: {a..c}
+    parallel -k echo '{=1 $_=++$::G =}' ::: {1001..1004} ::: {a..c}
+
+    echo '### bug #45939: {2} in {= =} fails'
+    parallel echo '{= s/O{2}//=}' ::: OOOK
+    parallel echo '{2}-{=1 s/O{2}//=}' ::: OOOK ::: OK
+}
+
+par_END() {
+    echo '### Test -i and --replace: Replace with argument'
+    (echo a; echo END; echo b) | parallel -k -i -eEND echo repl{}ce
+    (echo a; echo END; echo b) | parallel -k --replace -eEND echo repl{}ce
+    (echo a; echo END; echo b) | parallel -k -i+ -eEND echo repl+ce
+    (echo e; echo END; echo b) | parallel -k -i'*' -eEND echo r'*'plac'*'
+    (echo a; echo END; echo b) | parallel -k --replace + -eEND echo repl+ce
+    (echo a; echo END; echo b) | parallel -k --replace== -eEND echo repl=ce
+    (echo a; echo END; echo b) | parallel -k --replace = -eEND echo repl=ce
+    (echo a; echo END; echo b) | parallel -k --replace=^ -eEND echo repl^ce
+    (echo a; echo END; echo b) | parallel -k -I^ -eEND echo repl^ce
+
+    echo '### Test -E: Artificial end-of-file'
+    (echo include this; echo END; echo not this) | parallel -k -E END echo
+    (echo include this; echo END; echo not this) | parallel -k -EEND echo
+
+    echo '### Test -e and --eof: Artificial end-of-file'
+    (echo include this; echo END; echo not this) | parallel -k -e END echo
+    (echo include this; echo END; echo not this) | parallel -k -eEND echo
+    (echo include this; echo END; echo not this) | parallel -k --eof=END echo
+    (echo include this; echo END; echo not this) | parallel -k --eof END echo
+}
+
+par_xargs_compat() {
+    echo xargs compatibility
+
+    echo '### Test -L -l and --max-lines'
+    (echo a_b;echo c) | parallel -km -L2 echo
+    (echo a_b;echo c) | parallel -k -L2 echo
+    (echo a_b;echo c) | xargs -L2 echo
+
+    echo '### xargs -L1 echo'
+    (echo a_b;echo c) | parallel -km -L1 echo
+    (echo a_b;echo c) | parallel -k -L1 echo
+    (echo a_b;echo c) | xargs -L1 echo
+
+    echo 'Lines ending in space should continue on next line'
+    echo '### xargs -L1 echo'
+    (echo a_b' ';echo c;echo d) | parallel -km -L1 echo
+    (echo a_b' ';echo c;echo d) | parallel -k -L1 echo
+    (echo a_b' ';echo c;echo d) | xargs -L1 echo
+
+    echo '### xargs -L2 echo'
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km -L2 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k -L2 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs -L2 echo
+
+    echo '### xargs -l echo'
+    (echo a_b' ';echo c;echo d;echo e) | parallel -l -km echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | parallel -l -k echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | xargs -l echo
+
+    echo '### xargs -l2 echo'
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km -l2 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k -l2 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs -l2 echo
+
+    echo '### xargs -l1 echo'
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km -l1 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k -l1 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs -l1 echo
+
+    echo '### xargs --max-lines=2 echo'
+    (echo a_b' ';echo c;echo d;echo e) | parallel -km --max-lines 2 echo
+    (echo a_b' ';echo c;echo d;echo e) | parallel -k --max-lines 2 echo
+    (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines=2 echo
+
+    echo '### xargs --max-lines echo'
+    (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -km echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -k echo # This behaves wrong
+    (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines echo
+
+    echo '### test too long args'
+    perl -e 'print "z"x1000000' | parallel echo 2>&1
+    perl -e 'print "z"x1000000' | xargs echo 2>&1
+    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
+    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort xargs -s 10 echo
+    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -kX -s 10 echo
+
+    echo '### Test -x'
+    (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
+    (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
+    (seq 1 10; echo 12345; seq 12 15) | stdsort xargs -s 10 -x echo
+    (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
+    (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
+    (seq 1 10; echo 1234;  seq 12 15) | stdsort xargs -s 10 -x echo
+}
+
 par_sem_2jobs() {
     echo '### Test semaphore 2 jobs running simultaneously'
     parallel --semaphore --id 2jobs -u -j2 'echo job1a 1; sleep 4; echo job1b 3'
@@ -200,11 +402,6 @@ par_compress_fail() {
     seq 12 | parallel --compress -k seq {} 10000 | md5sum
 }
 
-par_round_robin_blocks() {
-    echo "bug #49664: --round-robin does not complete"
-    seq 20000000 | parallel -j8 --block 10M --round-robin --pipe wc -c | wc -l
-}
-
 par_results_csv() {
     echo "bug #: --results csv"
 
@@ -248,85 +445,6 @@ par_tmux_fg() {
     stdout parallel --tmux --fg sleep ::: 3 | perl -pe 's/.tmp\S+/tmp/'
 }
 
-par_plus_dyn_repl() {
-    echo "Dynamic replacement strings defined by --plus"
-
-    unset myvar
-    echo ${myvar:-myval}
-    parallel --rpl '{:-(.+)} $_ ||= $$1' echo {:-myval} ::: "$myvar"
-    parallel --plus echo {:-myval} ::: "$myvar"
-    parallel --plus echo {2:-myval} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2:-myval} ::: "wrong" ::: "$myvar" ::: "wrong"
-
-    myvar=abcAaAdef
-    echo ${myvar:2}
-    parallel --rpl '{:(\d+)} substr($_,0,$$1) = ""' echo {:2} ::: "$myvar"
-    parallel --plus echo {:2} ::: "$myvar"
-    parallel --plus echo {2:2} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2:2} ::: "wrong" ::: "$myvar" ::: "wrong"
-
-    echo ${myvar:2:3}
-    parallel --rpl '{:(\d+?):(\d+?)} $_ = substr($_,$$1,$$2);' echo {:2:3} ::: "$myvar"
-    parallel --plus echo {:2:3} ::: "$myvar"
-    parallel --plus echo {2:2:3} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2:2:3} ::: "wrong" ::: "$myvar" ::: "wrong"
-
-    echo ${#myvar}
-    parallel --rpl '{#} $_ = length $_;' echo {#} ::: "$myvar"
-    # {#} used for job number
-    parallel --plus echo {#} ::: "$myvar"
-
-    echo ${myvar#bc}
-    parallel --rpl '{#(.+?)} s/^$$1//;' echo {#bc} ::: "$myvar"
-    parallel --plus echo {#bc} ::: "$myvar"
-    parallel --plus echo {2#bc} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2#bc} ::: "wrong" ::: "$myvar" ::: "wrong"
-    echo ${myvar#abc}
-    parallel --rpl '{#(.+?)} s/^$$1//;' echo {#abc} ::: "$myvar"
-    parallel --plus echo {#abc} ::: "$myvar"
-    parallel --plus echo {2#abc} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2#abc} ::: "wrong" ::: "$myvar" ::: "wrong"
-
-    echo ${myvar%de}
-    parallel --rpl '{%(.+?)} s/$$1$//;' echo {%de} ::: "$myvar"
-    parallel --plus echo {%de} ::: "$myvar"
-    parallel --plus echo {2%de} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2%de} ::: "wrong" ::: "$myvar" ::: "wrong"
-    echo ${myvar%def}
-    parallel --rpl '{%(.+?)} s/$$1$//;' echo {%def} ::: "$myvar"
-    parallel --plus echo {%def} ::: "$myvar"
-    parallel --plus echo {2%def} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2%def} ::: "wrong" ::: "$myvar" ::: "wrong"
-
-    echo ${myvar/def/ghi}
-    parallel --rpl '{/(.+?)/(.+?)} s/$$1/$$2/;' echo {/def/ghi} ::: "$myvar"
-    parallel --plus echo {/def/ghi} ::: "$myvar"
-    parallel --plus echo {2/def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2/def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
-
-    echo ${myvar^a}
-    parallel --rpl '{^(.+?)} s/^($$1)/uc($1)/e;' echo {^a} ::: "$myvar"
-    parallel --plus echo {^a} ::: "$myvar"
-    parallel --plus echo {2^a} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2^a} ::: "wrong" ::: "$myvar" ::: "wrong"
-    echo ${myvar^^a}
-    parallel --rpl '{^^(.+?)} s/($$1)/uc($1)/eg;' echo {^^a} ::: "$myvar"
-    parallel --plus echo {^^a} ::: "$myvar"
-    parallel --plus echo {2^^a} ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo {-2^^a} ::: "wrong" ::: "$myvar" ::: "wrong"
-
-    myvar=AbcAaAdef
-    echo ${myvar,A}
-    parallel --rpl '{,(.+?)} s/^($$1)/lc($1)/e;' echo '{,A}' ::: "$myvar"
-    parallel --plus echo '{,A}' ::: "$myvar"
-    parallel --plus echo '{2,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo '{-2,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
-    echo ${myvar,,A}
-    parallel --rpl '{,,(.+?)} s/($$1)/lc($1)/eg;' echo '{,,A}' ::: "$myvar"
-    parallel --plus echo '{,,A}' ::: "$myvar"
-    parallel --plus echo '{2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
-    parallel --plus echo '{-2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
-}
 
 par_retries_all_fail() {
     echo "bug #53748: -k --retries 10 + out of filehandles = blocking"
@@ -358,6 +476,7 @@ par_long_line_remote() {
     perl -e 'print((("\$"x5000)."\n")x50)' |
 	parallel -j1 -S lo -N 10000 echo {} |wc
 }
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |

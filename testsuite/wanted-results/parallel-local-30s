@@ -1,3 +1,5 @@
+par_keeporder_roundrobin	bug #50081: --keep-order --round-robin should give predictable results
+par_keeporder_roundrobin	OK
 par_linebuffer_files	bug #48658: --linebuffer --files
 par_linebuffer_files	zstd	normal
 par_linebuffer_files	zstd	100000
@@ -152,6 +154,70 @@ par_no_newline_compress	tagstring=-k compress=-k
 par_no_newline_compress	OK
 par_no_newline_compress	tagstring=-k compress=-k
 par_no_newline_compress	OK
+par_plus_dyn_repl	Dynamic replacement strings defined by --plus
+par_plus_dyn_repl	myval
+par_plus_dyn_repl	myval
+par_plus_dyn_repl	myval
+par_plus_dyn_repl	myval
+par_plus_dyn_repl	myval
+par_plus_dyn_repl	cAaAdef
+par_plus_dyn_repl	cAaAdef
+par_plus_dyn_repl	cAaAdef
+par_plus_dyn_repl	cAaAdef
+par_plus_dyn_repl	cAaAdef
+par_plus_dyn_repl	cAa
+par_plus_dyn_repl	cAa
+par_plus_dyn_repl	cAa
+par_plus_dyn_repl	cAa
+par_plus_dyn_repl	cAa
+par_plus_dyn_repl	9
+par_plus_dyn_repl	9
+par_plus_dyn_repl	1
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	AaAdef
+par_plus_dyn_repl	AaAdef
+par_plus_dyn_repl	AaAdef
+par_plus_dyn_repl	AaAdef
+par_plus_dyn_repl	AaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaA
+par_plus_dyn_repl	abcAaA
+par_plus_dyn_repl	abcAaA
+par_plus_dyn_repl	abcAaA
+par_plus_dyn_repl	abcAaA
+par_plus_dyn_repl	abcAaAghi
+par_plus_dyn_repl	abcAaAghi
+par_plus_dyn_repl	abcAaAghi
+par_plus_dyn_repl	abcAaAghi
+par_plus_dyn_repl	abcAaAghi
+par_plus_dyn_repl	AbcAaAdef
+par_plus_dyn_repl	AbcAaAdef
+par_plus_dyn_repl	AbcAaAdef
+par_plus_dyn_repl	AbcAaAdef
+par_plus_dyn_repl	AbcAaAdef
+par_plus_dyn_repl	AbcAAAdef
+par_plus_dyn_repl	AbcAAAdef
+par_plus_dyn_repl	AbcAAAdef
+par_plus_dyn_repl	AbcAAAdef
+par_plus_dyn_repl	AbcAAAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcAaAdef
+par_plus_dyn_repl	abcaaadef
+par_plus_dyn_repl	abcaaadef
+par_plus_dyn_repl	abcaaadef
+par_plus_dyn_repl	abcaaadef
+par_plus_dyn_repl	abcaaadef
 par_race_condition1	### Test race condition on 8 CPU (my laptop)
 par_race_condition1	1
 par_race_condition1	2
@@ -163,6 +229,8 @@ par_race_condition1	7
 par_race_condition1	8
 par_race_condition1	9
 par_race_condition1	10
+par_round_robin_blocks	bug #49664: --round-robin does not complete
+par_round_robin_blocks	8
 par_shellquote	### Test --shellquote in all shells
 par_shellquote	ash	'	
 par_shellquote	ash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'

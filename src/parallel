@@ -612,7 +612,7 @@ sub group_by_loop($) {
 	if($groupby =~ s/^(\d+)\s*//) {
 	    # Column number (possibly prefix)
 	    $col = $1-1;
-	} elsif($groupby =~ s/^([a-z0-9_]+)\s*//) {
+	} elsif($groupby =~ s/^([a-z0-9_]+)\s*//i) {
 	    # Column name (possibly prefix)
 	    my $colname = $1;
 	    my($read,$char,@line,$header);

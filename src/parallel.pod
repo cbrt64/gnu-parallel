@@ -795,6 +795,75 @@ B<--group> is the default. Can be reversed with B<-u>.
 See also: B<--line-buffer> B<--ungroup>
 
 
+=item B<--group-by> I<val> (alpha testing)
+
+Group input by value. Combined with B<--pipe> B<--group-by> groups
+lines with the same value into a record.
+
+The value can be computed from the full line or from a single column.
+
+I<val> can be:
+
+=over 15
+
+=item Z<> column number
+
+Use the value in the column numbered.
+
+=item Z<> column name
+
+Treat the first line as a header and use the value in the column
+named.
+
+=item Z<> perl expression
+
+Run the perl expression and use $_ as the value.
+
+=item Z<> column number perl expression
+
+Put the value of the column put in $_, run the perl expression, and use $_ as the value.
+
+=item Z<> column name perl expression
+
+Put the value of the column put in $_, run the perl expression, and use $_ as the value.
+
+=back
+
+Example:
+
+  UserID, Consumption
+  123, 1
+  123, 2
+  12-3, 1
+  221, 3
+  221, 1
+  2/21, 5
+
+If you want to group 123, 12-3, 221, and 2/21 into 4 records and pass
+one record at a time to B<wc>:
+
+  tail -n +2 table.csv | \
+    parallel --pipe --colsep , --group-by 1 -kN1 wc
+
+Make GNU B<parallel> treat the first line as a header:
+
+  cat table.csv | \
+    parallel --pipe --colsep , --header : --group-by 1 -kN1 wc
+
+Address column by column name:
+
+  cat table.csv | \
+    parallel --pipe --colsep , --header : --group-by UserID -kN1 wc
+
+If 12-3 and 123 are really the same UserID, remove non-digits in
+UserID when grouping:
+
+  cat table.csv | parallel --pipe --colsep , --header : \
+    --group-by 'UserID s/\D//g' -kN1 wc
+
+See also B<--shard>.
+
+
 =item B<--help>
 
 =item B<-h>

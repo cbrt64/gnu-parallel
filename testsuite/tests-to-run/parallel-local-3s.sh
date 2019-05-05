@@ -4,6 +4,109 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_maxargs() {
+    echo '### Test -n and --max-args: Max number of args per line (only with -X and -m)'
+
+    (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -m echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -m echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k -n1 -X echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k -n2 -X echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k -n1 echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k -n2 echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k --max-args=1 -X echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 -X echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k --max-args=2 -X echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 -X echo
+    (echo line 1;echo line 2;echo line 3) | parallel -k --max-args 1 echo
+    (echo line 1;echo line 1;echo line 2) | parallel -k --max-args 2 echo
+}
+
+par_totaljob_repl() {
+    echo '{##} bug #45841: Replacement string for total no of jobs'
+
+    parallel -k --plus echo {##} ::: {a..j};
+    parallel -k 'echo {= $::G++ > 3 and ($_=$Global::JobQueue->total_jobs());=}' ::: {1..10}
+    parallel -k -N7 --plus echo {#} {##} ::: {1..14}
+    parallel -k -N7 --plus echo {#} {##} ::: {1..15}
+    parallel -k -S 8/: -X --plus echo {#} {##} ::: {1..15}
+}
+
+par_jobslot_repl() {
+    echo 'bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken'
+
+    parallel --bar -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
+    parallel --halt now,fail=10% -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e
+    parallel --eta -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
+    parallel --shuf -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
+
+    echo 'bug #46231: {%} with --pipepart broken. Should give 1+2'
+
+    seq 10000 > /tmp/num10000
+    parallel -k --pipepart -ka /tmp/num10000 --block 10k -j2 --delay 0.05 echo {%}
+    rm /tmp/num10000
+}
+
+par_shard() {
+    echo '### --shard'
+    # Each of the 5 lines should match:
+    #   ##### ##### ######
+    seq 100000 | parallel --pipe --shard 1 -j5  wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Data should be sharded to all processes
+    shard_on_col() {
+	col=$1
+	seq 10 99 | shuf | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard $col -j2 --colsep "\t" sort -k$col |
+	    field $col | uniq -c | sort
+    }
+    shard_on_col 1
+    shard_on_col 2
+    echo '*** broken'
+    # Shorthand for --pipe -j+0
+    seq 100000 | parallel --shard 1 wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Combine with arguments
+    seq 100000 | parallel --shard 1 echo {}\;wc ::: {1..5} ::: a b |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+}
+
+par_distribute_args_at_EOF() {
+    echo '### Test distribute arguments at EOF to 2 jobslots'
+    seq 1 92 | parallel -j2 -kX -s 100 echo
+
+    echo '### Test distribute arguments at EOF to 5 jobslots'
+    seq 1 92 | parallel -j5 -kX -s 100 echo
+
+    echo '### Test distribute arguments at EOF to infinity jobslots'
+    seq 1 92 | parallel -j0 -kX -s 100 echo 2>/dev/null
+
+    echo '### Test -N is not broken by distribution - single line'
+    seq 9 | parallel  -N 10  echo
+
+    echo '### Test -N is not broken by distribution - two lines'
+    seq 19 | parallel -k -N 10  echo
+}
+
+par_test_X_with_multiple_source() {
+    echo '### Test {} multiple times in different commands'
+
+    seq 10 | parallel -v -Xj1 echo {} \; echo {}
+
+    echo '### Test of -X {1}-{2} with multiple input sources'
+
+    parallel -j1 -kX  echo {1}-{2} ::: a ::: b
+    parallel -j2 -kX  echo {1}-{2} ::: a b ::: c d
+    parallel -j2 -kX  echo {1}-{2} ::: a b c ::: d e f
+    parallel -j0 -kX  echo {1}-{2} ::: a b c ::: d e f
+
+    echo '### Test of -X {}-{.} with multiple input sources'
+
+    parallel -j1 -kX  echo {}-{.} ::: a ::: b
+    parallel -j2 -kX  echo {}-{.} ::: a b ::: c d
+    parallel -j2 -kX  echo {}-{.} ::: a b c ::: d e f
+    parallel -j0 -kX  echo {}-{.} ::: a b c ::: d e f
+}
+
 par_resume_failed_k() {
     echo '### bug #38299: --resume-failed -k'
     tmp=$(tempfile)
@@ -28,19 +131,6 @@ par_resume_k() {
     rm -f $tmp
 }
 
-
-par_pipe_unneeded_procs() {
-    echo '### Test bug #34241: --pipe should not spawn unneeded processes'
-    seq 3 | parallel -j30 --pipe --block-size 10 cat\;echo o 2> >(grep -Ev 'Warning: Starting|Warning: Consider')
-}
-
-par_results_arg_256() {
-    echo '### bug #42089: --results with arg > 256 chars (should be 1 char shorter)'
-    parallel --results parallel_test_dir echo ::: 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456;
-    ls parallel_test_dir/1/
-    rm -rf parallel_test_dir
-}
-
 par_slow_args_generation() {
     echo '### Test slow arguments generation - https://savannah.gnu.org/bugs/?32834'
     seq 1 3 | parallel -j1 "sleep 2; echo {}" | parallel -kj2 echo
@@ -63,7 +153,7 @@ par_kill_hup() {
 
     parallel -j 2 -q bash -c 'sleep {} & pid=$!; wait $pid' ::: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 &
     T=$!
-    sleep 2
+    sleep 2.9
     pstree $$
     kill -HUP $T
     sleep 2
@@ -118,32 +208,6 @@ par_pipepart_block() {
     rm /run/shm/parallel$$
 }
 
-par_keeporder_roundrobin() {
-    echo 'bug #50081: --keep-order --round-robin should give predictable results'
-
-    export PARALLEL="-j13 --block 1m --pipe --roundrobin"
-    random500m() {
-	< /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
-	    head -c 500m;
-    }
-    a=$(random500m | parallel -k 'echo {#} $(md5sum)' | sort)
-    b=$(random500m | parallel -k 'echo {#} $(md5sum)' | sort)
-    c=$(random500m | parallel    'echo {#} $(md5sum)' | sort)
-    if [ "$a" == "$b" ] ; then
-	# Good: -k should be == -k
-	if [ "$a" == "$c" ] ; then
-	    # Bad: without -k the command should give different output
-	    echo 'Broken: a == c'
-	    printf "$a\n$b\n$c\n"
-	else
-	    echo OK
-	fi
-    else
-	echo 'Broken: a <> b'
-	printf "$a\n$b\n$c\n"
-    fi
-}
-
 par_multiline_commands() {
     echo 'bug #50781: joblog format with multiline commands'
     rm -f /tmp/jl.$$
@@ -177,7 +241,7 @@ par_sqlandworker_uninstalled_dbd() {
     sudo cp /usr/share/perl5/DBD/CSV.pm.gone /usr/share/perl5/DBD/CSV.pm
     parallel --sqlandworker csv:////%2Ftmp%2Flog.csv echo ::: works
 }
-    
+
 par_commandline_with_newline() {
     echo 'bug #51299: --retry-failed with command with newline'
     echo 'The format must remain the same'
@@ -212,6 +276,7 @@ par_delay_human_readable() {
 par_exitval_signal() {
     echo '### Test --joblog with exitval and Test --joblog with signal -- timing dependent'
     rm -f /tmp/parallel_sleep
+    rm -f mysleep
     cp /bin/sleep mysleep
     chmod +x mysleep
     parallel --joblog /tmp/parallel_joblog_signal \
@@ -226,7 +291,7 @@ par_exitval_signal() {
     wait
     grep -q 134 /tmp/parallel_joblog_exitval && echo exitval=128+6 OK
     grep -q '[^0-9]6[^0-9]' /tmp/parallel_joblog_signal && echo signal OK
-    
+
     rm -f /tmp/parallel_joblog_exitval /tmp/parallel_joblog_signal
 }
 
@@ -314,7 +379,7 @@ par_lb_mem_usage() {
 
 par_groupby() {
     tsv() {
-	printf "%s\t" a1 b1 c1; echo
+	printf "%s\t" a1 b1 C1; echo
 	printf "%s\t" 2 2 2; echo
 	printf "%s\t" 3 2 2; echo
 	printf "%s\t" 3 3 2; echo
@@ -326,7 +391,7 @@ par_groupby() {
 
     ssv() {
 	# space separated
-	printf "%s\t" a1 b1 c1; echo
+	printf "%s\t" a1 b1 C1; echo
 	printf "%s " 2 2 2; echo
 	printf "%s \t" 3 2 2; echo
 	printf "%s\t " 3 3 2; echo
@@ -338,7 +403,7 @@ par_groupby() {
 
     cssv() {
 	# , + space separated
-	printf "%s,\t" a1 b1 c1; echo
+	printf "%s,\t" a1 b1 C1; echo
 	printf "%s ," 2 2 2; echo
 	printf "%s  ,\t" 3 2 2; echo
 	printf "%s\t, " 3 3 2; echo
@@ -350,7 +415,7 @@ par_groupby() {
 
     csv() {
 	# , separated
-	printf "%s," a1 b1 c1; echo
+	printf "%s," a1 b1 C1; echo
 	printf "%s," 2 2 2; echo
 	printf "%s," 3 2 2; echo
 	printf "%s," 3 3 2; echo
@@ -372,18 +437,20 @@ par_groupby() {
     export -f tester
     parallel --tag -k tester \
 	     ::: -N1 '--block 20' \
-	     ::: '3 $_%=2' 3 's/^(.).*/$1/' c1 'c1 $_%=2' \
+	     ::: '3 $_%=2' 3 's/^(.).*/$1/' C1 'C1 $_%=2' \
 	     ::: tsv ssv cssv csv \
-	     :::+ '\t' '\s+' '[\s,]+' ',' \
+	     :::+ '\t' '\s+' '[\s,]+' ','
 
-    # Test --colsep char
-    # Test --colsep pattern
-    # Test --colsep -N1
-    # Test --colsep --block 20
-    # Test --groupby col
-    # Test --groupby 'col perl'
-    # Test space sep --colsep '\s'
-    # Test --colsep --header :
+    # Test --colsep char: OK
+    # Test --colsep pattern: OK
+    # Test --colsep -N1: OK
+    # Test --colsep --block 20: OK
+    # Test --groupby colno: OK
+    # Test --groupby 'colno perl': OK
+    # Test --groupby colname: OK
+    # Test --groupby 'colname perl': OK
+    # Test space sep --colsep '\s': OK
+    # Test --colsep --header : (OK: --header : not needed)
 }
 
 export -f $(compgen -A function | grep par_)

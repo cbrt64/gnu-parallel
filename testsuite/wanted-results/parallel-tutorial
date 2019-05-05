@@ -1,7 +1,15 @@
 ### test parallel_tutorial
-   fetch -o - http://pi.dk/3) | bash
+     fetch -o - http://pi.dk/3 ) > install.sh
+  $ sha1sum install.sh
+  12345678 3374ec53 bacb199b 245af2dd a86df6c9
+  $ md5sum install.sh
+  029a9ac0 6e8b5bc6 052eac57 b2c3c9ca
+  $ sha512sum install.sh
+  40f53af6 9e20dae5 713ba06c f517006d 9897747b ed8a4694 b1acba1b 1464beb4
+  60055629 3f2356f3 3e9c4e3c 76e3f3af a9db4b32 bd33322b 975696fc e6b23cfb
+  $ bash install.sh
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `   fetch -o - http://pi.dk/3) | bash'
+/bin/bash: -c: line 0: `     fetch -o - http://pi.dk/3 ) > install.sh'
 
   parallel -k echo ::: A B C > abc-file
   parallel -k echo ::: D E F > def-file

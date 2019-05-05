@@ -149,6 +149,8 @@ par_test_detected_shell() {
     test_unknown_shell() {
 	shell="$1"
 	tmp="/tmp/test_unknown_shell_$shell"
+	# Remove the file to avoid potential text-file-busy
+	rm -f "$tmp"
 	cp $(which "$shell") "$tmp"
 	chmod +x "$tmp"
 	$tmp -c 'parallel -Dinit echo ::: 1; true' |
@@ -247,6 +249,117 @@ par_macron() {
     print_it "$(perl -e 'print "\257"')"
     print_it "$(perl -e 'print "\257\256"')"
     print_it "$(perl -e 'print "\257<\257<\257>\257>"')"
+}
+
+par_round_robin_blocks() {
+    echo "bug #49664: --round-robin does not complete"
+    seq 20000000 | parallel -j8 --block 10M --round-robin --pipe wc -c | wc -l
+}
+
+par_plus_dyn_repl() {
+    echo "Dynamic replacement strings defined by --plus"
+
+    unset myvar
+    echo ${myvar:-myval}
+    parallel --rpl '{:-(.+)} $_ ||= $$1' echo {:-myval} ::: "$myvar"
+    parallel --plus echo {:-myval} ::: "$myvar"
+    parallel --plus echo {2:-myval} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2:-myval} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    myvar=abcAaAdef
+    echo ${myvar:2}
+    parallel --rpl '{:(\d+)} substr($_,0,$$1) = ""' echo {:2} ::: "$myvar"
+    parallel --plus echo {:2} ::: "$myvar"
+    parallel --plus echo {2:2} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2:2} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    echo ${myvar:2:3}
+    parallel --rpl '{:(\d+?):(\d+?)} $_ = substr($_,$$1,$$2);' echo {:2:3} ::: "$myvar"
+    parallel --plus echo {:2:3} ::: "$myvar"
+    parallel --plus echo {2:2:3} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2:2:3} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    echo ${#myvar}
+    parallel --rpl '{#} $_ = length $_;' echo {#} ::: "$myvar"
+    # {#} used for job number
+    parallel --plus echo {#} ::: "$myvar"
+
+    echo ${myvar#bc}
+    parallel --rpl '{#(.+?)} s/^$$1//;' echo {#bc} ::: "$myvar"
+    parallel --plus echo {#bc} ::: "$myvar"
+    parallel --plus echo {2#bc} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2#bc} ::: "wrong" ::: "$myvar" ::: "wrong"
+    echo ${myvar#abc}
+    parallel --rpl '{#(.+?)} s/^$$1//;' echo {#abc} ::: "$myvar"
+    parallel --plus echo {#abc} ::: "$myvar"
+    parallel --plus echo {2#abc} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2#abc} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    echo ${myvar%de}
+    parallel --rpl '{%(.+?)} s/$$1$//;' echo {%de} ::: "$myvar"
+    parallel --plus echo {%de} ::: "$myvar"
+    parallel --plus echo {2%de} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2%de} ::: "wrong" ::: "$myvar" ::: "wrong"
+    echo ${myvar%def}
+    parallel --rpl '{%(.+?)} s/$$1$//;' echo {%def} ::: "$myvar"
+    parallel --plus echo {%def} ::: "$myvar"
+    parallel --plus echo {2%def} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2%def} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    echo ${myvar/def/ghi}
+    parallel --rpl '{/(.+?)/(.+?)} s/$$1/$$2/;' echo {/def/ghi} ::: "$myvar"
+    parallel --plus echo {/def/ghi} ::: "$myvar"
+    parallel --plus echo {2/def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2/def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    echo ${myvar^a}
+    parallel --rpl '{^(.+?)} s/^($$1)/uc($1)/e;' echo {^a} ::: "$myvar"
+    parallel --plus echo {^a} ::: "$myvar"
+    parallel --plus echo {2^a} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2^a} ::: "wrong" ::: "$myvar" ::: "wrong"
+    echo ${myvar^^a}
+    parallel --rpl '{^^(.+?)} s/($$1)/uc($1)/eg;' echo {^^a} ::: "$myvar"
+    parallel --plus echo {^^a} ::: "$myvar"
+    parallel --plus echo {2^^a} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2^^a} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    myvar=AbcAaAdef
+    echo ${myvar,A}
+    parallel --rpl '{,(.+?)} s/^($$1)/lc($1)/e;' echo '{,A}' ::: "$myvar"
+    parallel --plus echo '{,A}' ::: "$myvar"
+    parallel --plus echo '{2,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo '{-2,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
+    echo ${myvar,,A}
+    parallel --rpl '{,,(.+?)} s/($$1)/lc($1)/eg;' echo '{,,A}' ::: "$myvar"
+    parallel --plus echo '{,,A}' ::: "$myvar"
+    parallel --plus echo '{2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo '{-2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
+}
+
+par_keeporder_roundrobin() {
+    echo 'bug #50081: --keep-order --round-robin should give predictable results'
+
+    export PARALLEL="-j13 --block 1m --pipe --roundrobin"
+    random500m() {
+	< /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
+	    head -c 500m;
+    }
+    a=$(random500m | parallel -k 'echo {#} $(md5sum)' | sort)
+    b=$(random500m | parallel -k 'echo {#} $(md5sum)' | sort)
+    c=$(random500m | parallel    'echo {#} $(md5sum)' | sort)
+    if [ "$a" == "$b" ] ; then
+	# Good: -k should be == -k
+	if [ "$a" == "$c" ] ; then
+	    # Bad: without -k the command should give different output
+	    echo 'Broken: a == c'
+	    printf "$a\n$b\n$c\n"
+	else
+	    echo OK
+	fi
+    else
+	echo 'Broken: a <> b'
+	printf "$a\n$b\n$c\n"
+    fi
 }
 
 export -f $(compgen -A function | grep par_)
