@@ -189,5 +189,13 @@ par_test_build_and_install() {
 	sudo parallel mv {} {.}
 }
 
+#par_crashing() {
+#    echo '### bug #56322: sem crashed when running with input from seq'
+#    echo "### This should not fail"
+#    doit() { seq 100000000 |xargs -P 80 -n 1 sem true; }
+#    export -f doit
+#    parallel -j1 --timeout 100 --nice 11 doit ::: 1
+#}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort | parallel -vj0 -k --tag --joblog /tmp/jl-`basename $0` '{} 2>&1'

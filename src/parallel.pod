@@ -797,8 +797,8 @@ See also: B<--line-buffer> B<--ungroup>
 
 =item B<--group-by> I<val> (alpha testing)
 
-Group input by value. Combined with B<--pipe> B<--group-by> groups
-lines with the same value into a record.
+Group input by value. Combined with B<--pipe>/B<--pipepart>
+B<--group-by> groups lines with the same value into a record.
 
 The value can be computed from the full line or from a single column.
 
@@ -815,6 +815,8 @@ Use the value in the column numbered.
 Treat the first line as a header and use the value in the column
 named.
 
+(Not supported with B<--pipepart>).
+
 =item Z<> perl expression
 
 Run the perl expression and use $_ as the value.
@@ -827,17 +829,19 @@ Put the value of the column put in $_, run the perl expression, and use $_ as th
 
 Put the value of the column put in $_, run the perl expression, and use $_ as the value.
 
+(Not supported with B<--pipepart>).
+
 =back
 
 Example:
 
   UserID, Consumption
-  123, 1
-  123, 2
-  12-3, 1
-  221, 3
-  221, 1
-  2/21, 5
+  123,    1
+  123,    2
+  12-3,   1
+  221,    3
+  221,    1
+  2/21,   5
 
 If you want to group 123, 12-3, 221, and 2/21 into 4 records and pass
 one record at a time to B<wc>:
@@ -861,7 +865,7 @@ UserID when grouping:
   cat table.csv | parallel --pipe --colsep , --header : \
     --group-by 'UserID s/\D//g' -kN1 wc
 
-See also B<--shard>.
+See also B<--shard>, B<--roundrobin>.
 
 
 =item B<--help>
@@ -1975,6 +1979,8 @@ impossible to track which input block corresponds to which output.
 
 B<--roundrobin> implies B<--pipe>, except if B<--pipepart> is given.
 
+See also B<--group-by>, B<--shard>.
+
 
 =item B<--rpl> 'I<tag> I<perl expression>'
 
@@ -2163,6 +2169,8 @@ The performance is in the order of 100K rows per second. Faster if the
 I<shardkey> is small (<10), slower if it is big (>100).
 
 B<--shard> requires B<--pipe> and a fixed numeric value for B<--jobs>.
+
+See also B<--group-by>, B<--roundrobin>.
 
 
 =item B<--shebang>
@@ -4461,6 +4469,46 @@ files:
 
   $ tracefile -un ./configure | tail | parallel -j0 apt-file search
 
+
+=head1 SPREADING BLOCKS OF DATA
+
+B<--round-robin>, B<--pipe-part>, B<--shard>, and B<--group-by> are
+all specialized versions of B<--pipe>.
+
+In the following I<n> is the number of jobslots given by B<--jobs>. A
+record starts with B<--recstart> and ends with B<--recend>. It is
+typically a full line. A chunk is a number of full records that is
+approximately the size of a block. A block can contain half records, a
+chunk cannot.
+
+B<--pipe> starts one job per chunk. It reads blocks from stdin
+(standard input). It finds a record end near a block border and passes
+a chunk to the program.
+
+B<--pipe-part> starts one job per chunk - just like normal
+B<--pipe>. It first finds record endings near all block borders in the
+file and then starts the jobs. By using B<--block -1> it will set the
+block size to 1/I<n> * size-of-file. Used this way it will start I<n>
+jobs in total.
+
+B<--round-robin> starts I<n> jobs in total. It reads a block and
+passes a chunk to whichever job is ready to read. It does not parse
+the content except for identifying where a record ends to make sure it
+only passes full records.
+
+B<--shard> starts I<n> jobs in total. It parses each line to read the
+value in the given column. Based on this value the line is passed to
+one of the I<n> jobs. All lines having this value will be given to the
+same jobslot.
+
+B<--group-by> starts one job per chunk. Record borders are not given
+by B<--recend>/B<--recstart>. Instead a record is defined by a number
+of lines having the same value in a given column. So the value of a
+given column changes at a chunk border. With B<--pipe> every line is
+parsed, with B<--pipe-part> only a few lines are parsed to find the
+chunk border.
+
+B<--group-by> can be combined with B<--round-robin> or B<--pipe-part>.
 
 =head1 QUOTING
 

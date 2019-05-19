@@ -462,7 +462,7 @@ sub pipe_part_files(@) {
     }
     my $header = find_header(\$buf,open_or_exit($file));
     # find positions
-    my @pos = find_split_positions($file,$Global::blocksize,length $header);
+    my @pos = find_split_positions($file,$Global::blocksize,$header);
     # Make @cat_prepends
     my @cat_prepends = ();
     for(my $i=0; $i<$#pos; $i++) {
@@ -507,19 +507,23 @@ sub find_split_positions($$$) {
     # Input:
     #   $file = the file to read
     #   $block = (minimal) --block-size of each chunk
-    #   $headerlen = length of header to be skipped
+    #   $header = header to be skipped
     # Uses:
     #   $opt::recstart
     #   $opt::recend
     # Returns:
     #   @positions of block start/end
-    my($file, $block, $headerlen) = @_;
+    my($file, $block, $header) = @_;
+    my $headerlen = length $header;
     my $size = -s $file;
     if(-b $file) {
 	# $file is a blockdevice
 	$size = size_of_block_dev($file);
     }
     $block = int $block;
+    if($opt::groupby) {
+	return split_positions_for_group_by($file,$size,$block,$header);
+    }
     # The optimal dd blocksize for mint, redhat, solaris, openbsd = 2^17..2^20
     # The optimal dd blocksize for freebsd = 2^15..2^17
     my $dd_block_size = 131072; # 2^17
@@ -563,9 +567,123 @@ sub find_split_positions($$$) {
     }
     if($pos[$#pos] != $size) {
 	# Last splitpoint was not at end of the file: add it
-	push(@pos,$size);
+	push @pos, $size;
     }
     close $fh;
+    return @pos;
+}
+
+sub split_positions_for_group_by($$$$) {
+    my($fh);
+    sub value_at($) {
+	my $pos = shift;
+	if($pos != 0) {
+	    seek($fh, $pos-1, 0) || die;
+	    # Read half line
+	    <$fh>;
+	}
+	# Read full line
+	my $linepos = tell($fh);
+	$_ = <$fh>;
+	if(defined $_) {
+	    # Not end of file
+	    my @F;
+	    if(defined $Global::group_by_column) {
+		$opt::colsep ||= "\t";
+		@F = split /$opt::colsep/, $_;
+		$_ = $F[$Global::group_by_column];
+	    }
+	    eval $Global::group_by_perlexpr;
+	}
+	return ($_,$linepos);
+    }
+
+    sub binary_search_end($$$) {
+	my ($s,$spos,$epos) = @_;
+	# value_at($spos) == $s
+	# value_at($epos) != $s
+	my $posdif = $epos - $spos;
+	my ($v,$vpos);
+	while($posdif) {
+	    ($v,$vpos) = value_at($spos+$posdif);
+	    if($v eq $s) {
+		$spos = $vpos;
+		$posdif = $epos - $spos;
+	    } else {
+		$epos = $vpos;
+	    }
+	    $posdif = int($posdif/2);
+	}
+	return($v,$vpos);
+    }
+
+    sub binary_search_start($$$) {
+	my ($s,$spos,$epos) = @_;
+	# value_at($spos) != $s
+	# value_at($epos) == $s
+	my $posdif = $epos - $spos;
+	my ($v,$vpos);
+	while($posdif) {
+	    ($v,$vpos) = value_at($spos+$posdif);
+	    if($v eq $s) {
+		$epos = $vpos;
+	    } else {
+		$spos = $vpos;
+		$posdif = $epos - $spos;
+	    }
+	    $posdif = int($posdif/2);
+	}
+	return($v,$vpos);
+    }
+
+    my ($file,$size,$block,$header) = @_;
+    my ($a,$b,$c,$apos,$bpos,$cpos);
+    my @pos;
+    $fh = open_or_exit($file);
+    # Set $Global::group_by_column $Global::group_by_perlexpr
+    group_by_loop($opt::recsep);
+    # $xpos = linestart, $x = value at $xpos, $apos < $bpos < $cpos
+    $apos = length $header;
+    for(($a,$apos) = value_at($apos); $apos < $size;) {
+	push @pos, $apos;
+	$bpos = $apos + $block;
+	($b,$bpos) = value_at($bpos);
+	if(eof($fh)) {
+	    push @pos, $size; last;
+	}
+	$cpos = $bpos + $block;
+	($c,$cpos) = value_at($cpos);
+	if($a eq $b) {
+	    while($b eq $c) {
+		# Move bpos, cpos a block forward until $a == $b != $c
+		$bpos = $cpos;
+		$cpos += $block;
+		($c,$cpos) = value_at($cpos);
+		if($cpos >= $size) {
+		    $cpos = $size;
+		    last;
+		}
+	    }
+	    # $a == $b != $c
+	    # Binary search for $b ending between ($bpos,$cpos)
+	    ($b,$bpos) = binary_search_end($b,$bpos,$cpos);
+	} else {
+	    if($b eq $c) {
+		# $a != $b == $c
+		# Binary search for $b starting between ($apos,$bpos)
+		($b,$bpos) = binary_search_start($b,$apos,$bpos);
+	    } else {
+		# $a != $b != $c
+		# Binary search for $b ending between ($bpos,$cpos)
+		($b,$bpos) = binary_search_end($b,$bpos,$cpos);
+	    }
+	}
+	($a,$apos) = ($b,$bpos);
+    }
+    if($pos[$#pos] != $size) {
+	# Last splitpoint was not at end of the file: add it
+	push @pos, $size;
+    }
     return @pos;
 }
 
@@ -637,6 +755,8 @@ sub group_by_loop($) {
     }
     # What is left of $groupby is $perlexpr
     $perlexpr = $groupby;
+    $Global::group_by_perlexpr = $perlexpr;
+    $Global::group_by_column = $col;
 
     my $loop = ::spacefree(0,'{
 	local $_=COLVALUE;
@@ -1792,7 +1912,7 @@ sub check_invalid_option_combinations() {
             ::wait_and_exit(255);
     }
     if($opt::groupby) {
-	if(not $opt::pipe) {
+	if(not $opt::pipe and not $opt::pipepart) {
 	    $opt::pipe = 1;
 	}
 	if($opt::remove_rec_sep) {
@@ -1805,12 +1925,6 @@ sub check_invalid_option_combinations() {
 	}
 	if($opt::recend ne "\n") {
 	    ::error("--recend is not compatible with --groupby");
-            ::wait_and_exit(255);
-	}
-	if($opt::pipepart) {
-	    # TODO This may be possible to do later
-	    # Finding split points might be a bitch though
-	    ::error("--pipepart is not compatible with --groupby");
             ::wait_and_exit(255);
 	}
     }
@@ -12558,7 +12672,7 @@ sub main() {
 	pipe_shard_setup();
     }
 
-    if($opt::groupby) {
+    if(not $opt::pipepart and $opt::groupby) {
 	group_by_stdin_filter();
     }
     if($opt::eta or $opt::bar or $opt::shuf or $Global::halt_pct) {

@@ -206,7 +206,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190522 ('') released <<[stable]>>
+Subject: GNU Parallel 20190522 ('Akihito') released <<[stable]>>
 
 GNU Parallel 20190522 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -222,6 +222,12 @@ Quote of the month:
 
 
 New in this release:
+
+* --group-by groups lines depending on value of a column. The value can be computed.
+
+* How to compress (bzip / gzip) a very large text quickly? https://medium.com/@gchandra/how-to-compress-bzip-gzip-a-very-large-text-quickly-27c11f4c6681
+
+* Simple tutorial to install & use GNU Parallel https://medium.com/@gchandra/simple-tutorial-to-install-use-gnu-parallel-79251120d618
 
 * Introducing Parallel into Shell https://petelawson.com/post/parallel-in-shell/
 
