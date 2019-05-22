@@ -1,3 +1,20 @@
+20190522
+
+* --group-by groups lines depending on value of a column. The value
+  can be computed.
+
+* How to compress (bzip / gzip) a very large text quickly?
+  https://medium.com/@gchandra/how-to-compress-bzip-gzip-a-very-large-text-quickly-27c11f4c6681
+
+* Simple tutorial to install & use GNU Parallel
+  https://medium.com/@gchandra/simple-tutorial-to-install-use-gnu-parallel-79251120d618
+
+* Introducing Parallel into Shell
+  https://petelawson.com/post/parallel-in-shell/
+
+* Bug fixes and man page updates.
+
+
 20190422
 
 * Invitation to the 10 years anniversary next year.
