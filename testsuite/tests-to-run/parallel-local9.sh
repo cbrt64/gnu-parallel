@@ -162,7 +162,7 @@ echo '### Test {#.}'
 $XAP -kv -a <(echo a-noext) -a <(echo b-withext.extension) -a <(echo c-ext.gif) echo {3.} {2.} {1.}
 
 echo "### Tests that failed for OO-rewrite"
-parallel -u --semaphore seq 1 10 '|' pv -qL 20; sem --wait; echo done
+parallel -u --semaphore --id local9 seq 1 10 '|' pv -qL 20; sem --id local9 --wait; echo done
 echo a | parallel echo {1}
 echo "echo a" | parallel
 nice parallel -j1 -I :: -X echo 'a::b::^c::[.}c' ::: 1

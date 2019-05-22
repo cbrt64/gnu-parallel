@@ -679,7 +679,7 @@ par_pipe_N1_regexp() {
 
 par_sem_quote() {
     echo '### sem --quote should not add empty argument'
-    sem --fg --quote -v echo
+    sem --id sem_quote --fg --quote -v echo
 }
 
 par_halt_on_error_division_by_zero() {

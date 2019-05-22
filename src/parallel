@@ -588,12 +588,12 @@ sub split_positions_for_group_by($$$$) {
 	if(defined $_) {
 	    # Not end of file
 	    my @F;
-	    if(defined $Global::group_by_column) {
+	    if(defined $group_by::col) {
 		$opt::colsep ||= "\t";
 		@F = split /$opt::colsep/, $_;
-		$_ = $F[$Global::group_by_column];
+		$_ = $F[$group_by::col];
 	    }
-	    eval $Global::group_by_perlexpr;
+	    eval $group_by::perlexpr;
 	}
 	return ($_,$linepos);
     }
@@ -641,7 +641,7 @@ sub split_positions_for_group_by($$$$) {
     my @pos;
     $fh = open_or_exit($file);
     # Set $Global::group_by_column $Global::group_by_perlexpr
-    group_by_loop($opt::recsep);
+    group_by_loop($fh,$opt::recsep);
     # $xpos = linestart, $x = value at $xpos, $apos < $bpos < $cpos
     $apos = length $header;
     for(($a,$apos) = value_at($apos); $apos < $size;) {
@@ -718,45 +718,67 @@ sub cat_partial($@) {
 	" perl -e '$script' @start_len |";
 }
 
-sub group_by_loop($) {
-    # Generate perl code for group-by loop
-    # Insert a $recsep when the column value changes
-    # The column value can be computed with $perexpr
-    my($recsep) = @_;
-    my $groupby = $opt::groupby;
-    my ($col,$perlexpr);
-    if($groupby =~ /^[a-z0-9_]+(\s|$)/i) {
+sub column_perlexpr($$$) {
+    # Compute the column number (if any), perlexpression from combined
+    # string (such as --shard key, --groupby key, {=n perlexpr=}
+    # Input:
+    #   $column_perlexpr = string with column and perl expression
+    #   $header = header from input file (if column is column name)
+    #   $colsep = column separator regexp
+    # Returns:
+    #   $col = column number
+    #   $perlexpr = perl expression
+    #   $subref = compiled perl expression as sub reference
+    my ($column_perlexpr, $header, $colsep) = @_;
+    my ($col, $perlexpr, $subref);
+    if($column_perlexpr =~ /^[-a-z0-9_]+(\s|$)/i) {
 	# Column name/number (possibly prefix)
-	if($groupby =~ s/^(\d+)\s*//) {
+	if($column_perlexpr =~ s/^(-?\d+)(\s|$)//) {
 	    # Column number (possibly prefix)
-	    $col = $1-1;
-	} elsif($groupby =~ s/^([a-z0-9_]+)\s*//i) {
+	    $col = $1;
+	} elsif($column_perlexpr =~ s/^([a-z0-9_]+)(\s+|$)//i) {
 	    # Column name (possibly prefix)
 	    my $colname = $1;
-	    my($read,$char,@line,$header);
-	    # A full line, but nothing more (the rest must be read by the child)
-	    do {
-		$read = sysread(STDIN,$char,1);
-		push @line, $char;
-	    } while($read and $char ne "\n");
-	    # $Global::header used to prepend block to each job
-	    $Global::header = join "", @line;
 	    # Split on --copsep pattern
-	    my @headers = split/$opt::colsep/, $Global::header;
+	    my @headers = split /$colsep/, $header;
 	    my %headers;
-	    # Numbered 0..n-1 due to being used by $F[n]
-	    @headers{@headers} = (0..$#headers);
+	    @headers{@headers} = (1..($#headers+1));
 	    $col = $headers{$colname};
 	    if(not defined $col) {
-		::error("Column '$colname' $opt::colsep not found in header",keys %headers);
+		::error("Column '$colname' $colsep not found in header",keys %headers);
 		::wait_and_exit(255);
 	    }
 	}
     }
-    # What is left of $groupby is $perlexpr
-    $perlexpr = $groupby;
-    $Global::group_by_perlexpr = $perlexpr;
-    $Global::group_by_column = $col;
+    # What is left of $column_perlexpr is $perlexpr (possibly empty)
+    $perlexpr = $column_perlexpr;
+    $subref = eval("sub { no strict; no warnings; $perlexpr }");
+    return($col, $perlexpr, $subref);
+}
+
+sub group_by_loop($$) {
+    # Generate perl code for group-by loop
+    # Insert a $recsep when the column value changes
+    # The column value can be computed with $perexpr
+    my($fh,$recsep) = @_;
+    my $groupby = $opt::groupby;
+    if($groupby =~ /^[a-z_][a-z_0-9]*(\s|$)/i) {
+	# Group by column name
+	# (Yes, this will also wrongly match a perlexpr like: chop)
+	my($read,$char,@line);
+	# A full line, but nothing more (the rest must be read by the child)
+	# $Global::header used to prepend block to each job
+        do {
+	    $read = sysread($fh,$char,1);
+	    push @line, $char;
+	} while($read and $char ne "\n");
+	$Global::header = join "", @line;
+    }
+    $opt::colsep ||= "\t";
+    ($group_by::col, $group_by::perlexpr, $group_by::subref) =
+	column_perlexpr($groupby, $Global::header, $opt::colsep);
+    # Numbered 0..n-1 due to being used by $F[n]
+    if($group_by::col) { $group_by::col--; }
 
     my $loop = ::spacefree(0,'{
 	local $_=COLVALUE;
@@ -768,12 +790,12 @@ sub group_by_loop($) {
 	}
     }');
 
-    if(defined $col) {
-	$loop =~ s/COLVALUE/\$F[$col]/g;
+    if(defined $group_by::col) {
+	$loop =~ s/COLVALUE/\$F[$group_by::col]/g;
     } else {
 	$loop =~ s/COLVALUE/\$_/g;
     }
-    $loop =~ s/PERLEXPR/$perlexpr/g;
+    $loop =~ s/PERLEXPR/$group_by::perlexpr/g;
     $loop =~ s/RECSEP/$recsep/g;
     return $loop;
 }
@@ -797,7 +819,7 @@ sub group_by_stdin_filter() {
 	push @filter, "-F$sep";
     }
     push @filter, "-pe";
-    push @filter, group_by_loop($opt::recstart);
+    push @filter, group_by_loop(*STDIN,$opt::recstart);
     ::debug("init", "@filter\n");
     open(STDIN, '-|', @filter) || die ("Cannot start @filter");
 }

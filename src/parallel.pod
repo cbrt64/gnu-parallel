@@ -2155,18 +2155,18 @@ Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
 See also B<--env>, B<--record-env>.
 
 
-=item B<--shard> I<shardkey> (beta testing)
+=item B<--shard> I<shardcol> (beta testing)
 
-Use column I<shardkey> as shard key and shard input to the jobs.
+Use column I<shardcol> as shard key and shard input to the jobs.
 
 Each input line is split using B<--colsep>. The value in the
-I<shardkey> column is hashed so that all lines of a given value is
+I<shardcol> column is hashed so that all lines of a given value is
 given to the same job slot.
 
 This is similar to sharding in databases.
 
 The performance is in the order of 100K rows per second. Faster if the
-I<shardkey> is small (<10), slower if it is big (>100).
+I<shardcol> is small (<10), slower if it is big (>100).
 
 B<--shard> requires B<--pipe> and a fixed numeric value for B<--jobs>.
 
@@ -2968,6 +2968,14 @@ symlinks are empty files.
 Find the files in a list that do not exist
 
   cat file_list | parallel 'if [ ! -e {} ] ; then echo {}; fi'
+
+
+=head1 EXAMPLE: Composed command with perl replacement string
+
+You have a bunch of file. You want them sorted into dirs. The dir of
+each file should be named the first letter of the file name.
+
+  parallel 'mkdir -p {=s/(.).*/$1/=}; mv {} {=s/(.).*/$1/=}' ::: *
 
 
 =head1 EXAMPLE: Composed command with multiple input sources

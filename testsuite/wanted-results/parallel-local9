@@ -369,7 +369,7 @@ echo c-ext b-withext a-noext
 c-ext b-withext a-noext
 echo "### Tests that failed for OO-rewrite"
 ### Tests that failed for OO-rewrite
-parallel -u --semaphore seq 1 10 '|' pv -qL 20; sem --wait; echo done
+parallel -u --semaphore --id local9 seq 1 10 '|' pv -qL 20; sem --id local9 --wait; echo done
 1
 2
 3

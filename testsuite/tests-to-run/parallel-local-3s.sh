@@ -453,6 +453,49 @@ par_groupby() {
     # Test --colsep --header : (OK: --header : not needed)
 }
 
+par_groupby_pipepart() {
+    tsv() {
+	printf "%s\t" a1 b1 c1 d1 e1 f1; echo
+	seq 100000 999999 | perl -pe '$_=join"\t",split//' |
+	    sort --parallel=8 --buffer-size=50% -rk3
+    }
+    export -f tsv
+
+    ssv() {
+	# space separated
+	tsv | perl -pe '@sep=("\t"," "); s/\t/$sep[rand(2)]/ge;'
+    }
+    export -f ssv
+
+    cssv() {
+	# , + space separated
+	tsv | perl -pe '@sep=("\t"," ",","); s/\t/$sep[rand(2)].$sep[rand(2)]/ge;'
+    }
+    export -f cssv
+
+    csv() {
+	# , separated
+	tsv | perl -pe 's/\t/,/g;'
+    }
+    export -f csv
+
+    tester() {
+	generator="$1"
+	colsep="$2"
+	groupby="$3"
+	tmp=`tempfile`
+	
+	echo "### test $generator | --colsep $colsep --groupby $groupby"
+	$generator > $tmp
+	parallel --pipepart -a $tmp --colsep "$colsep" --groupby "$groupby" -k 'echo NewRec; wc'
+    }
+    export -f tester
+    parallel --tag -k tester \
+	     ::: tsv ssv cssv csv \
+	     :::+ '\t' '\s+' '[\s,]+' ',' \
+	     ::: '3 $_%=2' 3 c1 'c1 $_%=2' 's/^(\d+[\t ,]+){2}(\d+).*/$2/'
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

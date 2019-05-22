@@ -647,6 +647,450 @@ par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer tha
 par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
 par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
 par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby_pipepart	tsv \t 3 $_%=2	### test tsv | --colsep \t --groupby 3 $_%=2
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	      1       6      19
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	### test tsv | --colsep \t --groupby 3
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	      1       6      19
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	### test tsv | --colsep \t --groupby c1
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90001  540006 1170019
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	### test tsv | --colsep \t --groupby c1 $_%=2
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90001  540006 1170019
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test tsv | --colsep \t --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       6      19
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	### test ssv | --colsep \s+ --groupby 3 $_%=2
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	      1       6      19
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	### test ssv | --colsep \s+ --groupby 3
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	      1       6      19
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	### test ssv | --colsep \s+ --groupby c1
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90001  540006 1170019
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	### test ssv | --colsep \s+ --groupby c1 $_%=2
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90001  540006 1170019
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test ssv | --colsep \s+ --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       6      19
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	### test cssv | --colsep [\s,]+ --groupby 3 $_%=2
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	      1       6      25
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	### test cssv | --colsep [\s,]+ --groupby 3
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	      1       6      25
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	### test cssv | --colsep [\s,]+ --groupby c1
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90001  540006 1710025
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	### test cssv | --colsep [\s,]+ --groupby c1 $_%=2
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90001  540006 1710025
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test cssv | --colsep [\s,]+ --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       6      25
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	csv , 3 $_%=2	### test csv | --colsep , --groupby 3 $_%=2
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	      1       1      19
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	### test csv | --colsep , --groupby 3
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	      1       1      19
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	### test csv | --colsep , --groupby c1
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90001   90001 1170019
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	### test csv | --colsep , --groupby c1 $_%=2
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90001   90001 1170019
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test csv | --colsep , --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       1      19
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
 par_jobslot_repl	bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken
 par_jobslot_repl	1
 par_jobslot_repl	2
