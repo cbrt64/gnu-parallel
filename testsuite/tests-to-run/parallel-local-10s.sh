@@ -4,6 +4,18 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_kill_hup() {
+    echo '### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end'
+
+    parallel -j 2 -q bash -c 'sleep {} & pid=$!; wait $pid' ::: 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 &
+    T=$!
+    sleep 9.9
+    pstree $$
+    kill -HUP $T
+    sleep 2
+    pstree $$
+}
+
 par_parset() {
     echo '### test parset'
     . `which env_parallel.bash`

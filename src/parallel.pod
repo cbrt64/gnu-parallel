@@ -2155,13 +2155,17 @@ Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
 See also B<--env>, B<--record-env>.
 
 
-=item B<--shard> I<shardcol> (beta testing)
+=item B<--shard> I<shardexpr> (alpha testing)
 
-Use column I<shardcol> as shard key and shard input to the jobs.
+Use I<shardexpr> as shard key and shard input to the jobs.
 
-Each input line is split using B<--colsep>. The value in the
-I<shardcol> column is hashed so that all lines of a given value is
-given to the same job slot.
+I<shardexpr> is [column number|column name] [perlexpression] e.g. 3,
+Address, 3 $_%=100, Address s/\d//g.
+
+Each input line is split using B<--colsep>. The value of the column is
+put into $_, the perl expression is executed, the resulting value is
+hashed so that all lines of a given value is given to the same job
+slot.
 
 This is similar to sharding in databases.
 

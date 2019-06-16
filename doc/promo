@@ -38,11 +38,20 @@ newest version.
 
 Before GNU Parallel was a GNU tool, it started as a wrapper around
 `make -j`. But GNU Parallel grew, and was no longer just a small
-hack. To make the code easier to maintain it was rewritten to object
-orientation.
+hack.
 
-This would not have been possible if the test suite had not been so
-thorough: It made it much easier to see if 
+The design goals included not requiring a compiler, compatibility with
+old operating systems, and single file program. This limited the
+languages tremendously.
+
+Perl and Python were in practice the only possibilities. Python was at
+the time quite slow, ressource hungry, and not as widely installed as
+Perl. So Perl was the choice.
+
+To make the code easier to maintain it was rewritten to object
+orientation. This would not have been possible if the test suite had
+not been so thorough: It made it much easier to see if a code change
+cause change in behaviour.
 
 
 =head2 --tollef

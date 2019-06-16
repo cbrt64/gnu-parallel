@@ -206,9 +206,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190522 ('Akihito') released <<[stable]>>
+Subject: GNU Parallel 20190622 ('Frederiksen/Saybie/HongKong') released <<[stable]>>
 
-GNU Parallel 20190522 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -218,19 +218,16 @@ See https://www.gnu.org/software/parallel/10-years-anniversary.html
 
 Quote of the month:
 
-  Amazingly useful script!
-    -- unxusr@reddit.com
-
+<<>>
 
 New in this release:
 
-* --group-by groups lines depending on value of a column. The value can be computed.
+https://livefreeordichotomize.com/2019/06/04/using_awk_and_r_to_parse_25tb/
 
-* How to compress (bzip / gzip) a very large text quickly? https://medium.com/@gchandra/how-to-compress-bzip-gzip-a-very-large-text-quickly-27c11f4c6681
+https://zh.wikipedia.org/wiki/GNU_parallel
+chck NEWS http://parallelandvisualtestingwithbehat.blogspot.com/p/blog-page.html
 
-* Simple tutorial to install & use GNU Parallel https://medium.com/@gchandra/simple-tutorial-to-install-use-gnu-parallel-79251120d618
-
-* Introducing Parallel into Shell https://petelawson.com/post/parallel-in-shell/
+* GNU Parallel Akihito released https://linuxreviews.org/GNU_Parallel_Akihito_released
 
 * Bug fixes and man page updates.
 

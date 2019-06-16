@@ -61,6 +61,37 @@ par_shard() {
     }
     shard_on_col 1
     shard_on_col 2
+
+    shard_on_col_name() {
+	colname=$1
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard $colname -j2 --colsep "\t" sort -k$col |
+	    field $col | uniq -c | sort
+    }
+    shard_on_col_name A 1
+    shard_on_col_name B 2
+
+    shard_on_col_expr() {
+	colexpr="$1"
+	col=$2
+	(seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | uniq -c | sort
+    }
+    shard_on_col_expr '1 $_%=3' 1
+    shard_on_col_expr '2 $_%=3' 2
+
+    shard_on_col_name_expr() {
+	colexpr="$1"
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | uniq -c | sort
+    }
+    shard_on_col_name_expr 'A $_%=3' 1
+    shard_on_col_name_expr 'B $_%=3' 2
+    
     echo '*** broken'
     # Shorthand for --pipe -j+0
     seq 100000 | parallel --shard 1 wc |
@@ -145,18 +176,6 @@ par_kill_term() {
     pstree $$
     kill -TERM $T
     sleep 1
-    pstree $$
-}
-
-par_kill_hup() {
-    echo '### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end'
-
-    parallel -j 2 -q bash -c 'sleep {} & pid=$!; wait $pid' ::: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 &
-    T=$!
-    sleep 2.9
-    pstree $$
-    kill -HUP $T
-    sleep 2
     pstree $$
 }
 

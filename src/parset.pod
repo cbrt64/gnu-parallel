@@ -68,8 +68,12 @@ The commands to run can be an array:
   echo "${data[1]}"
   echo "${data[2]}"
 
-B<parset> can not be part of a pipe. In particular this means it
-cannot read anything from standard input (stdin) or write to a pipe:
+B<parset> can read from stdin (standard input) if it is a file:
+
+  parset res echo < parallel_input_file
+
+but B<parset> can not be part of a pipe. In particular this means it
+cannot read from a pipe or write to a pipe:
 
   seq 10 | parset res echo Does not work
 
@@ -124,8 +128,12 @@ Put output into vars B<$seq, $pwd, $ls>:
   parset "seq pwd ls" ::: "seq 10" pwd ls
   echo "$ls"
 
-B<parset> can not be part of a pipe. In particular this means it
-cannot read anything from standard input (stdin) or write to a pipe:
+B<parset> can read from stdin (standard input) if it is a file:
+
+  parset res1,res2,res3 echo < parallel_input_file
+
+but B<parset> can not be part of a pipe. In particular this means it
+cannot read from a pipe or write to a pipe:
 
   seq 3 | parset res1,res2,res3 echo Does not work
 

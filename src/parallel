@@ -378,6 +378,8 @@ sub sharder_script() {
 	my $col = shift;
 	# Which columns to shard on (count from 0)
 	my $col0 = $col - 1;
+	# Perl expression
+	my $perlexpr = shift;
 	my $bins = @ARGV;
 	# Open fifos for writing, fh{0..$bins}
 	my $t = 0;
@@ -388,11 +390,25 @@ sub sharder_script() {
 	    # so unlink only happens when it is ready
 	    unlink $_;
 	}
-	while(<STDIN>) {
-	    # Split into $col columns (no need to split into more)
-	    @F = split $sep, $_, $col+1;
-	    $fh = $fh{ hex(B::hash($F[$col0]))%$bins };
-	    print $fh $_;
+        if($perlexpr) {
+	    my $subref = eval("sub { no strict; no warnings; $perlexpr }");
+	    while(<STDIN>) {
+		# Split into $col columns (no need to split into more)
+		@F = split $sep, $_, $col+1;
+		{
+		    local $_ = $F[$col0];
+		    &$subref();
+		    $fh = $fh{ hex(B::hash($_))%$bins };
+		}
+		print $fh $_;
+	    }
+	} else {
+	    while(<STDIN>) {
+		# Split into $col columns (no need to split into more)
+		@F = split $sep, $_, $col+1;
+		$fh = $fh{ hex(B::hash($F[$col0]))%$bins };
+		print $fh $_;
+	    }
 	}
 	# Close all open fifos
 	close values %fh;
@@ -423,6 +439,20 @@ sub pipe_shard_setup() {
     my $script = sharder_script();
     # cat foo | sharder sep col fifo1 fifo2 fifo3 ... fifoN
 
+    if($opt::shard =~ /^[a-z_][a-z_0-9]*(\s|$)/i) {
+	# Group by column name
+	# (Yes, this will also wrongly match a perlexpr like: chop)
+	my($read,$char,@line);
+	# A full line, but nothing more (the rest must be read by the child)
+	# $Global::header used to prepend block to each job
+        do {
+	    $read = sysread(STDIN,$char,1);
+	    push @line, $char;
+	} while($read and $char ne "\n");
+	$Global::header = join "", @line;
+    }
+    my ($col, $perlexpr, $subref) =
+	column_perlexpr($opt::shard, $Global::header, $opt::colsep);
     if(not fork()) {
 	# Let the sharder inherit our stdin
 	# and redirect stdout to null
@@ -432,7 +462,7 @@ sub pipe_shard_setup() {
 	$ENV{'PERL_HASH_SEED'} = $$;
 	exec qw(parallel --block 100k -q --pipe -j), $njobs,
 	    qw(--roundrobin -u perl -e), $script, ($opt::colsep || ","),
-	    $opt::shard, '{}', (map { (':::+', @{$_}) } @parcatfifos);
+	    $col, $perlexpr, '{}', (map { (':::+', @{$_}) } @parcatfifos);
     }
     # For each fifo
     #   (rm fifo1; grep 1) < fifo1

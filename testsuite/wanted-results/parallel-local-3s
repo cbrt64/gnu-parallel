@@ -1122,14 +1122,6 @@ par_jobslot_repl	2
 par_jobslot_repl	1
 par_jobslot_repl	2
 par_jobslot_repl	1
-par_kill_hup	### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end
-par_kill_hup	bash-+-perl---2*[bash---sleep]
-par_kill_hup	     `-pstree
-par_kill_hup	parallel: SIGHUP received. No new jobs will be started.
-par_kill_hup	parallel: Waiting for these 2 jobs to finish. Send SIGTERM to stop now.
-par_kill_hup	parallel: bash -c 'sleep 1 & pid=$!; wait $pid'
-par_kill_hup	parallel: bash -c 'sleep 1 & pid=$!; wait $pid'
-par_kill_hup	bash---pstree
 par_kill_int_twice	### Are children killed if GNU Parallel receives INT twice? There should be no sleep at the end
 par_kill_int_twice	bash-+-perl---bash---sleep
 par_kill_int_twice	     `-pstree
@@ -1278,6 +1270,71 @@ par_shard	     10 6
 par_shard	     10 7
 par_shard	     10 8
 par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      1 c1
+par_shard	      1 c1
+par_shard	      1 c2
+par_shard	      1 c2
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      1 c1
+par_shard	      1 c1
+par_shard	      1 c2
+par_shard	      1 c2
 par_shard	      9 0
 par_shard	      9 1
 par_shard	      9 2

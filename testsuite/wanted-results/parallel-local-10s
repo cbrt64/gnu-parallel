@@ -258,6 +258,15 @@ par_kill_children_timeout	parallel: Warning: This job was killed because it time
 par_kill_children_timeout	parallel: Warning: doit 1000000001
 par_kill_children_timeout	2
 par_kill_children_timeout	      0       0       0
+par_kill_hup	### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end
+par_kill_hup	bash-+-perl
+par_kill_hup	     `-pstree
+par_kill_hup	parallel: SIGHUP received. No new jobs will be started.
+par_kill_hup	parallel: Waiting for these 2 jobs to finish. Send SIGTERM to stop now.
+par_kill_hup	parallel: bash -c 'sleep 3 & pid=$!; wait $pid'
+par_kill_hup	parallel: bash -c 'sleep 3 & pid=$!; wait $pid'
+par_kill_hup	bash-+-perl---2*[bash---sleep]
+par_kill_hup	     `-pstree
 par_line_buffer	### --line-buffer
 par_line_buffer	     55      55     120
 par_line_buffer	These must diff: 1
