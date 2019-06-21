@@ -38,7 +38,7 @@ echo '### Check that 4 processes are really used'
   seq 1000000 | parallel -j4 --pipe --round --line-buf wc | wc -l
 
 echo '### --version must have higher priority than retired options'
-  $NICEPAR --version -g -Y -U -W -T | tail
+  $NICEPAR --version -g -Y -U -W -T | tail -n9
 
 echo '### bug #39787: --xargs broken'
   nice perl -e 'for(1..30000){print "$_\n"}' | $NICEPAR --xargs -k echo  | perl -ne 'print length $_,"\n"'

@@ -206,13 +206,13 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190622 ('Frederiksen/Saybie/HongKong') released <<[stable]>>
+Subject: GNU Parallel 20190722 ('') released <<[stable]>>
 
-GNU Parallel 20190622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190722 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
-GNU Parallel is 10 years old in a year on 2020-04-22. You are here by invited to a reception on Friday 2020-04-17.
+GNU Parallel is 10 years old next year on 2020-04-22. You are here by invited to a reception on Friday 2020-04-17.
 
 See https://www.gnu.org/software/parallel/10-years-anniversary.html
 
@@ -222,12 +222,6 @@ Quote of the month:
 
 New in this release:
 
-https://livefreeordichotomize.com/2019/06/04/using_awk_and_r_to_parse_25tb/
-
-https://zh.wikipedia.org/wiki/GNU_parallel
-chck NEWS http://parallelandvisualtestingwithbehat.blogspot.com/p/blog-page.html
-
-* GNU Parallel Akihito released https://linuxreviews.org/GNU_Parallel_Akihito_released
 
 * Bug fixes and man page updates.
 

@@ -1,3 +1,19 @@
+20190622
+
+* --shard can now take a column name and optionally a perl
+  expression. Similar to --group-by and replacement strings.
+
+* Using AWK and R to parse 25tb
+  https://livefreeordichotomize.com/2019/06/04/using_awk_and_r_to_parse_25tb/
+
+* Parallel and Visual testing with Behat
+  http://parallelandvisualtestingwithbehat.blogspot.com/p/blog-page.html
+
+* 维基百科，自由的百科全书https://zh.wikipedia.org/wiki/GNU_parallel
+
+* Bug fixes and man page updates.
+
+
 20190522
 
 * --group-by groups lines depending on value of a column. The value

@@ -1308,10 +1308,7 @@ par_shard	     10 6
 par_shard	     10 7
 par_shard	     10 8
 par_shard	     10 9
-par_shard	      1 c1
-par_shard	      1 c1
-par_shard	      1 c2
-par_shard	      1 c2
+par_shard	      2 c1
 par_shard	      9 0
 par_shard	      9 1
 par_shard	      9 2
@@ -1322,6 +1319,7 @@ par_shard	      9 6
 par_shard	      9 7
 par_shard	      9 8
 par_shard	      9 9
+par_shard	      2 c2
 par_shard	     10 1
 par_shard	     10 2
 par_shard	     10 3
@@ -1331,10 +1329,7 @@ par_shard	     10 6
 par_shard	     10 7
 par_shard	     10 8
 par_shard	     10 9
-par_shard	      1 c1
-par_shard	      1 c1
-par_shard	      1 c2
-par_shard	      1 c2
+par_shard	      2 c1
 par_shard	      9 0
 par_shard	      9 1
 par_shard	      9 2
@@ -1345,6 +1340,7 @@ par_shard	      9 6
 par_shard	      9 7
 par_shard	      9 8
 par_shard	      9 9
+par_shard	      2 c2
 par_shard	*** broken
 par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
 par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.

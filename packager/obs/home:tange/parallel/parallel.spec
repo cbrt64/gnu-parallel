@@ -1,9 +1,9 @@
 
 Summary:	Shell tool for executing jobs in parallel
 Name: 		parallel
-Version: 	20190522
-Release: 	1.2
-License: 	GPL
+Version: 	20190622
+Release: 	1.3
+License: 	GPL-3.0-or-later
 Group: 		Productivity/File utilities
 URL: 		ftp://ftp.gnu.org/gnu/parallel
 Source0: 	%{name}_%{version}.tar.gz

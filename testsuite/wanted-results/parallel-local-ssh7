@@ -1196,9 +1196,9 @@ par_ksh_man	work,
 par_ksh_man	too
 par_ksh_man	This may never work
 par_ksh_man	https://unix.stackexchange.com/questions/457031/extract-full-function-definitions
-par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
-par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
-par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
+par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
+par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
+par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
 par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255
@@ -1438,16 +1438,16 @@ par_fish_underscore	aliases functions work
 par_fish_underscore	aliases functions work
 par_fish_underscore	myecho $myarray functions $argv
 par_fish_underscore	^
-par_fish_underscore	in function 'myfunc'
+par_fish_underscore	in function â€œmyfuncâ€
 par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list 'work'
+par_fish_underscore		with parameter list â€œworkâ€
 par_fish_underscore	
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
 par_fish_underscore	myecho $myarray functions $argv
 par_fish_underscore	^
-par_fish_underscore	in function 'myfunc'
+par_fish_underscore	in function â€œmyfuncâ€
 par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list 'work'
+par_fish_underscore		with parameter list â€œworkâ€
 par_fish_underscore	
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
 par_fish_underscore	myfunc work
@@ -1901,16 +1901,16 @@ par_csh_funky	3 arg alias_works
 par_csh_funky	
 par_csh_funky	myvar  works
 par_csh_funky	space special chars problem
-par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works
+par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~Â€ÂÃ‚Â‚Ã‚ÂƒÃ‚Â„Ã‚Â…Ã‚Â†Ã‚Â‡Ã‚ÂˆÃ‚Â‰Ã‚ÂŠÃ‚Â‹Ã‚ÂŒÃ‚ÂÃ‚ÂÃ‚ÂÃ‚ÂÃ‚Â‘Ã‚Â’Ã‚Â“Ã‚Â”Ã‚Â•Ã‚Â–Ã‚Â—Ã‚Â˜Ã‚Â™Ã‚ÂšÃ‚Â›Ã‚ÂœÃ‚ÂÃ‚ÂÃ‚ÂŸÃ‚Â Ã‚Â¡Ã‚Â¢Ã‚Â£Ã‚Â¤Ã‚Â¥Ã‚Â¦Ã‚Â§Ã‚Â¨Ã‚Â©Ã‚ÂªÃ‚Â«Ã‚Â¬Ã‚Â­Ã‚Â®Ã‚Â¯Ã‚Â°Ã‚Â±Ã‚Â²Ã‚Â³Ã‚Â´Ã‚ÂµÃ‚Â¶Ã‚Â·Ã‚Â¸Ã‚Â¹Ã‚ÂºÃ‚Â»Ã‚Â¼Ã‚Â½Ã‚Â¾Ã‚Â¿Ã€ÃÃƒÂ‚ÃƒÂƒÃƒÂ„ÃƒÂ…ÃƒÂ†ÃƒÂ‡ÃƒÂˆÃƒÂ‰ÃƒÂŠÃƒÂ‹ÃƒÂŒÃƒÂÃƒÂÃƒÂÃƒÂÃƒÂ‘ÃƒÂ’ÃƒÂ“ÃƒÂ”ÃƒÂ•ÃƒÂ–ÃƒÂ—ÃƒÂ˜ÃƒÂ™ÃƒÂšÃƒÂ›ÃƒÂœÃƒÂÃƒÂÃƒÂŸÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ£ÃƒÂ¤ÃƒÂ¥ÃƒÂ¦ÃƒÂ§ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯ÃƒÂ°ÃƒÂ±ÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂµÃƒÂ¶ÃƒÂ·ÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼ÃƒÂ½ÃƒÂ¾ÃƒÂ¿-funky alias_var_works
 par_csh_funky	func_echo: Command not found.
 par_csh_funky	3 arg alias_works_over_ssh
 par_csh_funky	
 par_csh_funky	myvar  works
 par_csh_funky	space special chars problem
-par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works_over_ssh
+par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~Â€ÂÃ‚Â‚Ã‚ÂƒÃ‚Â„Ã‚Â…Ã‚Â†Ã‚Â‡Ã‚ÂˆÃ‚Â‰Ã‚ÂŠÃ‚Â‹Ã‚ÂŒÃ‚ÂÃ‚ÂÃ‚ÂÃ‚ÂÃ‚Â‘Ã‚Â’Ã‚Â“Ã‚Â”Ã‚Â•Ã‚Â–Ã‚Â—Ã‚Â˜Ã‚Â™Ã‚ÂšÃ‚Â›Ã‚ÂœÃ‚ÂÃ‚ÂÃ‚ÂŸÃ‚Â Ã‚Â¡Ã‚Â¢Ã‚Â£Ã‚Â¤Ã‚Â¥Ã‚Â¦Ã‚Â§Ã‚Â¨Ã‚Â©Ã‚ÂªÃ‚Â«Ã‚Â¬Ã‚Â­Ã‚Â®Ã‚Â¯Ã‚Â°Ã‚Â±Ã‚Â²Ã‚Â³Ã‚Â´Ã‚ÂµÃ‚Â¶Ã‚Â·Ã‚Â¸Ã‚Â¹Ã‚ÂºÃ‚Â»Ã‚Â¼Ã‚Â½Ã‚Â¾Ã‚Â¿Ã€ÃÃƒÂ‚ÃƒÂƒÃƒÂ„ÃƒÂ…ÃƒÂ†ÃƒÂ‡ÃƒÂˆÃƒÂ‰ÃƒÂŠÃƒÂ‹ÃƒÂŒÃƒÂÃƒÂÃƒÂÃƒÂÃƒÂ‘ÃƒÂ’ÃƒÂ“ÃƒÂ”ÃƒÂ•ÃƒÂ–ÃƒÂ—ÃƒÂ˜ÃƒÂ™ÃƒÂšÃƒÂ›ÃƒÂœÃƒÂÃƒÂÃƒÂŸÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ£ÃƒÂ¤ÃƒÂ¥ÃƒÂ¦ÃƒÂ§ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯ÃƒÂ°ÃƒÂ±ÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂµÃƒÂ¶ÃƒÂ·ÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼ÃƒÂ½ÃƒÂ¾ÃƒÂ¿-funky alias_var_works_over_ssh
 par_csh_funky	func_echo: Command not found.
 par_csh_funky	
-par_csh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
+par_csh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~\Â€\Â\Â\‚\Â\ƒ\Â\„\Â\…\Â\†\Â\‡\Â\ˆ\Â\‰\Â\Š\Â\‹\Â\Œ\Â\\Â\\Â\\Â\\Â\‘\Â\’\Â\“\Â\”\Â\•\Â\–\Â\—\Â\˜\Â\™\Â\š\Â\›\Â\œ\Â\\Â\\Â\Ÿ\Â\ \Â\¡\Â\¢\Â\£\Â\¤\Â\¥\Â\¦\Â\§\Â\¨\Â\©\Â\ª\Â\«\Â\¬\Â\­\Â\®\Â\¯\Â\°\Â\±\Â\²\Â\³\Â\´\Â\µ\Â\¶\Â\·\Â\¸\Â\¹\Â\º\Â\»\Â\¼\Â\½\Â\¾\Â\¿\Ã€\Ã\Ã\‚\Ã\ƒ\Ã\„\Ã\…\Ã\†\Ã\‡\Ã\ˆ\Ã\‰\Ã\Š\Ã\‹\Ã\Œ\Ã\\Ã\\Ã\\Ã\\Ã\‘\Ã\’\Ã\“\Ã\”\Ã\•\Ã\–\Ã\—\Ã\˜\Ã\™\Ã\š\Ã\›\Ã\œ\Ã\\Ã\\Ã\Ÿ\Ã\ \Ã\¡\Ã\¢\Ã\£\Ã\¤\Ã\¥\Ã\¦\Ã\§\Ã\¨\Ã\©\Ã\ª\Ã\«\Ã\¬\Ã\­\Ã\®\Ã\¯\Ã\°\Ã\±\Ã\²\Ã\³\Ã\´\Ã\µ\Ã\¶\Ã\·\Ã\¸\Ã\¹\Ã\º\Ã\»\Ã\¼\Ã\½\Ã\¾\Ã\¿
 par_csh_environment_too_big	Not implemented
 par_csh_env_parallel_session	Not implemented
 par_csh_env_parallel	bug #50435: Remote fifo broke in 20150522

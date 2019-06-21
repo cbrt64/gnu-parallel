@@ -57,7 +57,7 @@ par_shard() {
 	col=$1
 	seq 10 99 | shuf | perl -pe 's/(.)/$1\t/g' |
 	    parallel --pipe --shard $col -j2 --colsep "\t" sort -k$col |
-	    field $col | uniq -c | sort
+	    field $col | sort | uniq -c
     }
     shard_on_col 1
     shard_on_col 2
@@ -67,7 +67,7 @@ par_shard() {
 	col=$2
 	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
 	    parallel --header : --pipe --shard $colname -j2 --colsep "\t" sort -k$col |
-	    field $col | uniq -c | sort
+	    field $col | sort | uniq -c
     }
     shard_on_col_name A 1
     shard_on_col_name B 2
@@ -77,7 +77,7 @@ par_shard() {
 	col=$2
 	(seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
 	    parallel --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
-	    field $col | uniq -c | sort
+	    field $col | sort | uniq -c
     }
     shard_on_col_expr '1 $_%=3' 1
     shard_on_col_expr '2 $_%=3' 2
@@ -87,7 +87,7 @@ par_shard() {
 	col=$2
 	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
 	    parallel --header : --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
-	    field $col | uniq -c | sort
+	    field $col | sort | uniq -c
     }
     shard_on_col_name_expr 'A $_%=3' 1
     shard_on_col_name_expr 'B $_%=3' 2
