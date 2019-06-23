@@ -236,21 +236,6 @@ par_max_length_len_128k() {
     seq 1 60000 | perl -pe 's/$/.gif/' | parallel -X echo {} aa {} |head -n 1 |wc
 }
 
-par_macron() {
-    print_it() {
-	parallel ::: "echo $1"
-	parallel echo ::: "$1"
-	parallel echo "$1" ::: "$1"
-	parallel echo \""$1"\" ::: "$1"
-	parallel -q echo ::: "$1"
-	parallel -q echo "$1" ::: "$1"
-	parallel -q echo \""$1"\" ::: "$1"
-    }
-    print_it "$(perl -e 'print "\257"')"
-    print_it "$(perl -e 'print "\257\256"')"
-    print_it "$(perl -e 'print "\257<\257<\257>\257>"')"
-}
-
 par_round_robin_blocks() {
     echo "bug #49664: --round-robin does not complete"
     seq 20000000 | parallel -j8 --block 10M --round-robin --pipe wc -c | wc -l

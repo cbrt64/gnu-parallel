@@ -101,28 +101,6 @@ par_linebuffer_matters_compress	### (--linebuffer) --compress  should give diffe
 par_linebuffer_matters_compress	OK: --linebuffer makes a difference
 par_linebuffer_matters_compress_tag	### (--linebuffer) --compress --tag should give different output
 par_linebuffer_matters_compress_tag	OK: --linebuffer makes a difference
-par_macron	п
-par_macron	п
-par_macron	п п
-par_macron	п п
-par_macron	п
-par_macron	п п
-par_macron	"п" п
-par_macron	по
-par_macron	по
-par_macron	по п
-par_macron	по п
-par_macron	по
-par_macron	по п
-par_macron	"по" п
-par_macron	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
-par_macron	/bin/bash: -c: line 0: `echo п<п<п>п>'
-par_macron	п<п<п>п>
-par_macron	/bin/bash: п: No such file or directory
-par_macron	п<п<п>п> п<п<п>п>
-par_macron	п<п<п>п>
-par_macron	п<п<п>п> п<п<п>п>
-par_macron	"п<п<п>п>" п<п<п>п>
 par_max_length_len_128k	### BUG: The length for -X is not close to max (131072)
 par_max_length_len_128k	      1    8293  131004
 par_max_length_len_128k	      1    6662  131026

@@ -272,6 +272,105 @@ par_line_buffer	These must diff: 1
 par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      2       6   30006
 par_long_line_remote	      3      50  250050
+par_macron	### See if \257\256 \257<\257> is replaced correctly
+par_macron	п -X	п
+par_macron	п -X	п
+par_macron	п -X	п п
+par_macron	п -X	п п
+par_macron	п -X	пп
+par_macron	п -X	пп
+par_macron	п -q	п
+par_macron	п -q	п п
+par_macron	п -q	"п" п
+par_macron	п -q	пп
+par_macron	п -q	"п"п
+par_macron	п -q	/bin/bash: $'echo \257': command not found
+par_macron	п -Xq	п
+par_macron	п -Xq	п п
+par_macron	п -Xq	"п" п
+par_macron	п -Xq	пп
+par_macron	п -Xq	"п"п
+par_macron	п -Xq	/bin/bash: $'echo \257': command not found
+par_macron	п -k	п
+par_macron	п -k	п
+par_macron	п -k	п п
+par_macron	п -k	п п
+par_macron	п -k	пп
+par_macron	п -k	пп
+par_macron	по -X	по
+par_macron	по -X	по
+par_macron	по -X	по по
+par_macron	по -X	по по
+par_macron	по -X	попо
+par_macron	по -X	попо
+par_macron	по -q	по
+par_macron	по -q	по по
+par_macron	по -q	"по" по
+par_macron	по -q	попо
+par_macron	по -q	"по"по
+par_macron	по -q	/bin/bash: $'echo \257\256': command not found
+par_macron	по -Xq	по
+par_macron	по -Xq	по по
+par_macron	по -Xq	"по" по
+par_macron	по -Xq	попо
+par_macron	по -Xq	"по"по
+par_macron	по -Xq	/bin/bash: $'echo \257\256': command not found
+par_macron	по -k	по
+par_macron	по -k	по
+par_macron	по -k	по по
+par_macron	по -k	по по
+par_macron	по -k	попо
+par_macron	по -k	попо
+par_macron	ппо -X	ппо
+par_macron	ппо -X	ппо
+par_macron	ппо -X	ппо ппо
+par_macron	ппо -X	ппо ппо
+par_macron	ппо -X	ппоппо
+par_macron	ппо -X	ппоппо
+par_macron	ппо -q	ппо
+par_macron	ппо -q	ппо ппо
+par_macron	ппо -q	"ппо" ппо
+par_macron	ппо -q	ппоппо
+par_macron	ппо -q	"ппо"ппо
+par_macron	ппо -q	/bin/bash: $'echo \257\257\256': command not found
+par_macron	ппо -Xq	ппо
+par_macron	ппо -Xq	ппо ппо
+par_macron	ппо -Xq	"ппо" ппо
+par_macron	ппо -Xq	ппоппо
+par_macron	ппо -Xq	"ппо"ппо
+par_macron	ппо -Xq	/bin/bash: $'echo \257\257\256': command not found
+par_macron	ппо -k	ппо
+par_macron	ппо -k	ппо
+par_macron	ппо -k	ппо ппо
+par_macron	ппо -k	ппо ппо
+par_macron	ппо -k	ппоппо
+par_macron	ппо -k	ппоппо
+par_macron	п<п<п>п> -X	п<п<п>п>
+par_macron	п<п<п>п> -X	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -X	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -X	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
+par_macron	п<п<п>п> -X	/bin/bash: -c: line 0: `echo п<п<п>п>'
+par_macron	п<п<п>п> -X	/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -X	/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -q	п<п<п>п>
+par_macron	п<п<п>п> -q	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -q	"п<п<п>п>" п<п<п>п>
+par_macron	п<п<п>п> -q	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -q	"п<п<п>п>"п<п<п>п>
+par_macron	п<п<п>п> -q	/bin/bash: $'echo \257<\257<\257>\257>': command not found
+par_macron	п<п<п>п> -Xq	п<п<п>п>
+par_macron	п<п<п>п> -Xq	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -Xq	"п<п<п>п>" п<п<п>п>
+par_macron	п<п<п>п> -Xq	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -Xq	"п<п<п>п>"п<п<п>п>
+par_macron	п<п<п>п> -Xq	/bin/bash: $'echo \257<\257<\257>\257>': command not found
+par_macron	п<п<п>п> -k	п<п<п>п>
+par_macron	п<п<п>п> -k	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -k	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -k	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
+par_macron	п<п<п>п> -k	/bin/bash: -c: line 0: `echo п<п<п>п>'
+par_macron	п<п<п>п> -k	/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -k	/bin/bash: п: No such file or directory
 par_maxlinelen_X_I	### Test max line length -X -I
 par_maxlinelen_X_I	3cfc69ee81b0fe7fdbe8eb059ad2da61  -
 par_maxlinelen_X_I	Chars per line (817788/7): 116826

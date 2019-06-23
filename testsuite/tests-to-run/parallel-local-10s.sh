@@ -4,6 +4,24 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_macron() {
+    echo '### See if \257\256 \257<\257> is replaced correctly'
+    print_it() {
+	parallel $2 ::: "echo $1"
+	parallel $2 echo ::: "$1"
+	parallel $2 echo "$1" ::: "$1"
+	parallel $2 echo \""$1"\" ::: "$1"
+	parallel $2 echo "$1"{} ::: "$1"
+	parallel $2 echo \""$1"\"{} ::: "$1"
+    }
+    export -f print_it
+    parallel --tag -k print_it \
+      ::: "$(perl -e 'print "\257"')" "$(perl -e 'print "\257\256"')" \
+      "$(perl -e 'print "\257\257\256"')" \
+      "$(perl -e 'print "\257<\257<\257>\257>"')" \
+      ::: -X -q -Xq -k
+}
+
 par_kill_hup() {
     echo '### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end'
 

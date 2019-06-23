@@ -1,193 +1,143 @@
-echo '### Test --load remote'
-### Test --load remote
-  ssh parallel@lo 'seq 10 | parallel --nice 19 --timeout 15 -j0 -qN0 perl -e while\(1\)\{\ \}' &   sleep 1;   stdout /usr/bin/time -f %e parallel -S parallel@lo --load 10 sleep ::: 1 | perl -ne '$_ > 10 and print "OK\n"'
-OK
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-parallel: Warning: This job was killed because it timed out:
-parallel: Warning: perl -e 'while(1){ }'
-echo '**'
-**
-echo '### Stop if all hosts are filtered and there are no hosts left to run on'
-### Stop if all hosts are filtered and there are no hosts left to run on
-  stdout parallel --filter-hosts -S no-such.host echo ::: 1
-parallel: Warning: Removed no-such.host.
-parallel: Error: Cannot run any jobs.
-echo '### Can csh propagate a variable containing \n';   export A=$(seq 3); parallel -S csh@lo --env A bash -c \''echo "$A"'\' ::: dummy
-### Can csh propagate a variable containing \n
-1
-2
-3
-echo '### Test bug #34241: --pipe should not spawn unneeded processes'
-### Test bug #34241: --pipe should not spawn unneeded processes
-  seq 5 | ssh csh@lo parallel -k --block 5 --pipe -j10 cat\\\;echo Block_end
-1
-2
-Block_end
-3
-4
-Block_end
-5
-Block_end
-echo '### bug #40002: --files and --nonall seem not to work together:'
-### bug #40002: --files and --nonall seem not to work together:
-  parallel --files --nonall -S localhost true | tee >(parallel rm) | wc -l
-1
-echo '### bug #40001: --joblog and --nonall seem not to work together:'
-### bug #40001: --joblog and --nonall seem not to work together:
-  parallel --joblog - --nonall -S lo,localhost true | wc -l
-3
-echo '### bug #40132: FreeBSD: --workdir . gives warning if . == $HOME'
-### bug #40132: FreeBSD: --workdir . gives warning if . == $HOME
-  cd && parallel --workdir . -S lo pwd ::: ""
-~
-echo '### use function as $PARALLEL_SSH'
-### use function as $PARALLEL_SSH
-  foossh() { echo "FOOSSH" >&2; ssh "$@"; };   export -f foossh;   PARALLEL_SSH=foossh parallel -S 1/lo echo ::: 'Run through FOOSSH?'
-Run through FOOSSH?
-FOOSSH
-echo '### use --ssh'
-### use --ssh
-  barssh() { echo "BARSSH" >&2; ssh "$@"; };   export -f barssh;   parallel --ssh barssh -S 1/lo echo ::: 'Run through BARSSH?'
-Run through BARSSH?
-BARSSH
-echo '### test filename :'
-### test filename :
-  echo content-of-: > :;   echo : | parallel -j1 --trc {}.{.} -S parallel@lo '(echo remote-{}.{.};cat {}) > {}.{.}';   cat :.:; rm : :.:
-remote-:.:
-content-of-:
-echo '### Test --wd ... --cleanup which should remove the filled tmp dir'
-### Test --wd ... --cleanup which should remove the filled tmp dir
-  ssh sh@lo 'mkdir -p .parallel/tmp; find .parallel/tmp |grep uNiQuE_sTrInG.6 | parallel rm';   stdout parallel -j9 -k --retries 3 --wd ... --cleanup -S sh@lo -v echo ">"{}.6 :::  uNiQuE_sTrInG;   find ~sh/.parallel/tmp |grep uNiQuE_sTrInG.6
-echo >uNiQuE_sTrInG.6
-echo '### Test --wd --'
-### Test --wd --
-  stdout parallel --wd -- -S sh@lo echo OK ">"{}.7 ::: uNiQuE_sTrInG;   cat ~sh/--/uNiQuE_sTrInG.7;   stdout ssh sh@lo rm ./--/uNiQuE_sTrInG.7
-OK
-echo '### Test --wd " "'
-### Test --wd " "
-  stdout parallel --wd " " -S sh@lo echo OK ">"{}.8 ::: uNiQuE_sTrInG;   cat ~sh/" "/uNiQuE_sTrInG.8;   stdout ssh sh@lo rm ./'" "'/uNiQuE_sTrInG.8
-OK
-echo "### Test --wd \"'\""
-### Test --wd "'"
-  stdout parallel --wd "'" -S sh@lo echo OK ">"{}.9 ::: uNiQuE_sTrInG;   cat ~sh/"'"/uNiQuE_sTrInG.9;   stdout ssh sh@lo rm ./"\\'"/uNiQuE_sTrInG.9
-OK
-echo '### Test --trc ./--/--foo1'
-### Test --trc ./--/--foo1
-  mkdir -p ./--; echo 'Content --/--foo1' > ./--/--foo1;   stdout parallel --trc {}.1 -S sh@lo '(cat {}; echo remote1) > {}.1' ::: ./--/--foo1; cat ./--/--foo1.1;   stdout parallel --trc {}.2 -S sh@lo '(cat ./{}; echo remote2) > {}.2' ::: --/--foo1; cat ./--/--foo1.2
-Content --/--foo1
-remote1
-Content --/--foo1
-remote2
-echo '### Test --trc ./:dir/:foo2'
-### Test --trc ./:dir/:foo2
-  mkdir -p ./:dir; echo 'Content :dir/:foo2' > ./:dir/:foo2;   stdout parallel --trc {}.1 -S sh@lo '(cat {}; echo remote1) > {}.1' ::: ./:dir/:foo2;   cat ./:dir/:foo2.1;   stdout parallel --trc {}.2 -S sh@lo '(cat ./{}; echo remote2) > {}.2' ::: :dir/:foo2;   cat ./:dir/:foo2.2
-Content :dir/:foo2
-remote1
-Content :dir/:foo2
-remote2
-echo '### Test --trc ./" "/" "foo3'
-### Test --trc ./" "/" "foo3
-  mkdir -p ./" "; echo 'Content _/_foo3' > ./" "/" "foo3;   stdout parallel --trc {}.1 -S sh@lo '(cat {}; echo remote1) > {}.1' ::: ./" "/" "foo3;   cat ./" "/" "foo3.1;   stdout parallel --trc {}.2 -S sh@lo '(cat ./{}; echo remote2) > {}.2' ::: " "/" "foo3;   cat ./" "/" "foo3.2
-Content _/_foo3
-remote1
-Content _/_foo3
-remote2
-echo '### Test --trc ./--/./--foo4'
-### Test --trc ./--/./--foo4
-  mkdir -p ./--; echo 'Content --/./--foo4' > ./--/./--foo4;   stdout parallel --trc {}.1 -S sh@lo '(cat ./--foo4; echo remote{}) > --foo4.1' ::: --/./--foo4;   cat ./--/./--foo4.1
-Content --/./--foo4
-remote--/./--foo4
-echo '### Test --trc ./:/./:foo5'
-### Test --trc ./:/./:foo5
-  mkdir -p ./:a; echo 'Content :a/./:foo5' > ./:a/./:foo5;   stdout parallel --trc {}.1 -S sh@lo '(cat ./:foo5; echo remote{}) > ./:foo5.1' ::: ./:a/./:foo5;   cat ./:a/./:foo5.1
-Content :a/./:foo5
-remote./:a/./:foo5
-echo '### Test --trc ./" "/./" "foo6'
-### Test --trc ./" "/./" "foo6
-  mkdir -p ./" "; echo 'Content _/./_foo6' > ./" "/./" "foo6;   stdout parallel --trc {}.1 -S sh@lo '(cat ./" "foo6; echo remote{}) > ./" "foo6.1' ::: ./" "/./" "foo6;   cat ./" "/./" "foo6.1
-Content _/./_foo6
-remote./ /./ foo6
-echo '### Test --trc "-- " "-- "'
-### Test --trc "-- " "-- "
-  touch -- '-- ' ' --'; rm -f ./?--.a ./--?.a;   parallel --trc {}.a -S csh@lo,sh@lo touch ./{}.a ::: '-- ' ' --'; ls ./--?.a ./?--.a;   parallel --nonall -k -S csh@lo,sh@lo 'ls ./?-- || echo OK';   parallel --nonall -k -S csh@lo,sh@lo 'ls ./--? || echo OK';   parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--.a || echo OK';   parallel --nonall -k -S csh@lo,sh@lo 'ls ./--?.a || echo OK'
-./ --.a
-./-- .a
-OK
-OK
-OK
-OK
-OK
-OK
-OK
-OK
-ls: No match.
-ls: cannot access './?--': No such file or directory
-ls: No match.
-ls: cannot access './--?': No such file or directory
-ls: No match.
-ls: cannot access './?--.a': No such file or directory
-ls: No match.
-ls: cannot access './--?.a': No such file or directory
-echo '### Test --trc "/tmp/./--- /A" "/tmp/./ ---/B"'
-### Test --trc "/tmp/./--- /A" "/tmp/./ ---/B"
-  mkdir -p '/tmp/./--- '   '/tmp/ ---';   touch -- '/tmp/./--- /A' '/tmp/ ---/B';   rm -f ./---?/A.a ./?---/B.a;   parallel --trc {=s:.*/./::=}.a -S csh@lo,sh@lo touch ./{=s:.*/./::=}.a ::: '/tmp/./--- /A' '/tmp/./ ---/B';   ls ./---?/A.a ./?---/B.a | LC_ALL=C sort;   parallel --nonall -k -S csh@lo,sh@lo 'ls ./?--- ./---? || echo OK' | LC_ALL=C sort; echo '### bug #46519: --onall ignores --transfer'
-./ ---/B.a
-./--- /A.a
-OK
-OK
-### bug #46519: --onall ignores --transfer
-ls: No match.
-ls: cannot access './?---': No such file or directory
-ls: cannot access './---?': No such file or directory
-  touch bug46519.{a,b,c}; rm -f bug46519.?? bug46519.???;   parallel --onall --tf bug46519.{} --trc bug46519.{}{} --trc bug46519.{}{}{} -S csh@lo,sh@lo     'ls bug46519.{}; touch bug46519.{}{} bug46519.{}{}{}' ::: a b c;   ls bug46519.?? bug46519.???;   parallel --onall -S csh@lo,sh@lo ls bug46519.{}{} bug46519.{}{}{} ::: a b c && echo Cleanup failed
-bug46519.a
-bug46519.b
-bug46519.c
-bug46519.a
-bug46519.b
-bug46519.c
-bug46519.aa
-bug46519.aaa
-bug46519.bb
-bug46519.bbb
-bug46519.cc
-bug46519.ccc
-ls: cannot access 'bug46519.aa': No such file or directory
-ls: cannot access 'bug46519.aaa': No such file or directory
-ls: cannot access 'bug46519.bb': No such file or directory
-ls: cannot access 'bug46519.bbb': No such file or directory
-ls: cannot access 'bug46519.cc': No such file or directory
-ls: cannot access 'bug46519.ccc': No such file or directory
-ls: cannot access 'bug46519.aa': No such file or directory
-ls: cannot access 'bug46519.aaa': No such file or directory
-ls: cannot access 'bug46519.bb': No such file or directory
-ls: cannot access 'bug46519.bbb': No such file or directory
-ls: cannot access 'bug46519.cc': No such file or directory
-ls: cannot access 'bug46519.ccc': No such file or directory
-echo '### Test --nice remote'
-### Test --nice remote
-stdout parallel --nice 1 -S lo -vv 'PAR=a bash -c "echo  \$PAR {}"' ::: b |   perl -pe 's/\S*parallel-server\S*/one-server/;s:="[0-9]+":="XXXXX":i;'
-ssh lo -- exec 'perl -e '"'"'$ENV{"PARALLEL_PID"}="XXXXX";$ENV{"PARALLEL_SEQ"}="1";$bashfunc = "";@ARGV="PAR=a bash -c \"echo  \\\$PAR b\"";$shell="$ENV{SHELL}";$tmpdir="/tmp/parallel-local-ssh1-tmpdir";$nice=1;do{$ENV{PARALLEL_TMP}=$tmpdir."/par".join"",map{(0..9,"a".."z","A".."Z")[rand(62)]}(1..5);}while(-e$ENV{PARALLEL_TMP});$SIG{CHLD}=sub{$done=1;};$pid=fork;unless($pid){eval{setpgrp};eval{setpriority(0,0,$nice)};exec$shell,"-c",($bashfunc."@ARGV");die"exec:$!\n";}do{$s=$s<1?0.001+$s*1.03:$s;select(undef,undef,undef,$s);}until($done||getppid==1);kill(SIGHUP,-${pid})unless$done;wait;exit($?&127?128+($?&127):1+$?>>8)'"'";
-a b
-echo '**'
-**
 echo TODO
 TODO
 ## echo '### Test --trc --basefile --/./--foo7 :/./:foo8 " "/./" "foo9 ./foo11/./foo11'
+par_PARALLEL_SSH_function	### use function as $PARALLEL_SSH
+par_PARALLEL_SSH_function	Run through FOOSSH?
+par_PARALLEL_SSH_function	FOOSSH
+par_csh_variable_newline	### Can csh propagate a variable containing \n
+par_csh_variable_newline	1
+par_csh_variable_newline	2
+par_csh_variable_newline	3
+par_filename_colon	### test filename :
+par_filename_colon	remote-:.:
+par_filename_colon	content-of-:
+par_files_nonall	### bug #40002: --files and --nonall seem not to work together:
+par_files_nonall	1
+par_joblog_nonall	### bug #40001: --joblog and --nonall seem not to work together:
+par_joblog_nonall	3
+par_onall_transfer	### bug #46519: --onall ignores --transfer
+par_onall_transfer	bug46519.a
+par_onall_transfer	bug46519.b
+par_onall_transfer	bug46519.c
+par_onall_transfer	bug46519.a
+par_onall_transfer	bug46519.b
+par_onall_transfer	bug46519.c
+par_onall_transfer	bug46519.aa
+par_onall_transfer	bug46519.aaa
+par_onall_transfer	bug46519.bb
+par_onall_transfer	bug46519.bbb
+par_onall_transfer	bug46519.cc
+par_onall_transfer	bug46519.ccc
+par_onall_transfer	ls: cannot access 'bug46519.aa': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.aaa': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.bb': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.bbb': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.cc': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.ccc': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.aa': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.aaa': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.bb': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.bbb': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.cc': No such file or directory
+par_onall_transfer	ls: cannot access 'bug46519.ccc': No such file or directory
+par_pipe_unneeded_spawn	### Test bug #34241: --pipe should not spawn unneeded processes
+par_pipe_unneeded_spawn	1
+par_pipe_unneeded_spawn	2
+par_pipe_unneeded_spawn	Block_end
+par_pipe_unneeded_spawn	3
+par_pipe_unneeded_spawn	4
+par_pipe_unneeded_spawn	Block_end
+par_pipe_unneeded_spawn	5
+par_pipe_unneeded_spawn	Block_end
+par_remote_load	### Test --load remote
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	parallel: Warning: This job was killed because it timed out:
+par_remote_load	parallel: Warning: perl -e 'while(1){ }'
+par_remote_load	OK
+par_remote_nice	### Test --nice remote
+par_remote_nice	ssh lo -- exec 'perl -e '"'"'$ENV{"PARALLEL_PID"}="XXXXX";$ENV{"PARALLEL_SEQ"}="1";$bashfunc = "";@ARGV="PAR=a bash -c \"echo  \\\$PAR b\"";$shell="$ENV{SHELL}";$tmpdir="/tmp/parallel-local-ssh1-tmpdir";$nice=1;do{$ENV{PARALLEL_TMP}=$tmpdir."/par".join"",map{(0..9,"a".."z","A".."Z")[rand(62)]}(1..5);}while(-e$ENV{PARALLEL_TMP});$SIG{CHLD}=sub{$done=1;};$pid=fork;unless($pid){eval{setpgrp};eval{setpriority(0,0,$nice)};exec$shell,"-c",($bashfunc."@ARGV");die"exec:$!\n";}do{$s=$s<1?0.001+$s*1.03:$s;select(undef,undef,undef,$s);}until($done||getppid==1);kill(SIGHUP,-${pid})unless$done;wait;exit($?&127?128+($?&127):1+$?>>8)'"'";
+par_remote_nice	a b
+par_ssh	### use --ssh
+par_ssh	Run through BARSSH?
+par_ssh	BARSSH
+par_stop_if_no_hosts_left	### Stop if all hosts are filtered and there are no hosts left to run on
+par_stop_if_no_hosts_left	parallel: Warning: Removed no-such.host.
+par_stop_if_no_hosts_left	parallel: Error: Cannot run any jobs.
+par_trc_colon	### Test --trc ./:dir/:foo2
+par_trc_colon	Content :dir/:foo2
+par_trc_colon	remote1
+par_trc_colon	Content :dir/:foo2
+par_trc_colon	remote2
+par_trc_colondot	### Test --trc ./:/./:foo5
+par_trc_colondot	Content :a/./:foo5
+par_trc_colondot	remote./:a/./:foo5
+par_trc_dashdash	### Test --trc ./--/--foo1
+par_trc_dashdash	Content --/--foo1
+par_trc_dashdash	remote1
+par_trc_dashdash	Content --/--foo1
+par_trc_dashdash	remote2
+par_trc_dashdashdashspace	### Test --trc "/tmp/./--- /A" "/tmp/./ ---/B"
+par_trc_dashdashdashspace	./ ---/B.a
+par_trc_dashdashdashspace	./--- /A.a
+par_trc_dashdashdashspace	ls: No match.
+par_trc_dashdashdashspace	ls: cannot access './?---': No such file or directory
+par_trc_dashdashdashspace	ls: cannot access './---?': No such file or directory
+par_trc_dashdashdashspace	OK
+par_trc_dashdashdashspace	OK
+par_trc_dashdashdot	### Test --trc ./--/./--foo4
+par_trc_dashdashdot	Content --/./--foo4
+par_trc_dashdashdot	remote--/./--foo4
+par_trc_dashdashspace	### Test --trc "-- " "-- "
+par_trc_dashdashspace	./ --.a
+par_trc_dashdashspace	./-- .a
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './ --': No such file or directory
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './ --': No such file or directory
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './-- ': No such file or directory
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './-- ': No such file or directory
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './ --.a': No such file or directory
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './ --.a': No such file or directory
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './-- .a': No such file or directory
+par_trc_dashdashspace	OK
+par_trc_dashdashspace	ls: cannot access './-- .a': No such file or directory
+par_trc_space	### Test --trc ./" "/" "foo3
+par_trc_space	Content _/_foo3
+par_trc_space	remote1
+par_trc_space	Content _/_foo3
+par_trc_space	remote2
+par_trc_spacedot	### Test --trc ./" "/./" "foo6
+par_trc_spacedot	Content _/./_foo6
+par_trc_spacedot	remote./ /./ foo6
+par_wd_dashdash	### Test --wd --
+par_wd_dashdash	OK
+par_wd_dotdotdot	### Test --wd ... --cleanup which should remove the filled tmp dir
+par_wd_dotdotdot	echo >uNiQuE_sTrInG.6
+par_wd_quote	### Test --wd "'"
+par_wd_quote	OK
+par_wd_space	### Test --wd " "
+par_wd_space	OK
+par_workdir_home	### bug #40132: FreeBSD: --workdir . gives warning if . == $HOME
+par_workdir_home	~

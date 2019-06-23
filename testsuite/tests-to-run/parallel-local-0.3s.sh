@@ -737,6 +737,11 @@ par_rpl_that_is_substring_of_longer_rpl() {
 	     'echo {}=%;echo %D={//};echo %B={/.};echo %E={+.};echo %D/%B.%E={}' ::: a.b/c.d/e.f
 }
 
+par_unquote_replacement_string() {
+    echo '### Can part of the replacement string be unquoted using uq()?'
+    parallel echo '{}{=uq()=}' ::: '`echo foo`'
+}
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |

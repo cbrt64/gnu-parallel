@@ -1378,7 +1378,7 @@ sub options_hash() {
 	 "tmux" => \$opt::tmux,
 	 "tmuxpane" => \$opt::tmuxpane,
 	 "null|0" => \$opt::null,
-	 "quote|q" => \$opt::q,
+	 "quote|q" => \$opt::quote,
 	 # Replacement strings
 	 "parens=s" => \$opt::parens,
 	 "rpl=s" => \@opt::rpl,
@@ -1598,7 +1598,7 @@ sub parse_options(@) {
 	$opt::tagstring = unquote_printf($opt::tagstring);
     }
     if(defined $opt::interactive) { $Global::interactive = $opt::interactive; }
-    if(defined $opt::q) { $Global::quoting = 1; }
+    if(defined $opt::quote) { $Global::quoting = 1; }
     if(defined $opt::r) { $Global::ignore_empty = 1; }
     if(defined $opt::verbose) { $Global::stderr_verbose = 1; }
     parse_replacement_string_options();
@@ -1984,12 +1984,15 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190622;
+    $Global::version = 20190623;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
     $Global::verbose = 0;
+    # Don't quote every part of the command line
     $Global::quoting = 0;
+    # Quote replacement strings
+    $Global::quote_replace = 1;
     $Global::total_completed = 0;
     # Read only table with default --rpl values
     %Global::replace =
@@ -10257,8 +10260,8 @@ sub push($) {
     push @{$self->{'arg_list'}}, $record;
     # Make @arg available for {= =}
     *Arg::arg = $self->{'arg_list_flat_orig'};
-
-    my $quote_arg = $Global::noquote ? 0 : not $Global::quoting;
+	
+    my $quote_arg = ($Global::quote_replace and not $Global::quoting);
     for my $perlexpr (keys %{$self->{'replacecount'}}) {
 	if($perlexpr =~ /^(\d+) /) {
 	    # Positional
@@ -10285,7 +10288,7 @@ sub pop($) {
     # pop off arguments from @$record
     splice @{$self->{'arg_list_flat_orig'}}, -($#$record+1), $#$record+1;
     splice @{$self->{'arg_list_flat'}}, -($#$record+1), $#$record+1;
-    my $quote_arg = $Global::noquote ? 0 : not $Global::quoting;
+    my $quote_arg = ($Global::quote_replace and not $Global::quoting);
     for my $perlexpr (keys %{$self->{'replacecount'}}) {
 	if($perlexpr =~ /^(\d+) /) {
 	    # Positional
@@ -10551,14 +10554,14 @@ sub len($) {
 
 sub replaced($) {
     # Uses:
-    #   $Global::noquote
+    #   $Global::quote_replace
     #   $Global::quoting
     # Returns:
     #   $replaced = command with place holders replaced and prepended
     my $self = shift;
     if(not defined $self->{'replaced'}) {
 	# Don't quote arguments if the input is the full command line
-	my $quote_arg = $Global::noquote ? 0 : not $Global::quoting;
+	my $quote_arg = ($Global::quote_replace and not $Global::quoting);
 	# or if ($opt::cat or $opt::pipe) as they use $PARALLEL_TMP
 	$quote_arg = ($opt::cat || $opt::fifo) ? 0 : $quote_arg;
 	$self->{'replaced'} = $self->
@@ -10656,7 +10659,7 @@ sub replace_placeholders($$$$) {
 			# except the first
 			CORE::push @replaced, $space, map {
 			    $a = $_;
-			    $a =~
+			    if($a =~
 				s{\257<(-?\d+)?(.*)\257>}
 			    {
 				if($1) {
@@ -10671,7 +10674,15 @@ sub replace_placeholders($$$$) {
 				    $normal_replace ||= 1;
 				    ($arg ? $arg->replace($2,$quote_arg,$self) : "");
 				}
-			    }sgxe;
+			    }sgxe) {
+				# Token is \257<..\257>
+			    } else {
+				if($Global::escape_string_present) {
+				    # Command line contains \257:
+				    # Unescape it \257\256 => \257
+				    $a =~ s/\257\256/\257/g;
+				}
+			    }
 			    $a
 			} @ctxgroup;
 			$normal_replace or last;
@@ -10679,7 +10690,9 @@ sub replace_placeholders($$$$) {
 		    }
 		} else {
 		    # Context group has no a replacement string: Copy it once
-		    CORE::push @replaced, @ctxgroup;
+		    CORE::push @replaced, map {
+			$Global::escape_string_present and s/\257\256/\257/g; $_;
+		    } @ctxgroup;
 		}
 		# New context group
 		@ctxgroup=();
@@ -10724,21 +10737,14 @@ sub replace_placeholders($$$$) {
 		}
 	    } else {
 		# No replacement
-		CORE::push @replaced, $t;
+		CORE::push @replaced, map {
+		    $Global::escape_string_present and s/\257\256/\257/g; $_;
+		} $t;
 	    }
 	}
     }
     *Arg::arg = [];
     ::debug("replace","Replaced: ".join":",@replaced,"\n");
-    if($Global::escape_string_present) {
-	# Command line contains \257: Unescape it \257\256 => \257
-	# If a replacement resulted in \257\256
-	# it will have been escaped into \\\257\\\\256
-	# and will not be matched below
-	for(@replaced) {
-	    s/\257\256/\257/g;
-	}
-    }
 
     # Put tokens into groups that may be quoted.
     my @quotegroup;
@@ -10907,7 +10913,7 @@ sub new($) {
 	# argument or variable definition V1={})
 	# E.g. parallel {}, parallel my_{= s/_//=}, parallel {2}
 	# Do no quote (Otherwise it will fail if the input contains spaces)
-	$Global::noquote = 1;
+	$Global::quote_replace = 0;
     }
 
     if($opt::sqlmaster and $Global::sql->append()) {
@@ -11071,7 +11077,7 @@ sub get($) {
 		# argument or variable definition V1={})
 		# E.g. parallel {}, parallel my_{= s/_//=}, parallel {2}
 		# Do no quote (Otherwise it will fail if the input contains spaces)
-		$Global::noquote = 1;
+		$Global::quote_replace = 0;
 	    }
 	}
 
@@ -11795,6 +11801,10 @@ sub total_jobs() {
 	# shorthand for $job->seq();
 	$job->seq();
     }
+    sub uq() {
+	# Do not quote this arg
+	$Global::unquote_arg = 1;
+    }
 
     sub replace($$$$) {
 	# Calculates the corresponding value for a given perl expression
@@ -11802,7 +11812,7 @@ sub total_jobs() {
 	#   The calculated string (quoted if asked for)
 	my $self = shift;
 	my $perlexpr = shift; # E.g. $_=$_ or s/.gz//
-	my $quote = (shift) ? 1 : 0; # should the string be quoted?
+	my $quote = shift; # should the string be quoted?
 	# This is actually a CommandLine-object,
 	# but it looks nice to be able to say {= $job->slot() =}
 	$job = shift;
@@ -11834,10 +11844,20 @@ sub total_jobs() {
 	    # Execute the function
 	    $perleval{$perlexpr}->($job);
 	    $self->{'cache'}{$perlexpr} = $_;
+	    if($Global::unquote_arg) {
+		# uq() was called in perlexpr
+		$self->{'cache'}{'unquote'}{$perlexpr} = 1;
+		# Reset for next perlexpr
+		$Global::unquote_arg = 0;
+	    }
 	}
 	# Return the value quoted if needed
-	return($quote ? Q($self->{'cache'}{$perlexpr})
-	       : $self->{'cache'}{$perlexpr});
+	if($self->{'cache'}{'unquote'}{$perlexpr}) {
+	    return($self->{'cache'}{$perlexpr});
+	} else {
+	    return($quote ? Q($self->{'cache'}{$perlexpr})
+		   : $self->{'cache'}{$perlexpr});
+	}
     }
 }
 

@@ -977,6 +977,8 @@ par_tricolonplus	3 22 b cc
 par_tricolonplus	3 23 c aa
 par_tricolonplus	3 23 c bb
 par_tricolonplus	3 23 c cc
+par_unquote_replacement_string	### Can part of the replacement string be unquoted using uq()?
+par_unquote_replacement_string	`echo foo`foo
 par_verbose_t	### Test --verbose and -t
 par_verbose_t	echo bar
 par_verbose_t	echo car
