@@ -10,6 +10,7 @@ P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openi
 # Skip irix until Perl is upgraded (I cannot due to too small disk quota)
 P_ALL="openstep qnx pidora alpha tru64 hpux-ia64 syllable raspbian solaris openindiana aix hpux debian-ppc suse solaris-x86 mandriva ubuntu scosysv unixware centos miros macosx redhat netbsd openbsd freebsd debian dragonfly vax minix hurd beaglebone cubieboard2"
 P="$P_ALL"
+#P="unixware freebsd netbsd"
 
 # tru64 takes 22s to run 4 parallels
 MAXTIME=50
@@ -20,13 +21,14 @@ MAXINNERPROC=${maxinnerproc:-3}
 
 export PARALLEL_SSH="ssh -oLogLevel=quiet"
 
-# select a running master (debian-ppc, suse, ubuntu, or debian)
+# select a running master (debian-ppc, suse, ubuntu, redhat, or debian)
+# 2019-06-25 debian has too little free memory (and swap)
 MASTER=$(parallel -j0 --delay 0.1 --halt now,success=1 $PARALLEL_SSH {} echo {} \
-		  ::: {debian-ppc,ubuntu,debian,suse}.polarhome.com)
+		  ::: {debian-ppc,ubuntu,suse,redhat}.polarhome.com)
 
 parallel -j0 --delay 0.1 --retries $RETRIES \
-	 rsync -L /usr/local/bin/{parallel,env_parallel,env_parallel.*[^~],parcat,stdout} \
-	 ::: $MASTER:bin/
+    rsync -L /usr/local/bin/{parallel,env_parallel,env_parallel.*[^~],parcat,stdout} \
+    ::: $MASTER:bin/
 
 doit() {
     # Avoid the stupid /etc/issue.net banner at Polarhome: -oLogLevel=quiet
@@ -35,7 +37,7 @@ doit() {
     export MAXTIME
     export RETRIES
     export MAXPROC
-    export RET_TIME_K="--memfree 150m -k --retries $RETRIES --timeout $MAXTIME"
+    export RET_TIME_K="--memfree 100m -k --retries $RETRIES --timeout $MAXTIME"
     LC_ALL=C
     
     MAXPROC=$(echo $(seq 300 | parallel -j0 echo {%} | sort -n | tail -n1) /$MAXINNERPROC | bc)
@@ -44,8 +46,8 @@ doit() {
     echo '### Filter out working servers'
     # syllable often gives false positive
     parallel --timeout $MAXTIME -j10 ssh syllable true ::: {1..10} 2>/dev/null >/dev/null &
-    POLAR_ALL="`bin/parallel --memfree 200m -j0 -k --timeout 10 echo {} ::: $P`"
-    POLAR="`bin/parallel --memfree 200m -j0 -k --timeout 10 $PARALLEL_SSH {} echo {} ::: $P`"
+    POLAR_ALL="`bin/parallel --memfree 100m -j0 -k --timeout 10 echo {} ::: $P`"
+    POLAR="`bin/parallel --memfree 100m -j0 -k --timeout 10 $PARALLEL_SSH {} echo {} ::: $P`"
     diff <(echo "$POLAR_ALL") <(echo "$POLAR")
     S_POLAR=`bin/parallel -j0 $RET_TIME_K echo -S 1/{} ::: $POLAR`
 
@@ -77,7 +79,7 @@ doit() {
     par_nonall() {
 	parallel -j$MAXPROC $RET_TIME_K --delay 0.1 --tag \
 		 --nonall $S_POLAR -S "1/sshwithpass minix" --argsep ,:- \
-		 'source setupenv >&/dev/null || . `pwd`/setupenv;' "$@"
+		 'source setupenv 2>/dev/null; . `pwd`/setupenv;' "$@"
 	# setupenv contains something like this (adapted to the local path and shell)
 	#
 	# PATH=$HOME/bin:$PATH:/usr/local/bin
@@ -93,7 +95,7 @@ doit() {
 	     ::: $POLAR minix
     echo Done copying
 
-    env_parallel -d '\n\n' -vkj$MAXINNERPROC --delay 2 <<'EOF'
+    env_parallel -d '\n\n' -vkj$MAXINNERPROC --delay 2 <<'EOF' |
 
     echo
     echo '### Works on ...'
@@ -123,7 +125,7 @@ doit() {
             cat <(echo bash only A)
         }
         export -f funcA;
-        bin/parallel funcA ::: 1' 2>&1 | sort
+        bin/parallel funcA ::: 1' 2>&1 | LANG=C sort
 
     echo
     echo '### Does PARALLEL_SHELL help exporting a bash function'
@@ -142,16 +144,29 @@ doit() {
         bin/parallel funcB ::: 1' 2>&1
 
     echo
-    echo '### env_parallel echo :::: <(echo OK)'
+    echo '### env_parallel --install'
     echo '(bash ksh mksh zsh only)'
     echo
     par_nonall 'bin/env_parallel --install && echo install-OK' 2>&1
+
+    echo
+    echo '### env_parallel echo env_parallel ::: run-OK'
+    echo '(bash ksh mksh zsh only)'
+    echo
     par_nonall 'env_parallel echo env_parallel ::: run-OK' 2>&1
+
+    echo
+    echo '### env_parallel echo reading from process substitution :::: <(echo OK)'
+    echo '(bash ksh mksh zsh only)'
+    echo
     # csh on NetBSD does not support process substitution 
     par_nonall 'env_parallel echo reading from process substitution :::: <(echo OK)' 2>&1 | 
 	grep -v ': /tmp/.*: No such file or directory'
 
-    # Test empty command name in process list
+    echo
+    echo '### Test empty command name in process list'
+    echo '(bash ksh mksh zsh only)'
+    echo
     test_empty_cmd() {
 	echo '### Test if empty command name in process list causes problems'
 	perl -e '$0=" ";sleep 1000' &
@@ -179,7 +194,9 @@ doit() {
     echo '### env_parset var1,var2,var3 seq ::: 2 3 4'
     par_nonall 'start=2; env_parset var1,var2,var3 seq \$start ::: 2 3 4; echo $var1,$var2,$var3' 2>&1
 EOF
-
+    perl -ne 'm{UX:sh ./bin/sh.: ERROR: source: Not found} and next;
+    	      m{/usr/X11R7/bin/.: Permission denied.} and next;
+    print'
 }
 
 env_parallel -u -S$MASTER doit ::: 1

@@ -277,9 +277,9 @@ shell quote a string
 
 perl quote a string
 
-=item Z<> B<uq()>
+=item Z<> B<uq()> (or B<uq>)
 
-unquote current replacement string
+do not quote current replacement string
 
 =item Z<> B<total_jobs()>
 

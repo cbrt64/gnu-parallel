@@ -5940,7 +5940,7 @@ sub memfree_recompute() {
     # Run the script twice if it gives 0 (typically intermittent error)
     $self->{'memfree'} = ::qqx($script) || ::qqx($script);
     if(not $self->{'memfree'}) {
-	::die_bug("Less than 1 byte free");
+	::die_bug("Less than 1 byte memory free");
     }
     #::debug("mem","New free:",$self->{'memfree'}," ");
 }
@@ -6970,52 +6970,74 @@ sub socket_core_thread() {
     #     'active' => #taskset_threads = number of taskset limited cores
     #   }
     my $cpu;
-
+    my $cached_cpuspec = $Global::cache_dir . "/tmp/sshlogin/" .
+	::hostname() . "/cpuspec";
+    if(-e $cached_cpuspec and -M $cached_cpuspec < 1) {
+	# Reading cached copy instead of /proc/cpuinfo is 17 ms faster
+	if(open(my $in_fh, "<", $cached_cpuspec)) {
+	    ::debug("init","Read $cached_cpuspec");
+	    $cpu->{'sockets'} = int(<$in_fh>);
+	    $cpu->{'cores'} = int(<$in_fh>);
+	    $cpu->{'threads'} = int(<$in_fh>);
+	    close $in_fh;
+	}
+    }
     if ($^O eq 'linux') {
-	$cpu = sct_gnu_linux();
+	$cpu = sct_gnu_linux($cpu);
     } elsif ($^O eq 'android') {
-        $cpu = sct_android();
+	$cpu = sct_android($cpu);
     } elsif ($^O eq 'freebsd') {
-        $cpu = sct_freebsd();
+	$cpu = sct_freebsd($cpu);
     } elsif ($^O eq 'netbsd') {
-        $cpu = sct_netbsd();
+	$cpu = sct_netbsd($cpu);
     } elsif ($^O eq 'openbsd') {
-        $cpu = sct_openbsd();
+	$cpu = sct_openbsd($cpu);
     } elsif ($^O eq 'gnu') {
-        $cpu = sct_hurd();
+	$cpu = sct_hurd($cpu);
     } elsif ($^O eq 'darwin') {
-	$cpu = sct_darwin();
+	$cpu = sct_darwin($cpu);
     } elsif ($^O eq 'solaris') {
-        $cpu = sct_solaris();
+	$cpu = sct_solaris($cpu);
     } elsif ($^O eq 'aix') {
-        $cpu = sct_aix();
+	$cpu = sct_aix($cpu);
     } elsif ($^O eq 'hpux') {
-        $cpu = sct_hpux();
+	$cpu = sct_hpux($cpu);
     } elsif ($^O eq 'nto') {
-        $cpu = sct_qnx();
+	$cpu = sct_qnx($cpu);
     } elsif ($^O eq 'svr5') {
-        $cpu = sct_openserver();
+	$cpu = sct_openserver($cpu);
     } elsif ($^O eq 'irix') {
-        $cpu = sct_irix();
+	$cpu = sct_irix($cpu);
     } elsif ($^O eq 'dec_osf') {
-        $cpu = sct_tru64();
+	$cpu = sct_tru64($cpu);
     } else {
 	# Try all methods until we find something that works
-	$cpu = (sct_gnu_linux()
-		|| sct_android()
-		|| sct_freebsd()
-		|| sct_netbsd()
-		|| sct_openbsd()
-		|| sct_hurd()
-		|| sct_darwin()
-		|| sct_solaris()
-		|| sct_aix()
-		|| sct_hpux()
-		|| sct_qnx()
-		|| sct_openserver()
-		|| sct_irix()
-		|| sct_tru64()
+	$cpu = (sct_gnu_linux($cpu)
+		|| sct_android($cpu)
+		|| sct_freebsd($cpu)
+		|| sct_netbsd($cpu)
+		|| sct_openbsd($cpu)
+		|| sct_hurd($cpu)
+		|| sct_darwin($cpu)
+		|| sct_solaris($cpu)
+		|| sct_aix($cpu)
+		|| sct_hpux($cpu)
+		|| sct_qnx($cpu)
+		|| sct_openserver($cpu)
+		|| sct_irix($cpu)
+		|| sct_tru64($cpu)
 	    );
+    }
+    if(not grep { $_ > 0 } values %$cpu) {
+	$cpu = undef;
+    }
+    # Write cached copy instead of /proc/cpuinfo is 17 ms faster
+    if($cpu and open(my $out_fh, ">", $cached_cpuspec)) {
+	print $out_fh (map { chomp; "$_\n" }
+		       $cpu->{'sockets'},
+		       $cpu->{'cores'},
+		       $cpu->{'threads'});
+	close $out_fh;
     }
     if(not $cpu) {
 	my $nproc = nproc();
@@ -7035,7 +7057,13 @@ sub socket_core_thread() {
 	    $cpu->{'active'} =
 	    1
     }
-
+    $cpu->{'sockets'} ||= 1;
+    $cpu->{'threads'} ||= $cpu->{'cores'};
+    $cpu->{'active'} ||= $cpu->{'threads'};
+    chomp($cpu->{'sockets'},
+	  $cpu->{'cores'},
+	  $cpu->{'threads'},
+	  $cpu->{'active'});
     # Choose minimum of active and actual
     my $mincpu;
     $mincpu->{'sockets'} = ::min($cpu->{'sockets'},$cpu->{'active'});
@@ -7044,33 +7072,35 @@ sub socket_core_thread() {
     return $mincpu;
 }
 
-sub sct_gnu_linux() {
+sub sct_gnu_linux($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
-    my $cpu;
+    my $cpu = shift;
     local $/ = "\n"; # If delimiter is set, then $/ will be wrong
-    if($ENV{'PARALLEL_CPUINFO'} or -e "/proc/cpuinfo") {
+    my @cpuinfo;
+    if($ENV{'PARALLEL_CPUINFO'}) {
+	# Use CPUINFO from environment - used for testing only
+	@cpuinfo = split/(?<=\n)/,$ENV{'PARALLEL_CPUINFO'};
+    } elsif($cpu->{'sockets'} and $cpu->{'cores'} and
+	    $cpu->{'threads'}) {
+	# Skip /proc/cpuinfo - already set
+    } elsif(open(my $in_fh, "<", "/proc/cpuinfo")) {
+	# Read /proc/cpuinfo
+	@cpuinfo = <$in_fh>;
+    }
+    if(@cpuinfo) {
 	$cpu->{'sockets'} = 0;
 	$cpu->{'cores'} = 0;
 	$cpu->{'threads'} = 0;
 	my %seen;
 	my %phy_seen;
-	my @cpuinfo;
 	my $physicalid;
-	if(open(my $in_fh, "<", "/proc/cpuinfo")) {
-	    @cpuinfo = <$in_fh>;
-	    close $in_fh;
-	}
-	if($ENV{'PARALLEL_CPUINFO'}) {
-	    # Use CPUINFO from environment - used for testing only
-	    @cpuinfo = split/(?<=\n)/,$ENV{'PARALLEL_CPUINFO'};
-	}
 	for(@cpuinfo) {
 	    if(/^physical id.*[:](.*)/) {
-		$physicalid=$1;
+		$physicalid = $1;
 		if(not $phy_seen{$1}++) {
 		    $cpu->{'sockets'}++;
 		}
@@ -7080,8 +7110,7 @@ sub sct_gnu_linux() {
 	    }
 	    /^processor.*[:]/i and $cpu->{'threads'}++;
 	}
-	$cpu->{'sockets'} ||= 1;
-	$cpu->{'cores'} ||= $cpu->{'threads'};
+	$cpu->{'cores'} ||= $cpu->{'threads'} || $cpu->{'sockets'};
     }
     if(-e "/proc/self/status" and not $ENV{'PARALLEL_CPUINFO'}) {
 	# if 'taskset' is used to limit number of threads
@@ -7096,326 +7125,231 @@ sub sct_gnu_linux() {
 	    close $in_fh;
 	}
     }
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
-sub sct_android() {
+sub sct_android($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     # Use GNU/Linux
-    return sct_gnu_linux();
+    return sct_gnu_linux(@_);
 }
 
-sub sct_freebsd() {
+sub sct_freebsd($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} = (::qqx(qq{ sysctl -a dev.cpu | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }' })
+    my $cpu = shift;
+    $cpu->{'cores'} ||=
+	(::qqx(qq{ sysctl -a dev.cpu | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }' })
 	 or
 	 ::qqx(qq{ sysctl hw.ncpu | awk '{ print \$2 }' }));
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-    $cpu->{'threads'} =
+    $cpu->{'threads'} ||=
 	(::qqx(qq{ sysctl hw.ncpu | awk '{ print \$2 }' })
 	 or
 	 ::qqx(qq{ sysctl -a dev.cpu | grep \%parent | awk '{ print \$2 }' | uniq | wc -l | awk '{ print \$1 }' }));
-    $cpu->{'threads'} and chomp $cpu->{'threads'};
-    $cpu->{'sockets'} ||= $cpu->{'cores'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
-sub sct_netbsd() {
+sub sct_netbsd($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} = ::qqx("sysctl -n hw.ncpu");
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-    $cpu->{'threads'} = ::qqx("sysctl -n hw.ncpu");
-    $cpu->{'threads'} and chomp $cpu->{'threads'};
-    $cpu->{'sockets'} ||= $cpu->{'cores'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    my $cpu = shift;
+    $cpu->{'cores'} ||= ::qqx("sysctl -n hw.ncpu");
+    return $cpu;
 }
 
-sub sct_openbsd() {
+sub sct_openbsd($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} = ::qqx('sysctl -n hw.ncpu');
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-    $cpu->{'threads'} = ::qqx('sysctl -n hw.ncpu');
-    $cpu->{'threads'} and chomp $cpu->{'threads'};
-    $cpu->{'sockets'} ||= $cpu->{'cores'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    my $cpu = shift;
+    $cpu->{'cores'} ||= ::qqx('sysctl -n hw.ncpu');
+    return $cpu;
 }
 
-sub sct_hurd() {
+sub sct_hurd($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} = ::qqx("nproc");
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-    $cpu->{'threads'} = ::qqx("nproc");
-    $cpu->{'threads'} and chomp $cpu->{'threads'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    my $cpu = shift;
+    $cpu->{'cores'} ||= ::qqx("nproc");
+    return $cpu;
 }
 
-sub sct_darwin() {
+sub sct_darwin($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} =
+    my $cpu = shift;
+    $cpu->{'cores'} ||=
 	(::qqx('sysctl -n hw.physicalcpu')
 	 or
 	 ::qqx(qq{ sysctl -a hw | grep [^a-z]physicalcpu[^a-z] | awk '{ print \$2 }' }));
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-    $cpu->{'threads'} =
+    $cpu->{'threads'} ||=
 	(::qqx('sysctl -n hw.logicalcpu')
 	 or
 	 ::qqx(qq{ sysctl -a hw | grep [^a-z]logicalcpu[^a-z] | awk '{ print \$2 }' }));
-    $cpu->{'threads'} and chomp $cpu->{'threads'};
-    $cpu->{'sockets'} ||= $cpu->{'cores'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
-sub sct_solaris() {
+sub sct_solaris($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    if(-x "/usr/sbin/psrinfo") {
-        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
-        if($#psrinfo >= 0) {
-            $cpu->{'cores'} = $#psrinfo +1;
-        }
-    }
-    if(-x "/usr/sbin/prtconf") {
-        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
-        if($#prtconf >= 0) {
-            $cpu->{'cores'} = $#prtconf +1;
-        }
-    }
-    if(-x "/usr/sbin/prtconf") {
-        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
-        if($#prtconf >= 0) {
-            $cpu->{'cores'} = $#prtconf +1;
-        }
-    }
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-
-    if(-x "/usr/sbin/psrinfo") {
-        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
-        if($#psrinfo >= 0) {
-            $cpu->{'threads'} = $#psrinfo +1;
-        }
-    }
-    if(-x "/usr/sbin/prtconf") {
-        my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
-        if($#prtconf >= 0) {
-            $cpu->{'threads'} = $#prtconf +1;
-        }
-    }
-    $cpu->{'threads'} and chomp $cpu->{'threads'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
-}
-
-sub sct_aix() {
-    # Returns:
-    #   { 'sockets' => #sockets
-    #     'cores' => #cores
-    #     'threads' => #threads
-    #     'active' => #taskset_threads }
-    local $/ = "\n";
-    my $cpu;
-    if(-x "/usr/sbin/lscfg") {
-	if(open(my $in_fh, "-|", "/usr/sbin/lscfg -vs |grep proc | wc -l|tr -d ' '")) {
-	    $cpu->{'cores'} = <$in_fh>;
-	    chomp ($cpu->{'cores'});
-	    close $in_fh;
-	}
-    }
-    if(-x "/usr/bin/vmstat") {
-	if(open(my $in_fh, "-|", "/usr/bin/vmstat 1 1")) {
-	    while(<$in_fh>) {
-		/lcpu=([0-9]*) / and $cpu->{'threads'} = $1;
+    my $cpu = shift;
+    if(not $cpu->{'cores'}) {
+	if(-x "/usr/bin/kstat") {
+	    my @chip_id = ::qqx("/usr/bin/kstat cpu_info|grep chip_id");
+	    if($#chip_id >= 0) {
+		$cpu->{'sockets'} ||= $#chip_id +1;
 	    }
-	    close $in_fh;
+	    my @core_id = ::qqx("/usr/bin/kstat -m cpu_info|grep -w core_id|uniq");
+	    if($#core_id >= 0) {
+		$cpu->{'cores'} ||= $#core_id +1;
+	    }
+	}
+	if(-x "/usr/sbin/psrinfo") {
+	    my @psrinfo = ::qqx("/usr/sbin/psrinfo -p");
+	    if($#psrinfo >= 0) {
+		$cpu->{'sockets'} ||= $psrinfo[0];
+	    }
+	}
+	if(-x "/usr/sbin/prtconf") {
+	    my @prtconf = ::qqx("/usr/sbin/prtconf | grep cpu..instance");
+	    if($#prtconf >= 0) {
+		$cpu->{'cores'} ||= $#prtconf +1;
+	    }
 	}
     }
-
-    if(grep { /\d/ } values %$cpu) {
-	# BUG It is not not known how to calculate this
-	$cpu->{'sockets'} = 1;
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
-sub sct_hpux() {
+sub sct_aix($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} =
+    my $cpu = shift;
+    if(not $cpu->{'cores'}) {
+	if(-x "/usr/sbin/lscfg") {
+	    if(open(my $in_fh, "-|", "/usr/sbin/lscfg -vs |grep proc | wc -l|tr -d ' '")) {
+		$cpu->{'cores'} = <$in_fh>;
+		close $in_fh;
+	    }
+	}
+    }
+    if(not $cpu->{'threads'}) {
+	if(-x "/usr/bin/vmstat") {
+	    if(open(my $in_fh, "-|", "/usr/bin/vmstat 1 1")) {
+		while(<$in_fh>) {
+		    /lcpu=([0-9]*) / and $cpu->{'threads'} = $1;
+		}
+		close $in_fh;
+	    }
+	}
+    }
+    return $cpu;
+}
+
+sub sct_hpux($) {
+    # Returns:
+    #   { 'sockets' => #sockets
+    #     'cores' => #cores
+    #     'threads' => #threads
+    #     'active' => #taskset_threads }
+    local $/ = "\n";
+    my $cpu = shift;
+    $cpu->{'cores'} ||=
         ::qqx(qq{ /usr/bin/mpsched -s 2>&1 | grep 'Locality Domain Count' | awk '{ print \$4 }'});
-    chomp($cpu->{'cores'});
-    $cpu->{'threads'} =
+    $cpu->{'threads'} ||=
         ::qqx(qq{ /usr/bin/mpsched -s 2>&1 | perl -ne '/Processor Count\\D+(\\d+)/ and print "\$1"'});
-
-    if(grep { /\d/ } values %$cpu) {
-	# BUG It is not not known how to calculate this
-	$cpu->{'sockets'} = 1;
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
-sub sct_qnx() {
+sub sct_qnx($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
+    my $cpu = shift;
     # BUG: It is not known how to calculate this.
 
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
-sub sct_openserver() {
+sub sct_openserver($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    if(-x "/usr/sbin/psrinfo") {
-        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
-        if($#psrinfo >= 0) {
-            $cpu->{'cores'} = $#psrinfo +1;
-        }
-    }
-    if(-x "/usr/sbin/psrinfo") {
-        my @psrinfo = ::qqx("/usr/sbin/psrinfo");
-        if($#psrinfo >= 0) {
-            $cpu->{'threads'} = $#psrinfo +1;
-        }
+    my $cpu = shift;
+    if(not $cpu->{'cores'}) {
+	if(-x "/usr/sbin/psrinfo") {
+	    my @psrinfo = ::qqx("/usr/sbin/psrinfo");
+	    if($#psrinfo >= 0) {
+		$cpu->{'cores'} = $#psrinfo +1;
+	    }
+	}
     }
     $cpu->{'sockets'} ||= $cpu->{'cores'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
-sub sct_irix() {
+sub sct_irix($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} = ::qqx(qq{ hinv | grep HZ | grep Processor | awk '{print \$1}' });
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    my $cpu = shift;
+    $cpu->{'cores'} ||=
+	::qqx(qq{ hinv | grep HZ | grep Processor | awk '{print \$1}' });
+    return $cpu;
 }
 
-sub sct_tru64() {
+sub sct_tru64($) {
     # Returns:
     #   { 'sockets' => #sockets
     #     'cores' => #cores
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     local $/ = "\n";
-    my $cpu;
-    $cpu->{'cores'} = ::qqx("sizer -pr");
-    $cpu->{'cores'} and chomp $cpu->{'cores'};
-    $cpu->{'cores'} ||= 1;
+    my $cpu = shift;
+    $cpu->{'cores'} ||= ::qqx("sizer -pr");
     $cpu->{'sockets'} ||= $cpu->{'cores'};
     $cpu->{'threads'} ||= $cpu->{'cores'};
 
-    if(grep { /\d/ } values %$cpu) {
-	return $cpu;
-    } else {
-	return undef;
-    }
+    return $cpu;
 }
 
 sub sshcommand($) {
@@ -9221,7 +9155,8 @@ sub start($) {
 	return $pid;
     }
 
-    sub open3_setpgrp {
+    sub redefine_open3_setpgrp {
+	my $setgprp_cache = shift;
 	# Select and run open3_setpgrp_internal/open3_setpgrp_external
 	no warnings 'redefine';
 	my ($outfh,$name) = ::tmpfile(SUFFIX => ".tst");
@@ -9235,6 +9170,7 @@ sub start($) {
 	    "perl -MIPC::Open3 -e ".
 	    ::shell_quote_scalar_default($script)
 	    );
+	my $redefine_eval;
 	# Redirect STDERR temporarily,
 	# so errors on MacOS X are ignored.
 	open my $saveerr, ">&STDERR";
@@ -9249,13 +9185,29 @@ sub start($) {
 	    # or does not have bash:
 	    # Use (slow) external version
 	    unlink($name);
-	    *open3_setpgrp = \&open3_setpgrp_external;
+	    $redefine_eval = '*open3_setpgrp = \&open3_setpgrp_external';
 	    ::debug("init","open3_setpgrp_external chosen\n");
 	} else {
 	    # Supports open3(x,x,x,"-")
 	    # This is 0.5 ms faster to run
-	    *open3_setpgrp = \&open3_setpgrp_internal;
+	    $redefine_eval = '*open3_setpgrp = \&open3_setpgrp_internal';
 	    ::debug("init","open3_setpgrp_internal chosen\n");
+	}
+	open(my $fh, ">", $setgprp_cache) || die;
+	print $fh $redefine_eval;
+	close $fh;
+	eval $redefine_eval;
+    }
+
+    sub open3_setpgrp {
+	my $setgprp_cache = $Global::cache_dir . "/tmp/sshlogin/" .
+	    ::hostname() . "/setpgrp_func";
+	if(-e $setgprp_cache) {
+	    open(my $fh, "<", $setgprp_cache) || die;
+	    eval <$fh> || die;
+	    close $fh;
+	} else {
+	    redefine_open3_setpgrp($setgprp_cache);
 	}
 	# The sub is now redefined. Call it
 	return open3_setpgrp(@_);
