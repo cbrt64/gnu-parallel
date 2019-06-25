@@ -5442,6 +5442,27 @@ sub which(@) {
 		"-zsh" => ["zsh", "sh"],
 		);
 	}
+	if($^O eq "linux") {
+	    # Optimized for GNU/Linux
+	    my $testpid = $pid;
+	    my $shellpath;
+	    while($testpid) {
+		if($shellpath = readlink "/proc/$testpid/exe") {
+		    if($shellpath =~ m:/$shell$:o) {
+			::debug("init", "proc which ".$shellpath." => ");
+			return $shellpath;
+		    }
+		}
+		if(open(my $fd, "<", "/proc/$testpid/stat")) {
+		    my $line = <$fd>;
+		    close $fd;
+		    $testpid = (split /\s+/, $line)[3];
+		} else {
+		    # Something is wrong: fall back to old method
+		    last;
+		}
+	    }
+	}
 	# if -sh or -csh try readlink /proc/$$/exe
 	my ($children_of_ref, $parent_of_ref, $name_of_ref) = pid_table();
 	my $shellpath;
