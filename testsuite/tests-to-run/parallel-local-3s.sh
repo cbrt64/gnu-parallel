@@ -331,18 +331,26 @@ par_do_not_export_PARALLEL_ENV() {
 par_nice() {
     echo 'Check that --nice works'
     # parallel-20160422 OK
+    check_for_2_bzip2s() {
+	perl -e '
+	for(1..5) {
+	       # Try 5 times if the machine is slow starting bzip2
+	       sleep(1);
+	       @out = qx{ps -eo "%c %n" | grep 18 | grep bzip2};
+	       if($#out == 1) {
+		     # Should find 2 lines
+		     print @out;
+		     exit 0;
+	       }
+           }
+	   print "failed\n@out";
+	   '
+    }
     # wait for load < 8
     parallel --load 8 echo ::: load_10
     parallel -j0 --timeout 10 --nice 18 bzip2 '<' ::: /dev/zero /dev/zero &
     pid=$!
-    # Should find 2 lines
-    # Try 5 times if the machine is slow starting bzip2
-    (sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
-	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
-	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
-	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
-	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2) ||
-	(sleep 1; ps -eo "%c %n" | grep 18 | grep bzip2)
+    check_for_2_bzip2s
     parallel --retries 10 '! kill -TERM' ::: $pid 2>/dev/null
 }
 

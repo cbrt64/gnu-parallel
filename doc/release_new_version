@@ -222,9 +222,9 @@ Quote of the month:
 
 New in this release:
 
-* {= uq; =} will cause the replacement string to be unquoted. Example: parallel echo '{=uq;=}.jpg' ::: '*'
+* {= uq; =} causes the replacement string to be unquoted. Example: parallel echo '{=uq;=}.jpg' ::: '*'
 
-* Speedup of startup by 40%: Find the parent shell differerently on GNU/Linux, cache information about the CPU and which setpgrp method to make GNU Parallel start 40% faster.
+* Speedup of startup by 40%: Find the parent shell differerently on GNU/Linux, cache information about the CPU and which setpgrp method to use to make GNU Parallel start 40% faster.
 
 https://techieroop.com/how-to-run-multiple-bash-scripts-in-parallel/
 

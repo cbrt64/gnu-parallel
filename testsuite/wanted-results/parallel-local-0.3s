@@ -95,6 +95,9 @@ par_delimiter	line 3
 par_delimiter	delimiter TAB line 1
 par_delimiter	line 2
 par_delimiter	line 3
+par_delimiter_space	### Does space as delimiter work?
+par_delimiter_space	1
+par_delimiter_space	done
 par_disk_full	### Disk full
 par_disk_full	cat: write error: No space left on device
 par_disk_full	parallel: Error: Output is incomplete.

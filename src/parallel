@@ -19,8 +19,7 @@
 
 # open3 used in Job::start
 use IPC::Open3;
-# &WNOHANG used in reaper
-use POSIX qw(:sys_wait_h setsid ceil :errno_h);
+use POSIX;
 # gensym used in Job::start
 use Symbol qw(gensym);
 # tempfile used in Job::start
@@ -5080,7 +5079,7 @@ sub tmpname($) {
 
 sub tmpfifo() {
     # Find an unused name and mkfifo on it
-    use POSIX qw(mkfifo);
+    # use POSIX qw(mkfifo);
     my $tmpfifo = tmpname("fif");
     mkfifo($tmpfifo,0600);
     return $tmpfifo;
@@ -5426,7 +5425,7 @@ sub which(@) {
 		"-sh (sh)" => ["sh"],
 		# csh and tcsh disguise themselves as -sh/-csh
 		# E.g.: ssh -tt csh@lo 'ps aux;true' |egrep ^csh
-		# but sh also disguise itself as -sh
+		# but sh also disguises itself as -sh
 		# (TODO When does that happen?)
 		"-sh" => ["sh"],
 		"-csh" => ["tcsh", "csh"],
@@ -5446,16 +5445,35 @@ sub which(@) {
 	    # Optimized for GNU/Linux
 	    my $testpid = $pid;
 	    my $shellpath;
+	    my $shellline;
 	    while($testpid) {
-		if($shellpath = readlink "/proc/$testpid/exe") {
-		    if($shellpath =~ m:/$shell$:o) {
-			::debug("init", "proc which ".$shellpath." => ");
+		if(open(my $fd, "<", "/proc/$testpid/cmdline")) {
+		    local $/="\0";
+		    chomp($shellline = <$fd>);
+		    if($shellline =~ /$regexp/o) {
+			my $shellname = $4 || $8;
+			my $dash = $3 || $7;
+			if($shellname eq "sh" and $dash) {
+			    # -sh => csh or sh
+			    if($shellpath = readlink "/proc/$testpid/exe") {
+				::debug("init","procpath $shellpath\n");
+				if($shellpath =~ m:/$shell$:o) {
+				    ::debug("init", "proc which ".$shellpath." => ");
+				    return $shellpath;
+				}
+			    }
+			}
+			::debug("init", "which ".$shellname." => ");
+			$shellpath = (which($shellname,@{$fakename{$shellname}}))[0];
+			::debug("init", "shell path $shellpath\n");
 			return $shellpath;
 		    }
 		}
+		# Get parent pid
 		if(open(my $fd, "<", "/proc/$testpid/stat")) {
 		    my $line = <$fd>;
 		    close $fd;
+		    # Parent pid is field 4
 		    $testpid = (split /\s+/, $line)[3];
 		} else {
 		    # Something is wrong: fall back to old method
@@ -6995,8 +7013,9 @@ sub socket_core_thread() {
 	::hostname() . "/cpuspec";
     if(-e $cached_cpuspec and -M $cached_cpuspec < 1) {
 	# Reading cached copy instead of /proc/cpuinfo is 17 ms faster
+	local $/ = "\n";
 	if(open(my $in_fh, "<", $cached_cpuspec)) {
-	    ::debug("init","Read $cached_cpuspec");
+	    ::debug("init","Read $cached_cpuspec\n");
 	    $cpu->{'sockets'} = int(<$in_fh>);
 	    $cpu->{'cores'} = int(<$in_fh>);
 	    $cpu->{'threads'} = int(<$in_fh>);
@@ -8144,12 +8163,12 @@ sub remove_rec_sep($) {
 sub non_blocking_write($) {
     my $self = shift;
     my $something_written = 0;
-    use POSIX qw(:errno_h);
+    # use POSIX qw(:errno_h);
 
     my $in = $self->fh(0,"w");
     my $rv = syswrite($in,
 		      substr($self->{'block'},$self->{'block_pos'}));
-    if (!defined($rv) && $! == EAGAIN) {
+    if (!defined($rv) && $! == EAGAIN()) {
 	# would block - but would have written
 	$something_written = 0;
 	# avoid triggering auto expanding block
@@ -9224,6 +9243,7 @@ sub start($) {
 	my $setgprp_cache = $Global::cache_dir . "/tmp/sshlogin/" .
 	    ::hostname() . "/setpgrp_func";
 	if(-e $setgprp_cache) {
+	    local $/ = undef;
 	    open(my $fh, "<", $setgprp_cache) || die;
 	    eval <$fh> || die;
 	    close $fh;

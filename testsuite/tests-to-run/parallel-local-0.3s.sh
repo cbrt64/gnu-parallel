@@ -742,6 +742,11 @@ par_unquote_replacement_string() {
     parallel echo '{}{=uq()=}' ::: '`echo foo`'
 }
 
+par_delimiter_space() {
+    echo '### Does space as delimiter work?'
+    parallel -d " " echo ::: "1 done"
+}
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
