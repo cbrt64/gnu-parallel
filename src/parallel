@@ -1593,14 +1593,21 @@ sub parse_options(@) {
     if(defined $opt::silent) { $Global::verbose = 0; }
     if(defined $opt::null) { $/ = "\0"; }
     if(defined $opt::d) { $/ = unquote_printf($opt::d) }
+    parse_replacement_string_options();
     if(defined $opt::tagstring) {
 	$opt::tagstring = unquote_printf($opt::tagstring);
+	if($opt::tagstring =~ /\Q$Global::parensleft\E.*\Q$Global::parensright\E/
+	   and
+	   $opt::linebuffer) {
+	    # --tagstring contains {= =} and --linebuffer =>
+	    #   recompute replacement string for each use (do not cache)
+	    $Global::cache_replacement_eval = 0;
+	}
     }
     if(defined $opt::interactive) { $Global::interactive = $opt::interactive; }
     if(defined $opt::quote) { $Global::quoting = 1; }
     if(defined $opt::r) { $Global::ignore_empty = 1; }
     if(defined $opt::verbose) { $Global::stderr_verbose = 1; }
-    parse_replacement_string_options();
     if(defined $opt::eof) { $Global::end_of_file_string = $opt::eof; }
     if(defined $opt::max_args) {
 	$Global::max_number_of_args = $opt::max_args;
@@ -1993,6 +2000,7 @@ sub init_globals() {
     # Quote replacement strings
     $Global::quote_replace = 1;
     $Global::total_completed = 0;
+    $Global::cache_replacement_eval = 1;
     # Read only table with default --rpl values
     %Global::replace =
 	(
@@ -9537,8 +9545,8 @@ sub should_be_retried($) {
 sub print($) {
     # Print the output of the jobs
     # Returns: N/A
-
     my $self = shift;
+
     ::debug("print", ">>joboutput ", $self->replaced(), "\n");
     if($opt::dryrun) {
 	# Nothing was printed to this job:
@@ -9792,12 +9800,21 @@ sub print_linebuffer($) {
 		    # One or more complete lines were found
 		    if($opt::tag or defined $opt::tagstring) {
 			# Replace ^ with $tag within the full line
-			my $tag = $self->tag();
-			# TODO --recend that can be partially in @$halfline_ref
-			substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
-			# The length changed, so find the new ending pos
-			$i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
-			unshift @$halfline_ref, $tag;
+			if($Global::cache_replacement_eval) {
+			    # Replace with the same value for tag
+			    my $tag = $self->tag();
+			    unshift @$halfline_ref, $tag;
+			    # TODO --recend that can be partially in @$halfline_ref
+			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
+			    # The length changed, so find the new ending pos
+			    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+			} else {
+			    # Replace with freshly computed value of tag
+			    unshift @$halfline_ref, $self->tag();
+			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$self->tag()/gme;
+			    # The length changed, so find the new ending pos
+			    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+			}
 		    }
 		    # Print the partial line (halfline) and the last half
 		    print $out_fd @$halfline_ref, substr($buf,0,$i);
@@ -9939,7 +9956,7 @@ sub print_joblog($) {
 
 sub tag($) {
     my $self = shift;
-    if(not defined $self->{'tag'}) {
+    if(not defined $self->{'tag'} or not $Global::cache_replacement_eval) {
 	if($opt::tag or defined $opt::tagstring) {
 	    $self->{'tag'} = $self->{'commandline'}->
 		replace_placeholders([$opt::tagstring],0,0)."\t";
@@ -11810,7 +11827,9 @@ sub total_jobs() {
 	# but it looks nice to be able to say {= $job->slot() =}
 	$job = shift;
 	$perlexpr =~ s/^(-?\d+)? *//; # Positional replace treated as normal replace
-	if(not $self->{'cache'}{$perlexpr}) {
+	if(not $Global::cache_replacement_eval
+	   or
+	   not $self->{'cache'}{$perlexpr}) {
 	    # Only compute the value once
 	    # Use $_ as the variable to change
 	    local $_;
@@ -12714,7 +12733,6 @@ sub main() {
     }
 
     set_input_source_header(\@command,\@input_source_fh);
-
     if($opt::filter_hosts and (@opt::sshlogin or @opt::sshloginfile)) {
 	# Parallel check all hosts are up. Remove hosts that are down
 	filter_hosts();
@@ -12749,7 +12767,6 @@ sub main() {
     # Compute $Global::max_jobs_running
     # Must be done after ungetting any --pipepart jobs.
     max_jobs_running();
-
     init_run_jobs();
     my $sem;
     if($Global::semaphore) {
