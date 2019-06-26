@@ -616,6 +616,10 @@ par_pipepart_recend_recstart	9
 par_pipepart_recend_recstart	10
 par_pipepart_roundrobin	### bug #45769: --round-robin --pipepart gives wrong results
 par_pipepart_roundrobin	2
+par_profile	### Test -J profile, -J /dir/profile, -J ./profile
+par_profile	local	local
+par_profile	abs	abs
+par_profile	config	config
 par_python_children	### bug #49970: Python child process dies if --env is used
 par_quote	### Test -q
 par_quote	a b
@@ -731,6 +735,10 @@ par_read_from_stdin	b 6
 par_read_from_stdin	b 7
 par_read_from_stdin	b 8
 par_read_from_stdin	b 9
+par_recend_not_regexp	### bug #56558: --rrs with --recend that is not regexp
+par_recend_not_regexp	aend
+par_recend_not_regexp	b
+par_recend_not_regexp	end
 par_replace_replacementstring	### Test replace {}
 par_replace_replacementstring	replace curlies
 par_replace_replacementstring	replace curlies

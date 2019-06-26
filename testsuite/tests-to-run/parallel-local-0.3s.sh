@@ -747,6 +747,24 @@ par_delimiter_space() {
     parallel -d " " echo ::: "1 done"
 }
 
+par_recend_not_regexp() {
+    echo '### bug #56558: --rrs with --recend that is not regexp'
+    echo 'a+b' | parallel -k --pipe --rrs --recend '+' -N1 'cat;echo end'
+}
+
+par_profile() {
+    echo '### Test -J profile, -J /dir/profile, -J ./profile'
+    echo --tag > testprofile_local
+    parallel -J ./testprofile_local echo ::: local
+    rm testprofile_local
+    echo --tag > testprofile_abs
+    parallel -J `pwd`/testprofile_abs echo ::: abs
+    rm testprofile_abs
+    echo --tag > ~/.parallel/testprofile_config
+    parallel -J testprofile_config echo ::: config
+    rm ~/.parallel/testprofile_config
+}
+
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |

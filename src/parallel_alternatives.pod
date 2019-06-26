@@ -1853,30 +1853,36 @@ https://github.com/spion/npm-parallel (Last checked: 2019-01)
 B<machma> runs tasks in parallel. It gives time stamped
 output. It buffers in RAM. The examples from README.md:
 
+  # Put shorthand for timestamp in config for the examples
+  echo '--rpl '\
+    \''{time} $_=::strftime("%Y-%m-%d %H:%M:%S",localtime())'\' \
+    > ~/.parallel/machma
+  echo '--line-buffer --tagstring "{#} {time} {}"' >> ~/.parallel/machma
+
   find . -iname '*.jpg' |
     machma --  mogrify -resize 1200x1200 -filter Lanczos {}
   find . -iname '*.jpg' |
-    parallel mogrify -resize 1200x1200 -filter Lanczos {}
+    parallel --bar -Jmachma mogrify -resize 1200x1200 -filter Lanczos {}
 
   cat /tmp/ips | machma -p 2 -- ping -c 2 -q {}
-  cat /tmp/ips | parallel -j 2 --tag --line-buffer ping -c 2 -q {}
+  cat /tmp/ips | parallel -j2 -Jmachma ping -c 2 -q {}
 
   cat /tmp/ips |
     machma -- sh -c 'ping -c 2 -q $0 > /dev/null && echo alive' {}
   cat /tmp/ips |
-    parallel --tag 'ping -c 2 -q {} > /dev/null && echo alive'
+    parallel -Jmachma 'ping -c 2 -q {} > /dev/null && echo alive'
 
   find . -iname '*.jpg' |
     machma --timeout 5s --  mogrify -resize 1200x1200 -filter Lanczos {}
   find . -iname '*.jpg' |
-    parallel --timeout 5s  mogrify -resize 1200x1200 -filter Lanczos {}
+    parallel --timeout 5s --bar mogrify -resize 1200x1200 -filter Lanczos {}
 
   find . -iname '*.jpg' -print0 |
     machma --null --  mogrify -resize 1200x1200 -filter Lanczos {}
   find . -iname '*.jpg' -print0 |
-    parallel --null mogrify -resize 1200x1200 -filter Lanczos {}
+    parallel --null --bar mogrify -resize 1200x1200 -filter Lanczos {}
 
-https://github.com/fd0/machma (Last checked: 2019-01)
+https://github.com/fd0/machma (Last checked: 2019-06)
 
 
 =head2 DIFFERENCES BETWEEN interlace AND GNU Parallel

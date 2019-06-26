@@ -2552,13 +2552,20 @@ sub read_options() {
 	    # --profile overrides default profiles
 	    @profiles = ();
 	    for my $profile (@opt::profile) {
-		# Look for the $profile in . and @Global::config_dirs
-		push @profiles, grep { -r $_ }
-		    map { "$_/$profile" } ".", @Global::config_dirs;
+		if($profile =~ m:^\./|^/:) {
+		    # Look for ./profile in .
+		    # Look for /profile in /
+		    push @profiles, grep { -r $_ } $profile;
+		} else {
+		    # Look for the $profile in @Global::config_dirs
+		    push @profiles, grep { -r $_ }
+		    map { "$_/$profile" } @Global::config_dirs;
+		}
 	    }
 	}
 	for my $profile (@profiles) {
 	    if(-r $profile) {
+		::debug("init","Read $profile\n");
                 local $/ = "\n";
 		open (my $in_fh, "<", $profile) ||
 		    ::die_bug("read-profile: $profile");
@@ -8161,11 +8168,26 @@ sub block_length($) {
 }
 
 sub remove_rec_sep($) {
+    # Remove --recstart and --recend from $block
+    # Input:
+    #   $block_ref = reference to $block to be modified
+    #   $recstart = --recstart
+    #   $recend = --recend
+    # Uses:
+    #   $opt::regexp = Are --recstart/--recend regexp?
+    # Returns:
+    #   N/A
     my ($block_ref,$recstart,$recend) = @_;
     # Remove record separator
-    $$block_ref =~ s/$recend$recstart//gos;
-    $$block_ref =~ s/^$recstart//os;
-    $$block_ref =~ s/$recend$//os;
+    if($opt::regexp) {
+	$$block_ref =~ s/$recend$recstart//gos;
+	$$block_ref =~ s/^$recstart//os;
+	$$block_ref =~ s/$recend$//os;
+    } else {
+	$$block_ref =~ s/\Q$recend$recstart\E//gos;
+	$$block_ref =~ s/^\Q$recstart\E//os;
+	$$block_ref =~ s/\Q$recend\E$//os;
+    }
 }
 
 sub non_blocking_write($) {
@@ -8176,7 +8198,7 @@ sub non_blocking_write($) {
     my $in = $self->fh(0,"w");
     my $rv = syswrite($in,
 		      substr($self->{'block'},$self->{'block_pos'}));
-    if (!defined($rv) && $! == EAGAIN()) {
+    if (!defined($rv) && $! == ::EAGAIN()) {
 	# would block - but would have written
 	$something_written = 0;
 	# avoid triggering auto expanding block
