@@ -16,11 +16,6 @@ par_END	include this
 par_END	include this
 par_END	include this
 par_END	include this
-par__memleak	### Test memory consumption stays (almost) the same for 30 and 300 jobs
-par__memleak	should give 1 == true
-par__memleak	Memory use should not depend very much on the total number of jobs run\n
-par__memleak	Test if memory consumption(300 jobs) < memory consumption(30 jobs) * 110% 
-par__memleak	1
 par__pipe_tee	bug #45479: --pipe/--pipepart --tee
 par__pipe_tee	--pipe --tee
 par__pipe_tee	314572800
@@ -705,12 +700,47 @@ par_semaphore	job3a 4
 par_semaphore	job2b 5
 par_semaphore	job3b 6
 par_semaphore	done
-par_slow_total_jobs	bug #51006: Slow total_jobs() eats job
-par_slow_total_jobs	a
-par_slow_total_jobs	b
-par_slow_total_jobs	1
-par_slow_total_jobs	2
-par_slow_total_jobs	parallel: Warning: Reading X arguments took longer than XX seconds.
+par_shellquote	### Test --shellquote in all shells
+par_shellquote	ash	'	
+par_shellquote	ash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	bash	'	
+par_shellquote	bash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	csh	\\\\\\\\	"\
+par_shellquote	csh	"\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\\‰\\‹\\\\\\‘\’\“\”\•\–\—\\™\\›\\\\\ \΅\Ά\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\―\°\±\²\³\΄\µ\¶\·\Έ\Ή\Ί\»\Ό\½\Ύ\Ώ\ΐ\Α\Β\Γ\Δ\Ε\Ζ\Η\Θ\Ι\Κ\Λ\Μ\Ν\Ξ\Ο\Π\Ρ\Ò\Σ\Τ\Υ\Φ\Χ\Ψ\Ω\Ϊ\Ϋ\ά\έ\ή\ί\ΰ\α\β\γ\δ\ε\ζ\η\θ\ι\κ\λ\μ\ν\ξ\ο\π\ρ\ς\σ\τ\υ\φ\χ\ψ\ω\ϊ\ϋ\ό\ύ\ώ\ÿ
+par_shellquote	dash	'	
+par_shellquote	dash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	fish	'	
+par_shellquote	fish	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	fizsh	'	
+par_shellquote	fizsh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	ksh	'	
+par_shellquote	ksh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	ksh93	'	
+par_shellquote	ksh93	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	lksh	'	
+par_shellquote	lksh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	mksh	'	
+par_shellquote	mksh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	posh	'	
+par_shellquote	posh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	rzsh	'	
+par_shellquote	rzsh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	sash	'	
+par_shellquote	sash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	sh	'	
+par_shellquote	sh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	static-sh	'	
+par_shellquote	static-sh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	tcsh	\\\\\\\\	"\
+par_shellquote	tcsh	"\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\\‰\\‹\\\\\\‘\’\“\”\•\–\—\\™\\›\\\\\ \΅\Ά\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\―\°\±\²\³\΄\µ\¶\·\Έ\Ή\Ί\»\Ό\½\Ύ\Ώ\ΐ\Α\Β\Γ\Δ\Ε\Ζ\Η\Θ\Ι\Κ\Λ\Μ\Ν\Ξ\Ο\Π\Ρ\Ò\Σ\Τ\Υ\Φ\Χ\Ψ\Ω\Ϊ\Ϋ\ά\έ\ή\ί\ΰ\α\β\γ\δ\ε\ζ\η\θ\ι\κ\λ\μ\ν\ξ\ο\π\ρ\ς\σ\τ\υ\φ\χ\ψ\ω\ϊ\ϋ\ό\ύ\ώ\ÿ
+par_shellquote	yash	'	
+par_shellquote	yash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	zsh	'	
+par_shellquote	zsh	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡‰‹‘’“”•–—™› ΅Ά£¤¥¦§¨©ª«¬­®―°±²³΄µ¶·ΈΉΊ»Ό½ΎΏΐΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡÒΣΤΥΦΧΨΩΪΫάέήίΰαβγδεζηθικλμνξοπρςστυφχψωϊϋόύώÿ'
+par_shellquote	csh	\\\\\\\\	"\
+par_shellquote	csh	"\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\\‰\\‹\\\\\\‘\’\“\”\•\–\—\\™\\›\\\\\ \΅\Ά\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\―\°\±\²\³\΄\µ\¶\·\Έ\Ή\Ί\»\Ό\½\Ύ\Ώ\ΐ\Α\Β\Γ\Δ\Ε\Ζ\Η\Θ\Ι\Κ\Λ\Μ\Ν\Ξ\Ο\Π\Ρ\Ò\Σ\Τ\Υ\Φ\Χ\Ψ\Ω\Ϊ\Ϋ\ά\έ\ή\ί\ΰ\α\β\γ\δ\ε\ζ\η\θ\ι\κ\λ\μ\ν\ξ\ο\π\ρ\ς\σ\τ\υ\φ\χ\ψ\ω\ϊ\ϋ\ό\ύ\ώ\ÿ
+par_shellquote	tcsh	\\\\\\\\	"\
+par_shellquote	tcsh	"\\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\\‰\\‹\\\\\\‘\’\“\”\•\–\—\\™\\›\\\\\ \΅\Ά\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\―\°\±\²\³\΄\µ\¶\·\Έ\Ή\Ί\»\Ό\½\Ύ\Ώ\ΐ\Α\Β\Γ\Δ\Ε\Ζ\Η\Θ\Ι\Κ\Λ\Μ\Ν\Ξ\Ο\Π\Ρ\Ò\Σ\Τ\Υ\Φ\Χ\Ψ\Ω\Ϊ\Ϋ\ά\έ\ή\ί\ΰ\α\β\γ\δ\ε\ζ\η\θ\ι\κ\λ\μ\ν\ξ\ο\π\ρ\ς\σ\τ\υ\φ\χ\ψ\ω\ϊ\ϋ\ό\ύ\ώ\ÿ
 par_sockets_cores_threads	### Test --number-of-sockets/cores/threads
 par_sockets_cores_threads	1
 par_sockets_cores_threads	2
@@ -720,6 +750,12 @@ par_sockets_cores_threads	### Test --use-sockets-instead-of-threads
 par_sockets_cores_threads	threads done
 par_sockets_cores_threads	sockets done
 par_sockets_cores_threads	Threads should complete first on machines with less than 8 sockets
+par_tmp_full	### Test --tmpdir running full. bug #40733 was caused by this
+par_tmp_full	parallel: Error: Output is incomplete.
+par_tmp_full	parallel: Error: Cannot append to buffer file in /tmp/shm/parallel.
+par_tmp_full	parallel: Error: Is the disk full?
+par_tmp_full	parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
+par_tmp_full	Warning: unable to close filehandle properly: No space left on device during global destruction.
 par_tmux_fg	bug #50107: --tmux --fg should also write how to access it
 par_tmux_fg	See output with: tmux -S tmp attach
 par_tmux_fg	open terminal failed: not a terminal

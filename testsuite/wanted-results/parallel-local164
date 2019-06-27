@@ -1,7 +1,3 @@
-echo '### bug #38354: -J profile_name should read from `pwd`/profile_name before ~/.parallel/profile_name'
-### bug #38354: -J profile_name should read from `pwd`/profile_name before ~/.parallel/profile_name
-  echo "echo echo from ./local_test_profile" > local_test_profile;   parallel --profile local_test_profile echo ::: 1;   rm local_test_profile
-echo from ./local_test_profile echo 1
 echo "### Test --delay"
 ### Test --delay
 seq 9 | /usr/bin/time -f %e  parallel -j3 --delay 0.57 true {} 2>&1 |   perl -ne '$_ > 3.3 and print "More than 3.3 secs: OK\n"'

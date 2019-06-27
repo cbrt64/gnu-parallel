@@ -1219,9 +1219,9 @@ Similar to B<--memfree>.
 =back
 
 
-=item B<--line-buffer>
+=item B<--line-buffer> (alpha testing)
 
-=item B<--lb>
+=item B<--lb> (alpha testing)
 
 Buffer output on line basis. B<--group> will keep the output together
 for a whole job. B<--ungroup> allows output to mixup with half a line
@@ -1240,8 +1240,9 @@ B<--files>. This will make it as slow as B<--group> and will limit
 output to the available disk space.
 
 With B<--keep-order> B<--line-buffer> will output lines from the first
-job while it is running, then lines from the second job while that is
-running. It will buffer full lines, but jobs will not mix. Compare:
+job continuously while it is running, then lines from the second job
+while that is running. It will buffer full lines, but jobs will not
+mix. Compare:
 
   parallel -j0 'echo {};sleep {};echo {}' ::: 1 3 2 4
   parallel -j0 --lb 'echo {};sleep {};echo {}' ::: 1 3 2 4
@@ -1607,9 +1608,9 @@ B<,,>:
 See also: B<--rpl> B<{= perl expression =}>
 
 
-=item B<--profile> I<profilename>
+=item B<--profile> I<profilename> (alpha testing)
 
-=item B<-J> I<profilename>
+=item B<-J> I<profilename> (alpha testing)
 
 Use profile I<profilename> for options. This is useful if you want to
 have multiple profiles. You could have one profile for running jobs in
@@ -2494,7 +2495,7 @@ the lines will be prepended with the sshlogin instead.
 B<--tag> is ignored when using B<-u>.
 
 
-=item B<--tagstring> I<str>
+=item B<--tagstring> I<str> (alpha testing)
 
 Tag lines with a string. Each output line will be prepended with
 I<str> and TAB (\t). I<str> can contain replacement strings such as
@@ -4740,6 +4741,19 @@ B<--ssh>. It can also be set on a per server basis (see
 B<--sshlogin>).
 
 
+=item $PARALLEL_SSHLOGIN (alpha testing)
+
+The environment variable $PARALLEL_SSHLOGIN is set by GNU B<parallel>
+and is visible to the jobs started from GNU B<parallel>. The value is
+the sshlogin line with number of cores removed. E.g.
+
+  4//usr/bin/specialssh user@host
+
+becomes:
+
+  /usr/bin/specialssh user@host
+
+
 =item $PARALLEL_SEQ
 
 $PARALLEL_SEQ will be set to the sequence number of the job
@@ -4807,6 +4821,10 @@ variable $PARALLEL, may contain retired options such as B<--tollef>.
 If B<--profile> set, GNU B<parallel> will read the profile from that
 file rather than the global or user configuration files. You can have
 multiple B<--profiles>.
+
+Profiles are searched for in B<~/.parallel>. If the name starts with
+B</> it is seen as an absolute path. If the name starts with B<./> it
+is seen as a relative path from current dir.
 
 Example: Profile for running a command on every sshlogin in
 ~/.ssh/sshlogins and prepend the output with the sshlogin:

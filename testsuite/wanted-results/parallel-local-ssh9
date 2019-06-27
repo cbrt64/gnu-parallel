@@ -136,3 +136,14 @@ par_ash_embed	your
 par_ash_embed	code
 par_ash_embed	here
 par_ash_embed	Put your code here
+par_PARALLEL_SSHLOGIN	### bug #56554: Introduce $PARALLEL_SSHLOGIN
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	/usr/bin/ssh csh@lo
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	csh
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	/usr/bin/ssh tcsh@lo
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	tcsh
+par_PARALLEL_SSHLOGIN	lo	lo
+par_PARALLEL_SSHLOGIN	lo	tange
+par_PARALLEL_SSHLOGIN	sh@lo	sh
+par_PARALLEL_SSHLOGIN	sh@lo	sh@lo
+par_PARALLEL_SSHLOGIN	zsh@lo	zsh
+par_PARALLEL_SSHLOGIN	zsh@lo	zsh@lo

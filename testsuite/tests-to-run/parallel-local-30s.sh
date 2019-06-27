@@ -22,17 +22,6 @@ par_race_condition1() {
     rm /tmp/parallel_race_cond
 }
 
-par_tmp_full() {
-    # Assume /tmp/shm is easy to fill up
-    export SHM=/tmp/shm/parallel
-    mkdir -p $SHM
-    sudo umount -l $SHM 2>/dev/null
-    sudo mount -t tmpfs -o size=10% none $SHM
-
-    echo "### Test --tmpdir running full. bug #40733 was caused by this"
-    stdout parallel -j1 --tmpdir $SHM cat /dev/zero ::: dummy
-}
-
 par_memory_leak() {
     a_run() {
 	seq $1 |time -v parallel true 2>&1 |
@@ -41,7 +30,7 @@ par_memory_leak() {
     }
     export -f a_run
     echo "### Test for memory leaks"
-    echo "Of 100 runs of 1 job at least one should be bigger than a 3000 job run"
+    echo "Of 100 runs of 1 job none should be bigger than a 3000 job run"
     small_max=$(seq 100 | parallel a_run 1 | jq -s max)
     big=$(a_run 3000)
     if [ $small_max -lt $big ] ; then
@@ -49,6 +38,12 @@ par_memory_leak() {
     else
 	echo "Good: No memleak detected."
     fi
+}
+
+par_slow_total_jobs() {
+    echo 'bug #51006: Slow total_jobs() eats job'
+    (echo a; sleep 15; echo b; sleep 15; seq 2) |
+	parallel -k echo '{=total_jobs()=}' 2> >(perl -pe 's/\d/X/g')
 }
 
 linebuffer_matters() {
@@ -129,17 +124,6 @@ par_memfree() {
     parallel --memfree 1k echo Free mem: ::: 1k
     stdout parallel --timeout 20 --argsep II parallel --memfree 1t echo Free mem: ::: II 1t |
 	grep -v TERM | grep -v ps/display.c
-}
-
-par_shellquote() {
-    echo '### Test --shellquote in all shells'
-    doit() {
-	# Run --shellquote for ascii 1..255 in a shell
-	shell="$1"
-	"$shell" -c perl\ -e\ \'print\ pack\(\"c\*\",1..255\)\'\ \|\ parallel\ -0\ --shellquote
-    }
-    export -f doit
-    parallel --tag -q -k doit {} ::: ash bash csh dash fish fizsh ksh ksh93 lksh mksh posh rzsh sash sh static-sh tcsh yash zsh csh tcsh
 }
 
 par_test_detected_shell() {
@@ -349,4 +333,4 @@ par_keeporder_roundrobin() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
-    parallel --delay 0.3 -j0 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --delay 0.3 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

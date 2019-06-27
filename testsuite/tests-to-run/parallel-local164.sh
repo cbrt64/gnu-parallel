@@ -2,11 +2,6 @@
 
 # -L1 will join lines ending in ' '
 cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 -r
-echo '### bug #38354: -J profile_name should read from `pwd`/profile_name before ~/.parallel/profile_name'
-  echo "echo echo from ./local_test_profile" > local_test_profile; 
-  parallel --profile local_test_profile echo ::: 1; 
-  rm local_test_profile
-
 echo "### Test --delay"
 seq 9 | /usr/bin/time -f %e  parallel -j3 --delay 0.57 true {} 2>&1 | 
   perl -ne '$_ > 3.3 and print "More than 3.3 secs: OK\n"'

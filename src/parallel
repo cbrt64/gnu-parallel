@@ -8779,7 +8779,7 @@ sub sshlogin_wrap($) {
 	}
 	# Duplicate vars as BASH functions to include post-shellshock functions (v1+v2)
 	# So --env myfunc should look for BASH_FUNC_myfunc() and BASH_FUNC_myfunc%%
-	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ",
+	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ", "PARALLEL_SSHLOGIN",
 	     map { ("BASH_FUNC_$_()", "BASH_FUNC_$_%%") } @vars);
 	# Keep only defined variables
 	return grep { defined($ENV{$_}) } @vars;
@@ -8838,6 +8838,7 @@ sub sshlogin_wrap($) {
 	my $serverlogin = $sshlogin->serverlogin();
 	my $quoted_remote_command;
 	$ENV{'PARALLEL_SEQ'} = $self->seq();
+	$ENV{'PARALLEL_SSHLOGIN'} = $sshlogin->string();
 	$ENV{'PARALLEL_PID'} = $$;
 	if($serverlogin eq ":") {
 	    if($opt::workdir) {

@@ -194,6 +194,14 @@ par_no_route_to_host() {
     ) | perl -pe 's/(\d+\.\d+\.\d+\.\d+)/i.p.n.r/' | puniq
 }
 
+par_PARALLEL_SSHLOGIN() {
+    echo '### bug #56554: Introduce $PARALLEL_SSHLOGIN'
+    (echo lo; echo zsh@lo; echo /usr/bin/ssh csh@lo; echo 1/sh@lo;
+     echo 1//usr/bin/ssh tcsh@lo) |
+	parallel --tag --nonall -S - 'whoami;echo $PARALLEL_SSHLOGIN' |
+	sort
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |

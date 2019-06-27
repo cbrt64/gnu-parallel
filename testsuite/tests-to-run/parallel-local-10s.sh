@@ -331,23 +331,6 @@ par__pipepart_tee() {
     rm $tmp
 }
 
-par__memleak() {
-    echo "### Test memory consumption stays (almost) the same for 30 and 300 jobs"
-    echo "should give 1 == true"
-
-    mem30=$( nice stdout time -f %M parallel -j2 true :::: <(perl -e '$a="x"x60000;for(1..30){print $a,"\n"}') );
-    mem300=$( nice stdout time -f %M parallel -j2 true :::: <(perl -e '$a="x"x60000;for(1..300){print $a,"\n"}') );
-    echo "Memory use should not depend very much on the total number of jobs run\n";
-    echo "Test if memory consumption(300 jobs) < memory consumption(30 jobs) * 110% ";
-    echo $(($mem300*100 < $mem30 * 110))
-}
-
-par_slow_total_jobs() {
-    echo 'bug #51006: Slow total_jobs() eats job'
-    (echo a; sleep 15; echo b; sleep 15; seq 2) |
-	parallel -k echo '{=total_jobs()=}' 2> >(perl -pe 's/\d/X/g')
-}
-
 par_interactive() {
     echo '### Test -p --interactive'
     cat >/tmp/parallel-script-for-expect <<_EOF
@@ -505,6 +488,28 @@ par_long_line_remote() {
 	parallel -j1 -S lo -N 10000 echo {} |wc
     perl -e 'print((("\$"x5000)."\n")x50)' |
 	parallel -j1 -S lo -N 10000 echo {} |wc
+}
+
+par_shellquote() {
+    echo '### Test --shellquote in all shells'
+    doit() {
+	# Run --shellquote for ascii 1..255 in a shell
+	shell="$1"
+	"$shell" -c perl\ -e\ \'print\ pack\(\"c\*\",1..255\)\'\ \|\ parallel\ -0\ --shellquote
+    }
+    export -f doit
+    parallel --tag -q -k doit {} ::: ash bash csh dash fish fizsh ksh ksh93 lksh mksh posh rzsh sash sh static-sh tcsh yash zsh csh tcsh
+}
+
+par_tmp_full() {
+    # Assume /tmp/shm is easy to fill up
+    export SHM=/tmp/shm/parallel
+    mkdir -p $SHM
+    sudo umount -l $SHM 2>/dev/null
+    sudo mount -t tmpfs -o size=10% none $SHM
+
+    echo "### Test --tmpdir running full. bug #40733 was caused by this"
+    stdout parallel -j1 --tmpdir $SHM cat /dev/zero ::: dummy
 }
 
 
