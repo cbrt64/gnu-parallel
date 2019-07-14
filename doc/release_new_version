@@ -206,7 +206,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190722 ('') released <<[stable]>>
+Subject: GNU Parallel 20190722 ('Ryugu') released <<[stable]>>
 
 GNU Parallel 20190722 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -229,6 +229,8 @@ New in this release:
 * Use -J ./profile to read a profile in current dir.
 
 * Speedup of startup by 40%: Find the parent shell differerently on GNU/Linux, cache information about the CPU and which setpgrp method to use to make GNU Parallel start 40% faster.
+
+https://zalinux.ru/?p=2623
 
 https://techieroop.com/how-to-run-multiple-bash-scripts-in-parallel/
 

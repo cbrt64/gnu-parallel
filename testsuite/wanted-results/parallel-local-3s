@@ -1342,8 +1342,10 @@ par_shard	      9 8
 par_shard	      9 9
 par_shard	      2 c2
 par_shard	*** broken
-par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
-par_shard	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
 par_slow_args_generation	### Test slow arguments generation - https://savannah.gnu.org/bugs/?32834
 par_slow_args_generation	1
 par_slow_args_generation	2

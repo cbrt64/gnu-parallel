@@ -4020,20 +4020,22 @@ See more B<ssh> tricks on https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies
 =head1 EXAMPLE: Parallelizing rsync
 
 B<rsync> is a great tool, but sometimes it will not fill up the
-available bandwidth. This is often a problem when copying several big
-files over high speed connections.
+available bandwidth. Running multiple B<rsync> in parallel can fix
+this.
 
-The following will start one B<rsync> per big file in I<src-dir> to
-I<dest-dir> on the server I<fooserver>:
+  cd src-dir
+  find . -type f |
+    parallel -j10 -X rsync -zR -Ha ./{} fooserver:/dest-dir/
 
-  cd src-dir; find . -type f -size +100000 | \
-    parallel -v ssh fooserver mkdir -p /dest-dir/{//}\; \
-      rsync -s -Havessh {} fooserver:/dest-dir/{}
+Adjust B<-j10> until you find the optimal number.
 
-The dirs created may end up with wrong permissions and smaller files
-are not being transferred. To fix those run B<rsync> a final time:
+B<rsync -R> will create the needed subdirectories, so all files are
+not put into a single dir. The B<./> is needed so the resulting command
+looks similar to:
 
-  rsync -Havessh src-dir/ fooserver:/dest-dir/
+  rsync -zR ././sub/dir/file fooserver:/dest-dir/
+
+The B</./> is what B<rsync -R> works on.
 
 If you are unable to push data, but need to pull them and the files
 are called digits.png (e.g. 000000.png) you might be able to do:
@@ -4489,8 +4491,8 @@ files:
 
 =head1 SPREADING BLOCKS OF DATA
 
-B<--round-robin>, B<--pipe-part>, B<--shard>, and B<--group-by> are
-all specialized versions of B<--pipe>.
+B<--round-robin>, B<--pipe-part>, B<--shard>, B<--bin> and
+B<--group-by> are all specialized versions of B<--pipe>.
 
 In the following I<n> is the number of jobslots given by B<--jobs>. A
 record starts with B<--recstart> and ends with B<--recend>. It is
@@ -4517,6 +4519,11 @@ B<--shard> starts I<n> jobs in total. It parses each line to read the
 value in the given column. Based on this value the line is passed to
 one of the I<n> jobs. All lines having this value will be given to the
 same jobslot.
+
+B<--bin> works like B<--shard> but the value of the column is the
+jobslot number it will be passed to. If the value is bigger than I<n>,
+then I<n> will be subtracted from the value until the values is
+smaller than or equal to I<n>.
 
 B<--group-by> starts one job per chunk. Record borders are not given
 by B<--recend>/B<--recstart>. Instead a record is defined by a number

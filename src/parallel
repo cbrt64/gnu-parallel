@@ -415,6 +415,55 @@ sub sharder_script() {
     return ::spacefree(1, $script);
 }
 
+sub binner_script() {
+    my $script = q{
+	use B;
+	# Column separator
+	my $sep = shift;
+	# Which columns to shard on (count from 1)
+	my $col = shift;
+	# Which columns to shard on (count from 0)
+	my $col0 = $col - 1;
+	# Perl expression
+	my $perlexpr = shift;
+	my $bins = @ARGV;
+	# Open fifos for writing, fh{0..$bins}
+	my $t = 0;
+	my %fh;
+        # Let the last output fifo be the 0'th
+        open $fh{$t++}, ">", pop @ARGV;
+	for(@ARGV) {
+	    open $fh{$t++}, ">", $_;
+	    # open blocks until it is opened by reader
+	    # so unlink only happens when it is ready
+	    unlink $_;
+	}
+        if($perlexpr) {
+	    my $subref = eval("sub { no strict; no warnings; $perlexpr }");
+	    while(<STDIN>) {
+		# Split into $col columns (no need to split into more)
+		@F = split $sep, $_, $col+1;
+		{
+		    local $_ = $F[$col0];
+		    &$subref();
+		    $fh = $fh{ $_%$bins };
+		}
+		print $fh $_;
+	    }
+	} else {
+	    while(<STDIN>) {
+		# Split into $col columns (no need to split into more)
+		@F = split $sep, $_, $col+1;
+		$fh = $fh{ $F[$col0]%$bins };
+		print $fh $_;
+	    }
+	}
+	# Close all open fifos
+	close values %fh;
+    };
+    return ::spacefree(1, $script);
+}
+
 sub pipe_shard_setup() {
     # Create temporary fifos
     # Run 'shard.pl sep col fifo1 fifo2 fifo3 ... fifoN' in the background
@@ -435,10 +484,17 @@ sub pipe_shard_setup() {
 	    $parcatfifos[$n][$m] = $shardfifos[$m][$n] = tmpfifo();
 	}
     }
-    my $script = sharder_script();
+    my $shardbin = ($opt::shard || $opt::bin);
+    my $script;
+    if($opt::bin) {
+	$script = binner_script();
+    } else {
+	$script = sharder_script();
+    }
+   
     # cat foo | sharder sep col fifo1 fifo2 fifo3 ... fifoN
 
-    if($opt::shard =~ /^[a-z_][a-z_0-9]*(\s|$)/i) {
+    if($shardbin =~ /^[a-z_][a-z_0-9]*(\s|$)/i) {
 	# Group by column name
 	# (Yes, this will also wrongly match a perlexpr like: chop)
 	my($read,$char,@line);
@@ -451,7 +507,7 @@ sub pipe_shard_setup() {
 	$Global::header = join "", @line;
     }
     my ($col, $perlexpr, $subref) =
-	column_perlexpr($opt::shard, $Global::header, $opt::colsep);
+	column_perlexpr($shardbin, $Global::header, $opt::colsep);
     if(not fork()) {
 	# Let the sharder inherit our stdin
 	# and redirect stdout to null
@@ -1515,6 +1571,7 @@ sub options_hash() {
 	 "pipepart|pipe-part" => \$opt::pipepart,
 	 "tee" => \$opt::tee,
 	 "shard=s" => \$opt::shard,
+	 "bin=s" => \$opt::bin,
 	 "groupby|group-by=s" => \$opt::groupby,
 	 "hgrp|hostgrp|hostgroup|hostgroups" => \$opt::hostgroups,
 	 "embed" => \$opt::embed,
@@ -9319,7 +9376,7 @@ sub start($) {
 	    ::set_fh_non_blocking($stdin_fh);
 	}
 	$job->set_fh(0,"w",$stdin_fh);
-	if($opt::tee or $opt::shard) { $job->set_virgin(0); }
+	if($opt::tee or $opt::shard or $opt::bin) { $job->set_virgin(0); }
     } elsif ($opt::tty and -c "/dev/tty" and
 	     open(my $devtty_fh, "<", "/dev/tty")) {
 	# Give /dev/tty to the command if no one else is using it
@@ -9818,7 +9875,7 @@ sub print_linebuffer($) {
 		$outputlength += $rv;
 		# TODO --recend
 		# Treat both \n and \r as line end
-		$i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+		$i = ::max((rindex($buf,"\n")+1), (rindex($buf,"\r")+1));
 		if($i) {
 		    # One or more complete lines were found
 		    if($opt::tag or defined $opt::tagstring) {
@@ -9828,15 +9885,15 @@ sub print_linebuffer($) {
 			    my $tag = $self->tag();
 			    unshift @$halfline_ref, $tag;
 			    # TODO --recend that can be partially in @$halfline_ref
-			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$tag/gm;
+			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])(?=.|$)/$tag/gs;
 			    # The length changed, so find the new ending pos
-			    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+			    $i = ::max((rindex($buf,"\n")+1), (rindex($buf,"\r")+1));
 			} else {
 			    # Replace with freshly computed value of tag
 			    unshift @$halfline_ref, $self->tag();
-			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])/$self->tag()/gme;
+			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])(?=.|$)/$self->tag()/gse;
 			    # The length changed, so find the new ending pos
-			    $i = (rindex($buf,"\n")+1) || (rindex($buf,"\r")+1);
+			    $i = ::max((rindex($buf,"\n")+1), (rindex($buf,"\r")+1));
 			}
 		    }
 		    # Print the partial line (halfline) and the last half
@@ -9930,8 +9987,10 @@ sub print_normal($) {
 	    local $/ = "\n";
 	    my $tag = $self->tag();
 	    while(<$in_fh>) {
-		print $out_fd $tag,$_;
 		$outputlength += length $_;
+		# Tag lines with \r, too
+		$_ =~ s/(?<=[\r])(?=.|$)/$tag/gs;
+		print $out_fd $tag,$_;
 		if($Global::membuffer) {
 		    push @{$self->{'output'}{$fdno}}, $tag, $_;
 		}
@@ -12774,7 +12833,7 @@ sub main() {
 	pipepart_setup();
     } elsif($opt::pipe and $opt::tee) {
 	pipe_tee_setup();
-    } elsif($opt::pipe and $opt::shard) {
+    } elsif($opt::pipe and $opt::shard or $opt::bin) {
 	pipe_shard_setup();
     }
 
@@ -12798,12 +12857,22 @@ sub main() {
     $SIG{TERM} = $Global::original_sig{TERM};
     $SIG{HUP} = \&start_no_new_jobs;
 
-    if($opt::tee or $opt::shard) {
-	# All jobs must be running in parallel for --tee/--shard
+    if($opt::tee or $opt::shard or $opt::bin) {
+	# All jobs must be running in parallel for --tee/--shard/--bin
 	while(start_more_jobs()) {}
 	$Global::start_no_new_jobs = 1;
 	if(not $Global::JobQueue->empty()) {
-	    ::error("--tee requres --jobs to be higher. Try --jobs 0.");
+	    if($opt::tee) {
+		::error("--tee requires --jobs to be higher. Try --jobs 0.");
+	    } elsif($opt::bin) {
+		::error("--bin requires --jobs to be higher than the number of",
+			"arguments. Increase --jobs.");
+	    } elsif($opt::shard) {
+		::error("--shard requires --jobs to be higher than the number of",
+			"arguments. Increase --jobs.");
+	    } else {
+		::die_bug("--bin/--shard/--tee should not get here");
+	    }
 	    ::wait_and_exit(255);
 	}
     } elsif($opt::pipe and not $opt::pipepart) {

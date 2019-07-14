@@ -77,7 +77,7 @@ par_testhalt() {
     export -f testhalt_false;
     export -f testhalt_true;
 
-    stdout parallel -kj0 --delay 0.11 --tag testhalt_{4} {1},{2}={3} \
+    stdout parallel -k --delay 0.11 --tag testhalt_{4} {1},{2}={3} \
 	::: now soon ::: fail success done ::: 0 1 2 30% 70% ::: true false |
 	# Remove lines that only show up now and then
 	perl -ne '/Starting no more jobs./ or print'

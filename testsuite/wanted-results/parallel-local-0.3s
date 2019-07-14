@@ -44,6 +44,25 @@ par_basic_halt	true
 par_basic_halt	parallel: Error: --halt must have 'never', 'soon', or 'now'.
 par_basic_halt	parallel: Error: --halt soon must be followed by ,success or ,fail.
 par_basic_halt	parallel: Error: --halt now must be followed by ,success or ,fail.
+par_bin	### Test --bin
+par_bin	      2       2       4
+par_bin	      2       2       4
+par_bin	      3       3       6
+par_bin	      3       3       7
+par_bin	      2       4       8
+par_bin	      2       4       8
+par_bin	      3       6      13
+par_bin	      3       6      13
+par_bin	### Test --bin with expression that gives 1..n
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
+par_bin	### Test --bin with expression that gives 0..n-1
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
 par_blocking_redir	      0       0       0
 par_blocking_redir	      0       0       0
 par_blocking_redir	      1       9      54
@@ -850,7 +869,7 @@ par_tee_too_many_args	1	11
 par_tee_too_many_args	2	2
 par_tee_too_many_args	3	3
 par_tee_too_many_args	4	4
-par_tee_too_many_args	parallel: Error: --tee requres --jobs to be higher. Try --jobs 0.
+par_tee_too_many_args	parallel: Error: --tee requires --jobs to be higher. Try --jobs 0.
 par_test_L_context_replace	### Test -N context replace
 par_test_L_context_replace	a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
 par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b

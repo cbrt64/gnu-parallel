@@ -7,8 +7,7 @@
 # after which 'env_parallel' works
 #
 #
-# Copyright (C) 2016-2019
-# Ole Tange and Free Software Foundation, Inc.
+# Copyright (C) 2016-2019 Ole Tange and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -207,9 +206,11 @@ env_parallel() {
 
     # Grep regexp for vars given by --env
     _grep_REGEXP="`_make_grep_REGEXP \"$@\"`"
-
+    unset _make_grep_REGEXP
+    
     # Deal with --env _
     _ignore_UNDERSCORE="`_get_ignored_VARS \"$@\"`"
+    unset _get_ignored_VARS
 
     # --record-env
     # Bash is broken in version 3.2.25 and 4.2.39
@@ -251,6 +252,8 @@ env_parallel() {
 	export PARALLEL_IGNORED_NAMES
 	return 0
     fi
+    # Bash is broken in version 3.2.25 and 4.2.39
+    # The crazy '[ "`...`" == 0 ]' is needed for the same reason
     if [ "`perl -e 'exit grep { /^--end.?session$/ } @ARGV' -- "$@"; echo $?`" == 0 ] ; then
 	true skip
     else
@@ -298,17 +301,22 @@ env_parallel() {
         $_list_variable_VALUES;
     `"
     export PARALLEL_ENV
-    unset _list_alias_BODIES
-    unset _list_variable_VALUES
-    unset _list_function_BODIES
-    unset _grep_REGEXP
-    unset _ignore_UNDERSCORE
+    unset _list_alias_BODIES _list_variable_VALUES _list_function_BODIES
+    unset _bodies_of_ALIASES _bodies_of_VARIABLES _bodies_of_FUNCTIONS
+    unset _names_of_ALIASES _names_of_VARIABLES _names_of_FUNCTIONS
+    unset _ignore_HARDCODED _ignore_READONLY _ignore_UNDERSCORE
+    unset _remove_bad_NAMES _grep_REGEXP
+    unset _prefix_PARALLEL_ENV
     # Test if environment is too big
     if [ "`_which_PAR true`" == "$_which_TRUE" ] ; then
-	parallel "$@";
+	parallel "$@"
 	_parallel_exit_CODE=$?
-	unset PARALLEL_ENV;
-	return $_parallel_exit_CODE
+	# Clean up variables/functions
+	unset PARALLEL_ENV
+	unset _which_PAR _which_TRUE
+	unset _warning_PAR _error_PAR
+	# Unset _parallel_exit_CODE before return
+	eval "unset _parallel_exit_CODE; return $_parallel_exit_CODE"
     else
 	unset PARALLEL_ENV;
 	_error_PAR "Your environment is too big."
@@ -401,8 +409,10 @@ _parset_main() {
 	eval "$_parset_NAME=( $(
 	    # Compute results into files. Save exit value
 	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
-                perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "' 
+                perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "'
             ) )"
     fi
-    return `cat "$_exit_FILE"; rm "$_exit_FILE"`
+    unset _parset_NAME _parset_PARALLEL_PRG _parallel_exit_CODE
+    # Unset _exit_FILE before return
+    eval "unset _exit_FILE; return \`cat $_exit_FILE; rm $_exit_FILE\`"
 }

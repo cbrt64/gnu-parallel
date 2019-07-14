@@ -55,6 +55,8 @@ document.
 Full installation of GNU Parallel is as simple as:
 
     wget https://ftpmirror.gnu.org/parallel/parallel-20190622.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20190622.tar.bz2.sig
+    gpg parallel-20190622.tar.bz2.sig
     bzip2 -dc parallel-20190622.tar.bz2 | tar xvf -
     cd parallel-20190622
     ./configure && make && sudo make install
@@ -66,6 +68,8 @@ If you are not root you can add ~/bin to your path and install in
 ~/bin and ~/share:
 
     wget https://ftpmirror.gnu.org/parallel/parallel-20190622.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20190622.tar.bz2.sig
+    gpg parallel-20190622.tar.bz2.sig
     bzip2 -dc parallel-20190622.tar.bz2 | tar xvf -
     cd parallel-20190622
     ./configure --prefix=$HOME && make && make install

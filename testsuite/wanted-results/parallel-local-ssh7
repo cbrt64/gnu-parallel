@@ -127,12 +127,12 @@ par_zsh_man	exit value 2 should be 2
 par_zsh_man	Unknown option: no-such-option
 par_zsh_man	exit value 255 should be 255
 par_zsh_funky	
-par_zsh_funky	C-] !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œM-Ÿ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜM-]Şßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_zsh_funky	C-] !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œM-Ÿ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜM-]Şßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_zsh_funky	par_zsh_funky	C-] !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œM-Ÿ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜM-]Şßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_zsh_funky	par_zsh_funky	C-] !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œM-Ÿ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜM-]Şßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
 par_zsh_funky	  space  6  
 par_zsh_funky	  space  6  
 par_zsh_funky	'	'
-par_zsh_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_zsh_funky	'par_zsh_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_zsh_funky	3 arg alias_works
 par_zsh_funky	3 arg alias_works_over_ssh
 par_zsh_funky	Funky-	
@@ -359,108 +359,108 @@ par_zsh_env_parallel	bug #52534: Tail of multiline alias is ignored
 par_zsh_env_parallel	data from stdin
 par_zsh_env_parallel	data from stdin
 par_tcsh_underscore	### tcsh
-par_tcsh_underscore	### Testing of --env _
-par_tcsh_underscore	#: Command not found.
-par_tcsh_underscore	variables and arrays in aliases work
-par_tcsh_underscore	variables and arrays in aliases work
-par_tcsh_underscore	variables and arrays in aliases work
-par_tcsh_underscore	variables and arrays in aliases work
-par_tcsh_underscore	variables and arrays in aliases work
-par_tcsh_underscore	variables and arrays in aliases work
-par_tcsh_underscore	myvar: Undefined variable.
-par_tcsh_underscore	myvar: Undefined variable.
-par_tcsh_underscore	myarray: Undefined variable.
-par_tcsh_underscore	myarray: Undefined variable.
-par_tcsh_underscore	myecho: Command not found.
-par_tcsh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myecho
-par_tcsh_underscore	myecho: Command not found.
-par_tcsh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myecho
-par_tcsh_underscore	Connection to lo closed.
+par_tcsh_underscore	### Testing of --env _par_tcsh_underscore	
+par_tcsh_underscore	#: Command not found.par_tcsh_underscore	
+par_tcsh_underscore	variables and arrays in aliases workpar_tcsh_underscore	
+par_tcsh_underscore	variables and arrays in aliases workpar_tcsh_underscore	
+par_tcsh_underscore	variables and arrays in aliases workpar_tcsh_underscore	
+par_tcsh_underscore	variables and arrays in aliases workpar_tcsh_underscore	
+par_tcsh_underscore	variables and arrays in aliases workpar_tcsh_underscore	
+par_tcsh_underscore	variables and arrays in aliases workpar_tcsh_underscore	
+par_tcsh_underscore	myvar: Undefined variable.par_tcsh_underscore	
+par_tcsh_underscore	myvar: Undefined variable.par_tcsh_underscore	
+par_tcsh_underscore	myarray: Undefined variable.par_tcsh_underscore	
+par_tcsh_underscore	myarray: Undefined variable.par_tcsh_underscore	
+par_tcsh_underscore	myecho: Command not found.par_tcsh_underscore	
+par_tcsh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myechopar_tcsh_underscore	
+par_tcsh_underscore	myecho: Command not found.par_tcsh_underscore	
+par_tcsh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myechopar_tcsh_underscore	
+par_tcsh_underscore	Connection to lo closed.par_tcsh_underscore	
 par_tcsh_parset	Not implemented
 par_tcsh_man	### tcsh
-par_tcsh_man	### From man env_parallel
-par_tcsh_man	#: Command not found.
-par_tcsh_man	aliases with = & " work
-par_tcsh_man	aliases with = & " work
-par_tcsh_man	aliases with = & " work
-par_tcsh_man	aliases with = & " work
-par_tcsh_man	Functions not supported
-par_tcsh_man	#: Command not found.
-par_tcsh_man	#: Command not found.
-par_tcsh_man	variables with = & " work
-par_tcsh_man	variables with = & " work
-par_tcsh_man	variables with = & " work
-par_tcsh_man	variables with = & " work
-par_tcsh_man	#: Command not found.
-par_tcsh_man	arrays
-par_tcsh_man	with=&"'
-par_tcsh_man	work,
-par_tcsh_man	too
-par_tcsh_man	arrays
-par_tcsh_man	with=&"'
-par_tcsh_man	work,
-par_tcsh_man	too
-par_tcsh_man	arrays
-par_tcsh_man	with=&"'
-par_tcsh_man	work,
-par_tcsh_man	too
-par_tcsh_man	arrays
-par_tcsh_man	with=&"'
-par_tcsh_man	work,
-par_tcsh_man	too
-par_tcsh_man	Segmentation faults? Are you running bsd-csh version 20110502-3?
-par_tcsh_man	multi
-par_tcsh_man	level
-par_tcsh_man	env_parallel
-par_tcsh_man	exit value 2 should be 2
-par_tcsh_man	Unknown option: no-such-option
-par_tcsh_man	Usage:
-par_tcsh_man	
-par_tcsh_man	parallel [options] [command [arguments]] < list_of_arguments
-par_tcsh_man	parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...
-par_tcsh_man	cat ... | parallel --pipe [options] [command [arguments]]
-par_tcsh_man	
-par_tcsh_man	-j n            Run n jobs in parallel
-par_tcsh_man	-k              Keep same order
-par_tcsh_man	-X              Multiple arguments with context replace
-par_tcsh_man	--colsep regexp Split input on regexp for positional replacements
-par_tcsh_man	{} {.} {/} {/.} {#} {%} {= perl code =} Replacement strings
-par_tcsh_man	{3} {3.} {3/} {3/.} {=3 perl code =}    Positional replacement strings
-par_tcsh_man	With --plus:    {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =
-par_tcsh_man	                {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
-par_tcsh_man	
-par_tcsh_man	-S sshlogin     Example: foo@server.example.com
-par_tcsh_man	--slf ..        Use ~/.parallel/sshloginfile as the list of sshlogins
-par_tcsh_man	--trc {}.bar    Shorthand for --transfer --return {}.bar --cleanup
-par_tcsh_man	--onall         Run the given command with argument on all sshlogins
-par_tcsh_man	--nonall        Run the given command with no arguments on all sshlogins
-par_tcsh_man	
-par_tcsh_man	--pipe          Split stdin (standard input) to multiple jobs.
-par_tcsh_man	--recend str    Record end separator for --pipe.
-par_tcsh_man	--recstart str  Record start separator for --pipe.
-par_tcsh_man	
-par_tcsh_man	See 'man parallel' for details
-par_tcsh_man	
-par_tcsh_man	Academic tradition requires you to cite works you base your article on.
-par_tcsh_man	If you use programs that use GNU Parallel to process data for an article in a
-par_tcsh_man	scientific publication, please cite:
-par_tcsh_man	
-par_tcsh_man	  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,
-par_tcsh_man	  DOI https://doi.org/10.5281/zenodo.1146014
-par_tcsh_man	
-par_tcsh_man	This helps funding further development; AND IT WON'T COST YOU A CENT.
-par_tcsh_man	If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
-par_tcsh_man	
-par_tcsh_man	exit value 255 should be 255
-par_tcsh_man	Connection to lo closed.
+par_tcsh_man	### From man env_parallelpar_tcsh_man	
+par_tcsh_man	#: Command not found.par_tcsh_man	
+par_tcsh_man	aliases with = & " workpar_tcsh_man	
+par_tcsh_man	aliases with = & " workpar_tcsh_man	
+par_tcsh_man	aliases with = & " workpar_tcsh_man	
+par_tcsh_man	aliases with = & " workpar_tcsh_man	
+par_tcsh_man	Functions not supportedpar_tcsh_man	
+par_tcsh_man	#: Command not found.par_tcsh_man	
+par_tcsh_man	#: Command not found.par_tcsh_man	
+par_tcsh_man	variables with = & " workpar_tcsh_man	
+par_tcsh_man	variables with = & " workpar_tcsh_man	
+par_tcsh_man	variables with = & " workpar_tcsh_man	
+par_tcsh_man	variables with = & " workpar_tcsh_man	
+par_tcsh_man	#: Command not found.par_tcsh_man	
+par_tcsh_man	arrayspar_tcsh_man	
+par_tcsh_man	with=&"'par_tcsh_man	
+par_tcsh_man	work,par_tcsh_man	
+par_tcsh_man	toopar_tcsh_man	
+par_tcsh_man	arrayspar_tcsh_man	
+par_tcsh_man	with=&"'par_tcsh_man	
+par_tcsh_man	work,par_tcsh_man	
+par_tcsh_man	toopar_tcsh_man	
+par_tcsh_man	arrayspar_tcsh_man	
+par_tcsh_man	with=&"'par_tcsh_man	
+par_tcsh_man	work,par_tcsh_man	
+par_tcsh_man	toopar_tcsh_man	
+par_tcsh_man	arrayspar_tcsh_man	
+par_tcsh_man	with=&"'par_tcsh_man	
+par_tcsh_man	work,par_tcsh_man	
+par_tcsh_man	toopar_tcsh_man	
+par_tcsh_man	Segmentation faults? Are you running bsd-csh version 20110502-3?par_tcsh_man	
+par_tcsh_man	multipar_tcsh_man	
+par_tcsh_man	levelpar_tcsh_man	
+par_tcsh_man	env_parallelpar_tcsh_man	
+par_tcsh_man	exit value 2 should be 2par_tcsh_man	
+par_tcsh_man	Unknown option: no-such-optionpar_tcsh_man	
+par_tcsh_man	Usage:par_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	parallel [options] [command [arguments]] < list_of_argumentspar_tcsh_man	
+par_tcsh_man	parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...par_tcsh_man	
+par_tcsh_man	cat ... | parallel --pipe [options] [command [arguments]]par_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	-j n            Run n jobs in parallelpar_tcsh_man	
+par_tcsh_man	-k              Keep same orderpar_tcsh_man	
+par_tcsh_man	-X              Multiple arguments with context replacepar_tcsh_man	
+par_tcsh_man	--colsep regexp Split input on regexp for positional replacementspar_tcsh_man	
+par_tcsh_man	{} {.} {/} {/.} {#} {%} {= perl code =} Replacement stringspar_tcsh_man	
+par_tcsh_man	{3} {3.} {3/} {3/.} {=3 perl code =}    Positional replacement stringspar_tcsh_man	
+par_tcsh_man	With --plus:    {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =par_tcsh_man	
+par_tcsh_man	                {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}par_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	-S sshlogin     Example: foo@server.example.compar_tcsh_man	
+par_tcsh_man	--slf ..        Use ~/.parallel/sshloginfile as the list of sshloginspar_tcsh_man	
+par_tcsh_man	--trc {}.bar    Shorthand for --transfer --return {}.bar --cleanuppar_tcsh_man	
+par_tcsh_man	--onall         Run the given command with argument on all sshloginspar_tcsh_man	
+par_tcsh_man	--nonall        Run the given command with no arguments on all sshloginspar_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	--pipe          Split stdin (standard input) to multiple jobs.par_tcsh_man	
+par_tcsh_man	--recend str    Record end separator for --pipe.par_tcsh_man	
+par_tcsh_man	--recstart str  Record start separator for --pipe.par_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	See 'man parallel' for detailspar_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	Academic tradition requires you to cite works you base your article on.par_tcsh_man	
+par_tcsh_man	If you use programs that use GNU Parallel to process data for an article in apar_tcsh_man	
+par_tcsh_man	scientific publication, please cite:par_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,par_tcsh_man	
+par_tcsh_man	  DOI https://doi.org/10.5281/zenodo.1146014par_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	This helps funding further development; AND IT WON'T COST YOU A CENT.par_tcsh_man	
+par_tcsh_man	If you pay 10000 EUR you should feel free to use GNU Parallel without citing.par_tcsh_man	
+par_tcsh_man	par_tcsh_man	
+par_tcsh_man	exit value 255 should be 255par_tcsh_man	
+par_tcsh_man	Connection to lo closed.par_tcsh_man	
 par_tcsh_funky	
 par_tcsh_funky	
 par_tcsh_funky	
 par_tcsh_funky	3 arg alias_works
 par_tcsh_funky	3 arg alias_works_over_ssh
-par_tcsh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works
-par_tcsh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works_over_ssh
-par_tcsh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
+par_tcsh_funky	Funky-	 par_tcsh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works
+par_tcsh_funky	Funky-	 par_tcsh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky alias_var_works_over_ssh
+par_tcsh_funky	\\\\\\\\	\ \\\par_tcsh_funky	\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
 par_tcsh_funky	func_echo: Command not found.
 par_tcsh_funky	func_echo: Command not found.
 par_tcsh_funky	myvar  works
@@ -568,7 +568,7 @@ par_sh_man	Unknown option: no-such-option
 par_sh_man	exit value 255 should be 255
 par_sh_funky	
 par_sh_funky	'	'
-par_sh_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_sh_funky	'par_sh_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_sh_funky	3 arg alias_works
 par_sh_funky	3 arg alias_works_over_ssh
 par_sh_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
@@ -862,12 +862,12 @@ par_mksh_man	exit value 2 should be 2
 par_mksh_man	Unknown option: no-such-option
 par_mksh_man	exit value 255 should be 255
 par_mksh_funky	
-par_mksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_mksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_mksh_funky	par_mksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_mksh_funky	par_mksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
 par_mksh_funky	  space  6  
 par_mksh_funky	  space  6  
 par_mksh_funky	'	'
-par_mksh_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_mksh_funky	'par_mksh_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_mksh_funky	3 arg alias_works
 par_mksh_funky	3 arg alias_works_over_ssh
 par_mksh_funky	Funky-	
@@ -1203,12 +1203,12 @@ par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255
 par_ksh_funky	
-par_ksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_ksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_ksh_funky	par_ksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_ksh_funky	par_ksh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
 par_ksh_funky	  space  6  
 par_ksh_funky	  space  6  
 par_ksh_funky	'	'
-par_ksh_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_ksh_funky	'par_ksh_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_ksh_funky	3 arg alias_works
 par_ksh_funky	3 arg alias_works_over_ssh
 par_ksh_funky	Funky-	
@@ -1517,8 +1517,8 @@ par_fish_funky	  space  6
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
-par_fish_funky	Funky-	   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_fish_funky	Funkyenv-	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
+par_fish_funky	Funky-	 par_fish_funky	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_fish_funky	Funkyenv-	par_fish_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
@@ -1532,13 +1532,13 @@ par_fish_funky	  space  6
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
-par_fish_funky	Funky-	   !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
-par_fish_funky	Funkyenv-	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
+par_fish_funky	Funky-	 par_fish_funky	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_fish_funky	Funkyenv-	par_fish_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
-par_fish_funky	'	   !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_fish_funky	'	 par_fish_funky	  !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_fish_environment_too_big	Not implemented
 par_fish_env_parallel_session	### Test env_parallel --session
 par_fish_env_parallel_session	fish: Unknown command 'aliasbefore must_fail'
@@ -1653,7 +1653,7 @@ par_dash_man	Unknown option: no-such-option
 par_dash_man	exit value 255 should be 255
 par_dash_funky	
 par_dash_funky	'	'
-par_dash_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_dash_funky	'par_dash_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_dash_funky	3 arg alias_works
 par_dash_funky	3 arg alias_works_over_ssh
 par_dash_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
@@ -1810,23 +1810,23 @@ par_dash_env_parallel	bug #52534: Tail of multiline alias is ignored
 par_dash_env_parallel	data from stdin
 par_dash_env_parallel	data from stdin
 par_csh_underscore	### csh
-par_csh_underscore	### Testing of --env _
-par_csh_underscore	#: Command not found.
-par_csh_underscore	variables and arrays in aliases work
-par_csh_underscore	variables and arrays in aliases work
-par_csh_underscore	variables and arrays in aliases work
-par_csh_underscore	variables and arrays in aliases work
-par_csh_underscore	variables and arrays in aliases work
-par_csh_underscore	variables and arrays in aliases work
-par_csh_underscore	myvar: Undefined variable.
-par_csh_underscore	myvar: Undefined variable.
-par_csh_underscore	myarray: Undefined variable.
-par_csh_underscore	myarray: Undefined variable.
-par_csh_underscore	myecho: Command not found.
-par_csh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myecho
-par_csh_underscore	myecho: Command not found.
-par_csh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myecho
-par_csh_underscore	Connection to lo closed.
+par_csh_underscore	### Testing of --env _par_csh_underscore	
+par_csh_underscore	#: Command not found.par_csh_underscore	
+par_csh_underscore	variables and arrays in aliases workpar_csh_underscore	
+par_csh_underscore	variables and arrays in aliases workpar_csh_underscore	
+par_csh_underscore	variables and arrays in aliases workpar_csh_underscore	
+par_csh_underscore	variables and arrays in aliases workpar_csh_underscore	
+par_csh_underscore	variables and arrays in aliases workpar_csh_underscore	
+par_csh_underscore	variables and arrays in aliases workpar_csh_underscore	
+par_csh_underscore	myvar: Undefined variable.par_csh_underscore	
+par_csh_underscore	myvar: Undefined variable.par_csh_underscore	
+par_csh_underscore	myarray: Undefined variable.par_csh_underscore	
+par_csh_underscore	myarray: Undefined variable.par_csh_underscore	
+par_csh_underscore	myecho: Command not found.par_csh_underscore	
+par_csh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myechopar_csh_underscore	
+par_csh_underscore	myecho: Command not found.par_csh_underscore	
+par_csh_underscore	OK      ^^^^^^^^^^^^^^^^^ if no myechopar_csh_underscore	
+par_csh_underscore	Connection to lo closed.par_csh_underscore	
 par_csh_parset	Not implemented
 par_csh_man	### csh
 par_csh_man	
@@ -1901,16 +1901,16 @@ par_csh_funky	3 arg alias_works
 par_csh_funky	
 par_csh_funky	myvar  works
 par_csh_funky	space special chars problem
-par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~Â€ÂÃ‚Â‚Ã‚ÂƒÃ‚Â„Ã‚Â…Ã‚Â†Ã‚Â‡Ã‚ÂˆÃ‚Â‰Ã‚ÂŠÃ‚Â‹Ã‚ÂŒÃ‚ÂÃ‚ÂÃ‚ÂÃ‚ÂÃ‚Â‘Ã‚Â’Ã‚Â“Ã‚Â”Ã‚Â•Ã‚Â–Ã‚Â—Ã‚Â˜Ã‚Â™Ã‚ÂšÃ‚Â›Ã‚ÂœÃ‚ÂÃ‚ÂÃ‚ÂŸÃ‚Â Ã‚Â¡Ã‚Â¢Ã‚Â£Ã‚Â¤Ã‚Â¥Ã‚Â¦Ã‚Â§Ã‚Â¨Ã‚Â©Ã‚ÂªÃ‚Â«Ã‚Â¬Ã‚Â­Ã‚Â®Ã‚Â¯Ã‚Â°Ã‚Â±Ã‚Â²Ã‚Â³Ã‚Â´Ã‚ÂµÃ‚Â¶Ã‚Â·Ã‚Â¸Ã‚Â¹Ã‚ÂºÃ‚Â»Ã‚Â¼Ã‚Â½Ã‚Â¾Ã‚Â¿Ã€ÃÃƒÂ‚ÃƒÂƒÃƒÂ„ÃƒÂ…ÃƒÂ†ÃƒÂ‡ÃƒÂˆÃƒÂ‰ÃƒÂŠÃƒÂ‹ÃƒÂŒÃƒÂÃƒÂÃƒÂÃƒÂÃƒÂ‘ÃƒÂ’ÃƒÂ“ÃƒÂ”ÃƒÂ•ÃƒÂ–ÃƒÂ—ÃƒÂ˜ÃƒÂ™ÃƒÂšÃƒÂ›ÃƒÂœÃƒÂÃƒÂÃƒÂŸÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ£ÃƒÂ¤ÃƒÂ¥ÃƒÂ¦ÃƒÂ§ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯ÃƒÂ°ÃƒÂ±ÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂµÃƒÂ¶ÃƒÂ·ÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼ÃƒÂ½ÃƒÂ¾ÃƒÂ¿-funky alias_var_works
+par_csh_funky	Funky-	 par_csh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~Â€ÂÃ‚Â‚Ã‚ÂƒÃ‚Â„Ã‚Â…Ã‚Â†Ã‚Â‡Ã‚ÂˆÃ‚Â‰Ã‚ÂŠÃ‚Â‹Ã‚ÂŒÃ‚ÂÃ‚ÂÃ‚ÂÃ‚ÂÃ‚Â‘Ã‚Â’Ã‚Â“Ã‚Â”Ã‚Â•Ã‚Â–Ã‚Â—Ã‚Â˜Ã‚Â™Ã‚ÂšÃ‚Â›Ã‚ÂœÃ‚ÂÃ‚ÂÃ‚ÂŸÃ‚Â Ã‚Â¡Ã‚Â¢Ã‚Â£Ã‚Â¤Ã‚Â¥Ã‚Â¦Ã‚Â§Ã‚Â¨Ã‚Â©Ã‚ÂªÃ‚Â«Ã‚Â¬Ã‚Â­Ã‚Â®Ã‚Â¯Ã‚Â°Ã‚Â±Ã‚Â²Ã‚Â³Ã‚Â´Ã‚ÂµÃ‚Â¶Ã‚Â·Ã‚Â¸Ã‚Â¹Ã‚ÂºÃ‚Â»Ã‚Â¼Ã‚Â½Ã‚Â¾Ã‚Â¿Ã€ÃÃƒÂ‚ÃƒÂƒÃƒÂ„ÃƒÂ…ÃƒÂ†ÃƒÂ‡ÃƒÂˆÃƒÂ‰ÃƒÂŠÃƒÂ‹ÃƒÂŒÃƒÂÃƒÂÃƒÂÃƒÂÃƒÂ‘ÃƒÂ’ÃƒÂ“ÃƒÂ”ÃƒÂ•ÃƒÂ–ÃƒÂ—ÃƒÂ˜ÃƒÂ™ÃƒÂšÃƒÂ›ÃƒÂœÃƒÂÃƒÂÃƒÂŸÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ£ÃƒÂ¤ÃƒÂ¥ÃƒÂ¦ÃƒÂ§ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯ÃƒÂ°ÃƒÂ±ÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂµÃƒÂ¶ÃƒÂ·ÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼ÃƒÂ½ÃƒÂ¾ÃƒÂ¿-funky alias_var_works
 par_csh_funky	func_echo: Command not found.
 par_csh_funky	3 arg alias_works_over_ssh
 par_csh_funky	
 par_csh_funky	myvar  works
 par_csh_funky	space special chars problem
-par_csh_funky	Funky-	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~Â€ÂÃ‚Â‚Ã‚ÂƒÃ‚Â„Ã‚Â…Ã‚Â†Ã‚Â‡Ã‚ÂˆÃ‚Â‰Ã‚ÂŠÃ‚Â‹Ã‚ÂŒÃ‚ÂÃ‚ÂÃ‚ÂÃ‚ÂÃ‚Â‘Ã‚Â’Ã‚Â“Ã‚Â”Ã‚Â•Ã‚Â–Ã‚Â—Ã‚Â˜Ã‚Â™Ã‚ÂšÃ‚Â›Ã‚ÂœÃ‚ÂÃ‚ÂÃ‚ÂŸÃ‚Â Ã‚Â¡Ã‚Â¢Ã‚Â£Ã‚Â¤Ã‚Â¥Ã‚Â¦Ã‚Â§Ã‚Â¨Ã‚Â©Ã‚ÂªÃ‚Â«Ã‚Â¬Ã‚Â­Ã‚Â®Ã‚Â¯Ã‚Â°Ã‚Â±Ã‚Â²Ã‚Â³Ã‚Â´Ã‚ÂµÃ‚Â¶Ã‚Â·Ã‚Â¸Ã‚Â¹Ã‚ÂºÃ‚Â»Ã‚Â¼Ã‚Â½Ã‚Â¾Ã‚Â¿Ã€ÃÃƒÂ‚ÃƒÂƒÃƒÂ„ÃƒÂ…ÃƒÂ†ÃƒÂ‡ÃƒÂˆÃƒÂ‰ÃƒÂŠÃƒÂ‹ÃƒÂŒÃƒÂÃƒÂÃƒÂÃƒÂÃƒÂ‘ÃƒÂ’ÃƒÂ“ÃƒÂ”ÃƒÂ•ÃƒÂ–ÃƒÂ—ÃƒÂ˜ÃƒÂ™ÃƒÂšÃƒÂ›ÃƒÂœÃƒÂÃƒÂÃƒÂŸÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ£ÃƒÂ¤ÃƒÂ¥ÃƒÂ¦ÃƒÂ§ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯ÃƒÂ°ÃƒÂ±ÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂµÃƒÂ¶ÃƒÂ·ÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼ÃƒÂ½ÃƒÂ¾ÃƒÂ¿-funky alias_var_works_over_ssh
+par_csh_funky	Funky-	 par_csh_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~Â€ÂÃ‚Â‚Ã‚ÂƒÃ‚Â„Ã‚Â…Ã‚Â†Ã‚Â‡Ã‚ÂˆÃ‚Â‰Ã‚ÂŠÃ‚Â‹Ã‚ÂŒÃ‚ÂÃ‚ÂÃ‚ÂÃ‚ÂÃ‚Â‘Ã‚Â’Ã‚Â“Ã‚Â”Ã‚Â•Ã‚Â–Ã‚Â—Ã‚Â˜Ã‚Â™Ã‚ÂšÃ‚Â›Ã‚ÂœÃ‚ÂÃ‚ÂÃ‚ÂŸÃ‚Â Ã‚Â¡Ã‚Â¢Ã‚Â£Ã‚Â¤Ã‚Â¥Ã‚Â¦Ã‚Â§Ã‚Â¨Ã‚Â©Ã‚ÂªÃ‚Â«Ã‚Â¬Ã‚Â­Ã‚Â®Ã‚Â¯Ã‚Â°Ã‚Â±Ã‚Â²Ã‚Â³Ã‚Â´Ã‚ÂµÃ‚Â¶Ã‚Â·Ã‚Â¸Ã‚Â¹Ã‚ÂºÃ‚Â»Ã‚Â¼Ã‚Â½Ã‚Â¾Ã‚Â¿Ã€ÃÃƒÂ‚ÃƒÂƒÃƒÂ„ÃƒÂ…ÃƒÂ†ÃƒÂ‡ÃƒÂˆÃƒÂ‰ÃƒÂŠÃƒÂ‹ÃƒÂŒÃƒÂÃƒÂÃƒÂÃƒÂÃƒÂ‘ÃƒÂ’ÃƒÂ“ÃƒÂ”ÃƒÂ•ÃƒÂ–ÃƒÂ—ÃƒÂ˜ÃƒÂ™ÃƒÂšÃƒÂ›ÃƒÂœÃƒÂÃƒÂÃƒÂŸÃƒÂ ÃƒÂ¡ÃƒÂ¢ÃƒÂ£ÃƒÂ¤ÃƒÂ¥ÃƒÂ¦ÃƒÂ§ÃƒÂ¨ÃƒÂ©ÃƒÂªÃƒÂ«ÃƒÂ¬ÃƒÂ­ÃƒÂ®ÃƒÂ¯ÃƒÂ°ÃƒÂ±ÃƒÂ²ÃƒÂ³ÃƒÂ´ÃƒÂµÃƒÂ¶ÃƒÂ·ÃƒÂ¸ÃƒÂ¹ÃƒÂºÃƒÂ»ÃƒÂ¼ÃƒÂ½ÃƒÂ¾ÃƒÂ¿-funky alias_var_works_over_ssh
 par_csh_funky	func_echo: Command not found.
 par_csh_funky	
-par_csh_funky	\\\\\\\\	\ \\\\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~\Â€\Â\Â\‚\Â\ƒ\Â\„\Â\…\Â\†\Â\‡\Â\ˆ\Â\‰\Â\Š\Â\‹\Â\Œ\Â\\Â\\Â\\Â\\Â\‘\Â\’\Â\“\Â\”\Â\•\Â\–\Â\—\Â\˜\Â\™\Â\š\Â\›\Â\œ\Â\\Â\\Â\Ÿ\Â\ \Â\¡\Â\¢\Â\£\Â\¤\Â\¥\Â\¦\Â\§\Â\¨\Â\©\Â\ª\Â\«\Â\¬\Â\­\Â\®\Â\¯\Â\°\Â\±\Â\²\Â\³\Â\´\Â\µ\Â\¶\Â\·\Â\¸\Â\¹\Â\º\Â\»\Â\¼\Â\½\Â\¾\Â\¿\Ã€\Ã\Ã\‚\Ã\ƒ\Ã\„\Ã\…\Ã\†\Ã\‡\Ã\ˆ\Ã\‰\Ã\Š\Ã\‹\Ã\Œ\Ã\\Ã\\Ã\\Ã\\Ã\‘\Ã\’\Ã\“\Ã\”\Ã\•\Ã\–\Ã\—\Ã\˜\Ã\™\Ã\š\Ã\›\Ã\œ\Ã\\Ã\\Ã\Ÿ\Ã\ \Ã\¡\Ã\¢\Ã\£\Ã\¤\Ã\¥\Ã\¦\Ã\§\Ã\¨\Ã\©\Ã\ª\Ã\«\Ã\¬\Ã\­\Ã\®\Ã\¯\Ã\°\Ã\±\Ã\²\Ã\³\Ã\´\Ã\µ\Ã\¶\Ã\·\Ã\¸\Ã\¹\Ã\º\Ã\»\Ã\¼\Ã\½\Ã\¾\Ã\¿
+par_csh_funky	\\\\\\\\	\ \\\par_csh_funky	\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~\Â€\Â\Â\‚\Â\ƒ\Â\„\Â\…\Â\†\Â\‡\Â\ˆ\Â\‰\Â\Š\Â\‹\Â\Œ\Â\\Â\\Â\\Â\\Â\‘\Â\’\Â\“\Â\”\Â\•\Â\–\Â\—\Â\˜\Â\™\Â\š\Â\›\Â\œ\Â\\Â\\Â\Ÿ\Â\ \Â\¡\Â\¢\Â\£\Â\¤\Â\¥\Â\¦\Â\§\Â\¨\Â\©\Â\ª\Â\«\Â\¬\Â\­\Â\®\Â\¯\Â\°\Â\±\Â\²\Â\³\Â\´\Â\µ\Â\¶\Â\·\Â\¸\Â\¹\Â\º\Â\»\Â\¼\Â\½\Â\¾\Â\¿\Ã€\Ã\Ã\‚\Ã\ƒ\Ã\„\Ã\…\Ã\†\Ã\‡\Ã\ˆ\Ã\‰\Ã\Š\Ã\‹\Ã\Œ\Ã\\Ã\\Ã\\Ã\\Ã\‘\Ã\’\Ã\“\Ã\”\Ã\•\Ã\–\Ã\—\Ã\˜\Ã\™\Ã\š\Ã\›\Ã\œ\Ã\\Ã\\Ã\Ÿ\Ã\ \Ã\¡\Ã\¢\Ã\£\Ã\¤\Ã\¥\Ã\¦\Ã\§\Ã\¨\Ã\©\Ã\ª\Ã\«\Ã\¬\Ã\­\Ã\®\Ã\¯\Ã\°\Ã\±\Ã\²\Ã\³\Ã\´\Ã\µ\Ã\¶\Ã\·\Ã\¸\Ã\¹\Ã\º\Ã\»\Ã\¼\Ã\½\Ã\¾\Ã\¿
 par_csh_environment_too_big	Not implemented
 par_csh_env_parallel_session	Not implemented
 par_csh_env_parallel	bug #50435: Remote fifo broke in 20150522
@@ -2064,11 +2064,11 @@ par_bash_funky	  space  6
 par_bash_funky	  space  6  
 par_bash_funky	'	'
 par_bash_funky	''
-par_bash_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_bash_funky	'par_bash_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_bash_funky	3 arg alias_works
 par_bash_funky	3 arg alias_works_over_ssh
-par_bash_funky	Funkyline- !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyline
-par_bash_funky	Funkyline- !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyline
+par_bash_funky	Funkyline-par_bash_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyline
+par_bash_funky	Funkyline-par_bash_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyline
 par_bash_funky	Funkymultiline-
 par_bash_funky	Funkymultiline-
 par_bash_funky	assoc_val_a
@@ -2349,7 +2349,7 @@ par_ash_man	Unknown option: no-such-option
 par_ash_man	exit value 255 should be 255
 par_ash_funky	
 par_ash_funky	'	'
-par_ash_funky	' !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_ash_funky	'par_ash_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_ash_funky	3 arg alias_works
 par_ash_funky	3 arg alias_works_over_ssh
 par_ash_environment_too_big	bug #50815: env_parallel should warn if the environment is too big
