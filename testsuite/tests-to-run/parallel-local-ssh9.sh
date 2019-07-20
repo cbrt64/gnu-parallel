@@ -205,7 +205,7 @@ par_PARALLEL_SSHLOGIN() {
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |
-compgen -A function | grep par_ | sort -r |
+compgen -A function | grep par_ | LANG=C sort -r |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
     parallel --joblog /tmp/jl-`basename $0` --delay 0.1 -j200% --tag -k '{} 2>&1' |
     perl -pe 's/line \d\d\d+:/line XXX:/' |

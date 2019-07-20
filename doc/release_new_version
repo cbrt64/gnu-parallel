@@ -230,11 +230,15 @@ New in this release:
 
 * Speedup of startup by 40%: Find the parent shell differerently on GNU/Linux, cache information about the CPU and which setpgrp method to use to make GNU Parallel start 40% faster.
 
-https://zalinux.ru/?p=2623
+* $PARALLEL_SSHLOGIN can be used in the command line.
 
-https://techieroop.com/how-to-run-multiple-bash-scripts-in-parallel/
+* Occasionally sane: Simple usage of GNU parallel https://vfoley.xyz/parallel/
 
-https://blogs.oracle.com/solaris/announcing-oracle-solaris-114-sru10
+* How to run multiple bash scripts in parallel https://techieroop.com/how-to-run-multiple-bash-scripts-in-parallel/
+
+* Announcing Oracle Solaris 11.4 SRU10 https://blogs.oracle.com/solaris/announcing-oracle-solaris-114-sru10
+
+* Руководство по использованию GNU Parallel https://zalinux.ru/?p=2623
 
 * Bug fixes and man page updates.
 

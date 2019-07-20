@@ -54,8 +54,19 @@ par_propagate_env	** test_csh_filter
 par_propagate_env	FOO=test_csh_filter
 par_propagate_env	HOME=~
 par_propagate_env	** bug #41805 done
+par_PARALLEL_SSHLOGIN	### bug #56554: Introduce $PARALLEL_SSHLOGIN
+par_PARALLEL_SSHLOGIN	lo	lo
+par_PARALLEL_SSHLOGIN	lo	tange
+par_PARALLEL_SSHLOGIN	sh@lo	sh
+par_PARALLEL_SSHLOGIN	sh@lo	sh@lo
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	csh
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	/usr/bin/ssh csh@lo
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	tcsh
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	/usr/bin/ssh tcsh@lo
+par_PARALLEL_SSHLOGIN	zsh@lo	zsh
+par_PARALLEL_SSHLOGIN	zsh@lo	zsh@lo
 par_no_route_to_host	### no route to host with | and -j0 causes inf loop
-par_no_route_to_host	ssh: connect to host i.p.n.r port 22: No route to host
+par_no_route_to_host	ssh: connect to host i.p.n.r port 22: No route to hostpar_no_route_to_host	
 par_no_route_to_host	parallel: This job finished:
 par_no_route_to_host	raw i.p.n.r
 par_no_route_to_host	parallel: Warning: ssh to i.p.n.r only allows for 0 simultaneous logins.
@@ -136,14 +147,3 @@ par_ash_embed	your
 par_ash_embed	code
 par_ash_embed	here
 par_ash_embed	Put your code here
-par_PARALLEL_SSHLOGIN	### bug #56554: Introduce $PARALLEL_SSHLOGIN
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	/usr/bin/ssh csh@lo
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	csh
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	/usr/bin/ssh tcsh@lo
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	tcsh
-par_PARALLEL_SSHLOGIN	lo	lo
-par_PARALLEL_SSHLOGIN	lo	tange
-par_PARALLEL_SSHLOGIN	sh@lo	sh
-par_PARALLEL_SSHLOGIN	sh@lo	sh@lo
-par_PARALLEL_SSHLOGIN	zsh@lo	zsh
-par_PARALLEL_SSHLOGIN	zsh@lo	zsh@lo

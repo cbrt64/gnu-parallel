@@ -27,10 +27,10 @@ par_kill_hup() {
 
     parallel -j 2 -q bash -c 'sleep {} & pid=$!; wait $pid' ::: 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 &
     T=$!
-    sleep 9.9
+    sleep 3.9
     pstree $$
     kill -HUP $T
-    sleep 2
+    sleep 4
     pstree $$
 }
 

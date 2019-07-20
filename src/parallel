@@ -9321,9 +9321,12 @@ sub start($) {
 	    $redefine_eval = '*open3_setpgrp = \&open3_setpgrp_internal';
 	    ::debug("init","open3_setpgrp_internal chosen\n");
 	}
-	open(my $fh, ">", $setgprp_cache) || die;
-	print $fh $redefine_eval;
-	close $fh;
+	if(open(my $fh, ">", $setgprp_cache)) {
+	    print $fh $redefine_eval;
+	    close $fh;
+	} else {
+	    ::debug("init","Cannot write to $setgprp_cache");
+	}
 	eval $redefine_eval;
     }
 
