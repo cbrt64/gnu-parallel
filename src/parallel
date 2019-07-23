@@ -2047,7 +2047,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190623;
+    $Global::version = 20190722;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -5151,7 +5151,6 @@ sub tmpname($) {
 
 sub tmpfifo() {
     # Find an unused name and mkfifo on it
-    # use POSIX qw(mkfifo);
     my $tmpfifo = tmpname("fif");
     mkfifo($tmpfifo,0600);
     return $tmpfifo;
@@ -8250,7 +8249,6 @@ sub remove_rec_sep($) {
 sub non_blocking_write($) {
     my $self = shift;
     my $something_written = 0;
-    # use POSIX qw(:errno_h);
 
     my $in = $self->fh(0,"w");
     my $rv = syswrite($in,

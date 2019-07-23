@@ -208,7 +208,7 @@ stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
 Subject: GNU Parallel 20190722 ('Ryugu') released <<[stable]>>
 
-GNU Parallel 20190722 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190722 ('Ryugu') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -218,7 +218,8 @@ See https://www.gnu.org/software/parallel/10-years-anniversary.html
 
 Quote of the month:
 
-<<>>
+  It is SUPER easy to speed up jobs from the command line w/ GNU parallel.
+    -- B3n @B3njaminHimes@twitter
 
 New in this release:
 

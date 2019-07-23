@@ -105,7 +105,7 @@ B<Bash, Csh, or Tcsh aliases>: Use B<env_parallel>.
 
 B<Zsh, Fish, Ksh, and Pdksh functions and aliases>: Use B<env_parallel>.
 
-=item B<{}>
+=item B<{}> (alpha testing)
 
 Input line. This replacement string will be replaced by a full line
 read from the input source. The input source is normally stdin
@@ -279,6 +279,7 @@ perl quote a string
 
 =item Z<> B<uq()> (or B<uq>)
 
+(alpha testing)
 do not quote current replacement string
 
 =item Z<> B<total_jobs()>
@@ -467,6 +468,30 @@ basename of input line.
 =item B<--bner> I<replace-str>
 
 Use the replacement string I<replace-str> instead of B<{/.}> for basename of input line without extension.
+
+
+=item B<--bin> I<binexpr> (alpha testing)
+
+Use I<binexpr> as binning key and bin input to the jobs.
+
+I<binexpr> is [column number|column name] [perlexpression] e.g. 3,
+Address, 3 $_%=100, Address s/\D//g.
+
+Each input line is split using B<--colsep>. The value of the column is
+put into $_, the perl expression is executed, the resulting value is
+is the job slot that will be given the line. If the value is bigger
+than the number of jobslots the value will be modulo number of jobslots.
+
+This is similar to B<--shard> but the hashing algorithm is a simple
+modulo, which makes it predictible which jobslot will receive which
+value.
+
+The performance is in the order of 100K rows per second. Faster if the
+I<bincol> is small (<10), slower if it is big (>100).
+
+B<--bin> requires B<--pipe> and a fixed numeric value for B<--jobs>.
+
+See also B<--shard>, B<--group-by>, B<--roundrobin>.
 
 
 =item B<--bg>
@@ -1549,20 +1574,20 @@ on remote computers).
 Print the number of physical CPU cores and exit.
 
 
-=item B<--number-of-cores>
+=item B<--number-of-cores> (alpha testing)
 
 Print the number of physical CPU cores and exit (used by GNU B<parallel> itself
 to determine the number of physical CPU cores on remote computers).
 
 
-=item B<--number-of-sockets>
+=item B<--number-of-sockets> (alpha testing)
 
 Print the number of filled CPU sockets and exit (used by GNU
 B<parallel> itself to determine the number of filled CPU sockets on
 remote computers).
 
 
-=item B<--number-of-threads>
+=item B<--number-of-threads> (alpha testing)
 
 Print the number of hyperthreaded CPU cores and exit (used by GNU
 B<parallel> itself to determine the number of hyperthreaded CPU cores
@@ -2179,7 +2204,7 @@ I<shardcol> is small (<10), slower if it is big (>100).
 
 B<--shard> requires B<--pipe> and a fixed numeric value for B<--jobs>.
 
-See also B<--group-by>, B<--roundrobin>.
+See also B<--bin>, B<--group-by>, B<--roundrobin>.
 
 
 =item B<--shebang>
@@ -2486,7 +2511,7 @@ to GNU B<parallel> giving each child its own process group, which is
 then killed. Process groups are dependant on the tty.
 
 
-=item B<--tag>
+=item B<--tag> (alpha testing)
 
 Tag lines with arguments. Each output line will be prepended with the
 arguments and TAB (\t). When combined with B<--onall> or B<--nonall>

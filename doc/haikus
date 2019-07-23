@@ -6,9 +6,6 @@ I love so much @GnuParallel to parallelize my SQL requests on @PostgreSQL
 Parallel is the BEST command.
   -- Nick @NickInfoSec
 
-It is SUPER easy to speed up jobs from the command line w/ GNU parallel.
-  -- B3n @B3njaminHimes@twitter
-
 GNU parallel really changed how I do a lot of data processing stuff
   -- Brendan Dolan-Gavitt @moyix@twitter
 
@@ -44,6 +41,9 @@ It's the MapReduce of our generation!
 
 
 === Used ===
+It is SUPER easy to speed up jobs from the command line w/ GNU parallel.
+  -- B3n @B3njaminHimes@twitter
+
 I want to make a shout-out for @GnuParallel, it's a work of beauty and power
   -- Cristian Consonni @CristianCantoro
 

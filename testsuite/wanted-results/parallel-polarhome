@@ -500,60 +500,60 @@ unixware	1
 
 ### Fails if tmpdir is R/O
 
-aix	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: The file access permissions do not allow the specified action. at /home/t/tange/bin/parallel line 0000
+aix	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: The file access permissions do not allow the specified action. at ~/bin/parallel line 0000
 aix	OK readonly tmp
 centos	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
-centos	 at /home/t/tange/bin/parallel line 0000
+centos	 at ~/bin/parallel line 0000
 centos	OK readonly tmp
-debian	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+debian	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000.
 debian	OK readonly tmp
-debian-ppc	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+debian-ppc	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000.
 debian-ppc	OK readonly tmp
-freebsd	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+freebsd	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000.
 freebsd	OK readonly tmp
-hpux	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+hpux	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 hpux	OK readonly tmp
 hpux-ia64	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
 hpux-ia64	 at /home/t/tange/bin/parallel line 0000
 hpux-ia64	OK readonly tmp
 macosx	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /Users/tange/bin/parallel line 0000
 macosx	OK readonly tmp
-mandriva	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+mandriva	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 mandriva	OK readonly tmp
 miros	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
-miros	 at /home/t/tange/bin/parallel line 0000
+miros	 at ~/bin/parallel line 0000
 miros	OK readonly tmp
 netbsd	OK readonly tmp
 netbsd	Invalid null command.
 netbsd	Invalid null command.
-openbsd	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+openbsd	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 openbsd	OK readonly tmp
 openindiana	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /u/t/tange/bin/parallel line 0000
 openindiana	OK readonly tmp
-pidora	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+pidora	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000.
 pidora	OK readonly tmp
-qnx	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+qnx	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 qnx	OK readonly tmp
-raspbian	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+raspbian	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 raspbian	OK readonly tmp
-redhat	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+redhat	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 redhat	OK readonly tmp
 scosysv	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
-scosysv	 at /home/t/tange/bin/parallel line 0000
+scosysv	 at ~/bin/parallel line 0000
 scosysv	OK readonly tmp
 solaris	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
-solaris	 at /home/t/tange/bin/parallel line 0000
+solaris	 at ~/bin/parallel line 0000
 solaris	OK readonly tmp
 solaris-x86	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 solaris-x86	OK readonly tmp
-suse	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+suse	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000.
 suse	OK readonly tmp
 tru64	Error in tempfile() using /XXXXXXXX.arg: Parent directory (/) is not writable
-tru64	 at /home/t/tange/bin/parallel line 0000
+tru64	 at ~/bin/parallel line 0000
 tru64	OK readonly tmp
-ubuntu	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000.
+ubuntu	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000.
 ubuntu	OK readonly tmp
-unixware	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at /home/t/tange/bin/parallel line 0000
+unixware	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 unixware	OK readonly tmp
     echo
     echo '### Does exporting a bash function make parallel fail?'
@@ -662,7 +662,7 @@ miros	test funcB
 miros	bash only B
 netbsd	test funcB
 netbsd	bash only B
-netbsd	/home/t/tange/setupenv: line 9: syntax error: unexpected end of file
+netbsd	~/setupenv: line 9: syntax error: unexpected end of file
 openbsd	test funcB
 openbsd	bash only B
 openindiana	test funcB
@@ -700,70 +700,70 @@ unixware	bash only B
 (bash ksh mksh zsh only)
 
 aix	Installed env_parallel in:
-aix	     /home/t/tange/.bashrc
-aix	     /home/t/tange/.shrc
-aix	     /home/t/tange/.zshenv
-aix	     /home/t/tange/.config/fish/config.fish
-aix	     /home/t/tange/.kshrc
-aix	     /home/t/tange/.mkshrc
-aix	     /home/t/tange/.profile
-aix	     /home/t/tange/.cshrc
-aix	     /home/t/tange/.tcshrc
+aix	     ~/.bashrc
+aix	     ~/.shrc
+aix	     ~/.zshenv
+aix	     ~/.config/fish/config.fish
+aix	     ~/.kshrc
+aix	     ~/.mkshrc
+aix	     ~/.profile
+aix	     ~/.cshrc
+aix	     ~/.tcshrc
 aix	install-OK
 centos	Installed env_parallel in:
-centos	     /home/t/tange/.bashrc
-centos	     /home/t/tange/.shrc
-centos	     /home/t/tange/.zshenv
-centos	     /home/t/tange/.config/fish/config.fish
-centos	     /home/t/tange/.kshrc
-centos	     /home/t/tange/.mkshrc
-centos	     /home/t/tange/.profile
-centos	     /home/t/tange/.cshrc
-centos	     /home/t/tange/.tcshrc
+centos	     ~/.bashrc
+centos	     ~/.shrc
+centos	     ~/.zshenv
+centos	     ~/.config/fish/config.fish
+centos	     ~/.kshrc
+centos	     ~/.mkshrc
+centos	     ~/.profile
+centos	     ~/.cshrc
+centos	     ~/.tcshrc
 centos	install-OK
 debian	Installed env_parallel in:
-debian	     /home/t/tange/.bashrc
-debian	     /home/t/tange/.shrc
-debian	     /home/t/tange/.zshenv
-debian	     /home/t/tange/.config/fish/config.fish
-debian	     /home/t/tange/.kshrc
-debian	     /home/t/tange/.mkshrc
-debian	     /home/t/tange/.profile
-debian	     /home/t/tange/.cshrc
-debian	     /home/t/tange/.tcshrc
+debian	     ~/.bashrc
+debian	     ~/.shrc
+debian	     ~/.zshenv
+debian	     ~/.config/fish/config.fish
+debian	     ~/.kshrc
+debian	     ~/.mkshrc
+debian	     ~/.profile
+debian	     ~/.cshrc
+debian	     ~/.tcshrc
 debian	install-OK
 debian-ppc	Installed env_parallel in:
-debian-ppc	     /home/t/tange/.bashrc
-debian-ppc	     /home/t/tange/.shrc
-debian-ppc	     /home/t/tange/.zshenv
-debian-ppc	     /home/t/tange/.config/fish/config.fish
-debian-ppc	     /home/t/tange/.kshrc
-debian-ppc	     /home/t/tange/.mkshrc
-debian-ppc	     /home/t/tange/.profile
-debian-ppc	     /home/t/tange/.cshrc
-debian-ppc	     /home/t/tange/.tcshrc
+debian-ppc	     ~/.bashrc
+debian-ppc	     ~/.shrc
+debian-ppc	     ~/.zshenv
+debian-ppc	     ~/.config/fish/config.fish
+debian-ppc	     ~/.kshrc
+debian-ppc	     ~/.mkshrc
+debian-ppc	     ~/.profile
+debian-ppc	     ~/.cshrc
+debian-ppc	     ~/.tcshrc
 debian-ppc	install-OK
 freebsd	Installed env_parallel in:
-freebsd	     /home/t/tange/.bashrc
-freebsd	     /home/t/tange/.shrc
-freebsd	     /home/t/tange/.zshenv
-freebsd	     /home/t/tange/.config/fish/config.fish
-freebsd	     /home/t/tange/.kshrc
-freebsd	     /home/t/tange/.mkshrc
-freebsd	     /home/t/tange/.profile
-freebsd	     /home/t/tange/.cshrc
-freebsd	     /home/t/tange/.tcshrc
+freebsd	     ~/.bashrc
+freebsd	     ~/.shrc
+freebsd	     ~/.zshenv
+freebsd	     ~/.config/fish/config.fish
+freebsd	     ~/.kshrc
+freebsd	     ~/.mkshrc
+freebsd	     ~/.profile
+freebsd	     ~/.cshrc
+freebsd	     ~/.tcshrc
 freebsd	install-OK
 hpux	Installed env_parallel in:
-hpux	     /home/t/tange/.bashrc
-hpux	     /home/t/tange/.shrc
-hpux	     /home/t/tange/.zshenv
-hpux	     /home/t/tange/.config/fish/config.fish
-hpux	     /home/t/tange/.kshrc
-hpux	     /home/t/tange/.mkshrc
-hpux	     /home/t/tange/.profile
-hpux	     /home/t/tange/.cshrc
-hpux	     /home/t/tange/.tcshrc
+hpux	     ~/.bashrc
+hpux	     ~/.shrc
+hpux	     ~/.zshenv
+hpux	     ~/.config/fish/config.fish
+hpux	     ~/.kshrc
+hpux	     ~/.mkshrc
+hpux	     ~/.profile
+hpux	     ~/.cshrc
+hpux	     ~/.tcshrc
 hpux	install-OK
 hpux-ia64	Installed env_parallel in:
 hpux-ia64	     /home/t/tange/.bashrc
@@ -789,48 +789,48 @@ macosx	     /Users/tange/.cshrc
 macosx	     /Users/tange/.tcshrc
 macosx	install-OK
 mandriva	Installed env_parallel in:
-mandriva	     /home/t/tange/.bashrc
-mandriva	     /home/t/tange/.shrc
-mandriva	     /home/t/tange/.zshenv
-mandriva	     /home/t/tange/.config/fish/config.fish
-mandriva	     /home/t/tange/.kshrc
-mandriva	     /home/t/tange/.mkshrc
-mandriva	     /home/t/tange/.profile
-mandriva	     /home/t/tange/.cshrc
-mandriva	     /home/t/tange/.tcshrc
+mandriva	     ~/.bashrc
+mandriva	     ~/.shrc
+mandriva	     ~/.zshenv
+mandriva	     ~/.config/fish/config.fish
+mandriva	     ~/.kshrc
+mandriva	     ~/.mkshrc
+mandriva	     ~/.profile
+mandriva	     ~/.cshrc
+mandriva	     ~/.tcshrc
 mandriva	install-OK
 miros	Installed env_parallel in:
-miros	     /home/t/tange/.bashrc
-miros	     /home/t/tange/.shrc
-miros	     /home/t/tange/.zshenv
-miros	     /home/t/tange/.config/fish/config.fish
-miros	     /home/t/tange/.kshrc
-miros	     /home/t/tange/.mkshrc
-miros	     /home/t/tange/.profile
-miros	     /home/t/tange/.cshrc
-miros	     /home/t/tange/.tcshrc
+miros	     ~/.bashrc
+miros	     ~/.shrc
+miros	     ~/.zshenv
+miros	     ~/.config/fish/config.fish
+miros	     ~/.kshrc
+miros	     ~/.mkshrc
+miros	     ~/.profile
+miros	     ~/.cshrc
+miros	     ~/.tcshrc
 miros	install-OK
 netbsd	Installed env_parallel in:
-netbsd	     /home/t/tange/.bashrc
-netbsd	     /home/t/tange/.shrc
-netbsd	     /home/t/tange/.zshenv
-netbsd	     /home/t/tange/.config/fish/config.fish
-netbsd	     /home/t/tange/.kshrc
-netbsd	     /home/t/tange/.mkshrc
-netbsd	     /home/t/tange/.profile
-netbsd	     /home/t/tange/.cshrc
-netbsd	     /home/t/tange/.tcshrc
+netbsd	     ~/.bashrc
+netbsd	     ~/.shrc
+netbsd	     ~/.zshenv
+netbsd	     ~/.config/fish/config.fish
+netbsd	     ~/.kshrc
+netbsd	     ~/.mkshrc
+netbsd	     ~/.profile
+netbsd	     ~/.cshrc
+netbsd	     ~/.tcshrc
 netbsd	install-OK
 openbsd	Installed env_parallel in:
-openbsd	     /home/t/tange/.bashrc
-openbsd	     /home/t/tange/.shrc
-openbsd	     /home/t/tange/.zshenv
-openbsd	     /home/t/tange/.config/fish/config.fish
-openbsd	     /home/t/tange/.kshrc
-openbsd	     /home/t/tange/.mkshrc
-openbsd	     /home/t/tange/.profile
-openbsd	     /home/t/tange/.cshrc
-openbsd	     /home/t/tange/.tcshrc
+openbsd	     ~/.bashrc
+openbsd	     ~/.shrc
+openbsd	     ~/.zshenv
+openbsd	     ~/.config/fish/config.fish
+openbsd	     ~/.kshrc
+openbsd	     ~/.mkshrc
+openbsd	     ~/.profile
+openbsd	     ~/.cshrc
+openbsd	     ~/.tcshrc
 openbsd	install-OK
 openindiana	Installed env_parallel in:
 openindiana	     /u/t/tange/.bashrc
@@ -844,70 +844,70 @@ openindiana	     /u/t/tange/.cshrc
 openindiana	     /u/t/tange/.tcshrc
 openindiana	install-OK
 pidora	Installed env_parallel in:
-pidora	     /home/t/tange/.bashrc
-pidora	     /home/t/tange/.shrc
-pidora	     /home/t/tange/.zshenv
-pidora	     /home/t/tange/.config/fish/config.fish
-pidora	     /home/t/tange/.kshrc
-pidora	     /home/t/tange/.mkshrc
-pidora	     /home/t/tange/.profile
-pidora	     /home/t/tange/.cshrc
-pidora	     /home/t/tange/.tcshrc
+pidora	     ~/.bashrc
+pidora	     ~/.shrc
+pidora	     ~/.zshenv
+pidora	     ~/.config/fish/config.fish
+pidora	     ~/.kshrc
+pidora	     ~/.mkshrc
+pidora	     ~/.profile
+pidora	     ~/.cshrc
+pidora	     ~/.tcshrc
 pidora	install-OK
 qnx	Installed env_parallel in:
-qnx	     /home/t/tange/.bashrc
-qnx	     /home/t/tange/.shrc
-qnx	     /home/t/tange/.zshenv
-qnx	     /home/t/tange/.config/fish/config.fish
-qnx	     /home/t/tange/.kshrc
-qnx	     /home/t/tange/.mkshrc
-qnx	     /home/t/tange/.profile
-qnx	     /home/t/tange/.cshrc
-qnx	     /home/t/tange/.tcshrc
+qnx	     ~/.bashrc
+qnx	     ~/.shrc
+qnx	     ~/.zshenv
+qnx	     ~/.config/fish/config.fish
+qnx	     ~/.kshrc
+qnx	     ~/.mkshrc
+qnx	     ~/.profile
+qnx	     ~/.cshrc
+qnx	     ~/.tcshrc
 qnx	install-OK
 raspbian	Installed env_parallel in:
-raspbian	     /home/t/tange/.bashrc
-raspbian	     /home/t/tange/.shrc
-raspbian	     /home/t/tange/.zshenv
-raspbian	     /home/t/tange/.config/fish/config.fish
-raspbian	     /home/t/tange/.kshrc
-raspbian	     /home/t/tange/.mkshrc
-raspbian	     /home/t/tange/.profile
-raspbian	     /home/t/tange/.cshrc
-raspbian	     /home/t/tange/.tcshrc
+raspbian	     ~/.bashrc
+raspbian	     ~/.shrc
+raspbian	     ~/.zshenv
+raspbian	     ~/.config/fish/config.fish
+raspbian	     ~/.kshrc
+raspbian	     ~/.mkshrc
+raspbian	     ~/.profile
+raspbian	     ~/.cshrc
+raspbian	     ~/.tcshrc
 raspbian	install-OK
 redhat	Installed env_parallel in:
-redhat	     /home/t/tange/.bashrc
-redhat	     /home/t/tange/.shrc
-redhat	     /home/t/tange/.zshenv
-redhat	     /home/t/tange/.config/fish/config.fish
-redhat	     /home/t/tange/.kshrc
-redhat	     /home/t/tange/.mkshrc
-redhat	     /home/t/tange/.profile
-redhat	     /home/t/tange/.cshrc
-redhat	     /home/t/tange/.tcshrc
+redhat	     ~/.bashrc
+redhat	     ~/.shrc
+redhat	     ~/.zshenv
+redhat	     ~/.config/fish/config.fish
+redhat	     ~/.kshrc
+redhat	     ~/.mkshrc
+redhat	     ~/.profile
+redhat	     ~/.cshrc
+redhat	     ~/.tcshrc
 redhat	install-OK
 scosysv	Installed env_parallel in:
-scosysv	     /home/t/tange/.bashrc
-scosysv	     /home/t/tange/.shrc
-scosysv	     /home/t/tange/.zshenv
-scosysv	     /home/t/tange/.config/fish/config.fish
-scosysv	     /home/t/tange/.kshrc
-scosysv	     /home/t/tange/.mkshrc
-scosysv	     /home/t/tange/.profile
-scosysv	     /home/t/tange/.cshrc
-scosysv	     /home/t/tange/.tcshrc
+scosysv	     ~/.bashrc
+scosysv	     ~/.shrc
+scosysv	     ~/.zshenv
+scosysv	     ~/.config/fish/config.fish
+scosysv	     ~/.kshrc
+scosysv	     ~/.mkshrc
+scosysv	     ~/.profile
+scosysv	     ~/.cshrc
+scosysv	     ~/.tcshrc
 scosysv	install-OK
 solaris	Installed env_parallel in:
-solaris	     /home/t/tange/.bashrc
-solaris	     /home/t/tange/.shrc
-solaris	     /home/t/tange/.zshenv
-solaris	     /home/t/tange/.config/fish/config.fish
-solaris	     /home/t/tange/.kshrc
-solaris	     /home/t/tange/.mkshrc
-solaris	     /home/t/tange/.profile
-solaris	     /home/t/tange/.cshrc
-solaris	     /home/t/tange/.tcshrc
+solaris	     ~/.bashrc
+solaris	     ~/.shrc
+solaris	     ~/.zshenv
+solaris	     ~/.config/fish/config.fish
+solaris	     ~/.kshrc
+solaris	     ~/.mkshrc
+solaris	     ~/.profile
+solaris	     ~/.cshrc
+solaris	     ~/.tcshrc
 solaris	install-OK
 solaris-x86	Installed env_parallel in:
 solaris-x86	     ~/.bashrc
@@ -921,48 +921,48 @@ solaris-x86	     ~/.cshrc
 solaris-x86	     ~/.tcshrc
 solaris-x86	install-OK
 suse	Installed env_parallel in:
-suse	     /home/t/tange/.bashrc
-suse	     /home/t/tange/.shrc
-suse	     /home/t/tange/.zshenv
-suse	     /home/t/tange/.config/fish/config.fish
-suse	     /home/t/tange/.kshrc
-suse	     /home/t/tange/.mkshrc
-suse	     /home/t/tange/.profile
-suse	     /home/t/tange/.cshrc
-suse	     /home/t/tange/.tcshrc
+suse	     ~/.bashrc
+suse	     ~/.shrc
+suse	     ~/.zshenv
+suse	     ~/.config/fish/config.fish
+suse	     ~/.kshrc
+suse	     ~/.mkshrc
+suse	     ~/.profile
+suse	     ~/.cshrc
+suse	     ~/.tcshrc
 suse	install-OK
 tru64	Installed env_parallel in:
-tru64	     /home/t/tange/.bashrc
-tru64	     /home/t/tange/.shrc
-tru64	     /home/t/tange/.zshenv
-tru64	     /home/t/tange/.config/fish/config.fish
-tru64	     /home/t/tange/.kshrc
-tru64	     /home/t/tange/.mkshrc
-tru64	     /home/t/tange/.profile
-tru64	     /home/t/tange/.cshrc
-tru64	     /home/t/tange/.tcshrc
+tru64	     ~/.bashrc
+tru64	     ~/.shrc
+tru64	     ~/.zshenv
+tru64	     ~/.config/fish/config.fish
+tru64	     ~/.kshrc
+tru64	     ~/.mkshrc
+tru64	     ~/.profile
+tru64	     ~/.cshrc
+tru64	     ~/.tcshrc
 tru64	install-OK
 ubuntu	Installed env_parallel in:
-ubuntu	     /home/t/tange/.bashrc
-ubuntu	     /home/t/tange/.shrc
-ubuntu	     /home/t/tange/.zshenv
-ubuntu	     /home/t/tange/.config/fish/config.fish
-ubuntu	     /home/t/tange/.kshrc
-ubuntu	     /home/t/tange/.mkshrc
-ubuntu	     /home/t/tange/.profile
-ubuntu	     /home/t/tange/.cshrc
-ubuntu	     /home/t/tange/.tcshrc
+ubuntu	     ~/.bashrc
+ubuntu	     ~/.shrc
+ubuntu	     ~/.zshenv
+ubuntu	     ~/.config/fish/config.fish
+ubuntu	     ~/.kshrc
+ubuntu	     ~/.mkshrc
+ubuntu	     ~/.profile
+ubuntu	     ~/.cshrc
+ubuntu	     ~/.tcshrc
 ubuntu	install-OK
 unixware	Installed env_parallel in:
-unixware	     /home/t/tange/.bashrc
-unixware	     /home/t/tange/.shrc
-unixware	     /home/t/tange/.zshenv
-unixware	     /home/t/tange/.config/fish/config.fish
-unixware	     /home/t/tange/.kshrc
-unixware	     /home/t/tange/.mkshrc
-unixware	     /home/t/tange/.profile
-unixware	     /home/t/tange/.cshrc
-unixware	     /home/t/tange/.tcshrc
+unixware	     ~/.bashrc
+unixware	     ~/.shrc
+unixware	     ~/.zshenv
+unixware	     ~/.config/fish/config.fish
+unixware	     ~/.kshrc
+unixware	     ~/.mkshrc
+unixware	     ~/.profile
+unixware	     ~/.cshrc
+unixware	     ~/.tcshrc
 unixware	install-OK
     echo
     echo '### env_parallel echo env_parallel ::: run-OK'
@@ -978,7 +978,6 @@ centos	env_parallel run-OK
 debian	env_parallel run-OK
 debian-ppc	env_parallel run-OK
 freebsd	env_parallel run-OK
-freebsd	Cannot fork: Resource temporarily unavailable
 hpux	env_parallel run-OK
 hpux-ia64	env_parallel run-OK
 macosx	env_parallel run-OK
@@ -1080,7 +1079,7 @@ miros	### Test if empty command name in process list causes problems
 miros	OK_with_empty_cmd
 netbsd	### Test if empty command name in process list causes problems
 netbsd	OK_with_empty_cmd
-netbsd	/home/t/tange/setupenv: line 9: syntax error: unexpected end of file
+netbsd	~/setupenv: line 9: syntax error: unexpected end of file
 openbsd	### Test if empty command name in process list causes problems
 openbsd	OK_with_empty_cmd
 openindiana	### Test if empty command name in process list causes problems
@@ -1151,10 +1150,6 @@ aix	2 2 3 2 3 4
 centos	2 2 3 2 3 4
 debian	2 2 3 2 3 4
 debian-ppc	2 2 3 2 3 4
-freebsd	Cannot fork: Resource temporarily unavailable
-freebsd	Cannot fork: Resource temporarily unavailable
-freebsd	Cannot fork: Resource temporarily unavailable
-freebsd	Cannot fork: Resource temporarily unavailable
 freebsd	eval: 1: Syntax error: word unexpected (expecting ")")
 hpux	
 hpux-ia64	1 2 1 2 1 2
@@ -1227,11 +1222,6 @@ centos	2,2 3,2 3 4
 debian	2,2 3,2 3 4
 debian-ppc	2,2 3,2 3 4
 freebsd	2,2 3,2 3 4
-freebsd	Cannot fork: Resource temporarily unavailable
-freebsd	Cannot fork: Resource temporarily unavailable
-freebsd	Cannot fork: Resource temporarily unavailable
-freebsd	Cannot fork: Resource temporarily unavailable
-freebsd	Cannot fork: Resource temporarily unavailable
 hpux	,,
 hpux-ia64	1 2,1 2,1 2
 macosx	2,2 3,2 3 4

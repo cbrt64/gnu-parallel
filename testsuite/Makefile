@@ -1,3 +1,4 @@
+### Full test set (except mem)
 testsuite: 3
 	true
 
@@ -6,16 +7,32 @@ testsuite: 3
 	touch ~/.parallel/will-cite
 	make stopvm
 
+### Limited testsets - run once
+# No 100s, mem, polarhome, tutorial
 1: ../src/parallel tests-to-run/* wanted-results/* prereqlocal startdb prereqremote
 	TRIES=1 time bash Start.sh '' '100s|mem|polarhome|tutorial' || true
 	touch ~/.parallel/will-cite
 	make stopvm
 
+# Mem
 mem: ../src/parallel tests-to-run/*mem* wanted-results/*mem* prereqlocal
 	time bash Start.sh mem NONE || true
 	touch ~/.parallel/will-cite
 	make stopvm
 
+# Tutorial
+tutorial: ../src/parallel tests-to-run/*tutorial* wanted-results/*tutorial* prereqlocal
+	TRIES=1 time bash Start.sh tutorial NONE || true
+	touch ~/.parallel/will-cite
+	make stopvm
+
+# 100s
+100s: ../src/parallel tests-to-run/*100s* wanted-results/*100s* prereqlocal
+	time bash Start.sh 100s NONE || true
+	touch ~/.parallel/will-cite
+	make stopvm
+
+# Polarhome
 polarhome: polar
 	true
 
@@ -23,21 +40,31 @@ polar: ../src/parallel tests-to-run/*polar* wanted-results/*polar* prereqlocal
 	time bash Start.sh polar NONE || true
 	touch ~/.parallel/will-cite
 
-testdb: ../src/parallel tests-to-run/*sql* wanted-results/*sql* prereqdb
-	time bash Start.sh sql NONE
-
+# *local* only
 local:	testlocal
 	true
 
 testlocal: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
 	time bash Start.sh local mem
 
+# short and local
 short:	testlocalshort
 	true
 
 testlocalshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
 	TRIES=1 time bash Start.sh local mem'|'100s
 
+# sql
+testdb: ../src/parallel tests-to-run/*sql* wanted-results/*sql* prereqdb
+	time bash Start.sh sql NONE
+
+# Portable tests that runs everywhere
+portable:
+	# Cache sudo password
+	sudo echo
+	time bash Portable.sh
+
+### Prerequisites
 prereqlocal: installparallel
 	tcsh -c echo tcsh installed || (echo tcsh is required for testsuite; /bin/false)
 	seq 1 2 >/dev/null || (echo seq is required for testsuite; /bin/false)
@@ -73,14 +100,15 @@ stopvm:
 	VBoxManage controlvm RedHat9-root:redhat9 savestate || true
 	VBoxManage controlvm OracleXE savestate || true
 
-installparallel: ../src/parallel
-	cd .. && make -j && sudo make -j install
-
 startdb:
 	#echo shutdown abort | sudo su - oracle -c "sqlplus / as sysdba"
 	sudo parallel /etc/init.d/{} status '||' /etc/init.d/{} restart ::: postgresql mysql # oracle-xe
 	VBoxManage startvm OracleXE || true
 	parallel 'ping {} | read' :::  oracle11.tange.dk
+
+### Distribution
+installparallel: ../src/parallel
+	cd .. && make -j && sudo make -j install
 
 clean:
 	rm -rf input-files/random_dirs_no_newline
@@ -93,11 +121,7 @@ dist:
 	mv /tmp/parallel.tar.bz2 parallel-$$(date +"%Y%m%d").tar.bz2
 	rsync -Havessh parallel-$$(date +"%Y%m%d").tar.bz2 download.savannah.nongnu.org:/releases/parallel/
 
-portable:
-	# Cache sudo password
-	sudo echo
-	time bash Portable.sh
-
+### Measure timings
 timings: tests-to-run/* ../src/parallel
 	ls tests-to-run/*.sh | parallel echo /usr/bin/time -f "'%e\ %P'" bash >/tmp/timing.script
 	stdout bash -x /tmp/timing.script | tee /tmp/timing.out

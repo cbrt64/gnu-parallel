@@ -744,8 +744,7 @@ foo
   parallel --workdir . -S $SERVER1 pwd ::: ""
   parallel --workdir ... -S $SERVER1 pwd ::: ""
 /mnt/4tb/home/parallel
-BASE64
-/mnt/4tb/home/parallel/.TMPWORKDIR
+BASE64/mnt/4tb/home/parallel/.TMPWORKDIR
   parallel -S $SERVER1 --sshdelay 0.2 echo ::: 1 2 3
 9
   parallel --controlmaster -S $SERVER1 echo ::: 1 2 3
@@ -880,6 +879,7 @@ PARALLEL_HOME
 PARALLEL_PID
 PARALLEL_RSYNC_OPTS
 PARALLEL_SEQ
+PARALLEL_SSHLOGIN
 PARALLEL_TMP
 PATH
 PERL_MB_OPT

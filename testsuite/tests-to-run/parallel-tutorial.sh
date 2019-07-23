@@ -48,8 +48,6 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
             s/,[a-z]*,\d+.\d+,\d+.\d+/,:,000000000.000,0.000/g;
             # /usr/bin/time -f %e
             s/^(\d+)\.\d+$/$1/;
-            # Base 64 string with quotes
-            s:['"'"'"\\+/a-z0-9=]{50,}:BASE64:ig;
             # --workdir ...
             s:parallel/tmp/aspire-\d+-1:TMPWORKDIR:g;
             # + cat ... | (Bash outputs these in random order)
@@ -71,6 +69,8 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
             s/(std(out|err)|seq): Permission denied/$1: No such file or directory/;
             # Race condition
             s/^4-(middle|end)\n//;
+            # Base 64 string with quotes
+            s:['"'"'"\\+/a-z0-9=]{50,}(\s['"'"'"\\+/a-z0-9=]*)*:BASE64:ig;
             # Timings are often off
             s/^(\d)$/9/;
             s/^(\d\d)$/99/;

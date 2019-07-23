@@ -13,8 +13,11 @@ export -f gendata
 
 perl5.14parallel() {
     # Run GNU Parallel under perl 5.14 which does not support 64-bit very well
+    # Remove setpgrp_func because 5.14 may use another func
+    rm -f ~/.parallel/tmp/sshlogin/*/setpgrp_func
     PATH=input-files/perl-v5.14.2:$PATH
     PERL5LIB=input-files/perl-v5.14.2/lib input-files/perl-v5.14.2/perl `which parallel` "$@"
+    rm -f ~/.parallel/tmp/sshlogin/*/setpgrp_func
 }
 export -f perl5.14parallel
 
