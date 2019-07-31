@@ -206,9 +206,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190722 ('Ryugu') released <<[stable]>>
+Subject: GNU Parallel 20190822 ('Jesper Svarre') released <<[stable]>>
 
-GNU Parallel 20190722 ('Ryugu') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190822 ('Jesper Svarre') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -218,28 +218,13 @@ See https://www.gnu.org/software/parallel/10-years-anniversary.html
 
 Quote of the month:
 
-  It is SUPER easy to speed up jobs from the command line w/ GNU parallel.
-    -- B3n @B3njaminHimes@twitter
+  <<>>
 
 New in this release:
 
-* {= uq; =} causes the replacement string to be unquoted. Example: parallel echo '{=uq;=}.jpg' ::: '*'
-
-* --tagstring {=...=} is now evaluated for each line with --linebuffer.
-
-* Use -J ./profile to read a profile in current dir.
-
-* Speedup of startup by 40%: Find the parent shell differerently on GNU/Linux, cache information about the CPU and which setpgrp method to use to make GNU Parallel start 40% faster.
-
-* $PARALLEL_SSHLOGIN can be used in the command line.
-
-* Occasionally sane: Simple usage of GNU parallel https://vfoley.xyz/parallel/
-
-* How to run multiple bash scripts in parallel https://techieroop.com/how-to-run-multiple-bash-scripts-in-parallel/
-
-* Announcing Oracle Solaris 11.4 SRU10 https://blogs.oracle.com/solaris/announcing-oracle-solaris-114-sru10
-
-* Руководство по использованию GNU Parallel https://zalinux.ru/?p=2623
+https://captmeelo.com/pentest/2019/07/29/port-scanning.html
+https://linuxreviews.org/GNU_Parallel_Ryugu_released
+http://www.7daixie.com/2019071646302396.html
 
 * Bug fixes and man page updates.
 
@@ -256,10 +241,30 @@ If you use xargs and tee today you will find GNU Parallel very easy to use as GN
 
 GNU Parallel makes sure output from the commands is the same output as you would get had you run the commands sequentially. This makes it possible to use output from GNU Parallel as input for other programs.
 
+For example you can run this to convert all jpeg files into png and gif files and have a progress bar:
+
+  parallel --bar convert {1} {1.}.{2} ::: *.jpg ::: png gif
+
+Or you can generate big, medium, and small thumbnails of all jpeg files in sub dirs:
+
+  find . -name '*.jpg' |
+    parallel convert -geometry {2} {1} {1//}/thumb{2}_{1/} :::: - ::: 50 100 200
+
+
 You can find more about GNU Parallel at: http://www.gnu.org/s/parallel/
 
 You can install GNU Parallel in just 10 seconds with:
-(wget -O - pi.dk/3 || curl pi.dk/3/ || fetch -o - http://pi.dk/3) | bash
+
+    $ (wget -O - pi.dk/3 || lynx -source pi.dk/3 || curl pi.dk/3/ || \
+       fetch -o - http://pi.dk/3 ) > install.sh
+    $ sha1sum install.sh | grep 3374ec53bacb199b245af2dda86df6c9
+    12345678 3374ec53 bacb199b 245af2dd a86df6c9
+    $ md5sum install.sh | grep 029a9ac06e8b5bc6052eac57b2c3c9ca
+    029a9ac0 6e8b5bc6 052eac57 b2c3c9ca
+    $ sha512sum install.sh | grep f517006d9897747bed8a4694b1acba1b
+    40f53af6 9e20dae5 713ba06c f517006d 9897747b ed8a4694 b1acba1b 1464beb4
+    60055629 3f2356f3 3e9c4e3c 76e3f3af a9db4b32 bd33322b 975696fc e6b23cfb
+    $ bash install.sh
 
 Watch the intro video on http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
 

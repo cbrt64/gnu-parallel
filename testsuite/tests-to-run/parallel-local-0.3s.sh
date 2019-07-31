@@ -780,6 +780,12 @@ par_bin() {
     # paste <(seq 10000000) <(seq 10000000 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
 }
 
+par_cr_newline_header() {
+    echo '### --header : should set named replacement string if input line ends in \r\n'
+    printf "foo\r\nbar\r\n" |
+	parallel --colsep , --header : echo {foo}
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 30 -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

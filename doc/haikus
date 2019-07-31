@@ -1,5 +1,11 @@
 Quote of the month:
 
+With multicore systems everywhere GNU Parallel is a must have tool.
+  -- Neil H. Watson @neil_h_watson
+
+My new favourite command line tool is gnu parallel. After knowing it for a while I just recently came back to it for a refactor of a script and now I've changed like 4 different huge scripts into tiny parallel scripts that do their job literally 3 to 10 times faster and just [mind blown]
+  -- Izzy @angry_izzy
+
 I love so much @GnuParallel to parallelize my SQL requests on @PostgreSQL
   -- @rmaziere_85 Romain
 

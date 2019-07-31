@@ -77,6 +77,8 @@ par_blocking_redir	stdout
 par_colsep_0	bug --colsep 0
 par_colsep_0	OK
 par_colsep_0	OK
+par_cr_newline_header	### --header : should set named replacement string if input line ends in \r\n
+par_cr_newline_header	bar
 par_csv	col1"x3"-new
 par_csv	line col2-new2
 par_csv	line col3-col 4

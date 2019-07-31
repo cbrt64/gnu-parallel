@@ -166,14 +166,13 @@ par_no_route_to_host() {
     }
     export -f raw
 
-    # Random hosts that there is no route to
+    # Random hosts
     findhosts() {
 	ip='$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256))'
-	stdout parallel --timeout 2 -j0 ssh -o PasswordAuthentication=no $ip echo ::: {1..10000} |
-	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
+	seq 10000 | parallel -N0 echo $ip 
     }
 
-    # Retry if the hosts really fails this fast
+    # See if the hosts fail fast
     filterhosts() {
 	stdout parallel --timeout 2 -j5 ssh -o PasswordAuthentication=no {} echo |
 	    perl -ne 's/ssh:.* host (\d+\.\d+\.\d+\.\d+) .* No route .*/$1/ and print; $|=1'
@@ -183,12 +182,12 @@ par_no_route_to_host() {
 	# Cache a list of hosts that fail fast with 'No route'
 	# Filter the list 4 times to make sure to get good hosts
 	renice 10 -p $$ >/dev/null
-	findhosts | filterhosts | filterhosts |
+	findhosts | filterhosts | filterhosts | filterhosts |
 	    filterhosts | filterhosts | head > /tmp/filtered.$$
 	mv /tmp/filtered.$$ /tmp/filtered.hosts
     ) &
     (
-	# We just need one to complete
+	# We just need one of each to complete
 	stdout parallel --halt now,done=1 -j0 raw :::: /tmp/filtered.hosts
 	stdout parallel --halt now,done=1 -j0 via_parallel :::: /tmp/filtered.hosts
     ) | perl -pe 's/(\d+\.\d+\.\d+\.\d+)/i.p.n.r/' | puniq

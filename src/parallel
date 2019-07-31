@@ -48,6 +48,7 @@ sub set_input_source_header($$) {
 	for my $fh (@$input_source_fh_ref) {
 	    my $line = <$fh>;
 	    chomp($line);
+	    $line =~ s/\r$//;
 	    ::debug("init", "Delimiter: '$delimiter'");
 	    for my $s (split /$delimiter/o, $line) {
 		::debug("init", "Colname: '$s'");
@@ -1519,7 +1520,7 @@ sub options_hash() {
 	 "link|xapply" => \$opt::link,
 	 "linkinputsource|xapplyinputsource=i" => \@opt::linkinputsource,
 	 # Before changing this line, please read
-         # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	 # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 "bibtex|citation" => \$opt::citation,
 	 "wc|willcite|will-cite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
@@ -2047,7 +2048,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190722;
+    $Global::version = 20190724;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
@@ -2838,17 +2839,18 @@ sub shell_quote_scalar_default($) {
     #   $string = string to be quoted
     # Returns:
     #   $shell_quoted = string quoted as needed by the shell
-    my $par = $_[0];
-    if($par =~ /[^-_.+a-z0-9\/]/i) {
-	$par =~ s/'/'"'"'/g;  # "-quote single quotes
-	$par = "'$par'";      # '-quote entire string
-	$par =~ s/^''|''$//g; # Remove unneeded '' at ends
-	return $par;
-    } elsif ($par eq "") {
+    my $s = $_[0];
+    if($s =~ /[^-_.+a-z0-9\/]/i) {
+	$s =~ s/'/'"'"'/g; # "-quote single quotes
+	$s = "'$s'";       # '-quote entire string
+	$s =~ s/^''//;     # Remove unneeded '' at ends
+	$s =~ s/''$//;     # (faster than s/^''|''$//g)
+	return $s;
+    } elsif ($s eq "") {
 	return "''";
     } else {
 	# No quoting needed
-	return $par;
+	return $s;
     }
 }
 

@@ -7,7 +7,7 @@
 
 * Use -J ./profile to read a profile in current dir.
 
-* Speedup of startup by 40%: Find the parent shell differerently on
+* Speedup of startup by 40%: Find the parent shell differently on
   GNU/Linux, cache information about the CPU and which setpgrp method
   to use to make GNU Parallel start 40% faster.
 
