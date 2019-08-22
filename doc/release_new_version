@@ -75,6 +75,9 @@ make alphaupload
 
 == Update OpenSUSE build system ==
 
+
+YYYYMMDD=`yyyymmdd`
+export YYYYMMDD
 cd ~/privat/parallel/packager/obs
 
 find home:tange/parallel/* -type f | grep -v parallel.spec | parallel -Xj1 osc rm {}
@@ -222,9 +225,21 @@ Quote of the month:
 
 New in this release:
 
-https://captmeelo.com/pentest/2019/07/29/port-scanning.html
-https://linuxreviews.org/GNU_Parallel_Ryugu_released
-http://www.7daixie.com/2019071646302396.html
+* GNU Parallel will be presented at Driving IT 2019: https://ida.dk/arrangementer-og-kurser/konferencer/driving-it#beskrivelse
+
+* Linux Productivity Tools https://www.usenix.org/conference/lisa19/presentation/maheshwari
+
+* Improve your reconnaissance performance by using GNU Parallel https://mailchi.mp/3f46ceb46357/improve-your-reconnaissance-performance-by-using-gnu-parallel
+
+* Paralel İşler / İşlemler / Programlar Bash’de Nasıl Çalıştırılır? https://kaleinfo.com/2019/07/29/paralel-isler-islemler-programlar-bashde-nasil-calistirilir-2/
+
+* Use POLYBAR to change WALLPAPER with GNU Parallel https://www.youtube.com/watch?v=rjYg-b_eiRU
+
+* Finding the Balance Between Speed & Accuracy During an Internet-wide Port Scanning https://captmeelo.com/pentest/2019/07/29/port-scanning.html
+
+* GNU Parallel Ryugu released https://linuxreviews.org/GNU_Parallel_Ryugu_released
+
+* CO2017 - CW1 - Operating Systems & Networks - Shell scripting http://www.7daixie.com/2019071646302396.html
 
 * Bug fixes and man page updates.
 

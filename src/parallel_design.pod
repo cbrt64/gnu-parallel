@@ -2,6 +2,8 @@
 
 =encoding utf8
 
+options as wrapper scripts
+
 =head1 Design of GNU Parallel
 
 This document describes design decisions made in the development of
@@ -20,12 +22,27 @@ a single file: No need to mess around with environment variables like
 PERL5LIB.
 
 
-=head2 Interpreted language
+=head2 Choice of programming language
 
 GNU B<parallel> is designed to be able to run on old systems. That
 means that it cannot depend on a compiler being installed - and
 especially not a compiler for a language that is younger than 20 years
 old.
+
+The goal is that you can use GNU B<parallel> on any system, even if
+you are not allowed to install additional software.
+
+Of all the systems I have experienced, I have yet to see a system that
+had GCC installed that did not have Perl. The same goes for Rust, Go,
+Haskell, and other younger languages. I have, however, seen systems
+with Perl without any of the mentioned compilers.
+
+Most modern systems also have either Python2 or Python3 installed, but
+you still cannot be certain which version, and since Python2 cannot
+run under Python3, Python is not an option.
+
+Perl has the added benefit that implementing the {= perlexpr =}
+replacement string was fairly easy.
 
 
 =head2 Old Perl style 
@@ -1115,6 +1132,26 @@ the whole output of a single job and save it as csv/tsv or SQL.
 =back
 
 
+=head2 Argument separators ::: :::: :::+ ::::+
+
+The argument separator B<:::> was chosen because I have never seen B<:::>
+used in any command. The natural choice B<--> would be a bad idea since
+it is not unlikely that the template command will contain B<-->. I have
+seen B<::> used in programming languanges to separate classes, and I
+did not want the user to be confused that the separator had anything
+to do with classes.
+
+
+B<:::> also makes a visual separation, which is good if there are
+multiple B<:::>.
+
+When B<:::> was chosen, B<::::> came as a fairly natural extension.
+
+Linking input sources meant having to decide for some way to indicate
+linking of B<:::> and B<::::>. B<:::+> and B<::::+> was chosen, so
+that they were similar to B<:::> and B<::::>.
+
+
 =head2 Perl replacement strings, {= =}, and --rpl
 
 The shorthands for replacement strings make a command look more
@@ -1131,14 +1168,14 @@ again, the user may want to make his own shorthand for it. This is
 what B<--rpl> is for. It works so well, that even GNU B<parallel>'s
 own shorthands are implemented using B<--rpl>.
 
-In Perl code the bigrams {= and =} rarely exist. They look like a
+In Perl code the bigrams B<{=> and B<=}> rarely exist. They look like a
 matching pair and can be entered on all keyboards. This made them good
 candidates for enclosing the Perl expression in the replacement
 strings. Another candidate ,, and ,, was rejected because they do not
 look like a matching pair. B<--parens> was made, so that the users can
 still use ,, and ,, if they like: B<--parens ,,,,>
 
-Internally, however, the {= and =} are replaced by \257< and
+Internally, however, the B<{=> and B<=}> are replaced by \257< and
 \257>. This is to make it simpler to make regular expressions. You
 only need to look one character ahead, and never have to look behind.
 

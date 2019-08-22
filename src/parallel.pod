@@ -105,7 +105,7 @@ B<Bash, Csh, or Tcsh aliases>: Use B<env_parallel>.
 
 B<Zsh, Fish, Ksh, and Pdksh functions and aliases>: Use B<env_parallel>.
 
-=item B<{}> (alpha testing)
+=item B<{}> (beta testing)
 
 Input line. This replacement string will be replaced by a full line
 read from the input source. The input source is normally stdin
@@ -279,7 +279,7 @@ perl quote a string
 
 =item Z<> B<uq()> (or B<uq>)
 
-(alpha testing)
+(beta testing)
 do not quote current replacement string
 
 =item Z<> B<total_jobs()>
@@ -824,7 +824,7 @@ B<--group> is the default. Can be reversed with B<-u>.
 See also: B<--line-buffer> B<--ungroup>
 
 
-=item B<--group-by> I<val> (beta testing)
+=item B<--group-by> I<val>
 
 Group input by value. Combined with B<--pipe>/B<--pipepart>
 B<--group-by> groups lines with the same value into a record.
@@ -1244,9 +1244,9 @@ Similar to B<--memfree>.
 =back
 
 
-=item B<--line-buffer> (alpha testing)
+=item B<--line-buffer> (beta testing)
 
-=item B<--lb> (alpha testing)
+=item B<--lb> (beta testing)
 
 Buffer output on line basis. B<--group> will keep the output together
 for a whole job. B<--ungroup> allows output to mixup with half a line
@@ -1574,20 +1574,20 @@ on remote computers).
 Print the number of physical CPU cores and exit.
 
 
-=item B<--number-of-cores> (alpha testing)
+=item B<--number-of-cores> (beta testing)
 
 Print the number of physical CPU cores and exit (used by GNU B<parallel> itself
 to determine the number of physical CPU cores on remote computers).
 
 
-=item B<--number-of-sockets> (alpha testing)
+=item B<--number-of-sockets> (beta testing)
 
 Print the number of filled CPU sockets and exit (used by GNU
 B<parallel> itself to determine the number of filled CPU sockets on
 remote computers).
 
 
-=item B<--number-of-threads> (alpha testing)
+=item B<--number-of-threads> (beta testing)
 
 Print the number of hyperthreaded CPU cores and exit (used by GNU
 B<parallel> itself to determine the number of hyperthreaded CPU cores
@@ -1633,9 +1633,9 @@ B<,,>:
 See also: B<--rpl> B<{= perl expression =}>
 
 
-=item B<--profile> I<profilename> (alpha testing)
+=item B<--profile> I<profilename> (beta testing)
 
-=item B<-J> I<profilename> (alpha testing)
+=item B<-J> I<profilename> (beta testing)
 
 Use profile I<profilename> for options. This is useful if you want to
 have multiple profiles. You could have one profile for running jobs in
@@ -2511,7 +2511,7 @@ to GNU B<parallel> giving each child its own process group, which is
 then killed. Process groups are dependant on the tty.
 
 
-=item B<--tag> (alpha testing)
+=item B<--tag> (beta testing)
 
 Tag lines with arguments. Each output line will be prepended with the
 arguments and TAB (\t). When combined with B<--onall> or B<--nonall>
@@ -2520,7 +2520,7 @@ the lines will be prepended with the sshlogin instead.
 B<--tag> is ignored when using B<-u>.
 
 
-=item B<--tagstring> I<str> (alpha testing)
+=item B<--tagstring> I<str> (beta testing)
 
 Tag lines with a string. Each output line will be prepended with
 I<str> and TAB (\t). I<str> can contain replacement strings such as
@@ -4773,7 +4773,7 @@ B<--ssh>. It can also be set on a per server basis (see
 B<--sshlogin>).
 
 
-=item $PARALLEL_SSHLOGIN (alpha testing)
+=item $PARALLEL_SSHLOGIN (beta testing)
 
 The environment variable $PARALLEL_SSHLOGIN is set by GNU B<parallel>
 and is visible to the jobs started from GNU B<parallel>. The value is

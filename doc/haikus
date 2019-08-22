@@ -1,35 +1,37 @@
 Quote of the month:
 
-With multicore systems everywhere GNU Parallel is a must have tool.
-  -- Neil H. Watson @neil_h_watson
-
-My new favourite command line tool is gnu parallel. After knowing it for a while I just recently came back to it for a refactor of a script and now I've changed like 4 different huge scripts into tiny parallel scripts that do their job literally 3 to 10 times faster and just [mind blown]
-  -- Izzy @angry_izzy
-
-I love so much @GnuParallel to parallelize my SQL requests on @PostgreSQL
-  -- @rmaziere_85 Romain
-
-Parallel is the BEST command.
-  -- Nick @NickInfoSec
-
-GNU parallel really changed how I do a lot of data processing stuff
-  -- Brendan Dolan-Gavitt @moyix@twitter
-
-It is, beyond absolutely any doubt whatsoever, the single most
-important tool I use in making me a productive bioinformatician.
--- A-N-Other@reddit.com
-
-Parallel is a life send, what an awesome piece of software.
--- Blaze9@reddit.com
-
-It's really powerful for smallish data processing scripts
--- João Veiga @jcsvveiga@twitter
-
-It's the MapReduce of our generation!
-  -- Mathias Meyer @roidrage@twitter
-
+  GNU Parallel is awesome
+    -- Gaurav Jain @gauravjain49@twitter
+  
+  [L]earning about parallel was amazing for me, it gives us many beautiful solutions.
+     -- SergioAraujo@stackoverflow
+  
+  With multicore systems everywhere GNU Parallel is a must have tool.
+    -- Neil H. Watson @neil_h_watson@twitter
+  
+  My new favourite command line tool is gnu parallel. After knowing it for a while I just recently came back to it for a refactor of a script and now I've changed like 4 different huge scripts into tiny parallel scripts that do their job literally 3 to 10 times faster and just [mind blown]
+    -- Izzy @angry_izzy@twitter
+  
+  I love so much @GnuParallel to parallelize my SQL requests on @PostgreSQL
+    -- @rmaziere_85 Romain
+  
+  Parallel is the BEST command.
+    -- Nick @NickInfoSec@twitter
+  
+  GNU parallel really changed how I do a lot of data processing stuff
+    -- Brendan Dolan-Gavitt @moyix@twitter
+  
+  Parallel is a life send, what an awesome piece of software.
+    -- Blaze9@reddit.com
+  
+  It's really powerful for smallish data processing scripts
+    -- João Veiga @jcsvveiga@twitter
+  
+  It's the MapReduce of our generation!
+    -- Mathias Meyer @roidrage@twitter
+  
   GNU parallel is a seriously powerful flexible and tool.
-    -- Greg Hurrell @wincent
+    -- Greg Hurrell @wincent@twitter
 
   [socat is] top3 on my "crazy and powerful" list (the other two being
   gnu parallel and emacs).
@@ -47,6 +49,10 @@ It's the MapReduce of our generation!
 
 
 === Used ===
+  It is, beyond absolutely any doubt whatsoever, the single most
+  important tool I use in making me a productive bioinformatician.
+    -- A-N-Other@reddit.com
+  
 It is SUPER easy to speed up jobs from the command line w/ GNU parallel.
   -- B3n @B3njaminHimes@twitter
 

@@ -62,6 +62,7 @@ B<Execution>
  E4. Number of running jobs can depend on number of cpus
  E5. Finish running jobs, but do not start new jobs after first failure
  E6. Number of running jobs can be adjusted while running
+ E7. Only spawn new jobs if load is less than a limit
 
 B<Remote execution>
  R1. Jobs can be run on remote computers
@@ -91,17 +92,9 @@ parallel:
 I1 I2 I3 I4 I5 I6 I7
 M1 M2 M3 M4 M5 M6
 O1 O2 O3 O4 O5 O6 O7 O8 O9
-E1 E2 E3 E4 E5 E6
+E1 E2 E3 E4 E5 E6 E7
 R1 R2 R3 R4 R5 R6 R7 R8 R9
 S1 S2
-
-xargs:
-I1 I2 -  -  -  -  -
--  M2 M3 -  -  -
--  O2 O3 -  O5 O6
-E1 -  -  -  -  -
--  -  -  -  -  x  -  -  -
--  -
 
 find -exec:
 -  -  -  x  -  x  -
@@ -119,21 +112,6 @@ E1 -  -  -  E5 -
 -  -  -  -  -  -  -  -  -
 -  -
 
-ppss:
-I1 I2 -  -  -  -  I7
-M1 -  M3 -  -  M6
-O1 -  -  x  -  -
-E1 E2 ?E3 E4 - -
-R1 R2 R3 R4 -  -  ?R7 ? ?
--  -
-
-pexec:
-I1 I2 -  I4 I5 -  -
-M1 -  M3 -  -  M6
-O1 O2 O3 -  O5 O6
-E1 -  -  E4 -  E6
-R1 -  -  -  -  R6 -  -  -
-S1 -
 
 xjobs, prll, dxargs, mdm/middelman, xapply, paexec, ladon, jobflow,
 ClusterSSH: TODO - Please file a bug-report if you know what features
@@ -141,6 +119,14 @@ they support (See REPORTING BUGS).
 
 
 =head2 DIFFERENCES BETWEEN xargs AND GNU Parallel
+
+Summary table (see legend above):
+I1 I2 - - - - -
+- M2 M3 - - -
+- O2 O3 - O5 O6
+E1 - - - - - -
+- - - - - x - - -
+- -
 
 B<xargs> offers some of the same possibilities as GNU B<parallel>.
 
@@ -255,6 +241,14 @@ https://www.gnu.org/software/make/ (Last checked: 2019-01)
 
 =head2 DIFFERENCES BETWEEN ppss AND GNU Parallel
 
+Summary table (see legend above):
+I1 I2 - - - - I7
+M1 - M3 - - M6
+O1 - - x - -
+E1 E2 ?E3 E4 - - -
+R1 R2 R3 R4 - - ?R7 ? ?
+- -
+
 B<ppss> is also a tool for running jobs in parallel.
 
 The output of B<ppss> is status information and thus not useful for
@@ -330,6 +324,14 @@ https://github.com/louwrentius/PPSS
 
 
 =head2 DIFFERENCES BETWEEN pexec AND GNU Parallel
+
+Summary table (see legend above):
+I1 I2 - I4 I5 - -
+M1 - M3 - - M6
+O1 O2 O3 - O5 O6
+E1 - - E4 - E6 -
+R1 - - - - R6 - - -
+S1 -
 
 B<pexec> is also a tool for running jobs in parallel.
 
@@ -2195,6 +2197,33 @@ B<with-this> gives some additional information, so the output has to
 be cleaned before piping it to the next command.
 
 https://github.com/amritb/with-this.git (Last checked: 2019-03)
+
+
+=head2 DIFFERENCES BETWEEN Tollef's parallel (moreutils) AND GNU Parallel
+
+Summary table (see legend above):
+- - - I4 - - I7
+- - M3 - - M6
+- O2 O3 - O5 O6 - x x
+E1 - - - - - E7
+- x x x x x x x x
+- -
+
+=head3 EXAMPLES FROM Tollef's parallel MANUAL
+
+B<Tollef> parallel sh -c "echo hi; sleep 2; echo bye" -- 1 2 3
+
+B<GNU> parallel "echo hi; sleep 2; echo bye" ::: 1 2 3
+
+B<Tollef> parallel -j 3 ufraw -o processed -- *.NEF
+
+B<GNU> parallel -j 3 ufraw -o processed ::: *.NEF
+
+B<Tollef> parallel -j 3 -- ls df "echo hi"
+
+B<GNU> parallel -j 3 ::: ls df "echo hi"
+
+(Last checked: 2019-08)
 
 
 =head2 Todo
