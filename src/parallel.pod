@@ -1600,13 +1600,18 @@ Overrides an earlier B<--keep-order> (e.g. if set in
 B<~/.parallel/config>).
 
 
-=item B<--nice> I<niceness>
+=item B<--nice> I<niceness> (alpha testing)
 
-Run the command at this niceness. For simple commands you can just add
-B<nice> in front of the command. But if the command consists of more
-sub commands (Like: ls|wc) then prepending B<nice> will not always
-work. B<--nice> will make sure all sub commands are niced - even on
-remote servers.
+Run the command at this niceness.
+
+By default GNU B<parallel> will run jobs at the same nice level as GNU
+B<parallel> is started - both on the local machine and remote servers,
+so you are unlikely to ever use this option.
+
+Setting B<--nice> will override this nice level. If the nice level is
+smaller than the current nice level, it will only affect remote jobs
+(e.g. current level is 10 and B<--nice 5> will cause local jobs to be
+run at level 10, but remote jobs run at nice level 5).
 
 
 =item B<--interactive>

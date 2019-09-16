@@ -141,12 +141,13 @@ B<xargs> deals badly with special characters (such as space, \, ' and
   touch 'c:\windows\system32\clfs.sys'
   echo 'c:\windows\system32\clfs.sys' | xargs ls -l
 
-You can specify B<-0>, but many input generators are not
-optimized for using B<NUL> as separator but are optimized for
-B<newline> as separator. E.g B<head>, B<tail>, B<awk>, B<ls>, B<echo>,
-B<sed>, B<tar -v>, B<perl> (B<-0> and \0 instead of \n), B<locate>
-(requires using B<-0>), B<find> (requires using B<-print0>), B<grep>
-(requires user to use B<-z> or B<-Z>), B<sort> (requires using B<-z>).
+You can specify B<-0>, but many input generators are not optimized for
+using B<NUL> as separator but are optimized for B<newline> as
+separator. E.g. B<awk>, B<ls>, B<echo>, B<tar -v>, B<head> (requires
+using B<-z>), B<tail> (requires using B<-z>), B<sed> (requires using
+B<-z>), B<perl> (B<-0> and \0 instead of \n), B<locate> (requires
+using B<-0>), B<find> (requires using B<-print0>), B<grep> (requires
+using B<-z> or B<-Z>), B<sort> (requires using B<-z>).
 
 GNU B<parallel>'s newline separation can be emulated with:
 
@@ -467,7 +468,8 @@ B<dxargs> does not deal well with more simultaneous jobs than SSHD's
 MaxStartups. B<dxargs> is only built for remote run jobs, but does not
 support transferring of files.
 
-https://web.archive.org/web/20120518070250/http://www.semicomplete.com/blog/geekery/distributed-xargs.html (Last checked: 2019-01)
+https://web.archive.org/web/20120518070250/http://www.
+semicomplete.com/blog/geekery/distributed-xargs.html (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN mdm/middleman AND GNU Parallel
@@ -475,8 +477,8 @@ https://web.archive.org/web/20120518070250/http://www.semicomplete.com/blog/geek
 middleman(mdm) is also a tool for running jobs in parallel.
 
 Here are the shellscripts of
-https://web.archive.org/web/20110728064735/http://mdm.berlios.de/usage.html
-ported to GNU B<parallel>:
+https://web.archive.org/web/20110728064735/http://mdm.
+berlios.de/usage.html ported to GNU B<parallel>:
 
   seq 19 | parallel buffon -o - | sort -n > result
   cat files | parallel cmd
@@ -576,7 +578,8 @@ B</usr/joe>, enter:
   apply 'ln %1 /usr/joe' *
   parallel ln {} /usr/joe ::: *
 
-https://www-01.ibm.com/support/knowledgecenter/ssw_aix_71/com.ibm.aix.cmds1/apply.htm (Last checked: 2019-01)
+https://www-01.ibm.com/support/knowledgecenter/
+ssw_aix_71/com.ibm.aix.cmds1/apply.htm (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN paexec AND GNU Parallel
@@ -877,8 +880,8 @@ If the above is set up you can then do:
 
   orgalorg -o frontend1 -o frontend2 -p -er /tmp -n \
     'md5sum /tmp/bigfile' -S bigfile
-  par_emul -S frontend1 -S frontend2 --basefile bigfile --workdir /tmp \
-    md5sum /tmp/bigfile
+  par_emul -S frontend1 -S frontend2 --basefile bigfile \
+    --workdir /tmp md5sum /tmp/bigfile
 
 B<orgalorg> has a progress indicator for the transferring of a
 file. GNU B<parallel> does not.
@@ -1209,7 +1212,7 @@ processing result with `samtools`:>
   $ threads=25
   $ ls -d raw.cluster.clean.mapping/* \
     | rush -v ref=$ref -v j=$threads -v p='{}/{%}' \
-        'bwa mem -t {j} -M -a {ref} {p}_1.fq.gz {p}_2.fq.gz > {p}.sam; \
+        'bwa mem -t {j} -M -a {ref} {p}_1.fq.gz {p}_2.fq.gz >{p}.sam;\
         samtools view -bS {p}.sam > {p}.bam; \
         samtools sort -T {p}.tmp -@ {j} {p}.bam -o {p}.sorted.bam; \
         samtools index {p}.sorted.bam; \
@@ -1875,9 +1878,10 @@ output. It buffers in RAM. The examples from README.md:
     parallel -Jmachma 'ping -c 2 -q {} > /dev/null && echo alive'
 
   find . -iname '*.jpg' |
-    machma --timeout 5s --  mogrify -resize 1200x1200 -filter Lanczos {}
+    machma --timeout 5s -- mogrify -resize 1200x1200 -filter Lanczos {}
   find . -iname '*.jpg' |
-    parallel --timeout 5s --bar mogrify -resize 1200x1200 -filter Lanczos {}
+    parallel --timeout 5s --bar mogrify -resize 1200x1200 \
+      -filter Lanczos {}
 
   find . -iname '*.jpg' -print0 |
     machma --null --  mogrify -resize 1200x1200 -filter Lanczos {}
@@ -1889,22 +1893,69 @@ https://github.com/fd0/machma (Last checked: 2019-06)
 
 =head2 DIFFERENCES BETWEEN interlace AND GNU Parallel
 
+Summary table (see legend above):
+- I2 I3 I4 - - -
+M1 - M3 - - M6
+- O2 O3 - - - - x x
+E1 E2 - - - - -
+- - - - - - - - -
+- -
+
 B<interlace> is built for network analysis to run network tools in parallel.
 
 B<interface> does not buffer output, so output from different jobs mixes.
 
+The overhead for each target is O(n*n), so with 1000 targets it
+becomes very slow with an overhead in the order of 500ms/target.
+
 Using B<prips> most of the examples from
 https://github.com/codingo/Interlace can be run with GNU B<parallel>:
 
+Blocker
+
+  commands.txt:
+    mkdir -p _output_/_target_/scans/
+    _blocker_
+    nmap _target_ -oA _output_/_target_/scans/_target_-nmap
+  interlace -tL ./targets.txt -cL commands.txt -o $output
+
+  parallel -a targets.txt \
+    mkdir -p $output/{}/scans/\; nmap {} -oA $output/{}/scans/{}-nmap
+
+Blocks
+
+  commands.txt:
+    _block:nmap_
+    mkdir -p _target_/output/scans/
+    nmap _target_ -oN _target_/output/scans/_target_-nmap
+    _block:nmap_
+    nikto --host _target_
+  interlace -tL ./targets.txt -cL commands.txt
+
+  _nmap() {
+    mkdir -p $1/output/scans/
+    nmap $1 -oN $1/output/scans/$1-nmap
+  }
+  export -f _nmap
+  parallel ::: _nmap "nikto --host" :::: targets.txt
+
+Run Nikto Over Multiple Sites
+
   interlace -tL ./targets.txt -threads 5 \
     -c "nikto --host _target_ > ./_target_-nikto.txt" -v
-  parallel -a targets.txt -P5 nikto --host {} > ./{}_-nikto.txt
+
+  parallel -a targets.txt -P5 nikto --host {} \> ./{}_-nikto.txt
+
+Run Nikto Over Multiple Sites and Ports
 
   interlace -tL ./targets.txt -threads 5 -c \
     "nikto --host _target_:_port_ > ./_target_-_port_-nikto.txt" \
     -p 80,443 -v
-  parallel -P5 nikto --host {1}:{2} > ./{1}-{2}-nikto.txt \
+
+  parallel -P5 nikto --host {1}:{2} \> ./{1}-{2}-nikto.txt \
     :::: targets.txt ::: 80 443
+
+Run a List of Commands against Target Hosts
 
   commands.txt:
     nikto --host _target_:_port_ > _output_/_target_-nikto.txt
@@ -1913,63 +1964,77 @@ https://github.com/codingo/Interlace can be run with GNU B<parallel>:
   interlace -t example.com -o ~/Engagements/example/ \
     -cL ./commands.txt -p 80,443
 
-  _nikto() {
-    nikto --host "$1:$2"
-  }
-  _sslscan() {
-    sslscan "$1:$2"
-  }
-  _testssl() {
-    testssl.sh "$1:$2"
-  }
-  export -f _nikto
-  export -f _sslscan
-  export -f _testssl
-  parallel --results ~/Engagements/example/{2}:{3}{1} \
-    ::: _nikto _sslscan _testssl ::: example.com ::: 80 443
+  parallel --results ~/Engagements/example/{2}:{3}{1} {1} {2}:{3} \
+    ::: "nikto --host" sslscan testssl.sh ::: example.com ::: 80 443
+
+CIDR notation with an application that doesn't support it
 
   interlace -t 192.168.12.0/24 -c "vhostscan _target_ \
     -oN _output_/_target_-vhosts.txt" -o ~/scans/ -threads 50
+
   prips 192.168.12.0/24 |
     parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
 
+Glob notation with an application that doesn't support it
+
   interlace -t 192.168.12.* -c "vhostscan _target_ \
     -oN _output_/_target_-vhosts.txt" -o ~/scans/ -threads 50
+
   # Glob is not supported in prips
   prips 192.168.12.0/24 |
     parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
 
+Dash (-) notation with an application that doesn't support it
+
   interlace -t 192.168.12.1-15 -c \
     "vhostscan _target_ -oN _output_/_target_-vhosts.txt" \
     -o ~/scans/ -threads 50
+
   # Dash notation is not supported in prips
   prips 192.168.12.1 192.168.12.15 |
     parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
 
+Threading Support for an application that doesn't support it
+
   interlace -tL ./target-list.txt -c \
     "vhostscan -t _target_ -oN _output_/_target_-vhosts.txt" \
     -o ~/scans/ -threads 50
+
   cat ./target-list.txt |
     parallel -P50 vhostscan -t {} -oN ~/scans/{}-vhosts.txt
 
-  ./vhosts-commands.txt -tL ./target-list.txt:
+alternatively
+
+  ./vhosts-commands.txt:
     vhostscan -t $target -oN _output_/_target_-vhosts.txt
   interlace -cL ./vhosts-commands.txt -tL ./target-list.txt \
     -threads 50 -o ~/scans
 
-  ./vhosts-commands.txt -tL ./target-list.txt:
+  ./vhosts-commands.txt:
     vhostscan -t "$1" -oN "$2"
-  parallel -P50 ./vhosts-commands.txt {} ~/scans/{} \
+  parallel -P50 ./vhosts-commands.txt {} ~/scans/{}-vhosts.txt \
     :::: ./target-list.txt
+
+Exclusions
 
   interlace -t 192.168.12.0/24 -e 192.168.12.0/26 -c \
     "vhostscan _target_ -oN _output_/_target_-vhosts.txt" \
     -o ~/scans/ -threads 50
+
   prips 192.168.12.0/24 | grep -xv -Ff <(prips 192.168.12.0/26) |
     parallel -P50 vhostscan {} -oN ~/scans/{}-vhosts.txt
 
+Run Nikto Using Multiple Proxies
 
-https://github.com/codingo/Interlace (Last checked: 2019-02)
+   interlace -tL ./targets.txt -pL ./proxies.txt -threads 5 -c \
+     "nikto --host _target_:_port_ -useproxy _proxy_ > \
+      ./_target_-_port_-nikto.txt" -p 80,443 -v
+
+   parallel -j5 \
+     "nikto --host {1}:{2} -useproxy {3} > ./{1}-{2}-nikto.txt" \
+     :::: ./targets.txt ::: 80 443 :::: ./proxies.txt
+
+https://github.com/codingo/Interlace (Last checked: 2019-09)
 
 
 =head2 DIFFERENCES BETWEEN otonvm Parallel AND GNU Parallel

@@ -209,9 +209,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20190822 ('Jesper Svarre') released <<[stable]>>
+Subject: GNU Parallel 20190822 ('Dorian') released <<[stable]>>
 
-GNU Parallel 20190822 ('Jesper Svarre') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20190822 ('Dorian') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -225,21 +225,28 @@ Quote of the month:
 
 New in this release:
 
-* GNU Parallel will be presented at Driving IT 2019: https://ida.dk/arrangementer-og-kurser/konferencer/driving-it#beskrivelse
+* --nice is now inherited by the nice level that GNU Parallel is started at. So 'nice -n10 parallel' will also cause remote jobs to be run at nice level 10.
 
-* Linux Productivity Tools https://www.usenix.org/conference/lisa19/presentation/maheshwari
+* GNU Parallel will be presented at Driving IT 2019: https://ida.dk/arrangementer-og-kurser/konferencer/driving-it/tools
 
-* Improve your reconnaissance performance by using GNU Parallel https://mailchi.mp/3f46ceb46357/improve-your-reconnaissance-performance-by-using-gnu-parallel
+* Greenland Ice Sheet solid ice discharge from 1986 through 2017 https://www.earth-syst-sci-data.net/11/769/2019/essd-11-769-2019.pdf
 
-* Paralel İşler / İşlemler / Programlar Bash’de Nasıl Çalıştırılır? https://kaleinfo.com/2019/07/29/paralel-isler-islemler-programlar-bashde-nasil-calistirilir-2/
+https://dualuse.io/blog/curryfinger/
 
-* Use POLYBAR to change WALLPAPER with GNU Parallel https://www.youtube.com/watch?v=rjYg-b_eiRU
+https://wiki.cac.washington.edu/display/hyakusers/Hyak+parallel-sql
 
-* Finding the Balance Between Speed & Accuracy During an Internet-wide Port Scanning https://captmeelo.com/pentest/2019/07/29/port-scanning.html
+https://www.reddit.com/r/perl/comments/cyo2qc/a_meditation_on_analysing_data_with_perl_in/
 
-* GNU Parallel Ryugu released https://linuxreviews.org/GNU_Parallel_Ryugu_released
+https://www.eventbrite.ca/e/inscription-accelerer-ses-taches-avec-gnu-parallel-et-les-lots-de-taches-ul-71412840729
 
-* CO2017 - CW1 - Operating Systems & Networks - Shell scripting http://www.7daixie.com/2019071646302396.html
+https://curc.readthedocs.io/en/latest/software/GNUParallel.html
+
+https://petelawson.com/post/parallel-in-shell/	
+
+https://www.usenix.org/conference/lisa19/presentation/maheshwari
+
+http://atomicer.cn/2018/01/18/gnu-parallel-nfs-%E5%AE%9E%E7%8E%B0%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E7%BD%91%E7%BB%9C%E7%9A%84%E5%B9%B6%E5%8F%91%E8%AE%A1%E7%AE%97%E7%AD%89%E6%93%8D%E4%BD%9C/#more
+Gnu/parallel + Nfs 实现共享文件网络的并发计算等操作 
 
 * Bug fixes and man page updates.
 

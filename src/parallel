@@ -1676,7 +1676,8 @@ sub parse_options(@) {
     if(defined $opt::tmpdir) { $ENV{'TMPDIR'} = $opt::tmpdir; }
     $ENV{'PARALLEL_RSYNC_OPTS'} = $opt::rsync_opts ||
 	$ENV{'PARALLEL_RSYNC_OPTS'} || '-rlDzR';
-    $opt::nice ||= 0;
+    # Default: Same nice level as GNU Parallel is started at
+    $opt::nice ||= getpriority(0,0) || 0;
     if(defined $opt::help) { usage(); exit(0); }
     if(defined $opt::embed) { embed(); exit(0); }
     if(defined $opt::sqlandworker) {
@@ -1929,9 +1930,11 @@ sub parse_options(@) {
     # the alternatives instead?
     # See a list in: 'man parallel_alternatives'
     #
-    # If you are an honest person please read the above before
-    # changing this line.
+    # If you want GNU Parallel to be maintained in the future you should not
+    # change this line.
     citation_notice();
+    # Seriously: You will be harming free software by removing the notice.
+    # You make it harder to justify spending time developing it.
 
     parse_halt();
 
@@ -2048,7 +2051,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190822;
+    $Global::version = 20190823;
     $Global::progname = 'parallel';
     $Global::infinity = 2**31;
     $Global::debug = 0;
