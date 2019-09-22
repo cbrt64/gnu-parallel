@@ -444,14 +444,17 @@ par_newline_in_command() {
 par_wd_3dot_local() {
     echo 'bug #45993: --wd ... should also work when run locally'
 
-    parallel --wd /bi 'pwd; echo $OLDPWD; echo' ::: fail
-    parallel --wd /bin 'pwd; echo $OLDPWD; echo' ::: OK
-    parallel --wd / 'pwd; echo $OLDPWD; echo' ::: OK
-    parallel --wd /tmp 'pwd; echo $OLDPWD; echo' ::: OK
-    parallel --wd ... 'pwd; echo $OLDPWD; echo' ::: OK |
+    (
+	parallel --wd /bi 'pwd; echo $OLDPWD; echo' ::: fail
+	parallel --wd /bin 'pwd; echo $OLDPWD; echo' ::: OK
+	parallel --wd / 'pwd; echo $OLDPWD; echo' ::: OK
+	parallel --wd /tmp 'pwd; echo $OLDPWD; echo' ::: OK
+	parallel --wd ... 'pwd; echo $OLDPWD; echo' ::: OK
+	parallel --wd . 'pwd; echo $OLDPWD; echo' ::: OK
+    ) |
 	perl -pe 's:/mnt/4tb::; s:/home/tange:~:;' |
+	perl -pe 's:parallel./:parallel/:;' |
 	perl -pe 's/'`hostname`'/hostname/g; s/\d+/0/g'
-    parallel --wd . 'pwd; echo $OLDPWD; echo' ::: OK
 }
 
 par_X_eta_div_zero() {

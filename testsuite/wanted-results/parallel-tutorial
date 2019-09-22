@@ -158,9 +158,9 @@ B
   (echo 1; echo; echo 2) | parallel --no-run-if-empty echo
 9
   parallel ::: ls 'echo foo' pwd
+abc-file
 abc0-file
 abc_-file
-abc-file
 def-file
 fixedlen
 num1000000
@@ -397,11 +397,11 @@ pre-A-post
 =ls
   parallel 'set a="{}"; if( { test -d "$a" } ) echo "$a is a dir"' ::: *
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
+/bin/bash: -c: line 0: `set a="abc-file"; if( { test -d "$a" } ) echo "$a is a dir"'
+/bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `set a="abc0-file"; if( { test -d "$a" } ) echo "$a is a dir"'
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `set a="abc_-file"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="abc-file"; if( { test -d "$a" } ) echo "$a is a dir"'
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `set a="def-file"; if( { test -d "$a" } ) echo "$a is a dir"'
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
@@ -831,7 +831,6 @@ foo bar baz
 in my_func baz
   parallel --record-env
   cat ~/.parallel/ignored_vars|sort
-_
 BASH_FUNC_run_once%%
 BASH_FUNC_run_test%%
 COLORFGBG
@@ -888,7 +887,6 @@ PROFILEHOME
 PWD
 QT_ACCESSIBILITY
 QT_AUTO_SCREEN_SCALE_FACTOR
-S_COLORS
 SERVER1
 SERVER2
 SESSION_MANAGER
@@ -897,6 +895,7 @@ SHELL_SESSION_ID
 SHLVL
 SSH_AGENT_PID
 SSH_AUTH_SOCK
+S_COLORS
 TERM
 TIMEOUT
 TMPDIR
@@ -919,6 +918,8 @@ XDG_SESSION_ID
 XDG_SESSION_PATH
 XDG_SESSION_TYPE
 XDG_VTNR
+_
+mysqlrootpass
   # The function is only copied if using Bash
   my_func2() {
     echo in my_func2 $VAR $1

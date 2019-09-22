@@ -128,7 +128,8 @@ PATH=/usr/sbin:/usr/bin:/sbin:/bin
     rm parallel-embed
 _EOF
   )
-  ssh zsh@lo "$myscript"
+  ssh zsh@lo "$myscript" 2>&1 |
+      grep -v .zshenv:.:1
 }
 
 par_propagate_env() {
@@ -197,14 +198,14 @@ par_PARALLEL_SSHLOGIN() {
     echo '### bug #56554: Introduce $PARALLEL_SSHLOGIN'
     (echo lo; echo zsh@lo; echo /usr/bin/ssh csh@lo; echo 1/sh@lo;
      echo 1//usr/bin/ssh tcsh@lo) |
-	parallel --tag --nonall -S - 'whoami;echo $PARALLEL_SSHLOGIN' |
-	sort
+	parallel -k --tag --nonall -S - 'whoami;echo $PARALLEL_SSHLOGIN' |
+	LANG=C sort
 }
 
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |
-compgen -A function | grep par_ | LANG=C sort -r |
+compgen -A function | grep par_ | LANG=C sort -ri |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
     parallel --joblog /tmp/jl-`basename $0` --delay 0.1 -j200% --tag -k '{} 2>&1' |
     perl -pe 's/line \d\d\d+:/line XXX:/' |

@@ -1677,7 +1677,7 @@ sub parse_options(@) {
     $ENV{'PARALLEL_RSYNC_OPTS'} = $opt::rsync_opts ||
 	$ENV{'PARALLEL_RSYNC_OPTS'} || '-rlDzR';
     # Default: Same nice level as GNU Parallel is started at
-    $opt::nice ||= getpriority(0,0) || 0;
+    $opt::nice ||= eval { getpriority(0,0) } || 0;
     if(defined $opt::help) { usage(); exit(0); }
     if(defined $opt::embed) { embed(); exit(0); }
     if(defined $opt::sqlandworker) {
@@ -3214,7 +3214,7 @@ sub init_run_jobs() {
 	    if ($sshlogin->jobs_running() < $sshlogin->max_jobs_running()) {
 		if($opt::delay
 		   and
-		   $opt::delay > ::now() - $Global::newest_starttime) {
+		   $opt::delay - 0.008 > ::now() - $Global::newest_starttime) {
 		    # It has been too short since last start
 		    next;
 		}
@@ -5699,7 +5699,7 @@ sub reap_usleep() {
     if(reapers()) {
 	if(not $Global::total_completed % 100) {
 	    if($opt::timeout) {
-		# Force cleaning the timeout queue for every 1000 jobs
+		# Force cleaning the timeout queue for every 100 jobs
 		# Fixes potential memleak
 		$Global::timeoutq->process_timeouts();
 	    }
@@ -5716,13 +5716,6 @@ sub reap_usleep() {
 	if($opt::limit) {
 	    kill_youngest_if_over_limit();
 	}
-	if($ms > 0.002) {
-	    # When a child dies, wake up from sleep (or select(,,,))
-	    $SIG{CHLD} = sub { kill "ALRM", $$ };
-	    usleep($ms);
-	    # --compress needs $SIG{CHLD} unset
-	    $SIG{CHLD} = 'DEFAULT';
-	}
 	exit_if_disk_full();
 	if($opt::linebuffer) {
 	    my $something_printed = 0;
@@ -5738,6 +5731,19 @@ sub reap_usleep() {
 	    if($something_printed) {
 		$ms = $ms/2+0.001;
 	    }
+	}
+	if($ms > 0.002) {
+	    # When a child dies, wake up from sleep (or select(,,,))
+	    $SIG{CHLD} = sub { kill "ALRM", $$ };
+	    if($opt::delay) {
+		# The 0.004s is approximately the time it takes for one round
+		usleep(1000*($Global::newest_starttime +
+			     $opt::delay - 0.004 - ::now()));
+	    } else {
+		usleep($ms);
+	    }
+	    # --compress needs $SIG{CHLD} unset
+	    $SIG{CHLD} = 'DEFAULT';
 	}
 	# Sleep exponentially longer (1.1^n) if a job did not finish,
 	# though at most 1000 ms.

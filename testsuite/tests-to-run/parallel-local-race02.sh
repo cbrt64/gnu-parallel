@@ -90,7 +90,7 @@ par_continuous_output() {
 	echo "Test delayed output with '$1'"
 	echo "-u is optimal but hard to reach, due to non-mixing"
 	seq 10 |
-	    parallel -j1 $1 --delay 1 -N0 echo |
+	    parallel -j1 $1 --delay 1.5 -N0 echo |
 	    parallel -j4 $1 -N0 'sleep 0.6;date' |
 	    timestamp -dd |
 	    perl -pe 's/(.).*/$1/'

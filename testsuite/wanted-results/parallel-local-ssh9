@@ -6,7 +6,10 @@ par_zsh_embed	your
 par_zsh_embed	code
 par_zsh_embed	here
 par_zsh_embed	parallel_OK
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	env_parallel --env OK
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	_which_PAR:13: argument list too long: perl
 par_zsh_embed	env_parallel: Error: Your environment is too big.
 par_zsh_embed	env_parallel: Error: You can try 3 different approaches:
@@ -19,9 +22,17 @@ par_zsh_embed	env_parallel: Error:    And then use '--env _'
 par_zsh_embed	env_parallel: Error: For details see: man env_parallel
 par_zsh_embed	ParsetOK
 par_zsh_embed	Put
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	your
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	code
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	here
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
+par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	Put your code here
 par_tcsh_embed	Not implemented
 par_sh_embed	--embed
@@ -54,17 +65,6 @@ par_propagate_env	** test_csh_filter
 par_propagate_env	FOO=test_csh_filter
 par_propagate_env	HOME=~
 par_propagate_env	** bug #41805 done
-par_PARALLEL_SSHLOGIN	### bug #56554: Introduce $PARALLEL_SSHLOGIN
-par_PARALLEL_SSHLOGIN	lo	lo
-par_PARALLEL_SSHLOGIN	lo	tange
-par_PARALLEL_SSHLOGIN	sh@lo	sh
-par_PARALLEL_SSHLOGIN	sh@lo	sh@lo
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	csh
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	/usr/bin/ssh csh@lo
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	tcsh
-par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	/usr/bin/ssh tcsh@lo
-par_PARALLEL_SSHLOGIN	zsh@lo	zsh
-par_PARALLEL_SSHLOGIN	zsh@lo	zsh@lo
 par_no_route_to_host	### no route to host with | and -j0 causes inf loop
 par_no_route_to_host	ssh: connect to host i.p.n.r port 22: No route to hostpar_no_route_to_host	
 par_no_route_to_host	parallel: This job finished:
@@ -147,3 +147,14 @@ par_ash_embed	your
 par_ash_embed	code
 par_ash_embed	here
 par_ash_embed	Put your code here
+par_PARALLEL_SSHLOGIN	### bug #56554: Introduce $PARALLEL_SSHLOGIN
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	/usr/bin/ssh csh@lo
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh csh@lo	csh
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	/usr/bin/ssh tcsh@lo
+par_PARALLEL_SSHLOGIN	/usr/bin/ssh tcsh@lo	tcsh
+par_PARALLEL_SSHLOGIN	lo	lo
+par_PARALLEL_SSHLOGIN	lo	tange
+par_PARALLEL_SSHLOGIN	sh@lo	sh
+par_PARALLEL_SSHLOGIN	sh@lo	sh@lo
+par_PARALLEL_SSHLOGIN	zsh@lo	zsh
+par_PARALLEL_SSHLOGIN	zsh@lo	zsh@lo

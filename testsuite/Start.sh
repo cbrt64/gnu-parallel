@@ -3,6 +3,7 @@
 # Argument can be substring of tests (such as 'local')
 
 export LANG=C
+export LC_ALL=C
 unset LC_MONETARY
 SHFILE=/tmp/unittest-parallel.sh
 MAX_SEC_PER_TEST=900

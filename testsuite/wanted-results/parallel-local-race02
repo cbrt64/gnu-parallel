@@ -13,7 +13,7 @@ stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }"
 1=OK 1
 par_continuous_output	Test delayed output with ''
 par_continuous_output	-u is optimal but hard to reach, due to non-mixing
-par_continuous_output	4
+par_continuous_output	6
 par_continuous_output	0
 par_continuous_output	0
 par_continuous_output	0
@@ -25,11 +25,11 @@ par_continuous_output	1
 par_continuous_output	0
 par_continuous_output	Test delayed output with '-u'
 par_continuous_output	-u is optimal but hard to reach, due to non-mixing
-par_continuous_output	4
+par_continuous_output	5
 par_continuous_output	0
 par_continuous_output	0
 par_continuous_output	0
-par_continuous_output	0
+par_continuous_output	1
 par_continuous_output	1
 par_continuous_output	1
 par_continuous_output	1

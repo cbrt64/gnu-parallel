@@ -4,6 +4,16 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+
+par_profiles_with_space() {
+    echo '### bug #42902: profiles containing arguments with space'
+    echo "--rpl 'FULLPATH chomp(\$_=\"/bin/bash=\".\`readlink -f \$_\`);' " > ~/.parallel/FULLPATH; 
+    parallel -JFULLPATH echo FULLPATH ::: $0
+    PARALLEL="--rpl 'FULLPATH chomp(\$_=\"/bin/bash=\".\`readlink -f \$_\`);' -v" parallel  echo FULLPATH ::: $0
+    PARALLEL="--rpl 'FULLPATH chomp(\$_=\"/bin/bash=\".\`readlink -f \$_\`);' perl -e \'print \\\"@ARGV\\\n\\\"\' " parallel With script in \\\$PARALLEL FULLPATH ::: . |
+	perl -pe 's:parallel./:parallel/:'
+}
+
 par_fifo_under_csh() {
     echo '### Test --fifo under csh'
 

@@ -18,7 +18,8 @@ install_packages() {
     # Compression
     compression_pkgs="zstd clzip liblz4-tool lzop pigz pixz pxz gzip plzip pbzip2 lzma xz-utils lzip bzip2 lbzip2 lrzip"
     # Shells
-    shell_pkgs="ash csh dash fdclone fish fizsh ksh mksh posh rc rush sash tcsh yash zsh"
+    # (csh = bsd-csh that is broken)
+    shell_pkgs="ash dash fdclone fish fizsh ksh mksh posh rc rush sash tcsh yash zsh"
     # Databases
     database_pkgs="postgresql mysql-server sqlite"
     if $INSTALL $test_pkgs $packaging_pkgs $shebang_pkgs $sql_pkgs $compression_pkgs $shell_pkgs $database_pkgs; then
@@ -143,9 +144,11 @@ create_shell_logins() {
 	# Remove env_parallel from .profile
 	ssh nopathbash@lo 'perl -i.bak -pe s/.*env_parallel.*// .profile .bashrc'
 	ssh nopathcsh@lo 'echo >> .cshrc setenv PATH /bin:/usr/bin'
-	ssh nopathbash@lo 'echo $PATH; echo 1 | parallel echo' || echo Should FAIL
-	ssh nopathcsh@lo 'echo $PATH; echo 1 | parallel echo' || echo Should FAIL
-
+	ssh nopathcsh@lo 'echo >> .login setenv PATH /bin:/usr/bin'
+	ssh nopathbash@lo 'echo $PATH; echo 1 | parallel echo' ||
+	    echo Great - this should FAIL: parallel should not be found
+	ssh nopathcsh@lo 'echo $PATH; echo 1 | parallel echo' ||
+	    echo Great - this should FAIL: parallel should not be found
     )
 }
 
@@ -184,10 +187,34 @@ add_freebsd() {
     echo   Ciphers +aes256-cbc
 }
 
+tmux_versions() {
+    (cd /tmp
+     git clone https://github.com/tmux/tmux.git
+     make_one() {
+	 rsync -a --delete tmux/ tmux$1/
+	 cd tmux$1
+	 git reset --hard
+	 git checkout $1
+	 ./autogen.sh &&
+	     ./configure &&
+	     make -j2 &&
+	     sudo cp tmux /usr/local/bin/tmux-$1
+     }
+     export -f make_one
+     echo '# Building tmux'
+     seq 1.8 0.1 3.0 |
+	 stdout parallel --lb --tag '/usr/local/bin/tmux-{} -V || make_one {}'
+     seq 1.8 0.1 3.0 |
+	 parallel -k -v /usr/local/bin/tmux-{} -V
+    )
+}
+
 misc() {
     parallel --record-env
 
-    sudo cp /usr/bin/tmux /usr/local/bin/tmux1.8
+    #sudo cp /usr/bin/tmux /usr/local/bin/tmux1.8
+    # Build locale for LC_ALL=zh_HK.big5hkscs perl -e 1
+    sudo locale-gen zh_HK
 }
 
 install_packages &&

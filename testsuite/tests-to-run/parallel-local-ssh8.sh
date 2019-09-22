@@ -47,7 +47,6 @@ par_path_remote_csh() {
   env_parallel --filter --env A,PATH -Slo echo '$PATH' ::: OK
   # Sleep needed to avoid stderr/stdout mixing
   sleep 1
-  echo Right now it seems csh does not respect $PATH if set from Perl
   echo Done
 _EOS
 }
@@ -91,21 +90,21 @@ par_bar_m() {
 
 par_retries_1() {
     echo '### Test of --retries - it should run 13 jobs in total'; 
-    export PARALLEL="--retries 1 -S 12/localhost,1/:,parallel@parallel-server1 -uq"
+    export PARALLEL="--retries 1 -S 12/localhost,1/:,parallel@lo -uq"
     seq 0 12 |
 	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
 }
 
 par_retries_2() {
     echo '### Test of --retries - it should run 25 jobs in total'; 
-    export PARALLEL="--retries 2 -S 12/localhost,1/:,parallel@parallel-server1 -uq"
+    export PARALLEL="--retries 2 -S 12/localhost,1/:,parallel@lo -uq"
     seq 0 12 |
 	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
 }
 
 par_retries_4() {
     echo '### Test of --retries - it should run 49 jobs in total'; 
-    export PARALLEL="--retries 4 -S 12/localhost,1/:,parallel@parallel-server1 -uq"
+    export PARALLEL="--retries 4 -S 12/localhost,1/:,parallel@lo -uq"
     seq 0 12 |
 	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
 }

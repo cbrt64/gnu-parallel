@@ -65,12 +65,14 @@ par_env_newline_backslash_bash() {
 
 par_env_newline_backslash_csh() {
     echo '### Test --env for \n and \\ - single and double (*csh only) - no output is good but csh fails'
-    test_chr_on_sshlogin 10,92 2/tcsh@lo,2/csh@lo ''
+    test_chr_on_sshlogin 10,92 2/tcsh@lo,2/csh@lo '' |
+	perl -pe "s/'(.)'/\$1/g"
 }
 
 par_env_newline_backslash_onall_bash() {
     echo '### Test --env for \n and \\ - single and double --onall (bash only) - no output is good'
-    test_chr_on_sshlogin 10,92 :,lo --onall
+    test_chr_on_sshlogin 10,92 :,lo --onall |
+	grep -v "Unmatched '\"'"
 }
 
 par_env_newline_backslash_onall_csh() {

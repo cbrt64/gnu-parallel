@@ -515,4 +515,8 @@ par_tmp_full() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1'
+    parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1' |
+    perl -pe 's/,31,0/,15,0/' |
+    perl -pe 's:~:'$HOME':' |
+    perl -pe 's:'$PWD':.:' |
+    perl -pe 's:'$HOME':~:'

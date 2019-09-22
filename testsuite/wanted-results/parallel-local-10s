@@ -399,7 +399,7 @@ par_parset	4
 par_parset	5
 par_parset	The commands to run can be an array
 par_parset	<<joe  "double  space"  cartoon>>
-par_parset	~/privat/parallel/testsuite
+par_parset	.
 par_parset	You cannot pipe into parset, but must use a tempfile
 par_parset	1
 par_parset	10

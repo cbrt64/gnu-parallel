@@ -212,6 +212,11 @@ par_pipe_compress_blocks	1 2 3
 par_pipe_compress_blocks	1
 par_pipe_compress_blocks	2
 par_pipe_compress_blocks	3
+par_profiles_with_space	### bug #42902: profiles containing arguments with space
+par_profiles_with_space	/bin/bash=/bin/bash
+par_profiles_with_space	echo '/bin/bash=/bin/bash'
+par_profiles_with_space	/bin/bash=/bin/bash
+par_profiles_with_space	With script in $PARALLEL /bin/bash=~/privat/parallel/testsuite
 par_pxz_complains	bug #44250: pxz complains File format not recognized but decompresses anyway
 par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_pxz_complains	can not seek in input: Illegal seek
