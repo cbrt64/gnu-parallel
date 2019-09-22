@@ -6,10 +6,7 @@ par_zsh_embed	your
 par_zsh_embed	code
 par_zsh_embed	here
 par_zsh_embed	parallel_OK
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	env_parallel --env OK
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	_which_PAR:13: argument list too long: perl
 par_zsh_embed	env_parallel: Error: Your environment is too big.
 par_zsh_embed	env_parallel: Error: You can try 3 different approaches:
@@ -22,17 +19,9 @@ par_zsh_embed	env_parallel: Error:    And then use '--env _'
 par_zsh_embed	env_parallel: Error: For details see: man env_parallel
 par_zsh_embed	ParsetOK
 par_zsh_embed	Put
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	your
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	code
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	here
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
-par_zsh_embed	/home/zsh/.zshenv:.:1: no such file or directory: env_parallel.zsh
 par_zsh_embed	Put your code here
 par_tcsh_embed	Not implemented
 par_sh_embed	--embed

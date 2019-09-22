@@ -1,5 +1,47 @@
 20190822
 
+* --nice is now inherited by the nice level that GNU Parallel is
+  started at. So 'nice -n10 parallel' will also cause remote jobs to
+  be run at nice level 10.
+
+* --delay is now accurate to within 10 ms
+
+* GNU Parallel will be presented at Driving IT 2019:
+  https://ida.dk/arrangementer-og-kurser/konferencer/driving-it/tools
+
+* Greenland Ice Sheet solid ice discharge from 1986 through 2017 https://www.earth-syst-sci-data.net/11/769/2019/essd-11-769-2019.pdf
+
+* App Center Cloud Build Machines > Installed Software > Utilities https://docs.microsoft.com/en-us/appcenter/build/software
+
+* Curryfinger - SNI & Host header spoofing utility
+  https://dualuse.io/blog/curryfinger/
+
+* Hyak parallel-sql
+  https://wiki.cac.washington.edu/display/hyakusers/Hyak+parallel-sql
+
+* A meditation on analysing data with Perl in parallel using GNU Parallel
+  https://www.reddit.com/r/perl/comments/cyo2qc/a_meditation_on_analysing_data_with_perl_in/
+
+* Accélérer ses tâches avec GNU Parallel et les lots de tâches (UL)
+  https://www.eventbrite.ca/e/inscription-accelerer-ses-taches-avec-gnu-parallel-et-les-lots-de-taches-ul-71412840729
+
+* RMACC Summit GNU Parallel
+  https://curc.readthedocs.io/en/latest/software/GNUParallel.html
+
+* Introducing Parallel into Shell
+  https://petelawson.com/post/parallel-in-shell/
+
+* Linux Productivity Tools
+  https://www.usenix.org/conference/lisa19/presentation/maheshwari
+
+* Gnu/parallel + Nfs 实现共享文件网络的并发计算等操作
+  http://atomicer.cn/2018/01/18/gnu-parallel-nfs-%E5%AE%9E%E7%8E%B0%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E7%BD%91%E7%BB%9C%E7%9A%84%E5%B9%B6%E5%8F%91%E8%AE%A1%E7%AE%97%E7%AD%89%E6%93%8D%E4%BD%9C/#more
+
+* Bug fixes and man page updates.
+
+
+20190822
+
 * GNU Parallel will be presented at Driving IT 2019:
   https://ida.dk/arrangementer-og-kurser/konferencer/driving-it#beskrivelse
 
