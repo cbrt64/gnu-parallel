@@ -182,10 +182,17 @@ sub pipe_tee_setup() {
     }
     # cat foo | tee fifo1 fifo2 fifo3 fifo4 fifo5 > /dev/null
     if(not fork()){
+	# Test if tee supports --output-error=warn-nopipe
+	`echo | tee --output-error=warn-nopipe /dev/null >/dev/null 2>/dev/null`;
+	my $opt = $? ? "" : "--output-error=warn-nopipe";
 	# Let tee inherit our stdin
 	# and redirect stdout to null
 	open STDOUT, ">","/dev/null";
-	exec "tee",@fifos;
+	if($opt) {
+	    exec "tee", $opt, @fifos;
+	} else {
+	    exec "tee", @fifos;
+	}
     }
     # For each fifo
     #   (rm fifo1; grep 1) < fifo1

@@ -4,6 +4,33 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_tee_with_premature_close() {
+    echo '--tee --pipe should send all data to all commands'
+    echo 'even if a command closes stdin before reading everything'
+    seq 1000000 |
+	parallel -k --tee --pipe \
+		 ::: 'sleep 1' 'sleep 2;wc' 'sleep 2;head' 'sleep 2;tail'
+
+    # tee without --output-error=warn-nopipe support
+    cat > tmp/tee <<-EOF
+	#!/usr/bin/perl
+
+	if(grep /output-error=warn-nopipe/, @ARGV) {
+	    exit(1);
+	}
+	exec "/usr/bin/tee", @ARGV;
+	EOF
+    chmod +x tmp/tee
+    PATH=tmp:$PATH
+    # This gives incomplete output due to:
+    # * tee not supporting --output-error=warn-nopipe
+    # * sleep closes stdin before EOF
+    seq 1000000 |
+	parallel -k --tee --pipe \
+		 ::: 'sleep 1' 'sleep 2;wc' 'sleep 2;head' 'sleep 2;tail'
+    echo
+}
+
 par_maxargs() {
     echo '### Test -n and --max-args: Max number of args per line (only with -X and -m)'
 

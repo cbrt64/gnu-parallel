@@ -1659,11 +1659,13 @@ Default: config
 
 =item B<-q>
 
-Quote I<command>. The command must be a simple command (see B<man
-bash>) without redirections and without variable assignments. This
-will quote the command line and arguments so special characters are
-not interpreted by the shell. See the section QUOTING. Most people
-will never need this.  Quoting is disabled by default.
+Quote I<command>. If your command contains special characters that
+should not be interpreted by the shell (e.g. ; \ | *), use B<--quote> to
+escape these. The command must be a simple command (see B<man
+bash>) without redirections and without variable assignments.
+
+See the section QUOTING. Most people will not need this.  Quoting is
+disabled by default.
 
 
 =item B<--no-run-if-empty>
