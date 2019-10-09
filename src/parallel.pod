@@ -1610,8 +1610,8 @@ so you are unlikely to ever use this option.
 
 Setting B<--nice> will override this nice level. If the nice level is
 smaller than the current nice level, it will only affect remote jobs
-(e.g. current level is 10 and B<--nice 5> will cause local jobs to be
-run at level 10, but remote jobs run at nice level 5).
+(e.g. if current level is 10 then B<--nice 5> will cause local jobs to
+be run at level 10, but remote jobs run at nice level 5).
 
 
 =item B<--interactive>
@@ -2786,13 +2786,14 @@ Print the version GNU B<parallel> and exit.
 
 =item B<--wd> I<mydir>
 
+Jobs will be run in the dir I<mydir>.
+
 Files transferred using B<--transferfile> and B<--return> will be
-relative to I<mydir> on remote computers, and the command will be
-executed in the dir I<mydir>.
+relative to I<mydir> on remote computers.
 
 The special I<mydir> value B<...> will create working dirs under
-B<~/.parallel/tmp/> on the remote computers. If B<--cleanup> is given
-these dirs will be removed.
+B<~/.parallel/tmp/>. If B<--cleanup> is given these dirs will be
+removed.
 
 The special I<mydir> value B<.> uses the current working dir.  If the
 current working dir is beneath your home dir, the value B<.> is

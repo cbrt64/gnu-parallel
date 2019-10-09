@@ -149,8 +149,11 @@ sub pipepart_setup() {
 		    $size += -s $_;
 		} elsif(-b $_) {
 		    $size += size_of_block_dev($_);
-		} else {
+		} elsif(-e $_) {
 		    ::error("$_ is neither a file nor a block device");
+		    wait_and_exit(255);
+		} else {
+		    ::error("File not found: $_");
 		    wait_and_exit(255);
 		}
 	    }
@@ -1528,6 +1531,7 @@ sub options_hash() {
 	 "linkinputsource|xapplyinputsource=i" => \@opt::linkinputsource,
 	 # Before changing this line, please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	 "bibtex|citation" => \$opt::citation,
 	 "wc|willcite|will-cite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
@@ -1636,6 +1640,7 @@ sub parse_options(@) {
 
     # Before changing this line, please read
     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+    # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
     if(defined $opt::citation) {
 	citation(\@argv_before,\@ARGV);
 	wait_and_exit(0);
@@ -1683,7 +1688,7 @@ sub parse_options(@) {
     if(defined $opt::tmpdir) { $ENV{'TMPDIR'} = $opt::tmpdir; }
     $ENV{'PARALLEL_RSYNC_OPTS'} = $opt::rsync_opts ||
 	$ENV{'PARALLEL_RSYNC_OPTS'} || '-rlDzR';
-    # Default: Same nice level as GNU Parallel is started at
+    # Default: Same nice level as GNU  Parallel is started at
     $opt::nice ||= eval { getpriority(0,0) } || 0;
     if(defined $opt::help) { usage(); exit(0); }
     if(defined $opt::embed) { embed(); exit(0); }
@@ -1937,11 +1942,14 @@ sub parse_options(@) {
     # the alternatives instead?
     # See a list in: 'man parallel_alternatives'
     #
-    # If you want GNU Parallel to be maintained in the future you should not
-    # change this line.
+    # If you want GNU Parallel to be maintained in the future keep
+    # this line.
     citation_notice();
-    # Seriously: You will be harming free software by removing the notice.
-    # You make it harder to justify spending time developing it.
+    # Seriously: YOU will be harming free software by removing the
+    # notice.  You make it harder to justify spending time developing
+    # it. If you *do* remove the line, please email
+    # hallofshame@tange.dk if you want to avoid being put in a hall of
+    # shame.
 
     parse_halt();
 
@@ -2060,6 +2068,7 @@ sub init_globals() {
     # Defaults:
     $Global::version = 20190922;
     $Global::progname = 'parallel';
+    $::name = "GNU Parallel";
     $Global::infinity = 2**31;
     $Global::debug = 0;
     $Global::verbose = 0;
@@ -2274,7 +2283,7 @@ sub parse_replacement_string_options() {
 sub parse_semaphore() {
     # Semaphore defaults
     # Must be done before computing number of processes and max_line_length
-    # because when running as a semaphore GNU Parallel does not read args
+    # because when running as a semaphore GNU  Parallel does not read args
     # Uses:
     #   $opt::semaphore
     #   $Global::semaphore
@@ -3103,7 +3112,7 @@ sub __RUNNING_THE_JOBS_AND_PRINTING_PROGRESS__() {}
 #    $Global::total_started = total number of jobs started
 #    $Global::joblog = filehandle of joblog
 #    $Global::debug = Is debugging on?
-#    $Global::exitstatus = status code of GNU Parallel
+#    $Global::exitstatus = status code of GNU  Parallel
 #    $Global::quoting = quote the command to run
 
 sub init_run_jobs() {
@@ -3403,10 +3412,11 @@ sub drain_job_queue(@) {
     my $sleep = 0.2;
     do {
         while($Global::total_running > 0) {
-            debug($Global::total_running, "==", scalar
+            debug("init",$Global::total_running, "==", scalar
 		  keys %Global::running," slots: ", $Global::max_jobs_running);
 	    if($opt::pipe) {
-		# When using --pipe sometimes file handles are not closed properly
+		# When using --pipe sometimes file handles are not
+		# closed properly
 		for my $job (values %Global::running) {
 		    close $job->fh(0,"w");
 		}
@@ -4011,7 +4021,7 @@ sub setup_basefile() {
     }
     debug("init", "basesetup: @cmd\n");
     my ($exitstatus,$stdout_ref,$stderr_ref) =
-	run_parallel((join "\n",@cmd),"-j0","--retries",5);
+	run_gnu_parallel((join "\n",@cmd),"-j0","--retries",5);
     if($exitstatus) {
 	my @stdout = @$stdout_ref;
 	my @stderr = @$stderr_ref;
@@ -4041,7 +4051,7 @@ sub cleanup_basefile() {
     }
     debug("init", "basecleanup: @cmd\n");
     my ($exitstatus,$stdout_ref,$stderr_ref) =
-	run_parallel(join("\n",@cmd),"-j0","--retries",5);
+	run_gnu_parallel(join("\n",@cmd),"-j0","--retries",5);
     if($exitstatus) {
 	my @stdout = @$stdout_ref;
 	my @stderr = @$stderr_ref;
@@ -4050,22 +4060,22 @@ sub cleanup_basefile() {
     }
 }
 
-sub run_parallel() {
+sub run_gnu_parallel() {
     my ($stdin,@args) = @_;
     my $cmd = join "",map { " $_ & " } split /\n/, $stdin;
     print $Global::original_stderr ` $cmd wait` ;
     return 0
 }
 
-sub _run_parallel() {
-    # Run GNU Parallel
+sub _run_gnu_parallel() {
+    # Run GNU  Parallel
     # This should ideally just fork an internal copy
     # and not start it through a shell
     # Input:
-    #   $stdin = data to provide on stdin for GNU Parallel
+    #   $stdin = data to provide on stdin for GNU  Parallel
     #   @args = command line arguments
     # Returns:
-    #   $exitstatus = exitcode of GNU Parallel run
+    #   $exitstatus = exitcode of GNU  Parallel run
     #   \@stdout = standard output
     #   \@stderr = standard error
     my ($stdin,@args) = @_;
@@ -4441,7 +4451,7 @@ sub onall($@) {
 	);
     ::debug("init", "| $0 $options\n");
     open(my $parallel_fh, "|-", "$0 -0 --will-cite -j0 $options") ||
-	::die_bug("This does not run GNU Parallel: $0 $options");
+	::die_bug("This does not run GNU  Parallel: $0 $options");
     my @joblogs;
     for my $host (sort keys %Global::host) {
 	my $sshlogin = $Global::host{$host};
@@ -4505,14 +4515,14 @@ sub sigpipe() {
 
 sub signal_children() {
     # Send signal to all children process groups
-    # and GNU Parallel itself
+    # and GNU  Parallel itself
     # Uses:
     #   %SIG
     # Returns: N/A
     my $signal = shift;
     debug("run", "Sending $signal ");
     kill $signal, map { -$_ } keys %Global::running;
-    # Use default signal handler for GNU Parallel itself
+    # Use default signal handler for GNU  Parallel itself
     $SIG{$signal} = undef;
     kill $signal, $$;
 }
@@ -4793,6 +4803,7 @@ sub usage() {
 	 "",
 	 # Before changing this line, please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	 "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	 "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	 "",
@@ -4823,6 +4834,7 @@ sub citation_notice() {
 	     "",
 	     # Before changing this line, please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	     # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	     "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	     "",
@@ -4833,7 +4845,7 @@ sub citation_notice() {
 	     ""
 	    );
 	mkdir $Global::config_dir;
-	# Number of times the user has run GNU Parallel without showing
+	# Number of times the user has run GNU  Parallel without showing
 	# willingness to cite
 	my $runs = 0;
 	if(open (my $fh, "<", $Global::config_dir.
@@ -4986,7 +4998,7 @@ sub citation() {
 		      "",
 		      "If you use '--will-cite' in scripts to be run by others you are making",
 		      "it harder for others to see the citation notice.  The development of",
-		      "GNU parallel is indirectly financed through citations, so if users",
+		      "GNU Parallel is indirectly financed through citations, so if users",
 		      "do not know they should cite then you are making it harder to finance",
 		      "development. However, if you pay 10000 EUR, you should feel free to",
 		      "use '--will-cite' in scripts.",
@@ -5008,7 +5020,7 @@ sub show_limits() {
 }
 
 sub embed() {
-    # Give an embeddable version of GNU Parallel
+    # Give an embeddable version of GNU  Parallel
     # Tested with: bash, zsh, ksh, ash, dash, sh
     my $randomstring = "cut-here-".join"",
 	map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..20);
@@ -5053,9 +5065,9 @@ sub embed() {
 ";
 
 	print q!
-# Embedded GNU Parallel created with --embed
+# Embedded GNU  Parallel created with --embed
 parallel() {
-    # Start GNU Parallel without leaving temporary files
+    # Start GNU  Parallel without leaving temporary files
     #
     # Not all shells support 'perl <(cat ...)'
     # This is a complex way of doing:
@@ -5066,7 +5078,7 @@ parallel() {
     #   [1]+  Done   cat
 
     # Make a temporary fifo that perl can read from
-    _fifo_with_parallel_source=`perl -e 'use POSIX qw(mkfifo);
+    _fifo_with_GNU_Parallel_source=`perl -e 'use POSIX qw(mkfifo);
       do {
         $f = "/tmp/parallel-".join"",
           map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
@@ -5075,9 +5087,9 @@ parallel() {
       print $f;'`
     # Put source code into temporary file
     # so it is easy to copy to the fifo
-    _file_with_parallel_source=`mktemp`;
+    _file_with_GNU_Parallel_source=`mktemp`;
 !,
-	"cat <<'$randomstring' > \$_file_with_parallel_source\n",
+	"cat <<'$randomstring' > \$_file_with_GNU_Parallel_source\n",
 	@source,
 	$randomstring,"\n",
 	q!
@@ -5085,10 +5097,10 @@ parallel() {
     # and remove the file and fifo ASAP
     # 'sh -c' is needed to avoid
     #   [1]+  Done   cat
-    sh -c "(rm $_file_with_parallel_source; cat >$_fifo_with_parallel_source; rm $_fifo_with_parallel_source) < $_file_with_parallel_source &"
+    sh -c "(rm $_file_with_GNU_Parallel_source; cat >$_fifo_with_GNU_Parallel_source; rm $_fifo_with_GNU_Parallel_source) < $_file_with_GNU_Parallel_source &"
 
     # Read the source from the fifo
-    perl $_fifo_with_parallel_source "$@"
+    perl $_fifo_with_GNU_Parallel_source "$@"
 }
 !,
 	@env_parallel_source,
@@ -6530,7 +6542,7 @@ sub loadavg($) {
     #   Recompute a new one in the background
     # The load average is computed as the number of processes waiting for disk
     # or CPU right now. So it is the server load this instant and not averaged over
-    # several minutes. This is needed so GNU Parallel will at most start one job
+    # several minutes. This is needed so GNU  Parallel will at most start one job
     # that will push the load over the limit.
     #
     # Returns:
@@ -8751,7 +8763,7 @@ sub base64_eval($) {
     # Will be wrapped in ' so single quote is forbidden.
     # Spaces are stripped so spaces cannot be significant.
     # The funny 'use IPC::Open3'-syntax is to avoid spaces and
-    # to make it clear that this is a GNU Parallel command
+    # to make it clear that this is a GNU  Parallel command
     # when looking at the process table.
     # Returns:
     #   $script = 1-liner for perl -e
@@ -11420,7 +11432,7 @@ sub get($) {
     my $ret = $self->{'arg_sub_queue'}->get();
     if($ret) {
 	if(grep { index($_->orig(),"\0") > 0 } @$ret) {
-	    # Allow for \0 in position 0 because GNU Parallel uses "\0noarg"
+	    # Allow for \0 in position 0 because GNU  Parallel uses "\0noarg"
 	    # to mean no-string
 	    ::warning("A NUL character in the input was replaced with \\0.",
 		      "NUL cannot be passed through in the argument list.",

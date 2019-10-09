@@ -1,7 +1,10 @@
 Quote of the month:
 
-  IMHO, SQLite and GNU Parallel are among the world's great software.
-    -- singe@reddit
+  Well anyway, It was blazingly fast and astonished by performance. guess I'll never use xargs.
+    -- (Not) Akaming @_Akamig@twitter
+
+GNU parallel has helped me kill a Hadoop cluster before.
+    -- Travis Campbell @hcoyote@twitter
 
   Yeah, GNU parallel is a beast when used accordingly.
     -- @lsde@twitter
@@ -55,6 +58,9 @@ Quote of the month:
 
 
 === Used ===
+  IMHO, SQLite and GNU Parallel are among the world's great software.
+    -- singe@reddit
+
   It is, beyond absolutely any doubt whatsoever, the single most
   important tool I use in making me a productive bioinformatician.
     -- A-N-Other@reddit.com

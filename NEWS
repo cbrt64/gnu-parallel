@@ -1,4 +1,4 @@
-20190822
+20190922
 
 * --nice is now inherited by the nice level that GNU Parallel is
   started at. So 'nice -n10 parallel' will also cause remote jobs to
@@ -9,9 +9,11 @@
 * GNU Parallel will be presented at Driving IT 2019:
   https://ida.dk/arrangementer-og-kurser/konferencer/driving-it/tools
 
-* Greenland Ice Sheet solid ice discharge from 1986 through 2017 https://www.earth-syst-sci-data.net/11/769/2019/essd-11-769-2019.pdf
+* Greenland Ice Sheet solid ice discharge from 1986 through 2017
+  https://www.earth-syst-sci-data.net/11/769/2019/essd-11-769-2019.pdf
 
-* App Center Cloud Build Machines > Installed Software > Utilities https://docs.microsoft.com/en-us/appcenter/build/software
+* App Center Cloud Build Machines > Installed Software > Utilities
+  https://docs.microsoft.com/en-us/appcenter/build/software
 
 * Curryfinger - SNI & Host header spoofing utility
   https://dualuse.io/blog/curryfinger/
