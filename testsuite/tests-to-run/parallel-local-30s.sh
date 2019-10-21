@@ -31,8 +31,8 @@ par_memory_leak() {
     export -f a_run
     echo "### Test for memory leaks"
     echo "Of 100 runs of 1 job none should be bigger than a 3000 job run"
-    small_max=$(seq 100 | parallel a_run 1 | jq -s max)
-    big=$(a_run 3000)
+    . `which env_parallel.bash`
+    parset small_max,big ::: 'seq 100 | parallel a_run 1 | jq -s max' 'a_run 3000'
     if [ $small_max -lt $big ] ; then
 	echo "Bad: Memleak likely."
     else
@@ -181,6 +181,7 @@ par_linebuffer_files() {
 	rm -rf "/tmp/par48658-$compress"
     }
     export -f doit
+    # lrz complains 'Warning, unable to set nice value on thread'
     parallel -j1 --tag -k doit ::: zstd pzstd clzip lz4 lzop pigz pxz gzip plzip pbzip2 lzma xz lzip bzip2 lbzip2 lrz
 }
 

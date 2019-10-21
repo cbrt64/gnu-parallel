@@ -1,4 +1,4 @@
-== Citation notice FAQ ==
+== Citation FAQ ==
 
 > Why does GNU Parallel show a citation notice?
 
@@ -9,7 +9,7 @@ maintaining GNU Parallel. This is much easier to get if GNU Parallel
 is cited in scientific journals, and history has shown that
 researchers forget to do this if they are not reminded explicitly.
 
-It is therefore important for the long term survival of GNU Parallel
+It is therefore important for the long-term survival of GNU Parallel
 that it is cited. The citation notice makes users aware of this.
 
 See also: https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
@@ -139,8 +139,8 @@ should cite, over having many users, who do not know they should cite.
 If the goal had been to get more users, then the license would have
 been public domain.
 
-This is because a long term survival with funding is more important
-than short term gains in popularity that can be achieved by being
+This is because a long-term survival with funding is more important
+than short-term gains in popularity that can be achieved by being
 distributed as part of a distribution.
 
 

@@ -83,7 +83,7 @@ echo '### bug #42893: --block should not cause decimals in cat_partial'
 echo '### bug #42892: parallel -a nonexiting --pipepart'
 ### bug #42892: parallel -a nonexiting --pipepart
   parallel --pipepart -a nonexisting wc
-parallel: Error: nonexisting is neither a file nor a block device
+parallel: Error: File not found: nonexisting
 echo '### added transfersize/returnsize to local jobs'
 ### added transfersize/returnsize to local jobs
   echo '### normal'

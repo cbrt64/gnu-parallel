@@ -2165,6 +2165,14 @@ par_null_resume() {
     rm "$log"
 }
 
+par_block_negative_prefix() {
+    tmp=`mktemp`
+    seq 100000 > $tmp
+    echo '### This should generate 10*2 jobs'
+    parallel -j2 -a $tmp --pipepart --block -0.01k -k md5sum | wc
+    rm $tmp
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

@@ -181,11 +181,14 @@ par_no_route_to_host() {
 
     (
 	# Cache a list of hosts that fail fast with 'No route'
-	# Filter the list 4 times to make sure to get good hosts
-	renice 10 -p $$ >/dev/null
-	findhosts | filterhosts | filterhosts | filterhosts |
-	    filterhosts | filterhosts | head > /tmp/filtered.$$
-	mv /tmp/filtered.$$ /tmp/filtered.hosts
+	# Filter the list 5 times to make sure to get good hosts
+	export -f findhosts
+	export -f filterhosts
+	nice bash -c '
+	    findhosts | filterhosts | filterhosts | filterhosts |
+	        filterhosts | filterhosts | head > /tmp/filtered.$$
+	    mv /tmp/filtered.$$ /tmp/filtered.hosts
+	'
     ) &
     (
 	# We just need one of each to complete

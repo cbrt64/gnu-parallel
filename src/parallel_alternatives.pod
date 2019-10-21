@@ -2307,6 +2307,29 @@ https://github.com/flesler/parallel
 
 https://github.com/Julian/Verge
 
+https://github.com/ExpectationMax/simple_gpu_scheduler
+    simple_gpu_scheduler --gpus 0 1 2 < gpu_commands.txt
+    parallel -j3 --shuf CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' < gpu_commands.txt
+
+    simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 | simple_gpu_scheduler --gpus 0,1,2
+    parallel --header : --shuf -j3 -v CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =}' python3 train_dnn.py --lr {lr} --batch_size {bs} ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
+
+    simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" --n-samples 5 -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 | simple_gpu_scheduler --gpus 0,1,2
+    parallel --header : --shuf CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1; seq() > 5 and skip() =}' python3 train_dnn.py --lr {lr} --batch_size {bs} ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
+
+    touch gpu.queue
+    tail -f -n 0 gpu.queue | simple_gpu_scheduler --gpus 0,1,2 &
+    echo "my_command_with | and stuff > logfile" >> gpu.queue
+
+    touch gpu.queue
+    tail -f -n 0 gpu.queue | parallel -j3 CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' &
+    # Needed to fill job slots once
+    seq 3 | parallel echo true >> gpu.queue
+    # Add jobs
+    echo "my_command_with | and stuff > logfile" >> gpu.queue
+    # Needed to flush output from completed jobs 
+    seq 3 | parallel echo true >> gpu.queue
+
 
 =head1 TESTING OTHER TOOLS
 

@@ -1,3 +1,5 @@
+par_block_negative_prefix	### This should generate 10*2 jobs
+par_block_negative_prefix	     20      40     720
 par_compress_prg_fails	### bug #44546: If --compress-program fails: fail
 par_compress_prg_fails	  	1
 par_compress_prg_fails	  	parallel: Error: false failed.

@@ -161,7 +161,8 @@ sub pipepart_setup() {
 	    # Set --blocksize = size / no of proc / (- $blocksize)
 	    $Global::dummy_jobs = 1;
 	    $Global::blocksize = 1 +
-		int($size / max_jobs_running() / -$opt::blocksize);
+		int($size / max_jobs_running() /
+		    -multiply_binary_prefix($opt::blocksize));
 	}
 	@Global::cat_prepends = map { pipe_part_files($_) } @opt::a;
 	# Unget the empty arg as many times as there are parts
@@ -188,6 +189,7 @@ sub pipe_tee_setup() {
 	# Test if tee supports --output-error=warn-nopipe
 	`echo | tee --output-error=warn-nopipe /dev/null >/dev/null 2>/dev/null`;
 	my $opt = $? ? "" : "--output-error=warn-nopipe";
+	::debug("init","tee $opt");
 	# Let tee inherit our stdin
 	# and redirect stdout to null
 	open STDOUT, ">","/dev/null";
@@ -502,7 +504,7 @@ sub pipe_shard_setup() {
     } else {
 	$script = sharder_script();
     }
-   
+    
     # cat foo | sharder sep col fifo1 fifo2 fifo3 ... fifoN
 
     if($shardbin =~ /^[a-z_][a-z_0-9]*(\s|$)/i) {
@@ -635,7 +637,10 @@ sub find_split_positions($$$) {
 	    push(@pos,$pos);
 	} else {
 	    # Seek the the block start
-	    seek($fh, $pos, 0) || die;
+	    if(not seek($fh, $pos, 0)) {
+		::error("Cannot seek to $pos in $file");
+		edit(255);
+	    }
 	    while(read($fh,substr($buf,length $buf,0),$dd_block_size)) {
 		if($opt::regexp) {
 		    # If match /$recend$recstart/ => Record position
@@ -2066,7 +2071,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20190922;
+    $Global::version = 20191022;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -10383,7 +10388,7 @@ sub push($) {
     push @{$self->{'arg_list'}}, $record;
     # Make @arg available for {= =}
     *Arg::arg = $self->{'arg_list_flat_orig'};
-	
+    
     my $quote_arg = ($Global::quote_replace and not $Global::quoting);
     for my $perlexpr (keys %{$self->{'replacecount'}}) {
 	if($perlexpr =~ /^(\d+) /) {

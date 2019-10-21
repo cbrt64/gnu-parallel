@@ -788,6 +788,17 @@ freebsd	     ~/.profile
 freebsd	     ~/.cshrc
 freebsd	     ~/.tcshrc
 freebsd	install-OK
+hpux	Installed env_parallel in:
+hpux	     ~/.bashrc
+hpux	     ~/.shrc
+hpux	     ~/.zshenv
+hpux	     ~/.config/fish/config.fish
+hpux	     ~/.kshrc
+hpux	     ~/.mkshrc
+hpux	     ~/.profile
+hpux	     ~/.cshrc
+hpux	     ~/.tcshrc
+hpux	install-OK
 hpux-ia64	Installed env_parallel in:
 hpux-ia64	     ~/.bashrc
 hpux-ia64	     ~/.shrc
@@ -811,17 +822,6 @@ hurd	     ~/.profile
 hurd	     ~/.cshrc
 hurd	     ~/.tcshrc
 hurd	install-OK
-hpux	Installed env_parallel in:
-hpux	     ~/.bashrc
-hpux	     ~/.shrc
-hpux	     ~/.zshenv
-hpux	     ~/.config/fish/config.fish
-hpux	     ~/.kshrc
-hpux	     ~/.mkshrc
-hpux	     ~/.profile
-hpux	     ~/.cshrc
-hpux	     ~/.tcshrc
-hpux	install-OK
 hpux-ia64	Installed env_parallel in:
 hpux-ia64	     /home/t/tange/.bashrc
 hpux-ia64	     /home/t/tange/.shrc
