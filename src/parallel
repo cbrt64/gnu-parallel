@@ -2071,7 +2071,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20191022;
+    $Global::version = 20191023;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -7281,7 +7281,7 @@ sub sct_android($) {
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     # Use GNU/Linux
-    return sct_gnu_linux(@_);
+    return sct_gnu_linux($_[0]);
 }
 
 sub sct_freebsd($) {

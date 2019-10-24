@@ -1599,7 +1599,7 @@ Overrides an earlier B<--keep-order> (e.g. if set in
 B<~/.parallel/config>).
 
 
-=item B<--nice> I<niceness> (beta testing)
+=item B<--nice> I<niceness>
 
 Run the command at this niceness.
 
@@ -2191,7 +2191,7 @@ Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
 See also B<--env>, B<--record-env>.
 
 
-=item B<--shard> I<shardexpr> (beta testing)
+=item B<--shard> I<shardexpr>
 
 Use I<shardexpr> as shard key and shard input to the jobs.
 
