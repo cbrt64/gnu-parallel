@@ -209,9 +209,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20191022 ('Driving IT') released <<[stable]>>
+Subject: GNU Parallel 20191122 ('Berlin/Morales') released <<[stable]>>
 
-GNU Parallel 20191022 ('Driving IT') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20191122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -221,30 +221,14 @@ See https://www.gnu.org/software/parallel/10-years-anniversary.html
 
 Quote of the month:
 
-  I've said it before: The command line program GNU Parallel is a godsend.
-    -- Jo Chr. Oterhals @oterhals@twitter
 
 New in this release:
 
-* --tee will use --output-error=warn-nopipe if supported by tee.
+* GNU Parallel was presented at Driving IT. Slides:
 
-* GNU Parallel will be presented at Driving IT 2019: https://ida.dk/arrangementer-og-kurser/konferencer/driving-it/tools
+https://blog.naderman.de/2019/11/14/restarting-supervisord-processes-in-parallel/
 
-* UMN Duluth: Job parallelization with task arrays and GNU parallel https://www.msi.umn.edu/tutorials/umn-duluth-job-parallelization-task-arrays-and-gnu-parallel
-
-* Genome updater uses GNU Parallel https://github.com/pirovc/genome_updater
-
-* Using GNU-Parallel for bioinformatics https://www.danielecook.com/using-gnu-parallel-for-bioinformatics/
-
-* Speeding up PostgreSQL ETL pipeline with the help of GODS https://cfengine.com/company/blog-detail/speeding-up-postgresql-etl-pipeline-with-the-help-of-gods/
-
-* Runing linux commands in parallel https://dev.to/voyeg3r/runing-linux-commands-in-parallel-4ff8
-
-* Research Computing University of Colorado Boulder contains an intro to GNU Parallel https://readthedocs.org/projects/curc/downloads/pdf/latest/
-
-* 如何使用Parallel在Shell中并行执行命令https://www.myfreax.com/gnu-parallel/
-
-* 如何测试 Amazon Elastic File System https://aws.amazon.com/cn/blogs/china/how-to-test-drive-amazon-elastic-file-system/
+* https://www.reddit.com/r/DataHoarder/comments/dsgmhc/parallel_archiving_techniques/
 
 * Bug fixes and man page updates.
 

@@ -2847,6 +2847,7 @@ Exit if the size (see the B<-s> option) is exceeded.
 
 =back
 
+
 =head1 EXAMPLE: Working as xargs -n1. Argument appending
 
 GNU B<parallel> can work similar to B<xargs -n1>.
@@ -3992,7 +3993,13 @@ then the obvious solution would be this, but it B<does not work>:
 It does not work because the command is dequoted by B<ssh> twice where
 as GNU B<parallel> only expects it to be dequoted once.
 
-So instead put this in B<~/.ssh/config>:
+You can use a bash function and have GNU B<parallel> quote the command:
+
+  jumpssh() { ssh -A jumphost ssh $(parallel --shellquote ::: "$@"); }
+  export -f jumpssh
+  parallel --ssh jumpssh -S host1 echo ::: this works
+
+Or you can instead put this in B<~/.ssh/config>:
 
   Host host1 host2 host3
     ProxyCommand ssh jumphost.domain nc -w 1 %h 22
@@ -4222,6 +4229,25 @@ To run 100 processes simultaneously do:
   parallel -j 100 < jobs_to_run
 
 As there is not a I<command> the jobs will be evaluated by the shell.
+
+
+=head1 EXAMPLE: Call program with FASTA sequence
+
+FASTA files have the format:
+
+  >Sequence name1
+  sequence
+  sequence continued
+  >Sequence name2
+  sequence
+  sequence continued
+  more sequence
+
+To call B<myprog> with the sequence as argument run:
+
+  cat file.fasta |
+    parallel --pipe -N1 --recstart '>' --rrs \
+      'read a; echo Name: "$a"; myprog $(tr -d "\n")'
 
 
 =head1 EXAMPLE: Processing a big file using more CPUs
@@ -5248,8 +5274,11 @@ A copy of the full license is included in the file as cc-by-sa.txt.
 =head1 DEPENDENCIES
 
 GNU B<parallel> uses Perl, and the Perl modules Getopt::Long,
-IPC::Open3, Symbol, IO::File, POSIX, and File::Temp. For remote usage
-it also uses rsync with ssh.
+IPC::Open3, Symbol, IO::File, POSIX, and File::Temp.
+
+For B<--csv> it uses the Perl module Text::CSV.
+
+For remote usage it uses B<rsync> with B<ssh>.
 
 
 =head1 SEE ALSO

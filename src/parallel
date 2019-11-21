@@ -1193,7 +1193,7 @@ sub nindex($$) {
 	    # until one is empty and a new block is passed
 	    if(@robin_queue) {
 		# Rotate queue once so new blocks get a fair chance
-		# to be given to another block
+		# to be given to another slot
 		push @robin_queue, shift @robin_queue;
 	    } else {
 		# Make a queue to spread the blocks evenly
@@ -1950,7 +1950,7 @@ sub parse_options(@) {
     # If you want GNU Parallel to be maintained in the future keep
     # this line.
     citation_notice();
-    # Seriously: YOU will be harming free software by removing the
+    # Seriously: *You* will be harming free software by removing the
     # notice.  You make it harder to justify spending time developing
     # it. If you *do* remove the line, please email
     # hallofshame@tange.dk if you want to avoid being put in a hall of
@@ -8291,7 +8291,7 @@ sub non_blocking_write($) {
     if (!defined($rv) && $! == ::EAGAIN()) {
 	# would block - but would have written
 	$something_written = 0;
-	# avoid triggering auto expanding block
+	# avoid triggering auto expanding block size
 	$Global::no_autoexpand_block ||= 1;
     } elsif ($self->{'block_pos'}+$rv != $self->{'block_length'}) {
 	# incomplete write
@@ -9174,6 +9174,10 @@ sub remote_cleanup($) {
 }
 
 sub exitstatuswrapper(@) {
+    # Input:
+    #   @shellcode = shell code to execute
+    # Returns:
+    #   shell script that returns current status after executing @shellcode
     if($Global::cshell) {
 	return ('set _EXIT_status=$status; ' .
 		join(" ",@_).
@@ -9184,7 +9188,6 @@ sub exitstatuswrapper(@) {
 		'exit $_EXIT_status;');
     }
 }
-
 
 sub workdir($) {
     # Returns:
