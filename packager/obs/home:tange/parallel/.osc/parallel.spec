@@ -1,7 +1,7 @@
 
 Summary:	Shell tool for executing jobs in parallel
 Name: 		parallel
-Version: 	20191022
+Version: 	20191122
 Release: 	1.3
 License: 	GPL-3.0-or-later
 Group: 		Productivity/File utilities
@@ -88,7 +88,7 @@ rm $RPM_BUILD_ROOT%{_docdir}/sem.pdf
 rm $RPM_BUILD_ROOT%{_docdir}/sql.pdf
 rm $RPM_BUILD_ROOT%{_docdir}/parcat.pdf
 rm $RPM_BUILD_ROOT%{_docdir}/parset.pdf
-rm $RPM_BUILD_ROOT%{_docdir}/parallel_cheat.pdf
+rm $RPM_BUILD_ROOT%{_docdir}/parallel_cheat_bw.pdf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -98,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/*
 /usr/share/man/man1/*
 /usr/share/man/man7/*
-%doc README NEWS src/parallel.html src/env_parallel.html src/parallel_tutorial.html src/parallel_design.html src/parallel_alternatives.html src/parallel_book.html src/sem.html src/sql.html src/parcat.html src/parset.html src/niceload.html src/parallel.texi src/env_parallel.texi src/parallel_tutorial.texi src/parallel_design.texi src/parallel_alternatives.texi src/parallel_book.texi src/niceload.texi src/sem.texi src/sql.texi src/parcat.texi src/parset.texi src/parallel.pdf src/env_parallel.pdf src/parallel_tutorial.pdf src/parallel_design.pdf src/parallel_alternatives.pdf src/parallel_book.pdf src/niceload.pdf src/sem.pdf src/sql.pdf src/parcat.pdf src/parset.pdf src/parallel_cheat.pdf
+%doc README NEWS src/parallel.html src/env_parallel.html src/parallel_tutorial.html src/parallel_design.html src/parallel_alternatives.html src/parallel_book.html src/sem.html src/sql.html src/parcat.html src/parset.html src/niceload.html src/parallel.texi src/env_parallel.texi src/parallel_tutorial.texi src/parallel_design.texi src/parallel_alternatives.texi src/parallel_book.texi src/niceload.texi src/sem.texi src/sql.texi src/parcat.texi src/parset.texi src/parallel.pdf src/env_parallel.pdf src/parallel_tutorial.pdf src/parallel_design.pdf src/parallel_alternatives.pdf src/parallel_book.pdf src/niceload.pdf src/sem.pdf src/sql.pdf src/parcat.pdf src/parset.pdf src/parallel_cheat_bw.pdf
 
 %changelog
 * Sat Jan 22 2011 Ole Tange
@@ -111,6 +111,4 @@ rm -rf $RPM_BUILD_ROOT
 - Upgrade to current git-version of source. Tested on build.opensuse.org 
 * Fri Aug 27 2010 Ole Tange
 - Untested upgrade to current git-version of source.
-* Sat Aug 08 2010 Markus Ammer
-- Initial package setup.
 

@@ -19,8 +19,8 @@ upload:
 	(echo '#!/bin/bash'; \
 	 echo; \
 	 echo "# To check the signature run:"; \
-	 echo "#  echo | gpg"; \
-	 echo "#  gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve parallel-$(YYYYMMDD).tar.bz2.sig"; \
+	 echo "#   echo | gpg"; \
+	 echo "#   gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve parallel-$(YYYYMMDD).tar.bz2.sig"; \
 	 echo; \
 	 echo "echo | gpg 2>/dev/null"; \
 	 echo 'gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve $$0'; \
@@ -32,8 +32,8 @@ upload:
 	(echo '#!/bin/bash'; \
 	 echo; \
 	 echo "# To check the signature run:"; \
-	 echo "#  echo | gpg"; \
-	 echo "#  gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve parallel-latest.tar.bz2.sig"; \
+	 echo "#   echo | gpg"; \
+	 echo "#   gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve parallel-latest.tar.bz2.sig"; \
 	 echo; \
 	 echo "echo | gpg 2>/dev/null"; \
 	 echo 'gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve $$0'; \

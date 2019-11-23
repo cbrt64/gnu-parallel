@@ -7,11 +7,9 @@
 par_tee_with_premature_close() {
     echo '--tee --pipe should send all data to all commands'
     echo 'even if a command closes stdin before reading everything'
-    seq 1000000 |
-	parallel -k --tee --pipe \
-		 ::: 'sleep 1' 'sleep 2;wc' 'sleep 2;head' 'sleep 2;tail'
-
-    # tee without --output-error=warn-nopipe support
+    echo 'tee with --output-error=warn-nopipe support'
+    seq 1000000 | parallel -k --tee --pipe ::: wc head tail 'sleep 1'
+    echo 'tee without --output-error=warn-nopipe support'
     cat > tmp/tee <<-EOF
 	#!/usr/bin/perl
 
@@ -25,9 +23,8 @@ par_tee_with_premature_close() {
     # This gives incomplete output due to:
     # * tee not supporting --output-error=warn-nopipe
     # * sleep closes stdin before EOF
-    seq 1000000 |
-	parallel -k --tee --pipe \
-		 ::: 'sleep 1' 'sleep 2;wc' 'sleep 2;head' 'sleep 2;tail'
+    # Depending on tee it may provide partial output or no output
+    seq 1000000 | parallel -k --tee --pipe ::: wc head tail 'sleep 1'
     echo
 }
 

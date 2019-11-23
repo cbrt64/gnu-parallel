@@ -12,9 +12,6 @@ GNU parallel has helped me kill a Hadoop cluster before.
   GNU Parallel is awesome
     -- Gaurav Jain @gauravjain49@twitter
   
-  [L]earning about parallel was amazing for me, it gives us many beautiful solutions.
-     -- SergioAraujo@stackoverflow
-  
   With multicore systems everywhere GNU Parallel is a must have tool.
     -- Neil H. Watson @neil_h_watson@twitter
   
@@ -58,6 +55,10 @@ GNU parallel has helped me kill a Hadoop cluster before.
 
 
 === Used ===
+  [L]earning about parallel was amazing for me, it gives us many beautiful solutions.
+     -- SergioAraujo@stackoverflow
+  
+
   I've said it before: The command line program GNU Parallel is a godsend.
     -- Jo Chr. Oterhals @oterhals
 

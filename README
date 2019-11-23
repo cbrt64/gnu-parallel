@@ -24,6 +24,9 @@ GNU Parallel makes sure output from the commands is the same output as
 you would get had you run the commands sequentially. This makes it
 possible to use output from GNU Parallel as input for other programs.
 
+See the cheat sheet for examples that cover most of the daily usage:
+www.gnu.org/s/parallel/parallel_cheat.pdf
+
 
 = 10 seconds installation =
 
@@ -54,11 +57,11 @@ document.
 
 Full installation of GNU Parallel is as simple as:
 
-    wget https://ftpmirror.gnu.org/parallel/parallel-20191022.tar.bz2
-    wget https://ftpmirror.gnu.org/parallel/parallel-20191022.tar.bz2.sig
-    gpg parallel-20191022.tar.bz2.sig
-    bzip2 -dc parallel-20191022.tar.bz2 | tar xvf -
-    cd parallel-20191022
+    wget https://ftpmirror.gnu.org/parallel/parallel-20191122.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20191122.tar.bz2.sig
+    gpg parallel-20191122.tar.bz2.sig
+    bzip2 -dc parallel-20191122.tar.bz2 | tar xvf -
+    cd parallel-20191122
     ./configure && make && sudo make install
 
 
@@ -67,11 +70,11 @@ Full installation of GNU Parallel is as simple as:
 If you are not root you can add ~/bin to your path and install in
 ~/bin and ~/share:
 
-    wget https://ftpmirror.gnu.org/parallel/parallel-20191022.tar.bz2
-    wget https://ftpmirror.gnu.org/parallel/parallel-20191022.tar.bz2.sig
-    gpg parallel-20191022.tar.bz2.sig
-    bzip2 -dc parallel-20191022.tar.bz2 | tar xvf -
-    cd parallel-20191022
+    wget https://ftpmirror.gnu.org/parallel/parallel-20191122.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20191122.tar.bz2.sig
+    gpg parallel-20191122.tar.bz2.sig
+    bzip2 -dc parallel-20191122.tar.bz2 | tar xvf -
+    cd parallel-20191122
     ./configure --prefix=$HOME && make && make install
 
 Or if your system lacks 'make' you can simply copy src/parallel
@@ -87,6 +90,18 @@ system is old or Microsoft Windows):
     chmod 755 parallel
     cp parallel sem
     mv parallel sem dir-in-your-$PATH/bin/
+
+
+= Installation on compute servers =
+
+If you are developing your script to run on a remote server, that does
+not have GNU Parallel installed, but you have it installed on you
+development machine, the use can use `parallel --embed`.
+
+    parallel --embed > newscript.sh
+
+Just edit the last lines of newscript.sh and copy it to the compute
+server.
 
 
 = Test the installation =

@@ -1363,6 +1363,7 @@ par_sqlworker_hostname	<hostname>
 par_sqlworker_hostname	<hostname>
 par_tee_with_premature_close	--tee --pipe should send all data to all commands
 par_tee_with_premature_close	even if a command closes stdin before reading everything
+par_tee_with_premature_close	tee with --output-error=warn-nopipe support
 par_tee_with_premature_close	1000000 1000000 6888896
 par_tee_with_premature_close	1
 par_tee_with_premature_close	2
@@ -1384,7 +1385,8 @@ par_tee_with_premature_close	999997
 par_tee_with_premature_close	999998
 par_tee_with_premature_close	999999
 par_tee_with_premature_close	1000000
-par_tee_with_premature_close	  12773   12774   65536
+par_tee_with_premature_close	tee without --output-error=warn-nopipe support
+par_tee_with_premature_close	   1859    1860    8192
 par_tee_with_premature_close	1
 par_tee_with_premature_close	2
 par_tee_with_premature_close	3
@@ -1395,16 +1397,16 @@ par_tee_with_premature_close	7
 par_tee_with_premature_close	8
 par_tee_with_premature_close	9
 par_tee_with_premature_close	10
-par_tee_with_premature_close	12765
-par_tee_with_premature_close	12766
-par_tee_with_premature_close	12767
-par_tee_with_premature_close	12768
-par_tee_with_premature_close	12769
-par_tee_with_premature_close	12770
-par_tee_with_premature_close	12771
-par_tee_with_premature_close	12772
-par_tee_with_premature_close	12773
-par_tee_with_premature_close	1277
+par_tee_with_premature_close	1851
+par_tee_with_premature_close	1852
+par_tee_with_premature_close	1853
+par_tee_with_premature_close	1854
+par_tee_with_premature_close	1855
+par_tee_with_premature_close	1856
+par_tee_with_premature_close	1857
+par_tee_with_premature_close	1858
+par_tee_with_premature_close	1859
+par_tee_with_premature_close	1860
 par_test_X_with_multiple_source	### Test {} multiple times in different commands
 par_test_X_with_multiple_source	echo 1 2 3 4 5 6 7 8 9 10 ; echo 1 2 3 4 5 6 7 8 9 10
 par_test_X_with_multiple_source	1 2 3 4 5 6 7 8 9 10

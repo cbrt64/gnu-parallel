@@ -10,7 +10,6 @@
   $ bash install.sh
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `     fetch -o - http://pi.dk/3 ) > install.sh'
-
   parallel -k echo ::: A B C > abc-file
   parallel -k echo ::: D E F > def-file
   perl -e 'printf "A\0B\0C\0"' > abc0-file
@@ -28,7 +27,6 @@ sleep .3
 /bin/bash: -c: line 0: syntax error near unexpected token `)'
 /bin/bash: -c: line 0: `   perl -e 'for(1..10){print "$_\n"}') > num_%header'
   perl -e 'print "HHHHAAABBBCCC"' > fixedlen
-
   parallel echo ::: A B C
 A
 B
@@ -319,25 +317,20 @@ myval
 cAaAdef
   echo ${myvar:2:3}
   parallel --plus echo {:2:3} ::: "$myvar"
-
   echo ${myvar#bc}
   parallel --plus echo {#bc} ::: "$myvar"
   echo ${myvar#abc}
   parallel --plus echo {#abc} ::: "$myvar"
-
   echo ${myvar%de}
   parallel --plus echo {%de} ::: "$myvar"
   echo ${myvar%def}
   parallel --plus echo {%def} ::: "$myvar"
-
   echo ${myvar/def/ghi}
   parallel --plus echo {/def/ghi} ::: "$myvar"
-
   echo ${myvar^a}
   parallel --plus echo {^a} ::: "$myvar"
   echo ${myvar^^a}
   parallel --plus echo {^^a} ::: "$myvar"
-
   myvar=AbcAaAdef
   echo ${myvar,A}
   parallel --plus echo '{,A}' ::: "$myvar"
@@ -374,7 +367,6 @@ foo
   perl -e 'print "@ARGV\n"' A
 A
   parallel perl -e 'print "@ARGV\n"' ::: This wont work
-
   Warning: Input is read from the terminal. You either know what you
   Warning: are doing (in which case: YOU ARE AWESOME!) or you forgot
   Warning: ::: or :::: or to pipe data into parallel. If so
@@ -384,7 +376,6 @@ A
 /bin/bash: line 1: Warning:: command not found
 /bin/bash: -c: line 2: syntax error near unexpected token `('
 /bin/bash: -c: line 2: `  Warning: are doing (in which case: YOU ARE AWESOME!) or you forgot'
-
   parallel --trim r echo pre-{}-post ::: ' A '
 pre- A-post
   parallel --trim l echo pre-{}-post ::: ' A '
@@ -544,7 +535,6 @@ B D
   parallel --use-cpus-instead-of-cores -N0 sleep 1 :::: num8
   parallel --shuf echo ::: 1 2 3 ::: a b c ::: A B C
 123 abc ABC
-
   seq 10 20 | parallel --tmux 'echo start {}; sleep {}; echo done {}'
 See output with: tmux -S /tmp/parallel-tutorial-tmpdir/tmsXXXXX attach
   tmux -S /tmp/tmsXXXXX attach
@@ -567,19 +557,13 @@ parallel: Warning: sleep 8; echo 8
 parallel: Warning: This job was killed because it timed out:
 parallel: Warning: sleep 7; echo 7
   parallel --eta sleep ::: 1 3 2 2 1 3 3 2 1
-
 Computers / CPU cores / Max jobs to run
 1:local / 8 / 8
-
 Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete
-
   parallel --progress sleep ::: 1 3 2 2 1 3 3 2 1
-
 Computers / CPU cores / Max jobs to run
 1:local / 8 / 8
-
 Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete
-
   seq 1000 | parallel -j10 --bar '(echo -n {};sleep 0.1)' \
     2> >(zenity --timeout=15 --progress --auto-kill --auto-close)
   parallel --joblog /tmp/log exit  ::: 1 2 3 0
@@ -662,7 +646,6 @@ echo X; exit X
 completed 1
 completed 2
 completed 0
-
 tried 0
   show_signals() {
     perl -e 'for(keys %SIG) {
@@ -770,55 +753,41 @@ Unknown option: myecho $myvar
 Unknown option: :::
 Unknown option: green
 env_parallel only works if it is a function. Do the below and restart your shell.
-
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: aliases, functions, variables, arrays
-
 zsh:   Put this in $HOME/.zshrc:  . `which env_parallel.zsh`
        E.g. by doing:  echo '. `which env_parallel.zsh`' >> $HOME/.zshenv
        Supports: functions, variables, arrays
-
 fish:  Put this in $HOME/.config/fish/config.fish:
          . (which env_parallel.fish)
        E.g. by doing:
          echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
        Supports: aliases, functions, variables, arrays
-
 ksh:   Put this in $HOME/.kshrc:  source `which env_parallel.ksh`
        E.g. by doing:  echo 'source `which env_parallel.ksh`' >> $HOME/.kshrc
        Supports: aliases, functions, variables, arrays
-
 mksh:  Put this in $HOME/.mkshrc:  source `which env_parallel.mksh`
        E.g. by doing:  echo 'source `which env_parallel.mksh`' >> $HOME/.mkshrc
        Supports: aliases, functions, variables, arrays
-
 pdksh: Put this in $HOME/.profile:  source `which env_parallel.pdksh`
        E.g. by doing:  echo '. `which env_parallel.pdksh`' >> $HOME/.profile
        Supports: aliases, functions, variables, arrays
-
 ash:   Put this in $HOME/.profile:  . `which env_parallel.ash`
        E.g. by doing:  echo '. `which env_parallel.ash`' >> $HOME/.profile
        Supports: aliases, variables
-
 dash:  Put this in $HOME/.profile:  . `which env_parallel.dash`
        E.g. by doing:  echo '. `which env_parallel.dash`' >> $HOME/.profile
        Supports: aliases, variables
-
 csh:   Put this in $HOME/.cshrc:  source `which env_parallel.csh`
        E.g. by doing:  echo 'source `which env_parallel.csh`' >> $HOME/.cshrc
        Supports: aliases, variables, arrays with no special chars
-
 tcsh:  Put this in $HOME/.tcshrc:  source `which env_parallel.tcsh`
        E.g. by doing:  echo 'source `which env_parallel.tcsh`' >> $HOME/.tcshrc
        Supports: aliases, variables, arrays with no special chars
-
 To install in all shells run:
-
   env_parallel --install
-
 For details: see  man env_parallel
-
   MYVAR='foo bar'
   export MYVAR
   parallel --env MYVAR -S $SERVER1 echo '$MYVAR' ::: baz
@@ -928,7 +897,6 @@ mysqlrootpass
   VAR=foo
   export VAR
   parallel --env _ -S $SERVER1 'echo $VAR; my_func2' ::: bar
-
 /bin/bash: my_func2: command not found
   NOT='not exported var'
   alias myecho=echo
@@ -944,55 +912,41 @@ Unknown option: echo $NOT; not_ex
 Unknown option: :::
 Unknown option: bar
 env_parallel only works if it is a function. Do the below and restart your shell.
-
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: aliases, functions, variables, arrays
-
 zsh:   Put this in $HOME/.zshrc:  . `which env_parallel.zsh`
        E.g. by doing:  echo '. `which env_parallel.zsh`' >> $HOME/.zshenv
        Supports: functions, variables, arrays
-
 fish:  Put this in $HOME/.config/fish/config.fish:
          . (which env_parallel.fish)
        E.g. by doing:
          echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
        Supports: aliases, functions, variables, arrays
-
 ksh:   Put this in $HOME/.kshrc:  source `which env_parallel.ksh`
        E.g. by doing:  echo 'source `which env_parallel.ksh`' >> $HOME/.kshrc
        Supports: aliases, functions, variables, arrays
-
 mksh:  Put this in $HOME/.mkshrc:  source `which env_parallel.mksh`
        E.g. by doing:  echo 'source `which env_parallel.mksh`' >> $HOME/.mkshrc
        Supports: aliases, functions, variables, arrays
-
 pdksh: Put this in $HOME/.profile:  source `which env_parallel.pdksh`
        E.g. by doing:  echo '. `which env_parallel.pdksh`' >> $HOME/.profile
        Supports: aliases, functions, variables, arrays
-
 ash:   Put this in $HOME/.profile:  . `which env_parallel.ash`
        E.g. by doing:  echo '. `which env_parallel.ash`' >> $HOME/.profile
        Supports: aliases, variables
-
 dash:  Put this in $HOME/.profile:  . `which env_parallel.dash`
        E.g. by doing:  echo '. `which env_parallel.dash`' >> $HOME/.profile
        Supports: aliases, variables
-
 csh:   Put this in $HOME/.cshrc:  source `which env_parallel.csh`
        E.g. by doing:  echo 'source `which env_parallel.csh`' >> $HOME/.cshrc
        Supports: aliases, variables, arrays with no special chars
-
 tcsh:  Put this in $HOME/.tcshrc:  source `which env_parallel.tcsh`
        E.g. by doing:  echo 'source `which env_parallel.tcsh`' >> $HOME/.tcshrc
        Supports: aliases, variables, arrays with no special chars
-
 To install in all shells run:
-
   env_parallel --install
-
 For details: see  man env_parallel
-
   parallel -vv --pipepart --block 1M wc :::: num30000
 <num30000 perl -e 'while(@ARGV){sysseek(STDIN,shift,0)||die;$left=shift;while($read=sysread(STDIN,$buf,$left>131072?131072:$left)){$left-=$read;syswrite(STDOUT,$buf);}}' 0 0 0 168894 |(wc)
   30000   30000  168894
@@ -1013,49 +967,34 @@ Unknown option: a
 Unknown option: b
 parset only works if it is a function. The function is defined as part
 of env_parallel.
-
 Do the below and restart your shell.
-
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: aliases, functions, variables, arrays
-
 zsh:   Put this in $HOME/.zshrc:  . `which env_parallel.zsh`
        E.g. by doing:  echo '. `which env_parallel.zsh`' >> $HOME/.zshenv
        Supports: functions, variables, arrays
-
 fish:  Unsupported
-
 ksh:   Put this in $HOME/.kshrc:  source `which env_parallel.ksh`
        E.g. by doing:  echo 'source `which env_parallel.ksh`' >> $HOME/.kshrc
        Supports: aliases, functions, variables, arrays
-
 mksh:  Put this in $HOME/.mkshrc:  source `which env_parallel.mksh`
        E.g. by doing:  echo 'source `which env_parallel.mksh`' >> $HOME/.mkshrc
        Supports: aliases, functions, variables, arrays
-
 pdksh: Put this in $HOME/.profile:  source `which env_parallel.pdksh`
        E.g. by doing:  echo '. `which env_parallel.pdksh`' >> $HOME/.profile
        Supports: aliases, functions, variables, arrays
-
 ash:   Put this in $HOME/.profile:  . `which env_parallel.ash`
        E.g. by doing:  echo '. `which env_parallel.ash`' >> $HOME/.profile
        Supports: aliases, variables
-
 dash:  Put this in $HOME/.profile:  . `which env_parallel.dash`
        E.g. by doing:  echo '. `which env_parallel.dash`' >> $HOME/.profile
        Supports: aliases, variables
-
 csh:   Unsupported
-
 tcsh:  Unsupported
-
 To install in all shells run:
-
   parset --install
-
 For details: see  man parset
-
   parset myarray seq {} 5 ::: 1 2 3
   echo "${myarray[1]}"
 Unknown option: myarray
@@ -1068,49 +1007,34 @@ Unknown option: 2
 Unknown option: 3
 parset only works if it is a function. The function is defined as part
 of env_parallel.
-
 Do the below and restart your shell.
-
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: aliases, functions, variables, arrays
-
 zsh:   Put this in $HOME/.zshrc:  . `which env_parallel.zsh`
        E.g. by doing:  echo '. `which env_parallel.zsh`' >> $HOME/.zshenv
        Supports: functions, variables, arrays
-
 fish:  Unsupported
-
 ksh:   Put this in $HOME/.kshrc:  source `which env_parallel.ksh`
        E.g. by doing:  echo 'source `which env_parallel.ksh`' >> $HOME/.kshrc
        Supports: aliases, functions, variables, arrays
-
 mksh:  Put this in $HOME/.mkshrc:  source `which env_parallel.mksh`
        E.g. by doing:  echo 'source `which env_parallel.mksh`' >> $HOME/.mkshrc
        Supports: aliases, functions, variables, arrays
-
 pdksh: Put this in $HOME/.profile:  source `which env_parallel.pdksh`
        E.g. by doing:  echo '. `which env_parallel.pdksh`' >> $HOME/.profile
        Supports: aliases, functions, variables, arrays
-
 ash:   Put this in $HOME/.profile:  . `which env_parallel.ash`
        E.g. by doing:  echo '. `which env_parallel.ash`' >> $HOME/.profile
        Supports: aliases, variables
-
 dash:  Put this in $HOME/.profile:  . `which env_parallel.dash`
        E.g. by doing:  echo '. `which env_parallel.dash`' >> $HOME/.profile
        Supports: aliases, variables
-
 csh:   Unsupported
-
 tcsh:  Unsupported
-
 To install in all shells run:
-
   parset --install
-
 For details: see  man parset
-
   cmd=("echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
   parset data ::: "${cmd[@]}"
   echo "${data[0]}"
@@ -1121,49 +1045,34 @@ Unknown option: echo '<<joe  "double  space"  cartoon>>'
 Unknown option: pwd
 parset only works if it is a function. The function is defined as part
 of env_parallel.
-
 Do the below and restart your shell.
-
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: aliases, functions, variables, arrays
-
 zsh:   Put this in $HOME/.zshrc:  . `which env_parallel.zsh`
        E.g. by doing:  echo '. `which env_parallel.zsh`' >> $HOME/.zshenv
        Supports: functions, variables, arrays
-
 fish:  Unsupported
-
 ksh:   Put this in $HOME/.kshrc:  source `which env_parallel.ksh`
        E.g. by doing:  echo 'source `which env_parallel.ksh`' >> $HOME/.kshrc
        Supports: aliases, functions, variables, arrays
-
 mksh:  Put this in $HOME/.mkshrc:  source `which env_parallel.mksh`
        E.g. by doing:  echo 'source `which env_parallel.mksh`' >> $HOME/.mkshrc
        Supports: aliases, functions, variables, arrays
-
 pdksh: Put this in $HOME/.profile:  source `which env_parallel.pdksh`
        E.g. by doing:  echo '. `which env_parallel.pdksh`' >> $HOME/.profile
        Supports: aliases, functions, variables, arrays
-
 ash:   Put this in $HOME/.profile:  . `which env_parallel.ash`
        E.g. by doing:  echo '. `which env_parallel.ash`' >> $HOME/.profile
        Supports: aliases, variables
-
 dash:  Put this in $HOME/.profile:  . `which env_parallel.dash`
        E.g. by doing:  echo '. `which env_parallel.dash`' >> $HOME/.profile
        Supports: aliases, variables
-
 csh:   Unsupported
-
 tcsh:  Unsupported
-
 To install in all shells run:
-
   parset --install
-
 For details: see  man parset
-
   parallel --sqlandworker csv:////%2Ftmp%2Flog.csv \
     seq ::: 10 ::: 12 13 14
   cat /tmp/log.csv
@@ -1202,7 +1111,6 @@ bar quuz
   sql $DBURL 'SELECT * FROM mytable ORDER BY Seq;'
 Error:
 SELECT * FROM mytable ORDER BY Seq; is not a valid DBURL
-
 sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
   parallel --sqlmaster $DBURLTABLE echo ::: foo bar ::: baz quuz
 parallel: Error: echo is not a valid DBURL
@@ -1319,45 +1227,36 @@ Error: no such file "@ARGV\n"
   perl_echo foo bar
 /bin/bash: perl_echo: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/perl
-  
   print "Arguments @ARGV\n";
 Error: no such file "Arguments @ARGV\n"
   #!/usr/bin/parallel --shebang-wrap /usr/bin/python
-  
   print 'Arguments', str(sys.argv)
 /bin/bash: -c: line 3: syntax error near unexpected token `('
 /bin/bash: -c: line 3: `  print 'Arguments', str(sys.argv)'
   #!/usr/bin/parallel --shebang-wrap /bin/bash
-  
   echo Arguments "$@"
 Arguments
   #!/usr/bin/parallel --shebang-wrap /bin/csh
-  
   echo Arguments "$argv"
 Arguments 
   #!/usr/bin/parallel --shebang-wrap /usr/bin/tclsh
-  
   puts "Arguments $argv"
 /bin/bash: line 2: puts: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/Rscript --vanilla --slave
-  
   args <- commandArgs(trailingOnly = TRUE)
   print(paste("Arguments ",args))
 /bin/bash: -c: line 2: syntax error near unexpected token `('
 /bin/bash: -c: line 2: `  args <- commandArgs(trailingOnly = TRUE)'
   #!/usr/bin/parallel --shebang-wrap ARG={} /usr/bin/gnuplot
-  
   print "Arguments ", system('echo $ARG')
 /bin/bash: -c: line 2: syntax error near unexpected token `('
 /bin/bash: -c: line 2: `  print "Arguments ", system('echo $ARG')'
   #!/usr/bin/parallel --shebang-wrap /usr/bin/ruby
-  
   print "Arguments "
   puts ARGV
 Error: no such file "Arguments "
 /bin/bash: line 3: puts: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/octave
-  
   printf ("Arguments");
   arg_list = argv ();
   for i = 1:nargin
@@ -1367,7 +1266,6 @@ Error: no such file "Arguments "
 /bin/bash: -c: line 2: syntax error near unexpected token `"Arguments"'
 /bin/bash: -c: line 2: `  printf ("Arguments");'
   #!/usr/bin/parallel --shebang-wrap /usr/bin/clisp
-  
   (format t "~&~S~&" 'Arguments)
   (format t "~&~S~&" *args*)
 /bin/bash: -c: line 2: unexpected EOF while looking for matching `''
@@ -1391,7 +1289,6 @@ Arguments
 /bin/bash: -c: line 0: syntax error near unexpected token `('
 /bin/bash: -c: line 0: `  var myArgs = process.argv.slice(2);'
   #!/usr/bin/parallel --shebang-wrap /usr/bin/lua
-  
   io.write "Arguments"
   for a = 1, #arg do
     io.write(" ")
@@ -1402,7 +1299,6 @@ Arguments
 /bin/bash: -c: line 3: syntax error near unexpected token `='
 /bin/bash: -c: line 3: `  for a = 1, #arg do'
   #!/usr/bin/parallel --shebang-wrap ARGV={} /usr/bin/csharp
-  
   var argv = Environment.GetEnvironmentVariable("ARGV");
   print("Arguments "+argv);
 /bin/bash: -c: line 2: syntax error near unexpected token `('
@@ -1427,7 +1323,6 @@ The second finished running in the foreground
 First started
 First done
   sem --id my_id -u 'echo Second started; sleep 10; echo Second done'
-Second done
   sem --jobs 3 --id my_id -u 'echo Start 1; sleep 5; echo 1 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 2; sleep 6; echo 2 done' &&
   sem --jobs 3 --id my_id -u 'echo Start 3; sleep 7; echo 3 done' &&
@@ -1452,11 +1347,9 @@ parallel: Warning: Semaphore timed out. Stealing the semaphore.
 parallel: Warning: Semaphore timed out. Exiting.
   parallel --help
 Usage:
-
 parallel [options] [command [arguments]] < list_of_arguments
 parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...
 cat ... | parallel --pipe [options] [command [arguments]]
-
 -j n            Run n jobs in parallel
 -k              Keep same order
 -X              Multiple arguments with context replace
@@ -1465,38 +1358,29 @@ cat ... | parallel --pipe [options] [command [arguments]]
 {3} {3.} {3/} {3/.} {=3 perl code =}    Positional replacement strings
 With --plus:    {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =
                 {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
-
 -S sshlogin     Example: foo@server.example.com
 --slf ..        Use ~/.parallel/sshloginfile as the list of sshlogins
 --trc {}.bar    Shorthand for --transfer --return {}.bar --cleanup
 --onall         Run the given command with argument on all sshlogins
 --nonall        Run the given command with no arguments on all sshlogins
-
 --pipe          Split stdin (standard input) to multiple jobs.
 --recend str    Record end separator for --pipe.
 --recstart str  Record start separator for --pipe.
-
 See 'man parallel' for details
-
 Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
-
   O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,
   DOI https://doi.org/10.5281/zenodo.1146014
-
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
-
   parallel --version
 GNU parallel VERSION
 Copyright (C) 2007-2019 Ole Tange and Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
 GNU parallel comes with no warranty.
-
 Web site: http://www.gnu.org/software/parallel
-
 When using programs that use GNU Parallel to process data for publication
 please cite as described in 'parallel --citation'.
   parallel --minversion VERSION && \
@@ -1507,7 +1391,6 @@ Your version is at least VERSION.
 Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
-
 @book{tange_ole_2018_1146014,
       author       = {Tange, Ole},
       title        = {GNU Parallel 2018},
@@ -1518,20 +1401,15 @@ scientific publication, please cite:
       doi          = {10.5281/zenodo.1146014},
       url          = {https://doi.org/10.5281/zenodo.1146014}
 }
-
 (Feel free to use \nocite{tange_ole_2018_1146014})
-
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
-
 More about funding GNU Parallel and the citation notice:
 https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
 https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
-
 If you send a copy of your published article to tange@gnu.org, it will be
 mentioned in the release notes of next version of GNU Parallel.
-
   parallel --number-of-cpus
   parallel --number-of-cores
 9

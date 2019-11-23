@@ -185,7 +185,7 @@ par_too_long_line_X() {
 
 par_test_cpu_detection() {
     # Xeon 8 core server in Germany
-    cpuinfo1="
+    cpu1="
 processor	: 0
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -387,7 +387,7 @@ address sizes	: 38 bits physical, 48 bits virtual
 power management:
 ";
     # Core i7-3632QM Acer laptop
-    cpuinfo2="
+    cpu2="
 processor	: 0
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -605,7 +605,7 @@ address sizes	: 36 bits physical, 48 bits virtual
 power management:
 ";
     # Core i5-2410M laptop firewall
-    cpuinfo3="
+    cpu3="
 processor	: 0
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -715,7 +715,7 @@ address sizes	: 36 bits physical, 48 bits virtual
 power management:
 ";
     #
-    cpuinfo4="
+    cpu4="
 processor	: 0
 vendor_id	: AuthenticAMD
 cpu family	: 15
@@ -758,7 +758,7 @@ bogomips	: 3616.94
 clflush size	: 64
 power management: ts fid vid ttp
 ";
-    cpuinfo5="
+    cpu5="
 processor	: 0
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -2008,7 +2008,7 @@ address sizes	: 46 bits physical, 48 bits virtual
 power management:
 ";
     # HP Laptop Compaq 6530b
-    cpuinfo6="
+    cpu6="
 processor	: 0
 vendor_id	: GenuineIntel
 cpu family	: 6
@@ -2065,7 +2065,7 @@ power management:
 
 ";
     # Huawei P Smart Octa-core (4x2.36 GHz Cortex-A53 & 4x1.7 GHz Cortex-A53)
-    cpuinfo7="
+    cpu7="
 processor	: 0
 BogoMIPS	: 3.84
 Features	: fp asimd evtstrm aes pmull sha1 sha2 crc32
@@ -2139,6 +2139,22 @@ CPU part	: 0xd03
 CPU revision	: 4
 
 ";
+    # x96 quad-core Android
+    cpu8="
+Processor       : AArch64 Processor rev 4 (aarch64)
+processor       : 0
+processor       : 2
+processor       : 3
+Features        : fp asimd evtstrm aes pmull sha1 sha2 crc32 wp half thumb fastmult vfp edsp neon vfpv3 tlsi vfpv4 idiva idivt 
+CPU implementer : 0x41
+CPU architecture: 8
+CPU variant     : 0x0
+CPU part        : 0xd03
+CPU revision    : 4
+
+Hardware        : Amlogic
+Serial          : 210a82004906ca55455227aefac9be20
+";
     test_one() {
 	export PARALLEL_CPUINFO="$1"
 	echo $(parallel --number-of-sockets) \
@@ -2148,8 +2164,8 @@ CPU revision	: 4
     }
     export -f test_one
     parallel -j0 -0 -k --tagstring {2} test_one {1} \
-	 :::  "$cpuinfo1" "$cpuinfo2" "$cpuinfo3" "$cpuinfo4" "$cpuinfo5" "$cpuinfo6" "$cpuinfo7" \
-	 :::+ "2-8-8-8" "1-4-8-4" "1-2-4-2" "1-2-2-2" "2-24-48-24" "1-2-2-2" "1-8-8-8"
+	 :::  "$cpu1" "$cpu2" "$cpu3" "$cpu4" "$cpu5"    "$cpu6" "$cpu7" "$cpu8" \
+	 :::+ 2-8-8-8 1-4-8-4 1-2-4-2 1-2-2-2 2-24-48-24 1-2-2-2 1-8-8-8 1-4-4-4
 }
 
 par_null_resume() {

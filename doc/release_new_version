@@ -209,9 +209,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20191122 ('Berlin/Morales') released <<[stable]>>
+Subject: GNU Parallel 20191122 ('Quantum Supremacy') released <<[stable]>>
 
-GNU Parallel 20191122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20191122 ('Quantum Supremacy') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -224,11 +224,11 @@ Quote of the month:
 
 New in this release:
 
-* GNU Parallel was presented at Driving IT. Slides:
+* GNU Parallel was presented at Driving IT. Slides: cloud.prosa.dk/s/drivingit
 
-https://blog.naderman.de/2019/11/14/restarting-supervisord-processes-in-parallel/
+* Restarting supervisord processes in parallel https://blog.naderman.de/2019/11/14/restarting-supervisord-processes-in-parallel/
 
-* https://www.reddit.com/r/DataHoarder/comments/dsgmhc/parallel_archiving_techniques/
+* Using GNU Parallel to Create Archives Faster https://www.reddit.com/r/DataHoarder/comments/dsgmhc/parallel_archiving_techniques/
 
 * Bug fixes and man page updates.
 

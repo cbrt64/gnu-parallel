@@ -23,7 +23,7 @@ doc_DATA = parallel.html env_parallel.html sem.html sql.html		\
 	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
 	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
 	parallel_alternatives.pdf parcat.pdf parset.pdf			\
-	parallel_cheat.pdf
+	parallel_cheat_bw.pdf
 endif
 
 # Build documentation file if the tool to build exists.
@@ -258,9 +258,9 @@ parset.pdf: parset.pod
 	pod2pdf --output-file $(srcdir)/parset.pdf $(srcdir)/parset.pod --title "GNU parset" \
 	|| echo "Warning: pod2pdf not found. Using old parset.pdf"
 
-parallel_cheat.pdf: parallel_cheat.fodt
-	libreoffice --headless --convert-to pdf parallel_cheat.fodt \
-	|| echo "Warning: libreoffice failed. Using old parallel_cheat.pdf"
+parallel_cheat_bw.pdf: parallel_cheat_bw.fodt
+	libreoffice --headless --convert-to pdf parallel_cheat_bw.fodt \
+	|| echo "Warning: libreoffice failed. Using old parallel_cheat_bw.pdf"
 
 sem: parallel
 	ln -fs parallel sem
@@ -279,7 +279,7 @@ DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
 	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
 	parallel_alternatives.pdf parcat.pdf parset.pdf			\
-	parallel_cheat.pdf
+	parallel_cheat_bw.pdf
 
 EXTRA_DIST = parallel sem sql niceload parcat parset env_parallel	\
 	env_parallel.ash env_parallel.bash env_parallel.csh		\
@@ -288,4 +288,4 @@ EXTRA_DIST = parallel sem sql niceload parcat parset env_parallel	\
 	env_parallel.tcsh env_parallel.zsh parcat.pod parset.pod	\
 	sem.pod parallel.pod env_parallel.pod niceload.pod		\
 	parallel_tutorial.pod parallel_book.pod parallel_design.pod	\
-	parallel_alternatives.pod parallel_cheat.fodt $(DISTCLEANFILES)
+	parallel_alternatives.pod parallel_cheat_bw.fodt $(DISTCLEANFILES)

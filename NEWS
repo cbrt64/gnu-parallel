@@ -1,3 +1,17 @@
+20191122
+
+* GNU Parallel was presented at Driving IT. Slides:
+  cloud.prosa.dk/s/drivingit
+
+* Restarting supervisord processes in parallel
+  https://blog.naderman.de/2019/11/14/restarting-supervisord-processes-in-parallel/
+
+* Using GNU Parallel to Create Archives Faster
+  https://www.reddit.com/r/DataHoarder/comments/dsgmhc/parallel_archiving_techniques/
+
+* Bug fixes and man page updates.
+
+
 20191022
 
 * --tee will use --output-error=warn-nopipe if supported by tee.

@@ -564,6 +564,7 @@ par_test_cpu_detection	1-2-2-2	1 2 2 2
 par_test_cpu_detection	2-24-48-24	2 24 48 24
 par_test_cpu_detection	1-2-2-2	1 2 2 2
 par_test_cpu_detection	1-8-8-8	1 8 8 8
+par_test_cpu_detection	1-4-4-4	1 4 4 4
 par_too_long_line_X	bug #54869: Long lines break
 par_too_long_line_X	      1   29302  131012
 par_too_long_line_X	      1   12698   63490
