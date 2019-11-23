@@ -3,7 +3,7 @@ Quote of the month:
   Well anyway, It was blazingly fast and astonished by performance. guess I'll never use xargs.
     -- (Not) Akaming @_Akamig@twitter
 
-GNU parallel has helped me kill a Hadoop cluster before.
+  GNU parallel has helped me kill a Hadoop cluster before.
     -- Travis Campbell @hcoyote@twitter
 
   Yeah, GNU parallel is a beast when used accordingly.
@@ -43,7 +43,6 @@ GNU parallel has helped me kill a Hadoop cluster before.
   gnu parallel and emacs).
     -- Peter Kjellström @nsccap@twitter
 
-
   GNU/Parallel umm... tempting.
     -- k-leb k @dcatdemon@twitter
 
@@ -53,11 +52,9 @@ GNU parallel has helped me kill a Hadoop cluster before.
   Not sure if it counts as an "alt" tool but GNU parallel really took my shell scripting game to the next level.
     -- @alinajaf@twitter
 
-
 === Used ===
   [L]earning about parallel was amazing for me, it gives us many beautiful solutions.
      -- SergioAraujo@stackoverflow
-  
 
   I've said it before: The command line program GNU Parallel is a godsend.
     -- Jo Chr. Oterhals @oterhals
