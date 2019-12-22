@@ -4,6 +4,19 @@
 # Each should be taking 30-100s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_bug57364() {
+    echo '### bug #57364: Race condition creating len cache file.'
+    j=32
+    set -e
+    for i in $(seq 1 50); do
+        # Clear cache.
+        rm -rf "${HOME}/.parallel/tmp"
+        # Try to launch multiple parallel simultaneously.
+        seq $j |
+            xargs -P $j -n 1 parallel true $i :::
+    done 2>&1
+}
+
 par_sighup() {
     echo '### Test SIGHUP'
     parallel -k -j5 sleep 15';' echo ::: {1..99} >/tmp/parallel$$ 2>&1 &

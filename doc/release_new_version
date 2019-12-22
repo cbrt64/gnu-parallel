@@ -209,9 +209,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20191122 ('Quantum Supremacy') released <<[stable]>>
+Subject: GNU Parallel 20191222 ('Impeachment') released <<[stable]>>
 
-GNU Parallel 20191122 ('Quantum Supremacy') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20191222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -224,13 +224,14 @@ Quote of the month:
 
 New in this release:
 
-* GNU Parallel was presented at Driving IT. Slides: cloud.prosa.dk/s/drivingit
+* GNU Parallel course in Copenhagen https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-med-ole-tange/
 
-* Restarting supervisord processes in parallel https://blog.naderman.de/2019/11/14/restarting-supervisord-processes-in-parallel/
+* GNU Parallel course in Århus https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-og-parallelisering-i-unix-shellen/
 
-* Using GNU Parallel to Create Archives Faster https://www.reddit.com/r/DataHoarder/comments/dsgmhc/parallel_archiving_techniques/
+* GNU Parallel is used in https://github.com/JeffersonLab/rfw_tsf_extractor
 
 * Bug fixes and man page updates.
+
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

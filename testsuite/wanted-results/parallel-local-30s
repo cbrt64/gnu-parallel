@@ -1,3 +1,4 @@
+par_bug57364	### bug #57364: Race condition creating len cache file.
 par_keeporder_roundrobin	bug #50081: --keep-order --round-robin should give predictable results
 par_keeporder_roundrobin	OK
 par_linebuffer_files	bug #48658: --linebuffer --files
