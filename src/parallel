@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
-# Copyright (C) 2007-2019 Ole Tange and Free Software Foundation, Inc.
+# Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free
+# Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -504,7 +505,7 @@ sub pipe_shard_setup() {
     } else {
 	$script = sharder_script();
     }
-    
+
     # cat foo | sharder sep col fifo1 fifo2 fifo3 ... fifoN
 
     if($shardbin =~ /^[a-z_][a-z_0-9]*(\s|$)/i) {
@@ -589,8 +590,7 @@ sub find_header($$) {
 	if($opt::header eq ":") { $opt::header = "(.*\n)"; }
 	# Number = number of lines
 	$opt::header =~ s/^(\d+)$/"(.*\n)"x$1/e;
-	while(read($fh,substr($$buf_ref,length $$buf_ref,0),
-		   $Global::blocksize)) {
+	while(sysread($fh,$$buf_ref,$Global::blocksize,length $$buf_ref)) {
 	    if($$buf_ref =~ s/^($opt::header)//) {
 		$header = $1;
 		last;
@@ -637,11 +637,11 @@ sub find_split_positions($$$) {
 	    push(@pos,$pos);
 	} else {
 	    # Seek the the block start
-	    if(not seek($fh, $pos, 0)) {
+	    if(not sysseek($fh, $pos, 0)) {
 		::error("Cannot seek to $pos in $file");
 		edit(255);
 	    }
-	    while(read($fh,substr($buf,length $buf,0),$dd_block_size)) {
+	    while(sysread($fh,$buf,$dd_block_size,length $buf)) {
 		if($opt::regexp) {
 		    # If match /$recend$recstart/ => Record position
 		    if($buf =~ m:^(.*$recend)$recstart:os) {
@@ -667,7 +667,7 @@ sub find_split_positions($$$) {
 	}
     }
     if($pos[$#pos] != $size) {
-	# Last splitpoint was not at end of the file: add it
+	# Last splitpoint was not at end of the file: add $size as the last
 	push @pos, $size;
     }
     close $fh;
@@ -948,131 +948,197 @@ sub spreadstdin() {
     my $two_gb = 2**31-1;
     my $blocksize = $Global::blocksize;
     my $in = *STDIN;
+    my $timeout = ::multiply_time_units($opt::blocktimeout);
+
     my $header = find_header(\$buf,$in);
+    my $anything_written;
+    my $eof;
+
+    sub read_block() {
+	# Read a --blocksize from STDIN
+	# possibly interrupted by --blocktimeout
+	# Add up to the next full block
+	my $readsize = $blocksize - (length $buf) % $blocksize;
+	my ($nread,$alarm);
+	eval {
+	    local $SIG{ALRM} = sub { die "alarm\n" }; # NB: \n required
+	    # --blocktimeout (or 0 if not set)
+	    alarm $timeout;
+	    do {
+		$nread = sysread $in, $buf, $readsize, length $buf;
+		$readsize -= $nread;
+	    } while($readsize and $nread);
+	    alarm 0;
+	};
+	if ($@) {
+	    die unless $@ eq "alarm\n";   # propagate unexpected errors
+	    $alarm = 1;
+	} else {
+	    $alarm = 0;
+	}
+	$eof = not ($nread or $alarm);
+    }
+
+    sub pass_n_line_records() {
+	# Pass records of N lines
+	my $n_lines = $buf =~ tr/\n/\n/;
+	my $last_newline_pos = rindex64(\$buf,"\n");
+	# Go backwards until there are full n-line records
+	while($n_lines % $Global::max_lines) {
+	    $n_lines--;
+	    $last_newline_pos = rindex64(\$buf,"\n",$last_newline_pos-1);
+	}
+	# Chop at $last_newline_pos as that is where n-line record ends
+	$anything_written +=
+	    write_record_to_pipe($chunk_number++,\$header,\$buf,
+				 $recstart,$recend,$last_newline_pos+1);
+	shorten(\$buf,$last_newline_pos+1);
+    }
+
+    sub pass_n_regexps() {
+	# Pass records of N regexps
+	# -N => (start..*?end){n}
+	# -L -N => (start..*?end){n*l}
+	my $read_n_lines = -1+
+	    $Global::max_number_of_args * ($Global::max_lines || 1);
+	# (?!negative lookahead) is needed to avoid backtracking
+	# See: https://unix.stackexchange.com/questions/439356/
+	while($buf =~
+	      /(
+	      # Either recstart or at least one char from start
+	      ^(?: $recstart | .)
+	      # followed something
+	      (?:(?!$recend$recstart).)*?
+	      # and then recend
+	      $recend
+	      # Then n-1 times recstart.*recend
+	      (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines}
+	      )
+	      # Followed by recstart
+	      (?=$recstart)/osx) {
+	    $anything_written +=
+		write_record_to_pipe($chunk_number++,\$header,\$buf,
+				     $recstart,$recend,length $1);
+	    shorten(\$buf,length $1);
+	}
+    }
+
+    sub pass_regexp() {
+	# Find the last recend-recstart in $buf
+	$eof and return;
+	if($buf =~ /^(.*$recend)$recstart.*?$/os) {
+	    $anything_written +=
+		write_record_to_pipe($chunk_number++,\$header,\$buf,
+				     $recstart,$recend,length $1);
+	    shorten(\$buf,length $1);
+	}
+    }
+
+    sub pass_csv_record() {
+	# Pass CVS record
+	# We define a CSV record as an even number of " + end of line
+	# This works if you use " as quoting character
+	my $last_newline_pos = length $buf;
+	# Go backwards from the last \n and search for a position
+	# where there is an even number of "
+	do {
+	    # find last EOL
+	    $last_newline_pos = rindex64(\$buf,"\n",$last_newline_pos-1);
+	    # While uneven "
+	} while((substr($buf,0,$last_newline_pos) =~ y/"/"/)%2
+		and $last_newline_pos >= 0);
+	# Chop at $last_newline_pos as that is where CSV record ends
+	$anything_written +=
+	    write_record_to_pipe($chunk_number++,\$header,\$buf,
+				 $recstart,$recend,$last_newline_pos+1);
+	shorten(\$buf,$last_newline_pos+1);
+    }
+
+    sub pass_n() {
+	# Pass n records of --recend/--recstart
+	# -N => (start..*?end){n}
+	my $i = 0;
+	my $read_n_lines =
+	    $Global::max_number_of_args * ($Global::max_lines || 1);
+	    while(($i = nindex(\$buf,$recendrecstart,$read_n_lines)) != -1
+		  and
+		  length $buf) {
+		$i += length $recend; # find the actual splitting location
+		$anything_written +=
+		    write_record_to_pipe($chunk_number++,\$header,\$buf,
+					 $recstart,$recend,$i);
+		shorten(\$buf,$i);
+	    }
+    }
+
+    sub pass() {
+	# Pass records of --recend/--recstart
+	# Split record at fixed string
+	# Find the last recend+recstart in $buf
+	$eof and return;
+	my $i = rindex64(\$buf,$recendrecstart);
+	if($i != -1) {
+	    $i += length $recend; # find the actual splitting location
+	    $anything_written +=
+		write_record_to_pipe($chunk_number++,\$header,\$buf,
+				     $recstart,$recend,$i);
+	    shorten(\$buf,$i);
+	}
+    }
+
+    sub increase_blocksize_maybe() {
+	if(not $anything_written
+	   and not $opt::blocktimeout
+	   and not $Global::no_autoexpand_block) {
+	    # Nothing was written - maybe the block size < record size?
+	    # Increase blocksize exponentially up to 2GB-1 (2GB causes problems)
+	    if($blocksize < $two_gb) {
+		my $old_blocksize = $blocksize;
+		$blocksize = ::min(ceil($blocksize * 1.3 + 1), $two_gb);
+		::warning("A record was longer than $old_blocksize. " .
+			  "Increasing to --blocksize $blocksize.");
+	    }
+	}
+    }
+
     while(1) {
-      my $anything_written = 0;
-      my $buflen = length $buf;
-      my $readsize = ($buflen < $blocksize) ? $blocksize-$buflen : $blocksize;
-      # If $buf < $blocksize, append so it is $blocksize long after reading.
-      # Otherwise append a full $blocksize
-      if(not read($in,substr($buf,$buflen,0),$readsize)) {
-	  # End-of-file
-	  $chunk_number != 1 and last;
-	  # Force the while-loop once if everything was read by header reading
-	  $one_time_through++ and last;
-      }
-      if($opt::r) {
-	  # Remove empty lines
-	  $buf =~ s/^\s*\n//gm;
-	  if(length $buf == 0) {
-	      next;
-	  }
-      }
-      if($Global::max_lines and not $Global::max_number_of_args) {
-	  # Read n-line records
-	  my $n_lines = $buf =~ tr/\n/\n/;
-	  my $last_newline_pos = rindex64(\$buf,"\n");
-	  # Go backwards until there are full n-line records
-	  while($n_lines % $Global::max_lines) {
-	      $n_lines--;
-	      $last_newline_pos = rindex64(\$buf,"\n",$last_newline_pos-1);
-	  }
-	  # Chop at $last_newline_pos as that is where n-line record ends
-	  $anything_written +=
-	      write_record_to_pipe($chunk_number++,\$header,\$buf,
-				   $recstart,$recend,$last_newline_pos+1);
-	  shorten(\$buf,$last_newline_pos+1);
-      } elsif($opt::regexp) {
-	  if($Global::max_number_of_args) {
-	      # -N => (start..*?end){n}
-	      # -L -N => (start..*?end){n*l}
-	      my $read_n_lines = -1+
-		  $Global::max_number_of_args * ($Global::max_lines || 1);
-	      # (?!negative lookahead) is needed to avoid backtracking
-	      # See: https://unix.stackexchange.com/questions/439356/
-	      while($buf =~
-		    /(
-		    # Either recstart or at least one char from start
-		    ^(?: $recstart | .)
-		    # followed something
-		    (?:(?!$recend$recstart).)*?
-		    # and then recend
-		    $recend
-		    # Then n-1 times recstart.*recend
-		    (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines}
-		    )
-		    # Followed by recstart
-		    (?=$recstart)/osx) {
-		  $anything_written +=
-		      write_record_to_pipe($chunk_number++,\$header,\$buf,
-					   $recstart,$recend,length $1);
-		  shorten(\$buf,length $1);
-	      }
-	  } else {
-	      eof($in) and last;
-	      # Find the last recend-recstart in $buf
-	      if($buf =~ /^(.*$recend)$recstart.*?$/os) {
-		  $anything_written +=
-		      write_record_to_pipe($chunk_number++,\$header,\$buf,
-					   $recstart,$recend,length $1);
-		  shorten(\$buf,length $1);
-	      }
-	  }
-      } elsif($opt::csv) {
-	  # Read a full CSV record
-	  # even number of " + end of line
-	  my $last_newline_pos = length $buf;
-	  do {
-	      # find last EOL
-	      $last_newline_pos = rindex64(\$buf,"\n",$last_newline_pos-1);
-	      # While uneven "
-	  } while((substr($buf,0,$last_newline_pos) =~ y/"/"/)%2
-	      and $last_newline_pos >= 0);
-	  # Chop at $last_newline_pos as that is where CSV record ends
-	  $anything_written +=
-	      write_record_to_pipe($chunk_number++,\$header,\$buf,
-				   $recstart,$recend,$last_newline_pos+1);
-	  shorten(\$buf,$last_newline_pos+1);
-      } else {
-	  if($Global::max_number_of_args) {
-	      # -N => (start..*?end){n}
-	      my $i = 0;
-	      my $read_n_lines =
-		  $Global::max_number_of_args * ($Global::max_lines || 1);
-	      while(($i = nindex(\$buf,$recendrecstart,$read_n_lines)) != -1
-		    and
-		    length $buf) {
-		  $i += length $recend; # find the actual splitting location
-		  $anything_written +=
-		      write_record_to_pipe($chunk_number++,\$header,\$buf,
-					   $recstart,$recend,$i);
-		  shorten(\$buf,$i);
-	      }
-	  } else {
-	      eof($in) and last;
-	      # Find the last recend+recstart in $buf
-	      my $i = rindex64(\$buf,$recendrecstart);
-	      if($i != -1) {
-		  $i += length $recend; # find the actual splitting location
-		  $anything_written +=
-		      write_record_to_pipe($chunk_number++,\$header,\$buf,
-					   $recstart,$recend,$i);
-		  shorten(\$buf,$i);
-	      }
-	  }
-      }
-      if(not $anything_written
-	 and not eof($in)
-	 and not $Global::no_autoexpand_block) {
-	  # Nothing was written - maybe the block size < record size?
-	  # Increase blocksize exponentially up to 2GB-1 (2GB causes problems)
-	  if($blocksize < $two_gb) {
-	      my $old_blocksize = $blocksize;
-	      $blocksize = ::min(ceil($blocksize * 1.3 + 1), $two_gb);
-	      ::warning("A record was longer than $old_blocksize. " .
-			"Increasing to --blocksize $blocksize.");
-	  }
-      }
+	$anything_written = 0;
+	read_block();
+	if($opt::r) {
+	    # Remove empty lines
+	    $buf =~ s/^\s*\n//gm;
+	    if(length $buf == 0) {
+		if($eof) {
+		    last;
+		} else {
+		    next;
+		}
+	    }
+	}
+	if($Global::max_lines and not $Global::max_number_of_args) {
+	    # Pass n-line records
+	    pass_n_line_records();
+	} elsif($opt::csv) {
+	    # Pass a full CSV record
+	    pass_csv_record();
+	} elsif($opt::regexp) {
+	    # Split record at regexp
+	    if($Global::max_number_of_args) {
+		pass_n_regexps();
+	    } else {
+		pass_regexp();
+	    }
+	} else {
+	    # Pass normal --recend/--recstart record
+	    if($Global::max_number_of_args) {
+		pass_n();
+	    } else {
+		pass();
+	    }
+	}
+	$eof and last;
+	increase_blocksize_maybe();
+	::debug("init", "Round\n");
     }
     ::debug("init", "Done reading input\n");
 
@@ -1092,7 +1158,7 @@ sub spreadstdin() {
 	    }
 	}
 	# Wait for running jobs to be done
-	my $sleep =1;
+	my $sleep = 1;
 	while($Global::total_running > 0) {
 	    $sleep = ::reap_usleep($sleep);
 	    start_more_jobs();
@@ -1530,6 +1596,7 @@ sub options_hash() {
 	 "remove-rec-sep|removerecsep|rrs" => \$opt::remove_rec_sep,
 	 "files|output-as-files|outputasfiles" => \$opt::files,
 	 "block|block-size|blocksize=s" => \$opt::blocksize,
+	 "blocktimeout|block-timeout|bt=s" => \$opt::blocktimeout,
 	 "tollef" => \$opt::tollef,
 	 "gnu" => \$opt::gnu,
 	 "link|xapply" => \$opt::link,
@@ -2071,7 +2138,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20191222;
+    $Global::version = 20191223;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2280,7 +2347,7 @@ sub parse_replacement_string_options() {
     for(@opt::rpl) {
 	# Create $Global::rpl entries for --rpl options
 	# E.g: "{..} s:\.[^.]+$:;s:\.[^.]+$:;"
-	my ($shorthand,$long) = split/ /,$_,2;
+	my ($shorthand,$long) = split/\s/,$_,2;
 	$Global::rpl{$shorthand} = $long;
     }
 }
@@ -4920,7 +4987,8 @@ sub version() {
     print join
 	("\n",
 	 "GNU $Global::progname $Global::version",
-	 "Copyright (C) 2007-2019 Ole Tange and Free Software Foundation, Inc.",
+	 "Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software",
+	 "Foundation, Inc.",
 	 "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>",
 	 "This is free software: you are free to change and redistribute it.",
 	 "GNU $Global::progname comes with no warranty.",
@@ -5050,8 +5118,8 @@ sub embed() {
 	}
 	print "#!$Global::shell
 
-# Copyright (C) 2007-2019 $user, Ole Tange and Free Software
-# Foundation, Inc.
+# Copyright (C) 2007-2020 $user, Ole Tange, http://ole.tange.dk
+# and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -5263,7 +5331,7 @@ sub max(@) {
     return $max;
 }
 
-sub sum() {
+sub sum(@) {
     # Returns:
     #   Sum of values of array
     my @args = @_;
@@ -10397,7 +10465,7 @@ sub push($) {
     push @{$self->{'arg_list'}}, $record;
     # Make @arg available for {= =}
     *Arg::arg = $self->{'arg_list_flat_orig'};
-    
+
     my $quote_arg = ($Global::quote_replace and not $Global::quoting);
     for my $perlexpr (keys %{$self->{'replacecount'}}) {
 	if($perlexpr =~ /^(\d+) /) {

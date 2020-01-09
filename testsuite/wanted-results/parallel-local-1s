@@ -1,5 +1,63 @@
 par_block_negative_prefix	### This should generate 10*2 jobs
 par_block_negative_prefix	     20      40     720
+par_bug34241	### bug #34241: --pipe should not spawn unneeded processes
+par_bug34241	OK
+par_bug37042	### bug #37042: -J foo is taken from the whole command line - not just the part before the command
+par_bug37042	foo	tag_with_foo
+par_bug37042	a	tag_with_a
+par_bug37042	a	-J bug_37042_profile print_-J_bug_37042_profile
+par_bug37042	### Bug introduce by fixing bug #37042
+par_bug37042	abc
+par_bug43654	bug #43654: --bar with command not using {} - only last output line 
+par_bug43654	par_bug43654	[7m100% 1:0=0s 1                                                                   [0m[0m
+par_colsep	### Test of --colsep
+par_colsep	a b c
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a b c
+par_colsep	d e f
+par_colsep	a b c
+par_colsep	d e f
+par_colsep	a b c
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	### Test of tab as colsep
+par_colsep	abc def
+par_colsep	ghi jkl
+par_colsep	abc def
+par_colsep	ghi jkl
+par_colsep	### Test of multiple -a plus colsep
+par_colsep	abc def
+par_colsep	mno jkl
+par_colsep	### Test of multiple -a no colsep
+par_colsep	abc	def ghi
+par_colsep	jkl	mno pqr
+par_colsep	### Test of quoting after colsplit
+par_colsep	>/tmp/null >/dev/null
+par_colsep	### Test of --colsep as regexp
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a_b_c_
+par_colsep	a_b_c_d
+par_colsep	### Test of -C
+par_colsep	a_b_c_
+par_colsep	a_b_c_d
+par_colsep	### Test of --trim n
+par_colsep	a_b_' c '_
+par_colsep	a_' b '_c_d
+par_colsep	a_b_c_
+par_colsep	a_b_c_d
+par_colsep	### Test of bug: If input is empty string
+par_colsep	echo ''
+par_colsep	
+par_colsep	echo ac
+par_colsep	ac
+par_colsep	echo ac
+par_colsep	ac
 par_compress_prg_fails	### bug #44546: If --compress-program fails: fail
 par_compress_prg_fails	  	1
 par_compress_prg_fails	  	parallel: Error: false failed.
@@ -25,6 +83,12 @@ par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
 par_compress_prg_fails	--line-buffer --tag --files	1
 par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
 par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
+par_empty_string_command_line	### Test of ignore-empty string on :::
+par_empty_string_command_line	foo
+par_empty_string_command_line	ole
+par_empty_string_command_line	bar
+par_eof_on_command_line_input_source	### Test of eof string on :::
+par_eof_on_command_line_input_source	foo
 par_failing_compressor	Compress with failing (de)compressor
 par_failing_compressor	Test --tag/--line-buffer/--files in all combinations
 par_failing_compressor	Test working/failing compressor/decompressor in all combinations
@@ -155,6 +219,61 @@ par_fifo_under_csh	1
 par_fifo_under_csh	868832
 par_fifo_under_csh	1
 par_fifo_under_csh	exit 22
+par_header	### Test --header with -N
+par_header	Start
+par_header	h1
+par_header	h2
+par_header	1a
+par_header	1b
+par_header	Stop
+par_header	Start
+par_header	h1
+par_header	h2
+par_header	2a
+par_header	2b
+par_header	Stop
+par_header	Start
+par_header	h1
+par_header	h2
+par_header	3a
+par_header	Stop
+par_header	### Test --header with --block 1k
+par_header	Start
+par_header	h1
+par_header	h2
+par_header	1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	2xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	3xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	4xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	5xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	6xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	7xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	8xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	Stop
+par_header	Start
+par_header	h1
+par_header	h2
+par_header	9xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	10xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	11xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	12xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	13xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	14xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	15xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	16xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	Stop
+par_header	Start
+par_header	h1
+par_header	h2
+par_header	17xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	18xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	19xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	20xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	21xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	22xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+par_header	Stop
+par_header	### Test --header with multiple :::
+par_header	a2 b1 b1 a2
 par_header_parens	bug #49538: --header and {= =}
 par_header_parens	OK
 par_header_parens	OK
@@ -174,6 +293,85 @@ par_incomplete_linebuffer	7
 par_incomplete_linebuffer	8
 par_incomplete_linebuffer	9
 par_incomplete_linebuffer	10
+par_mix_triple_colon_with_quad_colon	### Test :::: mixed with :::
+par_mix_triple_colon_with_quad_colon	### Test :::: < ::: :::
+par_mix_triple_colon_with_quad_colon	6 4 1
+par_mix_triple_colon_with_quad_colon	6 4 2
+par_mix_triple_colon_with_quad_colon	6 4 3
+par_mix_triple_colon_with_quad_colon	6 5 1
+par_mix_triple_colon_with_quad_colon	6 5 2
+par_mix_triple_colon_with_quad_colon	6 5 3
+par_mix_triple_colon_with_quad_colon	7 4 1
+par_mix_triple_colon_with_quad_colon	7 4 2
+par_mix_triple_colon_with_quad_colon	7 4 3
+par_mix_triple_colon_with_quad_colon	7 5 1
+par_mix_triple_colon_with_quad_colon	7 5 2
+par_mix_triple_colon_with_quad_colon	7 5 3
+par_mix_triple_colon_with_quad_colon	### Test :::: <  < :::: <
+par_mix_triple_colon_with_quad_colon	6 4 1
+par_mix_triple_colon_with_quad_colon	6 4 2
+par_mix_triple_colon_with_quad_colon	6 4 3
+par_mix_triple_colon_with_quad_colon	6 5 1
+par_mix_triple_colon_with_quad_colon	6 5 2
+par_mix_triple_colon_with_quad_colon	6 5 3
+par_mix_triple_colon_with_quad_colon	7 4 1
+par_mix_triple_colon_with_quad_colon	7 4 2
+par_mix_triple_colon_with_quad_colon	7 4 3
+par_mix_triple_colon_with_quad_colon	7 5 1
+par_mix_triple_colon_with_quad_colon	7 5 2
+par_mix_triple_colon_with_quad_colon	7 5 3
+par_mix_triple_colon_with_quad_colon	### Test -a ::::  < :::: <
+par_mix_triple_colon_with_quad_colon	6 4 1
+par_mix_triple_colon_with_quad_colon	6 4 2
+par_mix_triple_colon_with_quad_colon	6 4 3
+par_mix_triple_colon_with_quad_colon	6 5 1
+par_mix_triple_colon_with_quad_colon	6 5 2
+par_mix_triple_colon_with_quad_colon	6 5 3
+par_mix_triple_colon_with_quad_colon	7 4 1
+par_mix_triple_colon_with_quad_colon	7 4 2
+par_mix_triple_colon_with_quad_colon	7 4 3
+par_mix_triple_colon_with_quad_colon	7 5 1
+par_mix_triple_colon_with_quad_colon	7 5 2
+par_mix_triple_colon_with_quad_colon	7 5 3
+par_mix_triple_colon_with_quad_colon	### Test -a -a :::
+par_mix_triple_colon_with_quad_colon	6 4 1
+par_mix_triple_colon_with_quad_colon	6 4 2
+par_mix_triple_colon_with_quad_colon	6 4 3
+par_mix_triple_colon_with_quad_colon	6 5 1
+par_mix_triple_colon_with_quad_colon	6 5 2
+par_mix_triple_colon_with_quad_colon	6 5 3
+par_mix_triple_colon_with_quad_colon	7 4 1
+par_mix_triple_colon_with_quad_colon	7 4 2
+par_mix_triple_colon_with_quad_colon	7 4 3
+par_mix_triple_colon_with_quad_colon	7 5 1
+par_mix_triple_colon_with_quad_colon	7 5 2
+par_mix_triple_colon_with_quad_colon	7 5 3
+par_mix_triple_colon_with_quad_colon	### Test -a - -a :::
+par_mix_triple_colon_with_quad_colon	6 4 1
+par_mix_triple_colon_with_quad_colon	6 4 2
+par_mix_triple_colon_with_quad_colon	6 4 3
+par_mix_triple_colon_with_quad_colon	6 5 1
+par_mix_triple_colon_with_quad_colon	6 5 2
+par_mix_triple_colon_with_quad_colon	6 5 3
+par_mix_triple_colon_with_quad_colon	7 4 1
+par_mix_triple_colon_with_quad_colon	7 4 2
+par_mix_triple_colon_with_quad_colon	7 4 3
+par_mix_triple_colon_with_quad_colon	7 5 1
+par_mix_triple_colon_with_quad_colon	7 5 2
+par_mix_triple_colon_with_quad_colon	7 5 3
+par_mix_triple_colon_with_quad_colon	### Test :::: < - :::
+par_mix_triple_colon_with_quad_colon	6 4 1
+par_mix_triple_colon_with_quad_colon	6 4 2
+par_mix_triple_colon_with_quad_colon	6 4 3
+par_mix_triple_colon_with_quad_colon	6 5 1
+par_mix_triple_colon_with_quad_colon	6 5 2
+par_mix_triple_colon_with_quad_colon	6 5 3
+par_mix_triple_colon_with_quad_colon	7 4 1
+par_mix_triple_colon_with_quad_colon	7 4 2
+par_mix_triple_colon_with_quad_colon	7 4 3
+par_mix_triple_colon_with_quad_colon	7 5 1
+par_mix_triple_colon_with_quad_colon	7 5 2
+par_mix_triple_colon_with_quad_colon	7 5 3
 par_null_resume	### --null --resume --jl
 par_null_resume	a
 par_null_resume	b
@@ -223,6 +421,64 @@ par_pxz_complains	bug #44250: pxz complains File format not recognized but decom
 par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_pxz_complains	can not seek in input: Illegal seek
 par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
+par_replacement_rename	### Test --basenamereplace
+par_replacement_rename	b.c b.c b.c b b b
+par_replacement_rename	b.c
+par_replacement_rename	b.c
+par_replacement_rename	b.c
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	### Test --bnr
+par_replacement_rename	b.c b.c b.c b b b
+par_replacement_rename	b.c
+par_replacement_rename	b.c
+par_replacement_rename	b.c
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	### Test --extensionreplace
+par_replacement_rename	/a/b a/b b /a/b a/b b
+par_replacement_rename	/a/b
+par_replacement_rename	a/b
+par_replacement_rename	b
+par_replacement_rename	/a/b
+par_replacement_rename	a/b
+par_replacement_rename	b
+par_replacement_rename	### Test --er
+par_replacement_rename	/a/b a/b b /a/b a/b b
+par_replacement_rename	/a/b
+par_replacement_rename	a/b
+par_replacement_rename	b
+par_replacement_rename	/a/b
+par_replacement_rename	a/b
+par_replacement_rename	b
+par_replacement_rename	### Test --basenameextensionreplace
+par_replacement_rename	b b b b b b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	### Test --bner
+par_replacement_rename	b b b b b b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_rename	b
+par_replacement_strings	### Test {/}
+par_replacement_strings	b.c b.c b.c b b b
+par_replacement_strings	### Test {/.}
+par_replacement_strings	b b b b b b
+par_replacement_strings	### Test {#/.}
+par_replacement_strings	number2
+par_replacement_strings	### Test {#/}
+par_replacement_strings	number2.c
+par_replacement_strings	### Test {#.}
+par_replacement_strings	a/number2
 par_result	### Test --results
 par_result	I III
 par_result	I IIII
@@ -479,6 +735,42 @@ par_result_replace	/tmp/par__49983-baz C
 par_result_replace	/tmp/par__49983-baz C/seq
 par_result_replace	/tmp/par__49983-baz C/stderr
 par_result_replace	/tmp/par__49983-baz C/stdout
+par_seqreplace_long_line	### Test --seqreplace and line too long
+par_seqreplace_long_line	      9       1       1     101
+par_seqreplace_long_line	     90       1       1     201
+par_seqreplace_long_line	      1 parallel: Error: Command line too long (309 >= 210) at input 0: 100
+par_test_E	### Test -E
+par_test_E	1 2 3
+par_test_E	1 2 4
+par_test_E	1 3 3
+par_test_E	1 3 4
+par_test_E	1 4 3
+par_test_E	1 4 4
+par_test_E	2 2 3
+par_test_E	2 2 4
+par_test_E	2 3 3
+par_test_E	2 3 4
+par_test_E	2 4 3
+par_test_E	2 4 4
+par_test_E	3 2 3
+par_test_E	3 2 4
+par_test_E	3 3 3
+par_test_E	3 3 4
+par_test_E	3 4 3
+par_test_E	3 4 4
+par_test_E	4 2 3
+par_test_E	4 2 4
+par_test_E	4 3 3
+par_test_E	4 3 4
+par_test_E	4 4 3
+par_test_E	4 4 4
+par_test_E	### Test -E one empty
+par_test_E	1 2 
+par_test_E	2 2 
+par_test_E	### Test -E 2 empty
+par_test_E	1  
+par_test_E	2  
+par_test_E	### Test -E all empty
 par_test_XI_mI	### Test -I
 par_test_XI_mI	1 1
 par_test_XI_mI	2 1
@@ -565,6 +857,34 @@ par_test_cpu_detection	2-24-48-24	2 24 48 24
 par_test_cpu_detection	1-2-2-2	1 2 2 2
 par_test_cpu_detection	1-8-8-8	1 8 8 8
 par_test_cpu_detection	1-4-4-4	1 4 4 4
+par_test_gt_quoting	### Test of quoting of > bug
+par_test_gt_quoting	>/dev/null
+par_test_gt_quoting	### Test of quoting of > bug if line continuation
+par_test_gt_quoting	> > >
+par_test_job_number	### Test {#}
+par_test_job_number	1
+par_test_job_number	2
+par_test_job_number	3
+par_test_job_number	4
+par_test_job_number	5
+par_test_job_number	6
+par_test_job_number	7
+par_test_job_number	8
+par_test_job_number	9
+par_test_job_number	10
 par_too_long_line_X	bug #54869: Long lines break
 par_too_long_line_X	      1   29302  131012
 par_too_long_line_X	      1   12698   63490
+par_trailing_space_line_continuation	### Test of trailing space continuation
+par_trailing_space_line_continuation	foo ole bar
+par_trailing_space_line_continuation	quux
+par_trailing_space_line_continuation	foo ole bar
+par_trailing_space_line_continuation	quux
+par_trailing_space_line_continuation	foo ole bar
+par_trailing_space_line_continuation	quux
+par_trailing_space_line_continuation	### Test of trailing space continuation with -E eof
+par_trailing_space_line_continuation	foo ole
+par_trailing_space_line_continuation	foo ole 
+par_trailing_space_line_continuation	foo ole 
+par_trim_illegal_value	### Test of --trim illegal
+par_trim_illegal_value	parallel: Error: --trim must be one of: r l rl lr.

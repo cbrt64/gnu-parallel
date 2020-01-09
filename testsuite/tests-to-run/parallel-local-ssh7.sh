@@ -1707,14 +1707,16 @@ _EOF
 par_bash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+50-25-12+6-3+2-1
-    len_var_remote=100-50+25+12-6+3
-    len_var_quote=100-50+25-12-6+3-2
-    len_var_quote_remote=100-50-25+12+6-3
-    len_fun=100+50-25-12+6-3
-    len_fun_remote=100-50+25+12-6+3
-    len_fun_quote=100+50-25-12
-    len_fun_quote_remote=100-50+25+12-6
+    len_functions=-$(typeset -f | wc -c)/1000
+    len_variables=-$(typeset -p | wc -c)/1000
+    len_var=$len_variables+100
+    len_var_remote=$len_variables+100-50+25-12+6
+    len_var_quote=$len_variables+100-50
+    len_var_quote_remote=$len_variables+100-50-25+12
+    len_fun=$len_functions+100
+    len_fun_remote=$len_functions+100-50+25-12+6
+    len_fun_quote=$len_functions+100
+    len_fun_quote_remote=$len_functions+100-50
     
     . `which env_parallel.bash`;
 
@@ -1856,14 +1858,16 @@ par_fish_environment_too_big() {
 par_ksh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+50-25-12
-    len_var_remote=100-50+25+12-6-3
-    len_var_quote=100+50-25-12
-    len_var_quote_remote=100-50+25+12-6
-    len_fun=100+12+6-3
-    len_fun_remote=100-50+25+12-6+3
-    len_fun_quote=100+50-25-12
-    len_fun_quote_remote=100-50+25+12-6
+    len_functions=-$(functions|wc -c)/1000
+    len_variables=-$(typeset -p | wc -c)/1000
+    len_var=$len_variables+100
+    len_var_remote=$len_variables+100-50+25-12+6
+    len_var_quote=$len_variables+100
+    len_var_quote_remote=$len_variables+100-50+25
+    len_fun=$len_functions+100
+    len_fun_remote=$len_functions+100-50+25-12+6
+    len_fun_quote=$len_functions+100
+    len_fun_quote_remote=$len_functions+100-50
     
     . `which env_parallel.ksh`;
 

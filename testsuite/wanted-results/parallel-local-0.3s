@@ -1019,7 +1019,7 @@ par_verbose_t	echo bar
 par_verbose_t	echo car
 par_verbose_t	echo far
 par_version	### Test --version: Version output (just check we get the same amount of lines)
-par_version	10
+par_version	11
 par_wd_3dot_local	bug #45993: --wd ... should also work when run locally
 par_wd_3dot_local	parallel: Error: Cannot change into non-executable dir /bi: No such file or directory
 par_wd_3dot_local	/bin

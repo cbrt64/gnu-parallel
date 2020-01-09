@@ -57,13 +57,16 @@ add_server_to_hosts() {
     fi
 }
 
+shellsplus() {
+    shells="bash sh csh ash dash tcsh zsh ksh fish fizsh mksh posh rc sash yash nopathbash nopathcsh"
+    shellsplus="parallel $shells"
+    parallel -k echo ::: $shellsplus
+}
+
 create_shell_logins() {
     # SHELLS
     echo '# Create shell logins'
     touch ~/.zshrc
-    SSHPASS=`goodpasswd`
-    export SSHPASS
-    shells="bash sh csh ash dash tcsh zsh ksh fish fizsh mksh posh rc sash yash nopathbash nopathcsh"
     del_add_user() {
 	shell="$1"
 	append-if-not-exists() {
@@ -77,23 +80,34 @@ create_shell_logins() {
 		echo "$string" | sudo tee -a "$file"
 	    fi
 	}
+	SSHPASS=`goodpasswd`
+	export SSHPASS
 	append-if-not-exists /etc/shells $(which $shell || which ${shell#"nopath"})
 	sudo deluser $shell && sudo mv /home/$shell /tmp/$shell.$RANDOM
 	sudo groupdel $shell
 	if echo $shell | grep -q parallel; then
+	    # User parallel should have /bin/bash
 	    loginshell=/bin/bash
 	else
+	    # Other users should have `which $shell` with nopath removed
 	    loginshell=$(which $shell || which ${shell#"nopath"})
 	fi
 	sudo adduser --shell $loginshell --disabled-password --gecos "$shell for parallel,,," $shell &&
-	echo "$shell:$SSHPASS" | sudo chpasswd
+	    echo "$shell:$SSHPASS" | sudo chpasswd && 
+	    sshpass -e ssh-copy-id $shell@lo &&
+	    echo "$shell created"
     }
     export -f del_add_user
 
+    echo '# (Re-)create user'
+    # Racecondition: if multiple adds a group it will the same group ID
+    shellsplus | parallel --timeout 15 --retries 5 --tag -j1 del_add_user
+}
+
+copy_ssh_keys() {
     make_sshkey() {
 	shell="$1"
-	sshpass -e ssh-copy-id $shell@lo
-	    echo Add server keys for lo and server &&
+	echo Add server keys for lo and server &&
 	    ssh $shell@lo 'rm -f .ssh/id_rsa; ssh-keyscan lo >>.ssh/known_hosts; ssh-keyscan server >> .ssh/known_hosts' &&
 	    echo Do ssh-keygen &&
 	    echo | ssh -t $shell@lo ssh-keygen -b 1024 -f .ssh/id_rsa &&
@@ -109,21 +123,17 @@ create_shell_logins() {
 	    echo
     }
     export -f make_sshkey
-    . `which env_parallel.bash`
-    shellsplus="parallel $shells"
 
-    echo '# (Re-)create user'
-    # Racecondition: if multiple adds a group it will the same group ID
-    parallel --timeout 15 --retries 5 --tag -j1	del_add_user ::: $shellsplus
     echo '# Make and copy sshkey'
-    parallel --timeout 15 --retries 5 --tag -j5	make_sshkey ::: $shellsplus
+    shellsplus | parallel --timeout 20 --retries 5 --tag -j5 make_sshkey
 
     ssh_a_to_b() {
 	ssh $1@lo ssh $2@lo echo OK ||
 	    echo failed && false
     }
     export -f ssh_a_to_b
-    parallel -j8 --timeout 5 --tag ssh_a_to_b {} {} ::: $shellsplus
+    echo "# copy id from X to X"
+    shellsplus | parallel --timeout 10 --tag ssh_a_to_b {} {}
 
     ssh_copy_id() {
 	from="$1"
@@ -133,9 +143,9 @@ create_shell_logins() {
     export -f ssh_copy_id
 
     echo '# copy id from any X to any Y'
-    parallel -u --bar -j3 --timeout 3 --retries 10 --tag ssh_copy_id {1}@lo {2}@lo ::: $shellsplus ::: $shellsplus
+    parallel -u --bar -j3 --timeout 3 --retries 10 --tag ssh_copy_id {1}@lo {2}@lo ::: $(shellsplus) ::: $(shellsplus)
     echo '# Test the copying went well'
-    parallel       -j3 --timeout 3 --retries 10 --tag ssh_a_to_b ::: $shellsplus ::: $shellsplus
+    parallel          -j2 --timeout 10 --retries 10 --tag ssh_a_to_b ::: $(shellsplus) ::: $(shellsplus)
 
     echo '# change paths to no path'
     (
@@ -221,6 +231,7 @@ install_packages &&
     setup_databases &&
     add_server_to_hosts &&
     create_shell_logins &&
+    copy_ssh_keys &&
     lsh_setup &&
     add_freebsd &&
     misc

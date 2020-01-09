@@ -209,9 +209,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20191222 ('Impeachment') released <<[stable]>>
+Subject: GNU Parallel 20200122 ('Soleimani') released <<[stable]>>
 
-GNU Parallel 20191222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200122 ('Soleimani') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -221,6 +221,8 @@ See https://www.gnu.org/software/parallel/10-years-anniversary.html
 
 Quote of the month:
 
+  GNU parallel is straight up incredible.
+    -- Ben Johnson @biobenkj@twtter
 
 New in this release:
 
@@ -228,7 +230,9 @@ New in this release:
 
 * GNU Parallel course in Århus https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-og-parallelisering-i-unix-shellen/
 
-* GNU Parallel is used in https://github.com/JeffersonLab/rfw_tsf_extractor
+
+https://net2.com/how-to-copy-a-file-to-multiple-directories-in-linux/
+https://dev.to/voyeg3r/runing-linux-commands-in-parallel-4ff8
 
 * Bug fixes and man page updates.
 

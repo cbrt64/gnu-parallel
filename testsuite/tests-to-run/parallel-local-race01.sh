@@ -47,9 +47,9 @@ par_distribute_input_by_ability() {
     echo "### Distribute input to jobs that are ready"
     echo "Job-slot n is 50% slower than n+1, so the order should be 1..7"
     seq 20000000 |
-    parallel --tagstring {#} -j7 --block 300k --round-robin --pipe \
+	parallel --tagstring {#} -j7 --block 300k --round-robin --pipe \
 	'pv -qL{=$_=$job->seq()**3+9=}0000 |wc -c' |
-    sort -nk2 | field 1
+	sort -nk2 | field 1
 }
 
 par_print_before_halt_on_error() {
@@ -67,6 +67,29 @@ par_print_before_halt_on_error() {
     }
     export -f mytest
     parallel -j0 -k --tag mytest ::: -2 -1 0 1 2
+}
+
+par_bug56403() {
+    echo 'bug #56403: --pipe block by time.'
+    (
+	sleep 2; # make sure parallel is ready
+	echo job1a;
+	sleep 2;
+	echo job2b;
+	echo -n job3c;
+	sleep 2;
+	echo job3d
+    ) | parallel --blocktimeout 1 -j1 --pipe --tagstring {#} -k cat
+    (
+	sleep 2; # make sure parallel is ready
+	echo job1a;
+	sleep 1;
+	echo job1b;
+	echo -n job2c;
+	sleep 4;
+	echo job2d
+    ) | parallel --blocktimeout 3 -j1 --pipe --tagstring {#} -k cat
+
 }
 
 export -f $(compgen -A function | grep par_)

@@ -569,6 +569,8 @@ par_groupby	--block 20 C1 cssv [\s,]+	3,,2,,4,,
 par_groupby	--block 20 C1 cssv [\s,]+	NewRec
 par_groupby	--block 20 C1 cssv [\s,]+	a1,	b1,	C1,	
 par_groupby	--block 20 C1 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	--block 20 C1 cssv [\s,]+	NewRec
+par_groupby	--block 20 C1 cssv [\s,]+	a1,	b1,	C1,	
 par_groupby	--block 20 C1 cssv [\s,]+	3	2	3	
 par_groupby	--block 20 C1 cssv [\s,]+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
 par_groupby	--block 20 C1 cssv [\s,]+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
@@ -1386,27 +1388,7 @@ par_tee_with_premature_close	999998
 par_tee_with_premature_close	999999
 par_tee_with_premature_close	1000000
 par_tee_with_premature_close	tee without --output-error=warn-nopipe support
-par_tee_with_premature_close	   1859    1860    8192
-par_tee_with_premature_close	1
-par_tee_with_premature_close	2
-par_tee_with_premature_close	3
-par_tee_with_premature_close	4
-par_tee_with_premature_close	5
-par_tee_with_premature_close	6
-par_tee_with_premature_close	7
-par_tee_with_premature_close	8
-par_tee_with_premature_close	9
-par_tee_with_premature_close	10
-par_tee_with_premature_close	1851
-par_tee_with_premature_close	1852
-par_tee_with_premature_close	1853
-par_tee_with_premature_close	1854
-par_tee_with_premature_close	1855
-par_tee_with_premature_close	1856
-par_tee_with_premature_close	1857
-par_tee_with_premature_close	1858
-par_tee_with_premature_close	1859
-par_tee_with_premature_close	1860
+par_tee_with_premature_close	OK
 par_test_X_with_multiple_source	### Test {} multiple times in different commands
 par_test_X_with_multiple_source	echo 1 2 3 4 5 6 7 8 9 10 ; echo 1 2 3 4 5 6 7 8 9 10
 par_test_X_with_multiple_source	1 2 3 4 5 6 7 8 9 10

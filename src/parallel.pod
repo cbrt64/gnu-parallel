@@ -562,6 +562,21 @@ jobslots process a large amount of data.
 See B<--pipe> and B<--pipepart> for use of this.
 
 
+=item B<--blocktimeout> I<duration>
+
+=item B<--bt> I<duration>
+
+Time out for reading block when using B<--pipe>. If it takes longer
+than I<duration> to generate a full block, use the partial block read
+so far.
+
+I<duration> must be in whole seconds, but can be expressed as floats
+postfixed with B<s>, B<m>, B<h>, or B<d> which would multiply the
+float by 1, 60, 3600, or 86400. Thus these are equivalent: B<--timeout
+100000> and B<--timeout 1d3.5h16.6m4s>.
+
+
+
 =item B<--cat>
 
 Create a temporary file with content. Normally B<--pipe>/B<--pipepart>
@@ -5157,8 +5172,8 @@ Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
 Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010-2019 Ole Tange,
-http://ole.tange.dk and Free Software Foundation, Inc.
+Copyright (C) 2010-2020 Ole Tange, http://ole.tange.dk and Free
+Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by
 the manual of B<xargs> from GNU findutils 4.4.2.

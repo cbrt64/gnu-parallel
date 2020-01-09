@@ -2290,10 +2290,69 @@ B<GNU> parallel -j 3 ::: ls df "echo hi"
 
 (Last checked: 2019-08)
 
+=head2 DIFFERENCES BETWEEN rargs AND GNU Parallel
+
+Summary table (see legend above):
+I1 - - - - - I7
+- - M3 M4 - -
+- O2 O3 - O5 O6 - O8 -
+E1 - - E4 - - -
+- - - - - - - - -
+- -
+
+B<rargs> has elegant ways of doing named regexp capture and field ranges.
+
+With GNU B<parallel> you can use B<--rpl> to get a similar
+functionality as regexp capture gives, and use B<join> and B<@arg> to
+get the field ranges. But the syntax is longer. This:
+
+  --rpl '{r(\d+)\.\.(\d+)} $_=join"$opt::colsep",@arg[$$1..$$2]'
+
+would make it possible to use:
+
+  {1r3..6}
+
+for field 3..6.
+
+For full support of {n..m:s} including negative numbers use a dynamic
+replacement string like this:
+
+
+PARALLEL=--rpl\ \''{r((-?\d+)?)\.\.((-?\d+)?)((:([^}]*))?)}
+          $a = defined $$2 ? $$2 < 0 ? 1+$#arg+$$2 : $$2 : 1;
+          $b = defined $$4 ? $$4 < 0 ? 1+$#arg+$$4 : $$4 : $#arg+1;
+          $s = defined $$6 ? $$7 : " ";
+          $_ = join $s,@arg[$a..$b]'\'
+export PARALLEL
+
+You can then do:
+
+  head /etc/passwd | parallel --colsep : echo ..={1r..} ..3={1r..3} 4..={1r4..} 2..4={1r2..4} 3..3={1r3..3} ..3:-={1r..3:-} ..3:/={1r..3:/} -1={-1} -5={-5} -6={-6} -3..={1r-3..}
+   
+
+=head3 EXAMPLES FROM rargs MANUAL
+
+  ls *.bak | rargs -p '(.*)\.bak' mv {0} {1}
+  ls *.bak | parallel mv {} {.}
+
+  cat download-list.csv | rargs -p '(?P<url>.*),(?P<filename>.*)' wget {url} -O {filename}
+  cat download-list.csv | parallel --csv wget {1} -O {2}
+  # or use regexps:
+  cat download-list.csv |
+    parallel --rpl '{url} s/,.*//' --rpl '{filename} s/.*?,//' wget {url} -O {filename}
+
+  cat /etc/passwd | rargs -d: echo -e 'id: "{1}"\t name: "{5}"\t rest: "{6..::}"'
+  cat /etc/passwd |
+    parallel -q --colsep : echo -e 'id: "{1}"\t name: "{5}"\t rest: "{=6 $_=join":",@arg[6..$#arg]=}"'
+
+https://github.com/lotabout/rargs (Last checked: 2020-01)
+
 
 =head2 Todo
 
-Url for spread
+https://github.com/jreisinger/runp
+
+https://github.com/JeiKeiLim/simple_distribute_job
 
 https://github.com/reggi/pkgrun
 
@@ -2557,7 +2616,7 @@ Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
 Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010-2019 Ole Tange, http://ole.tange.dk and Free
+Copyright (C) 2010-2020 Ole Tange, http://ole.tange.dk and Free
 Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by

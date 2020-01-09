@@ -2998,9 +2998,9 @@ When asking for help, always report the full output of this:
 
 Output:
 
-  GNU parallel 20180122
-  Copyright (C) 2007-2018
-  Ole Tange and Free Software Foundation, Inc.
+  GNU parallel 20200122
+  Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software
+  Foundation, Inc.
   License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
   This is free software: you are free to change and redistribute it.
   GNU parallel comes with no warranty.
@@ -3160,7 +3160,7 @@ https://my.fsf.org/donate/
 
 =back
 
-(C) 2013-2019 Ole Tange, FDLv1.3 (See fdl.txt)
+(C) 2013-2020 Ole Tange, FDLv1.3 (See fdl.txt)
 
 
 =cut

@@ -206,3 +206,14 @@ env_parallel -u -S$MASTER doit ::: 1 |
 # env_parallel myfunc ::: a | wc # OK
 # eval 'myfunc2() { echo '$(perl -e 'print "x"x120000')'; }'
 # env_parallel myfunc ::: a | wc # Fail too big env
+
+# Supported keylength:
+# 16300: 
+#   debian-ppc netbsd openbsd qnx aix centos freebsd hpux hpux-ia64
+#   macosx mandriva miros raspbian redhat scosysv suse tru64 unixware
+# 8000:
+#   solaris-x86
+# 4000:
+#   openindiana solaris
+
+

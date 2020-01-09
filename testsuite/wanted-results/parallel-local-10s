@@ -743,9 +743,9 @@ par_shellquote	tcsh	\\\\\\\\	"\
 par_shellquote	tcsh	"\\\par_shellquote	tcsh	\\\\\\\\\\\\\\ \!\"\#\$%\&\'\(\)\*+,-./0123456789:\;\<\=\>\?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\[\\\]\^_\`abcdefghijklmnopqrstuvwxyz\{\|\}\~€\‚\ƒ\„\…\†\‡\ˆ\‰\Š\‹\Œ\\\\\‘\’\“\”\•\–\—\˜\™\š\›\œ\\\Ÿ\ \¡\¢\£\¤\¥\¦\§\¨\©\ª\«\¬\­\®\¯\°\±\²\³\´\µ\¶\·\¸\¹\º\»\¼\½\¾\¿\À\Á\Â\Ã\Ä\Å\Æ\Ç\È\É\Ê\Ë\Ì\Í\Î\Ï\Ğ\Ñ\Ò\Ó\Ô\Õ\Ö\×\Ø\Ù\Ú\Û\Ü\İ\Ş\ß\à\á\â\ã\ä\å\æ\ç\è\é\ê\ë\ì\í\î\ï\ğ\ñ\ò\ó\ô\õ\ö\÷\ø\ù\ú\û\ü\ı\ş\ÿ
 par_sockets_cores_threads	### Test --number-of-sockets/cores/threads
 par_sockets_cores_threads	1
+par_sockets_cores_threads	2
 par_sockets_cores_threads	4
-par_sockets_cores_threads	8
-par_sockets_cores_threads	4
+par_sockets_cores_threads	2
 par_sockets_cores_threads	### Test --use-sockets-instead-of-threads
 par_sockets_cores_threads	threads done
 par_sockets_cores_threads	sockets done

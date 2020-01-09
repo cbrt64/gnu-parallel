@@ -1,3 +1,10 @@
+par_bug56403	bug #56403: --pipe block by time.
+par_bug56403	1	job1a
+par_bug56403	2	job2b
+par_bug56403	3	job3cjob3d
+par_bug56403	1	job1a
+par_bug56403	1	job1b
+par_bug56403	2	job2cjob2d
 par_distribute_input_by_ability	### bug #48290: round-robin does not distribute data based on business
 par_distribute_input_by_ability	### Distribute input to jobs that are ready
 par_distribute_input_by_ability	Job-slot n is 50% slower than n+1, so the order should be 1..7

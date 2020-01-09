@@ -4,7 +4,6 @@
 # Each should be taking 0.3-1s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
-
 stdsort() {
     "$@" 2>&1 | LC_ALL=C sort;
 }

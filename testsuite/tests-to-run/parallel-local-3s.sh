@@ -8,7 +8,8 @@ par_tee_with_premature_close() {
     echo '--tee --pipe should send all data to all commands'
     echo 'even if a command closes stdin before reading everything'
     echo 'tee with --output-error=warn-nopipe support'
-    seq 1000000 | parallel -k --tee --pipe ::: wc head tail 'sleep 1'
+    correct="$(seq 1000000 | parallel -k --tee --pipe ::: wc head tail 'sleep 1')"
+    echo "$correct"
     echo 'tee without --output-error=warn-nopipe support'
     cat > tmp/tee <<-EOF
 	#!/usr/bin/perl
@@ -24,8 +25,12 @@ par_tee_with_premature_close() {
     # * tee not supporting --output-error=warn-nopipe
     # * sleep closes stdin before EOF
     # Depending on tee it may provide partial output or no output
-    seq 1000000 | parallel -k --tee --pipe ::: wc head tail 'sleep 1'
-    echo
+    wrong="$(seq 1000000 | parallel -k --tee --pipe ::: wc head tail 'sleep 1')"
+    if diff <(echo "$correct") <(echo "$wrong") >/dev/null; then
+	echo Wrong: They should not give the same output
+    else
+	echo OK
+    fi
 }
 
 par_maxargs() {
@@ -170,6 +175,7 @@ par_resume_failed_k() {
     parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
     echo with exit 0
     parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit 0  ::: 0 1 2 3 0 1
+    sleep 0.5
     echo try 2 again. Gives empty
     parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
     rm $tmp

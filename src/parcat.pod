@@ -60,7 +60,7 @@ GNU B<parcat> is part of GNU B<parallel>. Report bugs to
 
 =head1 AUTHOR
 
-Copyright (C) 2016-2019 Ole Tange, http://ole.tange.dk and Free
+Copyright (C) 2016-2020 Ole Tange, http://ole.tange.dk and Free
 Software Foundation, Inc.
 
 =head1 LICENSE

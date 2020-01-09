@@ -29,11 +29,11 @@ par_path_remote_csh	^^^^^^^^ Not found is OK
 par_path_remote_csh	/bin:/usr/bin:/tmp OK
 par_path_remote_csh	Done
 par_retries_1	### Test of --retries - it should run 13 jobs in total
-par_retries_1	13
+par_retries_1	OK
 par_retries_2	### Test of --retries - it should run 25 jobs in total
-par_retries_2	25
+par_retries_2	OK
 par_retries_4	### Test of --retries - it should run 49 jobs in total
-par_retries_4	49
+par_retries_4	OK
 par_retries_bug_from_2010	### Bug with --retries
 par_retries_bug_from_2010	8
 par_retries_bug_from_2010	8

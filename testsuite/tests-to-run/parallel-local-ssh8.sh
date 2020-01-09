@@ -88,25 +88,34 @@ par_bar_m() {
 	uniq
 }
 
+retries() {
+    retries=$1
+    min=$2
+    max=$3
+    export PARALLEL="--retries $retries -S 12/localhost,1/:,parallel@lo -uq"
+    tries=$(seq 0 12 |
+		parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null |
+		wc -l)
+    # Dont care if they are off by one
+    if [ $min -le $tries -o $tries -le $max ] ; then
+	echo OK
+    fi
+}
+export -f retries
+
 par_retries_1() {
     echo '### Test of --retries - it should run 13 jobs in total'; 
-    export PARALLEL="--retries 1 -S 12/localhost,1/:,parallel@lo -uq"
-    seq 0 12 |
-	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
+    retries 1 11 13
 }
 
 par_retries_2() {
     echo '### Test of --retries - it should run 25 jobs in total'; 
-    export PARALLEL="--retries 2 -S 12/localhost,1/:,parallel@lo -uq"
-    seq 0 12 |
-	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
+    retries 2 24 25
 }
 
 par_retries_4() {
     echo '### Test of --retries - it should run 49 jobs in total'; 
-    export PARALLEL="--retries 4 -S 12/localhost,1/:,parallel@lo -uq"
-    seq 0 12 |
-	parallel perl -e 'print "job{}\n";exit({})' 2>/dev/null | wc -l
+    retries 4 48 49
 }
 
 par_retries_bug_from_2010() {
