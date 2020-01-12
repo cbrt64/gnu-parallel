@@ -68,18 +68,6 @@ par_load_csh() {
     parallel --load 100% -S csh@lo echo ::: a
 }
 
-par_PARALLEL_RSYNC_OPTS() {
-    echo '### test rsync opts'
-    touch parallel_rsync_opts.test
-    parallel --rsync-opts -rlDzRRRR -vv -S parallel@lo --trc {}.out touch {}.out ::: parallel_rsync_opts.test |
-	perl -ne 's/(rsync .*?RRRR)/print $1/ge'
-    export PARALLEL_RSYNC_OPTS=-zzrrllddRRRR
-    parallel -vv -S parallel@lo --trc {}.out touch {}.out ::: parallel_rsync_opts.test |
-	perl -ne 's/(rsync .*?RRRR)/print $1/ge'
-    rm parallel_rsync_opts.test parallel_rsync_opts.test.out
-    echo
-}
-
 par_bar_m() {
     echo '### test --bar -m'
     stdout parallel --bar -P 2 -m sleep ::: 1 1 2 2 3 3 |
@@ -116,51 +104,6 @@ par_retries_2() {
 par_retries_4() {
     echo '### Test of --retries - it should run 49 jobs in total'; 
     retries 4 48 49
-}
-
-par_retries_bug_from_2010() {
-    echo '### Bug with --retries'
-    seq 1 8 |
-	parallel --retries 2 --sshlogin 8/localhost,8/: -j+0 "hostname; false" |
-	wc -l
-    seq 1 8 |
-	parallel --retries 2 --sshlogin 8/localhost,8/: -j+1 "hostname; false" |
-	wc -l
-    seq 1 2 |
-	parallel --retries 2 --sshlogin 8/localhost,8/: -j-1 "hostname; false" |
-	wc -l
-    seq 1 1 |
-	parallel --retries 2 --sshlogin 1/localhost,1/: -j1 "hostname; false" |
-	wc -l
-    seq 1 1 |
-	parallel --retries 2 --sshlogin 1/localhost,1/: -j9 "hostname; false" |
-	wc -l
-    seq 1 1 |
-	parallel --retries 2 --sshlogin 1/localhost,1/: -j0 "hostname; false" |
-	wc -l
-
-    echo '### These were not affected by the bug'
-    seq 1 8 |
-	parallel --retries 2 --sshlogin 1/localhost,9/: -j-1 "hostname; false" |
-	wc -l
-    seq 1 8 |
-	parallel --retries 2 --sshlogin 8/localhost,8/: -j-1 "hostname; false" |
-	wc -l
-    seq 1 1 |
-	parallel --retries 2 --sshlogin 1/localhost,1/:  "hostname; false" |
-	wc -l
-    seq 1 4 |
-	parallel --retries 2 --sshlogin 2/localhost,2/: -j-1 "hostname; false" |
-	wc -l
-    seq 1 4 |
-	parallel --retries 2 --sshlogin 2/localhost,2/: -j1 "hostname; false" |
-	wc -l
-    seq 1 4 |
-	parallel --retries 2 --sshlogin 1/localhost,1/: -j1 "hostname; false" |
-	wc -l
-    seq 1 2 |
-	parallel --retries 2 --sshlogin 1/localhost,1/: -j1 "hostname; false" |
-	wc -l
 }
 
 export -f $(compgen -A function | grep par_)

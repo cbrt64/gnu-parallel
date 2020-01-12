@@ -24,21 +24,187 @@ par__pipepart_spawn	1:local / 2+ / 2+2+2+
 par__pipepart_tee	bug #45479: --pipe/--pipepart --tee
 par__pipepart_tee	--pipepart --tee
 par__pipepart_tee	314572800
+par_colsep	### Test of --colsep
+par_colsep	a b c
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a b c
+par_colsep	d e f
+par_colsep	a b c
+par_colsep	d e f
+par_colsep	a b c
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	### Test of tab as colsep
+par_colsep	abc def
+par_colsep	ghi jkl
+par_colsep	abc def
+par_colsep	ghi jkl
+par_colsep	### Test of multiple -a plus colsep
+par_colsep	abc def
+par_colsep	mno jkl
+par_colsep	### Test of multiple -a no colsep
+par_colsep	abc	def ghi
+par_colsep	jkl	mno pqr
+par_colsep	### Test of quoting after colsplit
+par_colsep	>/tmp/null >/dev/null
+par_colsep	### Test of --colsep as regexp
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a b c
+par_colsep	a b c d
+par_colsep	a_b_c_
+par_colsep	a_b_c_d
+par_colsep	### Test of -C
+par_colsep	a_b_c_
+par_colsep	a_b_c_d
+par_colsep	### Test of --trim n
+par_colsep	a_b_' c '_
+par_colsep	a_' b '_c_d
+par_colsep	a_b_c_
+par_colsep	a_b_c_d
+par_colsep	### Test of bug: If input is empty string
+par_colsep	echo ''
+par_colsep	
+par_colsep	echo ac
+par_colsep	ac
+par_colsep	echo ac
+par_colsep	ac
 par_compress_fail	### bug #41609: --compress fails
 par_compress_fail	f1a751b1283e99e7dda40f63f1225f74  -
 par_compress_fail	f1a751b1283e99e7dda40f63f1225f74  -
-par_interactive	### Test -p --interactive
-par_interactive	opt--interactive 1
-par_interactive	opt--interactive 3
-par_interactive	opt-p 1
-par_interactive	opt-p 3
-par_interactive	sleep 0.1; echo opt--interactive 1 ?...y
-par_interactive	sleep 0.1; echo opt--interactive 2 ?...n
-par_interactive	sleep 0.1; echo opt--interactive 3 ?...y
-par_interactive	sleep 0.1; echo opt-p 1 ?...y
-par_interactive	sleep 0.1; echo opt-p 2 ?...n
-par_interactive	sleep 0.1; echo opt-p 3 ?...y
-par_interactive	spawn /tmp/parallel-script-for-expect
+par_failing_compressor	Compress with failing (de)compressor
+par_failing_compressor	Test --tag/--line-buffer/--files in all combinations
+par_failing_compressor	Test working/failing compressor/decompressor in all combinations
+par_failing_compressor	(-k is used as a dummy argument)
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;false,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	C=cat;false,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;false,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	C=cat;false,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;false,D=cat;true
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	C=cat;false,D=cat;false
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;false,D=cat;true
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	C=cat;false,D=cat;false
+par_failing_compressor	parallel: Error: cat;false failed.
+par_fifo_under_csh	### Test --fifo under csh
+par_fifo_under_csh	1048571
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048572
+par_fifo_under_csh	1
+par_fifo_under_csh	1048569
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	1048576
+par_fifo_under_csh	1
+par_fifo_under_csh	868832
+par_fifo_under_csh	1
+par_fifo_under_csh	exit 22
 par_k	### Test -k
 par_k	parallel: Warning: Only enough file handles to run X jobs in parallel.
 par_k	parallel: Warning: Running 'parallel -jX -N X --pipe parallel -jX' or
@@ -253,119 +419,12 @@ par_kill_children_timeout	parallel: Warning: This job was killed because it time
 par_kill_children_timeout	parallel: Warning: doit 1000000001
 par_kill_children_timeout	2
 par_kill_children_timeout	      0       0       0
-par_kill_hup	### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end
-par_kill_hup	bash-+-perl---2*[bash---sleep]
-par_kill_hup	     `-pstree
-par_kill_hup	parallel: SIGHUP received. No new jobs will be started.
-par_kill_hup	parallel: Waiting for these 2 jobs to finish. Send SIGTERM to stop now.
-par_kill_hup	parallel: bash -c 'sleep 3 & pid=$!; wait $pid'
-par_kill_hup	parallel: bash -c 'sleep 3 & pid=$!; wait $pid'
-par_kill_hup	bash---pstree
 par_line_buffer	### --line-buffer
 par_line_buffer	     55      55     120
 par_line_buffer	These must diff: 1
 par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      2       6   30006
 par_long_line_remote	      3      50  250050
-par_macron	### See if \257\256 \257<\257> is replaced correctly
-par_macron	п -X	п
-par_macron	п -X	п
-par_macron	п -X	п п
-par_macron	п -X	п п
-par_macron	п -X	пп
-par_macron	п -X	пп
-par_macron	п -q	п
-par_macron	п -q	п п
-par_macron	п -q	"п" п
-par_macron	п -q	пп
-par_macron	п -q	"п"п
-par_macron	п -q	/bin/bash: $'echo \257': command not found
-par_macron	п -Xq	п
-par_macron	п -Xq	п п
-par_macron	п -Xq	"п" п
-par_macron	п -Xq	пп
-par_macron	п -Xq	"п"п
-par_macron	п -Xq	/bin/bash: $'echo \257': command not found
-par_macron	п -k	п
-par_macron	п -k	п
-par_macron	п -k	п п
-par_macron	п -k	п п
-par_macron	п -k	пп
-par_macron	п -k	пп
-par_macron	по -X	по
-par_macron	по -X	по
-par_macron	по -X	по по
-par_macron	по -X	по по
-par_macron	по -X	попо
-par_macron	по -X	попо
-par_macron	по -q	по
-par_macron	по -q	по по
-par_macron	по -q	"по" по
-par_macron	по -q	попо
-par_macron	по -q	"по"по
-par_macron	по -q	/bin/bash: $'echo \257\256': command not found
-par_macron	по -Xq	по
-par_macron	по -Xq	по по
-par_macron	по -Xq	"по" по
-par_macron	по -Xq	попо
-par_macron	по -Xq	"по"по
-par_macron	по -Xq	/bin/bash: $'echo \257\256': command not found
-par_macron	по -k	по
-par_macron	по -k	по
-par_macron	по -k	по по
-par_macron	по -k	по по
-par_macron	по -k	попо
-par_macron	по -k	попо
-par_macron	ппо -X	ппо
-par_macron	ппо -X	ппо
-par_macron	ппо -X	ппо ппо
-par_macron	ппо -X	ппо ппо
-par_macron	ппо -X	ппоппо
-par_macron	ппо -X	ппоппо
-par_macron	ппо -q	ппо
-par_macron	ппо -q	ппо ппо
-par_macron	ппо -q	"ппо" ппо
-par_macron	ппо -q	ппоппо
-par_macron	ппо -q	"ппо"ппо
-par_macron	ппо -q	/bin/bash: $'echo \257\257\256': command not found
-par_macron	ппо -Xq	ппо
-par_macron	ппо -Xq	ппо ппо
-par_macron	ппо -Xq	"ппо" ппо
-par_macron	ппо -Xq	ппоппо
-par_macron	ппо -Xq	"ппо"ппо
-par_macron	ппо -Xq	/bin/bash: $'echo \257\257\256': command not found
-par_macron	ппо -k	ппо
-par_macron	ппо -k	ппо
-par_macron	ппо -k	ппо ппо
-par_macron	ппо -k	ппо ппо
-par_macron	ппо -k	ппоппо
-par_macron	ппо -k	ппоппо
-par_macron	п<п<п>п> -X	п<п<п>п>
-par_macron	п<п<п>п> -X	п<п<п>п> п<п<п>п>
-par_macron	п<п<п>п> -X	п<п<п>п>п<п<п>п>
-par_macron	п<п<п>п> -X	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
-par_macron	п<п<п>п> -X	/bin/bash: -c: line 0: `echo п<п<п>п>'
-par_macron	п<п<п>п> -X	/bin/bash: п: No such file or directory
-par_macron	п<п<п>п> -X	/bin/bash: п: No such file or directory
-par_macron	п<п<п>п> -q	п<п<п>п>
-par_macron	п<п<п>п> -q	п<п<п>п> п<п<п>п>
-par_macron	п<п<п>п> -q	"п<п<п>п>" п<п<п>п>
-par_macron	п<п<п>п> -q	п<п<п>п>п<п<п>п>
-par_macron	п<п<п>п> -q	"п<п<п>п>"п<п<п>п>
-par_macron	п<п<п>п> -q	/bin/bash: $'echo \257<\257<\257>\257>': command not found
-par_macron	п<п<п>п> -Xq	п<п<п>п>
-par_macron	п<п<п>п> -Xq	п<п<п>п> п<п<п>п>
-par_macron	п<п<п>п> -Xq	"п<п<п>п>" п<п<п>п>
-par_macron	п<п<п>п> -Xq	п<п<п>п>п<п<п>п>
-par_macron	п<п<п>п> -Xq	"п<п<п>п>"п<п<п>п>
-par_macron	п<п<п>п> -Xq	/bin/bash: $'echo \257<\257<\257>\257>': command not found
-par_macron	п<п<п>п> -k	п<п<п>п>
-par_macron	п<п<п>п> -k	п<п<п>п> п<п<п>п>
-par_macron	п<п<п>п> -k	п<п<п>п>п<п<п>п>
-par_macron	п<п<п>п> -k	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
-par_macron	п<п<п>п> -k	/bin/bash: -c: line 0: `echo п<п<п>п>'
-par_macron	п<п<п>п> -k	/bin/bash: п: No such file or directory
-par_macron	п<п<п>п> -k	/bin/bash: п: No such file or directory
 par_maxlinelen_X_I	### Test max line length -X -I
 par_maxlinelen_X_I	3cfc69ee81b0fe7fdbe8eb059ad2da61  -
 par_maxlinelen_X_I	Chars per line (817788/7): 116826

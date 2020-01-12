@@ -1,5 +1,3 @@
-par_PARALLEL_RSYNC_OPTS	### test rsync opts
-par_PARALLEL_RSYNC_OPTS	rsync --protocol 30 -rlDzRRRRrsync --protocol 30 --rsync-path='cd ././.; rsync' -rlDzRRRRrsync --protocol 30 -zzrrllddRRRRrsync --protocol 30 --rsync-path='cd ././.; rsync' -zzrrllddRRRR
 par_bar_m	### test --bar -m
 par_bar_m	0
 par_bar_m	50
@@ -34,18 +32,3 @@ par_retries_2	### Test of --retries - it should run 25 jobs in total
 par_retries_2	OK
 par_retries_4	### Test of --retries - it should run 49 jobs in total
 par_retries_4	OK
-par_retries_bug_from_2010	### Bug with --retries
-par_retries_bug_from_2010	8
-par_retries_bug_from_2010	8
-par_retries_bug_from_2010	2
-par_retries_bug_from_2010	1
-par_retries_bug_from_2010	1
-par_retries_bug_from_2010	1
-par_retries_bug_from_2010	### These were not affected by the bug
-par_retries_bug_from_2010	8
-par_retries_bug_from_2010	8
-par_retries_bug_from_2010	1
-par_retries_bug_from_2010	4
-par_retries_bug_from_2010	4
-par_retries_bug_from_2010	4
-par_retries_bug_from_2010	2

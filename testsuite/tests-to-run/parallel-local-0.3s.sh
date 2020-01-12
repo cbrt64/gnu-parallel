@@ -767,21 +767,6 @@ par_profile() {
     rm ~/.parallel/testprofile_config
 }
 
-par_bin() {
-    echo '### Test --bin'
-    seq 10 | parallel --pipe --bin 1 -j4 wc | sort
-    paste <(seq 10) <(seq 10 -1 1) |
-	parallel --pipe --colsep '\t' --bin 2 -j4 wc | sort
-    echo '### Test --bin with expression that gives 1..n'
-    paste <(seq 10) <(seq 10 -1 1) |
-	parallel --pipe --colsep '\t' --bin '2 $_=$_%2+1' -j4 wc | sort
-    echo '### Test --bin with expression that gives 0..n-1'
-    paste <(seq 10) <(seq 10 -1 1) |
-	parallel --pipe --colsep '\t' --bin '2 $_%=2' -j4 wc | sort
-    # Fails - blocks!
-    # paste <(seq 10000000) <(seq 10000000 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
-}
-
 par_cr_newline_header() {
     echo '### --header : should set named replacement string if input line ends in \r\n'
     printf "foo\r\nbar\r\n" |
@@ -790,4 +775,4 @@ par_cr_newline_header() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel --timeout 30 -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

@@ -44,25 +44,6 @@ par_basic_halt	true
 par_basic_halt	parallel: Error: --halt must have 'never', 'soon', or 'now'.
 par_basic_halt	parallel: Error: --halt soon must be followed by ,success or ,fail.
 par_basic_halt	parallel: Error: --halt now must be followed by ,success or ,fail.
-par_bin	### Test --bin
-par_bin	      2       2       4
-par_bin	      2       2       4
-par_bin	      3       3       6
-par_bin	      3       3       7
-par_bin	      2       4       8
-par_bin	      2       4       8
-par_bin	      3       6      13
-par_bin	      3       6      13
-par_bin	### Test --bin with expression that gives 1..n
-par_bin	      0       0       0
-par_bin	      0       0       0
-par_bin	      5      10      21
-par_bin	      5      10      21
-par_bin	### Test --bin with expression that gives 0..n-1
-par_bin	      0       0       0
-par_bin	      0       0       0
-par_bin	      5      10      21
-par_bin	      5      10      21
 par_blocking_redir	      0       0       0
 par_blocking_redir	      0       0       0
 par_blocking_redir	      1       9      54

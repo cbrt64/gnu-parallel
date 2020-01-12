@@ -4,6 +4,21 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_bin() {
+    echo '### Test --bin'
+    seq 10 | parallel --pipe --bin 1 -j4 wc | sort
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin 2 -j4 wc | sort
+    echo '### Test --bin with expression that gives 1..n'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_=$_%2+1' -j4 wc | sort
+    echo '### Test --bin with expression that gives 0..n-1'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_%=2' -j4 wc | sort
+    # Fails - blocks!
+    # paste <(seq 10000000) <(seq 10000000 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
+}
+
 par_tee_with_premature_close() {
     echo '--tee --pipe should send all data to all commands'
     echo 'even if a command closes stdin before reading everything'
@@ -165,20 +180,6 @@ par_test_X_with_multiple_source() {
     parallel -j2 -kX  echo {}-{.} ::: a b ::: c d
     parallel -j2 -kX  echo {}-{.} ::: a b c ::: d e f
     parallel -j0 -kX  echo {}-{.} ::: a b c ::: d e f
-}
-
-par_resume_failed_k() {
-    echo '### bug #38299: --resume-failed -k'
-    tmp=$(tempfile)
-    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
-    echo try 2. Gives failing - not 0
-    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
-    echo with exit 0
-    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit 0  ::: 0 1 2 3 0 1
-    sleep 0.5
-    echo try 2 again. Gives empty
-    parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
-    rm $tmp
 }
 
 par_resume_k() {
@@ -434,125 +435,6 @@ par_lb_mem_usage() {
     memusage 100000 parallel --lb ::: 'long_line; long_line'
 }
 
-par_groupby() {
-    tsv() {
-	printf "%s\t" a1 b1 C1; echo
-	printf "%s\t" 2 2 2; echo
-	printf "%s\t" 3 2 2; echo
-	printf "%s\t" 3 3 2; echo
-	printf "%s\t" 3 2 4; echo
-	printf "%s\t" 3 2 2; echo
-	printf "%s\t" 3 2 3; echo
-    }
-    export -f tsv
-
-    ssv() {
-	# space separated
-	printf "%s\t" a1 b1 C1; echo
-	printf "%s " 2 2 2; echo
-	printf "%s \t" 3 2 2; echo
-	printf "%s\t " 3 3 2; echo
-	printf "%s  " 3 2 4; echo
-	printf "%s\t\t" 3 2 2; echo
-	printf "%s\t  \t" 3 2 3; echo
-    }
-    export -f ssv
-
-    cssv() {
-	# , + space separated
-	printf "%s,\t" a1 b1 C1; echo
-	printf "%s ," 2 2 2; echo
-	printf "%s  ,\t" 3 2 2; echo
-	printf "%s\t, " 3 3 2; echo
-	printf "%s,," 3 2 4; echo
-	printf "%s\t,,, " 3 2 2; echo
-	printf "%s\t" 3 2 3; echo
-    }
-    export -f cssv
-
-    csv() {
-	# , separated
-	printf "%s," a1 b1 C1; echo
-	printf "%s," 2 2 2; echo
-	printf "%s," 3 2 2; echo
-	printf "%s," 3 3 2; echo
-	printf "%s," 3 2 4; echo
-	printf "%s," 3 2 2; echo
-	printf "%s," 3 2 3; echo
-    }
-    export -f csv
-
-    tester() {
-	block="$1"
-	groupby="$2"
-	generator="$3"
-	colsep="$4"
-	echo "### test $generator | --colsep $colsep --groupby $groupby $block"
-	$generator |
-	    parallel --pipe --colsep "$colsep" --groupby "$groupby" -k $block 'echo NewRec; cat'
-    }
-    export -f tester
-    parallel --tag -k tester \
-	     ::: -N1 '--block 20' \
-	     ::: '3 $_%=2' 3 's/^(.).*/$1/' C1 'C1 $_%=2' \
-	     ::: tsv ssv cssv csv \
-	     :::+ '\t' '\s+' '[\s,]+' ','
-
-    # Test --colsep char: OK
-    # Test --colsep pattern: OK
-    # Test --colsep -N1: OK
-    # Test --colsep --block 20: OK
-    # Test --groupby colno: OK
-    # Test --groupby 'colno perl': OK
-    # Test --groupby colname: OK
-    # Test --groupby 'colname perl': OK
-    # Test space sep --colsep '\s': OK
-    # Test --colsep --header : (OK: --header : not needed)
-}
-
-par_groupby_pipepart() {
-    tsv() {
-	printf "%s\t" a1 b1 c1 d1 e1 f1; echo
-	seq 100000 999999 | perl -pe '$_=join"\t",split//' |
-	    sort --parallel=8 --buffer-size=50% -rk3
-    }
-    export -f tsv
-
-    ssv() {
-	# space separated
-	tsv | perl -pe '@sep=("\t"," "); s/\t/$sep[rand(2)]/ge;'
-    }
-    export -f ssv
-
-    cssv() {
-	# , + space separated
-	tsv | perl -pe '@sep=("\t"," ",","); s/\t/$sep[rand(2)].$sep[rand(2)]/ge;'
-    }
-    export -f cssv
-
-    csv() {
-	# , separated
-	tsv | perl -pe 's/\t/,/g;'
-    }
-    export -f csv
-
-    tester() {
-	generator="$1"
-	colsep="$2"
-	groupby="$3"
-	tmp=`tempfile`
-	
-	echo "### test $generator | --colsep $colsep --groupby $groupby"
-	$generator > $tmp
-	parallel --pipepart -a $tmp --colsep "$colsep" --groupby "$groupby" -k 'echo NewRec; wc'
-    }
-    export -f tester
-    parallel --tag -k tester \
-	     ::: tsv ssv cssv csv \
-	     :::+ '\t' '\s+' '[\s,]+' ',' \
-	     ::: '3 $_%=2' 3 c1 'c1 $_%=2' 's/^(\d+[\t ,]+){2}(\d+).*/$2/'
-}
-
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

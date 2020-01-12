@@ -4,6 +4,43 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_interactive() {
+    echo '### Test -p --interactive'
+    cat >/tmp/parallel-script-for-expect <<_EOF
+#!/bin/bash
+
+seq 1 3 | parallel -k -p "sleep 0.1; echo opt-p"
+seq 1 3 | parallel -k --interactive "sleep 0.1; echo opt--interactive"
+_EOF
+    chmod 755 /tmp/parallel-script-for-expect
+
+    (
+	expect -b - <<_EOF
+spawn /tmp/parallel-script-for-expect
+expect "echo opt-p 1"
+send "y\n"
+expect "echo opt-p 2"
+send "n\n"
+expect "echo opt-p 3"
+send "y\n"
+expect "opt-p 1"
+expect "opt-p 3"
+expect "echo opt--interactive 1"
+send "y\n"
+expect "echo opt--interactive 2"
+send "n\n"
+#expect "opt--interactive 1"
+expect "echo opt--interactive 3"
+send "y\n"
+expect "opt--interactive 3"
+send "\n"
+_EOF
+	echo
+    ) | perl -ne 's/\r//g;/\S/ and print' |
+	# Race will cause the order to change
+	LC_ALL=C sort
+}
+
 par_bug43654() {
     echo "bug #43654: --bar with command not using {} - only last output line "
     COLUMNS=80 stdout parallel --bar true {.} ::: 1 | perl -pe 's/.*\r/\r/'
@@ -92,46 +129,6 @@ par_trailing_space_line_continuation() {
     parallel -kr -L2 -E bar echo ::: foo '' 'ole ' bar quux
 }
 
-par_colsep() {
-    echo '### Test of --colsep'
-    echo 'a%c%b' | parallel --colsep % echo {1} {3} {2}
-    (echo 'a%c%b'; echo a%c%b%d) | parallel -k --colsep % echo {1} {3} {2} {4}
-    (echo a%c%b; echo d%f%e) | parallel -k --colsep % echo {1} {3} {2}
-    parallel -k --colsep % echo {1} {3} {2} ::: a%c%b d%f%e
-    parallel -k --colsep % echo {1} {3} {2} ::: a%c%b
-    parallel -k --colsep % echo {1} {3} {2} {4} ::: a%c%b a%c%b%d
-
-
-    echo '### Test of tab as colsep'
-    printf 'def\tabc\njkl\tghi' | parallel -k --colsep '\t' echo {2} {1}
-    parallel -k -a <(printf 'def\tabc\njkl\tghi') --colsep '\t' echo {2} {1}
-
-    echo '### Test of multiple -a plus colsep'
-    parallel --xapply -k -a <(printf 'def\njkl\n') -a <(printf 'abc\tghi\nmno\tpqr') --colsep '\t' echo {2} {1}
-
-    echo '### Test of multiple -a no colsep'
-    parallel --xapply -k -a <(printf 'ghi\npqr\n') -a <(printf 'abc\tdef\njkl\tmno') echo {2} {1}
-
-    echo '### Test of quoting after colsplit'
-    parallel --colsep % echo {2} {1} ::: '>/dev/null%>/tmp/null'
-
-    echo '### Test of --colsep as regexp'
-    (echo 'a%c%%b'; echo a%c%b%d) | parallel -k --colsep %+ echo {1} {3} {2} {4}
-    parallel -k --colsep %+ echo {1} {3} {2} {4} ::: a%c%%b a%c%b%d
-    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --colsep %+ echo {1} {3} {2} {4}
-    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --colsep %+ echo '"{1}_{3}_{2}_{4}"'
-    
-    echo '### Test of -C'
-    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"'
-    
-    echo '### Test of --trim n'
-    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --trim n --colsep %+ echo '"{1}_{3}_{2}_{4}"'
-    parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"' ::: 'a% c %%b' 'a%c% b %d'
-
-    echo '### Test of bug: If input is empty string'
-    (echo ; echo abcbdbebf;echo abc) | parallel -k --colsep b -v echo {1}{2}
-}
-
 par_mix_triple_colon_with_quad_colon() {
     echo '### Test :::: mixed with :::'
     echo '### Test :::: < ::: :::'
@@ -209,13 +206,6 @@ par_profiles_with_space() {
 	perl -pe 's:parallel./:parallel/:'
 }
 
-par_fifo_under_csh() {
-    echo '### Test --fifo under csh'
-
-    csh -c "seq 3000000 | parallel -k --pipe --fifo 'sleep .{#};cat {}|wc -c ; false; echo \$status; false'"
-    echo exit $?
-}
-
 par_compress_prg_fails() {
     echo '### bug #44546: If --compress-program fails: fail'
     doit() {
@@ -246,21 +236,6 @@ par_test_XI_mI() {
 
     echo "### Test -m -I"
     seq 1 10 | parallel -k 'seq 1 {} | parallel -j1 -m -k -I :: echo a{} b::'
-}
-
-par_failing_compressor() {
-    echo 'Compress with failing (de)compressor'
-    echo 'Test --tag/--line-buffer/--files in all combinations'
-    echo 'Test working/failing compressor/decompressor in all combinations'
-    echo '(-k is used as a dummy argument)'
-    stdout parallel -vk --header : --argsep ,,, \
-	     parallel -k {tag} {lb} {files} --compress --compress-program {comp} --decompress-program {decomp} echo ::: C={comp},D={decomp} \
-	     ,,, tag --tag -k \
-	     ,,, lb --line-buffer -k \
-	     ,,, files --files -k \
-	     ,,, comp 'cat;true' 'cat;false' \
-	     ,,, decomp 'cat;true' 'cat;false' |
-	perl -pe 's:/par......par:/tmpfile:'
 }
 
 par_result() {
@@ -2386,4 +2361,4 @@ par_block_negative_prefix() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

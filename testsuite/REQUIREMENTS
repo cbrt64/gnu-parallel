@@ -234,4 +234,5 @@ install_packages &&
     copy_ssh_keys &&
     lsh_setup &&
     add_freebsd &&
+    tmux_versions &&
     misc

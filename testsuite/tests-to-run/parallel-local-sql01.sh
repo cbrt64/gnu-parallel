@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# GNU SQL tests
+# GNU Parallel SQL tests
 # The tests must be able to run in parallel
 
 export SQLITE=sqlite3:///%2Frun%2Fshm%2Fparallel.db
@@ -34,7 +34,7 @@ p_wrapper() {
 }
 
 p_template() {
-  (sleep 4;
+  (sleep 6;
    parallel --sqlworker $DBURL    "$@" sleep .3\;echo >$T1) &
   parallel  --sqlandworker $DBURL "$@" sleep .3\;echo ::: {1..5} ::: {a..e} >$T2;
 }
@@ -96,7 +96,7 @@ par_shuf() {
   wait;
   # Did it compute correctly?
   cat $T/1/*/*/*/stdout
-  # Did it shuffle
+  # Did it shuffle (Compare job table to non-shuffled)
   SHUF=$(sql $SERVERURL "select Host,Command,V1,V2,Stdout,Stderr from $TABLE order by seq;")
   export PARALLEL="--result $T"
   parallel --sqlandworker $DBURL sleep .3\;echo \

@@ -10,54 +10,6 @@ par_bug37042	### Bug introduce by fixing bug #37042
 par_bug37042	abc
 par_bug43654	bug #43654: --bar with command not using {} - only last output line 
 par_bug43654	par_bug43654	[7m100% 1:0=0s 1                                                                   [0m[0m
-par_colsep	### Test of --colsep
-par_colsep	a b c
-par_colsep	a b c
-par_colsep	a b c d
-par_colsep	a b c
-par_colsep	d e f
-par_colsep	a b c
-par_colsep	d e f
-par_colsep	a b c
-par_colsep	a b c
-par_colsep	a b c d
-par_colsep	### Test of tab as colsep
-par_colsep	abc def
-par_colsep	ghi jkl
-par_colsep	abc def
-par_colsep	ghi jkl
-par_colsep	### Test of multiple -a plus colsep
-par_colsep	abc def
-par_colsep	mno jkl
-par_colsep	### Test of multiple -a no colsep
-par_colsep	abc	def ghi
-par_colsep	jkl	mno pqr
-par_colsep	### Test of quoting after colsplit
-par_colsep	>/tmp/null >/dev/null
-par_colsep	### Test of --colsep as regexp
-par_colsep	a b c
-par_colsep	a b c d
-par_colsep	a b c
-par_colsep	a b c d
-par_colsep	a b c
-par_colsep	a b c d
-par_colsep	a_b_c_
-par_colsep	a_b_c_d
-par_colsep	### Test of -C
-par_colsep	a_b_c_
-par_colsep	a_b_c_d
-par_colsep	### Test of --trim n
-par_colsep	a_b_' c '_
-par_colsep	a_' b '_c_d
-par_colsep	a_b_c_
-par_colsep	a_b_c_d
-par_colsep	### Test of bug: If input is empty string
-par_colsep	echo ''
-par_colsep	
-par_colsep	echo ac
-par_colsep	ac
-par_colsep	echo ac
-par_colsep	ac
 par_compress_prg_fails	### bug #44546: If --compress-program fails: fail
 par_compress_prg_fails	  	1
 par_compress_prg_fails	  	parallel: Error: false failed.
@@ -89,136 +41,6 @@ par_empty_string_command_line	ole
 par_empty_string_command_line	bar
 par_eof_on_command_line_input_source	### Test of eof string on :::
 par_eof_on_command_line_input_source	foo
-par_failing_compressor	Compress with failing (de)compressor
-par_failing_compressor	Test --tag/--line-buffer/--files in all combinations
-par_failing_compressor	Test working/failing compressor/decompressor in all combinations
-par_failing_compressor	(-k is used as a dummy argument)
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	C=cat;true,D=cat;true	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	C=cat;true,D=cat;false	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	C=cat;false,D=cat;true	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	C=cat;false,D=cat;false	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	C=cat;true,D=cat;true	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	C=cat;true,D=cat;false	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	C=cat;false,D=cat;true	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	C=cat;false,D=cat;false	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	C=cat;false,D=cat;true
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	C=cat;false,D=cat;false
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	/tmp/parallel-local-1s-tmpdir/tmpfile
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
-par_failing_compressor	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
-par_failing_compressor	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
-par_failing_compressor	C=cat;false,D=cat;true
-par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
-par_failing_compressor	C=cat;false,D=cat;false
-par_failing_compressor	parallel: Error: cat;false failed.
-par_fifo_under_csh	### Test --fifo under csh
-par_fifo_under_csh	1048571
-par_fifo_under_csh	1
-par_fifo_under_csh	1048572
-par_fifo_under_csh	1
-par_fifo_under_csh	1048572
-par_fifo_under_csh	1
-par_fifo_under_csh	1048572
-par_fifo_under_csh	1
-par_fifo_under_csh	1048572
-par_fifo_under_csh	1
-par_fifo_under_csh	1048572
-par_fifo_under_csh	1
-par_fifo_under_csh	1048569
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	1048576
-par_fifo_under_csh	1
-par_fifo_under_csh	868832
-par_fifo_under_csh	1
-par_fifo_under_csh	exit 22
 par_header	### Test --header with -N
 par_header	Start
 par_header	h1
@@ -293,6 +115,18 @@ par_incomplete_linebuffer	7
 par_incomplete_linebuffer	8
 par_incomplete_linebuffer	9
 par_incomplete_linebuffer	10
+par_interactive	### Test -p --interactive
+par_interactive	opt--interactive 1
+par_interactive	opt--interactive 3
+par_interactive	opt-p 1
+par_interactive	opt-p 3
+par_interactive	sleep 0.1; echo opt--interactive 1 ?...y
+par_interactive	sleep 0.1; echo opt--interactive 2 ?...n
+par_interactive	sleep 0.1; echo opt--interactive 3 ?...y
+par_interactive	sleep 0.1; echo opt-p 1 ?...y
+par_interactive	sleep 0.1; echo opt-p 2 ?...n
+par_interactive	sleep 0.1; echo opt-p 3 ?...y
+par_interactive	spawn /tmp/parallel-script-for-expect
 par_mix_triple_colon_with_quad_colon	### Test :::: mixed with :::
 par_mix_triple_colon_with_quad_colon	### Test :::: < ::: :::
 par_mix_triple_colon_with_quad_colon	6 4 1

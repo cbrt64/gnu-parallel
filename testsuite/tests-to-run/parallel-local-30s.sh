@@ -4,6 +4,187 @@
 # Each should be taking 30-100s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_exit_code() {
+    echo 'bug #52207: Exit status 0 when child job is killed, even with "now,fail=1"'
+    in_shell_run_command() {
+	# Runs command in given shell via Perl's open3
+	shell="$1"
+	prg="$2"
+	perl -MIPC::Open3 -e 'open3($a,$b,$c,"'$shell'","-c",'"$prg"'); wait; print $?>>8,"\n"'
+    }
+    export -f in_shell_run_command
+
+    runit() {
+	OK="ash bash csh dash fish mksh posh rc sash sh static-sh tcsh"
+	BAD="fdsh fizsh ksh ksh93 yash zsh"
+	s=100
+	rm -f /tmp/mysleep
+	cp /bin/sleep /tmp/mysleep
+	
+	echo '# Ideally the command should return the same'
+	echo '#   with or without parallel'
+	echo '# but fish 2.4.0 returns 1 while X.X.X returns 0'
+	parallel -kj500% --argsep ,, --tag in_shell_run_command {1} '{=2 $_=Q($_) =}' \
+		 ,, $OK $BAD ,, \
+	'/tmp/mysleep '$s \
+	'parallel --halt-on-error now,fail=1 /tmp/mysleep ::: '$s \
+	'parallel --halt-on-error now,done=1 /tmp/mysleep ::: '$s \
+	'parallel --halt-on-error now,done=1 /bin/true ::: '$s \
+	'parallel --halt-on-error now,done=1 exit ::: '$s \
+	'true;/tmp/mysleep '$s \
+	'parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: '$s \
+	'parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: '$s \
+	'parallel --halt-on-error now,done=1 "true;/bin/true" ::: '$s \
+	'parallel --halt-on-error now,done=1 "true;exit" ::: '$s
+    }
+    export -f runit
+
+    killsleep() {
+	sleep 5
+	while true; do killall -9 mysleep 2>/dev/null; sleep 1; done
+    }
+    export -f killsleep
+
+    parallel -uj0 --halt now,done=1 ::: runit killsleep
+}
+
+par_macron() {
+    echo '### See if \257\256 \257<\257> is replaced correctly'
+    print_it() {
+	parallel $2 ::: "echo $1"
+	parallel $2 echo ::: "$1"
+	parallel $2 echo "$1" ::: "$1"
+	parallel $2 echo \""$1"\" ::: "$1"
+	parallel $2 echo "$1"{} ::: "$1"
+	parallel $2 echo \""$1"\"{} ::: "$1"
+    }
+    export -f print_it
+    parallel --tag -k print_it \
+      ::: "$(perl -e 'print "\257"')" "$(perl -e 'print "\257\256"')" \
+      "$(perl -e 'print "\257\257\256"')" \
+      "$(perl -e 'print "\257<\257<\257>\257>"')" \
+      ::: -X -q -Xq -k
+}
+
+par_groupby() {
+    tsv() {
+	printf "%s\t" a1 b1 C1; echo
+	printf "%s\t" 2 2 2; echo
+	printf "%s\t" 3 2 2; echo
+	printf "%s\t" 3 3 2; echo
+	printf "%s\t" 3 2 4; echo
+	printf "%s\t" 3 2 2; echo
+	printf "%s\t" 3 2 3; echo
+    }
+    export -f tsv
+
+    ssv() {
+	# space separated
+	printf "%s\t" a1 b1 C1; echo
+	printf "%s " 2 2 2; echo
+	printf "%s \t" 3 2 2; echo
+	printf "%s\t " 3 3 2; echo
+	printf "%s  " 3 2 4; echo
+	printf "%s\t\t" 3 2 2; echo
+	printf "%s\t  \t" 3 2 3; echo
+    }
+    export -f ssv
+
+    cssv() {
+	# , + space separated
+	printf "%s,\t" a1 b1 C1; echo
+	printf "%s ," 2 2 2; echo
+	printf "%s  ,\t" 3 2 2; echo
+	printf "%s\t, " 3 3 2; echo
+	printf "%s,," 3 2 4; echo
+	printf "%s\t,,, " 3 2 2; echo
+	printf "%s\t" 3 2 3; echo
+    }
+    export -f cssv
+
+    csv() {
+	# , separated
+	printf "%s," a1 b1 C1; echo
+	printf "%s," 2 2 2; echo
+	printf "%s," 3 2 2; echo
+	printf "%s," 3 3 2; echo
+	printf "%s," 3 2 4; echo
+	printf "%s," 3 2 2; echo
+	printf "%s," 3 2 3; echo
+    }
+    export -f csv
+
+    tester() {
+	block="$1"
+	groupby="$2"
+	generator="$3"
+	colsep="$4"
+	echo "### test $generator | --colsep $colsep --groupby $groupby $block"
+	$generator |
+	    parallel --pipe --colsep "$colsep" --groupby "$groupby" -k $block 'echo NewRec; cat'
+    }
+    export -f tester
+    parallel --tag -k tester \
+	     ::: -N1 '--block 20' \
+	     ::: '3 $_%=2' 3 's/^(.).*/$1/' C1 'C1 $_%=2' \
+	     ::: tsv ssv cssv csv \
+	     :::+ '\t' '\s+' '[\s,]+' ','
+
+    # Test --colsep char: OK
+    # Test --colsep pattern: OK
+    # Test --colsep -N1: OK
+    # Test --colsep --block 20: OK
+    # Test --groupby colno: OK
+    # Test --groupby 'colno perl': OK
+    # Test --groupby colname: OK
+    # Test --groupby 'colname perl': OK
+    # Test space sep --colsep '\s': OK
+    # Test --colsep --header : (OK: --header : not needed)
+}
+
+par_groupby_pipepart() {
+    tsv() {
+	printf "%s\t" a1 b1 c1 d1 e1 f1; echo
+	seq 100000 999999 | perl -pe '$_=join"\t",split//' |
+	    sort --parallel=8 --buffer-size=50% -rk3
+    }
+    export -f tsv
+
+    ssv() {
+	# space separated
+	tsv | perl -pe '@sep=("\t"," "); s/\t/$sep[rand(2)]/ge;'
+    }
+    export -f ssv
+
+    cssv() {
+	# , + space separated
+	tsv | perl -pe '@sep=("\t"," ",","); s/\t/$sep[rand(2)].$sep[rand(2)]/ge;'
+    }
+    export -f cssv
+
+    csv() {
+	# , separated
+	tsv | perl -pe 's/\t/,/g;'
+    }
+    export -f csv
+
+    tester() {
+	generator="$1"
+	colsep="$2"
+	groupby="$3"
+	tmp=`tempfile`
+	
+	echo "### test $generator | --colsep $colsep --groupby $groupby"
+	$generator > $tmp
+	parallel --pipepart -a $tmp --colsep "$colsep" --groupby "$groupby" -k 'echo NewRec; wc'
+    }
+    export -f tester
+    parallel --tag -k tester \
+	     ::: tsv ssv cssv csv \
+	     :::+ '\t' '\s+' '[\s,]+' ',' \
+	     ::: '3 $_%=2' 3 c1 'c1 $_%=2' 's/^(\d+[\t ,]+){2}(\d+).*/$2/'
+}
+
 par_bug57364() {
     echo '### bug #57364: Race condition creating len cache file.'
     j=32
@@ -59,79 +240,6 @@ par_slow_total_jobs() {
 	parallel -k echo '{=total_jobs()=}' 2> >(perl -pe 's/\d/X/g')
 }
 
-linebuffer_matters() {
-    echo "### (--linebuffer) --compress $TAG should give different output"
-    nolbfile=$(mktemp)
-    lbfile=$(mktemp)
-    controlfile=$(mktemp)
-    randomfile=$(mktemp)
-    # Random data because it does not compress well
-    # forcing the compress tool to spit out compressed blocks
-    perl -pe 'y/[A-Za-z]//cd; $t++ % 1000 or print "\n"' < /dev/urandom |
-	head -c 10000000 > $randomfile
-    export randomfile
-
-    testfunc() {
-	linebuffer="$1"
-
-	incompressible_ascii() {
-	    # generate some incompressible ascii
-	    # with lines starting with the same string
-	    id=$1
-	    shuf $randomfile | perl -pe 's/^/'$id' /'
-	    # Sleep to give time to linebuffer-print the first part
-	    sleep 10
-	    shuf $randomfile | perl -pe 's/^/'$id' /'
-	    echo
-	}
-	export -f incompressible_ascii
-
-	nowarn() {
-	    # Ignore certain warnings
-	    # parallel: Warning: Starting 11 processes took > 2 sec.
-	    # parallel: Warning: Consider adjusting -j. Press CTRL-C to stop.
-	    grep -v '^parallel: Warning: (Starting|Consider)' >&2
-	}
-
-	parallel -j0 $linebuffer --compress $TAG \
-		 incompressible_ascii ::: {0..10} 2> >(nowarn) |
-	    perl -ne '/^(\d+)\s/ and print "$1\n"' |
-	    uniq |
-	    sort
-    }
-
-    # These can run in parallel if there are enough ressources
-    testfunc > $nolbfile
-    testfunc > $controlfile
-    testfunc --linebuffer > $lbfile
-    wait
-
-    nolb="$(cat $nolbfile)"
-    control="$(cat $controlfile)"
-    lb="$(cat $lbfile)"
-    rm $nolbfile $lbfile $controlfile $randomfile
-
-    if [ "$nolb" == "$control" ] ; then
-	if [ "$lb" == "$nolb" ] ; then
-	    echo "BAD: --linebuffer makes no difference"
-	else
-	    echo "OK: --linebuffer makes a difference"
-	fi
-    else
-	echo "BAD: control and nolb are not the same"
-    fi
-}
-export -f linebuffer_matters
-
-par_linebuffer_matters_compress_tag() {
-    export TAG=--tag
-    linebuffer_matters
-}
-
-par_linebuffer_matters_compress() {
-    linebuffer_matters
-}
-
 par_memfree() {
     echo '### test memfree - it should be killed by timeout'
     parallel --memfree 1k echo Free mem: ::: 1k
@@ -174,28 +282,6 @@ par_test_detected_shell() {
 	   ::: test_unknown_shell test_known_shell_c test_known_shell_pipe \
 	   ::: $shells |
 	grep -Ev 'parallel: Warning: (Starting .* processes took|Consider adjusting)'
-}
-
-par_linebuffer_files() {
-    echo 'bug #48658: --linebuffer --files'
-    rm -rf /tmp/par48658-*
-
-    doit() {
-	compress="$1"
-	echo "normal"
-	parallel --linebuffer --compress-program $compress seq ::: 100000 |
-	    wc -l
-	echo "--files"
-	parallel --files --linebuffer --compress-program $1 seq ::: 100000 |
-	    wc -l
-	echo "--results"
-	parallel --results /tmp/par48658-$compress --linebuffer --compress-program $compress seq ::: 100000 |
-	    wc -l
-	rm -rf "/tmp/par48658-$compress"
-    }
-    export -f doit
-    # lrz complains 'Warning, unable to set nice value on thread'
-    parallel -j1 --tag -k doit ::: zstd pzstd clzip lz4 lzop pigz pxz gzip plzip pbzip2 lzma xz lzip bzip2 lbzip2 lrz
 }
 
 par_no_newline_compress() {
@@ -347,4 +433,4 @@ par_keeporder_roundrobin() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
-    parallel --delay 0.3 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --delay 0.3 --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

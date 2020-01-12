@@ -1,107 +1,1289 @@
 par_bug57364	### bug #57364: Race condition creating len cache file.
+par_exit_code	bug #52207: Exit status 0 when child job is killed, even with "now,fail=1"
+par_exit_code	# Ideally the command should return the same
+par_exit_code	#   with or without parallel
+par_exit_code	# but fish 2.4.0 returns 1 while X.X.X returns 0
+par_exit_code	ash /tmp/mysleep 100	137
+par_exit_code	ash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	ash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	ash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	ash parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	ash true;/tmp/mysleep 100	137
+par_exit_code	ash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	ash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	ash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	ash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	bash /tmp/mysleep 100	0
+par_exit_code	bash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	bash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	bash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	bash parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	bash true;/tmp/mysleep 100	137
+par_exit_code	bash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	bash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	bash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	bash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	csh /tmp/mysleep 100	137
+par_exit_code	csh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	csh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	csh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	csh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	csh true;/tmp/mysleep 100	137
+par_exit_code	csh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	csh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	csh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	csh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	dash /tmp/mysleep 100	137
+par_exit_code	dash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	dash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	dash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	dash parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	dash true;/tmp/mysleep 100	137
+par_exit_code	dash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	dash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	dash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	dash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	fish /tmp/mysleep 100	137
+par_exit_code	fish parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	fish parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	fish parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	fish parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	fish true;/tmp/mysleep 100	137
+par_exit_code	fish parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	fish parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	fish parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	fish parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	mksh /tmp/mysleep 100	0
+par_exit_code	mksh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	mksh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	mksh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	mksh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	mksh true;/tmp/mysleep 100	137
+par_exit_code	mksh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	mksh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	mksh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	mksh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	posh /tmp/mysleep 100	137
+par_exit_code	posh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	posh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	posh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	posh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	posh true;/tmp/mysleep 100	137
+par_exit_code	posh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	posh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	posh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	posh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	rc /tmp/mysleep 100	1
+par_exit_code	rc parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 /bin/true ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 exit ::: 100	1
+par_exit_code	rc true;/tmp/mysleep 100	1
+par_exit_code	rc parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	1
+par_exit_code	rc parallel --halt-on-error now,done=1 "true;exit" ::: 100	1
+par_exit_code	sash /tmp/mysleep 100	255
+par_exit_code	sash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	255
+par_exit_code	sash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	255
+par_exit_code	sash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	sash parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	sash true;/tmp/mysleep 100	0
+par_exit_code	sash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	0
+par_exit_code	sash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	0
+par_exit_code	sash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	sash parallel --halt-on-error now,done=1 "true;exit" ::: 100	0
+par_exit_code	sh /tmp/mysleep 100	137
+par_exit_code	sh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	sh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	sh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	sh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	sh true;/tmp/mysleep 100	137
+par_exit_code	sh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	sh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	sh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	sh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	static-sh /tmp/mysleep 100	137
+par_exit_code	static-sh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	static-sh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	static-sh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	static-sh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	static-sh true;/tmp/mysleep 100	137
+par_exit_code	static-sh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	static-sh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	static-sh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	static-sh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	tcsh /tmp/mysleep 100	137
+par_exit_code	tcsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	tcsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	tcsh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	tcsh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	tcsh true;/tmp/mysleep 100	137
+par_exit_code	tcsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	tcsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	tcsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	tcsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	fdsh /tmp/mysleep 100	137
+par_exit_code	fdsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	2
+par_exit_code	fdsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	2
+par_exit_code	fdsh parallel --halt-on-error now,done=1 /bin/true ::: 100	2
+par_exit_code	fdsh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	fdsh true;/tmp/mysleep 100	137
+par_exit_code	fdsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	2
+par_exit_code	fdsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	2
+par_exit_code	fdsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	2
+par_exit_code	fdsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	fizsh /tmp/mysleep 100	137
+par_exit_code	fizsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	fizsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	fizsh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	fizsh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	fizsh true;/tmp/mysleep 100	137
+par_exit_code	fizsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	fizsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	fizsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	fizsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	ksh /tmp/mysleep 100	0
+par_exit_code	ksh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	ksh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	ksh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	ksh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	ksh true;/tmp/mysleep 100	0
+par_exit_code	ksh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	ksh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	ksh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	ksh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	ksh93 /tmp/mysleep 100	0
+par_exit_code	ksh93 parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	ksh93 true;/tmp/mysleep 100	0
+par_exit_code	ksh93 parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	ksh93 parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	yash /tmp/mysleep 100	0
+par_exit_code	yash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	yash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	yash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	yash parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	yash true;/tmp/mysleep 100	0
+par_exit_code	yash parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	yash parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	yash parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	yash parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	zsh /tmp/mysleep 100	0
+par_exit_code	zsh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
+par_exit_code	zsh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
+par_exit_code	zsh parallel --halt-on-error now,done=1 /bin/true ::: 100	0
+par_exit_code	zsh parallel --halt-on-error now,done=1 exit ::: 100	100
+par_exit_code	zsh true;/tmp/mysleep 100	0
+par_exit_code	zsh parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	zsh parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: 100	137
+par_exit_code	zsh parallel --halt-on-error now,done=1 "true;/bin/true" ::: 100	0
+par_exit_code	zsh parallel --halt-on-error now,done=1 "true;exit" ::: 100	100
+par_exit_code	parallel: This job finished:
+par_exit_code	runit
+par_groupby	-N1 3 $_%=2 tsv \t	### test tsv | --colsep \t --groupby 3 $_%=2 -N1
+par_groupby	-N1 3 $_%=2 tsv \t	NewRec
+par_groupby	-N1 3 $_%=2 tsv \t	a1	b1	C1	
+par_groupby	-N1 3 $_%=2 tsv \t	2	2	2	
+par_groupby	-N1 3 $_%=2 tsv \t	3	2	2	
+par_groupby	-N1 3 $_%=2 tsv \t	3	3	2	
+par_groupby	-N1 3 $_%=2 tsv \t	3	2	4	
+par_groupby	-N1 3 $_%=2 tsv \t	3	2	2	
+par_groupby	-N1 3 $_%=2 tsv \t	NewRec
+par_groupby	-N1 3 $_%=2 tsv \t	3	2	3	
+par_groupby	-N1 3 $_%=2 ssv \s+	### test ssv | --colsep \s+ --groupby 3 $_%=2 -N1
+par_groupby	-N1 3 $_%=2 ssv \s+	NewRec
+par_groupby	-N1 3 $_%=2 ssv \s+	a1	b1	C1	
+par_groupby	-N1 3 $_%=2 ssv \s+	2 2 2 
+par_groupby	-N1 3 $_%=2 ssv \s+	3 	2 	2 	
+par_groupby	-N1 3 $_%=2 ssv \s+	3	 3	 2	 
+par_groupby	-N1 3 $_%=2 ssv \s+	3  2  4  
+par_groupby	-N1 3 $_%=2 ssv \s+	3		2		2		
+par_groupby	-N1 3 $_%=2 ssv \s+	NewRec
+par_groupby	-N1 3 $_%=2 ssv \s+	3	  	2	  	3	  	
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby 3 $_%=2 -N1
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	NewRec
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	3,,2,,4,,
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	NewRec
+par_groupby	-N1 3 $_%=2 cssv [\s,]+	3	2	3	
+par_groupby	-N1 3 $_%=2 csv ,	### test csv | --colsep , --groupby 3 $_%=2 -N1
+par_groupby	-N1 3 $_%=2 csv ,	NewRec
+par_groupby	-N1 3 $_%=2 csv ,	a1,b1,C1,
+par_groupby	-N1 3 $_%=2 csv ,	2,2,2,
+par_groupby	-N1 3 $_%=2 csv ,	3,2,2,
+par_groupby	-N1 3 $_%=2 csv ,	3,3,2,
+par_groupby	-N1 3 $_%=2 csv ,	3,2,4,
+par_groupby	-N1 3 $_%=2 csv ,	3,2,2,
+par_groupby	-N1 3 $_%=2 csv ,	NewRec
+par_groupby	-N1 3 $_%=2 csv ,	3,2,3,
+par_groupby	-N1 3 tsv \t	### test tsv | --colsep \t --groupby 3 -N1
+par_groupby	-N1 3 tsv \t	NewRec
+par_groupby	-N1 3 tsv \t	a1	b1	C1	
+par_groupby	-N1 3 tsv \t	NewRec
+par_groupby	-N1 3 tsv \t	2	2	2	
+par_groupby	-N1 3 tsv \t	3	2	2	
+par_groupby	-N1 3 tsv \t	3	3	2	
+par_groupby	-N1 3 tsv \t	NewRec
+par_groupby	-N1 3 tsv \t	3	2	4	
+par_groupby	-N1 3 tsv \t	NewRec
+par_groupby	-N1 3 tsv \t	3	2	2	
+par_groupby	-N1 3 tsv \t	NewRec
+par_groupby	-N1 3 tsv \t	3	2	3	
+par_groupby	-N1 3 ssv \s+	### test ssv | --colsep \s+ --groupby 3 -N1
+par_groupby	-N1 3 ssv \s+	NewRec
+par_groupby	-N1 3 ssv \s+	a1	b1	C1	
+par_groupby	-N1 3 ssv \s+	NewRec
+par_groupby	-N1 3 ssv \s+	2 2 2 
+par_groupby	-N1 3 ssv \s+	3 	2 	2 	
+par_groupby	-N1 3 ssv \s+	3	 3	 2	 
+par_groupby	-N1 3 ssv \s+	NewRec
+par_groupby	-N1 3 ssv \s+	3  2  4  
+par_groupby	-N1 3 ssv \s+	NewRec
+par_groupby	-N1 3 ssv \s+	3		2		2		
+par_groupby	-N1 3 ssv \s+	NewRec
+par_groupby	-N1 3 ssv \s+	3	  	2	  	3	  	
+par_groupby	-N1 3 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby 3 -N1
+par_groupby	-N1 3 cssv [\s,]+	NewRec
+par_groupby	-N1 3 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 3 cssv [\s,]+	NewRec
+par_groupby	-N1 3 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	-N1 3 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	-N1 3 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	-N1 3 cssv [\s,]+	NewRec
+par_groupby	-N1 3 cssv [\s,]+	3,,2,,4,,
+par_groupby	-N1 3 cssv [\s,]+	NewRec
+par_groupby	-N1 3 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	-N1 3 cssv [\s,]+	NewRec
+par_groupby	-N1 3 cssv [\s,]+	3	2	3	
+par_groupby	-N1 3 csv ,	### test csv | --colsep , --groupby 3 -N1
+par_groupby	-N1 3 csv ,	NewRec
+par_groupby	-N1 3 csv ,	a1,b1,C1,
+par_groupby	-N1 3 csv ,	NewRec
+par_groupby	-N1 3 csv ,	2,2,2,
+par_groupby	-N1 3 csv ,	3,2,2,
+par_groupby	-N1 3 csv ,	3,3,2,
+par_groupby	-N1 3 csv ,	NewRec
+par_groupby	-N1 3 csv ,	3,2,4,
+par_groupby	-N1 3 csv ,	NewRec
+par_groupby	-N1 3 csv ,	3,2,2,
+par_groupby	-N1 3 csv ,	NewRec
+par_groupby	-N1 3 csv ,	3,2,3,
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	### test tsv | --colsep \t --groupby s/^(.).*/$1/ -N1
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	NewRec
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	a1	b1	C1	
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	NewRec
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	2	2	2	
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	NewRec
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	3	2	2	
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	3	3	2	
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	3	2	4	
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	3	2	2	
+par_groupby	-N1 s/^(.).*/$1/ tsv \t	3	2	3	
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	### test ssv | --colsep \s+ --groupby s/^(.).*/$1/ -N1
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	NewRec
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	a1	b1	C1	
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	NewRec
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	2 2 2 
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	NewRec
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	3 	2 	2 	
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	3	 3	 2	 
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	3  2  4  
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	3		2		2		
+par_groupby	-N1 s/^(.).*/$1/ ssv \s+	3	  	2	  	3	  	
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby s/^(.).*/$1/ -N1
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	NewRec
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	NewRec
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	NewRec
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	3,,2,,4,,
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	-N1 s/^(.).*/$1/ cssv [\s,]+	3	2	3	
+par_groupby	-N1 s/^(.).*/$1/ csv ,	### test csv | --colsep , --groupby s/^(.).*/$1/ -N1
+par_groupby	-N1 s/^(.).*/$1/ csv ,	NewRec
+par_groupby	-N1 s/^(.).*/$1/ csv ,	a1,b1,C1,
+par_groupby	-N1 s/^(.).*/$1/ csv ,	NewRec
+par_groupby	-N1 s/^(.).*/$1/ csv ,	2,2,2,
+par_groupby	-N1 s/^(.).*/$1/ csv ,	NewRec
+par_groupby	-N1 s/^(.).*/$1/ csv ,	3,2,2,
+par_groupby	-N1 s/^(.).*/$1/ csv ,	3,3,2,
+par_groupby	-N1 s/^(.).*/$1/ csv ,	3,2,4,
+par_groupby	-N1 s/^(.).*/$1/ csv ,	3,2,2,
+par_groupby	-N1 s/^(.).*/$1/ csv ,	3,2,3,
+par_groupby	-N1 C1 tsv \t	### test tsv | --colsep \t --groupby C1 -N1
+par_groupby	-N1 C1 tsv \t	NewRec
+par_groupby	-N1 C1 tsv \t	a1	b1	C1	
+par_groupby	-N1 C1 tsv \t	2	2	2	
+par_groupby	-N1 C1 tsv \t	3	2	2	
+par_groupby	-N1 C1 tsv \t	3	3	2	
+par_groupby	-N1 C1 tsv \t	NewRec
+par_groupby	-N1 C1 tsv \t	a1	b1	C1	
+par_groupby	-N1 C1 tsv \t	3	2	4	
+par_groupby	-N1 C1 tsv \t	NewRec
+par_groupby	-N1 C1 tsv \t	a1	b1	C1	
+par_groupby	-N1 C1 tsv \t	3	2	2	
+par_groupby	-N1 C1 tsv \t	NewRec
+par_groupby	-N1 C1 tsv \t	a1	b1	C1	
+par_groupby	-N1 C1 tsv \t	3	2	3	
+par_groupby	-N1 C1 ssv \s+	### test ssv | --colsep \s+ --groupby C1 -N1
+par_groupby	-N1 C1 ssv \s+	NewRec
+par_groupby	-N1 C1 ssv \s+	a1	b1	C1	
+par_groupby	-N1 C1 ssv \s+	2 2 2 
+par_groupby	-N1 C1 ssv \s+	3 	2 	2 	
+par_groupby	-N1 C1 ssv \s+	3	 3	 2	 
+par_groupby	-N1 C1 ssv \s+	NewRec
+par_groupby	-N1 C1 ssv \s+	a1	b1	C1	
+par_groupby	-N1 C1 ssv \s+	3  2  4  
+par_groupby	-N1 C1 ssv \s+	NewRec
+par_groupby	-N1 C1 ssv \s+	a1	b1	C1	
+par_groupby	-N1 C1 ssv \s+	3		2		2		
+par_groupby	-N1 C1 ssv \s+	NewRec
+par_groupby	-N1 C1 ssv \s+	a1	b1	C1	
+par_groupby	-N1 C1 ssv \s+	3	  	2	  	3	  	
+par_groupby	-N1 C1 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby C1 -N1
+par_groupby	-N1 C1 cssv [\s,]+	NewRec
+par_groupby	-N1 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 C1 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	-N1 C1 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	-N1 C1 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	-N1 C1 cssv [\s,]+	NewRec
+par_groupby	-N1 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 C1 cssv [\s,]+	3,,2,,4,,
+par_groupby	-N1 C1 cssv [\s,]+	NewRec
+par_groupby	-N1 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 C1 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	-N1 C1 cssv [\s,]+	NewRec
+par_groupby	-N1 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 C1 cssv [\s,]+	3	2	3	
+par_groupby	-N1 C1 csv ,	### test csv | --colsep , --groupby C1 -N1
+par_groupby	-N1 C1 csv ,	NewRec
+par_groupby	-N1 C1 csv ,	a1,b1,C1,
+par_groupby	-N1 C1 csv ,	2,2,2,
+par_groupby	-N1 C1 csv ,	3,2,2,
+par_groupby	-N1 C1 csv ,	3,3,2,
+par_groupby	-N1 C1 csv ,	NewRec
+par_groupby	-N1 C1 csv ,	a1,b1,C1,
+par_groupby	-N1 C1 csv ,	3,2,4,
+par_groupby	-N1 C1 csv ,	NewRec
+par_groupby	-N1 C1 csv ,	a1,b1,C1,
+par_groupby	-N1 C1 csv ,	3,2,2,
+par_groupby	-N1 C1 csv ,	NewRec
+par_groupby	-N1 C1 csv ,	a1,b1,C1,
+par_groupby	-N1 C1 csv ,	3,2,3,
+par_groupby	-N1 C1 $_%=2 tsv \t	### test tsv | --colsep \t --groupby C1 $_%=2 -N1
+par_groupby	-N1 C1 $_%=2 tsv \t	NewRec
+par_groupby	-N1 C1 $_%=2 tsv \t	a1	b1	C1	
+par_groupby	-N1 C1 $_%=2 tsv \t	2	2	2	
+par_groupby	-N1 C1 $_%=2 tsv \t	3	2	2	
+par_groupby	-N1 C1 $_%=2 tsv \t	3	3	2	
+par_groupby	-N1 C1 $_%=2 tsv \t	3	2	4	
+par_groupby	-N1 C1 $_%=2 tsv \t	3	2	2	
+par_groupby	-N1 C1 $_%=2 tsv \t	NewRec
+par_groupby	-N1 C1 $_%=2 tsv \t	a1	b1	C1	
+par_groupby	-N1 C1 $_%=2 tsv \t	3	2	3	
+par_groupby	-N1 C1 $_%=2 ssv \s+	### test ssv | --colsep \s+ --groupby C1 $_%=2 -N1
+par_groupby	-N1 C1 $_%=2 ssv \s+	NewRec
+par_groupby	-N1 C1 $_%=2 ssv \s+	a1	b1	C1	
+par_groupby	-N1 C1 $_%=2 ssv \s+	2 2 2 
+par_groupby	-N1 C1 $_%=2 ssv \s+	3 	2 	2 	
+par_groupby	-N1 C1 $_%=2 ssv \s+	3	 3	 2	 
+par_groupby	-N1 C1 $_%=2 ssv \s+	3  2  4  
+par_groupby	-N1 C1 $_%=2 ssv \s+	3		2		2		
+par_groupby	-N1 C1 $_%=2 ssv \s+	NewRec
+par_groupby	-N1 C1 $_%=2 ssv \s+	a1	b1	C1	
+par_groupby	-N1 C1 $_%=2 ssv \s+	3	  	2	  	3	  	
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby C1 $_%=2 -N1
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	NewRec
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	3,,2,,4,,
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	NewRec
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	-N1 C1 $_%=2 cssv [\s,]+	3	2	3	
+par_groupby	-N1 C1 $_%=2 csv ,	### test csv | --colsep , --groupby C1 $_%=2 -N1
+par_groupby	-N1 C1 $_%=2 csv ,	NewRec
+par_groupby	-N1 C1 $_%=2 csv ,	a1,b1,C1,
+par_groupby	-N1 C1 $_%=2 csv ,	2,2,2,
+par_groupby	-N1 C1 $_%=2 csv ,	3,2,2,
+par_groupby	-N1 C1 $_%=2 csv ,	3,3,2,
+par_groupby	-N1 C1 $_%=2 csv ,	3,2,4,
+par_groupby	-N1 C1 $_%=2 csv ,	3,2,2,
+par_groupby	-N1 C1 $_%=2 csv ,	NewRec
+par_groupby	-N1 C1 $_%=2 csv ,	a1,b1,C1,
+par_groupby	-N1 C1 $_%=2 csv ,	3,2,3,
+par_groupby	--block 20 3 $_%=2 tsv \t	### test tsv | --colsep \t --groupby 3 $_%=2 --block 20
+par_groupby	--block 20 3 $_%=2 tsv \t	NewRec
+par_groupby	--block 20 3 $_%=2 tsv \t	a1	b1	C1	
+par_groupby	--block 20 3 $_%=2 tsv \t	2	2	2	
+par_groupby	--block 20 3 $_%=2 tsv \t	3	2	2	
+par_groupby	--block 20 3 $_%=2 tsv \t	3	3	2	
+par_groupby	--block 20 3 $_%=2 tsv \t	3	2	4	
+par_groupby	--block 20 3 $_%=2 tsv \t	3	2	2	
+par_groupby	--block 20 3 $_%=2 tsv \t	NewRec
+par_groupby	--block 20 3 $_%=2 tsv \t	3	2	3	
+par_groupby	--block 20 3 $_%=2 tsv \t	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 $_%=2 tsv \t	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 $_%=2 tsv \t	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 $_%=2 tsv \t	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 3 $_%=2 ssv \s+	### test ssv | --colsep \s+ --groupby 3 $_%=2 --block 20
+par_groupby	--block 20 3 $_%=2 ssv \s+	NewRec
+par_groupby	--block 20 3 $_%=2 ssv \s+	a1	b1	C1	
+par_groupby	--block 20 3 $_%=2 ssv \s+	2 2 2 
+par_groupby	--block 20 3 $_%=2 ssv \s+	3 	2 	2 	
+par_groupby	--block 20 3 $_%=2 ssv \s+	3	 3	 2	 
+par_groupby	--block 20 3 $_%=2 ssv \s+	3  2  4  
+par_groupby	--block 20 3 $_%=2 ssv \s+	3		2		2		
+par_groupby	--block 20 3 $_%=2 ssv \s+	NewRec
+par_groupby	--block 20 3 $_%=2 ssv \s+	3	  	2	  	3	  	
+par_groupby	--block 20 3 $_%=2 ssv \s+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 $_%=2 ssv \s+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 $_%=2 ssv \s+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 $_%=2 ssv \s+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 3 $_%=2 ssv \s+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby 3 $_%=2 --block 20
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	NewRec
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	3,,2,,4,,
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	3	2	3	
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 3 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 87. Increasing to --blocksize 115.
+par_groupby	--block 20 3 $_%=2 csv ,	### test csv | --colsep , --groupby 3 $_%=2 --block 20
+par_groupby	--block 20 3 $_%=2 csv ,	NewRec
+par_groupby	--block 20 3 $_%=2 csv ,	a1,b1,C1,
+par_groupby	--block 20 3 $_%=2 csv ,	2,2,2,
+par_groupby	--block 20 3 $_%=2 csv ,	3,2,2,
+par_groupby	--block 20 3 $_%=2 csv ,	3,3,2,
+par_groupby	--block 20 3 $_%=2 csv ,	3,2,4,
+par_groupby	--block 20 3 $_%=2 csv ,	3,2,2,
+par_groupby	--block 20 3 $_%=2 csv ,	NewRec
+par_groupby	--block 20 3 $_%=2 csv ,	3,2,3,
+par_groupby	--block 20 3 $_%=2 csv ,	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 $_%=2 csv ,	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 $_%=2 csv ,	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 $_%=2 csv ,	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 3 tsv \t	### test tsv | --colsep \t --groupby 3 --block 20
+par_groupby	--block 20 3 tsv \t	NewRec
+par_groupby	--block 20 3 tsv \t	a1	b1	C1	
+par_groupby	--block 20 3 tsv \t	NewRec
+par_groupby	--block 20 3 tsv \t	2	2	2	
+par_groupby	--block 20 3 tsv \t	3	2	2	
+par_groupby	--block 20 3 tsv \t	3	3	2	
+par_groupby	--block 20 3 tsv \t	NewRec
+par_groupby	--block 20 3 tsv \t	3	2	4	
+par_groupby	--block 20 3 tsv \t	NewRec
+par_groupby	--block 20 3 tsv \t	3	2	2	
+par_groupby	--block 20 3 tsv \t	3	2	3	
+par_groupby	--block 20 3 tsv \t	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 tsv \t	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 tsv \t	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 tsv \t	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 3 ssv \s+	### test ssv | --colsep \s+ --groupby 3 --block 20
+par_groupby	--block 20 3 ssv \s+	NewRec
+par_groupby	--block 20 3 ssv \s+	a1	b1	C1	
+par_groupby	--block 20 3 ssv \s+	NewRec
+par_groupby	--block 20 3 ssv \s+	2 2 2 
+par_groupby	--block 20 3 ssv \s+	3 	2 	2 	
+par_groupby	--block 20 3 ssv \s+	3	 3	 2	 
+par_groupby	--block 20 3 ssv \s+	NewRec
+par_groupby	--block 20 3 ssv \s+	3  2  4  
+par_groupby	--block 20 3 ssv \s+	3		2		2		
+par_groupby	--block 20 3 ssv \s+	NewRec
+par_groupby	--block 20 3 ssv \s+	3	  	2	  	3	  	
+par_groupby	--block 20 3 ssv \s+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 ssv \s+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 ssv \s+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 ssv \s+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 3 ssv \s+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 3 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby 3 --block 20
+par_groupby	--block 20 3 cssv [\s,]+	NewRec
+par_groupby	--block 20 3 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 3 cssv [\s,]+	NewRec
+par_groupby	--block 20 3 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	--block 20 3 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	--block 20 3 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	--block 20 3 cssv [\s,]+	NewRec
+par_groupby	--block 20 3 cssv [\s,]+	3,,2,,4,,
+par_groupby	--block 20 3 cssv [\s,]+	NewRec
+par_groupby	--block 20 3 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	--block 20 3 cssv [\s,]+	3	2	3	
+par_groupby	--block 20 3 cssv [\s,]+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 cssv [\s,]+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 cssv [\s,]+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 cssv [\s,]+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 3 cssv [\s,]+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 3 csv ,	### test csv | --colsep , --groupby 3 --block 20
+par_groupby	--block 20 3 csv ,	NewRec
+par_groupby	--block 20 3 csv ,	a1,b1,C1,
+par_groupby	--block 20 3 csv ,	NewRec
+par_groupby	--block 20 3 csv ,	2,2,2,
+par_groupby	--block 20 3 csv ,	3,2,2,
+par_groupby	--block 20 3 csv ,	3,3,2,
+par_groupby	--block 20 3 csv ,	NewRec
+par_groupby	--block 20 3 csv ,	3,2,4,
+par_groupby	--block 20 3 csv ,	NewRec
+par_groupby	--block 20 3 csv ,	3,2,2,
+par_groupby	--block 20 3 csv ,	3,2,3,
+par_groupby	--block 20 3 csv ,	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 3 csv ,	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 3 csv ,	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 3 csv ,	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	### test tsv | --colsep \t --groupby s/^(.).*/$1/ --block 20
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	a1	b1	C1	
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	2	2	2	
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	3	2	2	
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	3	3	2	
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	3	2	4	
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	3	2	2	
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	3	2	3	
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 s/^(.).*/$1/ tsv \t	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	### test ssv | --colsep \s+ --groupby s/^(.).*/$1/ --block 20
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	a1	b1	C1	
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	2 2 2 
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	3 	2 	2 	
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	3	 3	 2	 
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	3  2  4  
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	3		2		2		
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	3	  	2	  	3	  	
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 s/^(.).*/$1/ ssv \s+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby s/^(.).*/$1/ --block 20
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	3,,2,,4,,
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	3	2	3	
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 s/^(.).*/$1/ cssv [\s,]+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	### test csv | --colsep , --groupby s/^(.).*/$1/ --block 20
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	a1,b1,C1,
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	2,2,2,
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	NewRec
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	3,2,2,
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	3,3,2,
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	3,2,4,
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	3,2,2,
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	3,2,3,
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 s/^(.).*/$1/ csv ,	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 C1 tsv \t	### test tsv | --colsep \t --groupby C1 --block 20
+par_groupby	--block 20 C1 tsv \t	NewRec
+par_groupby	--block 20 C1 tsv \t	a1	b1	C1	
+par_groupby	--block 20 C1 tsv \t	2	2	2	
+par_groupby	--block 20 C1 tsv \t	3	2	2	
+par_groupby	--block 20 C1 tsv \t	3	3	2	
+par_groupby	--block 20 C1 tsv \t	NewRec
+par_groupby	--block 20 C1 tsv \t	a1	b1	C1	
+par_groupby	--block 20 C1 tsv \t	3	2	4	
+par_groupby	--block 20 C1 tsv \t	NewRec
+par_groupby	--block 20 C1 tsv \t	a1	b1	C1	
+par_groupby	--block 20 C1 tsv \t	3	2	2	
+par_groupby	--block 20 C1 tsv \t	NewRec
+par_groupby	--block 20 C1 tsv \t	a1	b1	C1	
+par_groupby	--block 20 C1 tsv \t	3	2	3	
+par_groupby	--block 20 C1 tsv \t	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 tsv \t	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 tsv \t	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 ssv \s+	### test ssv | --colsep \s+ --groupby C1 --block 20
+par_groupby	--block 20 C1 ssv \s+	NewRec
+par_groupby	--block 20 C1 ssv \s+	a1	b1	C1	
+par_groupby	--block 20 C1 ssv \s+	2 2 2 
+par_groupby	--block 20 C1 ssv \s+	3 	2 	2 	
+par_groupby	--block 20 C1 ssv \s+	3	 3	 2	 
+par_groupby	--block 20 C1 ssv \s+	NewRec
+par_groupby	--block 20 C1 ssv \s+	a1	b1	C1	
+par_groupby	--block 20 C1 ssv \s+	3  2  4  
+par_groupby	--block 20 C1 ssv \s+	NewRec
+par_groupby	--block 20 C1 ssv \s+	a1	b1	C1	
+par_groupby	--block 20 C1 ssv \s+	3		2		2		
+par_groupby	--block 20 C1 ssv \s+	NewRec
+par_groupby	--block 20 C1 ssv \s+	a1	b1	C1	
+par_groupby	--block 20 C1 ssv \s+	3	  	2	  	3	  	
+par_groupby	--block 20 C1 ssv \s+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 ssv \s+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 ssv \s+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby C1 --block 20
+par_groupby	--block 20 C1 cssv [\s,]+	NewRec
+par_groupby	--block 20 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 C1 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	--block 20 C1 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	--block 20 C1 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	--block 20 C1 cssv [\s,]+	NewRec
+par_groupby	--block 20 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 C1 cssv [\s,]+	3,,2,,4,,
+par_groupby	--block 20 C1 cssv [\s,]+	NewRec
+par_groupby	--block 20 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 C1 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	--block 20 C1 cssv [\s,]+	NewRec
+par_groupby	--block 20 C1 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 C1 cssv [\s,]+	3	2	3	
+par_groupby	--block 20 C1 cssv [\s,]+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 cssv [\s,]+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 cssv [\s,]+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 cssv [\s,]+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 C1 csv ,	### test csv | --colsep , --groupby C1 --block 20
+par_groupby	--block 20 C1 csv ,	NewRec
+par_groupby	--block 20 C1 csv ,	a1,b1,C1,
+par_groupby	--block 20 C1 csv ,	2,2,2,
+par_groupby	--block 20 C1 csv ,	3,2,2,
+par_groupby	--block 20 C1 csv ,	3,3,2,
+par_groupby	--block 20 C1 csv ,	NewRec
+par_groupby	--block 20 C1 csv ,	a1,b1,C1,
+par_groupby	--block 20 C1 csv ,	3,2,4,
+par_groupby	--block 20 C1 csv ,	NewRec
+par_groupby	--block 20 C1 csv ,	a1,b1,C1,
+par_groupby	--block 20 C1 csv ,	3,2,2,
+par_groupby	--block 20 C1 csv ,	NewRec
+par_groupby	--block 20 C1 csv ,	a1,b1,C1,
+par_groupby	--block 20 C1 csv ,	3,2,3,
+par_groupby	--block 20 C1 csv ,	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 csv ,	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 csv ,	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 $_%=2 tsv \t	### test tsv | --colsep \t --groupby C1 $_%=2 --block 20
+par_groupby	--block 20 C1 $_%=2 tsv \t	NewRec
+par_groupby	--block 20 C1 $_%=2 tsv \t	a1	b1	C1	
+par_groupby	--block 20 C1 $_%=2 tsv \t	2	2	2	
+par_groupby	--block 20 C1 $_%=2 tsv \t	3	2	2	
+par_groupby	--block 20 C1 $_%=2 tsv \t	3	3	2	
+par_groupby	--block 20 C1 $_%=2 tsv \t	3	2	4	
+par_groupby	--block 20 C1 $_%=2 tsv \t	3	2	2	
+par_groupby	--block 20 C1 $_%=2 tsv \t	3	2	3	
+par_groupby	--block 20 C1 $_%=2 tsv \t	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 $_%=2 tsv \t	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 $_%=2 tsv \t	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 $_%=2 tsv \t	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 C1 $_%=2 ssv \s+	### test ssv | --colsep \s+ --groupby C1 $_%=2 --block 20
+par_groupby	--block 20 C1 $_%=2 ssv \s+	NewRec
+par_groupby	--block 20 C1 $_%=2 ssv \s+	a1	b1	C1	
+par_groupby	--block 20 C1 $_%=2 ssv \s+	2 2 2 
+par_groupby	--block 20 C1 $_%=2 ssv \s+	3 	2 	2 	
+par_groupby	--block 20 C1 $_%=2 ssv \s+	3	 3	 2	 
+par_groupby	--block 20 C1 $_%=2 ssv \s+	3  2  4  
+par_groupby	--block 20 C1 $_%=2 ssv \s+	3		2		2		
+par_groupby	--block 20 C1 $_%=2 ssv \s+	3	  	2	  	3	  	
+par_groupby	--block 20 C1 $_%=2 ssv \s+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 $_%=2 ssv \s+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 $_%=2 ssv \s+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 $_%=2 ssv \s+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 C1 $_%=2 ssv \s+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	### test cssv | --colsep [\s,]+ --groupby C1 $_%=2 --block 20
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	NewRec
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	a1,	b1,	C1,	
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	2 ,2 ,2 ,
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	3  ,	2  ,	2  ,	
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	3	, 3	, 2	, 
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	3,,2,,4,,
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	3	,,, 2	,,, 2	,,, 
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	3	2	3	
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 66. Increasing to --blocksize 87.
+par_groupby	--block 20 C1 $_%=2 cssv [\s,]+	parallel: Warning: A record was longer than 87. Increasing to --blocksize 115.
+par_groupby	--block 20 C1 $_%=2 csv ,	### test csv | --colsep , --groupby C1 $_%=2 --block 20
+par_groupby	--block 20 C1 $_%=2 csv ,	NewRec
+par_groupby	--block 20 C1 $_%=2 csv ,	a1,b1,C1,
+par_groupby	--block 20 C1 $_%=2 csv ,	2,2,2,
+par_groupby	--block 20 C1 $_%=2 csv ,	3,2,2,
+par_groupby	--block 20 C1 $_%=2 csv ,	3,3,2,
+par_groupby	--block 20 C1 $_%=2 csv ,	3,2,4,
+par_groupby	--block 20 C1 $_%=2 csv ,	3,2,2,
+par_groupby	--block 20 C1 $_%=2 csv ,	3,2,3,
+par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer than 20. Increasing to --blocksize 27.
+par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer than 27. Increasing to --blocksize 37.
+par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer than 37. Increasing to --blocksize 50.
+par_groupby	--block 20 C1 $_%=2 csv ,	parallel: Warning: A record was longer than 50. Increasing to --blocksize 66.
+par_groupby_pipepart	tsv \t 3 $_%=2	### test tsv | --colsep \t --groupby 3 $_%=2
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	      1       6      19
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3 $_%=2	NewRec
+par_groupby_pipepart	tsv \t 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	### test tsv | --colsep \t --groupby 3
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	      1       6      19
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t 3	NewRec
+par_groupby_pipepart	tsv \t 3	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	### test tsv | --colsep \t --groupby c1
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90001  540006 1170019
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1	NewRec
+par_groupby_pipepart	tsv \t c1	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	### test tsv | --colsep \t --groupby c1 $_%=2
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90001  540006 1170019
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t c1 $_%=2	NewRec
+par_groupby_pipepart	tsv \t c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test tsv | --colsep \t --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       6      19
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	tsv \t s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	### test ssv | --colsep \s+ --groupby 3 $_%=2
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	      1       6      19
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ 3 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	### test ssv | --colsep \s+ --groupby 3
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	      1       6      19
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ 3	NewRec
+par_groupby_pipepart	ssv \s+ 3	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	### test ssv | --colsep \s+ --groupby c1
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90001  540006 1170019
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1	NewRec
+par_groupby_pipepart	ssv \s+ c1	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	### test ssv | --colsep \s+ --groupby c1 $_%=2
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90001  540006 1170019
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ c1 $_%=2	NewRec
+par_groupby_pipepart	ssv \s+ c1 $_%=2	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test ssv | --colsep \s+ --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       6      19
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	ssv \s+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1170000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	### test cssv | --colsep [\s,]+ --groupby 3 $_%=2
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	      1       6      25
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	### test cssv | --colsep [\s,]+ --groupby 3
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	      1       6      25
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ 3	NewRec
+par_groupby_pipepart	cssv [\s,]+ 3	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	### test cssv | --colsep [\s,]+ --groupby c1
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90001  540006 1710025
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	### test cssv | --colsep [\s,]+ --groupby c1 $_%=2
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90001  540006 1710025
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	NewRec
+par_groupby_pipepart	cssv [\s,]+ c1 $_%=2	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test cssv | --colsep [\s,]+ --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       6      25
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	cssv [\s,]+ s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000  540000 1710000
+par_groupby_pipepart	csv , 3 $_%=2	### test csv | --colsep , --groupby 3 $_%=2
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	      1       1      19
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3 $_%=2	NewRec
+par_groupby_pipepart	csv , 3 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	### test csv | --colsep , --groupby 3
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	      1       1      19
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , 3	NewRec
+par_groupby_pipepart	csv , 3	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	### test csv | --colsep , --groupby c1
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90001   90001 1170019
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1	NewRec
+par_groupby_pipepart	csv , c1	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	### test csv | --colsep , --groupby c1 $_%=2
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90001   90001 1170019
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , c1 $_%=2	NewRec
+par_groupby_pipepart	csv , c1 $_%=2	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	### test csv | --colsep , --groupby s/^(\d+[\t ,]+){2}(\d+).*/$2/
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	      1       1      19
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
+par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90000   90000 1170000
 par_keeporder_roundrobin	bug #50081: --keep-order --round-robin should give predictable results
 par_keeporder_roundrobin	OK
-par_linebuffer_files	bug #48658: --linebuffer --files
-par_linebuffer_files	zstd	normal
-par_linebuffer_files	zstd	100000
-par_linebuffer_files	zstd	--files
-par_linebuffer_files	zstd	1
-par_linebuffer_files	zstd	--results
-par_linebuffer_files	zstd	1
-par_linebuffer_files	pzstd	normal
-par_linebuffer_files	pzstd	100000
-par_linebuffer_files	pzstd	--files
-par_linebuffer_files	pzstd	1
-par_linebuffer_files	pzstd	--results
-par_linebuffer_files	pzstd	1
-par_linebuffer_files	clzip	normal
-par_linebuffer_files	clzip	100000
-par_linebuffer_files	clzip	--files
-par_linebuffer_files	clzip	1
-par_linebuffer_files	clzip	--results
-par_linebuffer_files	clzip	1
-par_linebuffer_files	lz4	normal
-par_linebuffer_files	lz4	100000
-par_linebuffer_files	lz4	--files
-par_linebuffer_files	lz4	1
-par_linebuffer_files	lz4	--results
-par_linebuffer_files	lz4	1
-par_linebuffer_files	lzop	normal
-par_linebuffer_files	lzop	100000
-par_linebuffer_files	lzop	--files
-par_linebuffer_files	lzop	1
-par_linebuffer_files	lzop	--results
-par_linebuffer_files	lzop	1
-par_linebuffer_files	pigz	normal
-par_linebuffer_files	pigz	100000
-par_linebuffer_files	pigz	--files
-par_linebuffer_files	pigz	1
-par_linebuffer_files	pigz	--results
-par_linebuffer_files	pigz	1
-par_linebuffer_files	pxz	normal
-par_linebuffer_files	pxz	100000
-par_linebuffer_files	pxz	--files
-par_linebuffer_files	pxz	1
-par_linebuffer_files	pxz	--results
-par_linebuffer_files	pxz	1
-par_linebuffer_files	gzip	normal
-par_linebuffer_files	gzip	100000
-par_linebuffer_files	gzip	--files
-par_linebuffer_files	gzip	1
-par_linebuffer_files	gzip	--results
-par_linebuffer_files	gzip	1
-par_linebuffer_files	plzip	normal
-par_linebuffer_files	plzip	100000
-par_linebuffer_files	plzip	--files
-par_linebuffer_files	plzip	1
-par_linebuffer_files	plzip	--results
-par_linebuffer_files	plzip	1
-par_linebuffer_files	pbzip2	normal
-par_linebuffer_files	pbzip2	100000
-par_linebuffer_files	pbzip2	--files
-par_linebuffer_files	pbzip2	1
-par_linebuffer_files	pbzip2	--results
-par_linebuffer_files	pbzip2	1
-par_linebuffer_files	lzma	normal
-par_linebuffer_files	lzma	100000
-par_linebuffer_files	lzma	--files
-par_linebuffer_files	lzma	1
-par_linebuffer_files	lzma	--results
-par_linebuffer_files	lzma	1
-par_linebuffer_files	xz	normal
-par_linebuffer_files	xz	100000
-par_linebuffer_files	xz	--files
-par_linebuffer_files	xz	1
-par_linebuffer_files	xz	--results
-par_linebuffer_files	xz	1
-par_linebuffer_files	lzip	normal
-par_linebuffer_files	lzip	100000
-par_linebuffer_files	lzip	--files
-par_linebuffer_files	lzip	1
-par_linebuffer_files	lzip	--results
-par_linebuffer_files	lzip	1
-par_linebuffer_files	bzip2	normal
-par_linebuffer_files	bzip2	100000
-par_linebuffer_files	bzip2	--files
-par_linebuffer_files	bzip2	1
-par_linebuffer_files	bzip2	--results
-par_linebuffer_files	bzip2	1
-par_linebuffer_files	lbzip2	normal
-par_linebuffer_files	lbzip2	100000
-par_linebuffer_files	lbzip2	--files
-par_linebuffer_files	lbzip2	1
-par_linebuffer_files	lbzip2	--results
-par_linebuffer_files	lbzip2	1
-par_linebuffer_files	lrz	normal
-par_linebuffer_files	lrz	100000
-par_linebuffer_files	lrz	--files
-par_linebuffer_files	lrz	1
-par_linebuffer_files	lrz	--results
-par_linebuffer_files	lrz	1
-par_linebuffer_matters_compress	### (--linebuffer) --compress  should give different output
-par_linebuffer_matters_compress	OK: --linebuffer makes a difference
-par_linebuffer_matters_compress_tag	### (--linebuffer) --compress --tag should give different output
-par_linebuffer_matters_compress_tag	OK: --linebuffer makes a difference
+par_macron	### See if \257\256 \257<\257> is replaced correctly
+par_macron	п -X	п
+par_macron	п -X	п
+par_macron	п -X	п п
+par_macron	п -X	п п
+par_macron	п -X	пп
+par_macron	п -X	пп
+par_macron	п -q	п
+par_macron	п -q	п п
+par_macron	п -q	"п" п
+par_macron	п -q	пп
+par_macron	п -q	"п"п
+par_macron	п -q	/bin/bash: $'echo \257': command not found
+par_macron	п -Xq	п
+par_macron	п -Xq	п п
+par_macron	п -Xq	"п" п
+par_macron	п -Xq	пп
+par_macron	п -Xq	"п"п
+par_macron	п -Xq	/bin/bash: $'echo \257': command not found
+par_macron	п -k	п
+par_macron	п -k	п
+par_macron	п -k	п п
+par_macron	п -k	п п
+par_macron	п -k	пп
+par_macron	п -k	пп
+par_macron	по -X	по
+par_macron	по -X	по
+par_macron	по -X	по по
+par_macron	по -X	по по
+par_macron	по -X	попо
+par_macron	по -X	попо
+par_macron	по -q	по
+par_macron	по -q	по по
+par_macron	по -q	"по" по
+par_macron	по -q	попо
+par_macron	по -q	"по"по
+par_macron	по -q	/bin/bash: $'echo \257\256': command not found
+par_macron	по -Xq	по
+par_macron	по -Xq	по по
+par_macron	по -Xq	"по" по
+par_macron	по -Xq	попо
+par_macron	по -Xq	"по"по
+par_macron	по -Xq	/bin/bash: $'echo \257\256': command not found
+par_macron	по -k	по
+par_macron	по -k	по
+par_macron	по -k	по по
+par_macron	по -k	по по
+par_macron	по -k	попо
+par_macron	по -k	попо
+par_macron	ппо -X	ппо
+par_macron	ппо -X	ппо
+par_macron	ппо -X	ппо ппо
+par_macron	ппо -X	ппо ппо
+par_macron	ппо -X	ппоппо
+par_macron	ппо -X	ппоппо
+par_macron	ппо -q	ппо
+par_macron	ппо -q	ппо ппо
+par_macron	ппо -q	"ппо" ппо
+par_macron	ппо -q	ппоппо
+par_macron	ппо -q	"ппо"ппо
+par_macron	ппо -q	/bin/bash: $'echo \257\257\256': command not found
+par_macron	ппо -Xq	ппо
+par_macron	ппо -Xq	ппо ппо
+par_macron	ппо -Xq	"ппо" ппо
+par_macron	ппо -Xq	ппоппо
+par_macron	ппо -Xq	"ппо"ппо
+par_macron	ппо -Xq	/bin/bash: $'echo \257\257\256': command not found
+par_macron	ппо -k	ппо
+par_macron	ппо -k	ппо
+par_macron	ппо -k	ппо ппо
+par_macron	ппо -k	ппо ппо
+par_macron	ппо -k	ппоппо
+par_macron	ппо -k	ппоппо
+par_macron	п<п<п>п> -X	п<п<п>п>
+par_macron	п<п<п>п> -X	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -X	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -X	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
+par_macron	п<п<п>п> -X	/bin/bash: -c: line 0: `echo п<п<п>п>'
+par_macron	п<п<п>п> -X	/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -X	/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -q	п<п<п>п>
+par_macron	п<п<п>п> -q	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -q	"п<п<п>п>" п<п<п>п>
+par_macron	п<п<п>п> -q	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -q	"п<п<п>п>"п<п<п>п>
+par_macron	п<п<п>п> -q	/bin/bash: $'echo \257<\257<\257>\257>': command not found
+par_macron	п<п<п>п> -Xq	п<п<п>п>
+par_macron	п<п<п>п> -Xq	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -Xq	"п<п<п>п>" п<п<п>п>
+par_macron	п<п<п>п> -Xq	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -Xq	"п<п<п>п>"п<п<п>п>
+par_macron	п<п<п>п> -Xq	/bin/bash: $'echo \257<\257<\257>\257>': command not found
+par_macron	п<п<п>п> -k	п<п<п>п>
+par_macron	п<п<п>п> -k	п<п<п>п> п<п<п>п>
+par_macron	п<п<п>п> -k	п<п<п>п>п<п<п>п>
+par_macron	п<п<п>п> -k	/bin/bash: -c: line 0: syntax error near unexpected token `newline'
+par_macron	п<п<п>п> -k	/bin/bash: -c: line 0: `echo п<п<п>п>'
+par_macron	п<п<п>п> -k	/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -k	/bin/bash: п: No such file or directory
 par_max_length_len_128k	### BUG: The length for -X is not close to max (131072)
 par_max_length_len_128k	      1    8293  131004
 par_max_length_len_128k	      1    6662  131026

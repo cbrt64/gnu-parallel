@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Simple jobs that never fails
-# Each should be taking >100s and be possible to run in parallel
+# Each should be taking 100-300s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
 # tmpdir with > 5 GB available
@@ -10,119 +10,99 @@ export TMP5G
 
 rm -f /tmp/*.{tmx,pac,arg,all,log,swp,loa,ssh,df,pip,tmb,chr,tms,par}
 
-par_exit_code() {
-    echo 'bug #52207: Exit status 0 when child job is killed, even with "now,fail=1"'
-    in_shell_run_command() {
-	# Runs command in given shell via Perl's open3
-	shell="$1"
-	prg="$2"
-	perl -MIPC::Open3 -e 'open3($a,$b,$c,"'$shell'","-c",'"$prg"'); wait; print $?>>8,"\n"'
-    }
-    export -f in_shell_run_command
+linebuffer_matters() {
+    echo "### (--linebuffer) --compress $TAG should give different output"
+    nolbfile=$(mktemp)
+    lbfile=$(mktemp)
+    controlfile=$(mktemp)
+    randomfile=$(mktemp)
+    # Random data because it does not compress well
+    # forcing the compress tool to spit out compressed blocks
+    perl -pe 'y/[A-Za-z]//cd; $t++ % 1000 or print "\n"' < /dev/urandom |
+	head -c 10000000 > $randomfile
+    export randomfile
 
-    runit() {
-	OK="ash bash csh dash fish mksh posh rc sash sh static-sh tcsh"
-	BAD="fdsh fizsh ksh ksh93 yash zsh"
-	s=100
-	rm -f /tmp/mysleep
-	cp /bin/sleep /tmp/mysleep
-	
-	echo '# Ideally the command should return the same'
-	echo '#   with or without parallel'
-	echo '# but fish 2.4.0 returns 1 while X.X.X returns 0'
-	parallel -kj500% --argsep ,, --tag in_shell_run_command {1} '{=2 $_=Q($_) =}' \
-		 ,, $OK $BAD ,, \
-	'/tmp/mysleep '$s \
-	'parallel --halt-on-error now,fail=1 /tmp/mysleep ::: '$s \
-	'parallel --halt-on-error now,done=1 /tmp/mysleep ::: '$s \
-	'parallel --halt-on-error now,done=1 /bin/true ::: '$s \
-	'parallel --halt-on-error now,done=1 exit ::: '$s \
-	'true;/tmp/mysleep '$s \
-	'parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: '$s \
-	'parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: '$s \
-	'parallel --halt-on-error now,done=1 "true;/bin/true" ::: '$s \
-	'parallel --halt-on-error now,done=1 "true;exit" ::: '$s
-    }
-    export -f runit
+    testfunc() {
+	linebuffer="$1"
 
-    killsleep() {
-	sleep 5
-	while true; do killall -9 mysleep 2>/dev/null; sleep 1; done
-    }
-    export -f killsleep
+	incompressible_ascii() {
+	    # generate some incompressible ascii
+	    # with lines starting with the same string
+	    id=$1
+	    shuf $randomfile | perl -pe 's/^/'$id' /'
+	    # Sleep to give time to linebuffer-print the first part
+	    sleep 10
+	    shuf $randomfile | perl -pe 's/^/'$id' /'
+	    echo
+	}
+	export -f incompressible_ascii
 
-    parallel -uj0 --halt now,done=1 ::: runit killsleep
-}
-
-par_retries_unreachable() {
-  echo '### Test of --retries on unreachable host'
-  seq 2 | stdout parallel -k --retries 2 -v -S 4.3.2.1,: echo
-}
-
-par_outside_file_handle_limit() {
-    ulimit -n 1024
-    echo "### Test Force outside the file handle limit, 2009-02-17 Gave fork error"
-    (echo echo Start; seq 1 20000 | perl -pe 's/^/true /'; echo echo end) |
-	stdout parallel -uj 0 | egrep -v 'processes took|adjusting' |
-	perl -pe 's/\d\d\d/999/'
-}
-
-par_over_4GB() {
-    echo '### Test if we can deal with output > 4 GB'
-    echo |
-	nice parallel --tmpdir $TMP5G -q perl -e '$a="x"x1000000;for(0..4300){print $a}' |
-	nice md5sum
-}
-
-par_mem_leak() {
-    echo "### test for mem leak"
-
-    export parallel=parallel
-    no_mem_leak() {
-	run_measurements() {
-	    from=$1
-	    to=$2
-	    pause_every=$3
-	    measure() {
-		# Input:
-		#   $1 = iterations
-		#   $2 = sleep 1 sec for every $2
-		seq $1 | ramusage $parallel -u sleep '{= $_=$_%'$2'?0:1 =}'
-	    }
-	    export -f measure
-
-	    seq $from $to | $parallel measure {} $pause_every |
-    		sort -n
+	nowarn() {
+	    # Ignore certain warnings
+	    # parallel: Warning: Starting 11 processes took > 2 sec.
+	    # parallel: Warning: Consider adjusting -j. Press CTRL-C to stop.
+	    grep -v '^parallel: Warning: (Starting|Consider)' >&2
 	}
 
-	# Return false if leaking
-	# Normal: 16940-17320
-	max1000=$(run_measurements 1000 1007 100000 | tail -n1)
-	min30000=$(run_measurements 15000 15004 100000 | head -n1)
-	if [ $max1000 -gt $min30000 ] ; then
-	    echo Probably no leak $max1000 -gt $min30000
-	    return 0
-	else
-	    echo Probably leaks $max1000 not -gt $min30000
-	    # Make sure there are a few sleeps
-	    max1000=$(run_measurements 1001 1007 100 | tail -n1)
-	    min30000=$(run_measurements 30000 30004 100 | head -n1)
-	    if [ $max1000 -gt $min30000 ] ; then
-		echo $max1000 -gt $min30000 = very likely no leak
-		return 0
-	    else
-		echo not $max1000 -gt $min30000 = very likely leak
-		return 1
-	    fi
-	fi
+	parallel -j0 $linebuffer --compress $TAG \
+		 incompressible_ascii ::: {0..10} 2> >(nowarn) |
+	    perl -ne '/^(\d+)\s/ and print "$1\n"' |
+	    uniq |
+	    sort
     }
 
-    renice -n 3 $$ 2>/dev/null >/dev/null
-    if no_mem_leak >/dev/null ; then
-	echo no mem leak detected
+    # These can run in parallel if there are enough ressources
+    testfunc > $nolbfile
+    testfunc > $controlfile
+    testfunc --linebuffer > $lbfile
+    wait
+
+    nolb="$(cat $nolbfile)"
+    control="$(cat $controlfile)"
+    lb="$(cat $lbfile)"
+    rm $nolbfile $lbfile $controlfile $randomfile
+
+    if [ "$nolb" == "$control" ] ; then
+	if [ "$lb" == "$nolb" ] ; then
+	    echo "BAD: --linebuffer makes no difference"
+	else
+	    echo "OK: --linebuffer makes a difference"
+	fi
     else
-	echo possible mem leak;
+	echo "BAD: control and nolb are not the same"
     fi
+}
+export -f linebuffer_matters
+
+par_linebuffer_matters_compress_tag() {
+    export TAG=--tag
+    linebuffer_matters
+}
+
+par_linebuffer_matters_compress() {
+    linebuffer_matters
+}
+
+par_linebuffer_files() {
+    echo 'bug #48658: --linebuffer --files'
+    rm -rf /tmp/par48658-*
+
+    doit() {
+	compress="$1"
+	echo "normal"
+	parallel --linebuffer --compress-program $compress seq ::: 100000 |
+	    wc -l
+	echo "--files"
+	parallel --files --linebuffer --compress-program $1 seq ::: 100000 |
+	    wc -l
+	echo "--results"
+	parallel --results /tmp/par48658-$compress --linebuffer --compress-program $compress seq ::: 100000 |
+	    wc -l
+	rm -rf "/tmp/par48658-$compress"
+    }
+    export -f doit
+    # lrz complains 'Warning, unable to set nice value on thread'
+    parallel -j1 --tag -k doit ::: zstd pzstd clzip lz4 lzop pigz pxz gzip plzip pbzip2 lzma xz lzip bzip2 lbzip2 lrz
 }
 
 par_timeout() {
@@ -131,62 +111,6 @@ par_timeout() {
 	perl -ne '1 < $_ and $_ < 10 and print "OK\n"'
     stdout time -f %e parallel --timeout 1m sleep ::: 100 |
 	perl -ne '10 < $_ and $_ < 100 and print "OK\n"'
-}
-
-par_halt_on_error() {
-    mytest() {
-	HALT=$1
-	BOOL1=$2
-	BOOL2=$3
-	(echo "sleep 1;$BOOL1";
-	    echo "sleep 2;$BOOL2";
-	    echo "sleep 3;$BOOL1") |
-	parallel -j10 --halt-on-error $HALT
-	echo $?
-	(echo "sleep 1;$BOOL1";
-	    echo "sleep 2;$BOOL2";
-	    echo "sleep 3;$BOOL1";
-	    echo "sleep 4;non_exist";
-	) |
-	parallel -j10 --halt-on-error $HALT
-	echo $?
-    }
-    export -f mytest
-    parallel -j1 -k --tag mytest ::: -2 -1 0 1 2 ::: true false ::: true false
-}
-
-par_test_build_and_install() {
-    cd ~/privat/parallel
-    # Make a .tar.gz file
-    stdout make dist |
-	perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
-    LAST=$(ls *tar.gz | tail -n1)
-
-    cd /tmp
-    rm -rf parallel-20??????/
-    tar xf ~/privat/parallel/$LAST
-    cd parallel-20??????/
-
-    echo "### Test normal build and install"
-    # Make sure files depending on *.pod have to be rebuilt
-    touch src/*pod src/sql
-    ./configure --prefix=/tmp/parallel-install &&
-	(stdout nice make -j3 >/dev/null;
-	 stdout nice make install) |
-	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
-
-    echo '### Test installation missing pod2*'
-    parallel which ::: pod2html pod2man pod2texi pod2pdf |
-	sudo parallel mv {} {}.hidden
-    # Make sure files depending on *.pod have to be rebuilt
-    touch src/*pod src/sql
-    ./configure --prefix=/tmp/parallel-install &&
-	(stdout nice make -j3 >/dev/null;
-	 stdout nice make install) |
-	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
-
-    parallel which {}.hidden ::: pod2html pod2man pod2texi pod2pdf |
-	sudo parallel mv {} {.}
 }
 
 #par_crashing() {
@@ -198,4 +122,5 @@ par_test_build_and_install() {
 #}
 
 export -f $(compgen -A function | grep par_)
-compgen -A function | grep par_ | sort | parallel -vj0 -k --tag --joblog /tmp/jl-`basename $0` '{} 2>&1'
+compgen -A function | grep par_ | LC_ALL=C sort |
+    parallel --timeout 1000% -j10 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

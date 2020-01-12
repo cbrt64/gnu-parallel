@@ -4,34 +4,66 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
-par_macron() {
-    echo '### See if \257\256 \257<\257> is replaced correctly'
-    print_it() {
-	parallel $2 ::: "echo $1"
-	parallel $2 echo ::: "$1"
-	parallel $2 echo "$1" ::: "$1"
-	parallel $2 echo \""$1"\" ::: "$1"
-	parallel $2 echo "$1"{} ::: "$1"
-	parallel $2 echo \""$1"\"{} ::: "$1"
-    }
-    export -f print_it
-    parallel --tag -k print_it \
-      ::: "$(perl -e 'print "\257"')" "$(perl -e 'print "\257\256"')" \
-      "$(perl -e 'print "\257\257\256"')" \
-      "$(perl -e 'print "\257<\257<\257>\257>"')" \
-      ::: -X -q -Xq -k
+par_colsep() {
+    echo '### Test of --colsep'
+    echo 'a%c%b' | parallel --colsep % echo {1} {3} {2}
+    (echo 'a%c%b'; echo a%c%b%d) | parallel -k --colsep % echo {1} {3} {2} {4}
+    (echo a%c%b; echo d%f%e) | parallel -k --colsep % echo {1} {3} {2}
+    parallel -k --colsep % echo {1} {3} {2} ::: a%c%b d%f%e
+    parallel -k --colsep % echo {1} {3} {2} ::: a%c%b
+    parallel -k --colsep % echo {1} {3} {2} {4} ::: a%c%b a%c%b%d
+
+
+    echo '### Test of tab as colsep'
+    printf 'def\tabc\njkl\tghi' | parallel -k --colsep '\t' echo {2} {1}
+    parallel -k -a <(printf 'def\tabc\njkl\tghi') --colsep '\t' echo {2} {1}
+
+    echo '### Test of multiple -a plus colsep'
+    parallel --xapply -k -a <(printf 'def\njkl\n') -a <(printf 'abc\tghi\nmno\tpqr') --colsep '\t' echo {2} {1}
+
+    echo '### Test of multiple -a no colsep'
+    parallel --xapply -k -a <(printf 'ghi\npqr\n') -a <(printf 'abc\tdef\njkl\tmno') echo {2} {1}
+
+    echo '### Test of quoting after colsplit'
+    parallel --colsep % echo {2} {1} ::: '>/dev/null%>/tmp/null'
+
+    echo '### Test of --colsep as regexp'
+    (echo 'a%c%%b'; echo a%c%b%d) | parallel -k --colsep %+ echo {1} {3} {2} {4}
+    parallel -k --colsep %+ echo {1} {3} {2} {4} ::: a%c%%b a%c%b%d
+    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --colsep %+ echo {1} {3} {2} {4}
+    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --colsep %+ echo '"{1}_{3}_{2}_{4}"'
+    
+    echo '### Test of -C'
+    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"'
+    
+    echo '### Test of --trim n'
+    (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --trim n --colsep %+ echo '"{1}_{3}_{2}_{4}"'
+    parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"' ::: 'a% c %%b' 'a%c% b %d'
+
+    echo '### Test of bug: If input is empty string'
+    (echo ; echo abcbdbebf;echo abc) | parallel -k --colsep b -v echo {1}{2}
 }
 
-par_kill_hup() {
-    echo '### Are children killed if GNU Parallel receives HUP? There should be no sleep at the end'
+par_failing_compressor() {
+    echo 'Compress with failing (de)compressor'
+    echo 'Test --tag/--line-buffer/--files in all combinations'
+    echo 'Test working/failing compressor/decompressor in all combinations'
+    echo '(-k is used as a dummy argument)'
+    stdout parallel -vk --header : --argsep ,,, \
+	     parallel -k {tag} {lb} {files} --compress --compress-program {comp} --decompress-program {decomp} echo ::: C={comp},D={decomp} \
+	     ,,, tag --tag -k \
+	     ,,, lb --line-buffer -k \
+	     ,,, files --files -k \
+	     ,,, comp 'cat;true' 'cat;false' \
+	     ,,, decomp 'cat;true' 'cat;false' |
+	perl -pe 's:/par......par:/tmpfile:'
+}
 
-    parallel -j 2 -q bash -c 'sleep {} & pid=$!; wait $pid' ::: 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 &
-    T=$!
-    sleep 3.9
-    pstree $$
-    kill -HUP $T
-    sleep 4
-    pstree $$
+par_fifo_under_csh() {
+    echo '### Test --fifo under csh'
+
+    csh -c "seq 3000000 | parallel -k --pipe --fifo 'sleep .{#};cat {}|wc -c ; false; echo \$status; false'"
+    echo exit $?
 }
 
 par_parset() {
@@ -331,43 +363,6 @@ par__pipepart_tee() {
     rm $tmp
 }
 
-par_interactive() {
-    echo '### Test -p --interactive'
-    cat >/tmp/parallel-script-for-expect <<_EOF
-#!/bin/bash
-
-seq 1 3 | parallel -k -p "sleep 0.1; echo opt-p"
-seq 1 3 | parallel -k --interactive "sleep 0.1; echo opt--interactive"
-_EOF
-    chmod 755 /tmp/parallel-script-for-expect
-
-    (
-	expect -b - <<_EOF
-spawn /tmp/parallel-script-for-expect
-expect "echo opt-p 1"
-send "y\n"
-expect "echo opt-p 2"
-send "n\n"
-expect "echo opt-p 3"
-send "y\n"
-expect "opt-p 1"
-expect "opt-p 3"
-expect "echo opt--interactive 1"
-send "y\n"
-expect "echo opt--interactive 2"
-send "n\n"
-#expect "opt--interactive 1"
-expect "echo opt--interactive 3"
-send "y\n"
-expect "opt--interactive 3"
-send "\n"
-_EOF
-	echo
-    ) | perl -ne 's/\r//g;/\S/ and print' |
-	# Race will cause the order to change
-	LC_ALL=C sort
-}
-
 par_k() {
     echo '### Test -k'
     ulimit -n 50
@@ -515,7 +510,7 @@ par_tmp_full() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1' |
+    parallel --timeout 1000% -j10 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
     perl -pe 's/,31,0/,15,0/' |
     perl -pe 's:~:'$HOME':' |
     perl -pe 's:'$PWD':.:' |
