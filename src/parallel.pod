@@ -567,13 +567,13 @@ See B<--pipe> and B<--pipepart> for use of this.
 =item B<--bt> I<duration>
 
 Time out for reading block when using B<--pipe>. If it takes longer
-than I<duration> to generate a full block, use the partial block read
-so far.
+than I<duration> to read a full block, use the partial block read so
+far.
 
 I<duration> must be in whole seconds, but can be expressed as floats
 postfixed with B<s>, B<m>, B<h>, or B<d> which would multiply the
-float by 1, 60, 3600, or 86400. Thus these are equivalent: B<--timeout
-100000> and B<--timeout 1d3.5h16.6m4s>.
+float by 1, 60, 3600, or 86400. Thus these are equivalent:
+B<--blocktimeout 100000> and B<--blocktimeout 1d3.5h16.6m4s>.
 
 
 
@@ -670,6 +670,15 @@ Even quoted newlines are parsed correctly:
 When used with B<--pipe> only pass full CSV-records.
 
 
+=item B<--delay> I<mytime>
+
+Delay starting next job by I<mytime>. GNU B<parallel> will pause
+I<mytime> after starting each job. I<mytime> is normally in seconds,
+but can be floats postfixed with B<s>, B<m>, B<h>, or B<d> which would
+multiply the float by 1, 60, 3600, or 86400. Thus these are
+equivalent: B<--delay 100000> and B<--delay 1d3.5h16.6m4s>.
+
+
 =item B<--delimiter> I<delim>
 
 =item B<-d> I<delim>
@@ -691,22 +700,6 @@ Use the replacement string I<replace-str> instead of B<{//}> for
 dirname of input line.
 
 
-=item B<-E> I<eof-str>
-
-Set the end of file string to I<eof-str>.  If the end of file string
-occurs as a line of input, the rest of the input is not read.  If
-neither B<-E> nor B<-e> is used, no end of file string is used.
-
-
-=item B<--delay> I<mytime>
-
-Delay starting next job by I<mytime>. GNU B<parallel> will pause
-I<mytime> after starting each job. I<mytime> is normally in seconds,
-but can be floats postfixed with B<s>, B<m>, B<h>, or B<d> which would
-multiply the float by 1, 60, 3600, or 86400. Thus these are
-equivalent: B<--delay 100000> and B<--delay 1d3.5h16.6m4s>.
-
-
 =item B<--dry-run>
 
 Print the job to run on stdout (standard output), but do not run the
@@ -715,6 +708,13 @@ generates (for remote jobs, B<--tmux>, B<--nice>, B<--pipe>,
 B<--pipepart>, B<--fifo> and B<--cat>). Do not count on this
 literally, though, as the job may be scheduled on another computer or
 the local computer if : is in the list.
+
+
+=item B<-E> I<eof-str>
+
+Set the end of file string to I<eof-str>.  If the end of file string
+occurs as a line of input, the rest of the input is not read.  If
+neither B<-E> nor B<-e> is used, no end of file string is used.
 
 
 =item B<--eof>[=I<eof-str>]
@@ -1331,21 +1331,6 @@ run remote and are very fast to run. This is disabled for sshlogins
 that specify their own ssh command.
 
 
-=item B<--xargs>
-
-Multiple arguments. Insert as many arguments as the command line
-length permits.
-
-If B<{}> is not used the arguments will be appended to the
-line.  If B<{}> is used multiple times each B<{}> will be replaced
-with all the arguments.
-
-Support for B<--xargs> with B<--sshlogin> is limited and may fail.
-
-See also B<-X> for context replace. If in doubt use B<-X> as that will
-most likely do what is needed.
-
-
 =item B<-m>
 
 Multiple arguments. Insert as many arguments as the command line
@@ -1390,6 +1375,43 @@ This is useful for scripts that depend on features only available from
 a certain version of GNU B<parallel>.
 
 
+=item B<--max-args>=I<max-args>
+
+=item B<-n> I<max-args>
+
+Use at most I<max-args> arguments per command line.  Fewer than
+I<max-args> arguments will be used if the size (see the B<-s> option)
+is exceeded, unless the B<-x> option is given, in which case
+GNU B<parallel> will exit.
+
+B<-n 0> means read one argument, but insert 0 arguments on the command
+line.
+
+Implies B<-X> unless B<-m> is set.
+
+
+=item B<--max-replace-args>=I<max-args>
+
+=item B<-N> I<max-args>
+
+Use at most I<max-args> arguments per command line. Like B<-n> but
+also makes replacement strings B<{1}> .. B<{>I<max-args>B<}> that
+represents argument 1 .. I<max-args>. If too few args the B<{>I<n>B<}> will
+be empty.
+
+B<-N 0> means read one argument, but insert 0 arguments on the command
+line.
+
+This will set the owner of the homedir to the user:
+
+  tr ':' '\n' < /etc/passwd | parallel -N7 chown {1} {6}
+
+Implies B<-X> unless B<-m> or B<--pipe> is set.
+
+When used with B<--pipe> B<-N> is the number of records to read. This
+is somewhat slower than B<--block>.
+
+
 =item B<--nonall>
 
 B<--onall> with no arguments. Run the command on all computers given
@@ -1427,9 +1449,9 @@ of each job is saved in a file and the filename is then printed.
 See also: B<--results>
 
 
-=item B<--pipe>
+=item B<--pipe> (alpha testing)
 
-=item B<--spreadstdin>
+=item B<--spreadstdin> (alpha testing)
 
 Spread input to jobs on stdin (standard input). Read a block of data
 from stdin (standard input) and give one block of data as input to one
@@ -1537,43 +1559,6 @@ By sending GNU B<parallel> SIGUSR2 you can toggle turning on/off
 B<--progress> on a running GNU B<parallel> process.
 
 See also B<--eta> and B<--bar>.
-
-
-=item B<--max-args>=I<max-args>
-
-=item B<-n> I<max-args>
-
-Use at most I<max-args> arguments per command line.  Fewer than
-I<max-args> arguments will be used if the size (see the B<-s> option)
-is exceeded, unless the B<-x> option is given, in which case
-GNU B<parallel> will exit.
-
-B<-n 0> means read one argument, but insert 0 arguments on the command
-line.
-
-Implies B<-X> unless B<-m> is set.
-
-
-=item B<--max-replace-args>=I<max-args>
-
-=item B<-N> I<max-args>
-
-Use at most I<max-args> arguments per command line. Like B<-n> but
-also makes replacement strings B<{1}> .. B<{>I<max-args>B<}> that
-represents argument 1 .. I<max-args>. If too few args the B<{>I<n>B<}> will
-be empty.
-
-B<-N 0> means read one argument, but insert 0 arguments on the command
-line.
-
-This will set the owner of the homedir to the user:
-
-  tr ':' '\n' < /etc/passwd | parallel -N7 chown {1} {6}
-
-Implies B<-X> unless B<-m> or B<--pipe> is set.
-
-When used with B<--pipe> B<-N> is the number of records to read. This
-is somewhat slower than B<--block>.
 
 
 =item B<--max-line-length-allowed>
@@ -2858,6 +2843,21 @@ See also B<-m>.
 =item B<-x>
 
 Exit if the size (see the B<-s> option) is exceeded.
+
+
+=item B<--xargs>
+
+Multiple arguments. Insert as many arguments as the command line
+length permits.
+
+If B<{}> is not used the arguments will be appended to the
+line.  If B<{}> is used multiple times each B<{}> will be replaced
+with all the arguments.
+
+Support for B<--xargs> with B<--sshlogin> is limited and may fail.
+
+See also B<-X> for context replace. If in doubt use B<-X> as that will
+most likely do what is needed.
 
 
 =back
@@ -5112,13 +5112,13 @@ version.
 A minimal, complete, and verifiable example (See description on
 http://stackoverflow.com/help/mcve).
 
-It should be a complete example that others can run that shows the problem
-including all files needed to run the example. This should preferably
-be small and simple, so try to remove as many options as possible. A
-combination of B<yes>, B<seq>, B<cat>, B<echo>, and B<sleep> can
-reproduce most errors. If your example requires large files, see if
-you can make them by something like B<seq 1000000> > B<file> or B<yes
-| head -n 10000000> > B<file>.
+It should be a complete example that others can run that shows the
+problem including all files needed to run the example. This should
+preferably be small and simple, so try to remove as many options as
+possible. A combination of B<yes>, B<seq>, B<cat>, B<echo>, and
+B<sleep> can reproduce most errors. If your example requires large
+files, see if you can make them by something like B<seq 100000000> >
+B<bigfile> or B<yes | head -n 1000000000> > B<file>.
 
 If your example requires remote execution, see if you can use
 B<localhost> - maybe using another login.

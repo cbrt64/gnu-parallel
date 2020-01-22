@@ -121,6 +121,7 @@ cp src/parallel.html  ../parallel-web/parallel/man.html
 
 pushd ../parallel-web/parallel
 # Bug at Savannah makes this take 30 seconds
+(cd ..; cvs -z3 -d:ext:tange@cvs.savannah.gnu.org:/web/parallel co parallel)
 torsocks cvs up
 torsocks cvs ci -m "New release"
 pushd
@@ -226,16 +227,21 @@ Quote of the month:
 
 New in this release:
 
+* --blocktimeout dur - Time out for reading block when using --pipe. If it takes longer than dur to read a full block, use the partial block read so far.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
 * GNU Parallel course in Copenhagen https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-med-ole-tange/
 
 * GNU Parallel course in Århus https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-og-parallelisering-i-unix-shellen/
 
+* GNU Parallel pour accélérer vos process sous Linux https://www.yvonh.com/gnu-parallel-pour-accelerer-vos-process-sous-linux/
 
-https://net2.com/how-to-copy-a-file-to-multiple-directories-in-linux/
-https://dev.to/voyeg3r/runing-linux-commands-in-parallel-4ff8
+* How to copy a file to multiple directories in Linux https://net2.com/how-to-copy-a-file-to-multiple-directories-in-linux/
 
-* Bug fixes and man page updates.
-
+* Running linux commands in parallel https://dev.to/voyeg3r/runing-linux-commands-in-parallel-4ff8
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

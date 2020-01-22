@@ -52,7 +52,7 @@ short:	testlocalshort
 	true
 
 testlocalshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
-	TRIES=1 time bash Start.sh local mem'|'100s
+	TRIES=1 time bash Start.sh local 'mem|100s|300s'
 
 # sql
 testdb: ../src/parallel tests-to-run/*sql* wanted-results/*sql* prereqdb

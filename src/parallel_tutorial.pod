@@ -136,13 +136,13 @@ $SERVER1 and $SERVER2 must work.
   SERVER1=server.example.com
   SERVER2=server2.example.net
 
-So you must be able to do this:
+So you must be able to do this without entering a password:
 
   ssh $SERVER1 echo works
   ssh $SERVER2 echo works
 
 It can be setup by running 'ssh-keygen -t dsa; ssh-copy-id $SERVER1'
-and using an empty passphrase.
+and using an empty passphrase, or you can use B<ssh-agent>.
 
 =back
 

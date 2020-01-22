@@ -44,8 +44,9 @@ doit() {
     echo MAXTIME=$MAXTIME RETRIES=$RETRIES MAXPROC=$MAXPROC MAXINNERPROC=$MAXINNERPROC
 
     echo '### Filter out working servers'
-    # syllable often gives false positive
+    # pidora and syllable often gives false positive
     parallel --timeout $MAXTIME -j10 ssh syllable true ::: {1..10} 2>/dev/null >/dev/null &
+    parallel --timeout $MAXTIME -j10 ssh pidora true ::: {1..10} 2>/dev/null >/dev/null &
     POLAR_ALL="`bin/parallel --memfree 100m -j0 -k --timeout 10 echo {} ::: $P`"
     POLAR="`bin/parallel --memfree 100m -j0 -k --timeout 10 $PARALLEL_SSH {} echo {} ::: $P`"
     diff <(echo "$POLAR_ALL") <(echo "$POLAR")
