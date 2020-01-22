@@ -964,10 +964,18 @@ sub spreadstdin() {
 	    local $SIG{ALRM} = sub { die "alarm\n" }; # NB: \n required
 	    # --blocktimeout (or 0 if not set)
 	    alarm $timeout;
-	    do {
-		$nread = sysread $in, $buf, $readsize, length $buf;
-		$readsize -= $nread;
-	    } while($readsize and $nread);
+	    if($] >= 5.026) {
+		do {
+		    $nread = sysread $in, $buf, $readsize, length $buf;
+		    $readsize -= $nread;
+		} while($readsize and $nread);
+	    } else {
+		# Less efficient reading, but 32-bit sysread compatible
+		do {
+		    $nread = sysread($in,substr($buf,length $buf,0),$readsize,0);
+		    $readsize -= $nread;
+		} while($readsize and $nread);
+	    }
 	    alarm 0;
 	};
 	if ($@) {
@@ -2138,7 +2146,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20191223;
+    $Global::version = 20200122;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -11361,14 +11369,16 @@ sub max_length($) {
 	    open(my $fh, "<", $len_cache) || ::die_bug("Cannot read $len_cache");
 	    $cached_limit = <$fh>;
 	    close $fh;
-	} else {
+	}
+	if(not $cached_limit) {
 	    $cached_limit = real_max_length();
 	    # If $HOME is write protected: Do not fail
 	    my $dir = ::dirname($len_cache);
 	    -d $dir or eval { File::Path::mkpath($dir); };
-	    open(my $fh, ">", $len_cache);
+	    open(my $fh, ">", $len_cache.$$);
 	    print $fh $cached_limit;
 	    close $fh;
+	    rename $len_cache.$$, $len_cache || ::die_bug("rename cache file");
 	}
 	$Limits::Command::line_max_len = tmux_length($cached_limit);
 	if($opt::max_chars) {
