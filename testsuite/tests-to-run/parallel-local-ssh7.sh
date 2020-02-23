@@ -1709,7 +1709,7 @@ par_bash_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     len_functions=-$(typeset -f | wc -c)/1000
     len_variables=-$(typeset -p | wc -c)/1000
-    len_var=$len_variables+100
+    len_var=$len_variables+110
     len_var_remote=$len_variables+100-50+25-12+6
     len_var_quote=$len_variables+100-50
     len_var_quote_remote=$len_variables+100-50-25+12
@@ -1749,25 +1749,25 @@ par_bash_environment_too_big() {
 
     echo Rest should fail
 
-    bigvar=$(repeat x $len_var+10)
+    bigvar=$(repeat x $len_var+20)
     env_parallel echo ::: fail_bigvar
-    bigvar=$(repeat x $len_var_remote+10)
+    bigvar=$(repeat x $len_var_remote+20)
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar=$(repeat \" $len_var_quote+10)
+    bigvar=$(repeat \" $len_var_quote+20)
     env_parallel echo ::: fail_bigvar_quote
-    bigvar=$(repeat \" $len_var_quote_remote+10)
+    bigvar=$(repeat \" $len_var_quote_remote+20)
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(repeat x $len_fun+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat x $len_fun+20)"'"; };'
     env_parallel echo ::: fail_bigfunc
-    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote+20)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
     bigfunc() { true; }
@@ -1900,25 +1900,25 @@ par_ksh_environment_too_big() {
 
     echo Rest should fail
 
-    bigvar=$(repeat x $len_var+10)
+    bigvar=$(repeat x $len_var+20)
     env_parallel echo ::: fail_bigvar
-    bigvar=$(repeat x $len_var_remote+10)
+    bigvar=$(repeat x $len_var_remote+20)
     env_parallel -S lo echo ::: fail_bigvar_remote
 
-    bigvar=$(repeat \" $len_var_quote+10)
+    bigvar=$(repeat \" $len_var_quote+20)
     env_parallel echo ::: fail_bigvar_quote
-    bigvar=$(repeat \" $len_var_quote_remote+10)
+    bigvar=$(repeat \" $len_var_quote_remote+20)
     env_parallel -S lo echo ::: fail_bigvar_quote_remote
 
     bigvar=u
-    eval 'bigfunc() { a="'"$(repeat x $len_fun+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat x $len_fun+20)"'"; };'
     env_parallel echo ::: fail_bigfunc
-    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat x $len_fun_remote+20)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_remote
 
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
     bigfunc() { true; }

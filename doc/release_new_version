@@ -210,9 +210,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200122 ('Soleimani') released <<[stable]>>
+Subject: GNU Parallel 20200222 ('Brexitday') released <<[stable]>>
 
-GNU Parallel 20200122 ('Soleimani') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200222 ('Brexitday') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -227,8 +227,6 @@ Quote of the month:
 
 New in this release:
 
-* --blocktimeout dur - Time out for reading block when using --pipe. If it takes longer than dur to read a full block, use the partial block read so far.
-
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
@@ -236,12 +234,6 @@ News about GNU Parallel:
 * GNU Parallel course in Copenhagen https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-med-ole-tange/
 
 * GNU Parallel course in Århus https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-og-parallelisering-i-unix-shellen/
-
-* GNU Parallel pour accélérer vos process sous Linux https://www.yvonh.com/gnu-parallel-pour-accelerer-vos-process-sous-linux/
-
-* How to copy a file to multiple directories in Linux https://net2.com/how-to-copy-a-file-to-multiple-directories-in-linux/
-
-* Running linux commands in parallel https://dev.to/voyeg3r/runing-linux-commands-in-parallel-4ff8
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

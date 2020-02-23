@@ -1,3 +1,8 @@
+20200222
+
+* Bug fixes and man page updates.
+
+
 20200122
 
 * --blocktimeout dur - Time out for reading block when using --pipe. If it takes longer than dur to read a full block, use the partial block read so far.

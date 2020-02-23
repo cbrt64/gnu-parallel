@@ -2350,6 +2350,8 @@ https://github.com/lotabout/rargs (Last checked: 2020-01)
 
 =head2 Todo
 
+https://pypi.org/project/papply/
+
 https://github.com/jreisinger/runp
 
 https://github.com/JeiKeiLim/simple_distribute_job
