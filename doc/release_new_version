@@ -210,9 +210,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200222 ('Brexitday') released <<[stable]>>
+Subject: GNU Parallel 20200322 ('Corona/Locust') released <<[stable]>>
 
-GNU Parallel 20200222 ('Brexitday') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200322 ('Corona') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -234,6 +234,8 @@ News about GNU Parallel:
 * GNU Parallel course in Copenhagen https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-med-ole-tange/
 
 * GNU Parallel course in Århus https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-og-parallelisering-i-unix-shellen/
+
+https://badshah.io/experiment/faster-nmap-scanning-with-the-help-of-gnu-parallel/
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

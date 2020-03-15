@@ -2146,7 +2146,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200222;
+    $Global::version = 20200224;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -12921,15 +12921,6 @@ sub main() {
 	    @input_source_fh = (*STDIN);
 	}
     }
-    if($opt::sqlmaster) {
-	# Create SQL table to hold joblog + output
-	$Global::sql->create_table($#input_source_fh+1);
-	if($opt::sqlworker) {
-	    # Start a real --sqlworker in the background later
-	    $Global::start_sqlworker = 1;
-	    $opt::sqlworker = undef;
-	}
-    }
 
     if($opt::skip_first_line) {
 	# Skip the first line for the first file handle
@@ -12943,6 +12934,13 @@ sub main() {
 	filter_hosts();
     }
 
+
+    if($opt::sqlmaster and $opt::sqlworker) {
+	# Start a real --sqlworker in the background later
+	$Global::start_sqlworker = 1;
+	$opt::sqlworker = undef;
+    }
+
     if($opt::nonall or $opt::onall) {
 	onall(\@input_source_fh,@command);
 	wait_and_exit(min(undef_as_zero($Global::exitstatus),254));
@@ -12952,6 +12950,22 @@ sub main() {
 	\@command,\@input_source_fh,$Global::ContextReplace,
 	$number_of_args,\@Global::transfer_files,\@Global::ret_files);
 
+    if($opt::sqlmaster) {
+	# Create SQL table to hold joblog + output
+	# Figure out how many arguments are in a job
+	# (It is affected by --colsep, -N, $number_source_fh)
+	my $record_queue = $Global::JobQueue->{'commandlinequeue'}{'arg_queue'};
+	my $record = $record_queue->get();
+	my $no_of_values = $number_of_args * (1+$#{$record});
+	$record_queue->unget($record);
+	$Global::sql->create_table($no_of_values);
+	if($opt::sqlworker) {
+	    # Start a real --sqlworker in the background later
+	    $Global::start_sqlworker = 1;
+	    $opt::sqlworker = undef;
+	}
+    }
+    
     if($opt::pipepart) {
 	pipepart_setup();
     } elsif($opt::pipe and $opt::tee) {
