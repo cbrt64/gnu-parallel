@@ -12246,10 +12246,16 @@ sub new($) {
 	::error("$driver not supported. Are you missing a perl DBD::$driver module?");
 	::wait_and_exit(255);
     }
-    my $dbh = DBI->connect($dsn, $userid, $password,
+    my $dbh;
+    if($driver eq "CSV") {
+	# CSV does not use normal dsn
+	$dbh = DBI->connect("dbi:CSV:", "", "", { f_dir => "$database", })
+	or die $DBI::errstr;
+    } else {
+	$dbh = DBI->connect($dsn, $userid, $password,
 			   { RaiseError => 1, AutoInactiveDestroy => 1 })
 	or die $DBI::errstr;
-
+    }
     $dbh->{'PrintWarn'} = $Global::debug || 0;
     $dbh->{'PrintError'} = $Global::debug || 0;
     $dbh->{'RaiseError'} = 1;

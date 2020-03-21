@@ -3971,6 +3971,16 @@ par_sql_colsep() {
 	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33' '4 44' '5 55' '6 66'
 }
 
+par_sql_CSV() {
+    echo '### CSV write to the right place'
+    rm -rf /tmp/parallel-CSV
+    mkdir /tmp/parallel-CSV
+    parallel --sqlandworker csv:///%2Ftmp%2Fparallel-CSV/OK echo ::: 'ran OK'
+    ls /tmp/parallel-CSV
+    stdout parallel --sqlandworker csv:///%2Fmust%2Ffail/fail echo ::: 1 |
+	perl -pe 's/\d/0/g'
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

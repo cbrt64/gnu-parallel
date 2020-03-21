@@ -573,6 +573,11 @@ par_seqreplace_long_line	### Test --seqreplace and line too long
 par_seqreplace_long_line	      9       1       1     101
 par_seqreplace_long_line	     90       1       1     201
 par_seqreplace_long_line	      1 parallel: Error: Command line too long (309 >= 210) at input 0: 100
+par_sql_CSV	### CSV write to the right place
+par_sql_CSV	ran OK
+par_sql_CSV	ok
+par_sql_CSV	DBI connect('','',...) failed: No such directory '/must/fail at /usr/local/bin/parallel line 00000.
+par_sql_CSV	No such directory '/must/fail at /usr/local/bin/parallel line 00000.
 par_sql_colsep	### SQL should add Vn columns for --colsep
 par_sql_colsep	/a/A/1/11/
 par_sql_colsep	/a/A/2/22/
