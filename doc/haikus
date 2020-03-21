@@ -1,7 +1,4 @@
 Quote of the month:
-
-  Parallel is the BEST command.
-    -- Nick @NickInfoSec@twitter
   
   Who needs spark when GNU Parallel exists
     -- MatthijsB @MatthijsBrs@twitter
@@ -17,9 +14,6 @@ Quote of the month:
 
   Well anyway, It was blazingly fast and astonished by performance. guess I'll never use xargs.
     -- (Not) Akaming @_Akamig@twitter
-
-  GNU parallel has helped me kill a Hadoop cluster before.
-    -- Travis Campbell @hcoyote@twitter
 
   Yeah, GNU parallel is a beast when used accordingly.
     -- @lsde@twitter
@@ -66,6 +60,11 @@ Quote of the month:
 
 === Used ===
 
+  GNU parallel has helped me kill a Hadoop cluster before.
+    -- Travis Campbell @hcoyote@twitter
+
+  Parallel is the BEST command.
+    -- Nick @NickInfoSec@twitter
 
   [L]earning about parallel was amazing for me, it gives us many beautiful solutions.
      -- SergioAraujo@stackoverflow

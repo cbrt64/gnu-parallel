@@ -2146,7 +2146,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200224;
+    $Global::version = 20200322;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -12971,7 +12971,7 @@ sub main() {
 	    $opt::sqlworker = undef;
 	}
     }
-    
+
     if($opt::pipepart) {
 	pipepart_setup();
     } elsif($opt::pipe and $opt::tee) {

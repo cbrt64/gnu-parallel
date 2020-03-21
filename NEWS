@@ -1,3 +1,25 @@
+20200322
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* The GNU Parallel course in Copenhagen is cancelled
+  https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-med-ole-tange/
+
+* The GNU Parallel course in Århus is cancelled
+  https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-og-parallelisering-i-unix-shellen/
+
+* The 10 year anniversary may be cancelled, see
+  https://www.gnu.org/software/parallel/10-years-anniversary.html
+
+* Running shell commands in parallel, via GNU Parallel
+  https://dev.to/saveriomiroddi/running-shell-commands-in-parallel-via-gnu-parallel-3a72
+
+* Faster nmap scanning with the help of GNU parallel
+  https://badshah.io/experiment/faster-nmap-scanning-with-the-help-of-gnu-parallel/
+
+
 20200222
 
 * Bug fixes and man page updates.

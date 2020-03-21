@@ -1449,9 +1449,9 @@ of each job is saved in a file and the filename is then printed.
 See also: B<--results>
 
 
-=item B<--pipe> (beta testing)
+=item B<--pipe>
 
-=item B<--spreadstdin> (beta testing)
+=item B<--spreadstdin>
 
 Spread input to jobs on stdin (standard input). Read a block of data
 from stdin (standard input) and give one block of data as input to one
@@ -2302,7 +2302,7 @@ when called with B<--shebang>).
 Use B<--sqlmaster> instead.
 
 
-=item B<--sqlmaster> I<DBURL>
+=item B<--sqlmaster> I<DBURL> (alpha testing)
 
 Submit jobs via SQL server. I<DBURL> must point to a table, which will
 contain the same information as B<--joblog>, the values from the input
@@ -2340,12 +2340,12 @@ It can also be an alias from ~/.sql/aliases:
   :myalias mysql:///mydb/paralleljobs
 
 
-=item B<--sqlandworker> I<DBURL>
+=item B<--sqlandworker> I<DBURL> (alpha testing)
 
 Shorthand for: B<--sqlmaster> I<DBURL> B<--sqlworker> I<DBURL>.
 
 
-=item B<--sqlworker> I<DBURL>
+=item B<--sqlworker> I<DBURL> (alpha testing)
 
 Execute jobs via SQL server. Read the input sources variables from the
 table pointed to by I<DBURL>. The I<command> on the command line
