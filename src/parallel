@@ -2146,7 +2146,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200322;
+    $Global::version = 20200323;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4356,33 +4356,39 @@ sub parallelized_host_filtering() {
 
     sub sshwrapped {
 	# Wrap with ssh and --env
+	# Return $default_value if command fails
 	my $sshlogin = shift;
 	my $command = shift;
-	my $commandline = CommandLine->new(1,[$command],{},0,0,[],[],{},{},{});
+	my $default_value = shift;
+	# wrapper that returns $default_value if the command fails:
+	# bug #57886: Errors when using different version on remote
+	#   perl -e '$a=`$command`; print $? ? "$default_value" : $a'
+	my $wcmd = q(perl -e '$a=`).$command.q(`;).
+	    q(print $? ? ").::pQ($default_value).q(" : $a');
+	my $commandline = CommandLine->new(1,[$wcmd],{},0,0,[],[],{},{},{});
 	my $job = Job->new($commandline);
 	$job->set_sshlogin($sshlogin);
 	$job->wrapped();
 	return($job->{'wrapped'});
     }
-
+    
     my(@sockets, @cores, @threads, @maxline, @echo);
     while (my ($host, $sshlogin) = each %Global::host) {
 	if($host eq ":") { next }
 	# The 'true' is used to get the $host out later
 	push(@sockets, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --number-of-sockets")."\n\0");
+	     sshwrapped($sshlogin,"parallel --number-of-sockets",0)."\n\0");
 	push(@cores, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --number-of-cores")."\n\0");
+	     sshwrapped($sshlogin,"parallel --number-of-cores",0)."\n\0");
 	push(@threads, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --number-of-threads")."\n\0");
+	     sshwrapped($sshlogin,"parallel --number-of-threads",0)."\n\0");
 	push(@maxline, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --max-line-length-allowed")."\n\0");
+	     sshwrapped($sshlogin,"parallel --max-line-length-allowed",0)."\n\0");
 	# 'echo' is used to get the fastest possible ssh login time
 	my $sshcmd = "true $host; exec " .$sshlogin->sshcommand()." ".
 	    $sshlogin->serverlogin();
 	push(@echo, $host."\t".$sshcmd." -- echo\n\0");
     }
-
     # --timeout 10: Setting up an SSH connection and running a simple
     #               command should never take > 10 sec.
     # --delay 0.1:  If multiple sshlogins use the same proxy the delay
@@ -4398,6 +4404,8 @@ sub parallelized_host_filtering() {
 
     my ($host_fh,$in,$err);
     open3($in, $host_fh, $err, $cmd) || ::die_bug("parallel host check: $cmd");
+    ::debug("init", map { $_,"\n" } @sockets, @cores, @threads, @maxline, @echo);
+
     if(not fork()) {
 	# Give the commands to run to the $cmd
 	close $host_fh;
