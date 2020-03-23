@@ -1968,7 +1968,11 @@ sub parse_options(@) {
     # This problem has been covered by others - though no solution has
     # been found:
     # https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
+    # https://blog.licensezero.com/2019/08/24/process-of-elimination.html
     # https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
+    #
+    # The FAQ tells you why the citation notice exists:
+    # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
     #
     # If you want GNU Parallel to be maintained in the future, and not
     # just wither away like so many other free software tools, you
@@ -2011,7 +2015,7 @@ sub parse_options(@) {
     # https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
     # https://web.archive.org/web/20180715073717/https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
     #
-    # Other free software limiting derivates by the same name
+    # Other free software limiting derivates by the same name:
     # https://en.wikipedia.org/wiki/Red_Hat_Enterprise_Linux_derivatives#Legal_aspects
     # https://tm.joomla.org/trademark-faq.html
     # https://www.mozilla.org/en-US/foundation/trademarks/faq/
@@ -2025,7 +2029,7 @@ sub parse_options(@) {
     # If you want GNU Parallel to be maintained in the future keep
     # this line.
     citation_notice();
-    # Seriously: *You* will be harming free software by removing the
+    # Seriously: YOU will be harming free software by removing the
     # notice.  You make it harder to justify spending time developing
     # it. If you *do* remove the line, please email
     # hallofshame@tange.dk if you want to avoid being put in a hall of
@@ -4371,7 +4375,7 @@ sub parallelized_host_filtering() {
 	$job->wrapped();
 	return($job->{'wrapped'});
     }
-    
+
     my(@sockets, @cores, @threads, @maxline, @echo);
     while (my ($host, $sshlogin) = each %Global::host) {
 	if($host eq ":") { next }
@@ -5312,7 +5316,17 @@ sub qqx(@) {
     if($Global::debug) {
 	return qx{ @_ && true };
     } else {
-	return qx{ ( @_ ) 2>/dev/null };
+	# CygWin does not respect 2>/dev/null
+	# so we do that by hand
+	open my $original_stderr, ">&", "STDERR" or
+	    ::die_bug("Can't dup STDERR: $!");
+	close STDERR;
+	open(STDERR, ">", "/dev/null");
+	my @ret = qx{ @_ };
+	close STDERR;
+	open STDERR, ">&", $original_stderr or
+	    ::die_bug("Can't dup STDERR: $!");
+	return wantarray ? @ret : join "",@ret;
     }
 }
 
@@ -11404,10 +11418,14 @@ sub real_max_length($) {
     # Find the max_length of a command line
     # Returns:
     #   The maximal command line length
+    # This is slow on Cygwin, so give Cygwin users a warning
+    if($^O eq "cygwin") {
+	::warning("Finding the maximal command line length. This may take up to 30 seconds.")
+    }
     # Use an upper bound of 100 MB if the shell allows for infinite long lengths
     my $upper = 100_000_000;
     # 1000 is supported everywhere, so the search can start anywhere 1..999
-    # 324 makes the search much faster on CygWin, so let us use that
+    # 324 makes the search much faster on Cygwin, so let us use that
     my $len = 324;
     do {
 	if($len > $upper) { return $len };
