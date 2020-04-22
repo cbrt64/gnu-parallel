@@ -190,8 +190,9 @@ par_bug57364() {
     j=32
     set -e
     for i in $(seq 1 50); do
-        # Clear cache.
-        rm -rf "${HOME}/.parallel/tmp"
+        # Clear cache (simple 'rm -rf' causes race condition)
+        mv "${HOME}/.parallel/tmp" "${HOME}/.parallel/tmp-$$" &&
+            rm -rf "${HOME}/.parallel/tmp-$$"
         # Try to launch multiple parallel simultaneously.
         seq $j |
             xargs -P $j -n 1 parallel true $i :::
@@ -311,13 +312,20 @@ par_no_newline_compress() {
 
 par_max_length_len_128k() {
     echo "### BUG: The length for -X is not close to max (131072)"
-
-    seq 1 60000 | perl -pe 's/$/.gif/' | parallel -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
-    seq 1 60000 | perl -pe 's/$/.gif/' | parallel -X echo a{}b{}c |head -n 1 |wc
-    seq 1 60000 | perl -pe 's/$/.gif/' | parallel -X echo |head -n 1 |wc
-    seq 1 60000 | perl -pe 's/$/.gif/' | parallel -X echo a{}b{}c {} |head -n 1 |wc
-    seq 1 60000 | perl -pe 's/$/.gif/' | parallel -X echo {}aa{} |head -n 1 |wc
-    seq 1 60000 | perl -pe 's/$/.gif/' | parallel -X echo {} aa {} |head -n 1 |wc
+    (
+	seq 1 60000 | perl -pe 's/$/.gif/' |
+	    parallel -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} | head -n 1 | wc -c
+	seq 1 60000 | perl -pe 's/$/.gif/' |
+	    parallel -X echo a{}b{}c | head -n 1 | wc -c
+	seq 1 60000 | perl -pe 's/$/.gif/' |
+	    parallel -X echo | head -n 1 | wc -c
+	seq 1 60000 | perl -pe 's/$/.gif/' |
+	    parallel -X echo a{}b{}c {} | head -n 1 | wc -c
+	seq 1 60000 | perl -pe 's/$/.gif/' |
+	    parallel -X echo {}aa{} | head -n 1 | wc -c
+	seq 1 60000 | perl -pe 's/$/.gif/' |
+	    parallel -X echo {} aa {} | head -n 1 | wc -c
+    ) |	perl -pe 's/131\d\d\d/131xxx/g'
 }
 
 par_round_robin_blocks() {

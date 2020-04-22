@@ -86,9 +86,12 @@ par_verbose_t() {
 
 par_show_limits() {
     echo '### Test --show-limits'
-
-    (echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
-    (echo b; echo c; echo f) | parallel -j1 -kX --show-limits -s 100 echo {}ar
+    (
+	(echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
+	(echo b; echo c; echo f) | parallel -j1 -kX --show-limits -s 100 echo {}ar
+	echo "### BUG: empty lines with --show-limit"
+	echo | stdout parallel --show-limits
+    ) | perl -pe 's/131\d\d\d/131xxx/'
 }
 
 par_test_zero_args() {
@@ -746,7 +749,7 @@ par_unquote_replacement_string() {
 
 par_delimiter_space() {
     echo '### Does space as delimiter work?'
-    parallel -d " " echo ::: "1 done"
+    parallel -k -d " " echo ::: "1 done"
 }
 
 par_recend_not_regexp() {

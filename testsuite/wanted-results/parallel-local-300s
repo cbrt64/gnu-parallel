@@ -209,16 +209,16 @@ par_test_build_and_install	Making install in src
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/bin'
-par_test_build_and_install	 /usr/bin/install -c parallel sql niceload parcat parset env_parallel env_parallel.ash env_parallel.bash env_parallel.csh env_parallel.dash env_parallel.fish env_parallel.ksh env_parallel.mksh env_parallel.pdksh env_parallel.sh env_parallel.tcsh env_parallel.zsh '/tmp/parallel-install/bin'
+par_test_build_and_install	 /usr/bin/install -c parallel sql niceload parcat parset parsort env_parallel env_parallel.ash env_parallel.bash env_parallel.csh env_parallel.dash env_parallel.fish env_parallel.ksh env_parallel.mksh env_parallel.pdksh env_parallel.sh env_parallel.tcsh env_parallel.zsh '/tmp/parallel-install/bin'
 par_test_build_and_install	make  install-exec-hook
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	rm /tmp/parallel-install/bin/sem || true
 par_test_build_and_install	ln -s parallel /tmp/parallel-install/bin/sem
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/doc/parallel'
-par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_book.html parallel_design.html parallel_alternatives.html parcat.html parset.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_book.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf parallel_cheat_bw.pdf '/tmp/parallel-install/share/doc/parallel'
+par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_book.html parallel_design.html parallel_alternatives.html parcat.html parset.html parsort.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_book.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parsort.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf parallel_cheat_bw.pdf '/tmp/parallel-install/share/doc/parallel'
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/man/man1'
-par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.1 env_parallel.1 sem.1 sql.1 niceload.1 parcat.1 parset.1 '/tmp/parallel-install/share/man/man1'
+par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.1 env_parallel.1 sem.1 sql.1 niceload.1 parcat.1 parset.1 parsort.1 '/tmp/parallel-install/share/man/man1'
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/man/man7'
 par_test_build_and_install	 /usr/bin/install -c -m 644 parallel_tutorial.7 parallel_book.7 parallel_design.7 parallel_alternatives.7 '/tmp/parallel-install/share/man/man7'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000/src'
@@ -469,7 +469,7 @@ par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parset.pdf
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/bin'
-par_test_build_and_install	 /usr/bin/install -c parallel sql niceload parcat parset env_parallel env_parallel.ash env_parallel.bash env_parallel.csh env_parallel.dash env_parallel.fish env_parallel.ksh env_parallel.mksh env_parallel.pdksh env_parallel.sh env_parallel.tcsh env_parallel.zsh '/tmp/parallel-install/bin'
+par_test_build_and_install	 /usr/bin/install -c parallel sql niceload parcat parset parsort env_parallel env_parallel.ash env_parallel.bash env_parallel.csh env_parallel.dash env_parallel.fish env_parallel.ksh env_parallel.mksh env_parallel.pdksh env_parallel.sh env_parallel.tcsh env_parallel.zsh '/tmp/parallel-install/bin'
 par_test_build_and_install	make  install-exec-hook
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	rm /tmp/parallel-install/bin/sem || true
@@ -630,7 +630,7 @@ par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parset
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parset.pdf
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/doc/parallel'
-par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_book.html parallel_design.html parallel_alternatives.html parcat.html parset.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_book.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf parallel_cheat_bw.pdf '/tmp/parallel-install/share/doc/parallel'
+par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_book.html parallel_design.html parallel_alternatives.html parcat.html parset.html parsort.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_book.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parsort.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf parallel_cheat_bw.pdf '/tmp/parallel-install/share/doc/parallel'
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
 par_test_build_and_install		--section=1 ./parallel.pod > ./parallel.1n \
 par_test_build_and_install	&& mv ./parallel.1n ./parallel.1 \
@@ -698,7 +698,7 @@ par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parset
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parset.1
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/man/man1'
-par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.1 env_parallel.1 sem.1 sql.1 niceload.1 parcat.1 parset.1 '/tmp/parallel-install/share/man/man1'
+par_test_build_and_install	 /usr/bin/install -c -m 644 parallel.1 env_parallel.1 sem.1 sql.1 niceload.1 parcat.1 parset.1 parsort.1 '/tmp/parallel-install/share/man/man1'
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/man/man7'
 par_test_build_and_install	 /usr/bin/install -c -m 644 parallel_tutorial.7 parallel_book.7 parallel_design.7 parallel_alternatives.7 '/tmp/parallel-install/share/man/man7'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000/src'

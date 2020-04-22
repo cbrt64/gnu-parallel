@@ -112,8 +112,9 @@ http://www.gnu.org/software/parallel/man.html
 http://www.gnu.org/software/parallel/sql.html
 http://www.gnu.org/software/parallel/sem.html
 http://www.gnu.org/software/parallel/env_parallel.html
-http://www.gnu.org/software/parallel/parset.html
 http://www.gnu.org/software/parallel/parcat.html
+http://www.gnu.org/software/parallel/parset.html
+http://www.gnu.org/software/parallel/parsort.html
 http://www.gnu.org/software/parallel/niceload.html
 
 cp src/*.pdf src/*.html  ../parallel-web/parallel
@@ -210,34 +211,46 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200322 ('Corona/Locust') released <<[stable]>>
+Subject: GNU Parallel 20200422 ('10years') released <<[stable]>>
 
-GNU Parallel 20200322 ('Corona') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200422 ('10years') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
-GNU Parallel is 10 years old next year on 2020-04-22. You are here by invited to a reception on Friday 2020-04-17.
+This release celebrates GNU Parallel's 10 years as a GNU tool:
 
-See https://www.gnu.org/software/parallel/10-years-anniversary.html
+> commit ed2dfb1043768154d4e7678e01e10287155fa834
+> Author: Ole Tange <ole@tange.dk>
+> Date:   Thu Apr 22 01:23:00 2010 +0200
+>
+>    Name change: Parallel is now GNU Parallel.
+>    Basic structure for sshlogin and sshloginfile.
+
+Unfortunately the physical celebrations has been cancelled due to COVID19.
+
 
 Quote of the month:
 
-  GNU parallel is straight up incredible.
-    -- Ben Johnson @biobenkj@twtter
+  I wish more command line software had example pages as robust as GNU Parallel
+    -- Lucidbeaming @lucidbeaming
 
 New in this release:
 
-https://dev.to/saveriomiroddi/running-shell-commands-in-parallel-via-gnu-parallel-3a72
+* parsort makes GNU sort run faster for files with more than 1M lines.
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* GNU Parallel course in Copenhagen https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-med-ole-tange/
+* Several clusters have updated their documentation of GNU Parallel: https://www.grid5000.fr/w/GNU_Parallel https://research-it.berkeley.edu/virtual-training-running-jobs-parallel-savio http://www.hpc.lsu.edu/training/archive/tutorials.php
 
-* GNU Parallel course in Århus https://www.prosa.dk/nc/arrangementer/arrangement/gnu-parallel-og-parallelisering-i-unix-shellen/
+* add_pho uses GNU Parallel: https://github.com/SeedlingsBabylab/add_pho
 
-https://badshah.io/experiment/faster-nmap-scanning-with-the-help-of-gnu-parallel/
+* GNU parallel使用笔记https://zhuanlan.zhihu.com/p/37340011
+
+* Virtual Workshop: Running Jobs in Parallel on Savio https://ais.berkeley.edu/events/virtual-workshop-running-jobs-parallel-savio/2020-04-20
+
+* Free Concurrency with GNU Parallel  https://phili.pe/posts/free-concurrency-with-gnu-parallel/
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

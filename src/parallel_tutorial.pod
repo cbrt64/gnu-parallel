@@ -2243,7 +2243,7 @@ the output each in their own column.
 
 The simplest is to use a CSV file as the storage table:
 
-  parallel --sqlandworker csv:////%2Ftmp%2Flog.csv \
+  parallel --sqlandworker csv:///%2Ftmp/log.csv \
     seq ::: 10 ::: 12 13 14
   cat /tmp/log.csv
 
@@ -2274,7 +2274,7 @@ format correctly - even with fields containing newlines as above.
 
 If the output is big you may want to put it into files using B<--results>:
 
-  parallel --results outdir --sqlandworker csv:////%2Ftmp%2Flog2.csv \
+  parallel --results outdir --sqlandworker csv:///%2Ftmp/log2.csv \
     seq ::: 10 ::: 12 13 14
   cat /tmp/log2.csv
 
@@ -2303,7 +2303,7 @@ Example:
   mysql://scott:tiger@my.example.com/mydatabase/mytable
   postgresql://scott:tiger@pg.example.com/mydatabase/mytable
   sqlite3:///%2Ftmp%2Fmydatabase/mytable
-  csv:////%2Ftmp%2Flog.csv
+  csv:///%2Ftmp/log.csv
 
 To refer to B</tmp/mydatabase> with B<sqlite> or B<csv> you need to
 encode the B</> as B<%2F>.

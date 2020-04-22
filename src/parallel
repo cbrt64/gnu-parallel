@@ -2150,7 +2150,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200323;
+    $Global::version = 20200422;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5309,24 +5309,29 @@ sub qqx(@) {
     # ssh with ssh-agent needs PATH SSH_AUTH_SOCK SSH_AGENT_PID
     # ssh with Kerberos needs KRB5CCNAME
     # tmux needs LC_CTYPE
-    my @keep = qw(PATH SSH_AUTH_SOCK SSH_AGENT_PID KRB5CCNAME LC_CTYPE);
+    # lsh needs LOGNAME HOME
+    my @keep = qw(PATH SSH_AUTH_SOCK SSH_AGENT_PID KRB5CCNAME LC_CTYPE HOME LOGNAME);
     @env{@keep} = @ENV{@keep};
     local %ENV;
     %ENV = %env;
     if($Global::debug) {
 	return qx{ @_ && true };
     } else {
-	# CygWin does not respect 2>/dev/null
-	# so we do that by hand
-	open my $original_stderr, ">&", "STDERR" or
-	    ::die_bug("Can't dup STDERR: $!");
-	close STDERR;
-	open(STDERR, ">", "/dev/null");
-	my @ret = qx{ @_ };
-	close STDERR;
-	open STDERR, ">&", $original_stderr or
-	    ::die_bug("Can't dup STDERR: $!");
-	return wantarray ? @ret : join "",@ret;
+	if($^O eq "cygwin") {
+	    # CygWin does not respect 2>/dev/null
+	    # so we do that by hand
+	    open my $original_stderr, ">&", "STDERR" or
+		::die_bug("Can't dup STDERR: $!");
+	    close STDERR;
+	    open(STDERR, ">", "/dev/null");
+	    my @ret = qx{ @_ };
+	    close STDERR;
+	    open STDERR, ">&", $original_stderr or
+		::die_bug("Can't dup STDERR: $!");
+	    return wantarray ? @ret : join "",@ret;
+	} else {
+	    return qx{ ( @_ ) 2>/dev/null };
+	}
     }
 }
 
@@ -5578,7 +5583,6 @@ sub which(@) {
     # Returns:
     #   @full_path = full paths to @programs. Nothing if not found
     my @which;
-    ::debug("which", "@_ in $ENV{'PATH'}\n");
     for my $prg (@_) {
 	push(@which, grep { not -d $_ and -x $_ }
 	     map { $_."/".$prg } split(":",$ENV{'PATH'}));
@@ -5587,6 +5591,7 @@ sub which(@) {
 	    push(@which, grep { not -d $_ and -x $_ } $prg);
 	}
     }
+    ::debug("which", "$which[0] in $ENV{'PATH'}\n");
     return wantarray ? @which : $which[0];
 }
 
@@ -7158,6 +7163,7 @@ sub ncpus($) {
             }
         } else {
             my $ncpu;
+	    ::debug("init","echo|$sshcmd $serverlogin -- parallel --number-of-sockets");
             if($opt::use_sockets_instead_of_threads
 	       or
 		$opt::use_cpus_instead_of_cores) {

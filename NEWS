@@ -1,3 +1,38 @@
+20200422
+
+This release celebrates GNU Parallel's 10 years as a GNU tool:
+
+> commit ed2dfb1043768154d4e7678e01e10287155fa834
+> Author: Ole Tange <ole@tange.dk>
+> Date:   Thu Apr 22 01:23:00 2010 +0200
+>
+>    Name change: Parallel is now GNU Parallel.
+>    Basic structure for sshlogin and sshloginfile.
+
+New in this release:
+
+* parsort makes GNU sort run faster for files with more than 1M lines.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Several clusters have updated their documentation of GNU Parallel:
+  https://www.grid5000.fr/w/GNU_Parallel
+  https://research-it.berkeley.edu/virtual-training-running-jobs-parallel-savio
+  http://www.hpc.lsu.edu/training/archive/tutorials.php
+
+* add_pho uses GNU Parallel: https://github.com/SeedlingsBabylab/add_pho
+
+* GNU parallel使用笔记https://zhuanlan.zhihu.com/p/37340011
+
+* Virtual Workshop: Running Jobs in Parallel on Savio
+  https://ais.berkeley.edu/events/virtual-workshop-running-jobs-parallel-savio/2020-04-20
+
+* Free Concurrency with GNU Parallel
+  https://phili.pe/posts/free-concurrency-with-gnu-parallel/
+
+
 20200322
 
 * Bug fixes and man page updates.

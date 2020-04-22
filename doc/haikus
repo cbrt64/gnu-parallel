@@ -3,16 +3,13 @@ Quote of the month:
   Who needs spark when GNU Parallel exists
     -- MatthijsB @MatthijsBrs@twitter
 
-  I wish more command line software had example pages as robust as GNU Parallel
-    -- Lucidbeaming @lucidbeaming
-
   GNU parallel all the way!
     -- David Manouchehri @DaveManouchehri@twitter
 
   I found GNU Parallel and it's awesome.
     -- Teddy Choi @TeddyJChoi@twitter
 
-  Well anyway, It was blazingly fast and astonished by performance. guess I'll never use xargs.
+  Well anyway, It was blazingly fast and astonished by performance. Guess I'll never use xargs.
     -- (Not) Akaming @_Akamig@twitter
 
   Yeah, GNU parallel is a beast when used accordingly.
@@ -24,7 +21,7 @@ Quote of the month:
   With multicore systems everywhere GNU Parallel is a must have tool.
     -- Neil H. Watson @neil_h_watson@twitter
   
-  My new favourite command line tool is gnu parallel. After knowing it for a while I just recently came back to it for a refactor of a script and now I've changed like 4 different huge scripts into tiny parallel scripts that do their job literally 3 to 10 times faster and just [mind blown]
+  My new favourite command line tool is GNU Parallel. After knowing it for a while I just recently came back to it for a refactor of a script and now I've changed like 4 different huge scripts into tiny parallel scripts that do their job literally 3 to 10 times faster and just [mind blown]
     -- Izzy @angry_izzy@twitter
   
   I love so much @GnuParallel to parallelize my SQL requests on @PostgreSQL
@@ -59,6 +56,12 @@ Quote of the month:
     -- @alinajaf@twitter
 
 === Used ===
+
+  I wish more command line software had example pages as robust as GNU Parallel
+    -- Lucidbeaming @lucidbeaming
+
+  GNU parallel is straight up incredible.
+    -- Ben Johnson @biobenkj@twtter
 
   GNU parallel has helped me kill a Hadoop cluster before.
     -- Travis Campbell @hcoyote@twitter

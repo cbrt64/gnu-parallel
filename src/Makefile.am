@@ -1,8 +1,8 @@
-bin_SCRIPTS = parallel sql niceload parcat parset env_parallel	\
-	env_parallel.ash env_parallel.bash env_parallel.csh	\
-	env_parallel.dash env_parallel.fish env_parallel.ksh	\
-	env_parallel.mksh env_parallel.pdksh env_parallel.sh	\
-	env_parallel.tcsh env_parallel.zsh
+bin_SCRIPTS = parallel sql niceload parcat parset parsort	\
+	env_parallel env_parallel.ash env_parallel.bash		\
+	env_parallel.csh env_parallel.dash env_parallel.fish	\
+	env_parallel.ksh env_parallel.mksh env_parallel.pdksh	\
+	env_parallel.sh env_parallel.tcsh env_parallel.zsh
 
 install-exec-hook:
 	rm $(DESTDIR)$(bindir)/sem || true
@@ -11,18 +11,18 @@ install-exec-hook:
 if DOCUMENTATION
 man_MANS = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	parallel_tutorial.7 parallel_book.7 parallel_design.7	\
-	parallel_alternatives.7 parcat.1 parset.1
+	parallel_alternatives.7 parcat.1 parset.1 parsort.1
 doc_DATA = parallel.html env_parallel.html sem.html sql.html		\
 	niceload.html parallel_tutorial.html parallel_book.html		\
 	parallel_design.html parallel_alternatives.html parcat.html	\
-	parset.html \
+	parset.html parsort.html \
         parallel.texi env_parallel.texi sem.texi sql.texi		\
 	niceload.texi parallel_tutorial.texi parallel_book.texi		\
 	parallel_design.texi parallel_alternatives.texi parcat.texi	\
-	parset.texi \
+	parset.texi parsort.texi \
 	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
 	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
-	parallel_alternatives.pdf parcat.pdf parset.pdf			\
+	parallel_alternatives.pdf parcat.pdf parset.pdf	parsort.pdf 	\
 	parallel_cheat_bw.pdf
 endif
 
@@ -93,6 +93,12 @@ parset.1: parset.pod
 		--section=1 $(srcdir)/parset.pod > $(srcdir)/parset.1n \
 	&& mv $(srcdir)/parset.1n $(srcdir)/parset.1 \
 	|| echo "Warning: pod2man not found. Using old parset.1"
+
+parsort.1: parsort
+	pod2man --release='$(PACKAGE_VERSION)' --center='$(PACKAGE_NAME)' \
+		--section=1 $(srcdir)/parsort > $(srcdir)/parsort.1n \
+	&& mv $(srcdir)/parsort.1n $(srcdir)/parsort.1 \
+	|| echo "Warning: pod2man not found. Using old parsort.1"
 
 parallel.html: parallel.pod
 	pod2html --title "GNU Parallel" $(srcdir)/parallel.pod > $(srcdir)/parallel.htmln \
@@ -170,6 +176,13 @@ parset.html: parset.pod parcat.html
 	|| echo "Warning: pod2html not found. Using old parset.html"
 	rm -f $(srcdir)/pod2htm*
 
+# Depending on parset.html to avoid stupid pod2html race condition
+parsort.html: parsort parset.html
+	pod2html --title "GNU parsort" $(srcdir)/parsort > $(srcdir)/parsort.htmln \
+	&& mv $(srcdir)/parsort.htmln $(srcdir)/parsort.html \
+	|| echo "Warning: pod2html not found. Using old parsort.html"
+	rm -f $(srcdir)/pod2htm*
+
 parallel.texi: parallel.pod
 	pod2texi --output=$(srcdir)/parallel.texi $(srcdir)/parallel.pod \
 	|| echo "Warning: pod2texi not found. Using old parallel.texi"
@@ -213,6 +226,10 @@ parcat.texi: parcat.pod
 parset.texi: parset.pod
 	pod2texi --output=$(srcdir)/parset.texi $(srcdir)/parset.pod \
 	|| echo "Warning: pod2texi not found. Using old parset.texi"
+
+parsort.texi: parsort
+	pod2texi --output=$(srcdir)/parsort.texi $(srcdir)/parsort \
+	|| echo "Warning: pod2texi not found. Using old parsort.texi"
 
 parallel.pdf: parallel.pod
 	pod2pdf --output-file $(srcdir)/parallel.pdf $(srcdir)/parallel.pod --title "GNU Parallel" \
@@ -258,6 +275,10 @@ parset.pdf: parset.pod
 	pod2pdf --output-file $(srcdir)/parset.pdf $(srcdir)/parset.pod --title "GNU parset" \
 	|| echo "Warning: pod2pdf not found. Using old parset.pdf"
 
+parsort.pdf: parsort
+	pod2pdf --output-file $(srcdir)/parsort.pdf $(srcdir)/parsort --title "GNU parsort" \
+	|| echo "Warning: pod2pdf not found. Using old parsort.pdf"
+
 parallel_cheat_bw.pdf: parallel_cheat_bw.fodt
 	libreoffice --headless --convert-to pdf parallel_cheat_bw.fodt \
 	|| echo "Warning: libreoffice failed. Using old parallel_cheat_bw.pdf"
@@ -267,25 +288,25 @@ sem: parallel
 
 DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	parallel_tutorial.7 parallel_book.7 parallel_design.7		\
-	parallel_alternatives.7 parcat.1 parset.1 \
-        parallel.html env_parallel.html sem.html sql.html		\
+	parallel_alternatives.7 parcat.1 parset.1 parsort.1		\
+	parallel.html env_parallel.html sem.html sql.html		\
 	niceload.html parallel_tutorial.html parallel_book.html		\
 	parallel_design.html parallel_alternatives.html parcat.html	\
-	parset.html \
-	parallel.texi env_parallel.texi sem.texi sql.texi		\
-	niceload.texi parallel_tutorial.texi parallel_book.texi		\
-	parallel_design.texi parallel_alternatives.texi parcat.texi	\
-	parset.texi \
-	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
-	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
-	parallel_alternatives.pdf parcat.pdf parset.pdf			\
-	parallel_cheat_bw.pdf
+	parset.html parsort.html parallel.texi env_parallel.texi	\
+	sem.texi sql.texi niceload.texi parallel_tutorial.texi		\
+	parallel_book.texi parallel_design.texi				\
+	parallel_alternatives.texi parcat.texi parset.texi		\
+	parsort.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf	\
+	niceload.pdf parallel_tutorial.pdf parallel_book.pdf		\
+	parallel_design.pdf parallel_alternatives.pdf parcat.pdf	\
+	parset.pdf parsort.pdf parallel_cheat_bw.pdf
 
-EXTRA_DIST = parallel sem sql niceload parcat parset env_parallel	\
-	env_parallel.ash env_parallel.bash env_parallel.csh		\
-	env_parallel.dash env_parallel.fish env_parallel.ksh		\
-	env_parallel.mksh env_parallel.pdksh env_parallel.sh		\
-	env_parallel.tcsh env_parallel.zsh parcat.pod parset.pod	\
-	sem.pod parallel.pod env_parallel.pod niceload.pod		\
+EXTRA_DIST = parallel sem sql niceload parcat parset parsort		\
+	env_parallel env_parallel.ash env_parallel.bash			\
+	env_parallel.csh env_parallel.dash env_parallel.fish		\
+	env_parallel.ksh env_parallel.mksh env_parallel.pdksh		\
+	env_parallel.sh env_parallel.tcsh env_parallel.zsh parcat.pod	\
+	parset.pod sem.pod parallel.pod env_parallel.pod niceload.pod	\
 	parallel_tutorial.pod parallel_book.pod parallel_design.pod	\
-	parallel_alternatives.pod parallel_cheat_bw.fodt $(DISTCLEANFILES)
+	parallel_alternatives.pod parallel_cheat_bw.fodt		\
+	$(DISTCLEANFILES)

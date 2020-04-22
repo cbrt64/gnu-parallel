@@ -1285,12 +1285,12 @@ par_macron	¯<¯<¯>¯> -k	/bin/bash: -c: line 0: `echo ¯<¯<¯>¯>'
 par_macron	¯<¯<¯>¯> -k	/bin/bash: ¯: No such file or directory
 par_macron	¯<¯<¯>¯> -k	/bin/bash: ¯: No such file or directory
 par_max_length_len_128k	### BUG: The length for -X is not close to max (131072)
-par_max_length_len_128k	      1    8293  131004
-par_max_length_len_128k	      1    6662  131026
-par_max_length_len_128k	      1   14215  131044
-par_max_length_len_128k	      1    9266  131036
-par_max_length_len_128k	      1    7013  131033
-par_max_length_len_128k	      1   14807  131043
+par_max_length_len_128k	131xxx
+par_max_length_len_128k	131xxx
+par_max_length_len_128k	131xxx
+par_max_length_len_128k	131xxx
+par_max_length_len_128k	131xxx
+par_max_length_len_128k	131xxx
 par_memfree	### test memfree - it should be killed by timeout
 par_memfree	Free mem: 1k
 par_memfree	parallel: Warning: This job was killed because it timed out:

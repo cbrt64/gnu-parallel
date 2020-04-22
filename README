@@ -57,11 +57,11 @@ document.
 
 Full installation of GNU Parallel is as simple as:
 
-    wget https://ftpmirror.gnu.org/parallel/parallel-20200322.tar.bz2
-    wget https://ftpmirror.gnu.org/parallel/parallel-20200322.tar.bz2.sig
-    gpg parallel-20200322.tar.bz2.sig
-    bzip2 -dc parallel-20200322.tar.bz2 | tar xvf -
-    cd parallel-20200322
+    wget https://ftpmirror.gnu.org/parallel/parallel-20200422.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20200422.tar.bz2.sig
+    gpg parallel-20200422.tar.bz2.sig
+    bzip2 -dc parallel-20200422.tar.bz2 | tar xvf -
+    cd parallel-20200422
     ./configure && make && sudo make install
 
 
@@ -70,11 +70,11 @@ Full installation of GNU Parallel is as simple as:
 If you are not root you can add ~/bin to your path and install in
 ~/bin and ~/share:
 
-    wget https://ftpmirror.gnu.org/parallel/parallel-20200322.tar.bz2
-    wget https://ftpmirror.gnu.org/parallel/parallel-20200322.tar.bz2.sig
-    gpg parallel-20200322.tar.bz2.sig
-    bzip2 -dc parallel-20200322.tar.bz2 | tar xvf -
-    cd parallel-20200322
+    wget https://ftpmirror.gnu.org/parallel/parallel-20200422.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20200422.tar.bz2.sig
+    gpg parallel-20200422.tar.bz2.sig
+    bzip2 -dc parallel-20200422.tar.bz2 | tar xvf -
+    cd parallel-20200422
     ./configure --prefix=$HOME && make && make install
 
 Or if your system lacks 'make' you can simply copy src/parallel

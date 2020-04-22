@@ -53,33 +53,50 @@ the line as arguments. If no I<command> is given, the line of input is
 executed. Several lines will be run in parallel. GNU B<parallel> can
 often be used as a substitute for B<xargs> or B<cat | bash>.
 
+
 =head2 Reader's guide
+
+GNU B<parallel> includes the 4 types of documentation: Tutorial,
+how-to, reference and explanation.
+
+
+=head3 Tutorial
 
 If you prefer reading a book buy B<GNU Parallel 2018> at
 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
-or download it at: https://doi.org/10.5281/zenodo.1146014
+or download it at: https://doi.org/10.5281/zenodo.1146014 Read at
+least chapter 1+2. It should take you less than 20 minutes.
 
 Otherwise start by watching the intro videos for a quick introduction:
 http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
 
-If you need a one page printable cheat sheet you can find it on:
-https://www.gnu.org/software/parallel/parallel_cheat.pdf
+If you want to dive deeper: spend a couple of hours walking through
+the tutorial (B<man parallel_tutorial>). Your command line will love
+you for it.
+
+
+=head3 How-to
 
 You can find a lot of B<EXAMPLE>s of use after the list of B<OPTIONS>
 in B<man parallel> (Use B<LESS=+/EXAMPLE: man parallel>). That will
 give you an idea of what GNU B<parallel> is capable of, and you may
 find a solution you can simply adapt to your situation.
 
-If you want to dive even deeper: spend a couple of hours walking
-through the tutorial (B<man parallel_tutorial>). Your command line
-will love you for it.
 
-Finally you may want to look at the rest of the manual (B<man
-parallel>) if you have special needs not already covered.
+=head3 Reference
+
+If you need a one page printable cheat sheet you can find it on:
+https://www.gnu.org/software/parallel/parallel_cheat.pdf
+
+The man page is the reference for all options.
+
+
+=head3 Design discussion
 
 If you want to know the design decisions behind GNU B<parallel>, try:
 B<man parallel_design>. This is also a good intro if you intend to
 change GNU B<parallel>.
+
 
 
 =head1 OPTIONS
@@ -2333,7 +2350,8 @@ E.g.
   sql:oracle://scott:tiger@ora.example.com/xe/parjob
   postgresql://scott:tiger@pg.example.com/pgdb/parjob
   pg:///parjob
-  sqlite3:///pardb/parjob
+  sqlite3:///pardb/parjob.sqlite
+  csv:///%2Ftmp%2Fmydir/jobtable
 
 It can also be an alias from ~/.sql/aliases:
 
@@ -4152,39 +4170,40 @@ the columns. To keep the spaces:
 
 GNU B<parallel> can output to a database table and a CSV-file:
 
-  DBURL=csv:///%2Ftmp%2Fmy.csv
-  DBTABLEURL=$DBURL/mytable
-  parallel --sqlandworker $DBTABLEURL seq ::: {1..10}
+  dburl=csv:///%2Ftmp%2Fmydir
+  dbtableurl=$dburl/mytable.csv
+  parallel --sqlandworker $dbtableurl seq ::: {1..10}
 
 It is rather slow and takes up a lot of CPU time because GNU
 B<parallel> parses the whole CSV file for each update.
 
 A better approach is to use an SQLite-base and then convert that to CSV:
 
-  DBURL=sqlite3:///%2Ftmp%2Fmy.sqlite
-  DBTABLEURL=$DBURL/mytable
-  parallel --sqlandworker $DBTABLEURL seq ::: {1..10}
-  sql $DBURL '.headers on' '.mode csv' 'SELECT * FROM mytable;'
+  dburl=sqlite3:///%2Ftmp%2Fmy.sqlite
+  dbtableurl=$dburl/mytable
+  parallel --sqlandworker $dbtableurl seq ::: {1..10}
+  sql $dburl '.headers on' '.mode csv' 'SELECT * FROM mytable;'
 
 This takes around a second per job.
 
 If you have access to a real database system, such as PostgreSQL, it
 is even faster:
 
-  DBURL=pg://user:pass@host/mydb
-  DBTABLEURL=$DBURL/mytable
-  parallel --sqlandworker $DBTABLEURL seq ::: {1..10}
-  sql $DBURL \
+  dburl=pg://user:pass@host/mydb
+  dbtableurl=$dburl/mytable
+  parallel --sqlandworker $dbtableurl seq ::: {1..10}
+  sql $dburl \
     "COPY (SELECT * FROM mytable) TO stdout DELIMITER ',' CSV HEADER;"
 
 Or MySQL:
 
-  DBURL=mysql://user:pass@host/mydb
-  DBTABLEURL=$DBURL/mytable
-  parallel --sqlandworker $DBTABLEURL seq ::: {1..10}
-  sql -p -B $DBURL "SELECT * FROM mytable;" > mytable.tsv
-  perl -pe 's/"/""/g; s/\t/","/g; s/^/"/; s/$/"/; s/\\\\/\\/g;
-    s/\\t/\t/g; s/\\n/\n/g;' mytable.tsv
+  dburl=mysql://user:pass@host/mydb
+  dbtableurl=$dburl/mytable
+  parallel --sqlandworker $dbtableurl seq ::: {1..10}
+  sql -p -B $dburl "SELECT * FROM mytable;" > mytable.tsv
+  perl -pe 's/"/""/g; s/\t/","/g; s/^/"/; s/$/"/;
+    %s=("\\" => "\\", "t" => "\t", "n" => "\n");
+    s/\\([\\tn])/$s{$1}/g;' mytable.tsv
 
 
 =head1 EXAMPLE: Output to CSV-file for R

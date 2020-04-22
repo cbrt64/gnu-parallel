@@ -1073,7 +1073,7 @@ tcsh:  Unsupported
 To install in all shells run:
   parset --install
 For details: see  man parset
-  parallel --sqlandworker csv:////%2Ftmp%2Flog.csv \
+  parallel --sqlandworker csv:///%2Ftmp/log.csv \
     seq ::: 10 ::: 12 13 14
   cat /tmp/log.csv
 99
@@ -1087,7 +1087,7 @@ Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,_Signal,Command,V1,V2,Stdout,
 3,:,000000000.000,0.000,0,15,0,0,"seq 10 14",10,14,"10
 99
 ",
-  parallel --results outdir --sqlandworker csv:////%2Ftmp%2Flog2.csv \
+  parallel --results outdir --sqlandworker csv:///%2Ftmp/log2.csv \
     seq ::: 10 ::: 12 13 14
   cat /tmp/log2.csv
 99
@@ -1098,9 +1098,9 @@ Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,_Signal,Command,V1,V2,Stdout,
   vendor://[[user][:password]@][host][:port]/[database[/table]
 /bin/bash: vendor://[[user][:password]@][host][:port]/[database[/table]: No such file or directory
   sqlite3:///%2Ftmp%2Fmydatabase/mytable
-  csv:////%2Ftmp%2Flog.csv
+  csv:///%2Ftmp/log.csv
 /bin/bash: sqlite3:///%2Ftmp%2Fmydatabase/mytable: No such file or directory
-/bin/bash: line 1: csv:////%2Ftmp%2Flog.csv: No such file or directory
+/bin/bash: line 1: csv:///%2Ftmp/log.csv: No such file or directory
   DBURL=sqlite3:///%2Ftmp%2Fmydatabase
   DBURLTABLE=$DBURL/mytable
   parallel --sqlandworker $DBURLTABLE echo ::: foo bar ::: baz quuz

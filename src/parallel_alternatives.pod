@@ -54,6 +54,7 @@ B<Outputs>
  O7. Buffering on disk
  O8. Cleanup of file if killed
  O9. Test if disk runs full during run
+ O10. Output of a line bigger than 4 GB
 
 B<Execution>
  E1. Running jobs in parallel
@@ -91,7 +92,7 @@ BUGS).
 parallel:
 I1 I2 I3 I4 I5 I6 I7
 M1 M2 M3 M4 M5 M6
-O1 O2 O3 O4 O5 O6 O7 O8 O9
+O1 O2 O3 O4 O5 O6 O7 O8 O9 O10
 E1 E2 E3 E4 E5 E6 E7
 R1 R2 R3 R4 R5 R6 R7 R8 R9
 S1 S2
@@ -2348,11 +2349,156 @@ You can then do:
 https://github.com/lotabout/rargs (Last checked: 2020-01)
 
 
+=head2 DIFFERENCES BETWEEN threader AND GNU Parallel
+
+Summary table (see legend above):
+I1 - - - - - -
+M1 - M3 - - M6
+O1 - O3 - O5 - - N/A N/A
+E1 - - E4 - - -
+- - - - - - - - -
+- -
+
+Newline separates arguments, but newline at the end of file is treated
+as an empty argument. So this runs 2 jobs:
+
+  echo two_jobs | threader -run 'echo "$THREADID"'
+
+B<threader> ignores stderr, so any output to stderr is
+lost. B<threader> buffers in RAM, so output bigger than the machine's
+virtual memory will cause the machine to crash.
+
+https://github.com/voodooEntity/threader (Last checked: 2020-04)
+
+=head2 DIFFERENCES BETWEEN runp AND GNU Parallel
+
+Summary table (see legend above):
+I1 I2 - - - - -
+M1 - (M3) - - M6
+O1 O2 O3 - O5 O6 - N/A N/A -
+E1 - - - - - -
+- - - - - - - - -
+- -
+
+(M3): You can add a prefix and a postfix to the input, so it means you can
+only insert the argument on the command line once.
+
+B<runp> runs 10 jobs in parallel by default.  B<runp> blocks if output
+of a command is > 64 Kbytes.  Quoting of input is needed.  It adds
+output to stderr (this can be prevented with -q)
+
+=head3 Examples as GNU Parallel
+
+  base='https://images-api.nasa.gov/search'
+  query='jupiter'
+  desc='planet'
+  type='image'
+  url="$base?q=$query&description=$desc&media_type=$type"
+  
+  # Download the images in parallel using runp
+  curl -s $url | jq -r .collection.items[].href | \
+    runp -p 'curl -s' | jq -r .[] | grep large | \
+    runp -p 'curl -s -L -O'
+
+  time curl -s $url | jq -r .collection.items[].href | \
+    runp -g 1 -q -p 'curl -s' | jq -r .[] | grep large | \
+    runp -g 1 -q -p 'curl -s -L -O'
+
+  # Download the images in parallel
+  curl -s $url | jq -r .collection.items[].href | \
+    parallel curl -s | jq -r .[] | grep large | \
+    parallel curl -s -L -O
+  
+  time curl -s $url | jq -r .collection.items[].href | \
+    parallel -j 1 curl -s | jq -r .[] | grep large | \
+    parallel -j 1 curl -s -L -O
+
+
+=head4 Run some test commands (read from file)
+
+  # Create a file containing commands to run in parallel.
+  cat << EOF > /tmp/test-commands.txt
+  sleep 5
+  sleep 3
+  blah     # this will fail
+  ls $PWD  # PWD shell variable is used here
+  EOF
+  
+  # Run commands from the file.
+  runp /tmp/test-commands.txt > /dev/null
+  
+  parallel -a /tmp/test-commands.txt > /dev/null
+
+=head4 Ping several hosts and see packet loss (read from stdin)
+
+  # First copy this line and press Enter
+  runp -p 'ping -c 5 -W 2' -s '| grep loss'
+  localhost
+  1.1.1.1
+  8.8.8.8
+  # Press Enter and Ctrl-D when done entering the hosts
+
+  # First copy this line and press Enter
+  parallel ping -c 5 -W 2 {} '| grep loss'
+  localhost
+  1.1.1.1
+  8.8.8.8
+  # Press Enter and Ctrl-D when done entering the hosts
+
+=head4 Get directories' sizes (read from stdin)
+
+  echo -e "$HOME\n/etc\n/tmp" | runp -q -p 'sudo du -sh'
+
+  echo -e "$HOME\n/etc\n/tmp" | parallel sudo du -sh
+  # or:
+  parallel sudo du -sh ::: "$HOME" /etc /tmp
+
+=head4 Compress files
+
+  find . -iname '*.txt' | runp -p 'gzip --best'
+
+  find . -iname '*.txt' | parallel gzip --best
+
+=head4 Measure HTTP request + response time
+
+  export CURL="curl -w 'time_total:  %{time_total}\n'"
+  CURL="$CURL -o /dev/null -s https://golang.org/"
+  perl -wE 'for (1..10) { say $ENV{CURL} }' |
+     runp -q  # Make 10 requests
+
+  perl -wE 'for (1..10) { say $ENV{CURL} }' | parallel
+  # or:
+  parallel -N0 "$CURL" ::: {1..10}
+
+=head4 Find open TCP ports
+
+  cat << EOF > /tmp/host-port.txt
+  localhost 22
+  localhost 80
+  localhost 81
+  127.0.0.1 443
+  127.0.0.1 444
+  scanme.nmap.org 22
+  scanme.nmap.org 23
+  scanme.nmap.org 443
+  EOF
+  
+  cat /tmp/host-port.txt | \
+    runp -q -p 'netcat -v -w2 -z' 2>&1 | egrep '(succeeded!|open)$'
+
+  # --colsep is needed to split the line
+  cat /tmp/host-port.txt | \
+    parallel --colsep ' ' netcat -v -w2 -z 2>&1 | egrep '(succeeded!|open)$'
+  # or use uq for unquoted:
+  cat /tmp/host-port.txt | \
+    parallel netcat -v -w2 -z {=uq=} 2>&1 | egrep '(succeeded!|open)$'
+
+https://github.com/jreisinger/runp (Last checked: 2020-04)
+
+
 =head2 Todo
 
 https://pypi.org/project/papply/
-
-https://github.com/jreisinger/runp
 
 https://github.com/JeiKeiLim/simple_distribute_job
 
@@ -2602,6 +2748,22 @@ Some tools become very slow if output lines have many words.
 
   # Run 30 jobs in parallel
   seq 30 | time $paralleltool -j0 ./mycommand > /dev/null
+
+=head2 4GB: Output with a line > 4GB should be OK
+
+  #!/bin/bash
+  
+  paralleltool="parallel -j0"
+  
+  cat <<-EOF > mycommand
+  #!/bin/bash
+  
+  perl -e '\$a="a"x1000_000; for(1..5000) { print \$a }'
+  EOF
+  chmod +x mycommand
+  
+  # Run 1 job
+  seq 1 | $paralleltool ./mycommand | LC_ALL=C wc
 
 
 =head1 AUTHOR

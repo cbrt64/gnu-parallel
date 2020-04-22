@@ -774,8 +774,8 @@ par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
 par_show_limits	### Test --show-limits
-par_show_limits	Maximal size of command: 131049
-par_show_limits	Maximal used size of command: 131049
+par_show_limits	Maximal size of command: 131xxx
+par_show_limits	Maximal used size of command: 131xxx
 par_show_limits	
 par_show_limits	Execution of  will continue now, and it will try to read its input
 par_show_limits	and run commands; if this is not what you wanted to happen, please
@@ -783,13 +783,20 @@ par_show_limits	press CTRL-D or CTRL-C
 par_show_limits	bar
 par_show_limits	car
 par_show_limits	far
-par_show_limits	Maximal size of command: 131049
+par_show_limits	Maximal size of command: 131xxx
 par_show_limits	Maximal used size of command: 100
 par_show_limits	
 par_show_limits	Execution of  will continue now, and it will try to read its input
 par_show_limits	and run commands; if this is not what you wanted to happen, please
 par_show_limits	press CTRL-D or CTRL-C
 par_show_limits	bar car far
+par_show_limits	### BUG: empty lines with --show-limit
+par_show_limits	Maximal size of command: 131xxx
+par_show_limits	Maximal used size of command: 131xxx
+par_show_limits	
+par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	and run commands; if this is not what you wanted to happen, please
+par_show_limits	press CTRL-D or CTRL-C
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	    980     981    5881

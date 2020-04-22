@@ -170,9 +170,6 @@ nice parallel -j1 -I :: -X echo 'a::b::^c::[.}c' ::: 1
 echo "### BUG: The length for -X is not close to max (131072)"
 seq 1 4000 | nice parallel -k -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
 
-echo "### BUG: empty lines with --show-limit"
-echo | $NICEPAR --show-limits
-
 echo '### Test -N'
 seq 1 5 | $NICEPAR -kN3 echo {1} {2} {3}
 

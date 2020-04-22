@@ -23,8 +23,9 @@ export PARALLEL_SSH="ssh -oLogLevel=quiet"
 
 # select a running master (debian-ppc, suse, ubuntu, redhat, or debian)
 # 2019-06-25 debian has too little free memory (and swap)
+# 2020-04-22 debian-ppc has read-only disk
 MASTER=$(parallel -j0 --delay 0.1 --halt now,success=1 $PARALLEL_SSH {} echo {} \
-		  ::: {debian-ppc,ubuntu,suse,redhat}.polarhome.com)
+		  ::: {ubuntu,suse,redhat}.polarhome.com)
 
 parallel -j0 --delay 0.1 --retries $RETRIES \
     rsync -L /usr/local/bin/{parallel,env_parallel,env_parallel.*[^~],parcat,stdout} \
