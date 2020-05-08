@@ -135,6 +135,12 @@ par_remote_symlink_dir() {
     ssh parallel@lo rm wd && echo OK: wd is still a symlink with PARALLEL_RSYNC_OPTS
 }
 
+par_sshlogin_replacement() {
+    echo '### show {sshlogin} and {host}'
+    parallel -S $SSHLOGIN1 --plus echo {sshlogin} {} {host} ::: and
+    parallel -S '5//usr/bin/ssh '$SSHLOGIN1 --plus echo {sshlogin} {} {host} ::: and
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 compgen -A function | grep par_ | sort |

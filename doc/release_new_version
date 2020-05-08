@@ -131,7 +131,7 @@ pushd
 
 git diff
 
-# Recheck OBS https://build.opensuse.org/package/show?package=parallel&project=home%3Atange
+# Recheck OBS https://build.opensuse.org/package/show/home:tange/parallel
 
 YYYYMMDD=`yyyymmdd`
 TAG=MyTag
@@ -211,46 +211,24 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200422 ('10years') released <<[stable]>>
+Subject: GNU Parallel 20200522 ('Kraftwerk') released <<[stable]>>
 
-GNU Parallel 20200422 ('10years') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200522 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
-This release celebrates GNU Parallel's 10 years as a GNU tool:
-
-> commit ed2dfb1043768154d4e7678e01e10287155fa834
-> Author: Ole Tange <ole@tange.dk>
-> Date:   Thu Apr 22 01:23:00 2010 +0200
->
->    Name change: Parallel is now GNU Parallel.
->    Basic structure for sshlogin and sshloginfile.
-
-Unfortunately the physical celebrations has been cancelled due to COVID19.
-
-
 Quote of the month:
 
-  I wish more command line software had example pages as robust as GNU Parallel
-    -- Lucidbeaming @lucidbeaming
-
+  <<>>
+  
 New in this release:
 
-* parsort makes GNU sort run faster for files with more than 1M lines.
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* Several clusters have updated their documentation of GNU Parallel: https://www.grid5000.fr/w/GNU_Parallel https://research-it.berkeley.edu/virtual-training-running-jobs-parallel-savio http://www.hpc.lsu.edu/training/archive/tutorials.php
-
-* add_pho uses GNU Parallel: https://github.com/SeedlingsBabylab/add_pho
-
-* GNU parallel使用笔记https://zhuanlan.zhihu.com/p/37340011
-
-* Virtual Workshop: Running Jobs in Parallel on Savio https://ais.berkeley.edu/events/virtual-workshop-running-jobs-parallel-savio/2020-04-20
-
-* Free Concurrency with GNU Parallel  https://phili.pe/posts/free-concurrency-with-gnu-parallel/
+*
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

@@ -1546,6 +1546,11 @@ choose k. k is the number of input sources and n is the number of
 arguments in an input source.  The content of the input sources must
 be the same and the arguments must be unique.
 
+For remote jobs these are also activated:
+
+  {sshlogin}    sshlogin
+  {host}        hostname of sshlogin
+
 The following dynamic replacement strings are also activated. They are
 inspired by bash's parameter expansion:
 
@@ -5134,16 +5139,16 @@ http://stackoverflow.com/help/mcve).
 It should be a complete example that others can run that shows the
 problem including all files needed to run the example. This should
 preferably be small and simple, so try to remove as many options as
-possible. A combination of B<yes>, B<seq>, B<cat>, B<echo>, and
+possible. A combination of B<yes>, B<seq>, B<cat>, B<echo>, B<wc>, and
 B<sleep> can reproduce most errors. If your example requires large
-files, see if you can make them by something like B<seq 100000000> >
+files, see if you can make them with something like B<seq 100000000> >
 B<bigfile> or B<yes | head -n 1000000000> > B<file>.
 
 If your example requires remote execution, see if you can use
 B<localhost> - maybe using another login.
 
-If you have access to a different system, test if the MCVE shows the
-problem on that system.
+If you have access to a different system (maybe a VirtualBox on your
+own machine), test if the MCVE shows the problem on that system.
 
 =item *
 

@@ -2029,8 +2029,8 @@ sub parse_options(@) {
     # If you want GNU Parallel to be maintained in the future keep
     # this line.
     citation_notice();
-    # Seriously: YOU will be harming free software by removing the
-    # notice.  You make it harder to justify spending time developing
+    # Seriously: _YOU_ will be harming free software by removing the
+    # notice.  _YOU_ make it harder to justify spending time developing
     # it. If you *do* remove the line, please email
     # hallofshame@tange.dk if you want to avoid being put in a hall of
     # shame.
@@ -2150,7 +2150,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200422;
+    $Global::version = 20200423;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2212,6 +2212,10 @@ sub init_globals() {
 	 '{,([^}]+?)}' => 's/^($$1)/lc($1)/e;',
 	 # Bash ${a,,A}
 	 '{,,([^}]+?)}' => 's/($$1)/lc($1)/eg;',
+	 # {host} = ssh host
+	 '{host}' => '$_="\${PARALLEL_SSHHOST}";uq()',
+	 # {sshlogin} = sshlogin
+	 '{sshlogin}' => '$_="\${PARALLEL_SSHLOGIN}";uq()',
 	);
     # Modifiable copy of %Global::replace
     %Global::rpl = %Global::replace;
@@ -2367,7 +2371,7 @@ sub parse_replacement_string_options() {
 sub parse_semaphore() {
     # Semaphore defaults
     # Must be done before computing number of processes and max_line_length
-    # because when running as a semaphore GNU  Parallel does not read args
+    # because when running as a semaphore GNU Parallel does not read args
     # Uses:
     #   $opt::semaphore
     #   $Global::semaphore
@@ -3196,7 +3200,7 @@ sub __RUNNING_THE_JOBS_AND_PRINTING_PROGRESS__() {}
 #    $Global::total_started = total number of jobs started
 #    $Global::joblog = filehandle of joblog
 #    $Global::debug = Is debugging on?
-#    $Global::exitstatus = status code of GNU  Parallel
+#    $Global::exitstatus = status code of GNU   Parallel
 #    $Global::quoting = quote the command to run
 
 sub init_run_jobs() {
@@ -4152,14 +4156,14 @@ sub run_gnu_parallel() {
 }
 
 sub _run_gnu_parallel() {
-    # Run GNU  Parallel
+    # Run GNU Parallel
     # This should ideally just fork an internal copy
     # and not start it through a shell
     # Input:
-    #   $stdin = data to provide on stdin for GNU  Parallel
+    #   $stdin = data to provide on stdin for GNU   Parallel
     #   @args = command line arguments
     # Returns:
-    #   $exitstatus = exitcode of GNU  Parallel run
+    #   $exitstatus = exitcode of GNU Parallel run
     #   \@stdout = standard output
     #   \@stderr = standard error
     my ($stdin,@args) = @_;
@@ -4543,7 +4547,7 @@ sub onall($@) {
 	);
     ::debug("init", "| $0 $options\n");
     open(my $parallel_fh, "|-", "$0 -0 --will-cite -j0 $options") ||
-	::die_bug("This does not run GNU  Parallel: $0 $options");
+	::die_bug("This does not run GNU Parallel: $0 $options");
     my @joblogs;
     for my $host (sort keys %Global::host) {
 	my $sshlogin = $Global::host{$host};
@@ -4607,14 +4611,14 @@ sub sigpipe() {
 
 sub signal_children() {
     # Send signal to all children process groups
-    # and GNU  Parallel itself
+    # and GNU   Parallel itself
     # Uses:
     #   %SIG
     # Returns: N/A
     my $signal = shift;
     debug("run", "Sending $signal ");
     kill $signal, map { -$_ } keys %Global::running;
-    # Use default signal handler for GNU  Parallel itself
+    # Use default signal handler for GNU Parallel itself
     $SIG{$signal} = undef;
     kill $signal, $$;
 }
@@ -4925,7 +4929,7 @@ sub citation_notice() {
 	     "  DOI https://doi.org/10.5281/zenodo.1146014",
 	     "",
 	     # Before changing this line, please read
-	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
 	     # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	     "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
@@ -4937,7 +4941,7 @@ sub citation_notice() {
 	     ""
 	    );
 	mkdir $Global::config_dir;
-	# Number of times the user has run GNU  Parallel without showing
+	# Number of times the user has run GNU Parallel without showing
 	# willingness to cite
 	my $runs = 0;
 	if(open (my $fh, "<", $Global::config_dir.
@@ -5049,7 +5053,7 @@ sub citation() {
 	"(Feel free to use \\nocite{tange_ole_2018_1146014})",
 	"",
 	# Before changing this line, please read
-	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
 	# https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	"This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	"If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
@@ -5501,7 +5505,7 @@ sub seconds_to_time_units() {
 	#   N/A
 	if(not $disk_full_fh) {
 	    $disk_full_fh = ::tmpfile(SUFFIX => ".df");
-	    $b8193 = "x"x8193;
+	    $b8193 = "b"x8193;
 	}
 	# Linux does not discover if a disk is full if writing <= 8192
 	# Tested on:
@@ -8973,7 +8977,7 @@ sub sshlogin_wrap($) {
 	}
 	# Duplicate vars as BASH functions to include post-shellshock functions (v1+v2)
 	# So --env myfunc should look for BASH_FUNC_myfunc() and BASH_FUNC_myfunc%%
-	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ", "PARALLEL_SSHLOGIN",
+	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ", "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST",
 	     map { ("BASH_FUNC_$_()", "BASH_FUNC_$_%%") } @vars);
 	# Keep only defined variables
 	return grep { defined($ENV{$_}) } @vars;
@@ -9033,6 +9037,7 @@ sub sshlogin_wrap($) {
 	my $quoted_remote_command;
 	$ENV{'PARALLEL_SEQ'} = $self->seq();
 	$ENV{'PARALLEL_SSHLOGIN'} = $sshlogin->string();
+	$ENV{'PARALLEL_SSHHOST'} = $sshlogin->serverlogin();
 	$ENV{'PARALLEL_PID'} = $$;
 	if($serverlogin eq ":") {
 	    if($opt::workdir) {
@@ -9792,7 +9797,6 @@ sub print($) {
 		$opt::ungroup and return;
 	    }
 	}
-
 	# Check for disk full
 	::exit_if_disk_full();
     }
