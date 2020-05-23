@@ -209,6 +209,30 @@ number.
 
 The replacement string B<{%}> can be changed with B<--slotreplace>.
 
+If the job needs to be retried (e.g using B<--retries> or
+B<--retry-failed>) the job slot is not automatically updated. You
+should then instead use B<$PARALLEL_JOBSLOT>:
+
+  $ do_test() {
+      id="$3 {%}=$1 PARALLEL_JOBSLOT=$2"
+      echo run "$id";
+      sleep 1
+      # fail if {%} is odd
+      return `echo $1%2 | bc`
+    }
+  $ export -f do_test
+  $ parallel -j3 --jl mylog do_test {%} \$PARALLEL_JOBSLOT {} ::: A B C D
+  run A {%}=1 PARALLEL_JOBSLOT=1
+  run B {%}=2 PARALLEL_JOBSLOT=2
+  run C {%}=3 PARALLEL_JOBSLOT=3
+  run D {%}=1 PARALLEL_JOBSLOT=1
+  $ parallel --retry-failed -j3 --jl mylog do_test {%} \$PARALLEL_JOBSLOT {} ::: A B C D
+  run A {%}=1 PARALLEL_JOBSLOT=1
+  run C {%}=3 PARALLEL_JOBSLOT=2
+  run D {%}=1 PARALLEL_JOBSLOT=3
+
+Notice how {%} and $PARALLEL_JOBSLOT differ in the retry run of C and D.
+
 To understand replacement strings see B<{}>.
 
 
@@ -1538,7 +1562,7 @@ Activate additional replacement strings: {+/} {+.} {+..} {+...} {..}
 '{foo}' and {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =
 {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
 
-B<{##}> is the number of jobs to be run. It is incompatible with
+B<{##}> is the total number of jobs to be run. It is incompatible with
 B<-X>/B<-m>/B<--xargs>.
 
 B<{choose_k}> is inspired by n choose k: Given a list of n elements,
@@ -1546,10 +1570,11 @@ choose k. k is the number of input sources and n is the number of
 arguments in an input source.  The content of the input sources must
 be the same and the arguments must be unique.
 
-For remote jobs these are also activated:
+Shorthands for variables:
 
-  {sshlogin}    sshlogin
-  {host}        hostname of sshlogin
+  {slot}        $PARALLEL_JOBSLOT (see {%})
+  {sshlogin}    $PARALLEL_SSHLOGIN
+  {host}        $PARALLEL_SSHHOST
 
 The following dynamic replacement strings are also activated. They are
 inspired by bash's parameter expansion:
@@ -4793,13 +4818,23 @@ the currently running jobs are finished before exiting.
 Dir where GNU B<parallel> stores config files, semaphores, and caches
 information between invocations. Default: $HOME/.parallel.
 
+=item $PARALLEL_JOBSLOT
+
+Set by GNU B<parallel> and can be used in jobs run by GNU B<parallel>.
+Remember to quote the $, so it gets evaluated by the correct shell. Or
+use B<--plus> and {slot}.
+
+$PARALLEL_JOBSLOT is the jobslot of the job. It is equal to {%} unless
+the job is being retried. See {%} for details.
+
+
 =item $PARALLEL_PID
 
-The environment variable $PARALLEL_PID is set by GNU B<parallel> and
-is visible to the jobs started from GNU B<parallel>. This makes it
-possible for the jobs to communicate directly to GNU B<parallel>.
-Remember to quote the $, so it gets evaluated by the correct
-shell.
+Set by GNU B<parallel> and can be used in jobs run by GNU B<parallel>.
+Remember to quote the $, so it gets evaluated by the correct shell.
+
+This makes it possible for the jobs to communicate directly to GNU
+B<parallel>.
 
 B<Example:> If each of the jobs tests a solution and one of jobs finds
 the solution the job can tell GNU B<parallel> not to start more jobs
@@ -4839,17 +4874,36 @@ $SHELL. If undefined use:
 
 =item $PARALLEL_SSH
 
-GNU B<parallel> defaults to using B<ssh> for remote access. This can
-be overridden with $PARALLEL_SSH, which again can be overridden with
-B<--ssh>. It can also be set on a per server basis (see
-B<--sshlogin>).
+GNU B<parallel> defaults to using the B<ssh> command for remote
+access. This can be overridden with $PARALLEL_SSH, which again can be
+overridden with B<--ssh>. It can also be set on a per server basis
+(see B<--sshlogin>).
+
+
+=item $PARALLEL_SSHHOST
+
+Set by GNU B<parallel> and can be used in jobs run by GNU B<parallel>.
+Remember to quote the $, so it gets evaluated by the correct shell. Or
+use B<--plus> and {host}.
+
+
+$PARALLEL_SSHHOST is the host part of an sshlogin line. E.g.
+
+  4//usr/bin/specialssh user@host
+
+becomes:
+
+  host
 
 
 =item $PARALLEL_SSHLOGIN
 
-The environment variable $PARALLEL_SSHLOGIN is set by GNU B<parallel>
-and is visible to the jobs started from GNU B<parallel>. The value is
-the sshlogin line with number of cores removed. E.g.
+Set by GNU B<parallel> and can be used in jobs run by GNU B<parallel>.
+Remember to quote the $, so it gets evaluated by the correct shell. Or
+use B<--plus> and {sshlogin}.
+
+
+The value is the sshlogin line with number of cores removed. E.g.
 
   4//usr/bin/specialssh user@host
 
@@ -4860,14 +4914,17 @@ becomes:
 
 =item $PARALLEL_SEQ
 
-$PARALLEL_SEQ will be set to the sequence number of the job
-running. Remember to quote the $, so it gets evaluated by the correct
-shell.
+Set by GNU B<parallel> and can be used in jobs run by GNU B<parallel>.
+Remember to quote the $, so it gets evaluated by the correct shell.
+
+$PARALLEL_SEQ is the sequence number of the job running.
 
 B<Example:>
 
   seq 10 | parallel -N2 \
     echo seq:'$'PARALLEL_SEQ arg1:{1} arg2:{2}
+
+{#} is a shorthand for $PARALLEL_SEQ.
 
 
 =item $PARALLEL_TMUX
@@ -4897,7 +4954,7 @@ can be written as:
   cat list | PARALLEL='-kvj1 -S myssh\ user@server' \
     parallel echo
 
-Notice the \ in the middle is needed because 'myssh' and 'user@server'
+Notice the \ after 'myssh' is needed because 'myssh' and 'user@server'
 must be one argument.
 
 =back

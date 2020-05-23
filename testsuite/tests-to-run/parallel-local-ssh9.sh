@@ -197,11 +197,11 @@ par_no_route_to_host() {
     ) | perl -pe 's/(\d+\.\d+\.\d+\.\d+)/i.p.n.r/' | puniq
 }
 
-par_PARALLEL_SSHLOGIN() {
-    echo '### bug #56554: Introduce $PARALLEL_SSHLOGIN'
+par_PARALLEL_SSHLOGIN_SSHHOST() {
+    echo '### bug #56554: Introduce $PARALLEL_SSHLOGIN $PARALLEL_SSHHOST'
     (echo lo; echo zsh@lo; echo /usr/bin/ssh csh@lo; echo 1/sh@lo;
      echo 1//usr/bin/ssh tcsh@lo) |
-	parallel -k --tag --nonall -S - 'whoami;echo $PARALLEL_SSHLOGIN' |
+	parallel -k --tag --nonall -S - 'whoami;echo $PARALLEL_SSHLOGIN $PARALLEL_SSHHOST' |
 	LANG=C sort
 }
 

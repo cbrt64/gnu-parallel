@@ -618,6 +618,10 @@ par_pipepart_recend_recstart	9
 par_pipepart_recend_recstart	10
 par_pipepart_roundrobin	### bug #45769: --round-robin --pipepart gives wrong results
 par_pipepart_roundrobin	2
+par_plus_slot_replacement	### show {slot}
+par_plus_slot_replacement	1=1=1
+par_plus_slot_replacement	2=2=2
+par_plus_slot_replacement	3=3=3
 par_profile	### Test -J profile, -J /dir/profile, -J ./profile
 par_profile	local	local
 par_profile	abs	abs

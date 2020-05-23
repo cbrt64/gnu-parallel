@@ -776,6 +776,11 @@ par_cr_newline_header() {
 	parallel --colsep , --header : echo {foo}
 }
 
+par_plus_slot_replacement() {
+    echo '### show {slot}'
+    parallel -k --plus echo '{slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

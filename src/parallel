@@ -2150,7 +2150,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200423;
+    $Global::version = 20200522;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2212,10 +2212,12 @@ sub init_globals() {
 	 '{,([^}]+?)}' => 's/^($$1)/lc($1)/e;',
 	 # Bash ${a,,A}
 	 '{,,([^}]+?)}' => 's/($$1)/lc($1)/eg;',
+	 # {slot} = $PARALLEL_JOBSLOT
+	 '{slot}' => '1 $_="\${PARALLEL_JOBSLOT}";uq()',
 	 # {host} = ssh host
-	 '{host}' => '$_="\${PARALLEL_SSHHOST}";uq()',
+	 '{host}' => '1 $_="\${PARALLEL_SSHHOST}";uq()',
 	 # {sshlogin} = sshlogin
-	 '{sshlogin}' => '$_="\${PARALLEL_SSHLOGIN}";uq()',
+	 '{sshlogin}' => '1 $_="\${PARALLEL_SSHLOGIN}";uq()',
 	);
     # Modifiable copy of %Global::replace
     %Global::rpl = %Global::replace;
@@ -4894,10 +4896,10 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-	 "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
-	 "  DOI https://doi.org/10.5281/zenodo.1146014",
+         "  Tange, O. (2020, May 22). GNU Parallel 20200522 ('Kraftwerk').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.3840974",
 	 "",
-	 # Before changing this line, please read
+	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	 "This helps funding further development; AND IT WON'T COST YOU A CENT.",
@@ -4925,10 +4927,10 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,",
-	     "  DOI https://doi.org/10.5281/zenodo.1146014",
+	     "  Tange, O. (2020, May 22). GNU Parallel 20200522 ('Kraftwerk').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.3840974",
 	     "",
-	     # Before changing this line, please read
+	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
 	     # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
@@ -5039,18 +5041,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@book{tange_ole_2018_1146014,",
+	"\@software{tange_2020_3840974,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 2018},",
-	"      publisher    = {Ole Tange},",
-	"      month        = Mar,",
-	"      year         = 2018,",
-	"      ISBN         = {9781387509881},",
-	"      doi          = {10.5281/zenodo.1146014},",
-	"      url          = {https://doi.org/10.5281/zenodo.1146014}",
+	"      title        = {GNU Parallel 20200522 ('Kraftwerk')},",
+	"      month        = May,",
+	"      year         = 2020,",
+	"      note         = {{GNU Parallel is a general parallelizer to run",
+        "                       multiple serial command line programs in parallel",
+	"                       without changing them.}},",
+	"      publisher    = {Zenodo},",
+	"      doi          = {10.5281/zenodo.3840974},",
+	"      url          = {https://doi.org/10.5281/zenodo.3840974}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_ole_2018_1146014})",
+	"(Feel free to use \\nocite{tange_2020_3840974})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -8977,7 +8981,9 @@ sub sshlogin_wrap($) {
 	}
 	# Duplicate vars as BASH functions to include post-shellshock functions (v1+v2)
 	# So --env myfunc should look for BASH_FUNC_myfunc() and BASH_FUNC_myfunc%%
-	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ", "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST",
+
+	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ",
+	     "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST", "PARALLEL_JOBSLOT",
 	     map { ("BASH_FUNC_$_()", "BASH_FUNC_$_%%") } @vars);
 	# Keep only defined variables
 	return grep { defined($ENV{$_}) } @vars;
@@ -9036,6 +9042,7 @@ sub sshlogin_wrap($) {
 	my $serverlogin = $sshlogin->serverlogin();
 	my $quoted_remote_command;
 	$ENV{'PARALLEL_SEQ'} = $self->seq();
+	$ENV{'PARALLEL_JOBSLOT'} = $self->slot();
 	$ENV{'PARALLEL_SSHLOGIN'} = $sshlogin->string();
 	$ENV{'PARALLEL_SSHHOST'} = $sshlogin->serverlogin();
 	$ENV{'PARALLEL_PID'} = $$;
@@ -9509,12 +9516,11 @@ sub start($) {
     }
     $job->openoutputfiles();
     $job->print_verbose_dryrun();
-    # Call slot to store the slot value
-    $job->slot();
     my($stdout_fh,$stderr_fh) = ($job->fh(1,"w"),$job->fh(2,"w"));
     if($opt::dryrun or $opt::sqlmaster) { $command = "true"; }
     $ENV{'PARALLEL_SEQ'} = $job->seq();
     $ENV{'PARALLEL_PID'} = $$;
+    $ENV{'PARALLEL_JOBSLOT'} = $job->slot();
     $ENV{'PARALLEL_TMP'} = ::tmpname("par");
     $job->add_rm($ENV{'PARALLEL_TMP'});
     ::debug("run", $Global::total_running, " processes . Starting (",
