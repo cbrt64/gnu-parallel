@@ -1,3 +1,37 @@
+20200522
+
+New in this release:
+
+* While running a job $PARALLEL_JOBSLOT is the jobslot of the job. It
+  is equal to {%} unless the job is being retried. See {%} for
+  details.
+
+* While running a job $PARALLEL_SSHLOGIN is the sshlogin line with
+  number of cores removed. E.g. '4//usr/bin/specialssh user@host'
+  becomes: '/usr/bin/specialssh user@host'
+
+* While running a job $PARALLEL_SSHHOST is the host part of an
+  sshlogin line. E.g. '4//usr/bin/specialssh user@host' becomes:
+  'host'
+
+* --plus activates the replacement strings {slot} = $PARALLEL_JOBSLOT,
+  {sshlogin} = $PARALLEL_SSHLOGIN, {host} = $PARALLEL_SSHHOST
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Portable Batch System (PBS) & GNU Parallel - Running a Program
+  Multiple Times in Parallel
+  https://www.youtube.com/watch?v=6ccbWu6Befo
+
+* GNU Parallel przykład https://www.youtube.com/watch?v=gs_wG4Kt2G4
+
+* Demo of LINUX APP - GNU PARALLEL - running multiple Gstreamer webcam
+  .sh scripts with only 1 command
+  https://www.youtube.com/watch?v=trQuA_wmWjg
+
+
 20200422
 
 This release celebrates GNU Parallel's 10 years as a GNU tool:

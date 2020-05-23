@@ -126,53 +126,6 @@ echo "# --recend '' --files --halt-on-error"
 # --recend '' --files --halt-on-error
   nice nice perl -e '@x=1 .. 17000; for(1..100) { print "@x\n"}' | pv -qL 1000000 |     $PAR --recend '' --files --halt-on-error 2 cat | parallel -Xj1 cat {} ';' rm {} | md5sum
 350eda13a37912d755c9d733d149bdaf  -
-echo '### Test of -j filename - non-existent file';   nice stdout parallel -j no_such_file echo ::: 1
-### Test of -j filename - non-existent file
-parallel: Error: Parsing of --jobs/-j/--max-procs/-P failed.
-Usage:
-
-parallel [options] [command [arguments]] < list_of_arguments
-parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...
-cat ... | parallel --pipe [options] [command [arguments]]
-
--j n            Run n jobs in parallel
--k              Keep same order
--X              Multiple arguments with context replace
---colsep regexp Split input on regexp for positional replacements
-{} {.} {/} {/.} {#} {%} {= perl code =} Replacement strings
-{3} {3.} {3/} {3/.} {=3 perl code =}    Positional replacement strings
-With --plus:    {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =
-                {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
-
--S sshlogin     Example: foo@server.example.com
---slf ..        Use ~/.parallel/sshloginfile as the list of sshlogins
---trc {}.bar    Shorthand for --transfer --return {}.bar --cleanup
---onall         Run the given command with argument on all sshlogins
---nonall        Run the given command with no arguments on all sshlogins
-
---pipe          Split stdin (standard input) to multiple jobs.
---recend str    Record end separator for --pipe.
---recstart str  Record start separator for --pipe.
-
-See 'man parallel' for details
-
-Academic tradition requires you to cite works you base your article on.
-If you use programs that use GNU Parallel to process data for an article in a
-scientific publication, please cite:
-
-  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,
-  DOI https://doi.org/10.5281/zenodo.1146014
-
-This helps funding further development; AND IT WON'T COST YOU A CENT.
-If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
-
-echo '### Test of -j filename';   echo 3 >/tmp/jobs_to_run1;   parallel -j /tmp/jobs_to_run1 -v sleep {} ::: 10 8 6 5 4;   # Should give 6 8 10 5 4
-### Test of -j filename
-sleep 6
-sleep 8
-sleep 10
-sleep 5
-sleep 4
 echo '### Test ::::'
 ### Test ::::
 echo '### Change --arg-file-sep'

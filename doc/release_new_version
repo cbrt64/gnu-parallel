@@ -12,19 +12,58 @@ Modified => alpha
 
 == Update version ==
 
+Get DOI:
+https://zenodo.org/deposit/new (Reserve DOI)
+
 configure.ac: AC_INIT([parallel], [20100422], [bug-parallel@gnu.org])
 src/parallel: $Global::version = 20100422;
 README: parallel-20130222
 
+DOINO=3840974
+TAG=Kraftwerk
 YYYYMMDD=$(echo `yyyymmdd`-1 | bc)
 YYYYMMDD=$(echo `yyyymmdd`+1 | bc)
 YYYYMMDD=`yyyymmdd`
-echo $YYYYMMDD
-perl -i -pe "s/20\d\d\d\d\d\d/$YYYYMMDD/" configure.ac
-perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/parallel
-perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
-perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload
-perl -i -pe "s/parallel-20\d\d\d\d\d\d/parallel-$YYYYMMDD/" README
+
+updater() {
+  export DOINO
+  export TAG
+  export YYYYMMDD
+  export DOI=10.5281/zenodo.$DOINO
+  export YYYY=${YYYYMMDD:0:4}
+  export MON=`date +%b`
+  export MONTH=`date +%B`
+  echo Tag=$TAG Date:$YYYYMMDD Year:$YYYY Mon:$MON Month:$MONTH DOI:$DOI
+  export TITLE="GNU Parallel $YYYYMMDD ('$TAG')"
+
+  perl -i -pe "s/20\d\d\d\d\d\d/$YYYYMMDD/" configure.ac
+  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
+  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload
+  perl -i -pe "s/parallel-20\d\d\d\d\d\d/parallel-$YYYYMMDD/" README
+  perl -i -pe '
+     # Update version 20209999
+     /version/ and s/20\d\d\d\d\d\d/$ENV{YYYYMMDD}/;
+     # Update: 10.5281/zenodo.1146014 
+     s:10.5281/zenodo.\d+:$ENV{DOI}:;
+     # Update "@software{tange_2015_16303,"
+     s:tange_\d+_\d+:tange_$ENV{YYYY}_$ENV{DOINO}:;
+     # Update month = mar,
+     s/(month\s+=\s+)\S+,",/$1$ENV{MON},",/;
+     # Update title = {GNU Parallel 20200522 ('Kraftwerk')},",
+     / title\s+= / and s/\{.*\}/{$ENV{TITLE}}/;
+     # Tange, O. (2020, May 22). GNU Parallel 20200522 ('Kraftwerk').
+     s/(Tange, O. .).*(.. )(GNU.*[)])/$1$ENV{YYYY}, $ENV{MONTH} 22$2$ENV{TITLE}/;
+     ' src/parallel README
+  (
+  ppar --help
+  ppar --citation
+  grep -i 'zenodo|tange' README
+  ) 2>&1 | grep -E '^  |^}|tange'
+  mv ~/.parallel/will-cite ~/.parallel/will-cite.
+  ppar ::: true
+  mv ~/.parallel/will-cite. ~/.parallel/will-cite
+}
+updater
 
 === Autoconf/automake ===
 
@@ -223,12 +262,23 @@ Quote of the month:
   
 New in this release:
 
+* While running a job $PARALLEL_JOBSLOT is the jobslot of the job. It is equal to {%} unless the job is being retried. See {%} for details.
+
+* While running a job $PARALLEL_SSHLOGIN is the sshlogin line with number of cores removed. E.g. '4//usr/bin/specialssh user@host' becomes: '/usr/bin/specialssh user@host'
+
+* While running a job $PARALLEL_SSHHOST is the host part of an sshlogin line. E.g. '4//usr/bin/specialssh user@host' becomes: 'host'
+
+* --plus activates the replacement strings {slot} = $PARALLEL_JOBSLOT, {sshlogin} = $PARALLEL_SSHLOGIN, {host} = $PARALLEL_SSHHOST
+
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-*
+* Portable Batch System (PBS) & GNU Parallel - Running a Program Multiple Times in Parallel https://www.youtube.com/watch?v=6ccbWu6Befo
+* GNU Parallel przykład https://www.youtube.com/watch?v=gs_wG4Kt2G4
+* demo of LINUX APP - GNU PARALLEL - running multiple Gstreamer webcam .sh scripts with only 1 command https://www.youtube.com/watch?v=trQuA_wmWjg
+
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

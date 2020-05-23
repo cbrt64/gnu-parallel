@@ -114,11 +114,6 @@ E1 -  -  -  E5 -
 -  -
 
 
-xjobs, prll, dxargs, mdm/middelman, xapply, paexec, ladon, jobflow,
-ClusterSSH: TODO - Please file a bug-report if you know what features
-they support (See REPORTING BUGS).
-
-
 =head2 DIFFERENCES BETWEEN xargs AND GNU Parallel
 
 Summary table (see legend above):
@@ -520,9 +515,11 @@ using GNU B<parallel>:
 
   4$ parallel indent ::: *.c
 
-  5$ find ~ksb/bin -type f ! -perm -111 -print | xapply -f -v 'chmod a+x' -
+  5$ find ~ksb/bin -type f ! -perm -111 -print | \
+       xapply -f -v 'chmod a+x' -
 
-  5$ find ~ksb/bin -type f ! -perm -111 -print | parallel -v chmod a+x
+  5$ find ~ksb/bin -type f ! -perm -111 -print | \
+       parallel -v chmod a+x
 
   6$ find */ -... | fmt 960 1024 | xapply -f -i /dev/tty 'vi' -
 
@@ -532,15 +529,16 @@ using GNU B<parallel>:
 
   7$ find ... | xapply -f -5 -i /dev/tty 'vi' - - - - -
 
-  7$ sh <(find ... |parallel -n5 echo vi)
+  7$ sh <(find ... | parallel -n5 echo vi)
 
-  7$ find ... |parallel -n5 -uj1 vi
+  7$ find ... | parallel -n5 -uj1 vi
 
   8$ xapply -fn "" /etc/passwd
 
   8$ parallel -k echo < /etc/passwd
 
-  9$ tr ':' '\012' < /etc/passwd | xapply -7 -nf 'chown %1 %6' - - - - - - -
+  9$ tr ':' '\012' < /etc/passwd | \
+       xapply -7 -nf 'chown %1 %6' - - - - - - -
 
   9$ tr ':' '\012' < /etc/passwd | parallel -N7 chown {1} {6}
 
@@ -563,7 +561,7 @@ very much like GNU B<parallel>. B<apply> does not run jobs in
 parallel. B<apply> does not use an argument separator (like B<:::>);
 instead the template must be the first argument.
 
-=head3 EXAMPLES FROM IBM's KNOWLEDGE CENTER 
+=head3 EXAMPLES FROM IBM's KNOWLEDGE CENTER
 
 Here are the examples from IBM's Knowledge Center and the
 corresponding command using GNU B<parallel>:
@@ -649,65 +647,47 @@ https://github.com/cheusov/paexec
 =head2 DIFFERENCES BETWEEN map(sitaramc) AND GNU Parallel
 
 Summary table (see legend above):
-I1 - - I4 - - -
-M1 (M2) M3 M4 M5 -
+I1 - - I4 - - (I7)
+M1 (M2) M3 (M4) M5 M6
 - O2 O3 - O5 - - N/A N/A O10
 E1 - - - - - -
 - - - - - - - - -
 - -
 
-(M2): Only if there is a single replacement string.
+(I7): Only under special circumstances. See below.
 
-B<map> sees it as a feature to have less features and in doing so it
-also handles corner cases incorrectly. A lot of GNU B<parallel>'s code
-is to handle corner cases correctly on every platform, so you will not
-get a nasty surprise if a user, for example, saves a file called: I<My
-brother's 12" records.txt>
+(M2+M4): Only if there is a single replacement string.
 
-B<map>'s example showing how to deal with special characters fails on
-special characters:
+B<map> rejects input with special characters:
 
   echo "The Cure" > My\ brother\'s\ 12\"\ records
 
-  ls | \
-    map 'echo -n `gzip < "%" | wc -c`; echo -n '*100/'; wc -c < "%"' |
-    bc
+  ls | map 'echo %; wc %'
 
 It works with GNU B<parallel>:
 
-  ls | \
-    parallel \
-      'echo -n `gzip < {} | wc -c`; echo -n '*100/'; wc -c < {}' | bc
+  ls | parallel 'echo {}; wc {}'
 
-And you can even get the file name prepended:
+Under some circumstances it also works with B<map>:
 
-  ls | \
-    parallel --tag \
-      '(echo -n `gzip < {} | wc -c`'*100/'; wc -c < {}) | bc'
+  ls | map 'echo % works %'
 
-B<map> has no support for grouping. So this gives the wrong results
-without any warnings:
+But tiny changes make it reject the input with special characters:
 
-  parallel perl -e '\$a=\"1{}\"x10000000\;print\ \$a,\"\\n\"' '>' {} \
-    ::: a b c d e f
-  ls -l a b c d e f
-  parallel -kP4 -n1 grep 1 > out.par ::: a b c d e f
-  map -p 4 'grep 1' a b c d e f > out.map-unbuf
-  map -p 4 'grep --line-buffered 1' a b c d e f > out.map-linebuf
-  map -p 1 'grep --line-buffered 1' a b c d e f > out.map-serial
-  ls -l out*
-  md5sum out*
+  ls | map 'echo % does not work "%"'
 
-The documentation shows a workaround, but not only does that mix
-stdout (standard output) with stderr (standard error) it also fails
-completely for certain jobs (and may even be considered less readable):
+This means that many UTF-8 characters will be rejected. This is by
+design. From the web page: "As such, programs that I<quietly handle
+them, with no warnings at all,> are doing their users a disservice."
 
-  parallel echo -n {} ::: 1 2 3
+B<map> delays each job by 0.01 s. This can be emulated by using
+B<parallel --delay 0.01>.
 
-  map -p 4 'echo -n % 2>&1 | sed -e "s/^/$$:/"' 1 2 3 | \
-    sort | cut -f2- -d:
+B<map> prints '+' on stderr when a job starts, and '-' when a job
+finishes. This cannot be disabled. B<parallel> has B<--bar> if you
+need to see progress.
 
-B<map>s replacement strings (% %D %B %E) can be simulated in GNU
+B<map>'s replacement strings (% %D %B %E) can be simulated in GNU
 B<parallel> by putting this in B<~/.parallel/config>:
 
   --rpl '%'
@@ -730,25 +710,58 @@ context replace:
 
   map "echo 'BEGIN{'%'}END'" 1 2 3
 
-B<map> requires Perl v5.10.0 making it harder to use on old systems.
+B<map> has no support for grouping. So this gives the wrong results:
 
-To put a % in the command line B<map> requires you to use %%:
+  parallel perl -e '\$a=\"1{}\"x10000000\;print\ \$a,\"\\n\"' '>' {} \
+    ::: a b c d e f
+  ls -l a b c d e f
+  parallel -kP4 -n1 grep 1 ::: a b c d e f > out.par
+  map -n1 -p 4 'grep 1' a b c d e f > out.map-unbuf
+  map -n1 -p 4 'grep --line-buffered 1' a b c d e f > out.map-linebuf
+  map -n1 -p 1 'grep --line-buffered 1' a b c d e f > out.map-serial
+  ls -l out*
+  md5sum out*
 
-  seq 10 | map -n1 echo % +10%% {}
+=head3 EXAMPLES FROM map's WEBSITE
 
-  seq 10 | parallel -I ,, echo ,, +10% {}
+Here are the examples from B<map>'s web page with the equivalent using
+GNU B<parallel>:
 
-GNU B<parallel> has -I to specify another replacement string than
-B<{}> if you use B<{}> in the command template.
+  1$ ls *.gif | map convert % %B.png         # default max-args: 1
 
-By design B<map> is option incompatible with B<xargs>, it does not
-have remote job execution, a structured way of saving results,
-multiple input sources, progress indicator, configurable record
-delimiter (only field delimiter), logging of jobs run with possibility
-to resume, keeping the output in the same order as input, --pipe
-processing, and dynamically timeouts.
+  1$ ls *.gif | parallel convert {} {.}.png
 
-https://github.com/sitaramc/map (Last checked: 2020-04)
+  2$ map "mkdir %B; tar -C %B -xf %" *.tgz   # default max-args: 1
+
+  2$ parallel 'mkdir {.}; tar -C {.} -xf {}' :::  *.tgz
+
+  3$ ls *.gif | map cp % /tmp                # default max-args: 100
+
+  3$ ls *.gif | parallel -X cp {} /tmp
+
+  4$ ls *.tar | map -n 1 tar -xf %
+
+  4$ ls *.tar | parallel tar -xf
+
+  5$ map "cp % /tmp" *.tgz
+
+  5$ parallel cp {} /tmp ::: *.tgz
+
+  6$ map "du -sm /home/%/mail" alice bob carol
+
+  6$ parallel "du -sm /home/{}/mail" ::: alice bob carol
+  or if you prefer running a single job with multiple args:
+  6$ parallel -Xj1 "du -sm /home/{}/mail" ::: alice bob carol
+
+  7$ cat /etc/passwd | map -d: 'echo user %1 has shell %7'
+
+  7$ cat /etc/passwd | parallel --colsep : 'echo user {1} has shell {7}'
+
+  8$ export MAP_MAX_PROCS=$(( `nproc` / 2 ))
+
+  8$ export PARALLEL=-j50%
+
+https://github.com/sitaramc/map (Last checked: 2020-05)
 
 
 =head2 DIFFERENCES BETWEEN ladon AND GNU Parallel
@@ -849,9 +862,11 @@ jobs. This can be emulated by GNU B<parallel> using B<bash>'s B<ulimit>:
 
   3$ cat urls.txt | parallel -j32 wget {}
 
-  4$ find . -name '*.bmp' | jobflow -threads=8 -exec bmp2jpeg {.}.bmp {.}.jpg
+  4$ find . -name '*.bmp' | \
+       jobflow -threads=8 -exec bmp2jpeg {.}.bmp {.}.jpg
 
-  4$ find . -name '*.bmp' | parallel -j8 bmp2jpeg {.}.bmp {.}.jpg
+  4$ find . -name '*.bmp' | \
+       parallel -j8 bmp2jpeg {.}.bmp {.}.jpg
 
 https://github.com/rofl0r/jobflow
 
@@ -877,9 +892,11 @@ Output to stderr (standard error) is changed if the command fails.
 
   1$ seq 12 -1 1 | parallel -P 4 -n 3 "sleep {1}; echo {2} {3}"
 
-  2$ cat t.txt | gargs --sep "\s+" -p 2 "echo '{0}:{1}-{2}' full-line: \'{}\'"
+  2$ cat t.txt | gargs --sep "\s+" \
+       -p 2 "echo '{0}:{1}-{2}' full-line: \'{}\'"
 
-  2$ cat t.txt | parallel --colsep "\\s+" -P 2 "echo '{1}:{2}-{3}' full-line: \'{}\'"
+  2$ cat t.txt | parallel --colsep "\\s+" \
+       -P 2 "echo '{1}:{2}-{3}' full-line: \'{}\'"
 
 https://github.com/brentp/gargs
 
@@ -2633,7 +2650,7 @@ https://github.com/ExpectationMax/simple_gpu_scheduler
     seq 3 | parallel echo true >> gpu.queue
     # Add jobs
     echo "my_command_with | and stuff > logfile" >> gpu.queue
-    # Needed to flush output from completed jobs 
+    # Needed to flush output from completed jobs
     seq 3 | parallel echo true >> gpu.queue
 
 

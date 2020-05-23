@@ -4,8 +4,6 @@ Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
 
-  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,
-  DOI https://doi.org/10.5281/zenodo.1146014
 
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
@@ -27,8 +25,6 @@ Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
 
-  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,
-  DOI https://doi.org/10.5281/zenodo.1146014
 
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
@@ -39,22 +35,12 @@ https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 To silence this citation notice: run 'parallel --citation' once.
 
 10 files to edit
-[?2004h[?1049h[22;0;0t[?1h=[?2004h[1;24r[?12h[?12l[27m[23m[29m[m[H[2J[?25l[24;1H"file1" [New File][2;1H½[6n[2;1H  [1;1H[>c]10;?]11;?[2;1H[94m~                                                                               [3;1H~                                                                               [4;1H~                                                                               [5;1H~                                                                               [6;1H~                                                                               [7;1H~                                                                               [8;1H~                                                                               [9;1H~                                                                               [10;1H~                                                                               [11;1H~                                                                               [12;1H~                                                                               [13;1H~                                                                               [14;1H~                                                                               [15;1H~                                                                               [16;1H~                                                                               [17;1H~                                                                               [18;1H~                                                                               [19;1H~                                                                               [20;1H~                                                                               [21;1H~                                                                               [22;1H~                                                                               [23;1H~                                                                               [m[24;63H0,0-1[9CAll[1;1H[?25h[?25l[24;1H[97m[41mE173: 9 more files to edit[m[24;63H[K[?2004h[24;63H0,0-1[9CAll[1;1H[?25h[24;1H[?2004l[24;1H[K[24;1H[?2004l[?1l>[?1049l[23;0;0tAcademic tradition requires you to cite works you base your article on.
+Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
 
-@book{tange_ole_2018_1146014,
-      author       = {Tange, Ole},
-      title        = {GNU Parallel 2018},
-      publisher    = {Ole Tange},
-      month        = Mar,
-      year         = 2018,
-      ISBN         = {9781387509881},
-      doi          = {10.5281/zenodo.1146014},
-      url          = {https://doi.org/10.5281/zenodo.1146014}
 }
 
-(Feel free to use \nocite{tange_ole_2018_1146014})
 
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
@@ -64,7 +50,6 @@ https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
 https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 
-If you send a copy of your published article to tange@gnu.org, it will be
 mentioned in the release notes of next version of GNU Parallel.
 
 

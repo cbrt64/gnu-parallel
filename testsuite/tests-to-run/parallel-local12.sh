@@ -22,7 +22,9 @@ cat >/tmp/parallel-script-for-script2 <<EOF
 echo no output |parallel --tty -kv ::: 'echo a' 'cat'
 EOF
 chmod 755 /tmp/parallel-script-for-script2
-echo via pseudotty | script -q -f -c /tmp/parallel-script-for-script2 /dev/null
+echo via pseudotty |
+    script -q -f -c /tmp/parallel-script-for-script2 /dev/null |
+    perl -ne '/tange|  .*/ or print'
 sleep 2
 rm /tmp/parallel-script-for-script2
 
@@ -34,11 +36,14 @@ cat >/tmp/parallel-script-for-script3 <<EOF
 seq 10 | parallel --tty -X vi file{}
 EOF
 chmod 755 /tmp/parallel-script-for-script3
-echo ZZZZ | script -q -f -c /tmp/parallel-script-for-script3 /dev/null
+echo ZZZZ |
+    script -q -f -c /tmp/parallel-script-for-script3 /dev/null |
+    perl -ne '/tange|  .*/ or print'
 sleep 2
 rm /tmp/parallel-script-for-script3
 
-stdout parallel --citation < /dev/null
+stdout parallel --citation < /dev/null |
+    perl -ne '/tange|  .*/ or print'
 
 touch ~/.parallel/will-cite
 echo 1 > ~/.parallel/runs-without-willing-to-cite

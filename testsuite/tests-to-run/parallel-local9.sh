@@ -100,14 +100,6 @@ echo "# --recend '' --files --halt-on-error"
   nice nice perl -e '@x=1 .. 17000; for(1..100) { print "@x\n"}' | pv -qL 1000000 | 
     $PAR --recend '' --files --halt-on-error 2 cat | parallel -Xj1 cat {} ';' rm {} | md5sum
 
-echo '### Test of -j filename - non-existent file'; 
-  nice stdout parallel -j no_such_file echo ::: 1
-
-echo '### Test of -j filename'; 
-  echo 3 >/tmp/jobs_to_run1; 
-  parallel -j /tmp/jobs_to_run1 -v sleep {} ::: 10 8 6 5 4; 
-  # Should give 6 8 10 5 4
-
 echo '### Test ::::'
 echo '### Change --arg-file-sep'
 $XAP --arg-file-sep :::: -k echo {1} {2} :::: <(seq 1 10) <(seq 5 15)

@@ -507,6 +507,15 @@ par_tmp_full() {
     stdout parallel -j1 --tmpdir $SHM cat /dev/zero ::: dummy
 }
 
+par_jobs_file() {
+    echo '### Test of -j filename - non-existent file'
+    stdout parallel -j no_such_file echo ::: 1
+
+    echo '### Test of -j filename'
+    echo 3 >/tmp/jobs_to_run1
+    parallel -j /tmp/jobs_to_run1 -v sleep {} ::: 10 8 6 5 4
+    # Should give 6 8 10 5 4
+}
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |

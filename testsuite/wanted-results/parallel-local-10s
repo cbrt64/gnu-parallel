@@ -205,6 +205,51 @@ par_fifo_under_csh	1
 par_fifo_under_csh	868832
 par_fifo_under_csh	1
 par_fifo_under_csh	exit 22
+par_jobs_file	### Test of -j filename - non-existent file
+par_jobs_file	parallel: Error: Parsing of --jobs/-j/--max-procs/-P failed.
+par_jobs_file	Usage:
+par_jobs_file	
+par_jobs_file	parallel [options] [command [arguments]] < list_of_arguments
+par_jobs_file	parallel [options] [command [arguments]] (::: arguments|:::: argfile(s))...
+par_jobs_file	cat ... | parallel --pipe [options] [command [arguments]]
+par_jobs_file	
+par_jobs_file	-j n            Run n jobs in parallel
+par_jobs_file	-k              Keep same order
+par_jobs_file	-X              Multiple arguments with context replace
+par_jobs_file	--colsep regexp Split input on regexp for positional replacements
+par_jobs_file	{} {.} {/} {/.} {#} {%} {= perl code =} Replacement strings
+par_jobs_file	{3} {3.} {3/} {3/.} {=3 perl code =}    Positional replacement strings
+par_jobs_file	With --plus:    {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =
+par_jobs_file	                {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
+par_jobs_file	
+par_jobs_file	-S sshlogin     Example: foo@server.example.com
+par_jobs_file	--slf ..        Use ~/.parallel/sshloginfile as the list of sshlogins
+par_jobs_file	--trc {}.bar    Shorthand for --transfer --return {}.bar --cleanup
+par_jobs_file	--onall         Run the given command with argument on all sshlogins
+par_jobs_file	--nonall        Run the given command with no arguments on all sshlogins
+par_jobs_file	
+par_jobs_file	--pipe          Split stdin (standard input) to multiple jobs.
+par_jobs_file	--recend str    Record end separator for --pipe.
+par_jobs_file	--recstart str  Record start separator for --pipe.
+par_jobs_file	
+par_jobs_file	See 'man parallel' for details
+par_jobs_file	
+par_jobs_file	Academic tradition requires you to cite works you base your article on.
+par_jobs_file	If you use programs that use GNU Parallel to process data for an article in a
+par_jobs_file	scientific publication, please cite:
+par_jobs_file	
+par_jobs_file	  Tange, O. (2020, May 22). GNU Parallel 20200522 ('Kraftwerk').
+par_jobs_file	  Zenodo. https://doi.org/10.5281/zenodo.3840974
+par_jobs_file	
+par_jobs_file	This helps funding further development; AND IT WON'T COST YOU A CENT.
+par_jobs_file	If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
+par_jobs_file	
+par_jobs_file	### Test of -j filename
+par_jobs_file	sleep 6
+par_jobs_file	sleep 8
+par_jobs_file	sleep 10
+par_jobs_file	sleep 5
+par_jobs_file	sleep 4
 par_k	### Test -k
 par_k	parallel: Warning: Only enough file handles to run X jobs in parallel.
 par_k	parallel: Warning: Running 'parallel -jX -N X --pipe parallel -jX' or

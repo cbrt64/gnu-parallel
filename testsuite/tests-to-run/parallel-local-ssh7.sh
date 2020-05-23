@@ -3317,4 +3317,6 @@ compgen -A function | grep par_ | LC_ALL=C sort -r |
               s/\d+ >= \d+/XXX >= XXX/;
               s/sh:? \d?\d\d:/sh: XXX:/;
               s/:\d?\d\d:/:XXX:/;
-              s/sh\[\d+\]/sh[XXX]/;'
+              s/sh\[\d+\]/sh[XXX]/;
+	      s/.*(tange|zenodo).*//i;
+	      '
