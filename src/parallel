@@ -948,7 +948,7 @@ sub spreadstdin() {
     my $two_gb = 2**31-1;
     my $blocksize = $Global::blocksize;
     my $in = *STDIN;
-    my $timeout = ::multiply_time_units($opt::blocktimeout);
+    my $timeout = $Global::blocktimeout;
 
     my $header = find_header(\$buf,$in);
     my $anything_written;
@@ -1761,6 +1761,13 @@ sub parse_options(@) {
     if(defined $opt::eof) { $Global::end_of_file_string = $opt::eof; }
     if(defined $opt::max_args) {
 	$Global::max_number_of_args = $opt::max_args;
+    }
+    if(defined $opt::blocktimeout) {
+	$Global::blocktimeout = int(multiply_time_units($opt::blocktimeout));
+	if($Global::blocktimeout < 1) {
+	    ::error("--block-timeout must be at least 1");
+	    wait_and_exit(255);
+	}
     }
     if(defined $opt::timeout) {
 	$Global::timeoutq = TimeoutQueue->new($opt::timeout);
@@ -4535,6 +4542,7 @@ sub onall($@) {
 	     ((defined $opt::linebuffer) ? "--linebuffer" : ""),
 	     ((defined $opt::max_chars) ? "--max-chars ".$opt::max_chars : ""),
 	     ((defined $opt::plain) ? "--plain" : ""),
+	     ((defined $opt::plus) ? "--plus" : ""),
 	     ((defined $opt::retries) ? "--retries ".$opt::retries : ""),
 	     ((defined $opt::timeout) ? "--timeout ".$opt::timeout : ""),
 	     ((defined $opt::ungroup) ? "-u" : ""),

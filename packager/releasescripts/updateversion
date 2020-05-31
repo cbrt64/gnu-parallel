@@ -1,0 +1,58 @@
+#!/bin/bash
+
+updater() {
+  export DOINO
+  export TAG
+  export YYYYMMDD=`yyyymmdd`
+  export DOI=10.5281/zenodo.$DOINO
+  export YYYY=${YYYYMMDD:0:4}
+  export YYYYMM=${YYYYMMDD:0:6}
+  export YYYYMMDD=${YYYYMM}22
+  export MON=`date +%b`
+  export MONTH=`date +%B`
+  echo Tag=$TAG Date:$YYYYMMDD Year:$YYYY Mon:$MON Month:$MONTH DOI:$DOI
+  export TITLE="GNU Parallel $YYYYMMDD ('$TAG')"
+
+  if [ -z "$DOINO" ] ; then
+      echo '*** Set DOINO and try again ***'
+      echo 'https://zenodo.org/deposit/new (Reserve DOI)'
+      echo '[Save]'
+      echo DOINO=$(cat .last-doi.txt)
+      return
+  fi
+  echo "$DOINO" > .last-doi.txt
+  if [ -z "$TAG" ] ; then
+      echo '*** Set TAG and try again ***'
+      echo TAG=$(cat .last-tag.txt)
+      return
+  fi
+  echo "$TAG" > .last-tag.txt
+
+  perl -i -pe "s/20\d\d\d\d\d\d/$YYYYMMDD/" configure.ac
+  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
+  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload
+  perl -i -pe "s/parallel-20\d\d\d\d\d\d/parallel-$YYYYMMDD/" README
+  perl -i -pe '
+     # Update version 20209999
+     /version/ and s/20\d\d\d\d\d\d/$ENV{YYYYMMDD}/;
+     # Update: 10.5281/zenodo.1146014 
+     s:10.5281/zenodo.\d+:$ENV{DOI}:;
+     # Update "@software{tange_2015_16303,"
+     s:tange_\d+_\d+:tange_$ENV{YYYY}_$ENV{DOINO}:;
+     # Update month = mar,
+     s/(month\s+=\s+)\S+,",/$1$ENV{MON},",/;
+     # Update title = {GNU Parallel 20200522 ('Kraftwerk')},",
+     / title\s+= / and s/\{.*\}/{$ENV{TITLE}}/;
+     # Tange, O. (2020, May 22). GNU Parallel 20200522 ('Kraftwerk').
+     s/(Tange, O. .).*(.. )(GNU.*[)])/$1$ENV{YYYY}, $ENV{MONTH} 22$2$ENV{TITLE}/;
+     ' src/parallel README
+  (
+  ppar --help
+  ppar --citation
+  grep -i 'zenodo|tange' README
+  ) 2>&1 | grep -E '^  |^}|tange'
+  mv ~/.parallel/will-cite ~/.parallel/will-cite.
+  ppar ::: true
+  mv ~/.parallel/will-cite. ~/.parallel/will-cite
+}
+updater

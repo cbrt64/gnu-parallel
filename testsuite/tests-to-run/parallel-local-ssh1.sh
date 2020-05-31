@@ -168,6 +168,12 @@ par_onall_transfer() {
 	echo Cleanup failed
 }
 
+par_--onall_--plus() {
+    echo '### Test --plus is respected with --onall/--nonall'
+    parallel -S bash@lo --onall --plus echo {host} ::: OK
+    parallel -S bash@lo --nonall --plus echo {host}
+}
+
 par_remote_load() {
     echo '### Test --load remote'
     ssh parallel@lo 'seq 10 | parallel --nice 19 --timeout 15 -j0 -qN0 perl -e while\(1\)\{\ \}' &

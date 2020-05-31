@@ -1,5 +1,9 @@
 Quote of the month:
-  
+
+GNU parallel, which works a little bit like xargs, but has a much more friendly way of handling files with spaces and automatically parallelises calls. This tool has saved me a great deal of coding because it makes it so easy to write a program which does just one part of a task and then run it in parallel with load balancing and a nice progress bar. I cannot recommend this tool enough.
+
+https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
+
   Who needs spark when GNU Parallel exists
     -- MatthijsB @MatthijsBrs@twitter
 
@@ -56,6 +60,12 @@ Quote of the month:
     -- @alinajaf@twitter
 
 === Used ===
+
+  GNU Parallel: dead simple process-level parallelization of ad hoc
+  tasks. Write for a chunk, let gnu manage the splitting, permutations
+  and pool concurrency.
+    -- Nick Ursa @nickursa@twitter
+
 
   I wish more command line software had example pages as robust as GNU Parallel
     -- Lucidbeaming @lucidbeaming

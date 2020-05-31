@@ -2910,7 +2910,6 @@ most likely do what is needed.
 
 =back
 
-
 =head1 EXAMPLE: Working as xargs -n1. Argument appending
 
 GNU B<parallel> can work similar to B<xargs -n1>.
@@ -3142,6 +3141,17 @@ To test a program with different parameters:
 
 If B<my_program> fails a red FAIL will be printed followed by the failing
 command; otherwise a green OK will be printed followed by the command.
+
+
+=head1 EXAMPLE: Continously show the latest line of output
+
+It can be useful to monitor the output of running jobs.
+
+This shows the most recent output line until a job finishes. After
+which the output of the job is printed in full:
+
+  parallel '{} | tee >(cat >&3)' ::: 'command 1' 'command 2' \
+    3> >(perl -ne '$|=1;chomp;printf"%.'$COLUMNS's\r",$_." "x100')
 
 
 =head1 EXAMPLE: Log rotate

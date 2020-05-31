@@ -1,6 +1,9 @@
 echo TODO
 TODO
 ## echo '### Test --trc --basefile --/./--foo7 :/./:foo8 " "/./" "foo9 ./foo11/./foo11'
+par_--onall_--plus	### Test --plus is respected with --onall/--nonall
+par_--onall_--plus	lo
+par_--onall_--plus	lo
 par_PARALLEL_SSH_function	### use function as $PARALLEL_SSH
 par_PARALLEL_SSH_function	Run through FOOSSH?
 par_PARALLEL_SSH_function	FOOSSH

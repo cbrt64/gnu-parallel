@@ -10,139 +10,72 @@ Unmodified beta since last version => production
 Unmodified alpha since last version => beta
 Modified => alpha
 
-== Update version ==
+== Update NEWS ==
 
-Get DOI:
-https://zenodo.org/deposit/new (Reserve DOI)
-
-configure.ac: AC_INIT([parallel], [20100422], [bug-parallel@gnu.org])
-src/parallel: $Global::version = 20100422;
-README: parallel-20130222
-
-DOINO=3840974
-TAG=Kraftwerk
-YYYYMMDD=$(echo `yyyymmdd`-1 | bc)
-YYYYMMDD=$(echo `yyyymmdd`+1 | bc)
-YYYYMMDD=`yyyymmdd`
-
-updater() {
-  export DOINO
-  export TAG
-  export YYYYMMDD
-  export DOI=10.5281/zenodo.$DOINO
-  export YYYY=${YYYYMMDD:0:4}
-  export MON=`date +%b`
-  export MONTH=`date +%B`
-  echo Tag=$TAG Date:$YYYYMMDD Year:$YYYY Mon:$MON Month:$MONTH DOI:$DOI
-  export TITLE="GNU Parallel $YYYYMMDD ('$TAG')"
-
-  perl -i -pe "s/20\d\d\d\d\d\d/$YYYYMMDD/" configure.ac
-  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
-  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload
-  perl -i -pe "s/parallel-20\d\d\d\d\d\d/parallel-$YYYYMMDD/" README
-  perl -i -pe '
-     # Update version 20209999
-     /version/ and s/20\d\d\d\d\d\d/$ENV{YYYYMMDD}/;
-     # Update: 10.5281/zenodo.1146014 
-     s:10.5281/zenodo.\d+:$ENV{DOI}:;
-     # Update "@software{tange_2015_16303,"
-     s:tange_\d+_\d+:tange_$ENV{YYYY}_$ENV{DOINO}:;
-     # Update month = mar,
-     s/(month\s+=\s+)\S+,",/$1$ENV{MON},",/;
-     # Update title = {GNU Parallel 20200522 ('Kraftwerk')},",
-     / title\s+= / and s/\{.*\}/{$ENV{TITLE}}/;
-     # Tange, O. (2020, May 22). GNU Parallel 20200522 ('Kraftwerk').
-     s/(Tange, O. .).*(.. )(GNU.*[)])/$1$ENV{YYYY}, $ENV{MONTH} 22$2$ENV{TITLE}/;
-     ' src/parallel README
-  (
-  ppar --help
-  ppar --citation
-  grep -i 'zenodo|tange' README
-  ) 2>&1 | grep -E '^  |^}|tange'
-  mv ~/.parallel/will-cite ~/.parallel/will-cite.
-  ppar ::: true
-  mv ~/.parallel/will-cite. ~/.parallel/will-cite
-}
-updater
-
-=== Autoconf/automake ===
-
-rm -fr autom4te.cache aclocal.m4 config.h config.h.in config.log Makefile.in missing install-sh
-rm -rf src/Makefile.in
-autoreconf --install -W gnu
-./configure
-make -j && sudo make install
+With the same things that goes in the announce mail
 
 == Testsuite ==
 
 cd testsuite; make mem; make
 
-== Update NEWS ==
+== Update version ==
 
-With the same things that goes in the announce mail
+https://zenodo.org/deposit/new
 
-== Package ==
+(*) Software
+(Reserve DOI)
+https://orcid.org/0000-0002-6345-1437
+Description
+GNU Parallel is a general parallelizer to run multiple serial command line programs in parallel without changing them.
 
-./configure
-make dist
-make dist-bzip2
+License:
+gpl v3
 
-== Test the package ==
+[Save]
 
-YYYYMMDD=`yyyymmdd`
-cp parallel-$YYYYMMDD.tar.bz2 /tmp
-pushd /tmp
-tar xjvf parallel-$YYYYMMDD.tar.bz2
-cd parallel-$YYYYMMDD
-./configure && make -j && sudo make -j install
-pushd
+DOINO=3841377
+TAG=Kraftwerk
+
+# Update version
+. packager/releasescripts/updateversion
+
+=== Reconfig autoconf/automake, build tar.bz2 and test it ===
+
+make reconf &&
+make pack_unpack_and_test_build
 
 == Upload ==
 
-YYYYMMDD=`yyyymmdd`
-export YYYYMMDD
+export YYYYMMDD=`yyyymmdd`
+export YYYYMMDD=${YYYYMMDD:0:6}22
 eval `gpg-agent --daemon`
 # Takes up to 8 minutes
 make upload
 
 # Only needed for alpha:
-YYYYMMDD=`yyyymmdd`
-export YYYYMMDD
+export YYYYMMDD=`yyyymmdd`
+export YYYYMMDD=${YYYYMMDD:0:6}22
 eval `gpg-agent --daemon`
 # Takes up to 8 minutes
 make alphaupload
 
 == Update OpenSUSE build system ==
 
-
+export YYYYMMDD=`yyyymmdd`
+export YYYYMMDD=${YYYYMMDD:0:6}22
 YYYYMMDD=`yyyymmdd`
 export YYYYMMDD
 cd ~/privat/parallel/packager/obs
 
-find home:tange/parallel/* -type f | grep -v parallel.spec | parallel -Xj1 osc rm {}
+find home:tange/parallel/* -type f |
+  grep -v parallel.spec |
+  parallel -j1 'osc rm {} || rm {}'
 # This should not create new files
 osc up home:tange/parallel/
 make
 # Reload build-status:
 https://build.opensuse.org/package/show/home:tange/parallel
 # Check that one .deb (Debian 5.0) and one .rpm (CentOS) end with 'succeeded'
-
-== Download and test ==
-
-# Only needed for alpha (part of 'make upload')
-
-YYYYMMDD=`yyyymmdd`
-pushd /tmp
-rm -rf parallel-${YYYYMMDD}*
-# This can take 7 minutes
-#while ! wget http://ftp.gnu.org/gnu/parallel/parallel-$YYYYMMDD.tar.bz2 ; do sleep 2; done
-while ! wget http://alpha.gnu.org/gnu/parallel/parallel-$YYYYMMDD.tar.bz2 ; do sleep 2; done
-tar xjvf parallel-$YYYYMMDD.tar.bz2
-cd parallel-$YYYYMMDD
-./configure
-make -j && sudo make -j install
-pushd
-sudo cp /usr/local/bin/parallel /usr/local/bin/parallel-$YYYYMMDD
 
 == Update website ==
 
@@ -172,7 +105,8 @@ git diff
 
 # Recheck OBS https://build.opensuse.org/package/show/home:tange/parallel
 
-YYYYMMDD=`yyyymmdd`
+export YYYYMMDD=`yyyymmdd`
+export YYYYMMDD=${YYYYMMDD:0:6}22
 TAG=MyTag
 echo "Released as $YYYYMMDD ('$TAG')." | grep MyTag && (STOP;STOP;STOP)
 echo "$TAG" | grep ' ' && (STOP;STOP;STOP)
@@ -186,12 +120,16 @@ torsocks git push
 torsocks git push origin $TAG
 torsocks git push origin $YYYYMMDD
 
+== Zenodo ==
+
+Add tar.bz2 and publish.
 
 == Update documentation ==
 
 Update version number + 1
 
-YYYYMMDD=$(echo `yyyymmdd`+1 | bc)
+export YYYYMMDD=`yyyymmdd`
+export YYYYMMDD=${YYYYMMDD:0:6}23
 echo $YYYYMMDD
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/parallel
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
@@ -250,9 +188,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200522 ('Kraftwerk') released <<[stable]>>
+Subject: GNU Parallel 20200622 ('SpaceX') released <<[stable]>>
 
-GNU Parallel 20200522 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -262,23 +200,14 @@ Quote of the month:
   
 New in this release:
 
-* While running a job $PARALLEL_JOBSLOT is the jobslot of the job. It is equal to {%} unless the job is being retried. See {%} for details.
-
-* While running a job $PARALLEL_SSHLOGIN is the sshlogin line with number of cores removed. E.g. '4//usr/bin/specialssh user@host' becomes: '/usr/bin/specialssh user@host'
-
-* While running a job $PARALLEL_SSHHOST is the host part of an sshlogin line. E.g. '4//usr/bin/specialssh user@host' becomes: 'host'
-
-* --plus activates the replacement strings {slot} = $PARALLEL_JOBSLOT, {sshlogin} = $PARALLEL_SSHLOGIN, {host} = $PARALLEL_SSHHOST
+*
 
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* Portable Batch System (PBS) & GNU Parallel - Running a Program Multiple Times in Parallel https://www.youtube.com/watch?v=6ccbWu6Befo
-* GNU Parallel przykład https://www.youtube.com/watch?v=gs_wG4Kt2G4
-* demo of LINUX APP - GNU PARALLEL - running multiple Gstreamer webcam .sh scripts with only 1 command https://www.youtube.com/watch?v=trQuA_wmWjg
-
+https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
