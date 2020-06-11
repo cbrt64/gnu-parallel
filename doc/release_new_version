@@ -188,7 +188,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200622 ('SpaceX') released <<[stable]>>
+Subject: GNU Parallel 20200622 ('SpaceX/Floyd') released <<[stable]>>
 
 GNU Parallel 20200622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -201,11 +201,17 @@ Quote of the month:
 New in this release:
 
 *
+https://www.slideshare.net/hoffmanlab/gnu-parallel-194030490
+https://www.openskysoftware.com/site-credits.htm
 
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
+
+https://bioinformaticsworkbook.org/Appendix/GNUparallel/GNU_parallel_examples.html#gsc.tab=0
+
+http://pdebuyl.be/blog/2020/gnu-parallel-for-simulations.html
 
 https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 

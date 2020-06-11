@@ -6,9 +6,11 @@
 export SQLITE=sqlite3:///%2Frun%2Fshm%2Fparallel.db
 export PG=pg://`whoami`:`whoami`@lo/`whoami`
 export MYSQL=mysql://`whoami`:`whoami`@lo/`whoami`
+export CSV=csv:///%2Frun%2Fshm%2Fcsv
 
 export DEBUG=false
-rm /run/shm/parallel.db
+rm -f /run/shm/parallel.db
+mkdir -p /run/shm/csv
 
 p_showsqlresult() {
   SERVERURL=$1
@@ -125,7 +127,8 @@ export -f $(compgen -A function | egrep 'p_|par_')
 # Tested that -j0 in parallel is fastest (up to 15 jobs)
 compgen -A function | grep par_ | sort |
   stdout parallel -vj5 -k --tag --joblog /tmp/jl-`basename $0` p_wrapper \
-	 :::: - ::: \$MYSQL \$PG \$SQLITE | perl -pe 's/tbl\d+/TBL99999/gi;' |
+	 :::: - ::: \$MYSQL \$PG \$SQLITE \$CSV |
+  perl -pe 's/tbl\d+/TBL99999/gi;' |
   perl -pe 's/(from TBL99999 order) .*/$1/g' |
   perl -pe 's/ *\b'"$hostname"'\b */hostname/g' | 
   grep -v -- --------------- |

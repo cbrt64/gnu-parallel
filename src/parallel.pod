@@ -2380,8 +2380,11 @@ E.g.
   sql:oracle://scott:tiger@ora.example.com/xe/parjob
   postgresql://scott:tiger@pg.example.com/pgdb/parjob
   pg:///parjob
-  sqlite3:///pardb/parjob.sqlite
-  csv:///%2Ftmp%2Fmydir/jobtable
+  sqlite3:///%2Ftmp%2Fpardb.sqlite/parjob
+  csv:///%2Ftmp%2Fpardb/parjob
+
+Notice how / in the path of sqlite and CVS must be encoded as
+%2F. Except the last / in CSV which must be a /.
 
 It can also be an alias from ~/.sql/aliases:
 

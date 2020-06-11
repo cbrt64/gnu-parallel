@@ -12299,8 +12299,13 @@ sub new($) {
     my $dbh;
     if($driver eq "CSV") {
 	# CSV does not use normal dsn
-	$dbh = DBI->connect("dbi:CSV:", "", "", { f_dir => "$database", })
-	or die $DBI::errstr;
+	if(-d $database) {
+	    $dbh = DBI->connect("dbi:CSV:", "", "", { f_dir => "$database", })
+		or die $DBI::errstr;
+	} else {
+	    ::error("$database is not a directory.");
+	    ::wait_and_exit(255);
+	}
     } else {
 	$dbh = DBI->connect($dsn, $userid, $password,
 			   { RaiseError => 1, AutoInactiveDestroy => 1 })
@@ -12311,7 +12316,6 @@ sub new($) {
     $dbh->{'RaiseError'} = 1;
     $dbh->{'ShowErrorStatement'} = 1;
     $dbh->{'HandleError'} = sub {};
-
     if(not defined $options{'table'}) {
 	::error("The DBURL ($dburl) must contain a table.");
 	::wait_and_exit(255);
@@ -12650,26 +12654,58 @@ sub insert_records($) {
 	       0, @$record_ref[1..$#$record_ref]);
 }
 
+
 sub get_record($) {
     my $self = shift;
     my @retval;
     my $table = $self->table();
     my @v_cols = map { ", V$_" } (1..$self->max_number_of_args());
-    my $v = $self->get("SELECT Seq, Command @v_cols FROM $table ".
-		       "WHERE Exitval = -1000 ORDER BY Seq LIMIT 1;");
-    if($v->[0]) {
-	my $val_ref = $v->[0];
-	# Mark record as taken
-	my $seq = shift @$val_ref;
-	# Save the sequence number to use when running the job
-	$SQL::next_seq = $seq;
-	$self->update("SET Exitval = ? WHERE Seq = ".$seq, -1220);
-	my @command = split /\257 /, shift @$val_ref;
-	$SQL::command_ref = \@command;
-	for (@$val_ref) {
-	    push @retval, Arg->new($_);
+    my $rand = "Reserved-".$$.rand();
+    my $v;
+    my $more_pending;
+
+    do {
+	if($self->{'driver'} eq "CSV") {
+	    # Sub SELECT is not supported in CSV
+	    # So to minimize the race condition below select a job at random
+	    my $r = $self->get("SELECT Seq, Command @v_cols FROM $table ".
+			       "WHERE Exitval = -1000 LIMIT 100;");
+	    $v = [ sort { rand() > 0.5 } @$r ];
+	} else {
+	    # Avoid race condition where multiple workers get the same job
+	    # by setting Stdout to a unique string
+	    # (SELECT * FROM (...) AS dummy) is needed due to sillyness in MySQL
+	    $self->update("SET Stdout = ?,Exitval = ? ".
+			  "WHERE Seq = (".
+			  "  SELECT * FROM (".
+			  "    SELECT min(Seq) FROM $table WHERE Exitval = -1000".
+			  "  ) AS dummy".
+			  ") AND Exitval = -1000;", $rand, -1210);
+	    # If a parallel worker overwrote the unique string this will get nothing
+	    $v = $self->get("SELECT Seq, Command @v_cols FROM $table ".
+			    "WHERE Stdout = ?;", $rand);
 	}
-    }
+	if($v->[0]) {
+	    my $val_ref = $v->[0];
+	    # Mark record as taken
+	    my $seq = shift @$val_ref;
+	    # Save the sequence number to use when running the job
+	    $SQL::next_seq = $seq;
+	    $self->update("SET Exitval = ? WHERE Seq = ".$seq, -1220);
+	    # Command is encoded with '\257 space' as splitting char
+	    my @command = split /\257 /, shift @$val_ref;
+	    $SQL::command_ref = \@command;
+	    for (@$val_ref) {
+		push @retval, Arg->new($_);
+	    }
+	} else {
+	    # If the record was updated by another job in parallel,
+	    # then we may not be done, so see if there are more jobs pending
+	    $more_pending =
+		$self->get("SELECT Seq FROM $table WHERE Exitval = ?;", -1210);
+	}
+    } while (not $v->[0] and $more_pending->[0]);
+
     if(@retval) {
 	return \@retval;
     } else {
