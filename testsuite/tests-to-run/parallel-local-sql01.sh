@@ -6,7 +6,7 @@
 export SQLITE=sqlite3:///%2Frun%2Fshm%2Fparallel.db
 export PG=pg://`whoami`:`whoami`@lo/`whoami`
 export MYSQL=mysql://`whoami`:`whoami`@lo/`whoami`
-export CSV=csv:///%2Frun%2Fshm%2Fcsv
+export CSV=csv:///%2Frun%2Fshm/parallel.csv
 
 export DEBUG=false
 rm -f /run/shm/parallel.db

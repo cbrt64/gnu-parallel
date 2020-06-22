@@ -394,7 +394,7 @@ par_test_diff_roundrobin_k() {
 	doit() {
 	    # Sleep random time ever 10k line
 	    # to mix up which process gets the next block
-	    perl -ne '$t++ % 10000 or select(undef, undef, undef, rand()/1000);print' |
+	    perl -ne '$t++ % 1000 or select(undef, undef, undef, rand()/1000);print' |
 		md5sum
 	}
 	export -f doit

@@ -4,9 +4,6 @@ GNU parallel, which works a little bit like xargs, but has a much more friendly 
 
 https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
-  Who needs spark when GNU Parallel exists
-    -- MatthijsB @MatthijsBrs@twitter
-
   GNU parallel all the way!
     -- David Manouchehri @DaveManouchehri@twitter
 
@@ -60,6 +57,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  Who needs spark when GNU Parallel exists
+    -- MatthijsB @MatthijsBrs@twitter
 
   GNU Parallel: dead simple process-level parallelization of ad hoc
   tasks. Write for a chunk, let gnu manage the splitting, permutations

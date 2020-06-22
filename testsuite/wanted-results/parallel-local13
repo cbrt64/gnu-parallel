@@ -441,9 +441,7 @@ stdout parallel -k -r echo this plus that < space.xi
 echo '###  -t -0 echo this plus that < space.xi'
 ###  -t -0 echo this plus that < space.xi
 stdout xargs -t -0 echo this plus that < space.xi
-echo this plus that 
- 	
- 
+echo this plus that ''$'\n'' '$'\f\r\t\v\n' 
 this plus that 
  	
 

@@ -188,7 +188,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200622 ('SpaceX/Floyd') released <<[stable]>>
+Subject: GNU Parallel 20200622 ('Floyd') released <<[stable]>>
 
 GNU Parallel 20200622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -200,20 +200,29 @@ Quote of the month:
   
 New in this release:
 
-*
-https://www.slideshare.net/hoffmanlab/gnu-parallel-194030490
-https://www.openskysoftware.com/site-credits.htm
-
+* No new functionality
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-https://bioinformaticsworkbook.org/Appendix/GNUparallel/GNU_parallel_examples.html#gsc.tab=0
+* GNU Parallel is used at NERSC: https://www.nersc.gov/assets/Uploads/08-Workflows-20200616.pdf
 
-http://pdebuyl.be/blog/2020/gnu-parallel-for-simulations.html
+* Resumable batch jobs with GNU Parallel https://igor.io/parallel/
 
-https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
+* Lab Meeting technical talk https://www.slideshare.net/hoffmanlab/gnu-parallel-194030490
+
+* Open Sky Software Website Credits https://www.openskysoftware.com/site-credits.htm
+
+* Speed up your Python Scripts using Ubuntu and GNU Parallel https://ecce.esri.ca/wpecce/2019/12/24/speed-up-your-python-scripts-using-ubuntu-and-gnu-parallel/
+
+* Indispensable command-line tools https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
+
+* GNU Parallel for simulations http://pdebuyl.be/blog/2020/gnu-parallel-for-simulations.html
+
+* Introduction to GNU parallel https://bioinformaticsworkbook.org/Appendix/GNUparallel/GNU_parallel_examples.html
+
+* Bug fixes and man page updates.
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

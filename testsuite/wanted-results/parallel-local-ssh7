@@ -736,8 +736,8 @@ par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
-par_mksh_underscore	/bin/mksh: not_copied_alias: not found
-par_mksh_underscore	/bin/mksh: not_copied_func: not found
+par_mksh_underscore	/bin/mksh: not_copied_alias: inaccessible or not found
+par_mksh_underscore	/bin/mksh: not_copied_func: inaccessible or not found
 par_mksh_underscore	error=OK
 par_mksh_underscore	error=OK
 par_mksh_underscore	aliases in and arrays in functions work
@@ -748,9 +748,9 @@ par_mksh_underscore	aliases in functions work
 par_mksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_mksh_underscore	aliases in functions work
 par_mksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_mksh_underscore	/bin/mksh: myfunc: not found
+par_mksh_underscore	/bin/mksh: myfunc: inaccessible or not found
 par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
-par_mksh_underscore	/bin/mksh: myfunc: not found
+par_mksh_underscore	/bin/mksh: myfunc: inaccessible or not found
 par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
 par_mksh_parset	parset
 par_mksh_parset	### parset into array
@@ -886,7 +886,7 @@ par_mksh_environment_too_big	OK_bigfunc_remote
 par_mksh_environment_too_big	OK_bigfunc_quote
 par_mksh_environment_too_big	OK_bigfunc_quote_remote
 par_mksh_environment_too_big	Rest should fail
-par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
 par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -897,7 +897,7 @@ par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
 par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -908,7 +908,7 @@ par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
-par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
 par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -919,7 +919,7 @@ par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_remote
-par_mksh_environment_too_big	mksh: /usr/bin/perl: Argument list too long
+par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
 par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -934,12 +934,12 @@ par_mksh_env_parallel_session	### Test env_parallel --session
 par_mksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	l1var
 par_mksh_env_parallel_session	l1func
 par_mksh_env_parallel_session	l1alias
@@ -951,20 +951,20 @@ par_mksh_env_parallel_session	level1 array OK
 par_mksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level1func: not found
-par_mksh_env_parallel_session	/bin/mksh: level1alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level1func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level1alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level1func: not found
-par_mksh_env_parallel_session	/bin/mksh: level1alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level1func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level1alias: inaccessible or not found
 par_mksh_env_parallel_session	l2var
 par_mksh_env_parallel_session	l2func
 par_mksh_env_parallel_session	l2alias
@@ -976,12 +976,12 @@ par_mksh_env_parallel_session	level2 array OK
 par_mksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: not found
+par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	l1var
 par_mksh_env_parallel_session	l1func
 par_mksh_env_parallel_session	l1alias
@@ -1023,10 +1023,10 @@ par_mksh_env_parallel_session	l2var
 par_mksh_env_parallel_session	l2func
 par_mksh_env_parallel_session	l2alias
 par_mksh_env_parallel_session	level2 array OK
-par_mksh_env_parallel_session	/bin/mksh: aliasbefore: not found
-par_mksh_env_parallel_session	/bin/mksh: aliasbefore: not found
-par_mksh_env_parallel_session	/bin/mksh: funcbefore: not found
-par_mksh_env_parallel_session	/bin/mksh: funcbefore: not found
+par_mksh_env_parallel_session	/bin/mksh: aliasbefore: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: aliasbefore: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: funcbefore: inaccessible or not found
+par_mksh_env_parallel_session	/bin/mksh: funcbefore: inaccessible or not found
 par_mksh_env_parallel_session	no_before
 par_mksh_env_parallel_session	no_before
 par_mksh_env_parallel_session	no_before
@@ -1075,21 +1075,21 @@ par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
-par_ksh_underscore	/usr/bin/ksh: line 4: not_copied_alias: not found
-par_ksh_underscore	/usr/bin/ksh: line 4: not_copied_func: not found
+par_ksh_underscore	/bin/ksh: line 4: not_copied_alias: not found
+par_ksh_underscore	/bin/ksh: line 4: not_copied_func: not found
 par_ksh_underscore	error=OK
 par_ksh_underscore	error=OK
 par_ksh_underscore	aliases in and arrays in functions work
 par_ksh_underscore	aliases in and arrays in functions work
 par_ksh_underscore	aliases in functions work
 par_ksh_underscore	aliases in functions work
-par_ksh_underscore	/usr/bin/ksh: myecho: not found [No such file or directory]
+par_ksh_underscore	/bin/ksh: myecho: not found [No such file or directory]
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	/usr/bin/ksh: myecho: not found [No such file or directory]
+par_ksh_underscore	/bin/ksh: myecho: not found [No such file or directory]
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	/usr/bin/ksh: myfunc: not found
+par_ksh_underscore	/bin/ksh: myfunc: not found
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	/usr/bin/ksh: myfunc: not found
+par_ksh_underscore	/bin/ksh: myfunc: not found
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
 par_ksh_parset	parset
 par_ksh_parset	### parset into array
@@ -1196,9 +1196,9 @@ par_ksh_man	work,
 par_ksh_man	too
 par_ksh_man	This may never work
 par_ksh_man	https://unix.stackexchange.com/questions/457031/extract-full-function-definitions
-par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
-par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
-par_ksh_man	/usr/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
+par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
+par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
+par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
 par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255
@@ -1229,7 +1229,7 @@ par_ksh_environment_too_big	OK_bigfunc_remote
 par_ksh_environment_too_big	OK_bigfunc_quote
 par_ksh_environment_too_big	OK_bigfunc_quote_remote
 par_ksh_environment_too_big	Rest should fail
-par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -1240,7 +1240,7 @@ par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -1251,7 +1251,7 @@ par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
-par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -1262,7 +1262,7 @@ par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_remote
-par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -1272,7 +1272,7 @@ par_ksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean 
 par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[XXX]: perl: /usr/bin/perl: cannot execute [Argument list too long]
+par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
 par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
 par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -1286,12 +1286,12 @@ par_ksh_env_parallel_session	### Test env_parallel --session
 par_ksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	l1var
 par_ksh_env_parallel_session	l1func
 par_ksh_env_parallel_session	l1alias
@@ -1303,20 +1303,20 @@ par_ksh_env_parallel_session	level1 array OK
 par_ksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level1func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level1alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level1alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level1func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level1alias: not found [No such file or directory]
 par_ksh_env_parallel_session	l2var
 par_ksh_env_parallel_session	l2func
 par_ksh_env_parallel_session	l2alias
@@ -1328,12 +1328,12 @@ par_ksh_env_parallel_session	level2 array OK
 par_ksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/usr/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	l1var
 par_ksh_env_parallel_session	l1func
 par_ksh_env_parallel_session	l1alias
@@ -1375,10 +1375,10 @@ par_ksh_env_parallel_session	l2var
 par_ksh_env_parallel_session	l2func
 par_ksh_env_parallel_session	l2alias
 par_ksh_env_parallel_session	level2 array OK
-par_ksh_env_parallel_session	/usr/bin/ksh: line 3: aliasbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 3: aliasbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 3: funcbefore: not found
-par_ksh_env_parallel_session	/usr/bin/ksh: line 3: funcbefore: not found
+par_ksh_env_parallel_session	/bin/ksh: line 3: aliasbefore: not found
+par_ksh_env_parallel_session	/bin/ksh: line 3: aliasbefore: not found
+par_ksh_env_parallel_session	/bin/ksh: line 3: funcbefore: not found
+par_ksh_env_parallel_session	/bin/ksh: line 3: funcbefore: not found
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
@@ -1436,19 +1436,13 @@ par_fish_underscore	aliases and arrays in functions work
 par_fish_underscore	aliases and arrays in functions work
 par_fish_underscore	aliases functions work
 par_fish_underscore	aliases functions work
-par_fish_underscore	myecho $myarray functions $argv
-par_fish_underscore	^
-par_fish_underscore	in function 'myfunc'
-par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list 'work'
-par_fish_underscore	
+par_fish_underscore	      myecho $myarray functions $argv
+par_fish_underscore	      ^
+par_fish_underscore	in function 'myfunc' with arguments 'work'
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
-par_fish_underscore	myecho $myarray functions $argv
-par_fish_underscore	^
-par_fish_underscore	in function 'myfunc'
-par_fish_underscore		called on standard input
-par_fish_underscore		with parameter list 'work'
-par_fish_underscore	
+par_fish_underscore	      myecho $myarray functions $argv
+par_fish_underscore	      ^
+par_fish_underscore	in function 'myfunc' with arguments 'work'
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
 par_fish_underscore	myfunc work
 par_fish_underscore	^
@@ -1517,7 +1511,7 @@ par_fish_funky	  space  6
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
-par_fish_funky	Funky-	 par_fish_funky	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_fish_funky	Funky-	 par_fish_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
 par_fish_funky	Funkyenv-	par_fish_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
 par_fish_funky	
 par_fish_funky	
@@ -1532,28 +1526,28 @@ par_fish_funky	  space  6
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
-par_fish_funky	Funky-	 par_fish_funky	  !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
+par_fish_funky	Funky-	 par_fish_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funky
 par_fish_funky	Funkyenv-	par_fish_funky	 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ-funkyenv
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
 par_fish_funky	
-par_fish_funky	'	 par_fish_funky	  !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
+par_fish_funky	'	 par_fish_funky	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
 par_fish_environment_too_big	Not implemented
 par_fish_env_parallel_session	### Test env_parallel --session
-par_fish_env_parallel_session	fish: Unknown command 'aliasbefore must_fail'
+par_fish_env_parallel_session	fish: Unknown command: aliasbefore
 par_fish_env_parallel_session	fish: 
 par_fish_env_parallel_session	aliasbefore must_fail
 par_fish_env_parallel_session	^
-par_fish_env_parallel_session	fish: Unknown command 'aliasbefore must_fail'
+par_fish_env_parallel_session	fish: Unknown command: aliasbefore
 par_fish_env_parallel_session	fish: 
 par_fish_env_parallel_session	aliasbefore must_fail
 par_fish_env_parallel_session	^
-par_fish_env_parallel_session	fish: Unknown command 'funcbefore must_fail'
+par_fish_env_parallel_session	fish: Unknown command: funcbefore
 par_fish_env_parallel_session	fish: 
 par_fish_env_parallel_session	funcbefore must_fail
 par_fish_env_parallel_session	^
-par_fish_env_parallel_session	fish: Unknown command 'funcbefore must_fail'
+par_fish_env_parallel_session	fish: Unknown command: funcbefore
 par_fish_env_parallel_session	fish: 
 par_fish_env_parallel_session	funcbefore must_fail
 par_fish_env_parallel_session	^
@@ -1570,9 +1564,13 @@ par_fish_env_parallel_session	after varafter_OK
 par_fish_env_parallel_session	array after arrayafter_OK
 par_fish_env_parallel_session	array after arrayafter_OK
 par_fish_env_parallel	bug #50435: Remote fifo broke in 20150522
-par_fish_env_parallel	TODO fix env_parallel --fifo
-par_fish_env_parallel	parallel: Error: Command line too long (XXX >= XXX) at input 0: $PARALLEL_TMP
-par_fish_env_parallel	parallel: Error: Command line too long (XXX >= XXX) at input 0: $PARALLEL_TMP
+par_fish_env_parallel	data from stdin
+par_fish_env_parallel	OK
+par_fish_env_parallel	data from stdin
+par_fish_env_parallel	OK
+par_fish_env_parallel	fish: $? is not the exit status. In fish, please use $status.
+par_fish_env_parallel	cat $PARALLEL_TMP; and echo $OK;perl -e '$bash=shift;$csh=shift;for(@ARGV){unlink;rmdir;}if($bash=~s/h//){exit$bash;}exit$csh;' "$?h" "$status" $PARALLEL_TMP
+par_fish_env_parallel	                                                                                                                                  ^
 par_dash_underscore	### dash
 par_dash_underscore	### Testing of --env _
 par_dash_underscore	variables in aliases work
@@ -2087,7 +2085,7 @@ par_bash_environment_too_big	OK_bigfunc_remote
 par_bash_environment_too_big	OK_bigfunc_quote
 par_bash_environment_too_big	OK_bigfunc_quote_remote
 par_bash_environment_too_big	Rest should fail
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /usr/bin/perl: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -2098,7 +2096,7 @@ par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /usr/bin/perl: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -2109,7 +2107,7 @@ par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /usr/bin/perl: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -2120,7 +2118,7 @@ par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /usr/bin/perl: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
@@ -2130,7 +2128,7 @@ par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean
 par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /usr/bin/perl: Argument list too long
+par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
 par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
 par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
 par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set

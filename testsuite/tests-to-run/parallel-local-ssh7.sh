@@ -291,7 +291,7 @@ par_fish_man() {
     echo exit value $status should be 255 `sleep 1`
 _EOF
   )
-  ssh fish@lo "$myscript"
+  ssh fish@lo "$myscript" | LC_ALL=C sort
 }
 
 par_ksh_man() {
@@ -1513,8 +1513,8 @@ par_fish_env_parallel() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50435: Remote fifo broke in 20150522'
     # Due to $PARALLEL_TMP being transferred
+    env_parallel --session
     set OK OK
-    echo TODO fix env_parallel --fifo
     echo data from stdin | env_parallel --pipe -S lo --fifo 'cat {}; and echo $OK'
     echo data from stdin | env_parallel --pipe -S lo --cat 'cat {}; and echo $OK'
 _EOF
@@ -3319,4 +3319,5 @@ compgen -A function | grep par_ | LC_ALL=C sort -r |
               s/:\d?\d\d:/:XXX:/;
               s/sh\[\d+\]/sh[XXX]/;
 	      s/.*(tange|zenodo).*//i;
+	      s:/usr/bin:/bin:g;
 	      '

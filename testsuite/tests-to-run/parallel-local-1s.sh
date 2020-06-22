@@ -3965,9 +3965,14 @@ par_block_negative_prefix() {
 
 par_sql_colsep() {
     echo '### SQL should add Vn columns for --colsep'
-    parallel -C' ' --sqlandworker sqlite3:///%2ftmp%2ffoo/bar echo /{1}/{2}/{3}/{4}/ \
+    parallel -k -C' ' --sqlandworker sqlite3:///%2ftmp%2ffoo/bar echo /{1}/{2}/{3}/{4}/ \
 	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33'
-    parallel -C' ' -N3 --sqlandworker sqlite3:///%2ftmp%2ffoo/bar echo \
+    parallel -k -C' ' echo /{1}/{2}/{3}/{4}/ \
+	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33'
+    # TODO this is wrong
+    parallel -k -C' ' -N3 --sqlandworker sqlite3:///%2ftmp%2ffoo/bar echo \
+	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33' '4 44' '5 55' '6 66'
+    parallel -k -C' ' -N3 echo \
 	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33' '4 44' '5 55' '6 66'
 }
 
@@ -3983,4 +3988,5 @@ par_sql_CSV() {
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
+    perl -pe 's:/usr/bin:/bin:g;'

@@ -75,10 +75,10 @@ EOF
 par_shebang_wrap_python() {
     F=/tmp/shebang_wrap_python
     cat <<'EOF' > $F
-#!/usr/local/bin/parallel --shebang-wrap -k /usr/bin/python
+#!/usr/local/bin/parallel --shebang-wrap -k /usr/bin/python3
 
 import sys
-print 'Arguments', str(sys.argv)
+print('Arguments', str(sys.argv))
 EOF
     chmod 755 $F
     $F arg1 arg2 arg3

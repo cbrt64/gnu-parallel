@@ -3,13 +3,15 @@
 # SSH only allowed to localhost/lo
 
 par_autossh() {
-    echo '### --ssh	 autossh - add commands that fail here'
+    echo '### --ssh autossh'
     export PARALLEL_SSH=autossh; export AUTOSSH_PORT=0
     parallel -S lo echo ::: OK
     echo OK | parallel --pipe -S lo cat
     parallel -S lo false ::: a || echo OK should fail
+    echo '### --ssh autossh - add commands that fail here'
     touch foo_autossh
     stdout parallel -S csh@lo --trc {}.out touch {}.out ::: foo_autossh
+    ls foo_autossh*
     rm foo_autossh*
 }
 

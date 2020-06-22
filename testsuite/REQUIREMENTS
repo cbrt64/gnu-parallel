@@ -7,19 +7,21 @@ install_packages() {
 
     # The testsuite depends on this:
     test_pkgs="imagemagick expect autossh sshpass jq libpod-simple-perl pod2pdf gawk"
-    test_pkgs="$test_pkgs lua5.3 clisp php-cli nodejs mono-csharp-shell"
+    test_pkgs="$test_pkgs lua5.3 clisp php-cli nodejs mono-csharp-shell libevent-dev"
+    test_pkgs="$test_pkgs tcl libtext-csv-perl"
 
     # DEBIAN package
-    packaging_pkgs="dpkg-dev build-essential debhelper osc cvs"
+    packaging_pkgs="dpkg-dev build-essential debhelper osc cvs automake-1.15 python3-m2crypto"
     # SHEBANG TOOLS
     shebang_pkgs="gnuplot octave ruby r-base-core"
     # SQL TOOLS
     sql_pkgs="libdbd-pg-perl libdbd-sqlite3-perl libdbd-csv-perl libdbd-mysql-perl rlwrap"
     # Compression
-    compression_pkgs="zstd clzip liblz4-tool lzop pigz pixz pxz gzip plzip pbzip2 lzma xz-utils lzip bzip2 lbzip2 lrzip"
+    compression_pkgs="zstd clzip liblz4-tool lzop pigz pixz gzip plzip pbzip2 lzma xz-utils lzip bzip2 lbzip2 lrzip"
+    compression_pkgs_missing="pxz"
     # Shells
     # (csh = bsd-csh that is broken)
-    shell_pkgs="ash dash fdclone fish fizsh ksh mksh posh rc rush sash tcsh yash zsh"
+    shell_pkgs="ash dash fdclone fish fizsh ksh ksh93 mksh posh rc rush sash tcsh yash zsh"
     # Databases
     database_pkgs="postgresql mysql-server sqlite"
     if $INSTALL $test_pkgs $packaging_pkgs $shebang_pkgs $sql_pkgs $compression_pkgs $shell_pkgs $database_pkgs; then
@@ -58,7 +60,7 @@ add_server_to_hosts() {
 }
 
 shellsplus() {
-    shells="bash sh csh ash dash tcsh zsh ksh fish fizsh mksh posh rc sash yash nopathbash nopathcsh"
+    shells="bash sh csh ash dash tcsh zsh ksh ksh2020 ksh93 fish fizsh mksh posh rc sash yash nopathbash nopathcsh"
     shellsplus="parallel $shells"
     parallel -k echo ::: $shellsplus
 }
@@ -101,7 +103,8 @@ create_shell_logins() {
 
     echo '# (Re-)create user'
     # Racecondition: if multiple adds a group it will the same group ID
-    shellsplus | parallel --timeout 15 --retries 5 --tag -j1 del_add_user
+    shellsplus | parallel --timeout 15 --retries 5 --tag -j1 del_add_user ||
+	(echo Creation failed: $?; false)
 }
 
 copy_ssh_keys() {
@@ -117,9 +120,9 @@ copy_ssh_keys() {
 	    ssh $shell@lo "echo ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxg+dh+BL1myqo6A+pHcQCKVV5v7cewdkN8xGtMDqm7xGgh+e5A44W7qKViIx641d6yoWb012XzDz2MKetG4Kosoma8Z/qkS27p6901RmI3ap2JFffzBESlpQtW1FyxQPlMyBfrd4ONy8xW6R/gEkjC3yOcXCQO2494/c46ouXs5gtE84Cusr3RsopR4bI7oloH1GQZ4vsHSFSakq8IwcujaSh1mmribMONLb2TjDpmE7tAY+yfOVWHPQ2J+EU1//Go60EZfSRKOu81oxW7SJ2uGgWfWcs2T1lRtT8Yh+TwVTz8UFV75kVtpZ10x5baN+ncsSpaBK+8sFLfoMvA9yQQ'==' tange@freebsd71.tange.dk >> .ssh/authorized_keys" &&
 	    echo Do env_parallel --install &&
 	    ssh $shell@lo 'mkdir -p .parallel; touch .parallel/will-cite; env_parallel --install' &&
-	    echo OK Created $shell &&
+	    echo OK make_sshkey $shell &&
 	    echo >&2 &&
-	    echo OK Created $shell >&2 &&
+	    echo OK make_sshkey $shell >&2 &&
 	    echo
     }
     export -f make_sshkey
@@ -129,7 +132,7 @@ copy_ssh_keys() {
 
     ssh_a_to_b() {
 	ssh $1@lo ssh $2@lo echo OK ||
-	    echo failed && false
+	    (echo failed && false)
     }
     export -f ssh_a_to_b
     echo "# copy id from X to X"
@@ -145,7 +148,7 @@ copy_ssh_keys() {
     echo '# copy id from any X to any Y'
     parallel -u --bar -j3 --timeout 3 --retries 10 --tag ssh_copy_id {1}@lo {2}@lo ::: $(shellsplus) ::: $(shellsplus)
     echo '# Test the copying went well'
-    parallel          -j2 --timeout 10 --retries 10 --tag ssh_a_to_b ::: $(shellsplus) ::: $(shellsplus)
+    parallel    --bar -j2 --timeout 9 --retries 10 --tag ssh_a_to_b ::: $(shellsplus) ::: $(shellsplus)
 
     echo '# change paths to no path'
     (
@@ -188,7 +191,7 @@ add_freebsd() {
     echo no matching host key type found. Their offer: ssh-dss
     echo
     echo Add to /etc/ssh/sshd_config
-    echo Ciphers aes128-ctr,aes192-ctr,aes256-ctr,arcfour256,arcfour128,aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc
+    echo Ciphers aes128-ctr,aes192-ctr,aes256-ctr,aes256-cbc,aes192-cbc,aes128-cbc,3des-cbc
     echo KexAlgorithms diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,curve25519-sha256@libssh.org,diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1
     echo
     echo If you get:
@@ -227,7 +230,8 @@ misc() {
     sudo locale-gen zh_HK
 }
 
-install_packages &&
+run() {
+    install_packages &&
     setup_databases &&
     add_server_to_hosts &&
     create_shell_logins &&
@@ -236,3 +240,4 @@ install_packages &&
     add_freebsd &&
     tmux_versions &&
     misc
+}
