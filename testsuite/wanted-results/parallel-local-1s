@@ -252,7 +252,7 @@ par_profiles_with_space	echo '/bin/bash=/bin/bash'
 par_profiles_with_space	/bin/bash=/bin/bash
 par_profiles_with_space	With script in $PARALLEL /bin/bash=~/privat/parallel/testsuite
 par_pxz_complains	bug #44250: pxz complains File format not recognized but decompresses anyway
-par_pxz_complains	pxz: execution of xz binary failed: No such file or directory
+par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_pxz_complains	can not seek in input: Illegal seek
 par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_replacement_rename	### Test --basenamereplace

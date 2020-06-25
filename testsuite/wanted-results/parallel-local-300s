@@ -174,11 +174,16 @@ par_retries_unreachable	2
 par_test_build_and_install	make[0]: Entering directory '~/privat/parallel'
 par_test_build_and_install	make  dist-gzip am__post_remove_distdir='@:'
 par_test_build_and_install	make[0]: Entering directory '~/privat/parallel'
+par_test_build_and_install	make  distdir-am
+par_test_build_and_install	make[0]: Entering directory '~/privat/parallel'
 par_test_build_and_install	if test -d "parallel-00000000"; then find "parallel-00000000" -type d ! -perm -200 -exec chmod u+w {} ';' && rm -rf "parallel-00000000" || { sleep 5 && rm -rf "parallel-00000000"; }; else :; fi
 par_test_build_and_install	test -d "parallel-00000000" || mkdir "parallel-00000000"
 par_test_build_and_install	 (cd src && make  top_distdir=../parallel-00000000 distdir=../parallel-00000000/src \
 par_test_build_and_install	     am__remove_distdir=: am__skip_length_check=: am__skip_mode_fix=: distdir)
 par_test_build_and_install	make[0]: Entering directory '~/privat/parallel/src'
+par_test_build_and_install	make  distdir-am
+par_test_build_and_install	make[0]: Entering directory '~/privat/parallel/src'
+par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel/src'
 par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel/src'
 par_test_build_and_install	test -n "" \
 par_test_build_and_install	|| find "parallel-00000000" -type d ! -perm -755 \
@@ -187,6 +192,7 @@ par_test_build_and_install	  ! -type d ! -perm -444 -links 1 -exec chmod a+r {} 
 par_test_build_and_install	  ! -type d ! -perm -400 -exec chmod a+r {} \; -o \
 par_test_build_and_install	  ! -type d ! -perm -444 -exec /bin/bash ~/privat/parallel/install-sh -c -m a+r {} {} \; \
 par_test_build_and_install	|| chmod -R a+r "parallel-00000000"
+par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel'
 par_test_build_and_install	tardir=parallel-00000000 && ${TAR-tar} chof - "$tardir" | eval GZIP= gzip --best -c >parallel-00000000.tar.gz
 par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel'
 par_test_build_and_install	if test -d "parallel-00000000"; then find "parallel-00000000" -type d ! -perm -200 -exec chmod u+w {} ';' && rm -rf "parallel-00000000" || { sleep 5 && rm -rf "parallel-00000000"; }; else :; fi

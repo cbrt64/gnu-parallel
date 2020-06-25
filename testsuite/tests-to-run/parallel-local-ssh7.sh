@@ -1517,6 +1517,12 @@ par_fish_env_parallel() {
     set OK OK
     echo data from stdin | env_parallel --pipe -S lo --fifo 'cat {}; and echo $OK'
     echo data from stdin | env_parallel --pipe -S lo --cat 'cat {}; and echo $OK'
+    echo OK: 0==$status
+    echo '### Test failing command with --cat'
+    echo data from stdin | env_parallel --pipe -S lo --cat 'cat {}; false'
+    echo OK: 1==$status
+    echo data from stdin | parallel --pipe -S lo --cat 'cat {}; false'
+    echo OK: 1==$status
 _EOF
   )
   ssh fish@lo "$myscript"

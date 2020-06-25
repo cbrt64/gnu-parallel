@@ -113,6 +113,20 @@ par_timeout() {
 	perl -ne '10 < $_ and $_ < 100 and print "OK\n"'
 }
 
+par_bug57364() {
+    echo '### bug #57364: Race condition creating len cache file.'
+    j=32
+    set -e
+    for i in $(seq 1 50); do
+        # Clear cache (simple 'rm -rf' causes race condition)
+        mv "${HOME}/.parallel/tmp" "${HOME}/.parallel/tmp-$$" &&
+            rm -rf "${HOME}/.parallel/tmp-$$"
+        # Try to launch multiple parallel simultaneously.
+        seq $j |
+            xargs -P $j -n 1 parallel true $i :::
+    done 2>&1
+}
+
 #par_crashing() {
 #    echo '### bug #56322: sem crashed when running with input from seq'
 #    echo "### This should not fail"

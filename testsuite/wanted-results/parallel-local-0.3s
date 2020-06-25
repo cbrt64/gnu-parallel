@@ -106,7 +106,6 @@ par_disk_full	parallel: Error: Output is incomplete.
 par_disk_full	parallel: Error: Cannot append to buffer file in /mnt/ram.
 par_disk_full	parallel: Error: Is the disk full?
 par_disk_full	parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
-par_disk_full	Warning: unable to close filehandle properly: No space left on device during global destruction.
 par_dryrun_append_joblog	--dry-run should not append to joblog
 par_dryrun_append_joblog	1
 par_dryrun_append_joblog	2

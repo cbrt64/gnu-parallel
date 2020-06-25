@@ -1452,55 +1452,55 @@ par_fish_underscore	^
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myfunc
 par_fish_parset	Not implemented
 par_fish_man	### fish
+par_fish_man	Unknown option: no-such-option
+par_fish_man	    variables with  = & " ! ' work
+par_fish_man	    variables with  = & " ! ' work
+par_fish_man	    variables with  = & " ! ' work
+par_fish_man	    variables with  = & " ! ' work
+par_fish_man	    variables with  = & " ! ' work
 par_fish_man	### From man env_parallel
 par_fish_man	aliases with = & " ! ' work
 par_fish_man	aliases with = & " ! ' work
 par_fish_man	aliases with = & " ! ' work
 par_fish_man	aliases with = & " ! ' work
 par_fish_man	aliases with = & " ! ' work
-par_fish_man	functions with  = & " ! ' work
-par_fish_man	functions with  = & " ! ' work
-par_fish_man	functions with  = & " ! ' work
-par_fish_man	functions with  = & " ! ' work
-par_fish_man	functions with  = & " ! ' work
-par_fish_man	variables with  = & " ! ' work
-par_fish_man	variables with  = & " ! ' work
-par_fish_man	variables with  = & " ! ' work
-par_fish_man	variables with  = & " ! ' work
-par_fish_man	variables with  = & " ! ' work
-par_fish_man	multiline
-par_fish_man	    variables with  = & " ! ' work
-par_fish_man	multiline
-par_fish_man	    variables with  = & " ! ' work
-par_fish_man	multiline
-par_fish_man	    variables with  = & " ! ' work
-par_fish_man	multiline
-par_fish_man	    variables with  = & " ! ' work
-par_fish_man	multiline
-par_fish_man	    variables with  = & " ! ' work
+par_fish_man	arrays
+par_fish_man	arrays
+par_fish_man	arrays
+par_fish_man	arrays
 par_fish_man	arrays with  = & " ! ' work, too
-par_fish_man	arrays
-par_fish_man	with  = & " ! '
-par_fish_man	work,
-par_fish_man	too
-par_fish_man	arrays
-par_fish_man	with  = & " ! '
-par_fish_man	work,
-par_fish_man	too
-par_fish_man	arrays
-par_fish_man	with  = & " ! '
-par_fish_man	work,
-par_fish_man	too
-par_fish_man	arrays
-par_fish_man	with  = & " ! '
-par_fish_man	work,
-par_fish_man	too
-par_fish_man	multi
-par_fish_man	level
 par_fish_man	env_parallel
 par_fish_man	exit value 2 should be 2
-par_fish_man	Unknown option: no-such-option
 par_fish_man	exit value 255 should be 255 `sleep 1`
+par_fish_man	functions with  = & " ! ' work
+par_fish_man	functions with  = & " ! ' work
+par_fish_man	functions with  = & " ! ' work
+par_fish_man	functions with  = & " ! ' work
+par_fish_man	functions with  = & " ! ' work
+par_fish_man	level
+par_fish_man	multi
+par_fish_man	multiline
+par_fish_man	multiline
+par_fish_man	multiline
+par_fish_man	multiline
+par_fish_man	multiline
+par_fish_man	too
+par_fish_man	too
+par_fish_man	too
+par_fish_man	too
+par_fish_man	variables with  = & " ! ' work
+par_fish_man	variables with  = & " ! ' work
+par_fish_man	variables with  = & " ! ' work
+par_fish_man	variables with  = & " ! ' work
+par_fish_man	variables with  = & " ! ' work
+par_fish_man	with  = & " ! '
+par_fish_man	with  = & " ! '
+par_fish_man	with  = & " ! '
+par_fish_man	with  = & " ! '
+par_fish_man	work,
+par_fish_man	work,
+par_fish_man	work,
+par_fish_man	work,
 par_fish_funky	env_parallel: Warning: ASCII value 1 in variables is not supported
 par_fish_funky	3 arg alias_works
 par_fish_funky	env_parallel: Warning: ASCII value 1 in variables is not supported
@@ -1568,9 +1568,12 @@ par_fish_env_parallel	data from stdin
 par_fish_env_parallel	OK
 par_fish_env_parallel	data from stdin
 par_fish_env_parallel	OK
-par_fish_env_parallel	fish: $? is not the exit status. In fish, please use $status.
-par_fish_env_parallel	cat $PARALLEL_TMP; and echo $OK;perl -e '$bash=shift;$csh=shift;for(@ARGV){unlink;rmdir;}if($bash=~s/h//){exit$bash;}exit$csh;' "$?h" "$status" $PARALLEL_TMP
-par_fish_env_parallel	                                                                                                                                  ^
+par_fish_env_parallel	OK: 0==0
+par_fish_env_parallel	### Test failing command with --cat
+par_fish_env_parallel	data from stdin
+par_fish_env_parallel	OK: 1==1
+par_fish_env_parallel	data from stdin
+par_fish_env_parallel	OK: 1==1
 par_dash_underscore	### dash
 par_dash_underscore	### Testing of --env _
 par_dash_underscore	variables in aliases work

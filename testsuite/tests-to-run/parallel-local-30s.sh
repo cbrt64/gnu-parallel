@@ -10,13 +10,15 @@ par_exit_code() {
 	# Runs command in given shell via Perl's open3
 	shell="$1"
 	prg="$2"
-	perl -MIPC::Open3 -e 'open3($a,$b,$c,"'$shell'","-c",'"$prg"'); wait; print $?>>8,"\n"'
+	perl -MIPC::Open3 -e 'open3($a,$b,$c,"'$shell'","-c","'"$prg"'"); wait; print $?>>8,"\n"'
     }
     export -f in_shell_run_command
 
     runit() {
-	OK="ash bash csh dash fish mksh posh rc sash sh static-sh tcsh"
-	BAD="fdsh fizsh ksh ksh93 yash zsh"
+	# These give the same exit code prepended with 'true;' or not
+	OK="ash csh dash fish fizsh ksh2020 posh rc sash sh tcsh"
+	# These do not give the same exit code prepended with 'true;' or not
+	BAD="bash fdsh ksh93 mksh static-sh yash zsh"
 	s=100
 	rm -f /tmp/mysleep
 	cp /bin/sleep /tmp/mysleep
@@ -24,18 +26,18 @@ par_exit_code() {
 	echo '# Ideally the command should return the same'
 	echo '#   with or without parallel'
 	echo '# but fish 2.4.0 returns 1 while X.X.X returns 0'
-	parallel -kj500% --argsep ,, --tag in_shell_run_command {1} '{=2 $_=Q($_) =}' \
+	parallel -kj500% --argsep ,, --tag in_shell_run_command {1} {2} \
 		 ,, $OK $BAD ,, \
-	'/tmp/mysleep '$s \
-	'parallel --halt-on-error now,fail=1 /tmp/mysleep ::: '$s \
-	'parallel --halt-on-error now,done=1 /tmp/mysleep ::: '$s \
-	'parallel --halt-on-error now,done=1 /bin/true ::: '$s \
-	'parallel --halt-on-error now,done=1 exit ::: '$s \
-	'true;/tmp/mysleep '$s \
-	'parallel --halt-on-error now,fail=1 "true;/tmp/mysleep" ::: '$s \
-	'parallel --halt-on-error now,done=1 "true;/tmp/mysleep" ::: '$s \
-	'parallel --halt-on-error now,done=1 "true;/bin/true" ::: '$s \
-	'parallel --halt-on-error now,done=1 "true;exit" ::: '$s
+	"/tmp/mysleep "$s \
+	"parallel --halt-on-error now,fail=1 /tmp/mysleep ::: "$s \
+	"parallel --halt-on-error now,done=1 /tmp/mysleep ::: "$s \
+	"parallel --halt-on-error now,done=1 /bin/true ::: "$s \
+	"parallel --halt-on-error now,done=1 exit ::: "$s \
+	"true;/tmp/mysleep "$s \
+	"parallel --halt-on-error now,fail=1 'true;/tmp/mysleep' ::: "$s \
+	"parallel --halt-on-error now,done=1 'true;/tmp/mysleep' ::: "$s \
+	"parallel --halt-on-error now,done=1 'true;/bin/true' ::: "$s \
+	"parallel --halt-on-error now,done=1 'true;exit' ::: "$s
     }
     export -f runit
 
@@ -183,20 +185,6 @@ par_groupby_pipepart() {
 	     ::: tsv ssv cssv csv \
 	     :::+ '\t' '\s+' '[\s,]+' ',' \
 	     ::: '3 $_%=2' 3 c1 'c1 $_%=2' 's/^(\d+[\t ,]+){2}(\d+).*/$2/'
-}
-
-par_bug57364() {
-    echo '### bug #57364: Race condition creating len cache file.'
-    j=32
-    set -e
-    for i in $(seq 1 50); do
-        # Clear cache (simple 'rm -rf' causes race condition)
-        mv "${HOME}/.parallel/tmp" "${HOME}/.parallel/tmp-$$" &&
-            rm -rf "${HOME}/.parallel/tmp-$$"
-        # Try to launch multiple parallel simultaneously.
-        seq $j |
-            xargs -P $j -n 1 parallel true $i :::
-    done 2>&1
 }
 
 par_sighup() {

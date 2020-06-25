@@ -4,6 +4,77 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_bin() {
+    echo '### Test --bin'
+    seq 10 | parallel --pipe --bin 1 -j4 wc | sort
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin 2 -j4 wc | sort
+    echo '### Test --bin with expression that gives 1..n'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_=$_%2+1' -j4 wc | sort
+    echo '### Test --bin with expression that gives 0..n-1'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_%=2' -j4 wc | sort
+    # Fails - blocks!
+    # paste <(seq 10000000) <(seq 10000000 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
+}
+
+par_nice() {
+    echo 'Check that --nice works'
+    # parallel-20160422 OK
+    check_for_2_bzip2s() {
+	perl -e '
+	for(1..5) {
+	       # Try 5 times if the machine is slow starting bzip2
+	       sleep(1);
+	       @out = qx{ps -eo "%c %n" | grep 18 | grep bzip2};
+	       if($#out == 1) {
+		     # Should find 2 lines
+		     print @out;
+		     exit 0;
+	       }
+           }
+	   print "failed\n@out";
+	   '
+    }
+    # wait for load < 8
+    parallel --load 8 echo ::: load_10
+    parallel -j0 --timeout 10 --nice 18 bzip2 '<' ::: /dev/zero /dev/zero &
+    pid=$!
+    check_for_2_bzip2s
+    parallel --retries 10 '! kill -TERM' ::: $pid 2>/dev/null
+}
+
+par_test_diff_roundrobin_k() {
+    echo '### test there is difference on -k'
+    . $(which env_parallel.bash)
+    mytest() {
+	K=$1
+	doit() {
+	    # Sleep random time ever 1k line
+	    # to mix up which process gets the next block
+	    perl -ne '$t++ % 1000 or select(undef, undef, undef, rand()/10);print' |
+		md5sum
+	}
+	export -f doit
+	seq 1000000 |
+	    parallel --block 65K --pipe $K --roundrobin doit |
+	    sort
+    }
+    export -f mytest
+    parset a,b,c mytest ::: -k -k ''
+    # a == b and a != c or error
+    if [ "$a" == "$b" ]; then
+	if [ "$a" != "$c" ]; then
+	    echo OK
+	else
+	    echo error a c
+	fi
+    else
+	echo error a b
+    fi
+}
+
 par_colsep() {
     echo '### Test of --colsep'
     echo 'a%c%b' | parallel --colsep % echo {1} {3} {2}
@@ -509,7 +580,8 @@ par_tmp_full() {
 
 par_jobs_file() {
     echo '### Test of -j filename - non-existent file'
-    stdout parallel -j no_such_file echo ::: 1
+    stdout parallel -j no_such_file echo ::: 1 |
+	perl -ne '/Tange, O.|Zenodo./ or print'
 
     echo '### Test of -j filename'
     echo 3 >/tmp/jobs_to_run1

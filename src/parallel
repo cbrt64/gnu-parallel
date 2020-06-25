@@ -2157,7 +2157,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200622;
+    $Global::version = 20200623;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4860,6 +4860,9 @@ sub wait_and_exit($) {
     if($Global::unkilled_sqlworker) {
 	waitpid($Global::unkilled_sqlworker,0);
     }
+    # Avoid: Warning: unable to close filehandle properly: No space
+    #        left on device during global destruction.
+    $SIG{__WARN__} = sub {};
     exit($error);
 }
 
@@ -8590,12 +8593,13 @@ sub total_failed($) {
 			unlink;
 			rmdir;
 		    }
-		    if($bash=~s/h//) {
+		    if($bash=~s/(\d+)h/$1/) {
 			exit $bash;
 		    }
 		    exit $csh;
 			    }).
-			"' ".'"$?h" "$status" ';
+		# `echo \$?h` is needed to make fish not complain
+		"' ".'"`echo \\\\\\\\\$?h`" "$status" ';
 	}
 	return $script
     }
@@ -12615,7 +12619,7 @@ sub create_table($) {
     my %vartype = (
 	"Oracle" => { "BIGINT" => "NUMBER(19,0)",
 		      "TEXT" => "CLOB", },
-	"mysql" => { "TEXT" => "LONGTEXT", },
+	"mysql" => { "TEXT" => "BLOB", },
 	"CSV" => { "BIGINT" => "INT",
 		   "FLOAT" => "REAL", },
 	);

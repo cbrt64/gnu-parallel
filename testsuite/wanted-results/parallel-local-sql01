@@ -262,6 +262,13 @@ par_append $SQLITE	hostname|sleep .3;echo 15 D|15|D|15 D
 par_append $SQLITE	|
 par_append $SQLITE	hostname|sleep .3;echo 15 E|15|E|15 E
 par_append $SQLITE	|
+par_append $CSV	p_wrapper par_append '$CSV'
+par_append $CSV	Exit=0
+par_append $CSV	Exit=0
+par_append $CSV	Error:
+par_append $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_append $CSV	
+par_append $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_empty $MYSQL	p_wrapper par_empty '$MYSQL'
 par_empty $MYSQL	Exit=0
 par_empty $MYSQL	Exit=0
@@ -276,6 +283,13 @@ par_empty $SQLITE	p_wrapper par_empty '$SQLITE'
 par_empty $SQLITE	Exit=0
 par_empty $SQLITE	Exit=0
 par_empty $SQLITE	Error: near line 1: no such table: TBL99999
+par_empty $CSV	p_wrapper par_empty '$CSV'
+par_empty $CSV	Exit=0
+par_empty $CSV	Exit=0
+par_empty $CSV	Error:
+par_empty $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_empty $CSV	
+par_empty $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_shuf $MYSQL	p_wrapper par_shuf '$MYSQL'
 par_shuf $MYSQL	1 a
 par_shuf $MYSQL	1 b
@@ -443,6 +457,38 @@ par_shuf $SQLITE	hostname|sleep .3;echo 5 b|5|b|/tmp/parallel-bug49791-932/1/5/2
 par_shuf $SQLITE	hostname|sleep .3;echo 5 c|5|c|/tmp/parallel-bug49791-932/1/5/2/c/stdout|/tmp/parallel-bug49791-932/1/5/2/c/stderr
 par_shuf $SQLITE	hostname|sleep .3;echo 5 d|5|d|/tmp/parallel-bug49791-932/1/5/2/d/stdout|/tmp/parallel-bug49791-932/1/5/2/d/stderr
 par_shuf $SQLITE	hostname|sleep .3;echo 5 e|5|e|/tmp/parallel-bug49791-932/1/5/2/e/stdout|/tmp/parallel-bug49791-932/1/5/2/e/stderr
+par_shuf $CSV	p_wrapper par_shuf '$CSV'
+par_shuf $CSV	1 a
+par_shuf $CSV	1 b
+par_shuf $CSV	1 c
+par_shuf $CSV	1 d
+par_shuf $CSV	1 e
+par_shuf $CSV	2 a
+par_shuf $CSV	2 b
+par_shuf $CSV	2 c
+par_shuf $CSV	2 d
+par_shuf $CSV	2 e
+par_shuf $CSV	3 a
+par_shuf $CSV	3 b
+par_shuf $CSV	3 c
+par_shuf $CSV	3 d
+par_shuf $CSV	3 e
+par_shuf $CSV	4 a
+par_shuf $CSV	4 b
+par_shuf $CSV	4 c
+par_shuf $CSV	4 d
+par_shuf $CSV	4 e
+par_shuf $CSV	5 a
+par_shuf $CSV	5 b
+par_shuf $CSV	5 c
+par_shuf $CSV	5 d
+par_shuf $CSV	5 e
+par_shuf $CSV	Exit=0
+par_shuf $CSV	Exit=0
+par_shuf $CSV	Error:
+par_shuf $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_shuf $CSV	
+par_shuf $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker $MYSQL	p_wrapper par_sqlandworker '$MYSQL'
 par_sqlandworker $MYSQL	Exit=0
 par_sqlandworker $MYSQL	Exit=0
@@ -582,6 +628,13 @@ par_sqlandworker $SQLITE	hostname|sleep .3;echo 5 d|5|d|5 d
 par_sqlandworker $SQLITE	|
 par_sqlandworker $SQLITE	hostname|sleep .3;echo 5 e|5|e|5 e
 par_sqlandworker $SQLITE	|
+par_sqlandworker $CSV	p_wrapper par_sqlandworker '$CSV'
+par_sqlandworker $CSV	Exit=0
+par_sqlandworker $CSV	Exit=0
+par_sqlandworker $CSV	Error:
+par_sqlandworker $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker $CSV	
+par_sqlandworker $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_compress_linebuffer_tag $MYSQL	p_wrapper par_sqlandworker_compress_linebuffer_tag '$MYSQL'
 par_sqlandworker_compress_linebuffer_tag $MYSQL	Exit=0
 par_sqlandworker_compress_linebuffer_tag $MYSQL	Exit=0
@@ -721,6 +774,13 @@ par_sqlandworker_compress_linebuffer_tag $SQLITE	hostname|sleep .3;echo 5 d|5|d|
 par_sqlandworker_compress_linebuffer_tag $SQLITE	|
 par_sqlandworker_compress_linebuffer_tag $SQLITE	hostname|sleep .3;echo 5 e|5|e|5 e	5 e
 par_sqlandworker_compress_linebuffer_tag $SQLITE	|
+par_sqlandworker_compress_linebuffer_tag $CSV	p_wrapper par_sqlandworker_compress_linebuffer_tag '$CSV'
+par_sqlandworker_compress_linebuffer_tag $CSV	Exit=0
+par_sqlandworker_compress_linebuffer_tag $CSV	Exit=0
+par_sqlandworker_compress_linebuffer_tag $CSV	Error:
+par_sqlandworker_compress_linebuffer_tag $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_compress_linebuffer_tag $CSV	
+par_sqlandworker_compress_linebuffer_tag $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_linebuffer $MYSQL	p_wrapper par_sqlandworker_linebuffer '$MYSQL'
 par_sqlandworker_linebuffer $MYSQL	Exit=0
 par_sqlandworker_linebuffer $MYSQL	Exit=0
@@ -860,6 +920,13 @@ par_sqlandworker_linebuffer $SQLITE	hostname|sleep .3;echo 5 d|5|d|5 d
 par_sqlandworker_linebuffer $SQLITE	|
 par_sqlandworker_linebuffer $SQLITE	hostname|sleep .3;echo 5 e|5|e|5 e
 par_sqlandworker_linebuffer $SQLITE	|
+par_sqlandworker_linebuffer $CSV	p_wrapper par_sqlandworker_linebuffer '$CSV'
+par_sqlandworker_linebuffer $CSV	Exit=0
+par_sqlandworker_linebuffer $CSV	Exit=0
+par_sqlandworker_linebuffer $CSV	Error:
+par_sqlandworker_linebuffer $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_linebuffer $CSV	
+par_sqlandworker_linebuffer $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_linebuffer_tag $MYSQL	p_wrapper par_sqlandworker_linebuffer_tag '$MYSQL'
 par_sqlandworker_linebuffer_tag $MYSQL	Exit=0
 par_sqlandworker_linebuffer_tag $MYSQL	Exit=0
@@ -999,6 +1066,13 @@ par_sqlandworker_linebuffer_tag $SQLITE	hostname|sleep .3;echo 5 d|5|d|5 d	5 d
 par_sqlandworker_linebuffer_tag $SQLITE	|
 par_sqlandworker_linebuffer_tag $SQLITE	hostname|sleep .3;echo 5 e|5|e|5 e	5 e
 par_sqlandworker_linebuffer_tag $SQLITE	|
+par_sqlandworker_linebuffer_tag $CSV	p_wrapper par_sqlandworker_linebuffer_tag '$CSV'
+par_sqlandworker_linebuffer_tag $CSV	Exit=0
+par_sqlandworker_linebuffer_tag $CSV	Exit=0
+par_sqlandworker_linebuffer_tag $CSV	Error:
+par_sqlandworker_linebuffer_tag $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_linebuffer_tag $CSV	
+par_sqlandworker_linebuffer_tag $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_lo $MYSQL	p_wrapper par_sqlandworker_lo '$MYSQL'
 par_sqlandworker_lo $MYSQL	Exit=0
 par_sqlandworker_lo $MYSQL	Exit=0
@@ -1138,6 +1212,13 @@ par_sqlandworker_lo $SQLITE	lo|sleep .3;echo 5 d|5|d|5 d
 par_sqlandworker_lo $SQLITE	|
 par_sqlandworker_lo $SQLITE	lo|sleep .3;echo 5 e|5|e|5 e
 par_sqlandworker_lo $SQLITE	|
+par_sqlandworker_lo $CSV	p_wrapper par_sqlandworker_lo '$CSV'
+par_sqlandworker_lo $CSV	Exit=0
+par_sqlandworker_lo $CSV	Exit=0
+par_sqlandworker_lo $CSV	Error:
+par_sqlandworker_lo $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_lo $CSV	
+par_sqlandworker_lo $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_results $MYSQL	p_wrapper par_sqlandworker_results '$MYSQL'
 par_sqlandworker_results $MYSQL	Exit=0
 par_sqlandworker_results $MYSQL	Exit=0
@@ -1227,6 +1308,13 @@ par_sqlandworker_results $SQLITE	hostname|sleep .3;echo 5 b|5|b|/tmp/out--sql/1/
 par_sqlandworker_results $SQLITE	hostname|sleep .3;echo 5 c|5|c|/tmp/out--sql/1/5/2/c/stdout|/tmp/out--sql/1/5/2/c/stderr
 par_sqlandworker_results $SQLITE	hostname|sleep .3;echo 5 d|5|d|/tmp/out--sql/1/5/2/d/stdout|/tmp/out--sql/1/5/2/d/stderr
 par_sqlandworker_results $SQLITE	hostname|sleep .3;echo 5 e|5|e|/tmp/out--sql/1/5/2/e/stdout|/tmp/out--sql/1/5/2/e/stderr
+par_sqlandworker_results $CSV	p_wrapper par_sqlandworker_results '$CSV'
+par_sqlandworker_results $CSV	Exit=0
+par_sqlandworker_results $CSV	Exit=0
+par_sqlandworker_results $CSV	Error:
+par_sqlandworker_results $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_results $CSV	
+par_sqlandworker_results $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_tag $MYSQL	p_wrapper par_sqlandworker_tag '$MYSQL'
 par_sqlandworker_tag $MYSQL	Exit=0
 par_sqlandworker_tag $MYSQL	Exit=0
@@ -1366,6 +1454,13 @@ par_sqlandworker_tag $SQLITE	hostname|sleep .3;echo 5 d|5|d|5 d	5 d
 par_sqlandworker_tag $SQLITE	|
 par_sqlandworker_tag $SQLITE	hostname|sleep .3;echo 5 e|5|e|5 e	5 e
 par_sqlandworker_tag $SQLITE	|
+par_sqlandworker_tag $CSV	p_wrapper par_sqlandworker_tag '$CSV'
+par_sqlandworker_tag $CSV	Exit=0
+par_sqlandworker_tag $CSV	Exit=0
+par_sqlandworker_tag $CSV	Error:
+par_sqlandworker_tag $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_tag $CSV	
+par_sqlandworker_tag $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_total_jobs $MYSQL	p_wrapper par_sqlandworker_total_jobs '$MYSQL'
 par_sqlandworker_total_jobs $MYSQL	Exit=0
 par_sqlandworker_total_jobs $MYSQL	Exit=0
@@ -1555,6 +1650,13 @@ par_sqlandworker_total_jobs $SQLITE	|
 par_sqlandworker_total_jobs $SQLITE	hostname|echo 25 of 25; sleep .3;echo|5|e|25 of 25
 par_sqlandworker_total_jobs $SQLITE	
 par_sqlandworker_total_jobs $SQLITE	|
+par_sqlandworker_total_jobs $CSV	p_wrapper par_sqlandworker_total_jobs '$CSV'
+par_sqlandworker_total_jobs $CSV	Exit=0
+par_sqlandworker_total_jobs $CSV	Exit=0
+par_sqlandworker_total_jobs $CSV	Error:
+par_sqlandworker_total_jobs $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_total_jobs $CSV	
+par_sqlandworker_total_jobs $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_sqlandworker_unbuffer $MYSQL	p_wrapper par_sqlandworker_unbuffer '$MYSQL'
 par_sqlandworker_unbuffer $MYSQL	Exit=0
 par_sqlandworker_unbuffer $MYSQL	Exit=0
@@ -1644,3 +1746,10 @@ par_sqlandworker_unbuffer $SQLITE	hostname|sleep .3;echo 5 b|5|b||
 par_sqlandworker_unbuffer $SQLITE	hostname|sleep .3;echo 5 c|5|c||
 par_sqlandworker_unbuffer $SQLITE	hostname|sleep .3;echo 5 d|5|d||
 par_sqlandworker_unbuffer $SQLITE	hostname|sleep .3;echo 5 e|5|e||
+par_sqlandworker_unbuffer $CSV	p_wrapper par_sqlandworker_unbuffer '$CSV'
+par_sqlandworker_unbuffer $CSV	Exit=0
+par_sqlandworker_unbuffer $CSV	Exit=0
+par_sqlandworker_unbuffer $CSV	Error:
+par_sqlandworker_unbuffer $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
+par_sqlandworker_unbuffer $CSV	
+par_sqlandworker_unbuffer $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]

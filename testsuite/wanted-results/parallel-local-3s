@@ -198,10 +198,6 @@ par_multiline_commands	echo finish 4
 par_multiline_commands	parallel: Warning: Command lines contain newline. Forcing --null.
 par_multiline_commands	4
 par_multiline_commands	finish 4
-par_nice	Check that --nice works
-par_nice	load_10
-par_nice	bzip2            18
-par_nice	bzip2            18
 par_pipepart_block	### --pipepart --block -# (# < 0)
 par_pipepart_block	1
 par_pipepart_block	2
@@ -426,8 +422,6 @@ par_test_X_with_multiple_source	b-b f-f
 par_test_X_with_multiple_source	c-c d-d
 par_test_X_with_multiple_source	c-c e-e
 par_test_X_with_multiple_source	c-c f-f
-par_test_diff_roundrobin_k	### test there is difference on -k
-par_test_diff_roundrobin_k	OK
 par_totaljob_repl	{##} bug #45841: Replacement string for total no of jobs
 par_totaljob_repl	10
 par_totaljob_repl	10

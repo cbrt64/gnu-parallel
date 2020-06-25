@@ -1,3 +1,4 @@
+par_bug57364	### bug #57364: Race condition creating len cache file.
 par_linebuffer_files	bug #48658: --linebuffer --files
 par_linebuffer_files	zstd	normal
 par_linebuffer_files	zstd	100000
