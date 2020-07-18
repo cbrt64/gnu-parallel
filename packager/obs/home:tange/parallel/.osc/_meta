@@ -47,7 +47,11 @@ GNU niceload slows down a program when the computer load average (or other syste
     <disable arch="ppc" repository="SLE_11"/>
     <disable arch="ppc" repository="SLE_11_SP1"/>
     <disable arch="ppc" repository="openSUSE_Factory"/>
+    <disable repository="Arch_Core"/>
   </build>
+  <publish>
+    <disable repository="Arch_Core"/>
+  </publish>
   <debuginfo>
     <disable/>
   </debuginfo>
