@@ -35,8 +35,8 @@ gpl v3
 
 [Save]
 
-DOINO=3841377
-TAG=Kraftwerk
+DOINO=3956817
+TAG='PrivacyShield'
 
 # Update version
 . packager/releasescripts/updateversion
@@ -189,7 +189,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200622 ('Floyd') released <<[stable]>>
+Subject: GNU Parallel 20200722 ('Privacy Shield') released <<[stable]>>
 
 GNU Parallel 20200622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -207,23 +207,22 @@ New in this release:
 
 News about GNU Parallel:
 
-* GNU Parallel is used at NERSC: https://www.nersc.gov/assets/Uploads/08-Workflows-20200616.pdf
+* Tips for Running Jobs on your VM https://support.ehelp.edu.au/support/solutions/articles/6000089713-tips-for-running-jobs-on-your-vm#parallel
 
-* Resumable batch jobs with GNU Parallel https://igor.io/parallel/
+* Introduction to GNU Parallel: Parallelizing Massive Individual Tasks https://www.youtube.com/watch?v=QSFLTEyCKvo
 
-* Lab Meeting technical talk https://www.slideshare.net/hoffmanlab/gnu-parallel-194030490
+* Slides for same http://www.hpc.lsu.edu/training/weekly-materials/2020-Spring/GNUParallel_Spring_2020.pdf
 
-* Open Sky Software Website Credits https://www.openskysoftware.com/site-credits.htm
+* Linux-Fu: Parallel Universe https://hackaday.com/2020/06/29/linux-fu-parallel-universe/
 
-* Speed up your Python Scripts using Ubuntu and GNU Parallel https://ecce.esri.ca/wpecce/2019/12/24/speed-up-your-python-scripts-using-ubuntu-and-gnu-parallel/
+* Resumable batch jobs with gnu parallel https://igor.io/parallel/
 
-* Indispensable command-line tools https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
+* Introducing Parallel into Shell https://www.petelawson.com/post/parallel-in-shell/
 
-* GNU Parallel for simulations http://pdebuyl.be/blog/2020/gnu-parallel-for-simulations.html
+* AV1 encoding parallelization with GNU Parallel https://www.reddit.com/r/AV1/comments/fjvqp9/av1_encoding_parallelization_with_gnu_parallel/
 
-* Introduction to GNU parallel https://bioinformaticsworkbook.org/Appendix/GNUparallel/GNU_parallel_examples.html
+* Beschleunigte Befehlsbearbeitung mit GNU Parallel https://www.linux-community.de/ausgaben/linuxuser/2013/06/beschleunigte-befehlsbearbeitung-mit-gnu-parallel/
 
-* Bug fixes and man page updates.
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
