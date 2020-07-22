@@ -261,7 +261,8 @@ B<--session> is supported.
 =head3 BUGS
 
 Due to a bug in Bash, aliases containing newlines must be followed by
-a newline in the command.
+a newline in the command. Some systems are not affected by this bug,
+but will print a warning anyway.
 
 =head2 csh
 

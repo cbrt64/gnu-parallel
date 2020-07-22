@@ -58,7 +58,7 @@ env_parallel() {
     }
     _ignore_HARDCODED() {
 	# These names cannot be detected
-	echo '(_|TIMEOUT|GROUPS|FUNCNAME|DIRSTACK|PIPESTATUS|USERNAME|BASH_[A-Z_]+)'
+	echo '(_|TIMEOUT|GROUPS|FUNCNAME|DIRSTACK|PIPESTATUS|USERNAME|BASHPID|BASH_[A-Z_]+)'
     }
     _ignore_READONLY() {
 	readonly | perl -e '@r = map {

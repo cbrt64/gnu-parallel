@@ -8,8 +8,8 @@
   40f53af6 9e20dae5 713ba06c f517006d 9897747b ed8a4694 b1acba1b 1464beb4
   60055629 3f2356f3 3e9c4e3c 76e3f3af a9db4b32 bd33322b 975696fc e6b23cfb
   $ bash install.sh
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `     fetch -o - http://pi.dk/3 ) > install.sh'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `     fetch -o - http://pi.dk/3 ) > install.sh'
   parallel -k echo ::: A B C > abc-file
   parallel -k echo ::: D E F > def-file
   perl -e 'printf "A\0B\0C\0"' > abc0-file
@@ -21,11 +21,11 @@
   perl -e 'for(1..1000000){print "$_\n"}' > num1000000
   (echo %head1; echo %head2; \
 sleep .3
-/bin/bash: -c: line 2: syntax error: unexpected end of file
+/usr/bin/bash: -c: line 2: syntax error: unexpected end of file
 sleep .3
    perl -e 'for(1..10){print "$_\n"}') > num_%header
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `   perl -e 'for(1..10){print "$_\n"}') > num_%header'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `   perl -e 'for(1..10){print "$_\n"}') > num_%header'
   perl -e 'print "HHHHAAABBBCCC"' > fixedlen
   parallel echo ::: A B C
 A
@@ -234,7 +234,7 @@ foo
 foo
   parallel --rpl '{..} s:\.[^.]+$::;s:\.[^.]+$::;' echo '{..}'
     ::: foo.tar.gz
-/bin/bash: line 1: :::: command not found
+/usr/bin/bash: line 1: :::: command not found
   parallel --rpl '{%(.+?)} s/$$1$//;' echo {%.tar.gz}.zip ::: foo.tar.gz
 foo.zip
   parallel --rpl '{/(.+?)/(.*?)} s/$$1/$$2/;' echo {/tar.gz/zip} \
@@ -248,13 +248,13 @@ foo.zip
            eval "use File::Basename; 1;"; $_ = dirname($_);'
   --rpl '{/.} s:.*/::; s:\.[^/.]+$::;'
   --rpl '{.} s:\.[^/.]+$::'
-/bin/bash: --rpl: command not found
-/bin/bash: line 1: --rpl: command not found
-/bin/bash: line 2: --rpl: command not found
-/bin/bash: line 3: --rpl: command not found
-/bin/bash: line 5: --rpl: command not found
-/bin/bash: line 6: --rpl: command not found
-/bin/bash: line 7: --rpl: command not found
+/usr/bin/bash: --rpl: command not found
+/usr/bin/bash: line 1: --rpl: command not found
+/usr/bin/bash: line 2: --rpl: command not found
+/usr/bin/bash: line 3: --rpl: command not found
+/usr/bin/bash: line 5: --rpl: command not found
+/usr/bin/bash: line 6: --rpl: command not found
+/usr/bin/bash: line 7: --rpl: command not found
   parallel echo {1} and {2} ::: A B ::: C D
 A and C
 A and D
@@ -373,9 +373,9 @@ A
   Warning: Press CTRL-D to exit.
   perl -e 'print "@ARGV\n"'
   [CTRL-D]
-/bin/bash: line 1: Warning:: command not found
-/bin/bash: -c: line 2: syntax error near unexpected token `('
-/bin/bash: -c: line 2: `  Warning: are doing (in which case: YOU ARE AWESOME!) or you forgot'
+/usr/bin/bash: line 1: Warning:: command not found
+/usr/bin/bash: -c: line 2: syntax error near unexpected token `('
+/usr/bin/bash: -c: line 2: `  Warning: are doing (in which case: YOU ARE AWESOME!) or you forgot'
   parallel --trim r echo pre-{}-post ::: ' A '
 pre- A-post
   parallel --trim l echo pre-{}-post ::: ' A '
@@ -387,26 +387,26 @@ pre-A-post
 =bash
 =ls
   parallel 'set a="{}"; if( { test -d "$a" } ) echo "$a is a dir"' ::: *
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="abc-file"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="abc0-file"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="abc_-file"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="def-file"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="fixedlen"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="num1000000"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="num128"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="num30000"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="num8"; if( { test -d "$a" } ) echo "$a is a dir"'
-/bin/bash: -c: line 0: syntax error near unexpected token `)'
-/bin/bash: -c: line 0: `set a="tsv-file.tsv"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="abc-file"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="abc0-file"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="abc_-file"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="def-file"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="fixedlen"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="num1000000"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="num128"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="num30000"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="num8"; if( { test -d "$a" } ) echo "$a is a dir"'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `)'
+/usr/bin/bash: -c: line 0: `set a="tsv-file.tsv"; if( { test -d "$a" } ) echo "$a is a dir"'
   parallel --tag echo foo-{} ::: A B C
 A	foo-A
 B	foo-B
@@ -480,15 +480,15 @@ C
   outdir/1/C/seq
   outdir/1/C/stderr
   outdir/1/C/stdout
-/bin/bash: outdir/1/A/seq: No such file or directory
-/bin/bash: line 1: outdir/1/A/stderr: No such file or directory
-/bin/bash: line 2: outdir/1/A/stdout: No such file or directory
-/bin/bash: line 3: outdir/1/B/seq: No such file or directory
-/bin/bash: line 4: outdir/1/B/stderr: No such file or directory
-/bin/bash: line 5: outdir/1/B/stdout: No such file or directory
-/bin/bash: line 6: outdir/1/C/seq: No such file or directory
-/bin/bash: line 7: outdir/1/C/stderr: No such file or directory
-/bin/bash: line 8: outdir/1/C/stdout: No such file or directory
+/usr/bin/bash: outdir/1/A/seq: No such file or directory
+/usr/bin/bash: line 1: outdir/1/A/stderr: No such file or directory
+/usr/bin/bash: line 2: outdir/1/A/stdout: No such file or directory
+/usr/bin/bash: line 3: outdir/1/B/seq: No such file or directory
+/usr/bin/bash: line 4: outdir/1/B/stderr: No such file or directory
+/usr/bin/bash: line 5: outdir/1/B/stdout: No such file or directory
+/usr/bin/bash: line 6: outdir/1/C/seq: No such file or directory
+/usr/bin/bash: line 7: outdir/1/C/stderr: No such file or directory
+/usr/bin/bash: line 8: outdir/1/C/stdout: No such file or directory
   parallel --header : --results outdir echo ::: f1 A B ::: f2 C D
 A C
 A D
@@ -506,18 +506,18 @@ B D
   outdir/f1/B/f2/D/seq
   outdir/f1/B/f2/D/stderr
   outdir/f1/B/f2/D/stdout
-/bin/bash: outdir/f1/A/f2/C/seq: No such file or directory
-/bin/bash: line 1: outdir/f1/A/f2/C/stderr: No such file or directory
-/bin/bash: line 2: outdir/f1/A/f2/C/stdout: No such file or directory
-/bin/bash: line 3: outdir/f1/A/f2/D/seq: No such file or directory
-/bin/bash: line 4: outdir/f1/A/f2/D/stderr: No such file or directory
-/bin/bash: line 5: outdir/f1/A/f2/D/stdout: No such file or directory
-/bin/bash: line 6: outdir/f1/B/f2/C/seq: No such file or directory
-/bin/bash: line 7: outdir/f1/B/f2/C/stderr: No such file or directory
-/bin/bash: line 8: outdir/f1/B/f2/C/stdout: No such file or directory
-/bin/bash: line 9: outdir/f1/B/f2/D/seq: No such file or directory
-/bin/bash: line 10: outdir/f1/B/f2/D/stderr: No such file or directory
-/bin/bash: line 11: outdir/f1/B/f2/D/stdout: No such file or directory
+/usr/bin/bash: outdir/f1/A/f2/C/seq: No such file or directory
+/usr/bin/bash: line 1: outdir/f1/A/f2/C/stderr: No such file or directory
+/usr/bin/bash: line 2: outdir/f1/A/f2/C/stdout: No such file or directory
+/usr/bin/bash: line 3: outdir/f1/A/f2/D/seq: No such file or directory
+/usr/bin/bash: line 4: outdir/f1/A/f2/D/stderr: No such file or directory
+/usr/bin/bash: line 5: outdir/f1/A/f2/D/stdout: No such file or directory
+/usr/bin/bash: line 6: outdir/f1/B/f2/C/seq: No such file or directory
+/usr/bin/bash: line 7: outdir/f1/B/f2/C/stderr: No such file or directory
+/usr/bin/bash: line 8: outdir/f1/B/f2/C/stdout: No such file or directory
+/usr/bin/bash: line 9: outdir/f1/B/f2/D/seq: No such file or directory
+/usr/bin/bash: line 10: outdir/f1/B/f2/D/stderr: No such file or directory
+/usr/bin/bash: line 11: outdir/f1/B/f2/D/stdout: No such file or directory
   /usr/bin/time -f %e parallel -N0 -j64 sleep 1 :::: num128
 9
   /usr/bin/time -f %e parallel -N0 sleep 1 :::: num128
@@ -566,7 +566,7 @@ Computers / CPU cores / Max jobs to run
 Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete
   seq 1000 | parallel -j10 --bar '(echo -n {};sleep 0.1)' \
     2> >(zenity --timeout=15 --progress --auto-kill --auto-close)
-  parallel --joblog /tmp/log exit  ::: 1 2 3 0
+BASE64--joblog /tmp/log exit  ::: 1 2 3 0
   cat /tmp/log;
   parallel --joblog /tmp/log exit  ::: 1 2 3 0
   cat /tmp/log;  parallel --resume --joblog /tmp/log exit  ::: 1 2 3 0 0 0
@@ -660,7 +660,7 @@ parallel: Warning: This job was killed because it timed out:
 parallel: Warning: show_signals ''
   echo | parallel --termseq INT,200,TERM,100,KILL,25 \
     -u --timeout 1 show_signals
-/bin/bash: show_signals: command not found
+/usr/bin/bash: show_signals: command not found
   parallel --load 100% echo load is less than {} job per cpu ::: 1
 load is less than 1 job per cpu
   parallel --noswap echo the system is not swapping ::: now
@@ -726,8 +726,9 @@ foo
   parallel -S $SERVER1 pwd ::: ""
   parallel --workdir . -S $SERVER1 pwd ::: ""
   parallel --workdir ... -S $SERVER1 pwd ::: ""
-/mnt/4tb/home/parallel
-BASE64/mnt/4tb/home/parallel/.TMPWORKDIR
+/home/parallel
+/home/parallel/privat/parallel/testsuite/tmp
+/home/parallel/.TMPWORKDIR
   parallel -S $SERVER1 --sshdelay 0.2 echo ::: 1 2 3
 9
   parallel --controlmaster -S $SERVER1 echo ::: 1 2 3
@@ -807,27 +808,23 @@ COLORTERM
 DBUS_SESSION_BUS_ADDRESS
 DEBEMAIL
 DEBFULLNAME
-DEFAULTS_PATH
 DESKTOP_SESSION
 DISPLAY
+EDITOR
 GOPATH
 GPG_AGENT_INFO
-GS_LIB
 HISTCONTROL
 HOME
-JAVA_HOME
-JDK_HOME
 KDE_FULL_SESSION
 KDE_SESSION_UID
 KDE_SESSION_VERSION
 KONSOLE_DBUS_SERVICE
 KONSOLE_DBUS_SESSION
 KONSOLE_DBUS_WINDOW
-KONSOLE_PROFILE_NAME
+KONSOLE_VERSION
 LANG
 LANGUAGE
 LC_ALL
-LC_TIME
 LESS
 LESSCLOSE
 LESSOPEN
@@ -837,7 +834,6 @@ MAKEFLAGS
 MAKELEVEL
 MAKE_TERMERR
 MAKE_TERMOUT
-MANDATORY_PATH
 MFLAGS
 OLDPWD
 ORACLE_HOME
@@ -866,7 +862,6 @@ SHELL_SESSION_ID
 SHLVL
 SSH_AGENT_PID
 SSH_AUTH_SOCK
-S_COLORS
 TERM
 TIMEOUT
 TMPDIR
@@ -1098,11 +1093,11 @@ Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,_Signal,Command,V1,V2,Stdout,
 2,:,000000000.000,0.000,0,12,0,0,"seq 10 13",10,13,outdir/1/10/2/13/stdout,outdir/1/10/2/13/stderr
 3,:,000000000.000,0.000,0,15,0,0,"seq 10 14",10,14,outdir/1/10/2/14/stdout,outdir/1/10/2/14/stderr
   vendor://[[user][:password]@][host][:port]/[database[/table]
-/bin/bash: vendor://[[user][:password]@][host][:port]/[database[/table]: No such file or directory
+/usr/bin/bash: vendor://[[user][:password]@][host][:port]/[database[/table]: No such file or directory
   sqlite3:///%2Ftmp%2Fmydatabase/mytable
   csv:///%2Ftmp/log.csv
-/bin/bash: sqlite3:///%2Ftmp%2Fmydatabase/mytable: No such file or directory
-/bin/bash: line 1: csv:///%2Ftmp/log.csv: No such file or directory
+/usr/bin/bash: sqlite3:///%2Ftmp%2Fmydatabase/mytable: No such file or directory
+/usr/bin/bash: line 1: csv:///%2Ftmp/log.csv: No such file or directory
   DBURL=sqlite3:///%2Ftmp%2Fmydatabase
   DBURLTABLE=$DBURL/mytable
   parallel --sqlandworker $DBURLTABLE echo ::: foo bar ::: baz quuz
@@ -1201,40 +1196,40 @@ cat: num_%header: No such file or directory
  999999  999999 9999999
  126984  126984  888889
   cat input_file | parallel command
-/bin/bash: This is input_file: command not found
+/usr/bin/bash: This is input_file: command not found
   #!/bin/bash
   #!/usr/bin/parallel --shebang -r echo
   foo
   bar
   baz
-/bin/bash: foo: command not found
-/bin/bash: line 1: bar: command not found
-/bin/bash: line 2: baz: command not found
+/usr/bin/bash: foo: command not found
+/usr/bin/bash: line 1: bar: command not found
+/usr/bin/bash: line 2: baz: command not found
   cat input_file | parallel command
   parallel command ::: foo bar
-/bin/bash: This is input_file: command not found
-/bin/bash: foo: command not found
-/bin/bash: bar: command not found
+/usr/bin/bash: This is input_file: command not found
+/usr/bin/bash: foo: command not found
+/usr/bin/bash: bar: command not found
   cat input_file | command
   command foo bar
-/bin/bash: line 1: foo: command not found
+/usr/bin/bash: line 1: foo: command not found
   #!/usr/bin/perl
   print "@ARGV\n"
 Error: no such file "@ARGV\n"
   parallel perl_echo ::: foo bar
-/bin/bash: perl_echo: command not found
+/usr/bin/bash: perl_echo: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/perl
   print "@ARGV\n"
 Error: no such file "@ARGV\n"
   perl_echo foo bar
-/bin/bash: perl_echo: command not found
+/usr/bin/bash: perl_echo: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/perl
   print "Arguments @ARGV\n";
 Error: no such file "Arguments @ARGV\n"
   #!/usr/bin/parallel --shebang-wrap /usr/bin/python
   print 'Arguments', str(sys.argv)
-/bin/bash: -c: line 3: syntax error near unexpected token `('
-/bin/bash: -c: line 3: `  print 'Arguments', str(sys.argv)'
+/usr/bin/bash: -c: line 3: syntax error near unexpected token `('
+/usr/bin/bash: -c: line 3: `  print 'Arguments', str(sys.argv)'
   #!/usr/bin/parallel --shebang-wrap /bin/bash
   echo Arguments "$@"
 Arguments
@@ -1243,21 +1238,21 @@ Arguments
 Arguments 
   #!/usr/bin/parallel --shebang-wrap /usr/bin/tclsh
   puts "Arguments $argv"
-/bin/bash: line 2: puts: command not found
+/usr/bin/bash: line 2: puts: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/Rscript --vanilla --slave
   args <- commandArgs(trailingOnly = TRUE)
   print(paste("Arguments ",args))
-/bin/bash: -c: line 2: syntax error near unexpected token `('
-/bin/bash: -c: line 2: `  args <- commandArgs(trailingOnly = TRUE)'
+/usr/bin/bash: -c: line 2: syntax error near unexpected token `('
+/usr/bin/bash: -c: line 2: `  args <- commandArgs(trailingOnly = TRUE)'
   #!/usr/bin/parallel --shebang-wrap ARG={} /usr/bin/gnuplot
   print "Arguments ", system('echo $ARG')
-/bin/bash: -c: line 2: syntax error near unexpected token `('
-/bin/bash: -c: line 2: `  print "Arguments ", system('echo $ARG')'
+/usr/bin/bash: -c: line 2: syntax error near unexpected token `('
+/usr/bin/bash: -c: line 2: `  print "Arguments ", system('echo $ARG')'
   #!/usr/bin/parallel --shebang-wrap /usr/bin/ruby
   print "Arguments "
   puts ARGV
 Error: no such file "Arguments "
-/bin/bash: line 3: puts: command not found
+/usr/bin/bash: line 3: puts: command not found
   #!/usr/bin/parallel --shebang-wrap /usr/bin/octave
   printf ("Arguments");
   arg_list = argv ();
@@ -1265,13 +1260,13 @@ Error: no such file "Arguments "
     printf (" %s", arg_list{i});
   endfor
   printf ("\n");
-/bin/bash: -c: line 2: syntax error near unexpected token `"Arguments"'
-/bin/bash: -c: line 2: `  printf ("Arguments");'
+/usr/bin/bash: -c: line 2: syntax error near unexpected token `"Arguments"'
+/usr/bin/bash: -c: line 2: `  printf ("Arguments");'
   #!/usr/bin/parallel --shebang-wrap /usr/bin/clisp
   (format t "~&~S~&" 'Arguments)
   (format t "~&~S~&" *args*)
-/bin/bash: -c: line 2: unexpected EOF while looking for matching `''
-/bin/bash: -c: line 4: syntax error: unexpected end of file
+/usr/bin/bash: -c: line 2: unexpected EOF while looking for matching `''
+/usr/bin/bash: -c: line 4: syntax error: unexpected end of file
   #!/usr/bin/parallel --shebang-wrap /usr/bin/php
   <?php
   echo "Arguments";
@@ -1282,14 +1277,14 @@ Error: no such file "Arguments "
   echo "\n";
   ?>
 Arguments
-/bin/bash: line 1: ?php: No such file or directory
-/bin/bash: -c: line 3: syntax error near unexpected token `array_slice'
-/bin/bash: -c: line 3: `  foreach(array_slice($argv,1) as $v)'
+/usr/bin/bash: line 1: ?php: No such file or directory
+/usr/bin/bash: -c: line 3: syntax error near unexpected token `array_slice'
+/usr/bin/bash: -c: line 3: `  foreach(array_slice($argv,1) as $v)'
   #!/usr/bin/parallel --shebang-wrap /usr/bin/node
   var myArgs = process.argv.slice(2);
   console.log('Arguments ', myArgs);
-/bin/bash: -c: line 0: syntax error near unexpected token `('
-/bin/bash: -c: line 0: `  var myArgs = process.argv.slice(2);'
+/usr/bin/bash: -c: line 0: syntax error near unexpected token `('
+/usr/bin/bash: -c: line 0: `  var myArgs = process.argv.slice(2);'
   #!/usr/bin/parallel --shebang-wrap /usr/bin/lua
   io.write "Arguments"
   for a = 1, #arg do
@@ -1297,14 +1292,14 @@ Arguments
     io.write(arg[a])
   end
   print("")
-/bin/bash: line 2: io.write: command not found
-/bin/bash: -c: line 3: syntax error near unexpected token `='
-/bin/bash: -c: line 3: `  for a = 1, #arg do'
+/usr/bin/bash: line 2: io.write: command not found
+/usr/bin/bash: -c: line 3: syntax error near unexpected token `='
+/usr/bin/bash: -c: line 3: `  for a = 1, #arg do'
   #!/usr/bin/parallel --shebang-wrap ARGV={} /usr/bin/csharp
   var argv = Environment.GetEnvironmentVariable("ARGV");
   print("Arguments "+argv);
-/bin/bash: -c: line 2: syntax error near unexpected token `('
-/bin/bash: -c: line 2: `  var argv = Environment.GetEnvironmentVariable("ARGV");'
+/usr/bin/bash: -c: line 2: syntax error near unexpected token `('
+/usr/bin/bash: -c: line 2: `  var argv = Environment.GetEnvironmentVariable("ARGV");'
   sem 'sleep 1; echo The first finished' &&
     echo The first is now running in the background &&
     sem 'sleep 1; echo The second finished' &&
@@ -1372,18 +1367,18 @@ See 'man parallel' for details
 Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
-  O. Tange (2018): GNU Parallel 2018, Mar 2018, ISBN 9781387509881,
-  DOI https://doi.org/10.5281/zenodo.1146014
+  Tange, O. (2020, June 22). GNU Parallel VERSION ('Floyd').
+  Zenodo. https://doi.org/10.5281/zenodo.3903853
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
   parallel --version
 GNU parallel VERSION
 Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software
 Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
 GNU parallel comes with no warranty.
-Web site: http://www.gnu.org/software/parallel
+Web site: https://www.gnu.org/software/parallel
 When using programs that use GNU Parallel to process data for publication
 please cite as described in 'parallel --citation'.
   parallel --minversion VERSION && \
@@ -1394,17 +1389,19 @@ Your version is at least VERSION.
 Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
-@book{tange_ole_2018_1146014,
+@software{tange_2020_3903853,
       author       = {Tange, Ole},
-      title        = {GNU Parallel 2018},
-      publisher    = {Ole Tange},
-      month        = Mar,
-      year         = 2018,
-      ISBN         = {9781387509881},
-      doi          = {10.5281/zenodo.1146014},
-      url          = {https://doi.org/10.5281/zenodo.1146014}
+      title        = {GNU Parallel VERSION ('Floyd')},
+      month        = Jun,
+      year         = 2020,
+      note         = {{GNU Parallel is a general parallelizer to run
+                       multiple serial command line programs in parallel
+                       without changing them.}},
+      publisher    = {Zenodo},
+      doi          = {10.5281/zenodo.3903853},
+      url          = {https://doi.org/10.5281/zenodo.3903853}
 }
-(Feel free to use \nocite{tange_ole_2018_1146014})
+(Feel free to use \nocite{tange_2020_3903853})
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 More about funding GNU Parallel and the citation notice:
@@ -1427,4 +1424,4 @@ C
 echo A
 echo B
 echo C
-8
+7

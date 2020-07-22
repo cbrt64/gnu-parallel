@@ -5026,11 +5026,11 @@ sub version() {
 	 "GNU $Global::progname $Global::version",
 	 "Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software",
 	 "Foundation, Inc.",
-	 "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>",
+	 "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>",
 	 "This is free software: you are free to change and redistribute it.",
 	 "GNU $Global::progname comes with no warranty.",
 	 "",
-	 "Web site: http://www.gnu.org/software/${Global::progname}\n",
+	 "Web site: https://www.gnu.org/software/${Global::progname}\n",
 	 "When using programs that use GNU Parallel to process data for publication",
 	 "please cite as described in 'parallel --citation'.\n",
         );
@@ -5171,7 +5171,7 @@ sub embed() {
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, see <http://www.gnu.org/licenses/>
+# along with this program; if not, see <https://www.gnu.org/licenses/>
 # or write to the Free Software Foundation, Inc., 51 Franklin St,
 # Fifth Floor, Boston, MA 02110-1301 USA
 ";

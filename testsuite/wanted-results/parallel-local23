@@ -62,11 +62,11 @@ echo '### --version must have higher priority than retired options'
 ### --version must have higher priority than retired options
   $NICEPAR --version -g -Y -U -W -T | tail -n9
 Foundation, Inc.
-License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
 GNU parallel comes with no warranty.
 
-Web site: http://www.gnu.org/software/parallel
+Web site: https://www.gnu.org/software/parallel
 
 When using programs that use GNU Parallel to process data for publication
 please cite as described in 'parallel --citation'.

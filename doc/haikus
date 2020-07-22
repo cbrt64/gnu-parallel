@@ -1,5 +1,17 @@
 Quote of the month:
 
+Gnu parallel is also awesome, fwiw.
+  -- Rogan Dawes @RoganDawes@twitter
+
+I get a weird sense of satisfaction every single time I see the lovely logo of #GNU Parallel (plus, what an underrated piece of great software!)
+
+  -- Emre Sevinç @EmreSevinc@twitter
+
+
+I have gotten a *ton* of mileage out of jq, awk, and GNU parallel,
+  even at multi-GB sizes.
+    -- Eric Wolak @ericthewolak@twitter 
+
 GNU parallel, which works a little bit like xargs, but has a much more friendly way of handling files with spaces and automatically parallelises calls. This tool has saved me a great deal of coding because it makes it so easy to write a program which does just one part of a task and then run it in parallel with load balancing and a nice progress bar. I cannot recommend this tool enough.
 
 https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
