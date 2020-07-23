@@ -5323,7 +5323,6 @@ sub qqx(@) {
     # and STDERR ignored
     # This is needed if the environment contains functions
     # that /bin/sh does not understand
-    my $PATH = $ENV{'PATH'};
     my %env;
     # ssh with ssh-agent needs PATH SSH_AUTH_SOCK SSH_AGENT_PID
     # ssh with Kerberos needs KRB5CCNAME
@@ -5334,23 +5333,13 @@ sub qqx(@) {
     local %ENV;
     %ENV = %env;
     if($Global::debug) {
+	# && true is to force spawning a shell and not just exec'ing
 	return qx{ @_ && true };
     } else {
-	if($^O eq "cygwin") {
-	    # CygWin does not respect 2>/dev/null
-	    # so we do that by hand
-	    open my $original_stderr, ">&", "STDERR" or
-		::die_bug("Can't dup STDERR: $!");
-	    close STDERR;
-	    open(STDERR, ">", "/dev/null");
-	    my @ret = qx{ @_ };
-	    close STDERR;
-	    open STDERR, ">&", $original_stderr or
-		::die_bug("Can't dup STDERR: $!");
-	    return wantarray ? @ret : join "",@ret;
-	} else {
-	    return qx{ ( @_ ) 2>/dev/null };
-	}
+	local *STDERR;
+	open(STDERR, ">", "/dev/null");
+	# && true is to force spawning a shell and not just exec'ing
+	return qx{ @_ && true };
     }
 }
 
