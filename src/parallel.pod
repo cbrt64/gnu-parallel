@@ -481,8 +481,8 @@ completed, estimated seconds left, and number of jobs started.
 It is compatible with B<zenity>:
 
   seq 1000 | parallel -j30 --bar '(echo {};sleep 0.1)' \
-    2> >(zenity --progress --auto-kill) | wc
-
+    2> >(perl -pe 'BEGIN{$/="\r";$|=1};s/\r/\n/g' |
+         zenity --progress --auto-kill) | wc
 
 =item B<--basefile> I<file>
 

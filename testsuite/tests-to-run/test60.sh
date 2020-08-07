@@ -2,8 +2,15 @@
 
 SERVER1=parallel-server1
 SERVER2=parallel-server2
-SSHLOGIN1=parallel@$SERVER1
-SSHLOGIN2=parallel@$SERVER2
+SSHUSER1=vagrant
+SSHUSER2=vagrant
+SSHLOGIN1=$SSHUSER1@$SERVER1
+SSHLOGIN2=$SSHUSER2@$SERVER2
+
+#SERVER1=parallel-server1
+#SERVER2=parallel-server2
+#SSHLOGIN1=parallel@$SERVER1
+#SSHLOGIN2=parallel@$SERVER2
 
 # -L1 will join lines ending in ' '
 cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/\;s/\$SSHLOGIN1/$SSHLOGIN1/\;s/\$SSHLOGIN2/$SSHLOGIN2/ | parallel -vj10 -k --joblog /tmp/jl-`basename $0` -L1 -r

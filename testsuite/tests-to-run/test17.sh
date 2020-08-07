@@ -2,8 +2,15 @@
 
 SERVER1=parallel-server1
 SERVER2=parallel-server2
-SSHLOGIN1=parallel@$SERVER1
-SSHLOGIN2=parallel@$SERVER2
+SSHUSER1=vagrant
+SSHUSER2=vagrant
+SSHLOGIN1=$SSHUSER1@$SERVER1
+SSHLOGIN2=$SSHUSER2@$SERVER2
+
+#SERVER1=parallel-server1
+#SERVER2=parallel-server2
+#SSHLOGIN1=parallel@$SERVER1
+#SSHLOGIN2=parallel@$SERVER2
 
 export PARALLEL=-j0
 #export PARALLEL="--sshdelay 0.3"

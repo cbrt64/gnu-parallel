@@ -1,10 +1,20 @@
 #!/bin/bash
 
 SERVER1=parallel-server1
-SERVER2=lo
-SSHLOGIN1=parallel@parallel-server1
-SSHLOGIN2=parallel@lo
-SSHLOGIN3=parallel@parallel-server2
+SERVER2=parallel-server2
+SERVER3=parallel-server3
+SSHUSER1=vagrant
+SSHUSER2=vagrant
+SSHUSER3=vagrant
+SSHLOGIN1=$SSHUSER1@$SERVER1
+SSHLOGIN2=$SSHUSER2@$SERVER2
+SSHLOGIN3=$SSHUSER3@$SERVER3
+
+#SERVER1=parallel-server1
+#SERVER2=lo
+#SSHLOGIN1=parallel@parallel-server1
+#SSHLOGIN2=parallel@lo
+#SSHLOGIN3=parallel@parallel-server2
 
 echo '### Test use special ssh'
 echo 'TODO test ssh with > 9 simultaneous'
@@ -21,8 +31,8 @@ echo '### test --filter-hosts with server w/o ssh, non-existing server'
   parallel -S 192.168.1.197,8.8.8.8,$SSHLOGIN1,$SSHLOGIN2,$SSHLOGIN3 --filter-hosts --nonall -k --tag echo
 
 echo '### bug #41964: --controlmaster not seems to reuse OpenSSH connections to the same host'
-  (parallel -S redhat9.tange.dk true ::: {1..20}; echo No --controlmaster - finish last) & 
-  (parallel -M -S redhat9.tange.dk true ::: {1..20}; echo With --controlmaster - finish first) & 
+  (parallel -S $SSHLOGIN1 true ::: {1..20}; echo No --controlmaster - finish last) & 
+  (parallel -M -S $SSHLOGIN1 true ::: {1..20}; echo With --controlmaster - finish first) & 
   wait
 
 echo '### --filter-hosts - OK, non-such-user, connection refused, wrong host'

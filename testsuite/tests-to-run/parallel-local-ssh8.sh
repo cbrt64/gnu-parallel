@@ -7,7 +7,7 @@ par_path_remote_bash() {
   rm -rf /tmp/parallel
   cp /usr/local/bin/parallel /tmp
   
-  cat <<'_EOS' | stdout ssh nopathbash@lo -T | perl -ne '/logged in/..0 and print' | uniq
+  cat <<'_EOS' |
   echo logged in
   echo BASH Path before: $PATH with no parallel
   parallel echo ::: 1
@@ -21,6 +21,9 @@ par_path_remote_bash() {
   # --filter to see if $PATH with parallel is transferred
   env_parallel --filter --env A,PATH -Slo echo '$PATH' ::: OK
 _EOS
+  stdout ssh nopathbash@lo -T |
+      perl -ne '/logged in/..0 and print' |
+      uniq
   echo
 }
 
@@ -29,7 +32,7 @@ par_path_remote_csh() {
   rm -rf /tmp/parallel
   cp /usr/local/bin/parallel /tmp
 
-  cat <<'_EOS' | stdout ssh nopathcsh@lo -T | perl -ne '/logged in/..0 and print' | uniq
+  cat <<'_EOS' |
   echo logged in
   echo CSH Path before: $PATH with no parallel
   which parallel >& /dev/stdout
@@ -49,6 +52,9 @@ par_path_remote_csh() {
   sleep 1
   echo Done
 _EOS
+  stdout ssh nopathcsh@lo -T |
+      perl -ne '/logged in/..0 and print' |
+      uniq
 }
 
 par_keep_order() {
@@ -109,5 +115,5 @@ par_retries_4() {
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel --joblog /tmp/jl-`basename $0` --delay 0.1 -j10 --tag -k '{} 2>&1' |
-    grep -Ev 'microk8s|smart connected IoT'
+    parallel --joblog /tmp/jl-`basename $0` --delay 0.1 -j10 --tag -k '{} 2>&1'
+

@@ -5,7 +5,10 @@ all:
 	cp ../debian/parallel_*.dsc ../debian/parallel_*.tar.gz home\:tange/parallel/
 	cp `ls ../../parallel-2*.tar.bz2|grep -v latest|tail -n1` home\:tange/parallel/
 	perl -i -pe '/Version:/ and s/20\d\d\d\d\d\d/$$ENV{YYYYMMDD}/g' home:tange/parallel/parallel.spec
+	# Update sha256sum
 	cd home:tange/parallel && s=`sha256sum parallel-*.tar.bz2|field 1` perl -i -pe 's/(sha256sums=..)\w+(..)/$$1$$ENV{s}$$2/' PKGBUILD
+	# Update version
+	cd home:tange/parallel && perl -i -pe 's/pkgver=.*/pkgver=$$ENV{YYYYMMDD}/' PKGBUILD
 	cd home\:tange/parallel/ && osc diff
 	cd home\:tange/parallel/ && osc up
 	cd home\:tange/parallel/ && parallel osc add ::: *.spec *.dsc *.tar.gz *.tar.bz2 && echo Src added OK || true

@@ -1,19 +1,23 @@
 #!/bin/bash
 
+SERVER1=parallel-server1
+SSHUSER1=vagrant
+SSHLOGIN1=$SSHUSER1@$SERVER1
+ 
 rsync -Ha --delete input-files/testdir/ tmp/
 cd tmp
 
 SERVER2=parallel@parallel-server2
 
-echo $SERVER2 >~/.parallel/sshloginfile
+echo $SSHLOGIN1 >~/.parallel/sshloginfile
 
 echo '### Test --wd newtempdir/newdir/tmp/ with space dirs'; 
-  ssh $SERVER2 rm -rf newtempdir; 
+  ssh $SSHLOGIN1 rm -rf newtempdir; 
   stdout parallel -j9 -k --wd newtempdir/newdir/tmp/ --basefile 1-col.txt --trc {}.6 -S .. -v echo ">"{}.6 ::: './ ab/c"d/ef g' ' ab/c"d/efg' ./b/bar ./b/foo "./ ab /c' d/ ef\"g" ./2-col.txt './a b/cd / ef/efg'; 
   find . -name '*.6' | LC_ALL=C sort
 
 echo '### Test --wd /tmp/newtempdir/newdir/tmp/ with space dirs'; 
-  ssh $SERVER2 rm -rf /tmp/newtempdir; 
+  ssh $SSHLOGIN1 rm -rf /tmp/newtempdir; 
   stdout parallel -j9 -k --wd /tmp/newtempdir/newdir/tmp/ --basefile 1-col.txt --trc {}.7 -S .. -v echo ">"{}.7 ::: './ ab/c"d/ef g' ' ab/c"d/efg' ./b/bar ./b/foo "./ ab /c' d/ ef\"g" ./2-col.txt './a b/cd / ef/efg'; 
   find . -name '*.7' | LC_ALL=C sort
 

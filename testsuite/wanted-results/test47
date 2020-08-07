@@ -4,25 +4,25 @@
 file1
 file2
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 ls: /tmp/parallel.file*: No such file or directory
 ### --transfer - relpath
 file1
 file2
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 ls: tmp/parallel.file*: No such file or directory
 ### --transfer --cleanup - abspath
 file1
 file2
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 ls: /tmp/parallel.file*: No such file or directory
 ### --transfer --cleanup - relpath
 file1
 file2
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -43,7 +43,7 @@ tmp/parallel.file2.out
 /tmp/parallel.file2.file.done
 /tmp/parallel.file2.out
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 OK
 ls: /tmp/parallel.file*: No such file or directory
 OK
@@ -53,7 +53,7 @@ tmp/parallel.file1.out
 tmp/parallel.file2.file.done
 tmp/parallel.file2.out
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -63,7 +63,7 @@ OK
 /tmp/parallel.file2.file.done
 /tmp/parallel.file2.out
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -73,7 +73,7 @@ OK
 /tmp/parallel.file2.file.done
 /tmp/parallel.file2.out
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 OK
 ls: /tmp/parallel.file*: No such file or directory
 OK
@@ -83,7 +83,7 @@ OK
 /tmp/parallel.file2.file.done
 /tmp/parallel.file2.out
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -92,7 +92,7 @@ OK
 /tmp/parallel.file1.out
 /tmp/parallel.file2.file.done
 /tmp/parallel.file2.out
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -102,7 +102,7 @@ OK
 /tmp/parallel.file2.file.done
 /tmp/parallel.file2.out
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 OK
 ls: /tmp/parallel.file*: No such file or directory
 OK
@@ -112,7 +112,7 @@ tmp/parallel.file1.out
 tmp/parallel.file2.file.done
 tmp/parallel.file2.out
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -122,7 +122,7 @@ OK
 /tmp/parallel.file2.file.done
 /tmp/parallel.file2.out
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 OK
 ls: /tmp/parallel.file*: No such file or directory
 OK

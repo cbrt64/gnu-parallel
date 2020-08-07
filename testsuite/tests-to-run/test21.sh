@@ -2,23 +2,33 @@
 
 SERVER1=parallel-server1
 SERVER2=parallel-server2
+SERVER2=parallel-server3
+SSHUSER1=vagrant
+SSHUSER2=vagrant
+SSHUSER3=vagrant
+SSHLOGIN1=$SSHUSER1@$SERVER1
+SSHLOGIN2=$SSHUSER2@$SERVER2
+SSHLOGIN3=$SSHUSER3@$SERVER3
+
+#SERVER1=parallel-server1
+#SERVER2=parallel-server2
 
 echo '### Test $PARALLEL - single line'
 echo | PARALLEL=--number-of-cpus parallel
-(echo 1; echo 1) | PARALLEL="-Sparallel\@$SERVER1 -Sssh\ -l\ parallel\ $SERVER2 -j1" parallel -kv hostname\; echo | sort
+(echo 1; echo 1) | PARALLEL="-S$SSHLOGIN1 -Sssh\ -l\ $SSHUSER2\ $SERVER2 -j1" parallel -kv hostname\; echo | sort
 
 echo '### Test $PARALLEL - multi line'
-(echo 1; echo 1) | PARALLEL="-Sparallel\@$SERVER1
--Sssh\ -l\ parallel\ $SERVER2
+(echo 1; echo 1) | PARALLEL="-S$SSHLOGIN1
+-Sssh\ -l\ $SSHUSER2\ $SERVER2
 -j1" parallel -kv hostname\; echo | sort
 
 echo '### Test ~/.parallel/config - single line'
-echo "-Sparallel\@$SERVER1 -Sssh\ -l\ parallel\ $SERVER2 -j1" > ~/.parallel/config
+echo "-S$SSHLOGIN1 -Sssh\ -l\ $SSHUSER2\ $SERVER2 -j1" > ~/.parallel/config
 (echo 1; echo 1) | parallel -kv hostname\; echo | sort
 
 echo '### Test ~/.parallel/config - multi line'
-echo "-Sparallel\@$SERVER1
--Sssh\ -l\ parallel\ $SERVER2
+echo "-S$SSHLOGIN1
+-Sssh\ -l\ $SSHUSER2\ $SERVER2
 -j1" > ~/.parallel/config 
 (echo 1; echo 1) | parallel -kv hostname\; echo | sort
 rm ~/.parallel/config

@@ -2110,37 +2110,10 @@ par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
 par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
 par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote_remote
 par_bash_env_parallel_session	### Test env_parallel --session / --end-session
 par_bash_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_bash_env_parallel_session	
@@ -2254,6 +2227,14 @@ par_bash_env_parallel	OK
 par_bash_env_parallel	OK
 par_bash_env_parallel	alias line 1
 par_bash_env_parallel	alias line 1
+par_bash_env_parallel	alias line 2
+par_bash_env_parallel	alias line 2
+par_bash_env_parallel	alias line 3
+par_bash_env_parallel	alias line 3
+par_bash_env_parallel	alias2 line 1
+par_bash_env_parallel	alias2 line 1
+par_bash_env_parallel	alias2 line 2
+par_bash_env_parallel	alias2 line 2
 par_bash_env_parallel	bug #50435: Remote fifo broke in 20150522
 par_bash_env_parallel	bug #52534: Tail of multiline alias is ignored
 par_bash_env_parallel	data from stdin

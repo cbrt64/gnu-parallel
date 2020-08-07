@@ -1618,6 +1618,7 @@ sub options_hash() {
 	 "halt-on-error|halt=s" => \$opt::halt,
 	 "limit=s" => \$opt::limit,
 	 "memfree=s" => \$opt::memfree,
+	 "memsuspend=s" => \$opt::memsuspend,
 	 "retries=s" => \$opt::retries,
 	 "timeout=s" => \$opt::timeout,
 	 "termseq|term-seq=s" => \$opt::termseq,
@@ -1838,6 +1839,8 @@ sub parse_options(@) {
 	warning("--blocksize >= 64K causes problems on Cygwin.");
     }
     $opt::memfree = multiply_binary_prefix($opt::memfree);
+    $opt::memsuspend = multiply_binary_prefix($opt::memsuspend);
+    $Global::memlimit = $opt::memsuspend + $opt::memfree;
     check_invalid_option_combinations();
     if((defined $opt::fifo or defined $opt::cat)
        and not $opt::pipepart) {
@@ -2157,7 +2160,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200722;
+    $Global::version = 20200623;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -3343,7 +3346,9 @@ sub init_run_jobs() {
 		    # Over limit
 		    next;
 		}
-		if($opt::memfree and $sshlogin->memfree() < $opt::memfree) {
+		if(($opt::memfree or $opt::memsuspend)
+		   and
+		   $sshlogin->memfree() < $Global::memlimit) {
 		    # The server has not enough mem free
 		    ::debug("mem", "Not starting job: not enough mem\n");
 		    next;
@@ -3835,7 +3840,8 @@ sub progress() {
 	    $last_column_time = time;
 	    $columns = $ENV{'COLUMNS'};
 	    if(not $columns) {
-		my $stty = ::qqx("stty -a </dev/tty");
+		# && true is to force spawning a shell and not just exec'ing
+		my $stty = qx{stty -a </dev/tty 2>/dev/null && true};
 		# FreeBSD/OpenBSD/NetBSD/Dragonfly/MirOS
 		# MacOSX/IRIX/AIX/Tru64
 		$stty =~ /(\d+) columns/ and do { $columns = $1; };
@@ -3847,7 +3853,8 @@ sub progress() {
 		$stty =~ /rows=\d+,(\d+)/ and do { $columns = $1; };
 	    }
 	    if(not $columns) {
-		my $resize = ::qqx("resize");
+		# && true is to force spawning a shell and not just exec'ing
+		my $resize = qx{resize 2>/dev/null && true};
 		$resize =~ /COLUMNS=(\d+);/ and do { $columns = $1; };
 	    }
 	    $columns ||= 80;
@@ -4519,6 +4526,7 @@ sub onall($@) {
     my $options =
 	join(" ",
 	     ((defined $opt::memfree) ? "--memfree ".$opt::memfree : ""),
+	     ((defined $opt::memsuspend) ? "--memfree ".$opt::memsuspend : ""),
 	     ((defined $opt::D) ? "-D $opt::D" : ""),
 	     ((defined $opt::group) ? "-g" : ""),
 	     ((defined $opt::jobs) ? "-P $opt::jobs" : ""),
@@ -4800,8 +4808,12 @@ sub kill_sleep_seq(@) {
     # Convert pids to process groups ($processgroup = -$pid)
     my @pgrps = map { -$_ } @_;
     my @term_seq = split/,/,$opt::termseq;
-    if(not @term_seq) {
-	@term_seq = ("TERM",200,"TERM",100,"TERM",50,"KILL",25);
+    if($opt::memsuspend) {
+	@term_seq = ("STOP",1);
+    } else {
+	if(not @term_seq) {
+	    @term_seq = ("TERM",200,"TERM",100,"TERM",50,"KILL",25);
+	}
     }
     while(@term_seq) {
 	@pgrps = kill_sleep(shift @term_seq, shift @term_seq, @pgrps);
@@ -4907,8 +4919,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2020, July 22). GNU Parallel 20200722 ('Privacy Shield').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.3956817",
+         "  Tange, O. (2020, June 22). GNU Parallel 20200622 ('Floyd').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.3903853",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -4938,8 +4950,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2020, July 22). GNU Parallel 20200722 ('Privacy Shield').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.3956817",
+	     "  Tange, O. (2020, June 22). GNU Parallel 20200622 ('Floyd').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.3903853",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5052,20 +5064,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2020_3956817,",
+	"\@software{tange_2020_3903853,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20200722 ('Privacy Shield')},",
-	"      month        = Jul,",
+	"      title        = {GNU Parallel 20200622 ('Floyd')},",
+	"      month        = Jun,",
 	"      year         = 2020,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.3956817},",
-	"      url          = {https://doi.org/10.5281/zenodo.3956817}",
+	"      doi          = {10.5281/zenodo.3903853},",
+	"      url          = {https://doi.org/10.5281/zenodo.3903853}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2020_3956817})",
+	"(Feel free to use \\nocite{tange_2020_3903853})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5327,7 +5339,7 @@ sub qqx(@) {
     # ssh with ssh-agent needs PATH SSH_AUTH_SOCK SSH_AGENT_PID
     # ssh with Kerberos needs KRB5CCNAME
     # tmux needs LC_CTYPE
-    # lsh needs LOGNAME HOME
+    # lsh needs HOME LOGNAME
     my @keep = qw(PATH SSH_AUTH_SOCK SSH_AGENT_PID KRB5CCNAME LC_CTYPE HOME LOGNAME);
     @env{@keep} = @ENV{@keep};
     local %ENV;
@@ -5336,10 +5348,29 @@ sub qqx(@) {
 	# && true is to force spawning a shell and not just exec'ing
 	return qx{ @_ && true };
     } else {
-	local *STDERR;
-	open(STDERR, ">", "/dev/null");
-	# && true is to force spawning a shell and not just exec'ing
-	return qx{ @_ && true };
+	# CygWin does not respect 2>/dev/null
+	# so we do that by hand
+	# This trick does not work:
+	# https://stackoverflow.com/questions/13833088/why-doesnt-local-work-on-stderr-and-stdout
+	# local *STDERR;
+	# open(STDERR, ">", "/dev/null");
+	open(local *CHILD_STDIN,  '<', '/dev/null') or die $!;
+	open(local *CHILD_STDERR, '>', '/dev/null') or die $!;
+	my $out;
+	# eval is needed if open3 fails (e.g. command line too long)
+	eval {
+	    my $pid = open3(
+		'<&CHILD_STDIN',
+		$out,
+		'>&CHILD_STDERR',
+		# && true is to force spawning a shell and not just exec'ing
+		"@_ && true");
+	    my @arr = <$out>;
+	    close $out;
+	    # Make sure $? is set
+	    waitpid($pid, 0);
+	    return wantarray ? @arr : join "",@arr;
+	}
     }
 }
 
@@ -5846,7 +5877,10 @@ sub reap_usleep() {
 	    $Global::timeoutq->process_timeouts();
 	}
 	if($opt::memfree) {
-	    kill_youngster_if_not_enough_mem();
+	    kill_youngster_if_not_enough_mem($opt::memfree*0.5);
+	}
+	if($opt::memsuspend) {
+	    kill_youngster_if_not_enough_mem($opt::memsuspend*0.5);
 	}
 	if($opt::limit) {
 	    kill_youngest_if_over_limit();
@@ -5917,6 +5951,7 @@ sub kill_youngster_if_not_enough_mem() {
     # Put the child back in the queue.
     # Uses:
     #   %Global::running
+    my $limit = shift;
     my %jobs_of;
     my @sshlogins;
 
@@ -5928,12 +5963,12 @@ sub kill_youngster_if_not_enough_mem() {
     }
     for my $sshlogin (@sshlogins) {
 	for my $job (sort { $b->seq() <=> $a->seq() } @{$jobs_of{$sshlogin}}) {
-	    if($sshlogin->memfree() < $opt::memfree * 0.5) {
+	    if($sshlogin->memfree() < $limit) {
 		::debug("mem","\n",map { $_->seq()." " }
 			(sort { $b->seq() <=> $a->seq() }
 			 @{$jobs_of{$sshlogin}}));
 		::debug("mem","\n", $job->seq(), "killed ",
-			$sshlogin->memfree()," < ",$opt::memfree * 0.5);
+			$sshlogin->memfree()," < ",$limit);
 		$job->kill();
 		$sshlogin->memfree_recompute();
 	    } else {
@@ -5941,7 +5976,7 @@ sub kill_youngster_if_not_enough_mem() {
 	    }
 	}
 	::debug("mem","Free mem OK ",
-		$sshlogin->memfree()," > ",$opt::memfree * 0.5);
+		$sshlogin->memfree()," > ",$limit);
     }
 }
 
@@ -8498,6 +8533,21 @@ sub kill($) {
     my $self = shift;
     $self->set_exitstatus(-1);
     ::kill_sleep_seq($self->pid());
+    # push job onto start stack
+    if($opt::memsuspend) {
+	$self->{'suspended'} = 1;
+	$Global::JobQueue->{'commandlinequeue'}->unget($self);
+    }
+}
+
+sub set_suspended($$) {
+    my $self = shift;
+    $self->{'suspended'} = shift;
+}
+
+sub suspended($) {
+    my $self = shift;
+    return $self->{'suspended'};
 }
 
 sub failed($) {
@@ -9502,6 +9552,11 @@ sub start($) {
     }
 
     my $job = shift;
+    if($job->suspended()) {
+	# Job is kill -STOP'ped: Restart it.
+	kill "CONT", $job->pid();
+	return $job;
+    }
     # Get the shell command to be executed (possibly with ssh infront).
     my $command = $job->wrapped();
     my $pid;

@@ -65,7 +65,7 @@ portable:
 	time bash Portable.sh
 
 ### Prerequisites
-prereqlocal: installparallel
+prereqlocal: installparallel startvm
 	tcsh -c echo tcsh installed || (echo tcsh is required for testsuite; /bin/false)
 	seq 1 2 >/dev/null || (echo seq is required for testsuite; /bin/false)
 	stdout echo || (echo stdout is required for testsuite; /bin/false)
@@ -81,26 +81,21 @@ prereqlocal: installparallel
 	which lsh || (echo lsh is required for testsuite; /bin/false)
 	timeout 20 ssh sh@lo true || (echo ssh sh@lo is required for testsuite; /bin/false)
 	timeout 5 ssh csh@lo true || (echo ssh csh@lo is required for testsuite; /bin/false)
+	parallel -j1 ssh-keygen -R parallel-server{} ::: 1 2 3 || true
+	parallel 'ssh vagrant@parallel-server{} mkdir -p bin; scp `which parallel` vagrant@parallel-server{}:bin/' ::: 1 2 3 4
 
 prereqremote: installparallel startvm
-	parallel -j0 --timeout 10 --tag ssh parallel@parallel-server{} parallel --minversion 20121021 ::: 1 2 || (echo parallel on remote required for testsuite; /bin/true)
+	parallel -j0 --timeout 10 --tag ssh vagrant@parallel-server{} parallel --minversion 20121021 ::: 1 2 || (echo parallel on remote required for testsuite; /bin/true)
 
 startvm:
-	# Make sure we can reach the virtual machines
-	#sudo ifconfig wlp13s0:0 192.168.1.72 ||	sudo ifconfig wlan0:0 192.168.1.72
-	sudo ifconfig enp14s0:0 192.168.1.72 ||	sudo ifconfig eth0:0 192.168.1.72
-	# If they are already running: Don't fail
-	VBoxManage startvm CentOS3-root:centos3\ Clone2 || VBoxManage controlvm CentOS3-root:centos3\ Clone2 resume || true
-	VBoxManage startvm RedHat9-root:redhat9 || VBoxManage controlvm RedHat9-root:redhat9 resume || true
-	parallel 'ping {} | read' ::: redhat9.tange.dk centos3.tange.dk
+	parallel 'cd vagrant/generic/{} && vagrant up' ::: centos8 freebsd11 freebsd12 rhel8
 
 stopvm:
-	# || true - because this should not fail if the VM is not running
-	VBoxManage controlvm CentOS3-root:centos3 savestate || true
-	VBoxManage controlvm RedHat9-root:redhat9 savestate || true
-	VBoxManage controlvm OracleXE savestate || true
+	parallel 'cd vagrant/generic/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8
 
 startdb:
+	true should start Oracle in vagrant
+startdb-old:
 	#echo shutdown abort | sudo su - oracle -c "sqlplus / as sysdba"
 	sudo parallel /etc/init.d/{} status '||' /etc/init.d/{} restart ::: postgresql mysql # oracle-xe
 	VBoxManage startvm OracleXE || true

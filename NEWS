@@ -42,21 +42,28 @@ New in this release:
 
 News about GNU Parallel:
 
-* GNU Parallel is used at NERSC: https://www.nersc.gov/assets/Uploads/08-Workflows-20200616.pdf
+* GNU Parallel is used at NERSC:
+  https://www.nersc.gov/assets/Uploads/08-Workflows-20200616.pdf
 
 * Resumable batch jobs with GNU Parallel https://igor.io/parallel/
 
-* Lab Meeting technical talk https://www.slideshare.net/hoffmanlab/gnu-parallel-194030490
+* Lab Meeting technical talk
+  https://www.slideshare.net/hoffmanlab/gnu-parallel-194030490
 
-* Open Sky Software Website Credits https://www.openskysoftware.com/site-credits.htm
+* Open Sky Software Website Credits
+  https://www.openskysoftware.com/site-credits.htm
 
-* Speed up your Python Scripts using Ubuntu and GNU Parallel https://ecce.esri.ca/wpecce/2019/12/24/speed-up-your-python-scripts-using-ubuntu-and-gnu-parallel/
+* Speed up your Python Scripts using Ubuntu and GNU Parallel
+  https://ecce.esri.ca/wpecce/2019/12/24/speed-up-your-python-scripts-using-ubuntu-and-gnu-parallel/
 
-* Indispensable command-line tools https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
+* Indispensable command-line tools
+  https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
-* GNU Parallel for simulations http://pdebuyl.be/blog/2020/gnu-parallel-for-simulations.html
+* GNU Parallel for simulations
+  http://pdebuyl.be/blog/2020/gnu-parallel-for-simulations.html
 
-* Introduction to GNU parallel https://bioinformaticsworkbook.org/Appendix/GNUparallel/GNU_parallel_examples.html
+* Introduction to GNU parallel
+  https://bioinformaticsworkbook.org/Appendix/GNUparallel/GNU_parallel_examples.html
 
 
 20200522

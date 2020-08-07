@@ -4,15 +4,17 @@
 
 par_autossh() {
     echo '### --ssh autossh'
-    export PARALLEL_SSH=autossh; export AUTOSSH_PORT=0
-    parallel -S lo echo ::: OK
-    echo OK | parallel --pipe -S lo cat
-    parallel -S lo false ::: a || echo OK should fail
-    echo '### --ssh autossh - add commands that fail here'
-    touch foo_autossh
-    stdout parallel -S csh@lo --trc {}.out touch {}.out ::: foo_autossh
-    ls foo_autossh*
-    rm foo_autossh*
+    (
+	export PARALLEL_SSH=autossh; export AUTOSSH_PORT=0
+	stdout parallel -S lo echo ::: OK
+	echo OK | stdout parallel --pipe -S lo cat
+	stdout parallel -S lo false ::: a || echo OK should fail
+	echo '### --ssh autossh - add commands that fail here'
+	touch foo_autossh
+	stdout parallel -S csh@lo --trc {}.out touch {}.out ::: foo_autossh
+	ls foo_autossh*
+	rm foo_autossh*
+    ) | grep -Ev 'Warning: remote port forwarding failed for listen'
 }
 
 par_basefile_cleanup() {
@@ -76,7 +78,6 @@ par_command_len_shellquote() {
 
     stdout parallel --tag -k outer ::: '-Slo -j10' '' |
 	perl -pe 's/131\d\d\d/131xxx/g';
-	
 }
 
 export -f $(compgen -A function | grep par_)

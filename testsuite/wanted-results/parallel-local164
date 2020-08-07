@@ -278,7 +278,7 @@ correct
 correct
 echo 'bug #38439: "open files" with --files --pipe blocks after a while'
 bug #38439: "open files" with --files --pipe blocks after a while
-  ulimit -n 20; yes "`seq 3000`" |head -c 20M | parallel --pipe -k echo {#} of 21
+  ulimit -n 28; yes "`seq 3000`" |head -c 20M | parallel --pipe -k echo {#} of 21
 1 of 21
 2 of 21
 3 of 21
@@ -300,8 +300,8 @@ bug #38439: "open files" with --files --pipe blocks after a while
 19 of 21
 20 of 21
 21 of 21
-parallel: Warning: Only enough file handles to run 1 jobs in parallel.
-parallel: Warning: Running 'parallel -j0 -N 1 --pipe parallel -j0' or
+parallel: Warning: Only enough file handles to run 2 jobs in parallel.
+parallel: Warning: Running 'parallel -j0 -N 2 --pipe parallel -j0' or
 parallel: Warning: raising 'ulimit -n' or 'nofile' in /etc/security/limits.conf
 parallel: Warning: or /proc/sys/fs/file-max may help.
 echo 'bug #34241: --pipe should not spawn unneeded processes - part 2'

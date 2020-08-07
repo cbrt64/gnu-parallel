@@ -16,7 +16,7 @@ par_bin() {
     paste <(seq 10) <(seq 10 -1 1) |
 	parallel --pipe --colsep '\t' --bin '2 $_%=2' -j4 wc | sort
     # Fails - blocks!
-    # paste <(seq 10000000) <(seq 10000000 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
+    # paste <(seq 10) <(seq 10 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
 }
 
 par_nice() {
@@ -103,10 +103,10 @@ par_colsep() {
     parallel -k --colsep %+ echo {1} {3} {2} {4} ::: a%c%%b a%c%b%d
     (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --colsep %+ echo {1} {3} {2} {4}
     (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --colsep %+ echo '"{1}_{3}_{2}_{4}"'
-    
+
     echo '### Test of -C'
     (echo 'a% c %%b'; echo a%c% b %d) | parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"'
-    
+
     echo '### Test of --trim n'
     (echo 'a% c %%b'; echo a%c% b %d) | parallel -k --trim n --colsep %+ echo '"{1}_{3}_{2}_{4}"'
     parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"' ::: 'a% c %%b' 'a%c% b %d'
@@ -276,66 +276,77 @@ par_END() {
 
 par_xargs_compat() {
     echo xargs compatibility
+    a_b-c() { echo a_b; echo c; }
+    a_b_-c-d() { echo a_b' '; echo c; echo d; }
+    a_b_-c-d-e() { echo a_b' '; echo c; echo d; echo e; }
+    one_mb_line() { perl -e 'print "z"x1000000'; }
+    stdsort() { "$@" | LC_ALL=C sort; }
 
     echo '### Test -L -l and --max-lines'
-    (echo a_b;echo c) | parallel -km -L2 echo
-    (echo a_b;echo c) | parallel -k -L2 echo
-    (echo a_b;echo c) | xargs -L2 echo
+    a_b-c | parallel -km -L2 echo
+    a_b-c | parallel -k -L2 echo
+    a_b-c | xargs -L2 echo
 
     echo '### xargs -L1 echo'
-    (echo a_b;echo c) | parallel -km -L1 echo
-    (echo a_b;echo c) | parallel -k -L1 echo
-    (echo a_b;echo c) | xargs -L1 echo
+    a_b-c | parallel -km -L1 echo
+    a_b-c | parallel -k -L1 echo
+    a_b-c | xargs -L1 echo
 
     echo 'Lines ending in space should continue on next line'
     echo '### xargs -L1 echo'
-    (echo a_b' ';echo c;echo d) | parallel -km -L1 echo
-    (echo a_b' ';echo c;echo d) | parallel -k -L1 echo
-    (echo a_b' ';echo c;echo d) | xargs -L1 echo
+    a_b_-c-d | parallel -km -L1 echo
+    a_b_-c-d | parallel -k -L1 echo
+    a_b_-c-d | xargs -L1 echo
 
     echo '### xargs -L2 echo'
-    (echo a_b' ';echo c;echo d;echo e) | parallel -km -L2 echo
-    (echo a_b' ';echo c;echo d;echo e) | parallel -k -L2 echo
-    (echo a_b' ';echo c;echo d;echo e) | xargs -L2 echo
+    a_b_-c-d-e | parallel -km -L2 echo
+    a_b_-c-d-e | parallel -k -L2 echo
+    a_b_-c-d-e | xargs -L2 echo
 
     echo '### xargs -l echo'
-    (echo a_b' ';echo c;echo d;echo e) | parallel -l -km echo # This behaves wrong
-    (echo a_b' ';echo c;echo d;echo e) | parallel -l -k echo # This behaves wrong
-    (echo a_b' ';echo c;echo d;echo e) | xargs -l echo
+    a_b_-c-d-e | parallel -l -km echo # This behaves wrong
+    a_b_-c-d-e | parallel -l -k echo # This behaves wrong
+    a_b_-c-d-e | xargs -l echo
 
     echo '### xargs -l2 echo'
-    (echo a_b' ';echo c;echo d;echo e) | parallel -km -l2 echo
-    (echo a_b' ';echo c;echo d;echo e) | parallel -k -l2 echo
-    (echo a_b' ';echo c;echo d;echo e) | xargs -l2 echo
+    a_b_-c-d-e | parallel -km -l2 echo
+    a_b_-c-d-e | parallel -k -l2 echo
+    a_b_-c-d-e | xargs -l2 echo
 
     echo '### xargs -l1 echo'
-    (echo a_b' ';echo c;echo d;echo e) | parallel -km -l1 echo
-    (echo a_b' ';echo c;echo d;echo e) | parallel -k -l1 echo
-    (echo a_b' ';echo c;echo d;echo e) | xargs -l1 echo
+    a_b_-c-d-e | parallel -km -l1 echo
+    a_b_-c-d-e | parallel -k -l1 echo
+    a_b_-c-d-e | xargs -l1 echo
 
     echo '### xargs --max-lines=2 echo'
-    (echo a_b' ';echo c;echo d;echo e) | parallel -km --max-lines 2 echo
-    (echo a_b' ';echo c;echo d;echo e) | parallel -k --max-lines 2 echo
-    (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines=2 echo
+    a_b_-c-d-e | parallel -km --max-lines 2 echo
+    a_b_-c-d-e | parallel -k --max-lines 2 echo
+    a_b_-c-d-e | xargs --max-lines=2 echo
 
     echo '### xargs --max-lines echo'
-    (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -km echo # This behaves wrong
-    (echo a_b' ';echo c;echo d;echo e) | parallel --max-lines -k echo # This behaves wrong
-    (echo a_b' ';echo c;echo d;echo e) | xargs --max-lines echo
+    a_b_-c-d-e | parallel --max-lines -km echo # This behaves wrong
+    a_b_-c-d-e | parallel --max-lines -k echo # This behaves wrong
+    a_b_-c-d-e | xargs --max-lines echo
 
     echo '### test too long args'
-    perl -e 'print "z"x1000000' | parallel echo 2>&1
-    perl -e 'print "z"x1000000' | xargs echo 2>&1
-    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
-    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort xargs -s 10 echo
-    (seq 1 10; perl -e 'print "z"x1000000'; seq 12 15) | stdsort parallel -j1 -kX -s 10 echo
+    one_mb_line | parallel echo 2>&1
+    one_mb_line | xargs echo 2>&1
+    (seq 1 10; one_mb_line; seq 12 15) | stdsort parallel -j1 -km -s 10 echo
+    (seq 1 10; one_mb_line; seq 12 15) | stdsort xargs -s 10 echo
+    (seq 1 10; one_mb_line; seq 12 15) | stdsort parallel -j1 -kX -s 10 echo
 
     echo '### Test -x'
+    echo '-km'
     (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
+    echo '-kX'
     (seq 1 10; echo 12345; seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
+    echo '-x'
     (seq 1 10; echo 12345; seq 12 15) | stdsort xargs -s 10 -x echo
+    echo '-km -x'
     (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -km -s 10 -x echo
+    echo '-kX -x'
     (seq 1 10; echo 1234;  seq 12 15) | stdsort parallel -j1 -kX -s 10 -x echo
+    echo '-x'
     (seq 1 10; echo 1234;  seq 12 15) | stdsort xargs -s 10 -x echo
 }
 
@@ -534,6 +545,7 @@ par_retries_all_fail() {
 
 par_sockets_cores_threads() {
     echo '### Test --number-of-sockets/cores/threads'
+    unset PARALLEL_CPUINFO
     parallel --number-of-sockets
     parallel --number-of-cores
     parallel --number-of-threads
@@ -593,6 +605,8 @@ export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j10 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
     perl -pe 's/,31,0/,15,0/' |
-    perl -pe 's:~:'$HOME':' |
-    perl -pe 's:'$PWD':.:' |
-    perl -pe 's:'$HOME':~:'
+    perl -pe 's/131\d\d\d/131XXX/' |
+    # Replace $PWD with . even if given as ~/...
+    perl -pe 's:~:'$HOME':g' |
+    perl -pe 's:'$PWD':.:g' |
+    perl -pe 's:'$HOME':~:g'

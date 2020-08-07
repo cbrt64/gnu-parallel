@@ -565,7 +565,8 @@ Computers / CPU cores / Max jobs to run
 1:local / 8 / 8
 Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete
   seq 1000 | parallel -j10 --bar '(echo -n {};sleep 0.1)' \
-    2> >(zenity --timeout=15 --progress --auto-kill --auto-close)
+    2> >(perl -pe 'BEGIN{$/="\r";$|=1};s/\r/\n/g' |
+         zenity --timeout=15 --progress --auto-kill --auto-close)
 BASE64--joblog /tmp/log exit  ::: 1 2 3 0
   cat /tmp/log;
   parallel --joblog /tmp/log exit  ::: 1 2 3 0
@@ -1424,4 +1425,4 @@ C
 echo A
 echo B
 echo C
-7
+8

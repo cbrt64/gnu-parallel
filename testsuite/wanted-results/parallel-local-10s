@@ -24,6 +24,25 @@ par__pipepart_spawn	1:local / 2+ / 2+2+2+
 par__pipepart_tee	bug #45479: --pipe/--pipepart --tee
 par__pipepart_tee	--pipepart --tee
 par__pipepart_tee	314572800
+par_bin	### Test --bin
+par_bin	      2       2       4
+par_bin	      2       2       4
+par_bin	      3       3       6
+par_bin	      3       3       7
+par_bin	      2       4       8
+par_bin	      2       4       8
+par_bin	      3       6      13
+par_bin	      3       6      13
+par_bin	### Test --bin with expression that gives 1..n
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
+par_bin	### Test --bin with expression that gives 0..n-1
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
 par_colsep	### Test of --colsep
 par_colsep	a b c
 par_colsep	a b c
@@ -469,7 +488,7 @@ par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      2       6   30006
 par_long_line_remote	      3      50  250050
 par_maxlinelen_X_I	### Test max line length -X -I
-par_maxlinelen_X_I	3cfc69ee81b0fe7fdbe8eb059ad2da61  -
+par_maxlinelen_X_I	201ecb8ca789cecf39ee914a6d75611b  -
 par_maxlinelen_X_I	Chars per line (817788/7): 116826
 par_maxlinelen_m_I	### Test max line length -m -I
 par_maxlinelen_m_I	c78bd0799bc23d8946732f8b3ae3c94e  -
@@ -939,15 +958,77 @@ par_xargs_compat	a_b c
 par_xargs_compat	d
 par_xargs_compat	e
 par_xargs_compat	### test too long args
-par_xargs_compat	parallel: Error: Command line too long (1000005 >= 131049) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	parallel: Error: Command line too long (1000005 >= 131XXX) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
 par_xargs_compat	xargs: argument line too long
-par_xargs_compat	environment: line 109: stdsort: command not found
-par_xargs_compat	environment: line 112: stdsort: command not found
-par_xargs_compat	environment: line 115: stdsort: command not found
+par_xargs_compat	parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	xargs: argument line too long
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
 par_xargs_compat	### Test -x
-par_xargs_compat	environment: line 119: stdsort: command not found
-par_xargs_compat	environment: line 122: stdsort: command not found
-par_xargs_compat	environment: line 125: stdsort: command not found
-par_xargs_compat	environment: line 128: stdsort: command not found
-par_xargs_compat	environment: line 131: stdsort: command not found
-par_xargs_compat	environment: line 134: stdsort: command not found
+par_xargs_compat	-km
+par_xargs_compat	parallel: Error: Command line too long (10 >= 10) at input 0: 12345
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	-kX
+par_xargs_compat	parallel: Error: Command line too long (10 >= 10) at input 0: 12345
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	-x
+par_xargs_compat	xargs: argument line too long
+par_xargs_compat	1 2
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	-km -x
+par_xargs_compat	1 2
+par_xargs_compat	12
+par_xargs_compat	1234
+par_xargs_compat	13
+par_xargs_compat	14
+par_xargs_compat	15
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	-kX -x
+par_xargs_compat	1 2
+par_xargs_compat	12
+par_xargs_compat	1234
+par_xargs_compat	13
+par_xargs_compat	14
+par_xargs_compat	15
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10
+par_xargs_compat	-x
+par_xargs_compat	1 2
+par_xargs_compat	12
+par_xargs_compat	1234
+par_xargs_compat	13
+par_xargs_compat	14
+par_xargs_compat	15
+par_xargs_compat	3 4
+par_xargs_compat	5 6
+par_xargs_compat	7 8
+par_xargs_compat	9 10

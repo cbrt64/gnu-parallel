@@ -37,7 +37,7 @@ bytes
 3072
 Current command: sqlite3
 foo
-sqltest.sqlite3: SQLite 3.x database, last written using SQLite version 3022000
+sqltest.sqlite3: SQLite 3.x database, last written using SQLite version 3031001
 n|t
 1|Line 1
 2|Line 2

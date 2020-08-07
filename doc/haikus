@@ -1,14 +1,15 @@
 Quote of the month:
 
-Gnu parallel is also awesome, fwiw.
-  -- Rogan Dawes @RoganDawes@twitter
+  Gnu parallel is also awesome, fwiw.
+    -- Rogan Dawes @RoganDawes@twitter
 
-I get a weird sense of satisfaction every single time I see the lovely logo of #GNU Parallel (plus, what an underrated piece of great software!)
+  I get a weird sense of satisfaction every single time I see the
+  lovely logo of #GNU Parallel (plus, what an underrated piece of
+  great software!)
+    -- Emre Sevinç @EmreSevinc@twitter
 
-  -- Emre Sevinç @EmreSevinc@twitter
 
-
-I have gotten a *ton* of mileage out of jq, awk, and GNU parallel,
+  I have gotten a *ton* of mileage out of jq, awk, and GNU parallel,
   even at multi-GB sizes.
     -- Eric Wolak @ericthewolak@twitter 
 
@@ -30,9 +31,6 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
   GNU Parallel is awesome
     -- Gaurav Jain @gauravjain49@twitter
-  
-  With multicore systems everywhere GNU Parallel is a must have tool.
-    -- Neil H. Watson @neil_h_watson@twitter
   
   My new favourite command line tool is GNU Parallel. After knowing it for a while I just recently came back to it for a refactor of a script and now I've changed like 4 different huge scripts into tiny parallel scripts that do their job literally 3 to 10 times faster and just [mind blown]
     -- Izzy @angry_izzy@twitter
@@ -70,6 +68,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
 === Used ===
 
+  With multicore systems everywhere GNU Parallel is a must have tool.
+    -- Neil H. Watson @neil_h_watson@twitter
+  
   Who needs spark when GNU Parallel exists
     -- MatthijsB @MatthijsBrs@twitter
 

@@ -24,7 +24,7 @@ https://zenodo.org/deposit/new
 
 (*) Software
 (Reserve DOI)
-GNU Parallel 20200622 ('Floyd')
+GNU Parallel 20xxxx22 ('Xxxx')
 Ole Tange
 https://orcid.org/0000-0002-6345-1437
 Description
@@ -69,7 +69,7 @@ export YYYYMMDD
 cd ~/privat/parallel/packager/obs
 
 find home:tange/parallel/* -type f |
-  grep -v parallel.spec |
+  grep -Ev '(PKGBUILD|parallel.spec)' |
   parallel -j1 'osc rm {} || rm {}'
 # This should not create new files
 osc up home:tange/parallel/
@@ -189,9 +189,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200722 ('Privacy Shield') released <<[stable]>>
+Subject: GNU Parallel 20200822 ('Beirut/Juan Carlos') released <<[stable]>>
 
-GNU Parallel 20200622 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200822 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 

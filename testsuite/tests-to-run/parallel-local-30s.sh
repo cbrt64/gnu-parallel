@@ -146,8 +146,11 @@ par_groupby() {
 
 par_groupby_pipepart() {
     tsv() {
-	printf "%s\t" a1 b1 c1 d1 e1 f1; echo
+	# TSV file
+	printf "%s\t" header_a1 head_b1 c1 d1 e1 f1; echo
+	# Make 6 columns: 123456 => 1\t2\t3\t4\t5\t6
 	seq 100000 999999 | perl -pe '$_=join"\t",split//' |
+	    # Sort reverse on column 3 (This should group on col 3)
 	    sort --parallel=8 --buffer-size=50% -rk3
     }
     export -f tsv
@@ -178,7 +181,8 @@ par_groupby_pipepart() {
 	
 	echo "### test $generator | --colsep $colsep --groupby $groupby"
 	$generator > $tmp
-	parallel --pipepart -a $tmp --colsep "$colsep" --groupby "$groupby" -k 'echo NewRec; wc'
+	parallel --header 1 --pipepart -k \
+		 -a $tmp --colsep "$colsep" --groupby "$groupby" 'echo NewRec; wc'
     }
     export -f tester
     parallel --tag -k tester \
@@ -213,7 +217,7 @@ par_memory_leak() {
     }
     export -f a_run
     echo "### Test for memory leaks"
-    echo "Of 100 runs of 1 job none should be bigger than a 3000 job run"
+    echo "Of 100 runs of 1 job at least one should be bigger than a 3000 job run"
     . `which env_parallel.bash`
     parset small_max,big ::: 'seq 100 | parallel a_run 1 | jq -s max' 'a_run 3000'
     if [ $small_max -lt $big ] ; then

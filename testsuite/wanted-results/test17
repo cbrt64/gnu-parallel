@@ -4,25 +4,25 @@
 file>fire
 file : & ) \n*.jpg
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 ls: /tmp/parallel.file*: No such file or directory
 ### --transfer - relpath
 file>fire
 file : & ) \n*.jpg
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 ls: tmp/parallel.file*: No such file or directory
 ### --transfer --cleanup - abspath
 file>fire
 file : & ) \n*.jpg
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 ls: /tmp/parallel.file*: No such file or directory
 ### --transfer --cleanup - relpath
 file>fire
 file : & ) \n*.jpg
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -61,7 +61,7 @@ good if no file
 /tmp/parallel.file>fire.file.done
 /tmp/parallel.file>fire.out
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 OK
 ls: /tmp/parallel.file*: No such file or directory
 OK
@@ -71,7 +71,7 @@ OK
 /tmp/parallel.file>fire.file.done
 /tmp/parallel.file>fire.out
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -80,7 +80,7 @@ OK
 /tmp/parallel.file : & ) \n*.jpg.out
 /tmp/parallel.file>fire.file.done
 /tmp/parallel.file>fire.out
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -90,7 +90,7 @@ OK
 /tmp/parallel.file>fire.file.done
 /tmp/parallel.file>fire.out
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 OK
 ls: /tmp/parallel.file*: No such file or directory
 OK
@@ -100,7 +100,7 @@ tmp/parallel.file : & ) \n*.jpg.out
 tmp/parallel.file>fire.file.done
 tmp/parallel.file>fire.out
 good if no file
-ls: tmp/parallel.file*: No such file or directory
+ls: cannot access 'tmp/parallel.file*': No such file or directory
 OK
 ls: tmp/parallel.file*: No such file or directory
 OK
@@ -110,7 +110,7 @@ OK
 /tmp/parallel.file>fire.file.done
 /tmp/parallel.file>fire.out
 good if no file
-ls: /tmp/parallel.file*: No such file or directory
+ls: cannot access '/tmp/parallel.file*': No such file or directory
 OK
 ls: /tmp/parallel.file*: No such file or directory
 OK

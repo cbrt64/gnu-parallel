@@ -2,28 +2,28 @@
 4
 1
 1
-centos3.tange.dk
+centos8.localdomain
+freebsd12.localdomain
 hostname; echo 1
 hostname; echo 1
-redhat9.tange.dk
 ### Test $PARALLEL - multi line
 1
 1
-centos3.tange.dk
+centos8.localdomain
+freebsd12.localdomain
 hostname; echo 1
 hostname; echo 1
-redhat9.tange.dk
 ### Test ~/.parallel/config - single line
 1
 1
-centos3.tange.dk
+centos8.localdomain
+freebsd12.localdomain
 hostname; echo 1
 hostname; echo 1
-redhat9.tange.dk
 ### Test ~/.parallel/config - multi line
 1
 1
-centos3.tange.dk
+centos8.localdomain
+freebsd12.localdomain
 hostname; echo 1
 hostname; echo 1
-redhat9.tange.dk

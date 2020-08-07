@@ -1,4 +1,4 @@
-echo '### Test --onall';   parallel --onall -S parallel@parallel-server1,parallel@parallel-server2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2
+echo '### Test --onall';   parallel --onall -S vagrant@parallel-server1,vagrant@parallel-server2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2
 ### Test --onall
 1
 2
@@ -12,7 +12,7 @@ echo '### Test --onall';   parallel --onall -S parallel@parallel-server1,paralle
 2
 1
 2
-echo '### Test | --onall';   seq 3 | parallel --onall -S parallel@parallel-server1,parallel@parallel-server2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c :::: -
+echo '### Test | --onall';   seq 3 | parallel --onall -S vagrant@parallel-server1,vagrant@parallel-server2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c :::: -
 ### Test | --onall
 1
 2
@@ -32,7 +32,7 @@ echo '### Test | --onall';   seq 3 | parallel --onall -S parallel@parallel-serve
 1
 2
 3
-echo '### Test --onall -u';   parallel --onall -S parallel@parallel-server1,parallel@parallel-server2 -u '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2 3 | sort
+echo '### Test --onall -u';   parallel --onall -S vagrant@parallel-server1,vagrant@parallel-server2 -u '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2 3 | sort
 ### Test --onall -u
 1
 1
@@ -52,31 +52,31 @@ echo '### Test --onall -u';   parallel --onall -S parallel@parallel-server1,para
 3
 3
 3
-echo '### Test --nonall';   parallel --nonall -k -S parallel@parallel-server1,parallel@parallel-server2 'hostname' | sort
+echo '### Test --nonall';   parallel --nonall -k -S vagrant@parallel-server1,vagrant@parallel-server2 'hostname' | sort
 ### Test --nonall
-centos3.tange.dk
-redhat9.tange.dk
-echo '### Test --nonall -u - should be interleaved x y x y';   parallel --nonall -S parallel@parallel-server1,parallel@parallel-server2 -u 'hostname|grep -q redhat9 && sleep 3; hostname;sleep 12;hostname;'
+centos8.localdomain
+freebsd11.localdomain
+echo '### Test --nonall -u - should be interleaved x y x y';   parallel --nonall -S vagrant@parallel-server1,vagrant@parallel-server2 -u 'hostname|grep -q redhat9 && sleep 3; hostname;sleep 12;hostname;'
 ### Test --nonall -u - should be interleaved x y x y
-centos3.tange.dk
-redhat9.tange.dk
-centos3.tange.dk
-redhat9.tange.dk
-echo '### Test read sshloginfile from STDIN';   echo parallel@parallel-server1 | parallel -S - --nonall hostname;   echo parallel@parallel-server1 | parallel --sshloginfile - --nonall hostname
+freebsd11.localdomain
+centos8.localdomain
+freebsd11.localdomain
+centos8.localdomain
+echo '### Test read sshloginfile from STDIN';   echo vagrant@parallel-server1 | parallel -S - --nonall hostname;   echo vagrant@parallel-server1 | parallel --sshloginfile - --nonall hostname
 ### Test read sshloginfile from STDIN
-redhat9.tange.dk
-redhat9.tange.dk
-echo '### Test --nonall --basefile';   touch /tmp/nonall--basefile;   parallel --nonall --basefile /tmp/nonall--basefile -S parallel@parallel-server1,parallel@parallel-server2 ls /tmp/nonall--basefile\; rm  /tmp/nonall--basefile;   rm /tmp/nonall--basefile
+centos8.localdomain
+centos8.localdomain
+echo '### Test --nonall --basefile';   touch /tmp/nonall--basefile;   parallel --nonall --basefile /tmp/nonall--basefile -S vagrant@parallel-server1,vagrant@parallel-server2 ls /tmp/nonall--basefile\; rm  /tmp/nonall--basefile;   rm /tmp/nonall--basefile
 ### Test --nonall --basefile
 /tmp/nonall--basefile
 /tmp/nonall--basefile
-echo '### Test --onall --basefile';   touch /tmp/onall--basefile;   parallel --onall --basefile /tmp/onall--basefile -S parallel@parallel-server1,parallel@parallel-server2 ls {}\; rm {} ::: /tmp/onall--basefile;   rm /tmp/onall--basefile
+echo '### Test --onall --basefile';   touch /tmp/onall--basefile;   parallel --onall --basefile /tmp/onall--basefile -S vagrant@parallel-server1,vagrant@parallel-server2 ls {}\; rm {} ::: /tmp/onall--basefile;   rm /tmp/onall--basefile
 ### Test --onall --basefile
 /tmp/onall--basefile
 /tmp/onall--basefile
-echo '### Test --workdir .';   ssh parallel@parallel-server1 mkdir -p mydir;   mkdir -p $HOME/mydir; cd $HOME/mydir;   parallel --workdir . -S parallel@parallel-server1 ::: pwd
+echo '### Test --workdir .';   ssh vagrant@parallel-server1 mkdir -p mydir;   mkdir -p $HOME/mydir; cd $HOME/mydir;   parallel --workdir . -S vagrant@parallel-server1 ::: pwd
 ### Test --workdir .
-/home/parallel/mydir
-echo '### Test --wd .';   ssh parallel@parallel-server2 mkdir -p mydir;   mkdir -p $HOME/mydir; cd $HOME/mydir;   parallel --workdir . -S parallel@parallel-server2 ::: pwd
+/home/vagrant/mydir
+echo '### Test --wd .';   ssh vagrant@parallel-server2 mkdir -p mydir;   mkdir -p $HOME/mydir; cd $HOME/mydir;   parallel --workdir . -S vagrant@parallel-server2 ::: pwd
 ### Test --wd .
-/home/parallel/mydir
+/usr/home/vagrant/mydir

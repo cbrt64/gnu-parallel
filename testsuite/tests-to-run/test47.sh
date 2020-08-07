@@ -1,10 +1,20 @@
 #!/bin/bash
 
-# must be other servers than localhost
 SERVER1=parallel-server1
 SERVER2=parallel-server2
-SSHLOGIN1=parallel@$SERVER1
-SSHLOGIN2=parallel@$SERVER2
+SERVER2=parallel-server3
+SSHUSER1=vagrant
+SSHUSER2=vagrant
+SSHUSER3=vagrant
+SSHLOGIN1=$SSHUSER1@$SERVER1
+SSHLOGIN2=$SSHUSER2@$SERVER2
+SSHLOGIN3=$SSHUSER3@$SERVER3
+
+## must be other servers than localhost
+#SERVER1=parallel-server1
+#SERVER2=parallel-server2
+#SSHLOGIN1=parallel@$SERVER1
+#SSHLOGIN2=parallel@$SERVER2
 export SSHLOGIN1
 export SSHLOGIN2
 # Minimal version of test17
