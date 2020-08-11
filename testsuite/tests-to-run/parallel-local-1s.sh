@@ -214,7 +214,8 @@ par_compress_prg_fails() {
 	echo $?) | tail -n1
     }
     export -f doit
-    parallel --tag -k doit ::: '' --line-buffer ::: '' --tag ::: '' --files
+    stdout parallel --tag -k doit ::: '' --line-buffer ::: '' --tag ::: '' --files |
+	grep -v -- -dc
 }
 
 par_pxz_complains() {

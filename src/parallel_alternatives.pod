@@ -2616,6 +2616,85 @@ https://pypi.org/project/papply/ (Last checked: 2020-04)
 
 =head2 Todo
 
+test_many_var() {
+gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
+for a in `seq 11000`; do eval "export a$a=1" ; done
+gen500k | stdout parallel --timeout 5 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
+}
+
+test_many_var_func() {
+gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
+for a in `seq 5100`; do eval "export a$a=1" ; done
+for a in `seq 5100`; do eval "a$a() { 1; }" ; done
+for a in `seq 5100`; do eval export -f a$a ; done
+gen500k | stdout parallel --timeout 21 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
+}
+
+test_many_var_func() {
+gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
+for a in `seq 8000`; do eval "a$a() { 1; }" ; done
+for a in `seq 8000`; do eval export -f a$a ; done
+gen500k | stdout parallel --timeout 6 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
+}
+
+test_big_func() {
+gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
+big=`seq 1000`
+for a in `seq 50`; do eval "a$a() { '$big'; }" ; done
+for a in `seq 50`; do eval export -f a$a ; done
+gen500k | stdout parallel --timeout 4 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
+}
+
+test_many_var_big_func() {
+gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
+big=`seq 1000`
+for a in `seq 5100`; do eval "export a$a=1" ; done
+for a in `seq 20`; do eval "a$a() { '$big'; }" ; done
+for a in `seq 20`; do eval export -f a$a ; done
+gen500k | stdout parallel --timeout 6 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
+}
+
+test_big_func_name() {
+gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
+big=`perl -e print\"x\"x10000`
+for a in `seq 20`; do eval "export a$big$a=1" ; done
+gen500k | stdout parallel --timeout 8 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
+}
+
+test_big_var_func_name() {
+gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
+big=`perl -e print\"x\"x10000`
+for a in `seq 2`; do eval "export a$big$a=1" ; done
+for a in `seq 2`; do eval "a$big$a() { '$big'; }" ; done
+for a in `seq 2`; do eval export -f a$big$a ; done
+gen500k | stdout parallel --timeout 1000 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
+}
+
+
+
+tange@macosx:~$ for a in `seq 100`; do eval export a$a=fffffffffffffffffffffffff ; donetange@macosx:~$ seq 50000 | stdout parallel -Xj1  'echo {} {} | wc' | perl -pe 's/\d{3,5} //g'
+tange@macosx:~$ for a in `seq 100`; do eval export a$a=fffffffffffffffffffffffff ; donetange@macosx:~$ seq 50000 | stdout parallel -Xj1  'echo {} {} | wc' | perl -pe 's/\d{3,5} //g'
+tange@macosx:~$ for a in `seq 100`; do eval export -f a$a ; done
+
+
+seq 100000 | stdout parallel -Xj1  'echo {} {} | wc'
+export a=`seq 10000`
+seq 100000 | stdout parallel -Xj1  'echo {} {} | wc'
+
+
+
+    my $already_spread;
+    my $env_size;
+
+        if($^O eq "darwin") {
+            $env_size ||= 500+length(join'',%ENV);
+            $max_len -= $env_size;
+        }
+
+
+PASH: Light-touch Data-Parallel Shell Processing
+https://arxiv.org/pdf/2007.09436.pdf
+
 https://gitlab.com/netikras/bthread
 
 https://github.com/JeiKeiLim/simple_distribute_job

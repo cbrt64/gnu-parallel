@@ -31,26 +31,31 @@ export -f destroy_one
 
 
 server_list() {
-    cat <<SSHOK
-generic/arch.98
-generic/centos6.6
-generic/centos7.7
-generic/centos8.8
-generic/debian8.18
-generic/debian9.19
-generic/debian10.30
-generic/devuan3.43
-generic/freebsd11.71
-generic/freebsd12.72
-generic/gentoo.99
-generic/netbsd9.89
-generic/oracle7.127
-generic/rhel6.106
-generic/rhel7.107
-generic/rhel8.108
-generic/ubuntu1604.216
-generic/ubuntu1804.218
-generic/ubuntu2004.220
+    grep -v '#' <<SSHOK
+#generic/arch.98
+hfm4/centos4.4
+hfm4/centos5.5
+#generic/centos6.6
+#generic/centos7.7
+#generic/centos8.8
+MarcinOrlowski/debian4-i386.14
+twolfman/debian6-lamp-drush.16
+puphpet/debian75-x64.17
+#generic/debian8.18
+#generic/debian9.19
+#generic/debian10.30
+#generic/devuan3.43
+#generic/freebsd11.71
+#generic/freebsd12.72
+#generic/gentoo.99
+#generic/netbsd9.89
+#generic/oracle7.127
+#generic/rhel6.106
+#generic/rhel7.107
+#generic/rhel8.108
+#generic/ubuntu1604.216
+#generic/ubuntu1804.218
+#generic/ubuntu2004.220
 SSHOK
 
     # Ignore for now

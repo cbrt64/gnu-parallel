@@ -6,26 +6,33 @@ install_packages() {
     INSTALL=${INSTALL:-"sudo aptitude -y install"}
 
     # The testsuite depends on this:
-    test_pkgs="imagemagick expect autossh sshpass jq libpod-simple-perl pod2pdf gawk"
-    test_pkgs="$test_pkgs lua5.3 clisp php-cli nodejs mono-csharp-shell libevent-dev"
-    test_pkgs="$test_pkgs tcl libtext-csv-perl xterm libc6-i386 libcrypt1:i386"
+    test_pkgs="imagemagick expect autossh sshpass jq libpod-simple-perl"
+    test_pkgs="$test_pkgs pod2pdf gawk lua5.3 clisp php-cli nodejs"
+    test_pkgs="$test_pkgs mono-csharp-shell libevent-dev tcl libtext-csv-perl"
+    test_pkgs="$test_pkgs xterm libc6-i386 libcrypt1:i386"
+    test_pkgs="$test_pkgs libtest-nowarnings-perl"
 
     # DEBIAN package
-    packaging_pkgs="dpkg-dev build-essential debhelper osc cvs automake-1.15 python3-m2crypto"
+    packaging_pkgs="dpkg-dev build-essential debhelper osc cvs automake-1.15"
+    packaging_pkgs="$packaging_pkgs python3-m2crypto alien"
     # SHEBANG TOOLS
     shebang_pkgs="gnuplot octave ruby r-base-core"
     # SQL TOOLS
-    sql_pkgs="libdbd-pg-perl libdbd-sqlite3-perl libdbd-csv-perl libdbd-mysql-perl rlwrap"
+    sql_pkgs="libdbd-pg-perl libdbd-sqlite3-perl libdbd-csv-perl"
+    sql_pkgs="$sql_pkgs libdbd-mysql-perl rlwrap"
     # Compression
-    compression_pkgs="zstd clzip liblz4-tool lzop pigz pixz gzip plzip pbzip2 lzma xz-utils lzip bzip2 lbzip2 lrzip"
+    compression_pkgs="zstd clzip liblz4-tool lzop pigz pixz gzip plzip pbzip2"
+    compression_pkgs="$compression_pkgs lzma xz-utils lzip bzip2 lbzip2 lrzip"
     compression_pkgs_missing="pxz"
     # Shells
     # (csh = bsd-csh that is broken)
-    shell_pkgs="ash dash fdclone fish fizsh ksh ksh93 mksh posh rc rush sash tcsh yash zsh"
+    shell_pkgs="ash dash fdclone fish fizsh ksh ksh93 mksh posh rc rush sash"
+    shell_pkgs="$shell_pkgs tcsh yash zsh"
     # Databases
     database_pkgs="postgresql mysql-server sqlite"
-    sudo dpkg --add-architecture i386
-    if $INSTALL $test_pkgs $packaging_pkgs $shebang_pkgs $sql_pkgs $compression_pkgs $shell_pkgs $database_pkgs; then
+    sudo dpkg --add-architecture i386; sudo apt update
+    if $INSTALL $test_pkgs $packaging_pkgs $shebang_pkgs $sql_pkgs \
+		$compression_pkgs $shell_pkgs $database_pkgs; then
 	# OK
 	true
     else
@@ -33,6 +40,53 @@ install_packages() {
 	return 1
     fi
     sudo apt update &
+}
+
+install_oracle_client() {
+    # https://salsa.debian.org/perl-team/modules/packages/libdbd-oracle-perl/blob/master/debian/README.Debian
+    # sql oracle:// && return 0
+    (cd /tmp
+
+     get_rpm_install_deb() {
+	 glob="$1"
+	 url="$oracleurl/$2"
+	 testglob="$3"
+	 if [ ! -e `echo $glob*rpm` ] ; then
+	     wget $url
+	 fi
+	 if [ ! -e `echo $glob*deb` ] ; then
+	     echo Convert `echo $glob*rpm` to deb
+	     fakeroot alien `echo $glob*rpm`
+	 fi
+	 if [ ! -e `echo $testglob` ] ; then
+	     echo Install `echo $glob*deb`
+	     sudo dpkg -i `echo $glob*deb`
+	 fi
+     }
+
+     oracleurl=https://download.oracle.com/otn_software/linux/instantclient/19600
+     client=oracle-instantclient19.6
+     ver=19.6.0.0.0-1.x86_64.rpm
+     get_rpm_install_deb 'oracle-instantclient*devel' $client-devel-$ver /usr/share/doc/oracle-instantclient*-devel/copyright
+     get_rpm_install_deb 'oracle-instantclient*basic'   $client-basic-$ver /usr/share/oracle/*/client*/doc/BASIC_README
+     get_rpm_install_deb 'oracle-instantclient*sqlplus' $client-sqlplus-$ver /usr/lib/oracle/*/client*/bin/sqlplus
+    )     
+
+    echo Add this to .bashrc:
+    ORACLE_HOME=`echo /usr/lib/oracle/*/client*`
+    echo ORACLE_HOME=$ORACLE_HOME
+    if grep -q ORACLE_HOME=/ ~/.bashrc; then
+	perl -i.old -pe "s:ORACLE_HOME=/.*:ORACLE_HOME=$ORACLE_HOME:" ~/.bashrc
+    else
+	echo ORACLE_HOME=$ORACLE_HOME >> ~/.bashrc
+	echo 'PATH=$PATH:$ORACLE_HOME/bin' >> ~/.bashrc
+	echo 'export ORACLE_HOME' >> ~/.bashrc
+	echo 'export ORACLE_SID=XE' >> ~/.bashrc
+    fi
+    perl -MCPAN -e 'install DBD::Oracle'
+    # TODO set up vagrant oracle server
+    # TODO set up default passwd
+    # test it works: sql oracle://
 }
 
 setup_databases() {
@@ -46,15 +100,15 @@ setup_databases() {
     sudo su - postgres -c "sql pg:/// \"ALTER USER \\\"`whoami`\\\" WITH PASSWORD '`whoami`';\""
 
     mysqlrootpass=${mysqlrootpass:-b+Ydjq4ejT4E}
-
+    dburl=mysql://root:"$mysqlrootpass"@/mysql
     echo '# Create MySQL'
     sudo su mysql mysqladmin create `whoami`
     # Default Debian way of getting "root" access
     sudo mysql --defaults-file=/etc/mysql/debian.cnf mysql <<< "ALTER USER 'root'@'localhost' IDENTIFIED BY '$mysqlrootpass';"
 
     # Drop database and user if needed
-    sudo sql mysql://root:"$mysqlrootpass"@/mysql "DROP DATABASE `whoami`;DROP USER '`whoami`'@'localhost';"
-    sudo sql mysql://root:"$mysqlrootpass"@/mysql "CREATE DATABASE `whoami`;CREATE USER '`whoami`'@'localhost' IDENTIFIED BY '`whoami`'; GRANT ALL ON `whoami`.* TO '`whoami`'@'localhost';"
+    sudo sql "$dburl" "DROP DATABASE `whoami`;DROP USER '`whoami`'@'localhost';"
+    sudo sql "$dburl" "CREATE DATABASE `whoami`;CREATE USER '`whoami`'@'localhost' IDENTIFIED BY '`whoami`'; GRANT ALL ON `whoami`.* TO '`whoami`'@'localhost';"
 }
 
 add_server_to_hosts() {
@@ -69,7 +123,8 @@ add_server_to_hosts() {
 }
 
 shellsplus() {
-    shells="bash sh csh ash dash tcsh zsh ksh ksh2020 ksh93 fish fizsh mksh posh rc sash yash nopathbash nopathcsh"
+    shells="bash sh csh ash dash tcsh zsh ksh ksh2020 ksh93 fish fizsh mksh"
+    shells="$shells posh rc sash yash nopathbash nopathcsh"
     shellsplus="parallel $shells"
     parallel -k echo ::: $shellsplus
 }
@@ -93,7 +148,9 @@ create_shell_logins() {
 	}
 	SSHPASS=`goodpasswd`
 	export SSHPASS
-	append-if-not-exists /etc/shells $(which $shell || which ${shell#"nopath"})
+	append-if-not-exists /etc/shells $(which $shell ||
+					       which ${shell#"nopath"})
+	sudo killall -u $shell
 	sudo deluser $shell && sudo mv /home/$shell /tmp/$shell.$RANDOM
 	sudo groupdel $shell
 	if echo $shell | grep -q parallel; then
@@ -112,7 +169,8 @@ create_shell_logins() {
 
     echo '# (Re-)create user'
     # Racecondition: if multiple adds a group it will the same group ID
-    shellsplus | parallel --timeout 15 --retries 5 --tag -j1 del_add_user ||
+    shellsplus |
+	parallel --lb --halt soon,fail=1 --timeout 1000% --retries 5 --tag -j1 del_add_user ||
 	(echo Creation failed: $?; false)
 }
 
@@ -120,15 +178,19 @@ copy_ssh_keys() {
     make_sshkey() {
 	shell="$1"
 	echo Add server keys for lo and server &&
-	    ssh $shell@lo 'rm -f .ssh/id_rsa; ssh-keyscan lo >>.ssh/known_hosts; ssh-keyscan server >> .ssh/known_hosts' &&
+	    ssh $shell@lo 'rm -f .ssh/id_rsa; 
+	                   ssh-keyscan lo >>.ssh/known_hosts;
+                           ssh-keyscan server >> .ssh/known_hosts' &&
 	    echo Do ssh-keygen &&
 	    echo | ssh -t $shell@lo ssh-keygen -b 1024 -f .ssh/id_rsa &&
 	    echo Do ssh $shell@lo 'cat .ssh/id_rsa.pub >> .ssh/authorized_keys' &&
 	    ssh $shell@lo 'cat .ssh/id_rsa.pub | tee -a .ssh/authorized_keys' |
-	      ssh parallel@lo 'cat >> .ssh/authorized_keys' &&
+		ssh parallel@lo 'cat >> .ssh/authorized_keys' &&
 	    ssh $shell@lo "echo ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAxg+dh+BL1myqo6A+pHcQCKVV5v7cewdkN8xGtMDqm7xGgh+e5A44W7qKViIx641d6yoWb012XzDz2MKetG4Kosoma8Z/qkS27p6901RmI3ap2JFffzBESlpQtW1FyxQPlMyBfrd4ONy8xW6R/gEkjC3yOcXCQO2494/c46ouXs5gtE84Cusr3RsopR4bI7oloH1GQZ4vsHSFSakq8IwcujaSh1mmribMONLb2TjDpmE7tAY+yfOVWHPQ2J+EU1//Go60EZfSRKOu81oxW7SJ2uGgWfWcs2T1lRtT8Yh+TwVTz8UFV75kVtpZ10x5baN+ncsSpaBK+8sFLfoMvA9yQQ'==' tange@freebsd71.tange.dk >> .ssh/authorized_keys" &&
 	    echo Do env_parallel --install &&
-	    ssh $shell@lo 'mkdir -p .parallel; touch .parallel/will-cite; env_parallel --install' &&
+	    ssh $shell@lo 'mkdir -p .parallel;
+                           touch .parallel/will-cite;
+                           env_parallel --install' &&
 	    echo OK make_sshkey $shell &&
 	    echo >&2 &&
 	    echo OK make_sshkey $shell >&2 &&
@@ -155,9 +217,11 @@ copy_ssh_keys() {
     export -f ssh_copy_id
 
     echo '# copy id from any X to any Y'
-    parallel -u --bar -j3 --timeout 3 --retries 10 --tag ssh_copy_id {1}@lo {2}@lo ::: $(shellsplus) ::: $(shellsplus)
+    parallel -u --bar -j3 --timeout 3 --retries 10 --tag \
+	     ssh_copy_id {1}@lo {2}@lo ::: $(shellsplus) ::: $(shellsplus)
     echo '# Test the copying went well'
-    parallel    --bar -j2 --timeout 9 --retries 10 --tag ssh_a_to_b ::: $(shellsplus) ::: $(shellsplus)
+    parallel    --bar -j2 --timeout 9 --retries 10 --tag \
+		ssh_a_to_b ::: $(shellsplus) ::: $(shellsplus)
 
     echo '# change paths to no path'
     (
@@ -183,16 +247,21 @@ lsh_setup() {
     cd
     mkdir -p .lsh
     lsh-make-seed -o ".lsh/yarrow-seed-file"
-    lsh -c aes256-ctr --sloppy-host-authentication --capture-to ~/.lsh/host-acls lo echo Added host-auth
-    lsh -c aes256-ctr --sloppy-host-authentication --capture-to ~/.lsh/host-acls localhost echo Added host-auth
+    lsh -c aes256-ctr --sloppy-host-authentication \
+	--capture-to ~/.lsh/host-acls lo echo Added host-auth
+    lsh -c aes256-ctr --sloppy-host-authentication \
+	--capture-to ~/.lsh/host-acls localhost echo Added host-auth
     lsh-keygen | lsh-writekey -c none
-    lsh-export-key --openssh < ~/.lsh/identity.pub | lsh -c aes256-ctr lo 'cat >>.ssh/authorized_keys'
-    lsh-export-key --openssh < ~/.lsh/identity.pub | ssh csh@lo 'cat >>.ssh/authorized_keys'
+    lsh-export-key --openssh < ~/.lsh/identity.pub |
+	lsh -c aes256-ctr lo 'cat >>.ssh/authorized_keys'
+    lsh-export-key --openssh < ~/.lsh/identity.pub |
+	ssh csh@lo 'cat >>.ssh/authorized_keys'
 }
 
 add_freebsd() {
     echo "# Add public key to freebsd7.t"
-    ssh freebsd7.t cat .ssh/id_rsa.pub | ssh parallel@localhost 'cat >>.ssh/authorized_keys'
+    ssh freebsd7.t cat .ssh/id_rsa.pub |
+	ssh parallel@localhost 'cat >>.ssh/authorized_keys'
 
     echo Add:
     echo HostkeyAlgorithms +ssh-dss
@@ -204,7 +273,8 @@ add_freebsd() {
     echo KexAlgorithms diffie-hellman-group-exchange-sha256,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,curve25519-sha256@libssh.org,diffie-hellman-group1-sha1,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1
     echo
     echo If you get:
-    echo Unable to negotiate with server port 22: no matching cipher found. Their offer: aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
+    echo Unable to negotiate with server port 22: no matching cipher found.
+    echo Their offer: aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc,rijndael-cbc@lysator.liu.se
     echo add this to .ssh/config
     echo   Ciphers +aes256-cbc
 }
@@ -247,7 +317,8 @@ bash_versions() {
      export -f make_one
      echo '# Building bash'
      (cd bash; git tag | grep -v -- '-.*-') |
-	 stdout parallel --lb --tag '/usr/local/bin/{} --version || make_one {}'
+	 stdout parallel --lb --tag \
+		'/usr/local/bin/{} --version || make_one {}'
      (cd bash; git tag | grep -v -- '-.*-') |
 	 parallel -k -v --tag '/usr/local/bin/{} --version'
     )
@@ -263,6 +334,7 @@ misc() {
 
 run() {
     install_packages &&
+    install_oracle_client &&
     setup_databases &&
     add_server_to_hosts &&
     create_shell_logins &&

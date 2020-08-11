@@ -6249,36 +6249,48 @@ sub memfree_recompute() {
 		# Buffers:         19876 kB
 		# Cached:         431192 kB
 		# SwapCached:          0 kB
-		"linux" =>
-		q[ print 1024 * qx{ ].
-		q[   awk '/^((Swap)?Cached|MemFree|Buffers):/ ].
-		q[     { sum += \$2} END { print sum }' ].
-		q[   /proc/meminfo } ],
+		"linux" => (
+		    q{
+			print 1024 * qx{
+			awk '/^((Swap)?Cached|MemFree|Buffers):/
+			{ sum += \$2} END { print sum }'
+			    /proc/meminfo }
+		    }),
 		# Android uses same code as GNU/Linux
-		"android" =>
-		q[ print 1024 * qx{ ].
-		q[   awk '/^((Swap)?Cached|MemFree|Buffers):/ ].
-		q[     { sum += \$2} END { print sum }' ].
-		q[   /proc/meminfo } ],
-
+		"android" => (
+		    q{
+			print 1024 * qx{
+			awk '/^((Swap)?Cached|MemFree|Buffers):/
+			{ sum += \$2} END { print sum }'
+			    /proc/meminfo }
+		    }),
 		# $ vmstat 1 1
-		#     procs           memory                   page                              faults       cpu
-		# r     b     w      avm    free   re   at    pi   po    fr   de    sr     in     sy    cs  us sy id
-		# 1     0     0   242793  389737    5    1     0    0     0    0     0    107    978    60   1  1 99
-		"hpux" =>
-		q[ print (((reverse `vmstat 1 1`)[0] ].
-		q[   =~ /(?:\d+\D+){4}(\d+)/)[0]*1024) ],
+		#   procs         memory         page                   faults       cpu
+		# r  b  w    avm    free re at  pi po  fr de  sr   in   sy  cs  us sy id
+		# 1  0  0 242793  389737  5  1   0  0   0  0   0  107  978  60   1  1 99
+		"hpux" => (
+		    q{
+			print (((reverse `vmstat 1 1`)[0]
+			    =~ /(?:\d+\D+){4}(\d+)/)[0]*1024)
+		    }),
 		# $ vmstat 1 2
 		# kthr      memory            page            disk          faults      cpu
 		# r b w   swap  free  re  mf pi po fr de sr s3 s4 -- --   in   sy   cs us sy id
 		# 0 0 0 6496720 5170320 68 260 8 2  1  0  0 -0  3  0  0  309 1371  255  1  2 97
-		# 0 0 0 6434088 5072656 7 15  8  0  0  0  0  0 261 0  0 1889 1899 3222  0  8 92
+		# 0 0 0 6434088 5072656  7  15 8 0  0  0  0  0 261 0  0 1889 1899 3222  0  8 92
 		#
 		# The second free value is correct
-		"solaris" =>
-		q[ print (((reverse `vmstat 1 2`)[0] ].
-		q[   =~ /(?:\d+\D+){4}(\d+)/)[0]*1024) ],
-		"freebsd" => q{
+		"solaris" => (
+		    q{
+			print (((reverse `vmstat 1 2`)[0]
+				=~ /(?:\d+\D+){4}(\d+)/)[0]*1024)
+		    }),
+		# hw.pagesize: 4096
+		# vm.stats.vm.v_cache_count: 0
+		# vm.stats.vm.v_inactive_count: 79574
+		# vm.stats.vm.v_free_count: 4507
+		"freebsd" => (
+		    q{
 			for(qx{/sbin/sysctl -a}) {
 			    if (/^([^:]+):\s+(.+)\s*$/s) {
 				$sysctl->{$1} = $2;
@@ -6288,7 +6300,7 @@ sub memfree_recompute() {
 			    ($sysctl->{"vm.stats.vm.v_cache_count"}
 			     + $sysctl->{"vm.stats.vm.v_inactive_count"}
 			     + $sysctl->{"vm.stats.vm.v_free_count"});
-		    },
+		    }),
 		# Mach Virtual Memory Statistics: (page size of 4096 bytes)
 		# Pages free:                         198061.
 		# Pages active:                       159701.
@@ -6302,12 +6314,13 @@ sub memfree_recompute() {
 	        # Pageins:                           1798068.
 	        # Pageouts:                              257.
 		# Object cache: 6603 hits of 1713223 lookups (0% hit rate)
-		'darwin' =>
-		q[ $vm = `vm_stat`;
-		  print (($vm =~ /page size of (\d+)/)[0] *
-		  (($vm =~ /Pages free:\s+(\d+)/)[0] +
-		   ($vm =~ /Pages inactive:\s+(\d+)/)[0]));
-		],
+		'darwin' => (
+		    q{
+			$vm = `vm_stat`;
+			print (($vm =~ /page size of (\d+)/)[0] *
+			       (($vm =~ /Pages free:\s+(\d+)/)[0] +
+				($vm =~ /Pages inactive:\s+(\d+)/)[0]));
+		    }),
 		);
 	    my $perlscript = "";
 	    # Make a perl script that detects the OS ($^O) and runs
@@ -6315,8 +6328,7 @@ sub memfree_recompute() {
 	    for my $os (keys %script_of) {
 		$perlscript .= 'if($^O eq "'.$os.'") { '.$script_of{$os}.'}';
 	    }
-	    $perlscript =~ s/[\t\n ]+/ /g;
-	    $script = "perl -e " . ::Q($perlscript);
+	    $script = "perl -e " . ::Q(::spacefree(1,$perlscript));
 	}
 	return $script;
     }
@@ -10469,6 +10481,7 @@ sub slot($) {
 
 {
     my $already_spread;
+    my $env_size;
 
     sub populate($) {
 	# Add arguments from arg_queue until the number of arguments or
@@ -10486,7 +10499,25 @@ sub slot($) {
 	my $next_arg;
 	my $max_len = $Global::minimal_command_line_length
 	    || Limits::Command::max_length();
-
+	if($^O eq "darwin") {
+	    # On Mac bash 3.2.48(1)-release the length also depends on
+	    # number of functions, variables and the size of those.
+	    # 21 is found by trial and error and seems to be a safe value.
+	    # test_with() {
+	    # 	gen500k() {
+	    # 	    seq -f %f 1000000000000000 1000000000050000 |
+	    # 		head -c 131000;
+	    # 	}
+	    # 	for a in `seq 5100`; do eval "export a$a=1" ; done;
+	    # 	for a in `seq 5100`; do eval "a$a() { 1; }" ; done;
+	    # 	for a in `seq 5100`; do eval export -f a$a ; done;
+	    # 	gen500k | stdout parallel -Xj1  'echo {} {} {} {} | wc' |
+	    # 	    perl -pe 's/\d{10,} //g'
+	    # }
+            $env_size ||= (keys %ENV)*21
+                + length(join'',keys %ENV) + length(join'',%ENV);
+            $max_len -= $env_size;
+        }
 	if($opt::cat or $opt::fifo) {
 	    # Get the empty arg added by --pipepart (if any)
 	    $Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->get();
