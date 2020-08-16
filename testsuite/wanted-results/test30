@@ -22,7 +22,7 @@ Computers / CPU cores / Max jobs to run
 0
 echo '### --timeout --onall on remote machines: 2*slept 1, 2 jobs failed'
 ### --timeout --onall on remote machines: 2*slept 1, 2 jobs failed
-  parallel -j0 --timeout 6 --onall -S localhost,parallel@parallel-server1 'sleep {}; echo slept {}' ::: 1 8 9 ; echo jobs failed: $?
+  parallel -j0 --timeout 6 --onall -S localhost,$SSHLOGIN1 'sleep {}; echo slept {}' ::: 1 8 9 ; echo jobs failed: $?
 slept 1
 slept 1
 jobs failed: 2

@@ -2,6 +2,15 @@
 
 # Each test should at most run 1 ssh against parallel@lo or lo
 
+par_transfer_special_char_names() {
+    echo '### Test --return of weirdly named file'
+    ssh parallel@lo rm 'aa*b'
+    rm -f 'aa<${#}" b'
+    stdout parallel --return {} -S parallel@lo echo '>'{} ::: 'aa<${#}" b'
+    ls 'aa<${#}" b'
+    rm -f 'aa<${#}" b'
+}
+
 par_path_remote_bash() {
   echo 'bug #47695: How to set $PATH on remote? Bash'
   rm -rf /tmp/parallel

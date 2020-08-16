@@ -2160,7 +2160,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200623;
+    $Global::version = 20200815;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -10499,25 +10499,6 @@ sub slot($) {
 	my $next_arg;
 	my $max_len = $Global::minimal_command_line_length
 	    || Limits::Command::max_length();
-	if($^O eq "darwin") {
-	    # On Mac bash 3.2.48(1)-release the length also depends on
-	    # number of functions, variables and the size of those.
-	    # 21 is found by trial and error and seems to be a safe value.
-	    # test_with() {
-	    # 	gen500k() {
-	    # 	    seq -f %f 1000000000000000 1000000000050000 |
-	    # 		head -c 131000;
-	    # 	}
-	    # 	for a in `seq 5100`; do eval "export a$a=1" ; done;
-	    # 	for a in `seq 5100`; do eval "a$a() { 1; }" ; done;
-	    # 	for a in `seq 5100`; do eval export -f a$a ; done;
-	    # 	gen500k | stdout parallel -Xj1  'echo {} {} {} {} | wc' |
-	    # 	    perl -pe 's/\d{10,} //g'
-	    # }
-            $env_size ||= (keys %ENV)*21
-                + length(join'',keys %ENV) + length(join'',%ENV);
-            $max_len -= $env_size;
-        }
 	if($opt::cat or $opt::fifo) {
 	    # Get the empty arg added by --pipepart (if any)
 	    $Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->get();
@@ -11517,10 +11498,40 @@ sub max_length($) {
     return int($Limits::Command::line_max_len);
 }
 
-sub real_max_length($) {
+sub real_max_length() {
     # Find the max_length of a command line
     # Returns:
     #   The maximal command line length
+    if($^O eq "darwin") {
+	# env $((-260932 + $envl *4 -1064  + $envc + $single))
+	# Darwin's limit is affected by:
+	# * number of environment names (variables+functions)
+	# * size of environment
+	# * the length of arguments:
+	#   a one-char argument lowers the limit by 5
+	#   To be safe assume all arguments are one-char
+	my $max_len = find_max("x");
+	my $env_size = (keys %ENV) * 4 + length(join'',%ENV);
+	$max_len -= $env_size;
+	# Small fudge constant I cannot explain
+	$max_len -= 1064;
+	# If all arguments are 1 char, the limit is 5x smaller
+	$max_len /= 5;
+	return $max_len;
+    } else {
+	return find_max("x");
+    }
+}
+
+sub real_max_args() {
+    # Find the max number of args allowed on a command line
+    # Returns:
+    #   The maximal number of args allowed on a command line
+    return find_max(" x");
+}
+
+sub find_max($) {
+    my $string = shift;
     # This is slow on Cygwin, so give Cygwin users a warning
     if($^O eq "cygwin") {
 	::warning("Finding the maximal command line length. This may take up to 30 seconds.")
@@ -11533,39 +11544,42 @@ sub real_max_length($) {
     do {
 	if($len > $upper) { return $len };
 	$len *= 16;
-    } while (is_acceptable_command_line_length($len));
+    } while (is_acceptable_command_line_length($len,$string));
     # Then search for the actual max length between 0 and upper bound
-    return binary_find_max_length(int($len/16),$len);
+    return binary_find_max(int($len/16),$len,$string);
 }
 
 # Prototype forwarding
-sub binary_find_max_length($$);
-sub binary_find_max_length($$) {
-    # Given a lower and upper bound find the max_length of a command line
+sub binary_find_max($$$);
+sub binary_find_max($$$) {
+    # Given a lower and upper bound find the max (length or args) of a command line
     # Returns:
     #   number of chars on the longest command line allowed
-    my ($lower, $upper) = (@_);
+    my ($lower, $upper, $string) = (@_);
     if($lower == $upper or $lower == $upper-1) { return $lower; }
     my $middle = int (($upper-$lower)/2 + $lower);
     ::debug("init", "Maxlen: $lower<$middle<$upper: ");
-    if (is_acceptable_command_line_length($middle)) {
-	return binary_find_max_length($middle,$upper);
+    if (is_acceptable_command_line_length($middle,$string)) {
+	return binary_find_max($middle,$upper,$string);
     } else {
-	return binary_find_max_length($lower,$middle);
+	return binary_find_max($lower,$middle,$string);
     }
 }
 
-sub is_acceptable_command_line_length($) {
+sub is_acceptable_command_line_length($$) {
     # Test if a command line of this length can run
     # in the current environment
+    # If the string is " x" it tests how many args are allowed
     # Returns:
     #   0 if the command line length is too long
     #   1 otherwise
     my $len = shift;
+    my $string = shift;
     if($Global::parallel_env) {
 	$len += length $Global::parallel_env;
     }
-    ::qqx("true "."x"x$len);
+    # Force using non-built-in command
+    ::qqx("/bin/echo ".${string}x(($len-length "/bin/echo ")/length $string));
     ::debug("init", "$len=$? ");
     return not $?;
 }

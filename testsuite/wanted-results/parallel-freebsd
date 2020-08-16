@@ -55,13 +55,13 @@ par_shebang	bug #40134: FreeBSD: --shebang(-wrap) not working
 par_shebang	wrap
 par_shebang	works
 par_shebang	bug #40134: FreeBSD: --shebang(-wrap) with options not working
-par_shebang	/usr/bin/perl -w ./shebang-wrap-opt wrap
+par_shebang	/usr/local/bin/perl -w ./shebang-wrap-opt wrap
 par_shebang	wrap
-par_shebang	/usr/bin/perl -w ./shebang-wrap-opt works
+par_shebang	/usr/local/bin/perl -w ./shebang-wrap-opt works
 par_shebang	works
-par_shebang	/usr/bin/perl -w ./shebang-wrap-opt with
+par_shebang	/usr/local/bin/perl -w ./shebang-wrap-opt with
 par_shebang	with
-par_shebang	/usr/bin/perl -w ./shebang-wrap-opt options
+par_shebang	/usr/local/bin/perl -w ./shebang-wrap-opt options
 par_shebang	options
 par_shellshock_bug	par_shellshock_bug 2>&1
 par_shellshock_bug	bug #43358: shellshock breaks exporting functions using --env name
