@@ -2160,7 +2160,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200815;
+    $Global::version = 20200820;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5351,7 +5351,7 @@ sub qqx(@) {
 	# CygWin does not respect 2>/dev/null
 	# so we do that by hand
 	# This trick does not work:
-	# https://stackoverflow.com/questions/13833088/why-doesnt-local-work-on-stderr-and-stdout
+	# https://stackoverflow.com/q/13833088/363028
 	# local *STDERR;
 	# open(STDERR, ">", "/dev/null");
 	open(local *CHILD_STDIN,  '<', '/dev/null') or die $!;
@@ -5370,7 +5370,10 @@ sub qqx(@) {
 	    # Make sure $? is set
 	    waitpid($pid, 0);
 	    return wantarray ? @arr : join "",@arr;
-	}
+        } or do {
+            # If eval fails, force $?=false
+            `false`;
+        };
     }
 }
 
@@ -10481,7 +10484,7 @@ sub slot($) {
 
 {
     my $already_spread;
-    my $env_size;
+    my $darwin_max_len;
 
     sub populate($) {
 	# Add arguments from arg_queue until the number of arguments or
@@ -10499,6 +10502,28 @@ sub slot($) {
 	my $next_arg;
 	my $max_len = $Global::minimal_command_line_length
 	    || Limits::Command::max_length();
+	if($^O eq "darwin") {
+	    # env $((260932 - $single - $envc - $envl * 4 + 1064 ))
+	    # Darwin's limit is affected by:
+	    # * number of environment names (variables+functions)
+	    # * size of environment
+	    # * the length of arguments:
+	    #   a one-char argument lowers the limit by 5
+	    #   To be safe assume all arguments are one-char
+	    # The max_len is cached between runs, but if the size of
+	    # the environment is different we need to recompute the
+	    # usable max length for this run of GNU Parallel
+	    # See https://unix.stackexchange.com/a/604943/2972
+	    if(not $darwin_max_len) {
+		my $envc = (keys %ENV);
+		my $envn = length join"",(keys %ENV);
+		my $envv = length join"",(values %ENV);
+		$darwin_max_len = 3+($max_len - $envn - $envv) / 5 - $envc*2;
+		::debug("init",
+			"length: $darwin_max_len 3+($max_len - $envn - $envv) / 5 - $envc*2");
+	    }
+	    $max_len = $darwin_max_len;
+	}
 	if($opt::cat or $opt::fifo) {
 	    # Get the empty arg added by --pipepart (if any)
 	    $Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->get();
@@ -11501,33 +11526,9 @@ sub max_length($) {
 sub real_max_length() {
     # Find the max_length of a command line
     # Returns:
-    #   The maximal command line length
-    if($^O eq "darwin") {
-	# env $((-260932 + $envl *4 -1064  + $envc + $single))
-	# Darwin's limit is affected by:
-	# * number of environment names (variables+functions)
-	# * size of environment
-	# * the length of arguments:
-	#   a one-char argument lowers the limit by 5
-	#   To be safe assume all arguments are one-char
-	my $max_len = find_max("x");
-	my $env_size = (keys %ENV) * 4 + length(join'',%ENV);
-	$max_len -= $env_size;
-	# Small fudge constant I cannot explain
-	$max_len -= 1064;
-	# If all arguments are 1 char, the limit is 5x smaller
-	$max_len /= 5;
-	return $max_len;
-    } else {
-	return find_max("x");
-    }
-}
-
-sub real_max_args() {
-    # Find the max number of args allowed on a command line
-    # Returns:
-    #   The maximal number of args allowed on a command line
-    return find_max(" x");
+    #   The maximal command line length with 1 byte arguments
+    # return find_max(" x");
+    return find_max("x");
 }
 
 sub find_max($) {
