@@ -2,6 +2,8 @@ par_bar_m	### test --bar -m
 par_bar_m	0
 par_bar_m	50
 par_bar_m	100
+par_csh_environment_variables_set	### Check $PARALLEL_PID $PARALLEL_SEQ are set in csh
+par_csh_environment_variables_set	3
 par_keep_order	### Test --keep-order
 par_keep_order	job0
 par_keep_order	job1
@@ -32,3 +34,5 @@ par_retries_2	### Test of --retries - it should run 25 jobs in total
 par_retries_2	OK
 par_retries_4	### Test of --retries - it should run 49 jobs in total
 par_retries_4	OK
+par_transfer_special_char_names	### Test --return of weirdly named file
+par_transfer_special_char_names	aa<${#}" b

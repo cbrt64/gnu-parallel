@@ -4,6 +4,22 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_eta() {
+    echo '### Test of --eta'
+    seq 1 10 | stdout parallel --eta "sleep 1; echo {}" | wc -l
+
+    echo '### Test of --eta with no jobs'
+    stdout parallel --eta "sleep 1; echo {}" < /dev/null
+}
+
+par_progress() {
+    echo '### Test of --progress'
+    seq 1 10 | stdout parallel --progress "sleep 1; echo {}" | wc -l
+
+    echo '### Test of --progress with no jobs'
+    stdout parallel --progress "sleep 1; echo {}" < /dev/null
+}
+
 par_tee_with_premature_close() {
     echo '--tee --pipe should send all data to all commands'
     echo 'even if a command closes stdin before reading everything'

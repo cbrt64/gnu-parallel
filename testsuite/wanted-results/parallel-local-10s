@@ -488,10 +488,10 @@ par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      2       6   30006
 par_long_line_remote	      3      50  250050
 par_maxlinelen_X_I	### Test max line length -X -I
-par_maxlinelen_X_I	201ecb8ca789cecf39ee914a6d75611b  -
+par_maxlinelen_X_I	88ab30e1d8b7459fddf88986ff282950  -
 par_maxlinelen_X_I	Chars per line (817788/7): 116826
 par_maxlinelen_m_I	### Test max line length -m -I
-par_maxlinelen_m_I	c78bd0799bc23d8946732f8b3ae3c94e  -
+par_maxlinelen_m_I	51736abdee4738369ce04b354d40c887  -
 par_maxlinelen_m_I	Chars per line (697800/6): 116300
 par_nice	Check that --nice works
 par_nice	load_10

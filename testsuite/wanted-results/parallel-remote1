@@ -109,6 +109,9 @@ vagrant@parallel-server3
 echo '### test --filter-hosts with server w/o ssh, non-existing server'
 ### test --filter-hosts with server w/o ssh, non-existing server
   parallel -S 192.168.1.197,8.8.8.8,vagrant@parallel-server1,vagrant@parallel-server2,vagrant@parallel-server3 --filter-hosts --nonall -k --tag echo
+vagrant@parallel-server1	
+vagrant@parallel-server2	
+vagrant@parallel-server3	
 echo '### bug #41964: --controlmaster not seems to reuse OpenSSH connections to the same host'
 ### bug #41964: --controlmaster not seems to reuse OpenSSH connections to the same host
   (parallel -S vagrant@parallel-server1 true ::: {1..20}; echo No --controlmaster - finish last) &   (parallel -M -S vagrant@parallel-server1 true ::: {1..20}; echo With --controlmaster - finish first) &   wait
@@ -124,13 +127,3 @@ echo '### test --workdir . in $HOME'
 OK
 echo '### TODO: test --filter-hosts proxied through the one host'
 ### TODO: test --filter-hosts proxied through the one host
-echo '### bug #43358: shellshock breaks exporting functions using --env'
-### bug #43358: shellshock breaks exporting functions using --env
-  echo shellshock-hardened to shellshock-hardened;   funky() { echo Function $1; };   export -f funky;   parallel --env funky -S parallel@localhost funky ::: shellshock-hardened
-shellshock-hardened to shellshock-hardened
-Function shellshock-hardened
-echo '2bug #43358: shellshock breaks exporting functions using --env'
-2bug #43358: shellshock breaks exporting functions using --env
-  echo shellshock-hardened to non-shellshock-hardened;   funky() { echo Function $1; };   export -f funky;   parallel --env funky -S centos3.tange.dk funky ::: non-shellshock-hardened
-shellshock-hardened to non-shellshock-hardened
-Function non-shellshock-hardened

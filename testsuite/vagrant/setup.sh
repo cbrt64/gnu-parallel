@@ -33,6 +33,7 @@ export -f destroy_one
 server_list() {
     grep -v '#' <<SSHOK
 #generic/arch.98
+tange/centos3.3
 hfm4/centos4.4
 hfm4/centos5.5
 #generic/centos6.6

@@ -1,3 +1,13 @@
+20200822
+
+New in this release:
+
+* Max command line length is changed for MacOS - making this version
+  beta quality for MacOS.
+
+* Bug fixes and man page updates.
+
+
 20200722
 
 New in this release:

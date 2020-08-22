@@ -44,17 +44,6 @@ echo '### test --workdir . in $HOME'
 
 echo '### TODO: test --filter-hosts proxied through the one host'
 
-echo '### bug #43358: shellshock breaks exporting functions using --env'
-  echo shellshock-hardened to shellshock-hardened; 
-  funky() { echo Function $1; }; 
-  export -f funky; 
-  parallel --env funky -S parallel@localhost funky ::: shellshock-hardened
-
-echo '2bug #43358: shellshock breaks exporting functions using --env'
-  echo shellshock-hardened to non-shellshock-hardened; 
-  funky() { echo Function $1; }; 
-  export -f funky; 
-  parallel --env funky -S centos3.tange.dk funky ::: non-shellshock-hardened
 
 EOF
 rm /tmp/myssh1 /tmp/myssh2 /tmp/myssh1-run /tmp/myssh2-run

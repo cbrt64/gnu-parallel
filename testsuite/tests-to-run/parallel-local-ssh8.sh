@@ -121,6 +121,12 @@ par_retries_4() {
     retries 4 48 49
 }
 
+par_csh_environment_variables_set() {
+    echo '### Check $PARALLEL_PID $PARALLEL_SEQ are set in csh'
+    parallel -S csh@localhost 'echo $PARALLEL_PID $PARALLEL_SEQ {}| wc -w' ::: a
+}
+
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 compgen -A function | grep par_ | LC_ALL=C sort |

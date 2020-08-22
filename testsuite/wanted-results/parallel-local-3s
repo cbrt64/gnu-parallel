@@ -92,6 +92,13 @@ par_do_not_export_PARALLEL_ENV	Should give 60k and not overflow
 par_do_not_export_PARALLEL_ENV	      1       1   60001
 par_dryrun_timeout_ungroup	bug #51039: --dry-run --timeout 1.4m -u breaks
 par_dryrun_timeout_ungroup	   1000    2000    8893
+par_eta	### Test of --eta
+par_eta	16
+par_eta	### Test of --eta with no jobs
+par_eta	
+par_eta	Computers / CPU cores / Max jobs to run
+par_eta	1:local / 8 / 1
+par_eta	par_eta	ETA: 0s Left: 0 AVG: 0.00s  0
 par_exitval_signal	### Test --joblog with exitval and Test --joblog with signal -- timing dependent
 par_exitval_signal	exitval=128+6 OK
 par_exitval_signal	signal OK
@@ -226,6 +233,13 @@ par_pipepart_block	17-20
 par_pipepart_block	18-20
 par_pipepart_block	19-20
 par_pipepart_block	20-20
+par_progress	### Test of --progress
+par_progress	16
+par_progress	### Test of --progress with no jobs
+par_progress	
+par_progress	Computers / CPU cores / Max jobs to run
+par_progress	1:local / 8 / 1
+par_progress	par_progress	0
 par_resume_k	### --resume -k
 par_resume_k	job0id
 par_resume_k	job1id

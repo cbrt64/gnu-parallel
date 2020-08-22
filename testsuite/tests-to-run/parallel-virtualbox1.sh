@@ -1,26 +1,37 @@
 #!/bin/bash
 
-echo "### These tests requires VirtualBox running with the following images"
-echo `whoami`"@redhat9"
-echo `whoami`"@centos3"
-echo `whoami`"@centos5"
-echo `whoami`"@freebsd7"
+par_warning_on_centos3() {
+    echo "### bug #37589: Red Hat 9 (Shrike) perl v5.8.0 built for i386-linux-thread-multi error"
+    testone() {
+	sshlogin="$1"
+	program="$2"
+	basename="$3"
+	scp "$program" "$sshlogin":/tmp/"$basename"
+	stdout ssh "$sshlogin" perl /tmp/"$basename" echo \
+	       ::: Old_must_fail_New_must_be_OK
+    }
+    export -f testone
+    parallel --tag -k testone {1} {2} {2/} \
+	     ::: vagrant@centos3 vagrant@rhel8 \
+	     ::: /usr/local/bin/parallel-20120822 `which parallel`
+}
 
-VBoxManage startvm CentOS3-root:centos3 >/dev/null 2>&1
-VBoxManage startvm CentOS5-root:centos5 >/dev/null 2>&1
-VBoxManage startvm RedHat9-root:redhat9 >/dev/null 2>&1
-VBoxManage startvm FreeBSD71 >/dev/null 2>&1
-ping -c 1 centos3.tange.dk >/dev/null 2>&1
-ping -c 1 centos5.tange.dk >/dev/null 2>&1
-ping -c 1 redhat9.tange.dk >/dev/null 2>&1
-ping -c 1 freebsd7.tange.dk >/dev/null 2>&1
+par_shellshock() {
+    # Bash on centos3 is non-shellshock-hardened
+    echo '### bug #43358: shellshock breaks exporting functions using --env'
+    echo shellshock-hardened to shellshock-hardened
+    funky() { echo Function $1; }
+    export -f funky
+    parallel --env funky -S parallel@localhost funky ::: shellshock-hardened
 
-echo "### bug #37589: Red Hat 9 (Shrike) perl v5.8.0 built for i386-linux-thread-multi error"
-rm -rf /tmp/parallel
-cp `which parallel` /tmp/parallel
-stdout parallel -kj10 --argsep == --basefile /tmp/parallel --tag --nonall -S redhat9.tange.dk,centos3.tange.dk,centos5.tange.dk,freebsd7.tange.dk /tmp/parallel --no-notice echo ::: OK_if_no_perl_warnings | sort
+    echo '2bug #43358: shellshock breaks exporting functions using --env'
+    echo shellshock-hardened to non-shellshock-hardened
+    funky() { echo Function $1; }
+    export -f funky
+    parallel --env funky -S centos3 funky ::: non-shellshock-hardened
+}
 
-#VBoxManage controlvm CentOS3-root:centos3 savestate
-VBoxManage controlvm CentOS5-root:centos5 savestate
-#VBoxManage controlvm RedHat9-root:redhat9 savestate
-VBoxManage controlvm FreeBSD71 savestate
+export -f $(compgen -A function | grep par_)
+compgen -A function | grep par_ | LC_ALL=C sort |
+    parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
+    perl -pe 's:/usr/bin:/bin:g;'

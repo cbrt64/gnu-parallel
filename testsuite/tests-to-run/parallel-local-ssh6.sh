@@ -141,6 +141,12 @@ par_sshlogin_replacement() {
     parallel -S '5//usr/bin/ssh '$SSHLOGIN1 --plus echo {sshlogin} {} {host} ::: and
 }
 
+par_timeout_onall() {
+    echo '### --timeout --onall on remote machines: 2*slept 1, 2 jobs failed'
+    parallel -j0 --timeout 6 --onall -S localhost,$SSHLOGIN1 'sleep {}; echo slept {}' ::: 1 8 9
+    echo jobs failed: $?
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 compgen -A function | grep par_ | sort |

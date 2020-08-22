@@ -1,10 +1,16 @@
-### These tests requires VirtualBox running with the following images
-tange@redhat9
-tange@centos3
-tange@centos5
-tange@freebsd7
-### bug #37589: Red Hat 9 (Shrike) perl v5.8.0 built for i386-linux-thread-multi error
-centos3.tange.dk	OK_if_no_perl_warnings
-centos5.tange.dk	OK_if_no_perl_warnings
-freebsd7.tange.dk	OK_if_no_perl_warnings
-redhat9.tange.dk	OK_if_no_perl_warnings
+par_shellshock	### bug #43358: shellshock breaks exporting functions using --env
+par_shellshock	shellshock-hardened to shellshock-hardened
+par_shellshock	Function shellshock-hardened
+par_shellshock	2bug #43358: shellshock breaks exporting functions using --env
+par_shellshock	shellshock-hardened to non-shellshock-hardened
+par_shellshock	parallel: Warning: Could not figure out number of cpus on centos3 (). Using 1.
+par_shellshock	Function non-shellshock-hardened
+par_warning_on_centos3	### bug #37589: Red Hat 9 (Shrike) perl v5.8.0 built for i386-linux-thread-multi error
+par_warning_on_centos3	vagrant@centos3 /usr/local/bin/parallel-20120822	Bareword found where operator expected at /tmp/parallel-20120822 line 1249, near "$Global::original_stderr init_progress"
+par_warning_on_centos3	vagrant@centos3 /usr/local/bin/parallel-20120822		(Missing operator before init_progress?)
+par_warning_on_centos3	vagrant@centos3 /usr/local/bin/parallel-20120822	Bareword found where operator expected at /tmp/parallel-20120822 line 1294, near "$Global::original_stderr init_progress"
+par_warning_on_centos3	vagrant@centos3 /usr/local/bin/parallel-20120822		(Missing operator before init_progress?)
+par_warning_on_centos3	vagrant@centos3 /usr/local/bin/parallel-20120822	Old_must_fail_New_must_be_OK
+par_warning_on_centos3	vagrant@centos3 /usr/local/bin/parallel	Old_must_fail_New_must_be_OK
+par_warning_on_centos3	vagrant@rhel8 /usr/local/bin/parallel-20120822	Old_must_fail_New_must_be_OK
+par_warning_on_centos3	vagrant@rhel8 /usr/local/bin/parallel	Old_must_fail_New_must_be_OK
