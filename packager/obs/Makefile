@@ -13,12 +13,13 @@ all:
 	cd home\:tange/parallel/ && osc up
 	cd home\:tange/parallel/ && parallel osc add ::: *.spec *.dsc *.tar.gz *.tar.bz2 && echo Src added OK || true
 	cd home\:tange/parallel/ && osc ci -m "New release"
-# wait for "building" state
+	# wait for "building" state
 	cd home\:tange/parallel/ && yes building | parallel -j1 --delay 10 --halt now,success=1 'osc results|G -E {}'
-# wait for "building" state to end
-	cd home\:tange/parallel/ && yes building | parallel -j1 --delay 10 --halt now,fail=1 'osc results|G -v Mageia -E {}' || true
-# wait for "finished" state of .deb
+	# wait for "building" state to end
+	# Ignore Mageia and Raspbian_9.0 that are broken
+	cd home\:tange/parallel/ && yes building | parallel -j1 --delay 10 --halt now,fail=1 'osc results|G -v Mageia -v Raspbian_9.0 -E {}' || true
+	# wait for "finished" state of .deb
 	cd home\:tange/parallel/ && echo succeeded | parallel -j1 --retries 30 --delay 10 --halt now,success=1 'osc results|G -E "(Debian|Ubuntu).*{}"'
-# wait for "finished" state of .rpm
+	# wait for "finished" state of .rpm
 	cd home\:tange/parallel/ && echo succeeded | parallel -j1 --retries 30 --delay 10 --halt now,success=1 'osc results|G -E "(SUSE|SLE|Scientific|RHEL|Fedora|CentOS).*{}"'
 

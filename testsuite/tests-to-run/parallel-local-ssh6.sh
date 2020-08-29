@@ -147,6 +147,16 @@ par_timeout_onall() {
     echo jobs failed: $?
 }
 
+par_rsync_3.2.3() {
+    echo "bug #59006: rsync version 3.2.3 is not detected correctly"
+    PATH=$HOME/bin/rsync:$PATH
+    rsync --version | grep version
+    rm -f bug59006
+    parallel --return {} -Sparallel@lo touch ::: bug59006
+    ls bug59006
+    rm -f bug59006
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 compgen -A function | grep par_ | sort |

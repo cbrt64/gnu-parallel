@@ -2160,7 +2160,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200822;
+    $Global::version = 20200823;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -7836,7 +7836,9 @@ sub cleanup_cmd($$$) {
 	if(not $rsync) {
 	    my @out = `rsync --version`;
 	    for (@out) {
-		if(/version (\d+.\d+)(.\d+)?/) {
+		# rsync  version 3.1.3  protocol version 31
+		# rsync  version v3.2.3  protocol version 31
+		if(/version v?(\d+.\d+)(.\d+)?/) {
 		    if($1 >= 3.1) {
 			# Version 3.1.0 or later: Downgrade to protocol 30
 			$rsync = "rsync --protocol 30";

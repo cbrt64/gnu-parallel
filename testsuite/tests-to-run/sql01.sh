@@ -1,18 +1,17 @@
 #!/bin/bash
 
-mysqlrootpass=${mysqlrootpass:-M-b+Ydjq4ejT4E}
-MYSQL_ADMIN_DBURL=mysql://root:$mysqlrootpass@/mysql
-
 exec 2>&1
 
-# Setup
-sql $MYSQL_ADMIN_DBURL "drop user 'sqlunittest'@'localhost'"
-sql $MYSQL_ADMIN_DBURL DROP DATABASE sqlunittest;
-sql $MYSQL_ADMIN_DBURL CREATE DATABASE sqlunittest;
-sql $MYSQL_ADMIN_DBURL "CREATE USER 'sqlunittest'@'localhost' IDENTIFIED BY 'CB5A1FFFA5A';"
-sql $MYSQL_ADMIN_DBURL "GRANT ALL PRIVILEGES ON sqlunittest.* TO 'sqlunittest'@'localhost';"
+## Setup
+# mysqlrootpass=${mysqlrootpass:-M-b+Ydjq4ejT4E}
+# MYSQL_ADMIN_DBURL=mysql://root:$mysqlrootpass@/mysql
+# sql $MYSQL_ADMIN_DBURL "drop user 'sqlunittest'@'localhost'"
+# sql $MYSQL_ADMIN_DBURL DROP DATABASE sqlunittest;
+# sql $MYSQL_ADMIN_DBURL CREATE DATABASE sqlunittest;
+# sql $MYSQL_ADMIN_DBURL "CREATE USER 'sqlunittest'@'localhost' IDENTIFIED BY 'CB5A1FFFA5A';"
+# sql $MYSQL_ADMIN_DBURL "GRANT ALL PRIVILEGES ON sqlunittest.* TO 'sqlunittest'@'localhost';"
 
-MYSQL_TEST_DBURL=mysql://sqlunittest:CB5A1FFFA5A@/
+MYSQL_TEST_DBURL=mysql://tange:tange@/
 
 echo '### Test of #! -Y with file as input'
 cat >/tmp/shebang <<EOF
@@ -49,7 +48,7 @@ EOF
 sql $MYSQL_TEST_DBURL/sqlunittest </tmp/unittest.sql
 
 echo '### Test dburl with username password host port'
-sql mysql://sqlunittest:CB5A1FFFA5A@localhost:3306/sqlunittest </tmp/unittest.sql
+sql mysql://tange:tange@localhost:3306/tange </tmp/unittest.sql
 
 echo "### Test .sql/aliases"
 mkdir -p ~/.sql
