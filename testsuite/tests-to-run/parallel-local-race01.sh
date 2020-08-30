@@ -1,5 +1,12 @@
 #!/bin/bash
 
+par_sem_dir() {
+    echo '### bug #58985: sem stall if .parallel/semaphores is chmod 0'
+    chmod 0 ~/.parallel/semaphores
+    sem echo
+    chmod 700 ~/.parallel/semaphores
+}
+
 par_parcat_mixing() {
     echo 'parcat output should mix: a b a b'
     mktmpfifo() {

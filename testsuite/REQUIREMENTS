@@ -15,24 +15,34 @@ install_packages() {
     # DEBIAN package
     packaging_pkgs="dpkg-dev build-essential debhelper osc cvs automake-1.15"
     packaging_pkgs="$packaging_pkgs python3-m2crypto alien"
+
     # SHEBANG TOOLS
     shebang_pkgs="gnuplot octave ruby r-base-core"
+
     # SQL TOOLS
     sql_pkgs="libdbd-pg-perl libdbd-sqlite3-perl libdbd-csv-perl"
     sql_pkgs="$sql_pkgs libdbd-mysql-perl rlwrap"
+
     # Compression
     compression_pkgs="zstd clzip liblz4-tool lzop pigz pixz gzip plzip pbzip2"
     compression_pkgs="$compression_pkgs lzma xz-utils lzip bzip2 lbzip2 lrzip"
     compression_pkgs_missing="pxz"
+
     # Shells
     # (csh = bsd-csh that is broken)
     shell_pkgs="ash dash fdclone fish fizsh ksh ksh93 mksh posh rc rush sash"
     shell_pkgs="$shell_pkgs tcsh yash zsh"
+
     # Databases
     database_pkgs="postgresql mysql-server sqlite"
+
+    # Build packages
+    build_pkgs="libxxhash-dev libzstd-dev liblz4-dev libssl-dev"
+    build_pkgs="$build_pkgs python3-cmarkgfm"
+
     sudo dpkg --add-architecture i386; sudo apt update
     if $INSTALL $test_pkgs $packaging_pkgs $shebang_pkgs $sql_pkgs \
-		$compression_pkgs $shell_pkgs $database_pkgs; then
+		$compression_pkgs $shell_pkgs $database_pkgs $build_pkgs ; then
 	# OK
 	true
     else
@@ -321,6 +331,28 @@ bash_versions() {
 		'/usr/local/bin/{} --version || make_one {}'
      (cd bash; git tag | grep -v -- '-.*-') |
 	 parallel -k -v --tag '/usr/local/bin/{} --version'
+    )
+}
+
+rsync_versions() {
+    (cd /tmp
+     git clone https://github.com/WayneD/rsync
+     make_one() {
+	 rsync -a --delete rsync/ rsync-$1/
+	 cd rsync-$1
+	 git reset --hard
+	 git checkout $1
+	 LDFLAGS=-static ./configure &&
+	     make -j2 &&
+	     sudo cp rsync /usr/local/bin/rsync-$1
+     }
+     export -f make_one
+     echo '# Building rsync'
+     (cd rsync; git tag | grep -v -- '-.*-' | grep -v pre) |
+	 stdout parallel --lb --tag \
+		'/usr/local/bin/rsync-{} --version || make_one {}'
+     (cd rsync; git tag | grep -v -- '-.*-' | grep -v pre) |
+	 parallel -k -v --tag '/usr/local/bin/rsync-{} --version'
     )
 }
 

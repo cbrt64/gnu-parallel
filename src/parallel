@@ -12866,8 +12866,15 @@ sub new($) {
     my $parallel_locks = $Global::cache_dir . "/semaphores";
     -d $parallel_locks or ::mkdir_or_die($parallel_locks);
     my $lockdir = "$parallel_locks/$id";
-
     my $lockfile = $lockdir.".lock";
+    if(-d $parallel_locks and -w $parallel_locks
+       and -r $parallel_locks and -x $parallel_locks) {
+	# skip
+    } else {
+	::error("Semaphoredir must be writable: '$parallel_locks'");
+	::wait_and_exit(255);
+    }
+
     if($count < 1) { ::die_bug("semaphore-count: $count"); }
     return bless {
 	'lockfile' => $lockfile,

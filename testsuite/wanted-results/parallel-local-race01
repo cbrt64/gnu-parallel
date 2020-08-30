@@ -86,5 +86,7 @@ par_print_before_halt_on_error	2	exit code 1
 par_print_before_halt_on_error	2	0.1	0.1
 par_print_before_halt_on_error	2	parallel: This job failed:
 par_print_before_halt_on_error	2	perl -e 'sleep 1; sleep $ARGV[0]; print STDERR "",@ARGV,"\n"; 2 > 0 ? exit shift : exit not shift;' 1
+par_sem_dir	### bug #58985: sem stall if .parallel/semaphores is chmod 0
+par_sem_dir	parallel: Error: Semaphoredir must be writable: '~/.parallel/semaphores'
 par_tmux_termination	### --tmux test - check termination
 par_tmux_termination	See output with: tmux -S /tmp/parallel-local-race01-tmpdir/tmsXXXXX attach
