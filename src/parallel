@@ -7407,16 +7407,19 @@ sub sct_gnu_linux($) {
 	my %phy_seen;
 	my $physicalid;
 	for(@cpuinfo) {
+	    # physical id : 0
 	    if(/^physical id.*[:](.*)/) {
 		$physicalid = $1;
 		if(not $phy_seen{$1}++) {
 		    $cpu->{'sockets'}++;
 		}
 	    }
+	    # core id : 3
 	    if(/^core id.*[:](.*)/ and not $seen{$physicalid,$1}++) {
 		$cpu->{'cores'}++;
 	    }
-	    /^processor.*[:]/i and $cpu->{'threads'}++;
+	    # processor : 2
+	    /^processor.*[:]\s*\d/i and $cpu->{'threads'}++;
 	}
 	$cpu->{'cores'} ||= $cpu->{'threads'} || $cpu->{'sockets'};
     }
@@ -10519,7 +10522,7 @@ sub slot($) {
 		my $envc = (keys %ENV);
 		my $envn = length join"",(keys %ENV);
 		my $envv = length join"",(values %ENV);
-		$darwin_max_len = 3+($max_len - $envn - $envv)/5 - $envc*2;
+		$darwin_max_len = -146+($max_len - $envn - $envv) - $envc*10;
 		::debug("init",
 			"length: $darwin_max_len ".
 			"3+($max_len - $envn - $envv)/5 - $envc*2");
@@ -10840,6 +10843,8 @@ sub len($) {
     # Length of command w/ all replacement args removed
     $len += $self->{'len'}{'noncontext'} + @{$self->{'command'}} -1;
     ::debug("length", "noncontext + command: $len\n");
+    # MacOS has an overhead of 8 bytes per argument
+    my $darwin = ($^O eq "darwin") ? 8 : 0;
     my $recargs = $self->number_of_recargs();
     if($self->{'context_replace'}) {
 	# Context is duplicated for each arg
@@ -10858,16 +10863,23 @@ sub len($) {
 		" Groups: ", $self->{'len'}{'noncontextgroups'}, "\n");
 	# Add space between context groups
 	$len += ($recargs-1) * ($self->{'len'}{'contextgroups'});
+	if($darwin) {
+	    $len += $recargs * $self->{'len'}{'contextgroups'} * $darwin;
+	}
     } else {
 	# Each replacement string may occur several times
 	# Add the length for each time
 	$len += 1*$self->{'len'}{'context'};
 	::debug("length", "context+noncontext + command: $len\n");
 	for my $replstring (keys %{$self->{'replacecount'}}) {
-	    # (space between regargs + length of replacement)
+	    # (space between recargs + length of replacement)
 	    # * number this replacement is used
 	    $len += ($recargs -1 + $self->{'len'}{$replstring}) *
 		$self->{'replacecount'}{$replstring};
+	    if($darwin) {
+		$len += ($recargs * $self->{'replacecount'}{$replstring}
+			 * $darwin);
+	    }
 	}
     }
     if(defined $Global::parallel_env) {

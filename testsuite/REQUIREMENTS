@@ -18,7 +18,8 @@ install_packages() {
 
     # SHEBANG TOOLS
     shebang_pkgs="gnuplot octave ruby r-base-core"
-
+    # BUILD TOOLS
+    build_pkgs="bison"
     # SQL TOOLS
     sql_pkgs="libdbd-pg-perl libdbd-sqlite3-perl libdbd-csv-perl"
     sql_pkgs="$sql_pkgs libdbd-mysql-perl rlwrap"
@@ -315,6 +316,10 @@ bash_versions() {
     echo You may have to kill conftest
     (cd /tmp
      git clone https://git.savannah.gnu.org/git/bash.git
+     listtags() {
+	 (cd bash;
+	  git tag | grep -v -- '-.*-' | grep -v bash-4.1.11)
+     }
      make_one() {
 	 rsync -a --delete bash/ $1/
 	 cd $1
@@ -326,10 +331,10 @@ bash_versions() {
      }
      export -f make_one
      echo '# Building bash'
-     (cd bash; git tag | grep -v -- '-.*-') |
+     listtags |
 	 stdout parallel --lb --tag \
 		'/usr/local/bin/{} --version || make_one {}'
-     (cd bash; git tag | grep -v -- '-.*-') |
+     listtags |
 	 parallel -k -v --tag '/usr/local/bin/{} --version'
     )
 }
@@ -337,21 +342,28 @@ bash_versions() {
 rsync_versions() {
     (cd /tmp
      git clone https://github.com/WayneD/rsync
+     listtags() {
+	 (cd rsync;
+	  git tag | grep -v -- '-.*-' | grep -v pre)
+     }
      make_one() {
 	 rsync -a --delete rsync/ rsync-$1/
 	 cd rsync-$1
 	 git reset --hard
 	 git checkout $1
+         autoreconf --install -W gnu
+	 make proto
+	 # Make "lib/addrinfo.h" ?
 	 LDFLAGS=-static ./configure &&
 	     make -j2 &&
 	     sudo cp rsync /usr/local/bin/rsync-$1
      }
      export -f make_one
      echo '# Building rsync'
-     (cd rsync; git tag | grep -v -- '-.*-' | grep -v pre) |
+     listtags |
 	 stdout parallel --lb --tag \
 		'/usr/local/bin/rsync-{} --version || make_one {}'
-     (cd rsync; git tag | grep -v -- '-.*-' | grep -v pre) |
+     listtags |
 	 parallel -k -v --tag '/usr/local/bin/rsync-{} --version'
     )
 }
@@ -375,5 +387,6 @@ run() {
     add_freebsd &&
     tmux_versions &&
     bash_versions &&
+    rsync_versions &&
     misc
 }

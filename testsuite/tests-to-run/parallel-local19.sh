@@ -58,13 +58,6 @@ echo '### Test -m with 10000 args';
   wait; 
   sleep 1
 
-echo '### Test -X with 10000 args'; 
-  seq 10000 | perl -pe 's/$/.gif/' | 
-  parallel -j1 -kX echo a{}b{.}c{.} | 
-  tee >(wc; sleep 1) >(md5sum; sleep 1) >/dev/null; 
-  wait; 
-  sleep 1
-
 echo '### Test -X with 10000 args and 5 expansions'
   seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.}{} | wc -l
   seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.} | wc -l

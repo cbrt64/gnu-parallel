@@ -62,7 +62,7 @@ par_path_remote_csh() {
   echo Done
 _EOS
   stdout ssh nopathcsh@lo -T |
-      perl -ne '/logged in/..0 and print' |
+      perl -ne '/Users logged in/ and next; /logged in/..0 and print' |
       uniq
 }
 

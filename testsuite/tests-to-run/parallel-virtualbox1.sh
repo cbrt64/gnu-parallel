@@ -16,21 +16,6 @@ par_warning_on_centos3() {
 	     ::: /usr/local/bin/parallel-20120822 `which parallel`
 }
 
-par_shellshock() {
-    # Bash on centos3 is non-shellshock-hardened
-    echo '### bug #43358: shellshock breaks exporting functions using --env'
-    echo shellshock-hardened to shellshock-hardened
-    funky() { echo Function $1; }
-    export -f funky
-    parallel --env funky -S parallel@localhost funky ::: shellshock-hardened
-
-    echo '2bug #43358: shellshock breaks exporting functions using --env'
-    echo shellshock-hardened to non-shellshock-hardened
-    funky() { echo Function $1; }
-    export -f funky
-    parallel --env funky -S centos3 funky ::: non-shellshock-hardened
-}
-
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |

@@ -65,20 +65,6 @@ par_shebang() {
     ./shebang-wrap-opt wrap works with options
 }
 
-par_shellshock_bug() {
-    bash -c 'echo bug \#43358: shellshock breaks exporting functions using --env name;
-      echo Non-shellshock-hardened to non-shellshock-hardened;
-      funky() { echo Function $1; };
-      export -f funky;
-      PARALLEL_SHELL=bash parallel --env funky -S localhost funky ::: non-shellshock-hardened'
-
-    bash -c 'echo bug \#43358: shellshock breaks exporting functions using --env name;
-      echo Non-shellshock-hardened to shellshock-hardened;
-      funky() { echo Function $1; };
-      export -f funky;
-      PARALLEL_SHELL=bash parallel --env funky -S parallel@192.168.1.72 funky ::: shellshock-hardened'
-}
-
 par_load() {
     echo '### Test --load (must give 1=true)'
     parallel -j0 -N0 --timeout 5 --nice 10 'bzip2 < /dev/zero >/dev/null' ::: 1 2 3 4 5 6 &

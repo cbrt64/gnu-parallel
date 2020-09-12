@@ -714,17 +714,30 @@ par_test_XI_mI	a7 b1 2 3 4 5 6 7
 par_test_XI_mI	a8 b1 2 3 4 5 6 7 8
 par_test_XI_mI	a9 b1 2 3 4 5 6 7 8 9
 par_test_XI_mI	a10 b1 2 3 4 5 6 7 8 9 10
-par_test_cpu_detection	2-8-8-8	2 8 8 8
-par_test_cpu_detection	1-4-8-4	1 4 8 4
-par_test_cpu_detection	1-2-4-2	1 2 4 2
-par_test_cpu_detection	1-2-2-2	1 2 2 2
-par_test_cpu_detection	2-24-48-24	2 24 48 24
-par_test_cpu_detection	1-2-2-2	1 2 2 2
-par_test_cpu_detection	1-8-8-8	1 8 8 8
-par_test_cpu_detection	1-4-4-4	1 4 4 4
-par_test_cpu_detection	1-6-6-6	1 6 6 6
-par_test_cpu_detection	4-48-48-48	4 24 48 24
-par_test_cpu_detection	1-4-8-4	1 4 8 4
+par_test_cpu_detection	2-8-8-8 Xeon 8 core server in Germany
+par_test_cpu_detection	2 8 8 8
+par_test_cpu_detection	1-4-8-4 Core i7-3632QM Acer laptop
+par_test_cpu_detection	1 4 8 4
+par_test_cpu_detection	1-2-4-2 Core i5-2410M laptop firewall
+par_test_cpu_detection	1 2 4 2
+par_test_cpu_detection	1-2-2-2 dual core laptop(?)
+par_test_cpu_detection	1 2 2 2
+par_test_cpu_detection	2-24-48-24 24-core (maxwell?)
+par_test_cpu_detection	2 24 48 24
+par_test_cpu_detection	1-2-2-2 HP Laptop Compaq 6530b
+par_test_cpu_detection	1 2 2 2
+par_test_cpu_detection	1-8-8-8 Huawei P Smart Octa-core (4x2.36 GHz Cortex-A53 & 4x1.7 GHz Cortex-A53)
+par_test_cpu_detection	1 8 8 8
+par_test_cpu_detection	1-4-4-4 x96 quad-core Android TV-box
+par_test_cpu_detection	1 4 4 4
+par_test_cpu_detection	1-6-6-6 Kramses 200 USD laptop 6-core
+par_test_cpu_detection	1 6 6 6
+par_test_cpu_detection	4-48-48-48 Dell R815 4 CPU 48-core
+par_test_cpu_detection	4 24 48 24
+par_test_cpu_detection	1-4-8-4 4-core/8 thread Lenovo T480
+par_test_cpu_detection	1 4 8 4
+par_test_cpu_detection	4-64-64-64 Dell R815 4 CPU 64-core
+par_test_cpu_detection	4 32 64 32
 par_test_gt_quoting	### Test of quoting of > bug
 par_test_gt_quoting	>/dev/null
 par_test_gt_quoting	### Test of quoting of > bug if line continuation

@@ -63,10 +63,3 @@ par_shebang	/usr/local/bin/perl -w ./shebang-wrap-opt with
 par_shebang	with
 par_shebang	/usr/local/bin/perl -w ./shebang-wrap-opt options
 par_shebang	options
-par_shellshock_bug	par_shellshock_bug 2>&1
-par_shellshock_bug	bug #43358: shellshock breaks exporting functions using --env name
-par_shellshock_bug	Non-shellshock-hardened to non-shellshock-hardened
-par_shellshock_bug	Function non-shellshock-hardened
-par_shellshock_bug	bug #43358: shellshock breaks exporting functions using --env name
-par_shellshock_bug	Non-shellshock-hardened to shellshock-hardened
-par_shellshock_bug	Function shellshock-hardened

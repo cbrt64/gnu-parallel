@@ -10,7 +10,7 @@ true <<'EOF'
 # macosx.p = 10.7.5
 # El capitan = 10.11.4
 
-. `which binsearch`
+. `which find-first-fail`
 doit() {
     nfunc=$1
     lfunc=$2
@@ -18,6 +18,7 @@ doit() {
     nvar=$4
     lvar=$5
     lvarname=$6
+    onechar=$7
     varval="$(perl -e 'print "x "x('$lvar'/2)')"
     varname=$(perl -e 'print "x"x'$lvarname)
     funcval="$(perl -e 'print "x "x('$lfunc'/2)')"
@@ -26,27 +27,32 @@ doit() {
     for a in `seq $nfunc`; do eval "f$funcname$a() { $funcval; }" ; done
     for a in `seq $nfunc`; do eval "export -f f$funcname$a" ; done
     myrun() {
-	/bin/echo $(perl -e 'print " x"x('$1'/2-5)')
+	/bin/echo $(perl -e 'print "a"x('$2')." x"x('$1'/2)')
     }
     export -f myrun
     binlen=dummy
-    binlen=$(binsearch -q myrun)
+    binlen=$(find-first-fail -q myrun $onechar)
     perl -e '
     $envc=(keys %ENV);
     $envn=length join"",(keys %ENV);
     $envv=length join"",(values %ENV);
-    $maxlen=3+(262144 - $envn - $envv) / 5 - $envc*2;
+    $onechar='$onechar';
+    $maxlen=5-39+262144 - $envn - $envv - $onechar*5 - $envc*10;
     print("Max len = $maxlen\n");
     $bin='$binlen';
-    print("$bin=",$bin-$maxlen," $envc $envn $envv\n");
+    print("$bin=",$bin-$maxlen," $onechar $envc $envn $envv\n");
        '
 }
 export -f doit
 
 val="$(seq 2 100 1000)"
 val="10 20 50 100 200 500 1000"
-val="11 23 57 101 207 503 1007"
-parallel --shuf --tag -k doit ::: $val ::: $val ::: $val ::: $val ::: $val ::: $val
+val="12 103 304 506 1005"
+parallel --timeout 20 --shuf --tag -k doit ::: $val ::: $val ::: $val ::: $val ::: $val ::: $val ::: $val
+
+# Test with random data
+(seq 10;seq 100;seq 100;seq 100;seq 100; seq 300 ;seq 1000) |
+    shuf | parallel -n 7 --timeout 20 --tag -k doit
 EOF
 
 # Each should generate at least 2 commands
@@ -68,7 +74,7 @@ par_many_var() {
     export -f pecho
     gen() { seq -f %f 1000000000000000 1000000000050000 | head -c $1; }
     for a in `seq 6000`; do eval "export a$a=1" ; done
-    gen 10000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 40000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
@@ -81,7 +87,7 @@ par_many_var_func() {
     for a in `seq 2000`; do eval "export a$a=1" ; done
     for a in `seq 2000`; do eval "a$a() { 1; }" ; done
     for a in `seq 2000`; do eval export -f a$a ; done
-    gen 20000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 40000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
@@ -93,7 +99,7 @@ par_many_func() {
     export -f pecho
     for a in `seq 5000`; do eval "a$a() { 1; }" ; done
     for a in `seq 5000`; do eval export -f a$a ; done
-    gen 10000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 40000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
@@ -106,7 +112,7 @@ par_big_func() {
     big=`seq 1000`
     for a in `seq 1`; do eval "a$a() { '$big'; }" ; done
     for a in `seq 1`; do eval export -f a$a ; done
-    gen 20000 | stdout parallel --load 2 -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 80000 | stdout parallel --load 2 -Xkj1  'pecho {} {} {} {} | wc' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
@@ -120,7 +126,7 @@ par_many_var_big_func() {
     for a in `seq 5000`; do eval "export a$a=1" ; done
     for a in `seq 10`; do eval "a$a() { '$big'; }" ; done
     for a in `seq 10`; do eval export -f a$a ; done
-    gen 10000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 40000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
@@ -132,7 +138,7 @@ par_big_func_name() {
     export -f pecho
     big=`perl -e print\"x\"x10000`
     for a in `seq 10`; do eval "export a$big$a=1" ; done
-    gen 15000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 30000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
@@ -146,7 +152,7 @@ par_big_var_func_name() {
     for a in `seq 10`; do eval "export a$big$a=1" ; done
     for a in `seq 10`; do eval "a$big$a() { 1; }" ; done
     for a in `seq 10`; do eval export -f a$big$a ; done
-    gen 10000 | stdout parallel --load 4 -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 80000 | stdout parallel --load 4 -Xkj1  'pecho {} {} {} {} | wc' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
