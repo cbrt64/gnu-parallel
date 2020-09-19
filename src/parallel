@@ -7387,14 +7387,48 @@ sub sct_gnu_linux($) {
     #     'threads' => #threads
     #     'active' => #taskset_threads }
     my $cpu = shift;
+
+    sub read_topology($) {
+	my $prefix = shift;
+	my %sibiling;
+	my %socket;
+	my $thread;
+	for($thread = 0;
+	    -r "$prefix/cpu$thread/topology/physical_package_id";
+	    $thread++) {
+	    open(my $fh,"<",
+		 "$prefix/cpu$thread/topology/physical_package_id")
+		|| die;
+	    $socket{<$fh>}++;
+	    close $fh;
+	}
+	for($thread = 0;
+	    -r "$prefix/cpu$thread/topology/thread_siblings";
+	    $thread++) {
+	    open(my $fh,"<",
+		 "$prefix/cpu$thread/topology/thread_siblings")
+		|| die;
+	    $sibiling{<$fh>}++;
+	    close $fh;
+	}
+	$cpu->{'sockets'} = keys %socket;
+	$cpu->{'cores'} = keys %sibiling;
+	$cpu->{'threads'} = $thread;
+    }
+
     local $/ = "\n"; # If delimiter is set, then $/ will be wrong
     my @cpuinfo;
     if($ENV{'PARALLEL_CPUINFO'}) {
 	# Use CPUINFO from environment - used for testing only
 	@cpuinfo = split/(?<=\n)/,$ENV{'PARALLEL_CPUINFO'};
+    } elsif(-r "$ENV{'PARALLEL_CPUPREFIX'}/cpu0/topology/thread_siblings") {
+	# Use CPUPREFIX from environment - used for testing only
+	read_topology($ENV{'PARALLEL_CPUPREFIX'});
     } elsif($cpu->{'sockets'} and $cpu->{'cores'} and
 	    $cpu->{'threads'}) {
 	# Skip /proc/cpuinfo - already set
+    } elsif(-r "/sys/devices/system/cpu/cpu0/topology/thread_siblings") {
+	read_topology("/sys/devices/system/cpu");
     } elsif(open(my $in_fh, "<", "/proc/cpuinfo")) {
 	# Read /proc/cpuinfo
 	@cpuinfo = <$in_fh>;

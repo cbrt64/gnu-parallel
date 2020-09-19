@@ -354,10 +354,11 @@ par_too_long_line_X() {
     seq 3000 | parallel -Xj1 'echo {} {} {} {} {} {} {} {} {} {} {} {} {} {} | wc'
 }
 
-par_test_cpu_detection() {
-    pack() { zstd | mmencode; }
+par_test_cpu_detection_cpuinfo() {
+    pack() { zstd -19 | mmencode; }
     unpack() { mmencode -u | zstd -d; }
     export -f unpack
+    # ssh server cat /proc/cpuinfo | pack
 
     cpu1() {
 	echo '2-8-8-8 Xeon 8 core server in Germany'
@@ -416,7 +417,7 @@ par_test_cpu_detection() {
 	' | unpack
     }
     cpu4() {
-	echo '1-2-2-2 dual core laptop(?)'
+	echo '1-2-2-2 AMD Opteron 244 dual core laptop(?)'
 	echo '
 	KLUv/QRYvQoANtlJIkBprACDMMQtkTstiphu+tF3RsomRkcLaiECKgDo7qgtvyZCAEQAOQCP
 	WWerZUFc4QE7AaJ0dHLCDRiLr6TL4r9SgsrIVQLJV2KAb5n7w00ZMBbtzaiO+Sy+EvMajmSi
@@ -577,11 +578,203 @@ par_test_cpu_detection() {
 	/q05b9gEeqJ524Ixfxz8jbBi
 	' | unpack
     }
+    cpu13() {
+	echo '1-2-2-2 AMD Neo N36L Dual-Core Processor'
+	echo '
+	KLUv/QRoPRQA9iRoIyCPmwBAIy3LSinV2zbLlasWEvo1qQe/YpQhuFH+WyAIGgB4ZgBYAFoA
+	rN2p1bjy7LIA8UeDkReNn89SaykAuHCQiCwGQ1lNF4fz2m42LxTPCBkInIIaHgFxTBzmxB8e
+	LqAd8KB7WuGp6h3AJYO6QJiKa6okh3YtDRIKq/XLpyEF1lKE7GW0MJ4AECFzLhg3XxbfOEwu
+	W5iakpR3xxV+P28kM0VyiuofhpzErUMcrfYR1HXlxNZv8iOU9Vz6VPvI+sX95H2yp0ZnR7md
+	LAYuo3Rn7cHWm4uSibMCraR1e221VWtpsGsaBw01S0aK07b4brGgS1Fs3HtVo2dvmjyJtWTN
+	Jrfgc9M+iRj+WZ2SjKse2qhIXBrxK0s56dLqSpJHufdbC/cQJsJuD+rb2ye2cOE7g9BJmzH1
+	U80Prk/gY46rCwzDOJhl4YtHv5qv/e0+P6WPuzgFdWzRwLlb88iDOSNjql/qc5pT6QFZOB21
+	h3gsRFQskIMCAwSDbQod2CwNJkoZe+XyGYxHJqbqTnJyDnrn2K0Sc+qMFiqZlZRqalxnKDAE
+	iFNnHPIyW6sjBSmjVv2fZQzcoCUQPqCxgIN0gPYK4Id9CK2Xrhh+6pczlgJU1dW5V1wXneBN
+	Dso0OEHQ1BAQD8hEOKPSSEqqnbiUo9qSNWNCSqPFwUg3GEdg597rYovkh/VDJS4Jc2hsDA3N
+	hu0BT8rqVWmlI7y1M7cQWtFBkCZ5dJEVHCEfnkAcxowh8tfz/1gcq4N0e/Ln4LoBaCTxpDA/
+	K9wEOcdPpxqOgLHqXpMH0AQrQRswgv0G5nqaeJrhzIzcgz0m/QlzxxEQGeDTfXJ21z8GJGDt
+	hOfZ08YsNAENX1FX
+	' | unpack
+    }
     export -f $(compgen -A function | grep ^cpu)
     
     test_one() {
 	eval cpu$1 | head -n1
 	export PARALLEL_CPUINFO="$(eval cpu$1 | tail -n +2)"
+	echo $(parallel --number-of-sockets) \
+	     $(parallel --number-of-cores) \
+	     $(parallel --number-of-threads) \
+	     $(parallel --number-of-cpus)
+    }
+    export -f test_one
+    compgen -A function | grep ^cpu | parallel -j0 -k test_one {#}
+}
+
+par_test_cpu_detection_lscpu() {
+    pack() { zstd -19 | mmencode; }
+    unpack() { mmencode -u | zstd -d; }
+    export -f unpack
+    # ssh server lscpu | pack
+    
+    cpu1() {
+	echo '2-8-8-8 Xeon 8 core server in Germany'
+	echo '
+	KLUv/QRodQYA8solITAL5gF7YbnaqsSsYkliK98HHFiNI3FSwNumyBYOykA5Aew4x163Zw87
+	7XAqwtiSPYwAiCZa/8LET3hd+xO/ZCDAJQlLGEACjIF+VflN4KP1dFkhfg/zHeDC9Esbp39R
+	LyBo2lZJfWLmstJeIOmA2/WGWC23lWFWY1uv2rAKCd1SESOtGFYhITDsnsJDEK24vW70+1S0
+	SxQgQIII9QEdLfxiBElVRWsZDqgLA+oSr9kgrmS70kDZt2WvOkEnODfAiaJIAWgWoteFUwLs
+	8nwc
+	' | unpack
+    }
+    cpu2() {
+	echo '1-4-8-4 Core i7-3632QM Acer laptop'
+	echo '
+	KLUv/QRoxR8AukKICyngcGoTEJCWSciVLZJIKEXuzdZEplGI3JgV4DZJLMuEV2COJ8wwH2L4
+	BcEAsgChABMIwcjiqQJCoZiUW0AsFAUYGxxMCkBPd7MpzAYHDRQMCMYPfDKB0Xg0HgjoA0wq
+	D0ABQDr1HjHgLRmcMI9LU6eeZz9JPo1eNlAgeYTs5cQ7gkmFCMyCwjg6MSzIGWEChgHXYy5T
+	GS0VhsCDolnbn0/bw5PARDQVdVQpwnGHppbyxbLnVuePBucG5TNnZAwB85Syt+DZuhVCTBYl
+	PPsSYRyPO7Q6D4xGAAaQDLqHha8gkYBxPJpHxHRIxqhXtlpWRBAx+yncNw3H1BiVc4ZWaWAB
+	l4UrJkeQhfSMvQ6ulXz21FuvuFcqnbGyRyhPSVu1CMKs9uI8I2z+yqVIIE8DZN3SAMd8nsiJ
+	KluCQ5hNskmvTCh34LRw1J43pezB9QuTCY4pPckXVCRu4OkFBE5I7ROKLG9tS4G0dXLIZOJB
+	q0W7Re5Oa8kvrU0dFfO1aOKKR2Nyhkb0wSMYaVlqnS0gMNNDZeJBbbVBJ5jGAkJRoOGgSEgC
+	beE7gxBqNuO5nbOT+wfdE3Mby4qq6aeaXfuu+Om9NbX4wk9n7/ptOfMZyfzI0/PJuesudW72
+	tv5otNpL0K0raB9ju2/yl656xLSeyz3VPrL74n7yPtnTSY/2OYQh1RgwLHvl86g3jBCho77e
+	hdUnrjC4YFzqDiMcks2J0NPW9HmEQqFCuYMFBg2FQkQiIrlDPm1wO+OXxnwJvbWIAaP1KX4M
+	W7TmUWVbDXPn3r+2bxXVFdO7mJZm74Uu5jedchji50xXem9GqHGnbM/VPekaIFMWbuL219Hm
+	O+voOTp65jBfe+9svluknsa15rGoFln8eiyeT5J6Soqnc6rHdNoNU8mafmvhMqYzFo2D6dq7
+	xfZxe/pjMa03kjk/OeltV8PsEbY+6O54cDZ7BpahRa6tvb69OtNo18L3CwQbXNjTA3IgUABA
+	FFkPLUa8gdKoM6utIHa/NrtPEu5DQv8gyge6RJ2RmegWA2w0olDY/5lu43u3KLpQpvV9DWB7
+	CFzd08L6NLcg3DK2Iii4oCIi1jNIE2hkLi8wQYrBQthc9idpAuBaroQWpoIwMqR3NNkECfJu
+	sp2IAOACZSd4BLmUzVHl0rV1Cx0Tz3XrtPBCCl8Kvi0Wusx4XxBktMyMQbkszXzEs4pfZzPl
+	aJcthoylYAaKfS4KyazRcAhc3IKx7ShmMdAXiKvD0NxyiR0chavOhoeEWuhRXAvYVR9j44TQ
+	yFRTQMEnwBmtgAoLU0YIijDMvRARZYMpA4smUrtjrICOHpSiNYqBXUcja59JvwK0LWESpwSv
+	+wJQ
+	' | unpack
+    }
+    cpu3() {
+	echo '1-2-4-2 Core i5-2410M laptop firewall'
+	echo '
+	KLUv/QRobR0AFj+vJvCyNgHQEZLJrWwzBCOlyJ2IXthpoGeK2U1oGVrADy9eHBY/BkIIsgCr
+	AJsAlEmEYJJAgT4kMAcbuFJqZ54PiQiIhAD6wjGQyAQaMNgHYDQPwABQisFDrzx1EfNQOm8p
+	Nl0bXhRuBTXC4fIZHVQNeAZMRsUTybRytMg6Y8MDxfap0jGdHM0jGYA07/sV7huAFs/ksarn
+	WgiTCzzWljscee6VTpGwfiyfWadzDA9k6+DD9XUvxStT3bS4dsfyTCgX6JUGIEkAA6iL1ICM
+	z7hoeCaUiIJwvaKz6qa9nDYZAg03ykcRT905mXTeSObBBR0Z21SuKhHrOltSsTXlO8j+uk15
+	ttYdr7slc7W22asqzEx2pOuMzW8qM5cK9Iiun2KsazCZK/DUaaqkyfQ1vMIOA+PyVAte/qC5
+	uMJmezFTRyj0vYLRmOjlbL+KuvT68k7vW4lNha/SOMSymEskUMTg0Fp24hOKchprdxGK5xrQ
+	aMC4zT5W44ESDCaZiwsmbqIFAS6EAAJJgC5GBfPc0llSeRipaaqMOG2yqCFrpt5l43bzF/x7
+	rHGHr5I81W/OIWX+5Gv6RVFf2di53Tlcvem1UyTN5K1ItbON/JxNXSq/rWRHuNq1UVcmP5l6
+	476yvLorZb2S0yu8YQ/icdpNp4m9Y8WMEnuDHWa/WLOB+95Ot2QwNJkLbEBEGYzH1sHYbrmw
+	XC6gcF+UrfNtp0Ld/L0KAuqFjD81j4u8qEWOOrc8fPLNJjtze2oqp91bRrfSekudcae89E1f
+	Clr3iI5xOJqyL6VtviSlPU9p7yTmb8tLUk+9aOKw98tiV4vxdVb2qdR25Ji66A2bjBK6DkWi
+	idsmTzUnP2Vfp0Sudoky8yHWX5T1J1vE7jP2wkh9QmFt9w7X8SrqNfmF8uxuK9lkhO9s4osy
+	9vUnI7yLcRNJDWMgUASALDIelxSA43If9uHpvXHEbfAybA5yiTzjJGNsNEJhrP/trvE9thy4
+	EPWxBL9Ev+3Tc4V4y+yIoASj88gBPDh1YC0Hj+9SAIGlXIksTAVhZEDvaLMJEPRuqp2YAOQC
+	TScOHg0AZWaC3ta8uvJY+7RdpnWcJnqpGYJyWZn52M42vTHmkCoi6xGLgGI6qJBMGjmMBMaA
+	xU0EY9tRzDJQ4nY0BW6JnRuEi+6GBsRfsKN4C1hVzzGGYiil6i4wwSfBmRYAFSBTdAhduMYs
+	pN+yYcqIRXOpXTBSQCcPSsga9cCuhh7z/9NC2xMmKUr4tsTH
+	' | unpack
+    }
+    _cpu4() {
+	echo '1-2-2-2 dual core laptop(?)'
+	echo '
+	' | unpack
+    }
+    _cpu5() {
+	echo '2-24-48-24 24-core (maxwell?)'
+	echo '
+	' | unpack
+    }
+    _cpu6() {
+	echo '1-2-2-2 HP Laptop Compaq 6530b'
+	echo '
+	' | unpack
+    }
+    cpu7() {
+	echo '1-8-8-8 Huawei P Smart Octa-core (4x2.36 GHz Cortex-A53 & 4x1.7 GHz Cortex-A53)'
+	echo '
+	KLUv/QRoTQgAgk8yJCCN6AGBEUmyQvipyGwhCMTqQifa7nWt/lvbXsAxLGVACC2ABrswzRtD
+	KImUazOO/vUjml18lTF9qBAGEXY5CsYxMaQJmQvlLPmUUkqxNMwykSDxhEWqHCIfpf2OZQgg
+	ZdLvM+rIJC+G7aa00gJkwGCfTnbDLo5dzM83RJu1fUY7MBt7U8faIwxboCh+vj7I3PJBRTbW
+	eUzRSvacPOCG/0+BH2/nDe6XWOxqWOCfg7IwARWg3YwKnfyYol1NpDlj/LRLvvW/SHMoGAAr
+	Q5AWDg9qGEBiofABuk3KGsauTvhpnhsa5HVShxsS93JpFOfBzhP4ZgBCDQ0XCuEub/2VgAiV
+	mwwoAdUl+VI=
+	' | unpack
+    }
+    cpu8() {
+	echo '1-4-4-4 x96 quad-core Android TV-box'
+	echo '
+	KLUv/QRo/QgAtpE4JBCNWAHfG9LkksIm0BaMBALBz/jVBGlPVDQCo6NyBAUAwCBwEC4ALwAv
+	AE3Pdb/CdQp8qMWbgAkggTgKsm3Q4Oq6V+ENa+PHtSUIlBuYHrM3ylI/2hs93AgNJUKbo6OP
+	wb9x2qJDORYaBQnn2KA2qCXS+vDEqRwdtcTnrLIx5YhBMcoCQQ+1/s5JT34q++OePenb28ku
+	oTlh7mAtuGutJaBYGMsEguMR7F0CcdRCLp7AlVI7ohhGqqdtezZt2y92uj4zwajwcja9hKa3
+	k15PBt3hSVEfciy6hLiCefi5YmHRfBgggCQg1HBWDGNRBoJsaT4B1kZtNKSQAf5kC+J/a19p
+	9jscIBj33n2UBCmUphwBwqU/HBDKFhi+RQnSA8zN
+	' | unpack
+    }
+    _cpu9() {
+	echo '1-6-6-6 Kramses 200 USD laptop 6-core'
+	echo '
+	' | unpack
+    }
+    _cpu10() {
+	echo '4-48-48-48 Dell R815 4 CPU 48-core'
+	echo '
+	' | unpack
+    }
+    cpu11() {
+	echo '1-4-8-4 4-core/8 thread Lenovo T480'
+	echo '
+	' | unpack
+    }
+    cpu12() {
+	echo '4-64-64-64 Dell R815 4 CPU 64-core'
+	echo '
+	KLUv/QRoNR8A2kBECygQbcYJiNmWkVvZhZlEnSKWBFp0GRq85wI/vMgYA62BnzagCgCAQaAg
+	tQCvAKEAjwPx4OCIj9hIGkchwCHQLBUUOBIPuFJqQyQPQ/N8RmZlcT48wGsAME5t6eD6FrzT
+	Fh3JwkTcviUdcDSwbahTUw0HHD5jgyoBvsERoUHiQCSL1gksss5oIGEi+1TZls4JQtI8SqJ5
+	3a9wnQIdJG5RPbdacIstRyZ57o2+cFgrLJ9ZZ2sNCVzbIIKr614GU9t0cO1II3GeL/RGCtME
+	YADa4lNkfIQHA4nzQM8CcoZOqpn2Tmw2BAmYXrj4UxtulIcgnrpzruj8kCuCB0RkZFOZWqrr
+	bPkiY8pvcN01m/Jrqzd10eJtb0Bcq+3lqAKP7XWcwbxkJLrO2HymEoIBI2Jrp2dwc0i9MGja
+	TCVpvWOD3mnbUe+Ra4dHet1Gayp0lIRkaRSHYWCUZ3maR3kUCoVCWTgMjpJwGgKNwjSMYlEW
+	C4OSeGLhNM5zxnFmG7vgzKLQiS32tjBIJCgMGLdXhZWQMI2ARCK9ML5TaBQc9RyTXyj/pKly
+	/bEGtbfeFmoN0belJJMR3skI32J8QFIn1HA1P3fJuNt89FhUNvmWEWqIQuCdW4wj/J7OKPMn
+	Q6RD3vvElJMc+9P0kq/iY18P+Tn7XSqfrVxfQNiVveuSn/zOuK8sr+36qlNS4sdyCRg9Y7TO
+	YITXIQyBwS2aD7jOrfQGxIMvQIDYBiN746Hh8AWF66Jsnc5RAUlzcWKdU0vyU9utpEwteW5e
+	5qUtMm1vyysSHS51DIqYQowbkjvhJ7DooGpG7i3he831ZV/0XvVIRvsW9WqWUMT0SLJHUGdk
+	0GwWZey/qKG2yvpOt4j3wp3AlxFyjvYRFcdPrFXSKSMibM2VGT7WLd739aK1mOxV/AhbD3WQ
+	fJA0LXf2LNIh1bpWiyFnXW/IZJRnFsh5Fgj7etIb5Rh2IIAAYJCsDt0Itwf3dUHgOS8IC3/b
+	cx+tCmlszVYPLUY2cy6k32i2tsTCachLepZh+yFZ+9QZqUTqQcGisUgRvvEwh9VHGLSDCXO7
+	4229V2jZPh1WaFKMZmTN3FKTRx/WIhwGNK8IzwuWRBf5u7SCYK6uBC1MtTDiFrOijJL+3UQ7
+	keVCzWv4iQk9sM2ASaSnUIZnvcRUvcJqZcM5YIQfVShhtbI0nFeGKOysSdUYXLuFbGw5uKQI
+	9TqKlwFgqMGU058zcDgdl7WAndaEy5TLvwFg5aqP4zgAYc3lakmdkAAuoQCsBrIlQlAIw4he
+	PFE6mEJmPV3qB3YDIAGdPCihNatiXaWRte+lXwO0mTBJUQLQlar+
+	' | unpack
+    }
+    cpu13() {
+	echo '1-2-2-2 AMD Neo N36L Dual-Core Processor'
+	echo '
+	KLUv/QRolRgAtnKPJQCPWACgNvIHK2l1aPsb21+AYWrULM1pbgXRH0X4Tira///c/16KAI4A
+	fQCRyR+um5YG4mTgi0xasEzaa7lUV5OFyut0ci/kJxaLiMa5NE8vRpu8dSo0zmyvSx3bSlU0
+	TsPR/OC/8kEBKdE8kFVdn9WArD3OUPTcL3qkgDfj8Zm3OjdpJHtOMnxh94O4pK6rEt/OUJoC
+	yBv9IoHnEcAA62YUoPMWEwpNAQSCRK5Ltlbdth/V6iQJ0+tncaxvbQkzo5mo+W3pRSIx0zXc
+	S9hZpHYg3HZbSWLvGdGPeg2r+Ah25Zl+8EWsroTVxR2UZ/nz51HewyPPUo21OweiuRCQyPma
+	ZbyLBnIwYIBg8FwmKpY5TUpEvodzsehwOAYcjkiGg+UxyUfp9qWpk3nbrBMXgKxaOATkEfG5
+	Ea9UHhAbQE5I9eQbTf1Z5le+pF8xnuIKSrAd8mhGb83Yzib6WjueLr89yh652rfFL6OvHN+4
+	v0y/7hutV1TiicEGSdcZsTeZYfaLKyTsojrJB+GTTrlQvOEWRoyf+wSlUnF5Y+WDk/ZWCKuG
+	p59k/Lot36SHoDvJznVfrSw6T5RhmCBDZ6vL1QPNWowh+qo8RpsQsmoE3zRG69usmUIYCnKv
+	Heb95MPgc/SOsXiear3SVsoKYsQitT1a/Exj00KIxvYIIYli8C0bnfQQ52qvs5+c8U/Suwe5
+	u1fRRqc8pFPezTlBdCvUkjXL2Y6Z0j0e4WnjdvXR5Cx19E0n1Nde8hCyxhl+ViBABMAoqhrs
+	g7Hf/B/GILKuc2SwMcJQiDgBwi/gjABrg9JzmNOqR1vTDhyWM8swRNQfQlP0aR5ABZrRgKxQ
+	LLVBwPczF9136UFQQFcRWm8ZQoe1KIqmjbAGHt6QXhiuOxL3tMSZcblsxP24SlsticeSMQPw
+	nwvt4I9uNEhBXFEJoUWnhtbCEDvYBbOhnR6FO++GRBrkG7DW9Rm5AoWQy9RySiElwBmtgAoL
+	UzgEXRjGXoiIssGUkUUTqd0xvoBOHpTCmkWxrpQel//TQhslTAKUqRruSw==
+	' | unpack
+    }
+    export -f $(compgen -A function | grep ^cpu)
+    
+    test_one() {
+	eval cpu$1 | head -n1
+	export PARALLEL_LSCPU="$(eval cpu$1 | tail -n +2)"
 	echo $(parallel --number-of-sockets) \
 	     $(parallel --number-of-cores) \
 	     $(parallel --number-of-threads) \
