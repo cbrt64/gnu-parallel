@@ -8,9 +8,9 @@ testsuite: 3
 	make stopvm
 
 ### Limited testsets - run once
-# No 100s, mem, polarhome, tutorial
+# No 100s, 300s, mem, polarhome, tutorial
 1: ../src/parallel tests-to-run/* wanted-results/* prereqlocal startdb prereqremote
-	TRIES=1 time bash Start.sh '' '100s|mem|polarhome|tutorial' || true
+	TRIES=1 time bash Start.sh '' '00s|mem|polarhome|tutorial' || true
 	touch ~/.parallel/will-cite
 	make stopvm
 
@@ -26,9 +26,9 @@ tutorial: ../src/parallel tests-to-run/*tutorial* wanted-results/*tutorial* prer
 	touch ~/.parallel/will-cite
 	make stopvm
 
-# 100s
-100s: ../src/parallel tests-to-run/*100s* wanted-results/*100s* prereqlocal
-	time bash Start.sh 100s NONE || true
+# 100s and 300s
+100s: ../src/parallel tests-to-run/*00s* wanted-results/*00s* prereqlocal
+	time bash Start.sh 00s NONE || true
 	touch ~/.parallel/will-cite
 	make stopvm
 
@@ -88,10 +88,10 @@ prereqremote: installparallel startvm
 	parallel -j0 --timeout 10 --tag ssh vagrant@parallel-server{} parallel --minversion 20121021 ::: 1 2 || (echo parallel on remote required for testsuite; /bin/true)
 
 startvm:
-	parallel 'cd vagrant/generic/{} && vagrant up' ::: centos8 freebsd11 freebsd12 rhel8
+	parallel --tag -k 'cd vagrant/generic/{} && vagrant up' ::: centos8 freebsd11 freebsd12 rhel8
 
 stopvm:
-	parallel 'cd vagrant/generic/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8
+	parallel --tag -k 'cd vagrant/generic/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8
 
 startdb:
 	true should start Oracle in vagrant

@@ -157,7 +157,9 @@ par_big_var_func_name() {
 }
 
 #macsshlogin=ota@mac
-macsshlogin=macosx.p
+#macsshlogin=macosx.p
+macsshlogin=$(parallel --halt now,success=1 ssh {} echo {} ::: ota@mac macosx.p)
+
 scp /usr/local/bin/parallel $macsshlogin:bin/
 
 export LC_ALL=C

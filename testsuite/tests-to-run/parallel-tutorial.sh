@@ -84,7 +84,16 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
 	    s{tried 1}{};
 	    s/^\s*\n//;
 	    s/^Second done\n//;
-' |
+	    # Changed citation
+	    s/Tange, O. .* GNU Parallel .*//;
+	    s:https.//doi.org/10.5281/.*::;
+	    s/.software.tange_.*//;
+	    s/title.*= .*Parallel .*//;
+	    s/month.*= .*//;
+	    s/doi.*=.*//;
+	    s/url.*= .*doi.org.*//;
+	    s/.Feel free to use .nocite.*//;
+	    ' |
   perl -ne '/GTK2_RC_FILES/ and next;
     /GTK_RC_FILES/ and next;
     print' |

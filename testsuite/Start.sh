@@ -46,18 +46,27 @@ run_test() {
 }
 export -f run_test
 
-# Create a monitor script
-echo forever "'echo; pstree -lp '"$$"'; pstree -l'" $$ >/tmp/monitor
-chmod 755 /tmp/monitor
-# Log rotate
-mkdir -p log
-seq 10 -1 1 |
-    parallel -j1 mv log/testsuite.log.{} log/testsuite.log.'{= $_++ =}'
-mv testsuite.log log/testsuite.log.1
-date
+create_monitor_script() {
+    # Create a monitor script
+    echo forever "'echo; pstree -lp '"$$"'; pstree -l'" $$ >/tmp/monitor
+    chmod 755 /tmp/monitor
+}
+
+log_rotate() {
+    # Log rotate
+    mkdir -p log
+    seq 10 -1 1 |
+	parallel -j1 mv log/testsuite.log.{} log/testsuite.log.'{= $_++ =}'
+    mv testsuite.log log/testsuite.log.1
+}
+
+create_monitor_script
+log_rotate
+
+printf "\033[48;5;78;38;5;0m     `date`     \033[00m\n"
 mkdir -p actual-results
 ls -t tests-to-run/*${1}*.sh | egrep -v "${2}" |
-  parallel --tty -tj1 run_test | tee testsuite.log
+    parallel --tty -tj1 run_test | tee testsuite.log
 # If testsuite.log contains @@ then there is a diff
 if grep -q '@@' testsuite.log ; then
     false
@@ -66,4 +75,4 @@ else
     rm -rf src-passing-testsuite
     cp -a ../src src-passing-testsuite
 fi
-date
+printf "\033[48;5;208;38;5;0m     `date`     \033[00m\n"

@@ -192,27 +192,28 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200922 ('Ginsburg/Kenosha/Belarus/Lukashenko/California/Malmö') released <<[stable]>>
+Subject: GNU Parallel 20200922 ('Ginsburg') released <<[stable]>>
 
-GNU Parallel 20200922 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20200922 ('Ginsburg') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-  <<>>
+  Great tool, gets jobs done fast.
+  Great tool, gets jobs done fast.
+  Great tool, gets jobs done fast.
+    -- Paul F. De La Cruz @pdelacruzcc@twitter
   
 New in this release:
 
-* No new functionality
+* New CPU detection for GNU/Linux.
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-https://floki.blog/2020/08/more_unix_tools
-
-https://computeontario.ca/event/webinar-options-for-solving-jobs-with-many-tasks/
+* Aug 21, 2020 - More Unix tools https://floki.blog/2020/08/more_unix_tools
 
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html

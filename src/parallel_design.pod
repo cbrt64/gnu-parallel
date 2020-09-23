@@ -652,8 +652,12 @@ exec'ing a Perl wrapper to monitor the parent pid and kill the child
 if the parent pid becomes 1, then Ctrl-C works and stderr is kept on
 stderr.
 
+Ctrl-C does, however, kill the ssh connection, so any output from
+a remote dying process is lost.
+
 To be able to kill all (grand)*children a new process group is
 started.
+
 
 =head3 --nice
 

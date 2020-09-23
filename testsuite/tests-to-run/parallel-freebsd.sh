@@ -1,14 +1,10 @@
 #!/bin/bash
 
 echo "### These tests requires VirtualBox running with the following images"
-echo `whoami`"@freebsd7"
-
 SERVER1=freebsd11
 SSHUSER1=vagrant
 SSHLOGIN1=$SSHUSER1@$SERVER1
-
-#VBoxManage startvm FreeBSD71 >/dev/null 2>&1
-#ping -c 1 freebsd7.tange.dk >/dev/null 2>&1
+echo $SSHUSER1@$SERVER1
 
 ssh $SSHLOGIN1 touch .parallel/will-cite
 scp -q .*/src/{parallel,sem,sql,niceload,env_parallel*} $SSHLOGIN1:bin/
@@ -97,9 +93,8 @@ unset TMPDIR
 #   we get 'shopt'-errors and 'declare'-errors.
 #   We can safely ignore those.
 
+export LC_ALL=C
 PARALLEL_SHELL=sh env_parallel --env _ -vj9 -k --joblog /tmp/jl-`basename $0` --retries 3 \
 	     -S $SSHLOGIN1 --tag '{} 2>&1' \
 	     ::: $(compgen -A function | grep par_ | sort) \
 	     2> >(grep -Ev 'shopt: not found|declare: not found')
-
-#VBoxManage controlvm FreeBSD71 savestate

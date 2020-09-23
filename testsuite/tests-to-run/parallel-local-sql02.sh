@@ -23,6 +23,7 @@ par_few_duplicate_run() {
 	       parallel --sqlworker $DBURL &
 	       wait
 	   ) | wc -l)
+    sql "$1" "drop table $TABLE;"
     if [ $lines -gt 105 ] ; then
 	echo Error: $lines are more than 5% duplicates
     else

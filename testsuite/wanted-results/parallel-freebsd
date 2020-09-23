@@ -1,5 +1,5 @@
 ### These tests requires VirtualBox running with the following images
-tange@freebsd7
+vagrant@freebsd11
 par_compress_pipe	par_compress_pipe 2>&1
 par_compress_pipe	Test --compress --pipe
 par_compress_pipe	    1000    1000    3893

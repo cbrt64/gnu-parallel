@@ -1368,8 +1368,8 @@ See 'man parallel' for details
 Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
-  Tange, O. (2020, June 22). GNU Parallel VERSION ('Floyd').
-  Zenodo. https://doi.org/10.5281/zenodo.3903853
+  
+  Zenodo. 
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
   parallel --version
@@ -1390,19 +1390,18 @@ Your version is at least VERSION.
 Academic tradition requires you to cite works you base your article on.
 If you use programs that use GNU Parallel to process data for an article in a
 scientific publication, please cite:
-@software{tange_2020_3903853,
+
       author       = {Tange, Ole},
-      title        = {GNU Parallel VERSION ('Floyd')},
-      month        = Jun,
+      
       year         = 2020,
       note         = {{GNU Parallel is a general parallelizer to run
                        multiple serial command line programs in parallel
                        without changing them.}},
       publisher    = {Zenodo},
-      doi          = {10.5281/zenodo.3903853},
-      url          = {https://doi.org/10.5281/zenodo.3903853}
+      
+      url          = {
 }
-(Feel free to use \nocite{tange_2020_3903853})
+
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 More about funding GNU Parallel and the citation notice:
