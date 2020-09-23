@@ -7416,24 +7416,8 @@ sub sct_gnu_linux($) {
 	$cpu->{'threads'} = $thread;
     }
 
-    local $/ = "\n"; # If delimiter is set, then $/ will be wrong
-    my @cpuinfo;
-    if($ENV{'PARALLEL_CPUINFO'}) {
-	# Use CPUINFO from environment - used for testing only
-	@cpuinfo = split/(?<=\n)/,$ENV{'PARALLEL_CPUINFO'};
-    } elsif(-r "$ENV{'PARALLEL_CPUPREFIX'}/cpu0/topology/thread_siblings") {
-	# Use CPUPREFIX from environment - used for testing only
-	read_topology($ENV{'PARALLEL_CPUPREFIX'});
-    } elsif($cpu->{'sockets'} and $cpu->{'cores'} and
-	    $cpu->{'threads'}) {
-	# Skip /proc/cpuinfo - already set
-    } elsif(-r "/sys/devices/system/cpu/cpu0/topology/thread_siblings") {
-	read_topology("/sys/devices/system/cpu");
-    } elsif(open(my $in_fh, "<", "/proc/cpuinfo")) {
-	# Read /proc/cpuinfo
-	@cpuinfo = <$in_fh>;
-    }
-    if(@cpuinfo) {
+    sub read_cpuinfo(@) {
+	my @cpuinfo = @_;
 	$cpu->{'sockets'} = 0;
 	$cpu->{'cores'} = 0;
 	$cpu->{'threads'} = 0;
@@ -7455,7 +7439,62 @@ sub sct_gnu_linux($) {
 	    # processor : 2
 	    /^processor.*[:]\s*\d/i and $cpu->{'threads'}++;
 	}
-	$cpu->{'cores'} ||= $cpu->{'threads'} || $cpu->{'sockets'};
+	$cpu->{'cores'} ||= $cpu->{'threads'};
+	$cpu->{'cpus'} ||= $cpu->{'threads'};
+	$cpu->{'sockets'} ||= 1;
+    }
+
+    sub read_lscpu(@) {
+	my @lscpu = @_;
+	my $threads_per_core;
+	my $cores_per_socket;
+	for(@lscpu) {
+	    /^CPU.s.:\s*(\d+)/ and $cpu->{'threads'} = $1;
+	    /^Thread.s. per core:\s*(\d+)/ and $threads_per_core = $1;
+	    /^Core.s. per socket:\s*(\d+)/ and $cores_per_socket = $1;
+	    /^(CPU )?Socket.s.:\s*(\d+)/i and $cpu->{'sockets'} = $2;
+	}
+	if($threads_per_core and $cpu->{'threads'}) {
+	    $cpu->{'cores'} =  $cpu->{'threads'} / $threads_per_core;
+	}
+	$cpu->{'cpus'} ||= $cpu->{'threads'};
+    }
+
+    local $/ = "\n"; # If delimiter is set, then $/ will be wrong
+    my @cpuinfo;
+    my @lscpu;
+    if($ENV{'PARALLEL_CPUINFO'}) {
+	# Use CPUINFO from environment - used for testing only
+	read_cpuinfo(split/(?<=\n)/,$ENV{'PARALLEL_CPUINFO'});
+    } elsif($ENV{'PARALLEL_LSCPU'}) {
+	# Use LSCPU from environment - used for testing only
+	read_lscpu(split/(?<=\n)/,$ENV{'PARALLEL_LSCPU'});
+    } elsif(-r "$ENV{'PARALLEL_CPUPREFIX'}/cpu0/topology/thread_siblings") {
+	# Use CPUPREFIX from environment - used for testing only
+	read_topology($ENV{'PARALLEL_CPUPREFIX'});
+    } elsif($cpu->{'sockets'} and $cpu->{'cores'} and $cpu->{'threads'}) {
+	# Skip /proc/cpuinfo - already set
+    } else {
+	# Not debugging: Look at this computer
+	if(!($cpu->{'sockets'} and $cpu->{'cores'} and $cpu->{'threads'})
+	   and
+	   open(my $in_fh, "-|", "lscpu")) {
+	    # Parse output from lscpu
+	    read_lscpu(<$in_fh>);
+	    close $in_fh;
+	}
+	if(!($cpu->{'sockets'} and $cpu->{'cores'} and $cpu->{'threads'})
+	   and
+	   -r "/sys/devices/system/cpu/cpu0/topology/thread_siblings") {
+	    read_topology("/sys/devices/system/cpu");
+	}
+	if(!($cpu->{'sockets'} and $cpu->{'cores'} and $cpu->{'threads'})
+	   and
+	   open(my $in_fh, "<", "/proc/cpuinfo")) {
+	    # Read /proc/cpuinfo
+	    read_cpuinfo(<$in_fh>);
+	    close $in_fh;
+	}
     }
     if(-e "/proc/self/status" and not $ENV{'PARALLEL_CPUINFO'}) {
 	# if 'taskset' is used to limit number of threads
