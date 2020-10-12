@@ -44,7 +44,7 @@ EOF
 
 cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 --joblog /tmp/jl-`basename $0` -L1
 echo '### -f and --factor'
-  niceload -H --factor 10 -l6 echo factor 10 finish last
+  niceload -H --factor 30 -l6 echo factor 30 finish last
   niceload -H -f 0.01 -l6 echo f 0.1 finish first
 EOF
 

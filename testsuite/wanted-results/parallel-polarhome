@@ -166,6 +166,7 @@ bin/env_parallel.dash macosx	copy macosx bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash redhat	copy redhat bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash netbsd	copy netbsd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash openbsd	copy openbsd bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash debian	copy debian bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash minix	copy minix bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.fish qnx	copy qnx bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish pidora	copy pidora bin/env_parallel.fish env_parallel.fish

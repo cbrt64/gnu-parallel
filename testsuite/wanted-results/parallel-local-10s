@@ -251,7 +251,7 @@ par_jobs_file	--pipe          Split stdin (standard input) to multiple jobs.
 par_jobs_file	--recend str    Record end separator for --pipe.
 par_jobs_file	--recstart str  Record start separator for --pipe.
 par_jobs_file	
-par_jobs_file	See 'man parallel' for details
+par_jobs_file	GNU Parallel can do much more. See 'man parallel' for details
 par_jobs_file	
 par_jobs_file	Academic tradition requires you to cite works you base your article on.
 par_jobs_file	If you use programs that use GNU Parallel to process data for an article in a

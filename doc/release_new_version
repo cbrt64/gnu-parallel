@@ -192,33 +192,31 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20200922 ('Ginsburg') released <<[stable]>>
+Subject: GNU Parallel 20201022 ('CRISPR/Memphis-mumier/TrumpVirus/Belarus/Assange') released <<[stable]>>
 
-GNU Parallel 20200922 ('Ginsburg') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20201022 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-  Great tool, gets jobs done fast.
-  Great tool, gets jobs done fast.
-  Great tool, gets jobs done fast.
-    -- Paul F. De La Cruz @pdelacruzcc@twitter
   
 New in this release:
 
-* New CPU detection for GNU/Linux.
+
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* Aug 21, 2020 - More Unix tools https://floki.blog/2020/08/more_unix_tools
+https://cloud.tencent.com/developer/article/1705499
 
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
 GNU Parallel - For people who live life in the parallel lane.
+
+If you like GNU Parallel record a video testimonial: Say who you are, what you use GNU Parallel for, how it helps you, and what you like most about it. Include command that uses GNU Parallel if you feel like it.
 
 
 = About GNU Parallel =

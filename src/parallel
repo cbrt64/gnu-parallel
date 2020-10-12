@@ -881,16 +881,17 @@ sub group_by_loop($$) {
     # Numbered 0..n-1 due to being used by $F[n]
     if($group_by::col) { $group_by::col--; }
 
-    my $loop = ::spacefree(0,'{
-	local $_=COLVALUE;
-	PERLEXPR;
-	if(! defined $last) { $last = $_ }
-	if(($last) ne $_) {
-	    print "RECSEP";
-	    $last = $_;
+    my $loop = ::spacefree(0,q{
+	BEGIN{ $last = "RECSEP"; }
+        {
+	    local $_=COLVALUE;
+	    PERLEXPR;
+	    if(($last) ne $_) {
+		print "RECSEP";
+		$last = $_;
+	    }
 	}
-    }');
-
+			   });
     if(defined $group_by::col) {
 	$loop =~ s/COLVALUE/\$F[$group_by::col]/g;
     } else {
@@ -2160,7 +2161,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20200922;
+    $Global::version = 20200923;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4554,6 +4555,7 @@ sub onall($@) {
 	     ((defined $opt::retries) ? "--retries ".$opt::retries : ""),
 	     ((defined $opt::timeout) ? "--timeout ".$opt::timeout : ""),
 	     ((defined $opt::ungroup) ? "-u" : ""),
+	     ((defined $opt::ssh) ? "--ssh '".$opt::ssh."'" : ""),
 	     ((defined $opt::tee) ? "--tee" : ""),
 	     ((defined $opt::workdir) ? "--wd ".Q($opt::workdir) : ""),
 	     (@Global::transfer_files ? map { "--tf ".Q($_) }
@@ -4913,7 +4915,7 @@ sub usage() {
 	 "--recend str    Record end separator for --pipe.",
 	 "--recstart str  Record start separator for --pipe.",
 	 "",
-	 "See 'man $Global::progname' for details",
+	 "GNU Parallel can do much more. See 'man $Global::progname' for details",
 	 "",
 	 "Academic tradition requires you to cite works you base your article on.",
 	 "If you use programs that use GNU Parallel to process data for an article in a",
@@ -10330,7 +10332,7 @@ sub print_joblog($) {
 	$cmd = $self->replaced();
     } else {
 	# Verbose level > 1: Print the rsync and stuff
-	$cmd = join " ", @{$self->{'commandline'}};
+	$cmd = $self->wrapped();
     }
     # Newlines make it hard to parse the joblog
     $cmd =~ s/\n/\0/g;

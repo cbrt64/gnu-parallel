@@ -546,6 +546,7 @@ par_retries_all_fail() {
 par_sockets_cores_threads() {
     echo '### Test --number-of-sockets/cores/threads'
     unset PARALLEL_CPUINFO
+    unset PARALLEL_LSCPU
     parallel --number-of-sockets
     parallel --number-of-cores
     parallel --number-of-threads

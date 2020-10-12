@@ -439,7 +439,7 @@ par_tcsh_man	--pipe          Split stdin (standard input) to multiple jobs.par_
 par_tcsh_man	--recend str    Record end separator for --pipe.par_tcsh_man	
 par_tcsh_man	--recstart str  Record start separator for --pipe.par_tcsh_man	
 par_tcsh_man	par_tcsh_man	
-par_tcsh_man	See 'man parallel' for detailspar_tcsh_man	
+par_tcsh_man	GNU Parallel can do much more. See 'man parallel' for detailspar_tcsh_man	
 par_tcsh_man	par_tcsh_man	
 par_tcsh_man	Academic tradition requires you to cite works you base your article on.par_tcsh_man	
 par_tcsh_man	If you use programs that use GNU Parallel to process data for an article in apar_tcsh_man	
@@ -1856,9 +1856,9 @@ par_csh_man	-X              Multiple arguments with context replace
 par_csh_man	-j n            Run n jobs in parallel
 par_csh_man	-k              Keep same order
 par_csh_man	Academic tradition requires you to cite works you base your article on.
+par_csh_man	GNU Parallel can do much more. See 'man parallel' for details
 par_csh_man	If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 par_csh_man	If you use programs that use GNU Parallel to process data for an article in a
-par_csh_man	See 'man parallel' for details
 par_csh_man	This helps funding further development; AND IT WON'T COST YOU A CENT.
 par_csh_man	Unknown option: no-such-option
 par_csh_man	Usage:

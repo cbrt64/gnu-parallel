@@ -4056,6 +4056,14 @@ output.
 If you have a lot of hosts use '-j0' to access more hosts in parallel.
 
 
+=head1 EXAMPLE: Running 'sudo' on remote computers
+
+Put the password into passwordfile then run:
+
+  parallel --ssh 'cat passwordfile | ssh' --nonall \
+    -S user@server1,user@server2 sudo -S ls -l /root
+
+
 =head1 EXAMPLE: Using remote computers behind NAT wall
 
 If the workers are behind a NAT wall, you need some trickery to get to

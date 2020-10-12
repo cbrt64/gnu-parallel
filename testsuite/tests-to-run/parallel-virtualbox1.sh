@@ -1,5 +1,10 @@
 #!/bin/bash
 
+(
+    cd vagrant/tange/centos3/
+    vagrant up
+)
+
 par_warning_on_centos3() {
     echo "### bug #37589: Red Hat 9 (Shrike) perl v5.8.0 built for i386-linux-thread-multi error"
     testone() {
@@ -20,3 +25,8 @@ export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
     perl -pe 's:/usr/bin:/bin:g;'
+
+(
+    cd vagrant/tange/centos3/
+    vagrant suspend
+)
