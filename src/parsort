@@ -65,7 +65,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 =head1 DEPENDENCIES
 
-B<parsort> uses B<sort>, B<bash>, B<parallel>, and B<mbuffer>.
+B<parsort> uses B<sort>, B<bash>, and B<parallel>.
 
 
 =head1 SEE ALSO
@@ -82,6 +82,7 @@ use POSIX qw(mkfifo);
 Getopt::Long::Configure("bundling","require_order");
 
 my @ARGV_before = @ARGV;
+
 GetOptions(
     "debug|D" => \$opt::D,
     "version" => \$opt::version,
@@ -117,7 +118,7 @@ GetOptions(
     "help" => \$opt::dummy,
     ) || exit(255);
 $Global::progname = ($0 =~ m:(^|/)([^/]+)$:)[1];
-$Global::version = 20200823;
+$Global::version = 20201011;
 if($opt::version) { version(); exit 0; }
 @Global::sortoptions = @ARGV_before[0..($#ARGV_before-$#ARGV-1)];
 #if($opt::zero_terminated) { $/ = "\0"; }
@@ -136,8 +137,9 @@ sub merge {
 	    my $b = shift @cmd;
 	    $a &&= "<($a)";
 	    $b &&= "<($b)";
-	    # Ignore errors from mbuffer - it gives errors when a pipe is closed
-	    push @tmp, "sort -m @Global::sortoptions $a $b | ".buffer();
+	    # This looks like useless use of 'cat', but contrary to
+	    # naive belief it increases performance dramatically.
+	    push @tmp, "sort -m @Global::sortoptions $a $b | cat"
 	}
 	@cmd = @tmp;
     }
@@ -173,17 +175,8 @@ sub sort_stdin {
     if(fork) {
     } else {
 	exec(qw(parallel -j),$numthreads,
-	     # 1M 30M = 43s
-	     # 3M 30M = 59s
-	     # 300k 30M = 40-45s
-	     # 100k 30M = 47s
-	     # 500k 30M = 44s
-	     # 300k 10M = 41-45s
-	     # 256k 10M = 42-44s
-	     # 300k 3M = 42-45s
-	     # 300k - = 47s
 	     # 286k is the best mean value after testing 250..350
-	     qw(--block 286k --pipe --roundrobin ),buffer(),qw(> {} :::),@fifos);
+	     qw(--block 286k --pipe --roundrobin cat > {} :::),@fifos);
     }
     # The command uses <(...) so it is incompatible with /bin/sh
     open(my $bash,"|-","bash") || die;
@@ -217,43 +210,6 @@ sub tmpfifo {
     my $tmpfifo = tmpname("psort");
     mkfifo($tmpfifo,0600);
     return $tmpfifo;
-}
-
-{
-    my $buffer;
-    
-    sub buffer {
-	if(not defined $buffer) {
-	    if(which("mbuffker")) {
-		# Use mbuffer if installed
-		# 30M = 43s
-		# 10M = 41-45s
-		# 3M = 42-45s
-		# Ignore errors from mbuffer - it gives errors when a pipe is closed
-		$buffer = "mbuffer -v0 -q -m 30M";
-	    } else {
-		$buffer = "cat";
-	    }
-	}
-	return $buffer;
-    }
-}
-
-sub which {
-    # Input:
-    #   @programs = programs to find the path to
-    # Returns:
-    #   @full_path = full paths to @programs. Nothing if not found
-    my @which;
-    for my $prg (@_) {
-	push(@which, grep { not -d $_ and -x $_ }
-	     map { $_."/".$prg } split(":",$ENV{'PATH'}));
-	if($prg =~ m:/:) {
-	    # Including path
-	    push(@which, grep { not -d $_ and -x $_ } $prg);
-	}
-    }
-    return wantarray ? @which : $which[0];
 }
 
 sub version() {
