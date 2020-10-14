@@ -6,6 +6,40 @@ export SSHLOGIN1=parallel@lo
 export SSHLOGIN2=csh@lo
 mkdir -p tmp
 
+par_termseq_remote() {
+    echo '### bug #59146: Support --termseq for remote jobs'
+    doit() {
+	# setup signal handlers for all signals
+	exec perl -e '
+	$file = shift;
+    for $i (qw(
+    HUP      INT      QUIT     ILL      TRAP
+    ABRT     BUS      FPE      KILL     USR1
+    SEGV     USR2     PIPE     ALRM     TERM
+    STKFLT   CHLD     CONT     STOP     TSTP
+    TTIN     TTOU     URG      XCPU     XFSZ
+    VTALRM   PROF     WINCH    IO       PWR
+    SYS      RTMIN    RTMIN+1  RTMIN+2  RTMIN+3
+    RTMIN+4  RTMIN+5  RTMIN+6  RTMIN+7  RTMIN+8
+    RTMIN+9  RTMIN+10 RTMIN+11 RTMIN+12 RTMIN+13
+    RTMIN+14 RTMIN+15 RTMAX-14 RTMAX-13 RTMAX-12
+    RTMAX-11 RTMAX-10 RTMAX-9  RTMAX-8  RTMAX-7
+    RTMAX-6  RTMAX-5  RTMAX-4  RTMAX-3  RTMAX-2
+    RTMAX-1  RTMAX
+	    )) {
+	    eval q[$SIG{].$i.q[}=sub{open(A,">>$file");print A "].$i.q[\n";};];
+	}
+	for(1..100) { sleep(1);}
+	' $file
+    }
+    file=/tmp/sig$$
+    . `which env_parallel.bash`
+    env_parallel -v --timeout 2 --termseq HUP,30,INT,30,QUIT,30,ILL,30,TRAP,30,ABRT,30,BUS,30,FPE,30,USR1,30,SEGV,30,USR2,30,PIPE,30,ALRM,30,TERM,30,STKFLT,30,CHLD,30,CONT,30,TSTP,30,TTIN,30,TTOU,30,URG,30,XCPU,30,XFSZ,30,VTALRM,30,PROF,30,WINCH,30,IO,30,PWR,30,SYS,30,RTMIN,30,RTMAX,30,KILL,9 -S $SSHLOGIN1 doit ::: 1
+    sleep 1
+    cat $file
+    ssh $SSHLOGIN1 rm $file
+}
+
 par_nonall_ssh() {
     echo 'bug #59181: --ssh is not propagated to --nonall'
     parallel --ssh 'echo OK | ssh' -S $SSHLOGIN1 --nonall cat

@@ -34,6 +34,40 @@ par_rsync_3.2.3	bug59006
 par_sshlogin_replacement	### show {sshlogin} and {host}
 par_sshlogin_replacement	parallel@lo and lo
 par_sshlogin_replacement	/usr/bin/ssh parallel@lo and lo
+par_termseq_remote	### bug #59146: Support --termseq for remote jobs
+par_termseq_remote	parallel: Warning: This job was killed because it timed out:
+par_termseq_remote	parallel: Warning: doit 1
+par_termseq_remote	doit 1
+par_termseq_remote	HUP
+par_termseq_remote	INT
+par_termseq_remote	QUIT
+par_termseq_remote	ILL
+par_termseq_remote	TRAP
+par_termseq_remote	ABRT
+par_termseq_remote	BUS
+par_termseq_remote	FPE
+par_termseq_remote	USR1
+par_termseq_remote	SEGV
+par_termseq_remote	USR2
+par_termseq_remote	PIPE
+par_termseq_remote	ALRM
+par_termseq_remote	TERM
+par_termseq_remote	STKFLT
+par_termseq_remote	CHLD
+par_termseq_remote	CONT
+par_termseq_remote	TSTP
+par_termseq_remote	TTIN
+par_termseq_remote	TTOU
+par_termseq_remote	URG
+par_termseq_remote	XCPU
+par_termseq_remote	XFSZ
+par_termseq_remote	VTALRM
+par_termseq_remote	PROF
+par_termseq_remote	WINCH
+par_termseq_remote	IO
+par_termseq_remote	PWR
+par_termseq_remote	SYS
+par_termseq_remote	RTMIN
 par_test_nonall	### Test --nonall
 par_test_nonall	/home/csh
 par_test_nonall	/home/parallel

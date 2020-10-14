@@ -9063,6 +9063,7 @@ sub sshlogin_wrap($) {
 		::spacefree(0,'$shell = "'.($ENV{'PARALLEL_SHELL'} || '$ENV{SHELL}').'";'.
 			    '$tmpdir = "'.::perl_quote_scalar($ENV{'TMPDIR'}).'";'.
 			    '$nice = '.$opt::nice.';'.
+			    '$termseq = "'.$opt::termseq.'";'.
 			    q{
 		# Set $PARALLEL_TMP to a non-existent file name in $TMPDIR
 		do {
@@ -9084,8 +9085,17 @@ sub sshlogin_wrap($) {
                     $s = $s < 1 ? 0.001 + $s * 1.03 : $s;
                     select(undef, undef, undef, $s);
                 } until ($done || getppid == 1);
-		# Kill HUP the process group if job not done
-		kill(SIGHUP, -${pid}) unless $done;
+		if(not $done) {
+		    # Kill as per --termseq
+		    my @term_seq = split/,/,$termseq;
+		    if(not @term_seq) {
+			@term_seq = ("TERM",200,"TERM",100,"TERM",50,"KILL",25);
+		    }
+		    while(@term_seq && kill(0,-$pid)) {
+			kill(shift @term_seq, -$pid);
+			select(undef, undef, undef, (shift @term_seq)/1000);
+		    }
+		}
 		wait;
 		exit ($?&127 ? 128+($?&127) : 1+$?>>8)
             });
