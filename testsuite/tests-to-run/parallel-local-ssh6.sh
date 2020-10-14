@@ -6,6 +6,11 @@ export SSHLOGIN1=parallel@lo
 export SSHLOGIN2=csh@lo
 mkdir -p tmp
 
+par_nonall_ssh() {
+    echo 'bug #59181: --ssh is not propagated to --nonall'
+    parallel --ssh 'echo OK | ssh' -S $SSHLOGIN1 --nonall cat
+}
+
 par_test_onall() {
     echo '### Test --onall'
     parallel --onall --tag -k -S $SSHLOGIN1,$SSHLOGIN2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2

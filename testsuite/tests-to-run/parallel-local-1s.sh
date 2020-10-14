@@ -206,18 +206,6 @@ par_profiles_with_space() {
 	perl -pe 's:parallel./:parallel/:'
 }
 
-par_compress_prg_fails() {
-    echo '### bug #44546: If --compress-program fails: fail'
-    doit() {
-	(parallel $* --compress-program false \
-		  echo \; sleep 1\; ls ::: /no-existing
-	echo $?) | tail -n1
-    }
-    export -f doit
-    stdout parallel --tag -k doit ::: '' --line-buffer ::: '' --tag ::: '' --files |
-	grep -v -- -dc
-}
-
 par_pxz_complains() {
     echo 'bug #44250: pxz complains File format not recognized but decompresses anyway'
 
@@ -599,11 +587,14 @@ par_test_cpu_detection_cpuinfo() {
     cpu14() {
 	echo '1-1-1-1 Intel Xeon X5675 (mandriva.p)'
 	echo '
-	KLUv/QRonQYAwsolIjBpzABoi2gVcBKev0FN8WI7YcCuNoTmTbB1dAmqC8N6MAf9xOhcS6B+
-	oOLc0Qb145avJCV9NqgRCTRE5ZAsLCJ3UOm9nwP6Pbd+2qihgkUvysD6XJ2vNKuvSDiO7aw/
-	UJ2JJoBuk5QfQVrssW26Wen4rx+YManHlUC3TAuQBw/M+Gkv5FqfpKYfJIAxwZfHWZafaSUx
-	ExcgQEik8g6fj08zd4EHssVA93AJ8C7xnA3qlYxXshyLBYN1XHECyZgjRUkKjzkkLOUQtuV4
-	YQqnBNP0ggo=
+ 	KLUv/QRo1QwABt5WJBCNWAGjFDHykUWSQEvNjTGJMp1z5pZCA7MA9TKhFAAAEwwAAlEASgBI
+	AI5SkwOF5Y6KYGPe2WtyYNBQJBYf+BmNhuHwhoUCGNfhAQwAd9Q+Bs8wd5RyC8W3mjtK4tpj
+	j0usy+2ECAubBNfgjoLaIyMEN7IUd5SM3atRcmcRX8r5ztvXxuyOSb/6vowv+117fpu/0PdF
+	LvGjI+Y4YiluI+sONYkVxjZ5ddqnVyLxYxEk3OFYFuWO2knrL0SZrsaiSTgYisUD3X0ZZ4Px
+	HQKCcNJzym+QOcJLougixzkdijF6eOVZuvZ8JmSzYdQ/d9aekPwE7xzTlvQn5Mt2X/b0+PTe
+	IS25h9M3i8n4kfg0azkT7tuIQfYuNyLyckyaskUczAUc09YSCL9ne7iC6V4JQWzCfTBqjj1M
+	sxpLoqEozR3V3F6M4sN67nlAmHsv+4TKkb8oD7Pdb5RJv9gYKBAixjTqEIhm1AHKWTCgrkEE
+	YstArr0BOSgXJ4Xmpu4j9PRpQcgRCckdf4fcSFol9GuGecuj5uBxngHakML8
 	' | unpack
     }
     export -f $(compgen -A function | grep ^cpu)
@@ -783,14 +774,11 @@ par_test_cpu_detection_lscpu() {
     cpu14() {
 	echo '1-1-1-1 Intel Xeon X5675 (mandriva.p)'
 	echo '
- 	KLUv/QRo1QwABt5WJBCNWAGjFDHykUWSQEvNjTGJMp1z5pZCA7MA9TKhFAAAEwwAAlEASgBI
-	AI5SkwOF5Y6KYGPe2WtyYNBQJBYf+BmNhuHwhoUCGNfhAQwAd9Q+Bs8wd5RyC8W3mjtK4tpj
-	j0usy+2ECAubBNfgjoLaIyMEN7IUd5SM3atRcmcRX8r5ztvXxuyOSb/6vowv+117fpu/0PdF
-	LvGjI+Y4YiluI+sONYkVxjZ5ddqnVyLxYxEk3OFYFuWO2knrL0SZrsaiSTgYisUD3X0ZZ4Px
-	HQKCcNJzym+QOcJLougixzkdijF6eOVZuvZ8JmSzYdQ/d9aekPwE7xzTlvQn5Mt2X/b0+PTe
-	IS25h9M3i8n4kfg0azkT7tuIQfYuNyLyckyaskUczAUc09YSCL9ne7iC6V4JQWzCfTBqjj1M
-	sxpLoqEozR3V3F6M4sN67nlAmHsv+4TKkb8oD7Pdb5RJv9gYKBAixjTqEIhm1AHKWTCgrkEE
-	YstArr0BOSgXJ4Xmpu4j9PRpQcgRCckdf4fcSFol9GuGecuj5uBxngHakML8
+	KLUv/QRonQYAwsolIjBpzABoi2gVcBKev0FN8WI7YcCuNoTmTbB1dAmqC8N6MAf9xOhcS6B+
+	oOLc0Qb145avJCV9NqgRCTRE5ZAsLCJ3UOm9nwP6Pbd+2qihgkUvysD6XJ2vNKuvSDiO7aw/
+	UJ2JJoBuk5QfQVrssW26Wen4rx+YManHlUC3TAuQBw/M+Gkv5FqfpKYfJIAxwZfHWZafaSUx
+	ExcgQEik8g6fj08zd4EHssVA93AJ8C7xnA3qlYxXshyLBYN1XHECyZgjRUkKjzkkLOUQtuV4
+	YQqnBNP0ggo=
 	' | unpack
     }
     export -f $(compgen -A function | grep ^cpu)

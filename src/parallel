@@ -2087,6 +2087,9 @@ sub parse_options(@) {
 	$Global::sql = SQL->new($opt::sqlmaster || $opt::sqlworker);
     }
     if($opt::sqlworker) { $Global::membuffer ||= 1; }
+    # The sqlmaster groups the arguments, so the should just read one
+    if($opt::sqlworker and not $opt::sqlmaster) { $Global::max_number_of_args = 1; }
+
 }
 
 sub check_invalid_option_combinations() {

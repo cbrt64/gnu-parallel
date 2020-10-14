@@ -2,7 +2,7 @@
 
 (
     cd vagrant/tange/centos3/
-    vagrant up
+    stdout vagrant up |	grep -v 'default'
 )
 
 par_warning_on_centos3() {
@@ -28,5 +28,6 @@ compgen -A function | grep par_ | LC_ALL=C sort |
 
 (
     cd vagrant/tange/centos3/
-    vagrant suspend
+    stdout vagrant suspend |
+	grep -v '==> default: Saving VM state'
 )

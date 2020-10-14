@@ -23,5 +23,5 @@ echo '### -f and --factor'
 ### -f and --factor
   niceload -H -f 0.01 -l6 echo f 0.1 finish first
 f 0.1 finish first
-  niceload -H --factor 10 -l6 echo factor 10 finish last
-factor 10 finish last
+  niceload -H --factor 30 -l6 echo factor 30 finish last
+factor 30 finish last

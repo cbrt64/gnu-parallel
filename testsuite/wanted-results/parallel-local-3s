@@ -31,6 +31,31 @@ par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<n
 par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" d
 par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" e
 par_commandline_with_newline	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+par_compress_prg_fails	### bug #44546: If --compress-program fails: fail
+par_compress_prg_fails	  	1
+par_compress_prg_fails	  	parallel: Error: false failed.
+par_compress_prg_fails	  	parallel: Error: false failed.
+par_compress_prg_fails	  --files	1
+par_compress_prg_fails	  --files	parallel: Error: false failed.
+par_compress_prg_fails	  --files	parallel: Error: false failed.
+par_compress_prg_fails	 --tag 	1
+par_compress_prg_fails	 --tag 	parallel: Error: false failed.
+par_compress_prg_fails	 --tag 	parallel: Error: false failed.
+par_compress_prg_fails	 --tag --files	1
+par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  	1
+par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  --files	1
+par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag 	1
+par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag --files	1
+par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
 par_delay_human_readable	a
 par_delay_human_readable	b
 par_delay_human_readable	c

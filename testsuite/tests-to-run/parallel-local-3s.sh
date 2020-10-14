@@ -4,6 +4,18 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_compress_prg_fails() {
+    echo '### bug #44546: If --compress-program fails: fail'
+    doit() {
+	(parallel $* --compress-program false \
+		  echo \; sleep 1\; ls ::: /no-existing
+	echo $?) | tail -n1
+    }
+    export -f doit
+    stdout parallel --tag -k doit ::: '' --line-buffer ::: '' --tag ::: '' --files |
+	grep -v -- -dc
+}
+
 par_eta() {
     echo '### Test of --eta'
     seq 1 10 | stdout parallel --eta "sleep 1; echo {}" | wc -l

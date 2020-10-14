@@ -374,6 +374,28 @@ _parset_main() {
 	echo parset: Error: ' ' parset myarray echo ::: foo bar >&2
 	return 255
     fi
+    if [ "$_parset_NAME" = "--help" ] ; then
+	echo parset: Error: Usage: >&2
+	echo parset: Error: ' ' parset varname GNU Parallel options and command >&2
+	echo
+	parallel --help
+	return 255
+    fi
+    if [ "$_parset_NAME" = "--version" ] ; then
+	echo "parset 20201010 (GNU parallel `parallel --minversion 1`)"
+	echo "Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software"
+	echo "Foundation, Inc."
+	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
+	echo "This is free software: you are free to change and redistribute it."
+	echo "GNU parallel comes with no warranty."
+	echo
+	echo "Web site: https://www.gnu.org/software/parallel"
+	echo
+	echo "When using programs that use GNU Parallel to process data for publication"
+	echo "please cite as described in 'parallel --citation'."
+	echo
+	return 255
+    fi
     shift
     echo "$_parset_NAME" |
 	perl -ne 'chomp;for (split /[, ]/) {
@@ -381,6 +403,8 @@ _parset_main() {
 	    if(not /^[a-zA-Z_][a-zA-Z_0-9]*(\[\d+\])?$/) {
                 print STDERR "parset: Error: $_ is an invalid variable name.\n";
                 print STDERR "parset: Error: Variable names must be letter followed by letters or digits.\n";
+		print STDERR "parset: Error: Usage:\n";
+		print STDERR "parset: Error:   parset varname GNU Parallel options and command\n";
                 $exitval = 255;
             }
         }

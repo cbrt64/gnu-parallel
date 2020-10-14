@@ -77,6 +77,11 @@ par_groupby() {
 	printf "%s\t" 3 2 4; echo
 	printf "%s\t" 3 2 2; echo
 	printf "%s\t" 3 2 3; echo
+	printf "%s\t" 3 1 3; echo
+	printf "%s\t" 3 2 3; echo
+	printf "%s\t" 3 3 3; echo
+	printf "%s\t" 3 4 4; echo
+	printf "%s\t" 3 5 4; echo
     }
     export -f tsv
 
@@ -89,6 +94,11 @@ par_groupby() {
 	printf "%s  " 3 2 4; echo
 	printf "%s\t\t" 3 2 2; echo
 	printf "%s\t  \t" 3 2 3; echo
+	printf "%s\t  \t  " 3 1 3; echo
+	printf "%s\t  \t " 3 2 3; echo
+	printf "%s\t  \t" 3 3 3; echo
+	printf "%s\t\t" 3 4 4; echo
+	printf "%s\t \t" 3 5 4; echo
     }
     export -f ssv
 
@@ -101,6 +111,11 @@ par_groupby() {
 	printf "%s,," 3 2 4; echo
 	printf "%s\t,,, " 3 2 2; echo
 	printf "%s\t" 3 2 3; echo
+	printf "%s\t, " 3 1 3; echo
+	printf "%s\t," 3 2 3; echo
+	printf "%s, \t" 3 3 3; echo
+	printf "%s,\t," 3 4 4; echo
+	printf "%s\t,," 3 5 4; echo
     }
     export -f cssv
 
@@ -113,6 +128,11 @@ par_groupby() {
 	printf "%s," 3 2 4; echo
 	printf "%s," 3 2 2; echo
 	printf "%s," 3 2 3; echo
+	printf "%s," 3 1 3; echo
+	printf "%s," 3 2 3; echo
+	printf "%s," 3 3 3; echo
+	printf "%s," 3 4 4; echo
+	printf "%s," 3 5 4; echo
     }
     export -f csv
 
@@ -126,6 +146,8 @@ par_groupby() {
 	    parallel --pipe --colsep "$colsep" --groupby "$groupby" -k $block 'echo NewRec; cat'
     }
     export -f tester
+    # -N1 = allow only a single value
+    # --block 20 = allow multiple groups of values
     parallel --tag -k tester \
 	     ::: -N1 '--block 20' \
 	     ::: '3 $_%=2' 3 's/^(.).*/$1/' C1 'C1 $_%=2' \
@@ -151,7 +173,7 @@ par_groupby_pipepart() {
 	# Make 6 columns: 123456 => 1\t2\t3\t4\t5\t6
 	seq 100000 999999 | perl -pe '$_=join"\t",split//' |
 	    # Sort reverse on column 3 (This should group on col 3)
-	    sort --parallel=8 --buffer-size=50% -rk3
+	    sort --parallel=8 --buffer-size=50% -k3r
     }
     export -f tsv
 

@@ -10,31 +10,6 @@ par_bug37042	### Bug introduce by fixing bug #37042
 par_bug37042	abc
 par_bug43654	bug #43654: --bar with command not using {} - only last output line 
 par_bug43654	par_bug43654	[7m100% 1:0=0s 1                                                                   [0m[0m
-par_compress_prg_fails	### bug #44546: If --compress-program fails: fail
-par_compress_prg_fails	  	1
-par_compress_prg_fails	  	parallel: Error: false failed.
-par_compress_prg_fails	  	parallel: Error: false failed.
-par_compress_prg_fails	  --files	1
-par_compress_prg_fails	  --files	parallel: Error: false failed.
-par_compress_prg_fails	  --files	parallel: Error: false failed.
-par_compress_prg_fails	 --tag 	1
-par_compress_prg_fails	 --tag 	parallel: Error: false failed.
-par_compress_prg_fails	 --tag 	parallel: Error: false failed.
-par_compress_prg_fails	 --tag --files	1
-par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
-par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer  	1
-par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer  --files	1
-par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer --tag 	1
-par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer --tag --files	1
-par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
-par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
 par_empty_string_command_line	### Test of ignore-empty string on :::
 par_empty_string_command_line	foo
 par_empty_string_command_line	ole
@@ -596,8 +571,12 @@ par_sql_colsep	/b/B/3/33/
 par_sql_colsep	/c/C/1/11/
 par_sql_colsep	/c/C/2/22/
 par_sql_colsep	/c/C/3/33/
-par_sql_colsep	a A 1 11 a A 2 22 a A 3 33 a A 4 44 a A 5 55 a A 6 66 b B 1 11 b B 2 22 b B 3 33
-par_sql_colsep	b B 4 44 b B 5 55 b B 6 66 c C 1 11 c C 2 22 c C 3 33 c C 4 44 c C 5 55 c C 6 66
+par_sql_colsep	a A 1 11 a A 2 22 a A 3 33
+par_sql_colsep	a A 4 44 a A 5 55 a A 6 66
+par_sql_colsep	b B 1 11 b B 2 22 b B 3 33
+par_sql_colsep	b B 4 44 b B 5 55 b B 6 66
+par_sql_colsep	c C 1 11 c C 2 22 c C 3 33
+par_sql_colsep	c C 4 44 c C 5 55 c C 6 66
 par_sql_colsep	a A 1 11 a A 2 22 a A 3 33
 par_sql_colsep	a A 4 44 a A 5 55 a A 6 66
 par_sql_colsep	b B 1 11 b B 2 22 b B 3 33
@@ -724,6 +703,8 @@ par_test_cpu_detection_cpuinfo	4-64-64-64 Dell R815 4 CPU 64-core
 par_test_cpu_detection_cpuinfo	4 32 64 32
 par_test_cpu_detection_cpuinfo	1-2-2-2 AMD Neo N36L Dual-Core Processor
 par_test_cpu_detection_cpuinfo	1 2 2 2
+par_test_cpu_detection_cpuinfo	1-1-1-1 Intel Xeon X5675 (mandriva.p)
+par_test_cpu_detection_cpuinfo	1 1 1 1
 par_test_cpu_detection_cpuinfo	1-4-8-4 Core i7-3632QM Acer laptop
 par_test_cpu_detection_cpuinfo	1 4 8 4
 par_test_cpu_detection_cpuinfo	1-2-4-2 Core i5-2410M laptop firewall
@@ -746,6 +727,8 @@ par_test_cpu_detection_lscpu	4-64-64-64 Dell R815 4 CPU 64-core
 par_test_cpu_detection_lscpu	4 8 8 8
 par_test_cpu_detection_lscpu	1-2-2-2 AMD Neo N36L Dual-Core Processor
 par_test_cpu_detection_lscpu	1 2 2 2
+par_test_cpu_detection_lscpu	1-1-1-1 Intel Xeon X5675 (mandriva.p)
+par_test_cpu_detection_lscpu	1 1 1 1
 par_test_cpu_detection_lscpu	1-4-8-4 Core i7-3632QM Acer laptop
 par_test_cpu_detection_lscpu	1 4 8 4
 par_test_cpu_detection_lscpu	1-2-4-2 Core i5-2410M laptop firewall
