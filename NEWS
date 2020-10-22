@@ -1,3 +1,20 @@
+20201022
+
+* --termseq now works for jobs running remotely.
+
+* parsort: Performance optimized for 64-core machines.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Juan Sierra Pons has made a testimonial:
+  http://www.elsotanillo.net/wp-content/uploads/GnuParallel_JuanSierraPons.mp4
+
+* 「翻译」在生物信息学中使用 GNU-Parallel
+  https://cloud.tencent.com/developer/article/1705499
+
+
 20200922
 
 * New CPU detection for GNU/Linux.

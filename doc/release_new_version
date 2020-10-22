@@ -198,11 +198,9 @@ GNU Parallel 20201022 ('Samuel Paty') <<[stable]>> has been released. It is avai
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
+* --termseq now works for jobs running remotely.
 
-Please help spreading GNU Parallel by making a testimonial video like
-Juan Sierra Pons:
-
-http://www.elsotanillo.net/wp-content/uploads/GnuParallel_JuanSierraPons.mp4
+* Please help spreading GNU Parallel by making a testimonial video like Juan Sierra Pons: http://www.elsotanillo.net/wp-content/uploads/GnuParallel_JuanSierraPons.mp4
 
 It does not have to be as detailed as Juan's. It is perfectly fine if
 you just say your name, and what field you are using GNU Parallel for.
@@ -212,7 +210,7 @@ Quote of the month:
   
 New in this release:
 
-* --termseq now works for remote running jobs.
+* --termseq now works for jobs running remotely.
 
 * parsort: Performance optimized for 64-core machines.
 
