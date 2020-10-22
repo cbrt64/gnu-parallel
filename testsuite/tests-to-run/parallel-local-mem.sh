@@ -1,6 +1,6 @@
 #!/bin/bash
 
-make stopvm
+make stopvm >/dev/null 2>/dev/null
 TMPDIR=${TMPDIR:-/tmp}
 mkdir -p $TMPDIR
 # Jobs that eat more than 2 GB RAM
@@ -24,22 +24,22 @@ export -f perl5.14parallel
 par_2gb_records_N() {
     echo '### bug #44358: 2 GB records cause problems for -N'
     echo '5 GB version: Eats 12.5 GB RAM + 4 GB Swap'
-    (gendata 5000MB; echo FOO; 
-     gendata 3000MB; echo FOO; 
-     gendata 1000MB;) | 
+    (gendata 5000MB; echo FOO;
+     gendata 3000MB; echo FOO;
+     gendata 1000MB;) |
 	perl5.14parallel --pipe --recend FOO -N2 --block 1g -k LANG=c wc -c
 
     echo '2 GB version: eats 10 GB'
-    (gendata 2300MB; echo FOO; 
-     gendata 2300MB; echo FOO; 
+    (gendata 2300MB; echo FOO;
+     gendata 2300MB; echo FOO;
      gendata 1000MB;) |
 	perl5.14parallel --pipe --recend FOO -N2 --block 1g -k LANG=c wc -c
 
     echo '### -L >4GB';
     echo 'Eats 12.5 GB RAM + 6 GB Swap';
-    (head -c 5000MB /dev/zero; echo FOO; 
-     head -c 3000MB /dev/zero; echo FOO; 
-     head -c 1000MB /dev/zero;) | 
+    (head -c 5000MB /dev/zero; echo FOO;
+     head -c 3000MB /dev/zero; echo FOO;
+     head -c 1000MB /dev/zero;) |
 	parallel --pipe  -L2 --block 1g -k LANG=c wc -c
 }
 
@@ -48,18 +48,15 @@ par_2gb_record_reading() {
     echo '### perl -e $buf=("x"x(2**31))."x"; substr($buf,0,2**31+1)=""; print length $buf'
     echo 'Eats 4 GB'
     perl -e '$buf=("x"x(2**31))."x"; substr($buf,0,2**31+1)=""; print ((length $buf)."\n")'
-    
+
     echo 'Eats 4.7 GB'
     (gendata 2300MB; echo ged) |
 	perl5.14parallel -k --block 2G --pipe --recend ged md5sum
     echo 'Eats 4.7 GB'
-    (gendata 2300MB; echo ged) | 
+    (gendata 2300MB; echo ged) |
 	perl5.14parallel -k --block 2G --pipe --recend ged cat | wc -c
 }
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     parallel -j1 --tag -k --joblog +/tmp/jl-`basename $0` '{} 2>&1'
-
-
-make startvm

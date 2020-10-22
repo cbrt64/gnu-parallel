@@ -188,6 +188,32 @@ par_null_resume	c
 par_null_resume	A
 par_null_resume	B
 par_null_resume	C
+par_open_files_blocks	bug #38439: "open files" with --files --pipe blocks after a while
+par_open_files_blocks	parallel: Warning: Only enough file handles to run 2 jobs in parallel.
+par_open_files_blocks	parallel: Warning: Running 'parallel -j0 -N 2 --pipe parallel -j0' or
+par_open_files_blocks	parallel: Warning: raising 'ulimit -n' or 'nofile' in /etc/security/limits.conf
+par_open_files_blocks	parallel: Warning: or /proc/sys/fs/file-max may help.
+par_open_files_blocks	1 of 21
+par_open_files_blocks	2 of 21
+par_open_files_blocks	3 of 21
+par_open_files_blocks	4 of 21
+par_open_files_blocks	5 of 21
+par_open_files_blocks	6 of 21
+par_open_files_blocks	7 of 21
+par_open_files_blocks	8 of 21
+par_open_files_blocks	9 of 21
+par_open_files_blocks	10 of 21
+par_open_files_blocks	11 of 21
+par_open_files_blocks	12 of 21
+par_open_files_blocks	13 of 21
+par_open_files_blocks	14 of 21
+par_open_files_blocks	15 of 21
+par_open_files_blocks	16 of 21
+par_open_files_blocks	17 of 21
+par_open_files_blocks	18 of 21
+par_open_files_blocks	19 of 21
+par_open_files_blocks	20 of 21
+par_open_files_blocks	21 of 21
 par_pipe_compress_blocks	### bug #41482: --pipe --compress blocks at different -j/seq combinations
 par_pipe_compress_blocks	1
 par_pipe_compress_blocks	echo 1-4 + 1-4
@@ -221,6 +247,10 @@ par_pipe_compress_blocks	1 2 3
 par_pipe_compress_blocks	1
 par_pipe_compress_blocks	2
 par_pipe_compress_blocks	3
+par_pipe_unneeded_procs	bug #34241: --pipe should not spawn unneeded processes - part 2
+par_pipe_unneeded_procs	2
+par_pipe_unneeded_procs	No .par should exist
+par_pipe_unneeded_procs	ls: cannot access '*.par': No such file or directory
 par_profiles_with_space	### bug #42902: profiles containing arguments with space
 par_profiles_with_space	/bin/bash=/bin/bash
 par_profiles_with_space	echo '/bin/bash=/bin/bash'

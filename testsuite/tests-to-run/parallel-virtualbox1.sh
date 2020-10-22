@@ -2,7 +2,7 @@
 
 (
     cd vagrant/tange/centos3/
-    stdout vagrant up |	grep -v 'default'
+    stdout vagrant up | grep -v 'default' | grep -v '==>' | grep -E '^$'
 )
 
 par_warning_on_centos3() {

@@ -56,7 +56,7 @@ echo '### Test --nonall';   parallel --nonall -k -S vagrant@parallel-server1,vag
 ### Test --nonall
 centos8.localdomain
 freebsd11.localdomain
-echo '### Test --nonall -u - should be interleaved x y x y';   parallel --nonall -S vagrant@parallel-server1,vagrant@parallel-server2 -u 'hostname|grep -q redhat9 && sleep 3; hostname;sleep 12;hostname;'
+echo '### Test --nonall -u - should be interleaved x y x y';   parallel --nonall --sshdelay 2 -S vagrant@parallel-server1,vagrant@parallel-server2 -u 'hostname|grep -q centos && sleep 2; hostname;sleep 4;hostname;'
 ### Test --nonall -u - should be interleaved x y x y
 freebsd11.localdomain
 centos8.localdomain

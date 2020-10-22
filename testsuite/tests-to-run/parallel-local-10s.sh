@@ -4,6 +4,118 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_compress_prg_fails() {
+    echo '### bug #44546: If --compress-program fails: fail'
+    doit() {
+	(parallel $* --compress-program false \
+		  echo \; sleep 1\; ls ::: /no-existing
+	echo $?) | tail -n1
+    }
+    export -f doit
+    stdout parallel --tag -k doit ::: '' --line-buffer ::: '' --tag ::: '' --files |
+	grep -v -- -dc
+}
+
+par_dryrun_timeout_ungroup() {
+    echo 'bug #51039: --dry-run --timeout 1.4m -u breaks'
+    seq 1000 | stdout parallel --dry-run --timeout 1.4m -u --jobs 10 echo | wc
+}
+
+par_shard() {
+    echo '### --shard'
+    # Each of the 5 lines should match:
+    #   ##### ##### ######
+    seq 100000 | parallel --pipe --shard 1 -j5  wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Data should be sharded to all processes
+    shard_on_col() {
+	col=$1
+	seq 10 99 | shuf | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard $col -j2 --colsep "\t" sort -k$col |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col 1
+    shard_on_col 2
+
+    shard_on_col_name() {
+	colname=$1
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard $colname -j2 --colsep "\t" sort -k$col |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_name A 1
+    shard_on_col_name B 2
+
+    shard_on_col_expr() {
+	colexpr="$1"
+	col=$2
+	(seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_expr '1 $_%=3' 1
+    shard_on_col_expr '2 $_%=3' 2
+
+    shard_on_col_name_expr() {
+	colexpr="$1"
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_name_expr 'A $_%=3' 1
+    shard_on_col_name_expr 'B $_%=3' 2
+    
+    echo '*** broken'
+    # Shorthand for --pipe -j+0
+    seq 100000 | parallel --shard 1 wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Combine with arguments
+    seq 100000 | parallel --shard 1 echo {}\;wc ::: {1..5} ::: a b |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+}
+
+par_opt_arg_eaten() {
+    echo 'bug #31716: Options with optional arguments may eat next argument'
+    echo '### Test https://savannah.gnu.org/bugs/index.php?31716'
+    seq 1 5 | stdout parallel -k -l echo {} OK
+    seq 1 5 | stdout parallel -k -l 1 echo {} OK
+
+    echo '### -k -l -0'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -l -0 echo {} OK
+
+    echo '### -k -0 -l'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -0 -l echo {} OK
+
+    echo '### -k -0 -l 1'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -0 -l 1 echo {} OK
+
+    echo '### -k -0 -l 0'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -0 -l 0 echo {} OK
+
+    echo '### -k -0 -L -0 - -0 is argument for -L'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -0 -L -0 echo {} OK
+
+    echo '### -k -0 -L 0 - -L always takes arg'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -0 -L 0 echo {} OK
+
+    echo '### -k -0 -L 0 - -L always takes arg'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -L 0 -0 echo {} OK
+
+    echo '### -k -e -0'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -e -0 echo {} OK
+
+    echo '### -k -0 -e eof'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -0 -e eof echo {} OK
+
+    echo '### -k -i -0'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -i -0 echo {} OK
+
+    echo '### -k -0 -i repl'
+    printf '1\0002\0003\0004\0005\000' | stdout parallel -k -0 -i repl echo repl OK
+}
+
 par_bin() {
     echo '### Test --bin'
     seq 10 | parallel --pipe --bin 1 -j4 wc | sort

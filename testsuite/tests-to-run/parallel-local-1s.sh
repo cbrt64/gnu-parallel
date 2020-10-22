@@ -4,6 +4,25 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_open_files_blocks() {
+    echo 'bug #38439: "open files" with --files --pipe blocks after a while'
+    ulimit -n 28
+    yes "`seq 3000`" |
+	head -c 20M |
+	stdout parallel -j10 --pipe -k echo {#} of 21 |
+	grep -v 'parallel: Warning: No more file handles.' |
+	grep -v 'Warning: Raising ulimit -n or /etc/security/limits.conf'
+}
+
+par_pipe_unneeded_procs() {
+    echo 'bug #34241: --pipe should not spawn unneeded processes - part 2'
+    seq 500 | parallel --tmpdir . -j10 --pipe --block 1k --files wc >/dev/null
+    ls *.par | wc -l; rm *.par
+    seq 500 | parallel --tmpdir . -j10 --pipe --block 1k --files --dry-run wc >/dev/null
+    echo No .par should exist
+    stdout ls *.par
+}
+
 par_interactive() {
     echo '### Test -p --interactive'
     cat >/tmp/parallel-script-for-expect <<_EOF
@@ -609,6 +628,7 @@ par_test_cpu_detection_cpuinfo() {
     }
     export -f test_one
     compgen -A function | grep ^cpu | sort | parallel -j0 -k test_one
+    rm ~/.parallel/tmp/sshlogin/*/cpuspec
 }
 
 par_test_cpu_detection_lscpu() {
@@ -793,6 +813,7 @@ par_test_cpu_detection_lscpu() {
     }
     export -f test_one
     compgen -A function | grep ^cpu | sort | parallel -j0 -k test_one
+    rm ~/.parallel/tmp/sshlogin/*/cpuspec
 }
 
 par_null_resume() {

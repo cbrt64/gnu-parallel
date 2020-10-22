@@ -30,6 +30,8 @@ updater() {
 
   perl -i -pe "s/20\d\d\d\d\d\d/$YYYYMMDD/" configure.ac
   perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
+  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/parsort
+  perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/env_parallel*
   perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload
   perl -i -pe "s/parallel-20\d\d\d\d\d\d/parallel-$YYYYMMDD/" README
   perl -i -pe '

@@ -94,6 +94,33 @@ par_colsep	ac
 par_compress_fail	### bug #41609: --compress fails
 par_compress_fail	f1a751b1283e99e7dda40f63f1225f74  -
 par_compress_fail	f1a751b1283e99e7dda40f63f1225f74  -
+par_compress_prg_fails	### bug #44546: If --compress-program fails: fail
+par_compress_prg_fails	  	1
+par_compress_prg_fails	  	parallel: Error: false failed.
+par_compress_prg_fails	  	parallel: Error: false failed.
+par_compress_prg_fails	  --files	1
+par_compress_prg_fails	  --files	parallel: Error: false failed.
+par_compress_prg_fails	  --files	parallel: Error: false failed.
+par_compress_prg_fails	 --tag 	1
+par_compress_prg_fails	 --tag 	parallel: Error: false failed.
+par_compress_prg_fails	 --tag 	parallel: Error: false failed.
+par_compress_prg_fails	 --tag --files	1
+par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	 --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  	1
+par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  --files	1
+par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer  --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag 	1
+par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag 	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag --files	1
+par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
+par_compress_prg_fails	--line-buffer --tag --files	parallel: Error: false failed.
+par_dryrun_timeout_ungroup	bug #51039: --dry-run --timeout 1.4m -u breaks
+par_dryrun_timeout_ungroup	   1000    2000    8893
 par_failing_compressor	Compress with failing (de)compressor
 par_failing_compressor	Test --tag/--line-buffer/--files in all combinations
 par_failing_compressor	Test working/failing compressor/decompressor in all combinations
@@ -497,6 +524,84 @@ par_nice	Check that --nice works
 par_nice	load_10
 par_nice	bzip2            18
 par_nice	bzip2            18
+par_opt_arg_eaten	bug #31716: Options with optional arguments may eat next argument
+par_opt_arg_eaten	### Test https://savannah.gnu.org/bugs/index.php?31716
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -l -0
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -0 -l
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -0 -l 1
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -0 -l 0
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -0 -L -0 - -0 is argument for -L
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	### -k -0 -L 0 - -L always takes arg
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	### -k -0 -L 0 - -L always takes arg
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	OK
+par_opt_arg_eaten	### -k -e -0
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -0 -e eof
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -i -0
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
+par_opt_arg_eaten	### -k -0 -i repl
+par_opt_arg_eaten	1 OK
+par_opt_arg_eaten	2 OK
+par_opt_arg_eaten	3 OK
+par_opt_arg_eaten	4 OK
+par_opt_arg_eaten	5 OK
 par_parset	### test parset
 par_parset	Put output into $myarray
 par_parset	10
@@ -825,6 +930,97 @@ par_semaphore	job3a 4
 par_semaphore	job2b 5
 par_semaphore	job3b 6
 par_semaphore	done
+par_shard	### --shard
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      2 c1
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	      2 c2
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      2 c1
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	      2 c2
+par_shard	*** broken
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
 par_shellquote	### Test --shellquote in all shells
 par_shellquote	ash	'	
 par_shellquote	ash	par_shellquote	ash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'

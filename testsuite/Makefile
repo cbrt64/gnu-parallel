@@ -15,7 +15,8 @@ testsuite: 3
 	make stopvm
 
 # Mem
-mem: ../src/parallel tests-to-run/*mem* wanted-results/*mem* prereqlocal
+mem: ../src/parallel tests-to-run/*mem* wanted-results/*mem*
+	make stopvm || true
 	time bash Start.sh mem NONE || true
 	touch ~/.parallel/will-cite
 	make stopvm
@@ -65,33 +66,42 @@ portable:
 	time bash Portable.sh
 
 ### Prerequisites
+REQUIRE=bash -c '\
+  is_installed() { \
+    eval $$2 >/dev/null 2>/dev/null || (echo "$$1" is required for testsuite; /bin/false); \
+  }; \
+  export -f is_installed; \
+  parallel -n2 --tag is_installed ::: \
+	script	"echo | script -c echo -q /dev/null"				\
+	lsh	"lsh lo echo lsh is installed"					\
+	"ssh sh@lo"	"timeout 20 ssh sh@lo true"				\
+	"ssh csh@lo"	"timeout 5 ssh csh@lo true"				\
+	niceload	"niceload echo niceload is installed"			\
+	expect	"expect -c \"spawn cat; puts \\\"expect is installed\\\"\"" 	\
+	autossh	"autossh -V"							\
+	tcsh	"tcsh -c echo tcsh installed"					\
+	seq	"seq 1 2"							\
+	stdout	"stdout echo stdout is installed"				\
+	convert	"convert -version"						\
+	bc	"echo 1+2 | bc"							\
+	gawk	"echo | gawk \"{print \\\"gawk is installed\\\"}\""		\
+	pv	"echo | pv -qL 10"						\
+	timeout	"timeout 1 echo timeout is installed"				\
+'
+
 prereqlocal: installparallel startvm
-	tcsh -c echo tcsh installed || (echo tcsh is required for testsuite; /bin/false)
-	seq 1 2 >/dev/null || (echo seq is required for testsuite; /bin/false)
-	stdout echo || (echo stdout is required for testsuite; /bin/false)
-	convert -version >/dev/null || (echo convert is required for testsuite; /bin/false)
-	echo 1+2 | bc >/dev/null || (echo bc is required for testsuite; /bin/false)
-	echo | gawk '{print "gawk is installed"}' || (echo gawk is required for testsuite; /bin/false)
-	expect -c 'spawn cat; puts "expect is installed"' || (echo expect is required for testsuite; /bin/false)
-	echo | pv -qL 10 || (echo pv is required for testsuite; /bin/false)
-	echo | script -c echo -q /dev/null || (echo script is required for testsuite; /bin/false)
-	niceload true || (echo niceload is required for testsuite; /bin/false)
-	which timeout || (echo timeout is required for testsuite; /bin/false)
-	which autossh || (echo autossh is required for testsuite; /bin/false)
-	which lsh || (echo lsh is required for testsuite; /bin/false)
-	timeout 20 ssh sh@lo true || (echo ssh sh@lo is required for testsuite; /bin/false)
-	timeout 5 ssh csh@lo true || (echo ssh csh@lo is required for testsuite; /bin/false)
-	parallel -j1 ssh-keygen -R parallel-server{} ::: 1 2 3 || true
-	parallel 'ssh vagrant@parallel-server{} mkdir -p bin; scp `which parallel` vagrant@parallel-server{}:bin/' ::: 1 2 3 4
+	${REQUIRE}
+	parallel -j1 ssh-keygen -R parallel-server{} ::: 1 2 3 4 || true
+	(parallel 'ssh vagrant@parallel-server{} mkdir -p bin; scp `which parallel` vagrant@parallel-server{}:bin/' ::: 1 2 3 4)&
 
 prereqremote: installparallel startvm
 	parallel -j0 --timeout 10 --tag ssh vagrant@parallel-server{} parallel --minversion 20121021 ::: 1 2 || (echo parallel on remote required for testsuite; /bin/true)
 
 startvm:
-	parallel --tag -k 'ping -w 1 -c 1 {} || (cd vagrant/generic/{} && vagrant up)' ::: centos8 freebsd11 freebsd12 rhel8
+	parallel --tag -k 'ping -w 1 -c 1 {} || (cd vagrant/*/{} && vagrant up)' ::: centos8 freebsd11 freebsd12 rhel8 centos3 &
 
 stopvm:
-	parallel --tag -k 'ping -w 1 -c 1 {} && cd vagrant/generic/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8
+	parallel --tag -k 'ping -w 1 -c 1 {} && cd vagrant/*/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8 centos3
 
 startdb:
 	true should start Oracle in vagrant

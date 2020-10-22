@@ -87,10 +87,11 @@ sql --proclist :sqlunittest | wc -lw
 sql --listproc :sqlunittest | wc -lw
 
 echo "### Test --db-size --dbsize";
-sql --dbsize :sqlunittest | wc
-sql --db-size :sqlunittest | wc
+sql --dbsize :sqlunittest | wc -w
+sql --db-size :sqlunittest | wc -w
 
 echo "### Test --table-size --tablesize"
+sql --showtables :sqlunittest | grep TBL | parallel sql :sqlunittest drop table
 sql --tablesize :sqlunittest | wc -l
 sql --table-size :sqlunittest | wc -l
 

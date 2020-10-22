@@ -4,16 +4,63 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
-par_compress_prg_fails() {
-    echo '### bug #44546: If --compress-program fails: fail'
-    doit() {
-	(parallel $* --compress-program false \
-		  echo \; sleep 1\; ls ::: /no-existing
-	echo $?) | tail -n1
-    }
-    export -f doit
-    stdout parallel --tag -k doit ::: '' --line-buffer ::: '' --tag ::: '' --files |
-	grep -v -- -dc
+par_delay() {
+    echo "### Test --delay"
+    seq 9 | /usr/bin/time -f %e  parallel -j3 --delay 0.57 true {} 2>&1 |
+	perl -ne '$_ > 3.3 and print "More than 3.3 secs: OK\n"'
+}
+
+par_sshdelay() {
+    echo '### test --sshdelay'
+    stdout /usr/bin/time -f %e parallel -j0 --sshdelay 0.5 -S localhost true ::: 1 2 3 |
+	perl -ne 'print($_ > 1.30 ? "OK\n" : "Not OK\n")'
+}
+
+par_empty_string_quote() {
+    echo "bug #37694: Empty string argument skipped when using --quote"
+    parallel -q --nonall perl -le 'print scalar @ARGV' 'a' 'b' ''
+}
+
+par_compute_command_len() {
+    echo "### Computing length of command line"
+    seq 1 2 | parallel -k -N2 echo {1} {2}
+    parallel --xapply -k -a <(seq 11 12) -a <(seq 1 3) echo
+    parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"' ::: 'a% c %%b' 'a%c% b %d'
+    parallel -k -C %+ echo {4} ::: 'a% c %%b'
+}
+
+par_replacement_slashslash() {
+    echo '### Test {//}'
+    parallel -k echo {//} {} ::: a a/b a/b/c
+    parallel -k echo {//} {} ::: /a /a/b /a/b/c
+    parallel -k echo {//} {} ::: ./a ./a/b ./a/b/c
+    parallel -k echo {//} {} ::: a.jpg a/b.jpg a/b/c.jpg
+    parallel -k echo {//} {} ::: /a.jpg /a/b.jpg /a/b/c.jpg
+    parallel -k echo {//} {} ::: ./a.jpg ./a/b.jpg ./a/b/c.jpg
+
+    echo '### Test {1//}'
+    parallel -k echo {1//} {} ::: a a/b a/b/c
+    parallel -k echo {1//} {} ::: /a /a/b /a/b/c
+    parallel -k echo {1//} {} ::: ./a ./a/b ./a/b/c
+    parallel -k echo {1//} {} ::: a.jpg a/b.jpg a/b/c.jpg
+    parallel -k echo {1//} {} ::: /a.jpg /a/b.jpg /a/b/c.jpg
+    parallel -k echo {1//} {} ::: ./a.jpg ./a/b.jpg ./a/b/c.jpg
+}
+
+par_dirnamereplace() {
+    echo '### Test --dnr'
+    parallel --dnr II -k echo II {} ::: a a/b a/b/c
+
+    echo '### Test --dirnamereplace'
+    parallel --dirnamereplace II -k echo II {} ::: a a/b a/b/c
+}
+
+par_negative_replacement() {
+    echo '### Negative replacement strings'
+    parallel -X -j1 -N 6 echo {-1}orrec{1} ::: t B X D E c
+    parallel -N 6 echo {-1}orrect ::: A B X D E c
+    parallel --colsep ' ' echo '{2} + {4} = {2} + {-1}=' '$(( {2} + {-1} ))' ::: "1 2 3 4"
+    parallel --colsep ' ' echo '{-3}orrect' ::: "1 c 3 4"
 }
 
 par_eta() {
@@ -102,61 +149,6 @@ par_jobslot_repl() {
     seq 10000 > /tmp/num10000
     parallel -k --pipepart -ka /tmp/num10000 --block 10k -j2 --delay 0.05 echo {%}
     rm /tmp/num10000
-}
-
-par_shard() {
-    echo '### --shard'
-    # Each of the 5 lines should match:
-    #   ##### ##### ######
-    seq 100000 | parallel --pipe --shard 1 -j5  wc |
-	perl -pe 's/(.*\d{5,}){3}/OK/'
-    # Data should be sharded to all processes
-    shard_on_col() {
-	col=$1
-	seq 10 99 | shuf | perl -pe 's/(.)/$1\t/g' |
-	    parallel --pipe --shard $col -j2 --colsep "\t" sort -k$col |
-	    field $col | sort | uniq -c
-    }
-    shard_on_col 1
-    shard_on_col 2
-
-    shard_on_col_name() {
-	colname=$1
-	col=$2
-	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
-	    parallel --header : --pipe --shard $colname -j2 --colsep "\t" sort -k$col |
-	    field $col | sort | uniq -c
-    }
-    shard_on_col_name A 1
-    shard_on_col_name B 2
-
-    shard_on_col_expr() {
-	colexpr="$1"
-	col=$2
-	(seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
-	    parallel --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
-	    field $col | sort | uniq -c
-    }
-    shard_on_col_expr '1 $_%=3' 1
-    shard_on_col_expr '2 $_%=3' 2
-
-    shard_on_col_name_expr() {
-	colexpr="$1"
-	col=$2
-	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
-	    parallel --header : --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
-	    field $col | sort | uniq -c
-    }
-    shard_on_col_name_expr 'A $_%=3' 1
-    shard_on_col_name_expr 'B $_%=3' 2
-    
-    echo '*** broken'
-    # Shorthand for --pipe -j+0
-    seq 100000 | parallel --shard 1 wc |
-	perl -pe 's/(.*\d{5,}){3}/OK/'
-    # Combine with arguments
-    seq 100000 | parallel --shard 1 echo {}\;wc ::: {1..5} ::: a b |
-	perl -pe 's/(.*\d{5,}){3}/OK/'
 }
 
 par_distribute_args_at_EOF() {
@@ -280,11 +272,6 @@ echo finish {}' ::: 1 2 4
     parallel --jl /tmp/jl.$$ --timeout 5s --retry-failed 'sleep {}; echo {};
 echo finish {}' ::: 1 2 4
     rm -f /tmp/jl.$$
-}
-
-par_dryrun_timeout_ungroup() {
-    echo 'bug #51039: --dry-run --timeout 1.4m -u breaks'
-    seq 1000 | stdout parallel --dry-run --timeout 1.4m -u --jobs 10 echo | wc
 }
 
 par_sqlworker_hostname() {

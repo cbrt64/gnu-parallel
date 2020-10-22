@@ -510,7 +510,7 @@ basename of input line.
 Use the replacement string I<replace-str> instead of B<{/.}> for basename of input line without extension.
 
 
-=item B<--bin> I<binexpr> (beta testing)
+=item B<--bin> I<binexpr>
 
 Use I<binexpr> as binning key and bin input to the jobs.
 
@@ -879,7 +879,7 @@ B<--group> is the default. Can be reversed with B<-u>.
 See also: B<--line-buffer> B<--ungroup>
 
 
-=item B<--group-by> I<val>
+=item B<--group-by> I<val> (beta testing)
 
 Group input by value. Combined with B<--pipe>/B<--pipepart>
 B<--group-by> groups lines with the same value into a record.

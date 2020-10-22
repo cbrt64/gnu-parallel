@@ -37,10 +37,10 @@ doit() {
     $envn=length join"",(keys %ENV);
     $envv=length join"",(values %ENV);
     $onechar='$onechar';
-    $maxlen=5-39+262144 - $envn - $envv - $onechar*5 - $envc*10;
-    print("Max len = $maxlen\n");
+    $maxlen=-39+262144 - $envn - $envv - $onechar*5 - $envc*10;
+    print("Computed max len = $maxlen\n");
     $bin='$binlen';
-    print("$bin=",$bin-$maxlen," $onechar $envc $envn $envv\n");
+    print("Actual:$bin Diff:",$bin-$maxlen," Vars: $onechar $envc $envn $envv\n");
        '
 }
 export -f doit
@@ -48,7 +48,7 @@ export -f doit
 val="$(seq 2 100 1000)"
 val="10 20 50 100 200 500 1000"
 val="12 103 304 506 1005"
-parallel --timeout 20 --shuf --tag -k doit ::: $val ::: $val ::: $val ::: $val ::: $val ::: $val ::: $val
+parallel --timeout 20 --shuf --tag -k doit ::: $val ::: $val ::: $val ::: $val ::: $val ::: $val ::: $val 2>/dev/null
 
 # Test with random data
 (seq 10;seq 100;seq 100;seq 100;seq 100; seq 300 ;seq 1000) |
@@ -167,4 +167,4 @@ export -f $(compgen -A function | grep par_)
 compgen -A function |
     grep par_ |
     LC_ALL=C sort |
-    env_parallel --timeout 1000% --tag -k -S 6/$macsshlogin 'PATH=$HOME/bin:$PATH; {}'
+    env_parallel --timeout 3000% --tag -k -S 6/$macsshlogin 'PATH=$HOME/bin:$PATH; {}'

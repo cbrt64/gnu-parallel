@@ -125,8 +125,9 @@ par_empty() {
 hostname=`hostname`
 export -f $(compgen -A function | egrep 'p_|par_')
 # Tested that -j0 in parallel is fastest (up to 15 jobs)
+# -j5: SQLite complains about locked database.
 compgen -A function | grep par_ | sort |
-  stdout parallel -vj5 -k --tag --joblog /tmp/jl-`basename $0` p_wrapper \
+  stdout parallel -vj4 -k --tag --joblog /tmp/jl-`basename $0` p_wrapper \
 	 :::: - ::: \$MYSQL \$PG \$SQLITE \$CSV |
   perl -pe 's/tbl\d+/TBL99999/gi;' |
   perl -pe 's/(from TBL99999 order) .*/$1/g' |

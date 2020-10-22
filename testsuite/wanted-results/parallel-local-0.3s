@@ -58,6 +58,8 @@ par_blocking_redir	stdout
 par_colsep_0	bug --colsep 0
 par_colsep_0	OK
 par_colsep_0	OK
+par_colsep_default	bug #37956: --colsep does not default to '\t' as specified in the man page.
+par_colsep_default	one 1
 par_cr_newline_header	### --header : should set named replacement string if input line ends in \r\n
 par_cr_newline_header	bar
 par_csv	col1"x3"-new
@@ -459,6 +461,25 @@ par_no_command_given	parallel: Error: Command line too long (1000002 >= 10) at i
 par_no_joblog_with_dryrun	bug #46016: --joblog should not log when --dryrun
 par_no_joblog_with_dryrun	echo Only_this
 par_no_run_if_empty	### Test --no-run-if-empty and -r: This should give no output
+par_opt_gnu	### Test --tollef
+par_opt_gnu	parallel: Error: --tollef has been retired.
+par_opt_gnu	parallel: Error: Remove --tollef or use --gnu to override --tollef.
+par_opt_gnu	### Test --tollef --gnu
+par_opt_gnu	1
+par_opt_gnu	2
+par_opt_gnu	3
+par_opt_gnu	--
+par_opt_gnu	a
+par_opt_gnu	b
+par_opt_gnu	c
+par_opt_gnu	### Test --gnu
+par_opt_gnu	1
+par_opt_gnu	2
+par_opt_gnu	3
+par_opt_gnu	--
+par_opt_gnu	a
+par_opt_gnu	b
+par_opt_gnu	c
 par_parcat_args_stdin	bug #51690: parcat: read args from stdin
 par_parcat_args_stdin	OK1
 par_parcat_args_stdin	OK2

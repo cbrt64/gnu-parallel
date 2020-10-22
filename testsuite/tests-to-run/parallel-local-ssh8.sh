@@ -17,7 +17,7 @@ par_path_remote_bash() {
   cp /usr/local/bin/parallel /tmp
   
   cat <<'_EOS' |
-  echo logged in
+  echo StArT
   echo BASH Path before: $PATH with no parallel
   parallel echo ::: 1
   # Race condition stderr/stdout
@@ -31,7 +31,7 @@ par_path_remote_bash() {
   env_parallel --filter --env A,PATH -Slo echo '$PATH' ::: OK
 _EOS
   stdout ssh nopathbash@lo -T |
-      perl -ne '/logged in/..0 and print' |
+      perl -ne '/StArT/..0 and print' |
       uniq
   echo
 }
@@ -42,7 +42,7 @@ par_path_remote_csh() {
   cp /usr/local/bin/parallel /tmp
 
   cat <<'_EOS' |
-  echo logged in
+  echo StArT
   echo CSH Path before: $PATH with no parallel
   which parallel >& /dev/stdout
   echo '^^^^^^^^ Not found is OK'
@@ -62,7 +62,7 @@ par_path_remote_csh() {
   echo Done
 _EOS
   stdout ssh nopathcsh@lo -T |
-      perl -ne '/Users logged in/ and next; /logged in/..0 and print' |
+      perl -ne '/StArT/..0 and print' |
       uniq
 }
 

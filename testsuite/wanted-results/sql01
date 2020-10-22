@@ -39,8 +39,8 @@ def 3
       2      17
       2      17
 ### Test --db-size --dbsize
-      2       6      48
-      2       6      48
+6
+6
 ### Test --table-size --tablesize
 81
 81

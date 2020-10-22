@@ -1175,7 +1175,8 @@ par_csh_funky() {
     echo "$funky" | parallel --shellquote
 _EOF
   )
-  ssh csh@lo "$myscript"
+  # Sometimes the order f*cks up
+  stdout ssh csh@lo "$myscript" | LC_ALL=C sort
 }
 
 par_dash_funky() {
