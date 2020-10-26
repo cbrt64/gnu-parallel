@@ -25,7 +25,7 @@ https://zenodo.org/deposit/new
 (*) Software
 (Reserve DOI)
 GNU Parallel 20xxxx22 ('Xxxx')
-Ole Tange
+Tange, Ole
 https://orcid.org/0000-0002-6345-1437
 Description
 GNU Parallel is a general parallelizer to run multiple serial command line programs in parallel without changing them.
@@ -134,6 +134,7 @@ export YYYYMMDD=${YYYYMMDD:0:6}23
 echo $YYYYMMDD
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/parallel
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
+perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/env_parallel*
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/parsort
 perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/niceload
 
