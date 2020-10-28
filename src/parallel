@@ -5634,7 +5634,7 @@ sub which(@) {
 	push(@which, grep { not -d $_ and -x $_ }
 	     map { $_."/".$prg } split(":",$ENV{'PATH'}));
 	if($prg =~ m:/:) {
-	    # Including path
+	    # Test if program with full path exists
 	    push(@which, grep { not -d $_ and -x $_ } $prg);
 	}
     }
@@ -11663,7 +11663,8 @@ sub find_max($) {
 	if($len > $upper) { return $len };
 	$len *= 16;
     } while (is_acceptable_command_line_length($len,$string));
-    # Then search for the actual max length between 0 and upper bound
+    # Then search for the actual max length between
+    # last successful length ($len/16) and upper bound
     return binary_find_max(int($len/16),$len,$string);
 }
 
@@ -11684,22 +11685,27 @@ sub binary_find_max($$$) {
     }
 }
 
-sub is_acceptable_command_line_length($$) {
-    # Test if a command line of this length can run
-    # in the current environment
-    # If the string is " x" it tests how many args are allowed
-    # Returns:
-    #   0 if the command line length is too long
-    #   1 otherwise
-    my $len = shift;
-    my $string = shift;
-    if($Global::parallel_env) {
-	$len += length $Global::parallel_env;
+{
+    my $prg;
+    
+    sub is_acceptable_command_line_length($$) {
+	# Test if a command line of this length can run
+	# in the current environment
+	# If the string is " x" it tests how many args are allowed
+	# Returns:
+	#   0 if the command line length is too long
+	#   1 otherwise
+	my $len = shift;
+	my $string = shift;
+	if($Global::parallel_env) {
+	    $len += length $Global::parallel_env;
+	}
+	# Force using non-built-in command
+	$prg ||= ::which("echo");
+	::qqx("$prg ".${string}x(($len-1-length $prg)/length $string));
+	::debug("init", "$len=$? ");
+	return not $?;
     }
-    # Force using non-built-in command
-    ::qqx("/bin/echo ".${string}x(($len-length "/bin/echo ")/length $string));
-    ::debug("init", "$len=$? ");
-    return not $?;
 }
 
 sub tmux_length($) {
