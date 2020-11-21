@@ -561,7 +561,7 @@ sub pipe_part_files(@) {
     }
     my $header = find_header(\$buf,open_or_exit($file));
     # find positions
-    my @pos = find_split_positions($file,$Global::blocksize,$header);
+    my @pos = find_split_positions($file,int($Global::blocksize),$header);
     # Make @cat_prepends
     my @cat_prepends = ();
     for(my $i=0; $i<$#pos; $i++) {
@@ -590,7 +590,7 @@ sub find_header($$) {
 	if($opt::header eq ":") { $opt::header = "(.*\n)"; }
 	# Number = number of lines
 	$opt::header =~ s/^(\d+)$/"(.*\n)"x$1/e;
-	while(sysread($fh,$$buf_ref,$Global::blocksize,length $$buf_ref)) {
+	while(sysread($fh,$$buf_ref,int($Global::blocksize),length $$buf_ref)) {
 	    if($$buf_ref =~ s/^($opt::header)//) {
 		$header = $1;
 		last;
@@ -947,7 +947,7 @@ sub spreadstdin() {
     my $chunk_number = 1;
     my $one_time_through;
     my $two_gb = 2**31-1;
-    my $blocksize = $Global::blocksize;
+    my $blocksize = int($Global::blocksize);
     my $in = *STDIN;
     my $timeout = $Global::blocktimeout;
 
@@ -2164,7 +2164,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20201023;
+    $Global::version = 20201122;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4924,8 +4924,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2020, October 22). GNU Parallel 20201022 ('SamuelPaty').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.4118697",
+         "  Tange, O. (2020, November 22). GNU Parallel 20201122 ('Biden').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.4284075",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -4955,8 +4955,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2020, October 22). GNU Parallel 20201022 ('SamuelPaty').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.4118697",
+	     "  Tange, O. (2020, November 22). GNU Parallel 20201122 ('Biden').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.4284075",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5069,20 +5069,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2020_4118697,",
+	"\@software{tange_2020_4284075,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20201022 ('SamuelPaty')},",
-	"      month        = Oct,",
+	"      title        = {GNU Parallel 20201122 ('Biden')},",
+	"      month        = Nov,",
 	"      year         = 2020,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.4118697},",
-	"      url          = {https://doi.org/10.5281/zenodo.4118697}",
+	"      doi          = {10.5281/zenodo.4284075},",
+	"      url          = {https://doi.org/10.5281/zenodo.4284075}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2020_4118697})",
+	"(Feel free to use \\nocite{tange_2020_4284075})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and

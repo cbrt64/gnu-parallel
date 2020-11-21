@@ -12,6 +12,11 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_pipe_float_blocksize() {
+    echo '### Test --block <<non int>>'
+    seq 5 | parallel --block 3.1 --pipe wc
+}
+
 par_opt_gnu() {
     echo '### Test --tollef'
     stdout parallel -k --tollef echo -- 1 2 3 ::: a b c | LC_ALL=C sort

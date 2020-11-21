@@ -521,6 +521,12 @@ par_pipe_N1_regexp	JOB4
 par_pipe_N1_regexp	begin
 par_pipe_N1_regexp	cend
 par_pipe_N1_regexp	END
+par_pipe_float_blocksize	### Test --block <<non int>>
+par_pipe_float_blocksize	      1       1       2
+par_pipe_float_blocksize	      1       1       2
+par_pipe_float_blocksize	      1       1       2
+par_pipe_float_blocksize	      1       1       2
+par_pipe_float_blocksize	      1       1       2
 par_pipe_no_command	### --pipe without command
 par_pipe_no_command	parallel: Error: --pipe/--pipepart must have a command to pipe into (e.g. 'cat').
 par_pipe_recend	bug #54328: --pipe --recend  blocks
