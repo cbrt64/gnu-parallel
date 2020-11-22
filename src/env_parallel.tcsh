@@ -83,7 +83,7 @@ else
   # Make a tmpfile for the variable definitions + alias
   set _tMpaLLfILe=`_tempfile`
   foreach _vARnAmE ($_vARnAmES);
-    # These 3 lines break in csh version 20201023-3
+    # These 3 lines break in csh ver. 20110502-3
     # if not defined: next
     eval if'(! $?'$_vARnAmE') continue'
     # if $#myvar <= 1 echo scalar_myvar=$var

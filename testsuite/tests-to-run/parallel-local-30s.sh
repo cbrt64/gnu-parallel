@@ -4,6 +4,21 @@
 # Each should be taking 30-100s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_bin() {
+    echo '### Test --bin'
+    seq 10 | parallel --pipe --bin 1 -j4 wc | sort
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin 2 -j4 wc | sort
+    echo '### Test --bin with expression that gives 1..n'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_=$_%2+1' -j4 wc | sort
+    echo '### Test --bin with expression that gives 0..n-1'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_%=2' -j4 wc | sort
+    # Fails - blocks!
+    # paste <(seq 10) <(seq 10 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
+}
+
 par_exit_code() {
     echo 'bug #52207: Exit status 0 when child job is killed, even with "now,fail=1"'
     in_shell_run_command() {

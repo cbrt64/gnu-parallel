@@ -17,7 +17,9 @@ stdout ping -w 1 -c 1 centos3 >/dev/null || (
     cd vagrant/tange/centos3/ 2>/dev/null
     cd ../vagrant/tange/centos3/ 2>/dev/null
     stdout vagrant up >/dev/null
-    vagrant ssh -c 'sudo ifconfig eth1 172.27.27.3'
+    vagrant ssh -c 'sudo ifconfig eth1 172.27.27.3' |
+	# Ignore empty ^M line
+	grep ..
 )
 (
     # Copy binaries to server

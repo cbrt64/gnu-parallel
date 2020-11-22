@@ -1,3 +1,12 @@
+20201122
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* https://bash-prompt.net/guides/gnu-parallel-multi-server/
+
+
 20201022
 
 * --termseq now works for jobs running remotely.

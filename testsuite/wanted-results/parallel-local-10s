@@ -24,25 +24,6 @@ par__pipepart_spawn	1:local / 2+ / 2+2+2+
 par__pipepart_tee	bug #45479: --pipe/--pipepart --tee
 par__pipepart_tee	--pipepart --tee
 par__pipepart_tee	314572800
-par_bin	### Test --bin
-par_bin	      2       2       4
-par_bin	      2       2       4
-par_bin	      3       3       6
-par_bin	      3       3       7
-par_bin	      2       4       8
-par_bin	      2       4       8
-par_bin	      3       6      13
-par_bin	      3       6      13
-par_bin	### Test --bin with expression that gives 1..n
-par_bin	      0       0       0
-par_bin	      0       0       0
-par_bin	      5      10      21
-par_bin	      5      10      21
-par_bin	### Test --bin with expression that gives 0..n-1
-par_bin	      0       0       0
-par_bin	      0       0       0
-par_bin	      5      10      21
-par_bin	      5      10      21
 par_colsep	### Test of --colsep
 par_colsep	a b c
 par_colsep	a b c

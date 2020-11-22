@@ -4,6 +4,14 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_I_X_m() {
+    echo '### Test -I with -X and -m'
+
+    seq 10 | parallel -k 'seq 1 {.} | parallel -k -I :: echo {.} ::'
+    seq 10 | parallel -k 'seq 1 {.} | parallel -j1 -X -k -I :: echo a{.} b::'
+    seq 10 | parallel -k 'seq 1 {.} | parallel -j1 -m -k -I :: echo a{.} b::'
+}
+
 par_open_files_blocks() {
     echo 'bug #38439: "open files" with --files --pipe blocks after a while'
     ulimit -n 28

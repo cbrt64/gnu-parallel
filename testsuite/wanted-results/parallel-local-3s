@@ -1,3 +1,22 @@
+par_10000_5_rpl_X	### Test -X with 10000 args and 5 replacement strings
+par_10000_5_rpl_X	3
+par_10000_5_rpl_X	2
+par_10000_5_rpl_X	2
+par_10000_5_rpl_X	2
+par_10000_5_rpl_X	1
+par_10000_m_X	### Test -m with 10000 args
+par_10000_m_X	      2   29996  186684
+par_10000_m_X	c606aec1723ee5cc15f2a1b95d83d3cf  -
+par_10000_m_X	3
+par_10000_m_X	2
+par_10000_m_X	2
+par_10000_m_X	2
+par_10000_m_X	1
+par_X_I_meta	### Test -X -I with shell meta chars
+par_X_I_meta	2
+par_X_I_meta	2
+par_X_I_meta	2
+par_X_I_meta	2
 par_children_receive_sig	### Do children receive --termseq signals
 par_children_receive_sig	parallel: Warning: This job was killed because it timed out:
 par_children_receive_sig	parallel: Warning: show_signals ''
@@ -312,6 +331,13 @@ par_resume_k	try 2 = nothing
 par_resume_k	two extra
 par_resume_k	job6id
 par_resume_k	job7id
+par_rpl_repeats	### Test {.} does not repeat more than {}
+par_rpl_repeats	a1.gifb1c1 a2.gifb2c2 a3.gifb3c3 a4.gifb4c4 a5.gifb5c5 a6.gifb6c6
+par_rpl_repeats	a7.gifb7c7 a8.gifb8c8 a9.gifb9c9 a10.gifb10c10 a11.gifb11c11 a12.gifb12c12
+par_rpl_repeats	a13.gifb13c13 a14.gifb14c14 a15.gifb15c15
+par_rpl_repeats	a1.gif 2.gif 3.gif 4.gif 5.gif 6.gif 7.gifb1 2 3 4 5 6 7c1 2 3 4 5 6 7
+par_rpl_repeats	a8.gif 9.gif 10.gif 11.gif 12.gif 13.gifb8 9 10 11 12 13c8 9 10 11 12 13
+par_rpl_repeats	a14.gif 15.gifb14 15c14 15
 par_slow_args_generation	### Test slow arguments generation - https://savannah.gnu.org/bugs/?32834
 par_slow_args_generation	1
 par_slow_args_generation	2

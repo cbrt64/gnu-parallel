@@ -98,7 +98,7 @@ prereqremote: installparallel startvm
 	parallel -j0 --timeout 10 --tag ssh vagrant@parallel-server{} parallel --minversion 20121021 ::: 1 2 || (echo parallel on remote required for testsuite; /bin/true)
 
 startvm:
-	parallel --tag -k 'ping -w 1 -c 1 {} || (cd vagrant/*/{} && vagrant up)' ::: centos8 freebsd11 freebsd12 rhel8 centos3 &
+	parallel --tag -k 'ping -w 1 -c 1 {} || (cd vagrant/*/{} && vagrant up; wssh vagrant@{} echo {} is up)' ::: centos8 freebsd11 freebsd12 rhel8 centos3 &
 
 stopvm:
 	parallel --tag -k 'ping -w 1 -c 1 {} && cd vagrant/*/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8 centos3

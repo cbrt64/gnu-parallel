@@ -1,3 +1,22 @@
+par_bin	### Test --bin
+par_bin	      2       2       4
+par_bin	      2       2       4
+par_bin	      3       3       6
+par_bin	      3       3       7
+par_bin	      2       4       8
+par_bin	      2       4       8
+par_bin	      3       6      13
+par_bin	      3       6      13
+par_bin	### Test --bin with expression that gives 1..n
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
+par_bin	### Test --bin with expression that gives 0..n-1
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
 par_exit_code	bug #52207: Exit status 0 when child job is killed, even with "now,fail=1"
 par_exit_code	# Ideally the command should return the same
 par_exit_code	#   with or without parallel

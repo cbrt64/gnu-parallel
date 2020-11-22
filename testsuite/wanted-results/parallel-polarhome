@@ -36,8 +36,8 @@ bin/parallel macosx	copy macosx bin/parallel parallel
 bin/parallel redhat	copy redhat bin/parallel parallel
 bin/parallel netbsd	copy netbsd bin/parallel parallel
 bin/parallel openbsd	copy openbsd bin/parallel parallel
-bin/parallel debian	copy debian bin/parallel parallel
 bin/parallel freebsd	copy freebsd bin/parallel parallel
+bin/parallel debian	copy debian bin/parallel parallel
 bin/parallel hurd	copy hurd bin/parallel parallel
 bin/parallel minix	copy minix bin/parallel parallel
 bin/env_parallel qnx	copy qnx bin/env_parallel env_parallel
@@ -62,8 +62,8 @@ bin/env_parallel macosx	copy macosx bin/env_parallel env_parallel
 bin/env_parallel redhat	copy redhat bin/env_parallel env_parallel
 bin/env_parallel netbsd	copy netbsd bin/env_parallel env_parallel
 bin/env_parallel openbsd	copy openbsd bin/env_parallel env_parallel
-bin/env_parallel debian	copy debian bin/env_parallel env_parallel
 bin/env_parallel freebsd	copy freebsd bin/env_parallel env_parallel
+bin/env_parallel debian	copy debian bin/env_parallel env_parallel
 bin/env_parallel hurd	copy hurd bin/env_parallel env_parallel
 bin/env_parallel minix	copy minix bin/env_parallel env_parallel
 bin/env_parallel.ash qnx	copy qnx bin/env_parallel.ash env_parallel.ash
@@ -88,8 +88,8 @@ bin/env_parallel.ash macosx	copy macosx bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash redhat	copy redhat bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash netbsd	copy netbsd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash openbsd	copy openbsd bin/env_parallel.ash env_parallel.ash
-bin/env_parallel.ash debian	copy debian bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash freebsd	copy freebsd bin/env_parallel.ash env_parallel.ash
+bin/env_parallel.ash debian	copy debian bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash hurd	copy hurd bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.ash minix	copy minix bin/env_parallel.ash env_parallel.ash
 bin/env_parallel.bash qnx	copy qnx bin/env_parallel.bash env_parallel.bash
@@ -114,8 +114,8 @@ bin/env_parallel.bash macosx	copy macosx bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash redhat	copy redhat bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash netbsd	copy netbsd bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash openbsd	copy openbsd bin/env_parallel.bash env_parallel.bash
-bin/env_parallel.bash debian	copy debian bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash freebsd	copy freebsd bin/env_parallel.bash env_parallel.bash
+bin/env_parallel.bash debian	copy debian bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash hurd	copy hurd bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.bash minix	copy minix bin/env_parallel.bash env_parallel.bash
 bin/env_parallel.csh qnx	copy qnx bin/env_parallel.csh env_parallel.csh
@@ -140,8 +140,8 @@ bin/env_parallel.csh macosx	copy macosx bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh redhat	copy redhat bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh netbsd	copy netbsd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh openbsd	copy openbsd bin/env_parallel.csh env_parallel.csh
-bin/env_parallel.csh debian	copy debian bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh freebsd	copy freebsd bin/env_parallel.csh env_parallel.csh
+bin/env_parallel.csh debian	copy debian bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh hurd	copy hurd bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.csh minix	copy minix bin/env_parallel.csh env_parallel.csh
 bin/env_parallel.dash qnx	copy qnx bin/env_parallel.dash env_parallel.dash
@@ -166,7 +166,9 @@ bin/env_parallel.dash macosx	copy macosx bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash redhat	copy redhat bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash netbsd	copy netbsd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash openbsd	copy openbsd bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash freebsd	copy freebsd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash debian	copy debian bin/env_parallel.dash env_parallel.dash
+bin/env_parallel.dash hurd	copy hurd bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.dash minix	copy minix bin/env_parallel.dash env_parallel.dash
 bin/env_parallel.fish qnx	copy qnx bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish pidora	copy pidora bin/env_parallel.fish env_parallel.fish
@@ -190,8 +192,8 @@ bin/env_parallel.fish macosx	copy macosx bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish redhat	copy redhat bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish netbsd	copy netbsd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish openbsd	copy openbsd bin/env_parallel.fish env_parallel.fish
-bin/env_parallel.fish debian	copy debian bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish freebsd	copy freebsd bin/env_parallel.fish env_parallel.fish
+bin/env_parallel.fish debian	copy debian bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish hurd	copy hurd bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.fish minix	copy minix bin/env_parallel.fish env_parallel.fish
 bin/env_parallel.ksh qnx	copy qnx bin/env_parallel.ksh env_parallel.ksh
@@ -216,8 +218,8 @@ bin/env_parallel.ksh macosx	copy macosx bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh redhat	copy redhat bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh netbsd	copy netbsd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh openbsd	copy openbsd bin/env_parallel.ksh env_parallel.ksh
-bin/env_parallel.ksh debian	copy debian bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh freebsd	copy freebsd bin/env_parallel.ksh env_parallel.ksh
+bin/env_parallel.ksh debian	copy debian bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh hurd	copy hurd bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.ksh minix	copy minix bin/env_parallel.ksh env_parallel.ksh
 bin/env_parallel.mksh qnx	copy qnx bin/env_parallel.mksh env_parallel.mksh
@@ -242,8 +244,8 @@ bin/env_parallel.mksh macosx	copy macosx bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh redhat	copy redhat bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh netbsd	copy netbsd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh openbsd	copy openbsd bin/env_parallel.mksh env_parallel.mksh
-bin/env_parallel.mksh debian	copy debian bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh freebsd	copy freebsd bin/env_parallel.mksh env_parallel.mksh
+bin/env_parallel.mksh debian	copy debian bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh hurd	copy hurd bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.mksh minix	copy minix bin/env_parallel.mksh env_parallel.mksh
 bin/env_parallel.pdksh qnx	copy qnx bin/env_parallel.pdksh env_parallel.pdksh
@@ -268,8 +270,8 @@ bin/env_parallel.pdksh macosx	copy macosx bin/env_parallel.pdksh env_parallel.pd
 bin/env_parallel.pdksh redhat	copy redhat bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh netbsd	copy netbsd bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh openbsd	copy openbsd bin/env_parallel.pdksh env_parallel.pdksh
-bin/env_parallel.pdksh debian	copy debian bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh freebsd	copy freebsd bin/env_parallel.pdksh env_parallel.pdksh
+bin/env_parallel.pdksh debian	copy debian bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh hurd	copy hurd bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.pdksh minix	copy minix bin/env_parallel.pdksh env_parallel.pdksh
 bin/env_parallel.sh qnx	copy qnx bin/env_parallel.sh env_parallel.sh
@@ -294,8 +296,8 @@ bin/env_parallel.sh macosx	copy macosx bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh redhat	copy redhat bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh netbsd	copy netbsd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh openbsd	copy openbsd bin/env_parallel.sh env_parallel.sh
-bin/env_parallel.sh debian	copy debian bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh freebsd	copy freebsd bin/env_parallel.sh env_parallel.sh
+bin/env_parallel.sh debian	copy debian bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh hurd	copy hurd bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.sh minix	copy minix bin/env_parallel.sh env_parallel.sh
 bin/env_parallel.tcsh qnx	copy qnx bin/env_parallel.tcsh env_parallel.tcsh
@@ -320,8 +322,8 @@ bin/env_parallel.tcsh macosx	copy macosx bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh redhat	copy redhat bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh netbsd	copy netbsd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh openbsd	copy openbsd bin/env_parallel.tcsh env_parallel.tcsh
-bin/env_parallel.tcsh debian	copy debian bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh freebsd	copy freebsd bin/env_parallel.tcsh env_parallel.tcsh
+bin/env_parallel.tcsh debian	copy debian bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh hurd	copy hurd bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.tcsh minix	copy minix bin/env_parallel.tcsh env_parallel.tcsh
 bin/env_parallel.zsh qnx	copy qnx bin/env_parallel.zsh env_parallel.zsh
@@ -346,8 +348,8 @@ bin/env_parallel.zsh macosx	copy macosx bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh redhat	copy redhat bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh netbsd	copy netbsd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh openbsd	copy openbsd bin/env_parallel.zsh env_parallel.zsh
-bin/env_parallel.zsh debian	copy debian bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh freebsd	copy freebsd bin/env_parallel.zsh env_parallel.zsh
+bin/env_parallel.zsh debian	copy debian bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh hurd	copy hurd bin/env_parallel.zsh env_parallel.zsh
 bin/env_parallel.zsh minix	copy minix bin/env_parallel.zsh env_parallel.zsh
 bin/parcat qnx	copy qnx bin/parcat parcat
@@ -372,8 +374,8 @@ bin/parcat macosx	copy macosx bin/parcat parcat
 bin/parcat redhat	copy redhat bin/parcat parcat
 bin/parcat netbsd	copy netbsd bin/parcat parcat
 bin/parcat openbsd	copy openbsd bin/parcat parcat
-bin/parcat debian	copy debian bin/parcat parcat
 bin/parcat freebsd	copy freebsd bin/parcat parcat
+bin/parcat debian	copy debian bin/parcat parcat
 bin/parcat hurd	copy hurd bin/parcat parcat
 bin/parcat minix	copy minix bin/parcat parcat
 Done copying
@@ -393,7 +395,7 @@ freebsd	Works on freebsd.polarhome.com
 hpux	Works on hpux64
 hpux-ia64	Works on hpux-ia64
 hurd	Works on hurd
-macosx	Works on macosx
+macosx	Works on macosx.polarhome.com
 mandriva	Works on mandriva.polarhome.com
 miros	Works on miros.polarhome.com
 netbsd	Works on netbsd.polarhome.com

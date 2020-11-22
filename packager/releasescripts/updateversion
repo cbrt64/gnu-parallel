@@ -17,17 +17,21 @@ updater() {
       echo '*** Set DOINO and try again ***'
       echo 'https://zenodo.org/deposit/new (Reserve DOI)'
       echo '[Save]'
-      echo DOINO=$(cat .last-doi.txt)
+      cat .last-doitag.txt
+      echo . .last-doitag.txt
       return
   fi
-  echo "$DOINO" > .last-doi.txt
   if [ -z "$TAG" ] ; then
       echo '*** Set TAG and try again ***'
-      echo TAG=$(cat .last-tag.txt)
+      cat .last-doitag.txt
+      echo . .last-doitag.txt
       return
   fi
-  echo "$TAG" > .last-tag.txt
-
+  echo "export DOINO=$DOINO" > .last-doitag.txt
+  echo "export TAG=$TAG" >> .last-doitag.txt
+  echo "export YYYYMMDD=$YYYYMMDD" >> .last-doitag.txt
+  echo 'echo "$DOINO $YYYYMMDD ($TAG)"' >> .last-doitag.txt
+  
   perl -i -pe "s/20\d\d\d\d\d\d/$YYYYMMDD/" configure.ac
   perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/sql
   perl -i -pe "/version/ and s/20\d\d\d\d\d\d/$YYYYMMDD/" src/parsort

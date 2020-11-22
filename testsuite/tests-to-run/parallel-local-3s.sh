@@ -4,6 +4,42 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_10000_m_X() {
+    echo '### Test -m with 10000 args'
+    seq 10000 | perl -pe 's/$/.gif/' |
+        parallel -j1 -km echo a{}b{.}c{.} |
+        parallel -k --pipe --tee ::: wc md5sum
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.}{} | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.} | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.} | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b | wc -l
+}
+
+par_10000_5_rpl_X() {
+    echo '### Test -X with 10000 args and 5 replacement strings'
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.}{} | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.} | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.} | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c | wc -l
+    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b | wc -l
+}
+
+par_rpl_repeats() {
+    echo '### Test {.} does not repeat more than {}'
+    seq 15 | perl -pe 's/$/.gif/'   | parallel -j1 -s 80 -kX echo a{}b{.}c{.}
+    seq 15 | perl -pe 's/$/.gif/'   | parallel -j1 -s 80 -km echo a{}b{.}c{.}
+}
+
+par_X_I_meta() {
+    echo '### Test -X -I with shell meta chars'
+
+    seq 10000 | parallel -j1 -I :: -X echo a::b::c:: | wc -l
+    seq 10000 | parallel -j1 -I '<>' -X echo 'a<>b<>c<>' | wc -l
+    seq 10000 | parallel -j1 -I '<' -X echo 'a<b<c<' | wc -l
+    seq 10000 | parallel -j1 -I '>' -X echo 'a>b>c>' | wc -l
+}
+
 par_delay() {
     echo "### Test --delay"
     seq 9 | /usr/bin/time -f %e  parallel -j3 --delay 0.57 true {} 2>&1 |

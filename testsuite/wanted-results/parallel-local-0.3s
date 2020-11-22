@@ -60,6 +60,10 @@ par_colsep_0	OK
 par_colsep_0	OK
 par_colsep_default	bug #37956: --colsep does not default to '\t' as specified in the man page.
 par_colsep_default	one 1
+par_compress_stdout_stderr	### Test compress - stdout
+par_compress_stdout_stderr	OK
+par_compress_stdout_stderr	### Test compress - stderr
+par_compress_stdout_stderr	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_cr_newline_header	### --header : should set named replacement string if input line ends in \r\n
 par_cr_newline_header	bar
 par_csv	col1"x3"-new
@@ -175,6 +179,18 @@ par_help	### Test --help and -h: Help output (just check we get the same amount 
 par_help	Output from -h and --help
 par_help	37
 par_help	37
+par_i_t	### Test -i
+par_i_t	replace
+par_i_t	### Test --replace
+par_i_t	replace
+par_i_t	### Test -t
+par_i_t	echo bar
+par_i_t	echo car
+par_i_t	echo far
+par_i_t	### Test --verbose
+par_i_t	echo bar
+par_i_t	echo car
+par_i_t	echo far
 par_inefficient_L	bug #37325: Inefficiency of --pipe -L
 par_inefficient_L	    276     276     996
 par_inefficient_L	FOO
@@ -771,6 +787,8 @@ par_recend_not_regexp	### bug #56558: --rrs with --recend that is not regexp
 par_recend_not_regexp	aend
 par_recend_not_regexp	b
 par_recend_not_regexp	end
+par_regexp_chars_in_template	### Test regexp chars in template
+par_regexp_chars_in_template	a1b1^c1[.}c a2b2^c2[.}c a3b3^c3[.}c a4b4^c4[.}c a5b5^c5[.}c a6b6^c6[.}c
 par_replace_replacementstring	### Test replace {}
 par_replace_replacementstring	replace curlies
 par_replace_replacementstring	replace curlies
@@ -781,6 +799,11 @@ par_replacement_string_as_part_of_command	/bin/ls
 par_replacement_string_as_part_of_command	/bin/ls
 par_replacement_string_as_part_of_command	/bin/ls
 par_replacement_string_as_part_of_command	/bin/ls
+par_replacement_string_on_utf8	### test {} {.} on UTF8 input
+par_replacement_string_on_utf8	中国 (Zhōngguó)/China's (中国) road.jpg 中国 (Zhōngguó)/China's (中国) road
+par_replacement_string_on_utf8	中国.(中国) 中国
+par_replacement_string_on_utf8	/tmp/test-of-{.}-parallel/subdir/file /tmp/test-of-{.}-parallel/subdir/file
+par_replacement_string_on_utf8	/tmp/test-of-{.}-parallel/subdir/file{.}.funkyextension}} /tmp/test-of-{.}-parallel/subdir/file{.}
 par_results	### --results test.csv
 par_results	a
 par_results	b
@@ -896,6 +919,14 @@ par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b
 par_test_L_context_replace	### Test -L context replace
 par_test_L_context_replace	a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
 par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b
+par_test_m_X	### Test -m vs -X
+par_test_m_X	1foo bar joe.gif2foo bar joe3 Afoo bar joeBfoo bar joeC
+par_test_m_X	1foo2foo3 1bar2bar3 1joe.gif2joe3 AfooBfooC AbarBbarC AjoeBjoeC
+par_test_m_X	a1.gif 2.gif 3.gif 4.gif 5.gif 6.gifb1 2 3 4 5 6c1 2 3 4 5 6
+par_test_m_X	a1.gifb1c1 a2.gifb2c2 a3.gifb3c3 a4.gifb4c4 a5.gifb5c5 a6.gifb6c6
+par_test_m_X	### Test -q {.}
+par_test_m_X	'a' 
+par_test_m_X	'a'
 par_test_r_with_pipe	### Test of -r with --pipe - the first should give an empty line. The second should not.
 par_test_r_with_pipe	1
 par_test_r_with_pipe	0

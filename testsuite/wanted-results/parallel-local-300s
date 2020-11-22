@@ -218,8 +218,8 @@ par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/bin'
 par_test_build_and_install	 /bin/install -c parallel sql niceload parcat parset parsort env_parallel env_parallel.ash env_parallel.bash env_parallel.csh env_parallel.dash env_parallel.fish env_parallel.ksh env_parallel.mksh env_parallel.pdksh env_parallel.sh env_parallel.tcsh env_parallel.zsh '/tmp/parallel-install/bin'
 par_test_build_and_install	make  install-exec-hook
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
-par_test_build_and_install	rm /tmp/parallel-install/bin/sem || true
-par_test_build_and_install	ln -s parallel /tmp/parallel-install/bin/sem
+par_test_build_and_install	rm "/tmp/parallel-install/bin"/sem || true
+par_test_build_and_install	ln -s parallel "/tmp/parallel-install/bin"/sem
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/doc/parallel'
 par_test_build_and_install	 /bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_book.html parallel_design.html parallel_alternatives.html parcat.html parset.html parsort.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_book.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parsort.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf parallel_cheat_bw.pdf '/tmp/parallel-install/share/doc/parallel'
@@ -254,222 +254,222 @@ par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
 par_test_build_and_install	Making install in src
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./parallel.pod > ./parallel.1n \
-par_test_build_and_install	&& mv ./parallel.1n ./parallel.1 \
+par_test_build_and_install		--section=1 "."/parallel.pod > "."/parallel.1n \
+par_test_build_and_install	&& mv "."/parallel.1n "."/parallel.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./env_parallel.pod > ./env_parallel.1n \
-par_test_build_and_install	&& mv ./env_parallel.1n ./env_parallel.1 \
+par_test_build_and_install		--section=1 "."/env_parallel.pod > "."/env_parallel.1n \
+par_test_build_and_install	&& mv "."/env_parallel.1n "."/env_parallel.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old env_parallel.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old env_parallel.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./sem.pod > ./sem.1n \
-par_test_build_and_install	&& mv ./sem.1n ./sem.1 \
+par_test_build_and_install		--section=1 "."/sem.pod > "."/sem.1n \
+par_test_build_and_install	&& mv "."/sem.1n "."/sem.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old sem.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old sem.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./sql > ./sql.1n \
-par_test_build_and_install	&& mv ./sql.1n ./sql.1 \
+par_test_build_and_install		--section=1 "."/sql > "."/sql.1n \
+par_test_build_and_install	&& mv "."/sql.1n "."/sql.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old sql.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old sql.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./niceload.pod > ./niceload.1n \
-par_test_build_and_install	&& mv ./niceload.1n ./niceload.1 \
+par_test_build_and_install		--section=1 "."/niceload.pod > "."/niceload.1n \
+par_test_build_and_install	&& mv "."/niceload.1n "."/niceload.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old niceload.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old niceload.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_tutorial.pod > ./parallel_tutorial.7n \
-par_test_build_and_install	&& mv ./parallel_tutorial.7n ./parallel_tutorial.7 \
+par_test_build_and_install		--section=7 "."/parallel_tutorial.pod > "."/parallel_tutorial.7n \
+par_test_build_and_install	&& mv "."/parallel_tutorial.7n "."/parallel_tutorial.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_tutorial.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_tutorial.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_book.pod > ./parallel_book.7n \
-par_test_build_and_install	&& mv ./parallel_book.7n ./parallel_book.7 \
+par_test_build_and_install		--section=7 "."/parallel_book.pod > "."/parallel_book.7n \
+par_test_build_and_install	&& mv "."/parallel_book.7n "."/parallel_book.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_book.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_book.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_design.pod > ./parallel_design.7n \
-par_test_build_and_install	&& mv ./parallel_design.7n ./parallel_design.7 \
+par_test_build_and_install		--section=7 "."/parallel_design.pod > "."/parallel_design.7n \
+par_test_build_and_install	&& mv "."/parallel_design.7n "."/parallel_design.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_design.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_design.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_alternatives.pod > ./parallel_alternatives.7n \
-par_test_build_and_install	&& mv ./parallel_alternatives.7n ./parallel_alternatives.7 \
+par_test_build_and_install		--section=7 "."/parallel_alternatives.pod > "."/parallel_alternatives.7n \
+par_test_build_and_install	&& mv "."/parallel_alternatives.7n "."/parallel_alternatives.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_alternatives.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_alternatives.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./parcat.pod > ./parcat.1n \
-par_test_build_and_install	&& mv ./parcat.1n ./parcat.1 \
+par_test_build_and_install		--section=1 "."/parcat.pod > "."/parcat.1n \
+par_test_build_and_install	&& mv "."/parcat.1n "."/parcat.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parcat.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parcat.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./parset.pod > ./parset.1n \
-par_test_build_and_install	&& mv ./parset.1n ./parset.1 \
+par_test_build_and_install		--section=1 "."/parset.pod > "."/parset.1n \
+par_test_build_and_install	&& mv "."/parset.1n "."/parset.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parset.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parset.1
-par_test_build_and_install	pod2html --title "GNU Parallel" ./parallel.pod > ./parallel.htmln \
-par_test_build_and_install	&& mv ./parallel.htmln ./parallel.html \
+par_test_build_and_install	pod2html --title "GNU Parallel" "."/parallel.pod > "."/parallel.htmln \
+par_test_build_and_install	&& mv "."/parallel.htmln "."/parallel.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel with environment" ./env_parallel.pod > ./env_parallel.htmln \
-par_test_build_and_install	&& mv ./env_parallel.htmln ./env_parallel.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel with environment" "."/env_parallel.pod > "."/env_parallel.htmln \
+par_test_build_and_install	&& mv "."/env_parallel.htmln "."/env_parallel.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old env_parallel.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old env_parallel.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel tutorial" ./parallel_tutorial.pod > ./parallel_tutorial.htmln \
-par_test_build_and_install	&& mv ./parallel_tutorial.htmln ./parallel_tutorial.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel tutorial" "."/parallel_tutorial.pod > "."/parallel_tutorial.htmln \
+par_test_build_and_install	&& mv "."/parallel_tutorial.htmln "."/parallel_tutorial.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_tutorial.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_tutorial.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel book" ./parallel_book.pod > ./parallel_book.htmln \
-par_test_build_and_install	&& mv ./parallel_book.htmln ./parallel_book.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel book" "."/parallel_book.pod > "."/parallel_book.htmln \
+par_test_build_and_install	&& mv "."/parallel_book.htmln "."/parallel_book.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_book.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_book.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel design" ./parallel_design.pod > ./parallel_design.htmln \
-par_test_build_and_install	&& mv ./parallel_design.htmln ./parallel_design.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel design" "."/parallel_design.pod > "."/parallel_design.htmln \
+par_test_build_and_install	&& mv "."/parallel_design.htmln "."/parallel_design.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_design.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_design.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel alternatives" ./parallel_alternatives.pod > ./parallel_alternatives.htmln \
-par_test_build_and_install	&& mv ./parallel_alternatives.htmln ./parallel_alternatives.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel alternatives" "."/parallel_alternatives.pod > "."/parallel_alternatives.htmln \
+par_test_build_and_install	&& mv "."/parallel_alternatives.htmln "."/parallel_alternatives.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_alternatives.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_alternatives.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "sem (GNU Parallel)" ./sem.pod > ./sem.htmln \
-par_test_build_and_install	&& mv ./sem.htmln ./sem.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "sem (GNU Parallel)" "."/sem.pod > "."/sem.htmln \
+par_test_build_and_install	&& mv "."/sem.htmln "."/sem.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old sem.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old sem.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU SQL" ./sql > ./sql.htmln \
-par_test_build_and_install	&& mv ./sql.htmln ./sql.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU SQL" "."/sql > "."/sql.htmln \
+par_test_build_and_install	&& mv "."/sql.htmln "."/sql.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old sql.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old sql.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU niceload" ./niceload.pod > ./niceload.htmln \
-par_test_build_and_install	&& mv ./niceload.htmln ./niceload.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU niceload" "."/niceload.pod > "."/niceload.htmln \
+par_test_build_and_install	&& mv "."/niceload.htmln "."/niceload.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old niceload.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old niceload.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU parcat" ./parcat.pod > ./parcat.htmln \
-par_test_build_and_install	&& mv ./parcat.htmln ./parcat.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU parcat" "."/parcat.pod > "."/parcat.htmln \
+par_test_build_and_install	&& mv "."/parcat.htmln "."/parcat.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parcat.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parcat.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU parset" ./parset.pod > ./parset.htmln \
-par_test_build_and_install	&& mv ./parset.htmln ./parset.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU parset" "."/parset.pod > "."/parset.htmln \
+par_test_build_and_install	&& mv "."/parset.htmln "."/parset.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parset.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parset.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2texi --output=./parallel.texi ./parallel.pod \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2texi --output="."/parallel.texi "."/parallel.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel.texi
-par_test_build_and_install	pod2texi --output=./env_parallel.texi ./env_parallel.pod \
+par_test_build_and_install	pod2texi --output="."/env_parallel.texi "."/env_parallel.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old env_parallel.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old env_parallel.texi
-par_test_build_and_install	pod2texi --output=./sem.texi ./sem.pod \
+par_test_build_and_install	pod2texi --output="."/sem.texi "."/sem.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old sem.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old sem.texi
-par_test_build_and_install	pod2texi --output=./sql.texi ./sql \
+par_test_build_and_install	pod2texi --output="."/sql.texi "."/sql \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old sql.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old sql.texi
-par_test_build_and_install	pod2texi --output=./niceload.texi ./niceload.pod \
+par_test_build_and_install	pod2texi --output="."/niceload.texi "."/niceload.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old niceload.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old niceload.texi
-par_test_build_and_install	pod2texi --output=./parallel_tutorial.texi ./parallel_tutorial.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_tutorial.texi "."/parallel_tutorial.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_tutorial.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_tutorial.texi
-par_test_build_and_install	pod2texi --output=./parallel_book.texi ./parallel_book.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_book.texi "."/parallel_book.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_book.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_book.texi
-par_test_build_and_install	pod2texi --output=./parallel_design.texi ./parallel_design.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_design.texi "."/parallel_design.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_design.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_design.texi
-par_test_build_and_install	pod2texi --output=./parallel_alternatives.texi ./parallel_alternatives.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_alternatives.texi "."/parallel_alternatives.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_alternatives.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_alternatives.texi
-par_test_build_and_install	pod2texi --output=./parcat.texi ./parcat.pod \
+par_test_build_and_install	pod2texi --output="."/parcat.texi "."/parcat.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parcat.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parcat.texi
-par_test_build_and_install	pod2texi --output=./parset.texi ./parset.pod \
+par_test_build_and_install	pod2texi --output="."/parset.texi "."/parset.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parset.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parset.texi
-par_test_build_and_install	pod2pdf --output-file ./parallel.pdf ./parallel.pod --title "GNU Parallel" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel.pdf "."/parallel.pod --title "GNU Parallel" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel.pdf
-par_test_build_and_install	pod2pdf --output-file ./env_parallel.pdf ./env_parallel.pod --title "GNU Parallel with environment" \
+par_test_build_and_install	pod2pdf --output-file "."/env_parallel.pdf "."/env_parallel.pod --title "GNU Parallel with environment" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old env_parallel.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old env_parallel.pdf
-par_test_build_and_install	pod2pdf --output-file ./sem.pdf ./sem.pod --title "GNU sem" \
+par_test_build_and_install	pod2pdf --output-file "."/sem.pdf "."/sem.pod --title "GNU sem" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old sem.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old sem.pdf
-par_test_build_and_install	pod2pdf --output-file ./sql.pdf ./sql --title "GNU SQL" \
+par_test_build_and_install	pod2pdf --output-file "."/sql.pdf "."/sql --title "GNU SQL" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old sql.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old sql.pdf
-par_test_build_and_install	pod2pdf --output-file ./niceload.pdf ./niceload.pod --title "GNU niceload" \
+par_test_build_and_install	pod2pdf --output-file "."/niceload.pdf "."/niceload.pod --title "GNU niceload" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old niceload.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old niceload.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_tutorial.pdf ./parallel_tutorial.pod --title "GNU Parallel Tutorial" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_tutorial.pdf "."/parallel_tutorial.pod --title "GNU Parallel Tutorial" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_tutorial.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_tutorial.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_book.pdf ./parallel_book.pod --title "GNU Parallel Book" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_book.pdf "."/parallel_book.pod --title "GNU Parallel Book" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_book.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_book.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_design.pdf ./parallel_design.pod --title "GNU Parallel Design" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_design.pdf "."/parallel_design.pod --title "GNU Parallel Design" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_design.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_design.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_alternatives.pdf ./parallel_alternatives.pod --title "GNU Parallel alternatives" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_alternatives.pdf "."/parallel_alternatives.pod --title "GNU Parallel alternatives" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_alternatives.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_alternatives.pdf
-par_test_build_and_install	pod2pdf --output-file ./parcat.pdf ./parcat.pod --title "GNU parcat" \
+par_test_build_and_install	pod2pdf --output-file "."/parcat.pdf "."/parcat.pod --title "GNU parcat" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parcat.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parcat.pdf
-par_test_build_and_install	pod2pdf --output-file ./parset.pdf ./parset.pod --title "GNU parset" \
+par_test_build_and_install	pod2pdf --output-file "."/parset.pdf "."/parset.pod --title "GNU parset" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parset.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parset.pdf
@@ -478,228 +478,228 @@ par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/bin'
 par_test_build_and_install	 /bin/install -c parallel sql niceload parcat parset parsort env_parallel env_parallel.ash env_parallel.bash env_parallel.csh env_parallel.dash env_parallel.fish env_parallel.ksh env_parallel.mksh env_parallel.pdksh env_parallel.sh env_parallel.tcsh env_parallel.zsh '/tmp/parallel-install/bin'
 par_test_build_and_install	make  install-exec-hook
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000/src'
-par_test_build_and_install	rm /tmp/parallel-install/bin/sem || true
-par_test_build_and_install	ln -s parallel /tmp/parallel-install/bin/sem
+par_test_build_and_install	rm "/tmp/parallel-install/bin"/sem || true
+par_test_build_and_install	ln -s parallel "/tmp/parallel-install/bin"/sem
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000/src'
-par_test_build_and_install	pod2html --title "GNU Parallel" ./parallel.pod > ./parallel.htmln \
-par_test_build_and_install	&& mv ./parallel.htmln ./parallel.html \
+par_test_build_and_install	pod2html --title "GNU Parallel" "."/parallel.pod > "."/parallel.htmln \
+par_test_build_and_install	&& mv "."/parallel.htmln "."/parallel.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel with environment" ./env_parallel.pod > ./env_parallel.htmln \
-par_test_build_and_install	&& mv ./env_parallel.htmln ./env_parallel.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel with environment" "."/env_parallel.pod > "."/env_parallel.htmln \
+par_test_build_and_install	&& mv "."/env_parallel.htmln "."/env_parallel.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old env_parallel.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old env_parallel.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel tutorial" ./parallel_tutorial.pod > ./parallel_tutorial.htmln \
-par_test_build_and_install	&& mv ./parallel_tutorial.htmln ./parallel_tutorial.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel tutorial" "."/parallel_tutorial.pod > "."/parallel_tutorial.htmln \
+par_test_build_and_install	&& mv "."/parallel_tutorial.htmln "."/parallel_tutorial.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_tutorial.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_tutorial.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel book" ./parallel_book.pod > ./parallel_book.htmln \
-par_test_build_and_install	&& mv ./parallel_book.htmln ./parallel_book.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel book" "."/parallel_book.pod > "."/parallel_book.htmln \
+par_test_build_and_install	&& mv "."/parallel_book.htmln "."/parallel_book.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_book.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_book.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel design" ./parallel_design.pod > ./parallel_design.htmln \
-par_test_build_and_install	&& mv ./parallel_design.htmln ./parallel_design.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel design" "."/parallel_design.pod > "."/parallel_design.htmln \
+par_test_build_and_install	&& mv "."/parallel_design.htmln "."/parallel_design.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_design.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_design.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel alternatives" ./parallel_alternatives.pod > ./parallel_alternatives.htmln \
-par_test_build_and_install	&& mv ./parallel_alternatives.htmln ./parallel_alternatives.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel alternatives" "."/parallel_alternatives.pod > "."/parallel_alternatives.htmln \
+par_test_build_and_install	&& mv "."/parallel_alternatives.htmln "."/parallel_alternatives.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_alternatives.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parallel_alternatives.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "sem (GNU Parallel)" ./sem.pod > ./sem.htmln \
-par_test_build_and_install	&& mv ./sem.htmln ./sem.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "sem (GNU Parallel)" "."/sem.pod > "."/sem.htmln \
+par_test_build_and_install	&& mv "."/sem.htmln "."/sem.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old sem.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old sem.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU SQL" ./sql > ./sql.htmln \
-par_test_build_and_install	&& mv ./sql.htmln ./sql.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU SQL" "."/sql > "."/sql.htmln \
+par_test_build_and_install	&& mv "."/sql.htmln "."/sql.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old sql.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old sql.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU niceload" ./niceload.pod > ./niceload.htmln \
-par_test_build_and_install	&& mv ./niceload.htmln ./niceload.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU niceload" "."/niceload.pod > "."/niceload.htmln \
+par_test_build_and_install	&& mv "."/niceload.htmln "."/niceload.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old niceload.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old niceload.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU parcat" ./parcat.pod > ./parcat.htmln \
-par_test_build_and_install	&& mv ./parcat.htmln ./parcat.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU parcat" "."/parcat.pod > "."/parcat.htmln \
+par_test_build_and_install	&& mv "."/parcat.htmln "."/parcat.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parcat.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parcat.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2html --title "GNU parset" ./parset.pod > ./parset.htmln \
-par_test_build_and_install	&& mv ./parset.htmln ./parset.html \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU parset" "."/parset.pod > "."/parset.htmln \
+par_test_build_and_install	&& mv "."/parset.htmln "."/parset.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parset.html"
 par_test_build_and_install	/bin/bash: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old parset.html
-par_test_build_and_install	rm -f ./pod2htm*
-par_test_build_and_install	pod2texi --output=./parallel.texi ./parallel.pod \
+par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2texi --output="."/parallel.texi "."/parallel.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel.texi
-par_test_build_and_install	pod2texi --output=./env_parallel.texi ./env_parallel.pod \
+par_test_build_and_install	pod2texi --output="."/env_parallel.texi "."/env_parallel.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old env_parallel.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old env_parallel.texi
-par_test_build_and_install	pod2texi --output=./sem.texi ./sem.pod \
+par_test_build_and_install	pod2texi --output="."/sem.texi "."/sem.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old sem.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old sem.texi
-par_test_build_and_install	pod2texi --output=./sql.texi ./sql \
+par_test_build_and_install	pod2texi --output="."/sql.texi "."/sql \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old sql.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old sql.texi
-par_test_build_and_install	pod2texi --output=./niceload.texi ./niceload.pod \
+par_test_build_and_install	pod2texi --output="."/niceload.texi "."/niceload.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old niceload.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old niceload.texi
-par_test_build_and_install	pod2texi --output=./parallel_tutorial.texi ./parallel_tutorial.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_tutorial.texi "."/parallel_tutorial.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_tutorial.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_tutorial.texi
-par_test_build_and_install	pod2texi --output=./parallel_book.texi ./parallel_book.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_book.texi "."/parallel_book.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_book.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_book.texi
-par_test_build_and_install	pod2texi --output=./parallel_design.texi ./parallel_design.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_design.texi "."/parallel_design.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_design.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_design.texi
-par_test_build_and_install	pod2texi --output=./parallel_alternatives.texi ./parallel_alternatives.pod \
+par_test_build_and_install	pod2texi --output="."/parallel_alternatives.texi "."/parallel_alternatives.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parallel_alternatives.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parallel_alternatives.texi
-par_test_build_and_install	pod2texi --output=./parcat.texi ./parcat.pod \
+par_test_build_and_install	pod2texi --output="."/parcat.texi "."/parcat.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parcat.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parcat.texi
-par_test_build_and_install	pod2texi --output=./parset.texi ./parset.pod \
+par_test_build_and_install	pod2texi --output="."/parset.texi "."/parset.pod \
 par_test_build_and_install	|| echo "Warning: pod2texi not found. Using old parset.texi"
 par_test_build_and_install	/bin/bash: pod2texi: command not found
 par_test_build_and_install	Warning: pod2texi not found. Using old parset.texi
-par_test_build_and_install	pod2pdf --output-file ./parallel.pdf ./parallel.pod --title "GNU Parallel" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel.pdf "."/parallel.pod --title "GNU Parallel" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel.pdf
-par_test_build_and_install	pod2pdf --output-file ./env_parallel.pdf ./env_parallel.pod --title "GNU Parallel with environment" \
+par_test_build_and_install	pod2pdf --output-file "."/env_parallel.pdf "."/env_parallel.pod --title "GNU Parallel with environment" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old env_parallel.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old env_parallel.pdf
-par_test_build_and_install	pod2pdf --output-file ./sem.pdf ./sem.pod --title "GNU sem" \
+par_test_build_and_install	pod2pdf --output-file "."/sem.pdf "."/sem.pod --title "GNU sem" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old sem.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old sem.pdf
-par_test_build_and_install	pod2pdf --output-file ./sql.pdf ./sql --title "GNU SQL" \
+par_test_build_and_install	pod2pdf --output-file "."/sql.pdf "."/sql --title "GNU SQL" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old sql.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old sql.pdf
-par_test_build_and_install	pod2pdf --output-file ./niceload.pdf ./niceload.pod --title "GNU niceload" \
+par_test_build_and_install	pod2pdf --output-file "."/niceload.pdf "."/niceload.pod --title "GNU niceload" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old niceload.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old niceload.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_tutorial.pdf ./parallel_tutorial.pod --title "GNU Parallel Tutorial" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_tutorial.pdf "."/parallel_tutorial.pod --title "GNU Parallel Tutorial" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_tutorial.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_tutorial.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_book.pdf ./parallel_book.pod --title "GNU Parallel Book" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_book.pdf "."/parallel_book.pod --title "GNU Parallel Book" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_book.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_book.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_design.pdf ./parallel_design.pod --title "GNU Parallel Design" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_design.pdf "."/parallel_design.pod --title "GNU Parallel Design" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_design.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_design.pdf
-par_test_build_and_install	pod2pdf --output-file ./parallel_alternatives.pdf ./parallel_alternatives.pod --title "GNU Parallel alternatives" \
+par_test_build_and_install	pod2pdf --output-file "."/parallel_alternatives.pdf "."/parallel_alternatives.pod --title "GNU Parallel alternatives" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parallel_alternatives.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parallel_alternatives.pdf
-par_test_build_and_install	pod2pdf --output-file ./parcat.pdf ./parcat.pod --title "GNU parcat" \
+par_test_build_and_install	pod2pdf --output-file "."/parcat.pdf "."/parcat.pod --title "GNU parcat" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parcat.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parcat.pdf
-par_test_build_and_install	pod2pdf --output-file ./parset.pdf ./parset.pod --title "GNU parset" \
+par_test_build_and_install	pod2pdf --output-file "."/parset.pdf "."/parset.pod --title "GNU parset" \
 par_test_build_and_install	|| echo "Warning: pod2pdf not found. Using old parset.pdf"
 par_test_build_and_install	/bin/bash: pod2pdf: command not found
 par_test_build_and_install	Warning: pod2pdf not found. Using old parset.pdf
 par_test_build_and_install	 /bin/mkdir -p '/tmp/parallel-install/share/doc/parallel'
 par_test_build_and_install	 /bin/install -c -m 644 parallel.html env_parallel.html sem.html sql.html niceload.html parallel_tutorial.html parallel_book.html parallel_design.html parallel_alternatives.html parcat.html parset.html parsort.html parallel.texi env_parallel.texi sem.texi sql.texi niceload.texi parallel_tutorial.texi parallel_book.texi parallel_design.texi parallel_alternatives.texi parcat.texi parset.texi parsort.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf parallel_cheat_bw.pdf '/tmp/parallel-install/share/doc/parallel'
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./parallel.pod > ./parallel.1n \
-par_test_build_and_install	&& mv ./parallel.1n ./parallel.1 \
+par_test_build_and_install		--section=1 "."/parallel.pod > "."/parallel.1n \
+par_test_build_and_install	&& mv "."/parallel.1n "."/parallel.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./env_parallel.pod > ./env_parallel.1n \
-par_test_build_and_install	&& mv ./env_parallel.1n ./env_parallel.1 \
+par_test_build_and_install		--section=1 "."/env_parallel.pod > "."/env_parallel.1n \
+par_test_build_and_install	&& mv "."/env_parallel.1n "."/env_parallel.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old env_parallel.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old env_parallel.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./sem.pod > ./sem.1n \
-par_test_build_and_install	&& mv ./sem.1n ./sem.1 \
+par_test_build_and_install		--section=1 "."/sem.pod > "."/sem.1n \
+par_test_build_and_install	&& mv "."/sem.1n "."/sem.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old sem.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old sem.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./sql > ./sql.1n \
-par_test_build_and_install	&& mv ./sql.1n ./sql.1 \
+par_test_build_and_install		--section=1 "."/sql > "."/sql.1n \
+par_test_build_and_install	&& mv "."/sql.1n "."/sql.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old sql.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old sql.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./niceload.pod > ./niceload.1n \
-par_test_build_and_install	&& mv ./niceload.1n ./niceload.1 \
+par_test_build_and_install		--section=1 "."/niceload.pod > "."/niceload.1n \
+par_test_build_and_install	&& mv "."/niceload.1n "."/niceload.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old niceload.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old niceload.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_tutorial.pod > ./parallel_tutorial.7n \
-par_test_build_and_install	&& mv ./parallel_tutorial.7n ./parallel_tutorial.7 \
+par_test_build_and_install		--section=7 "."/parallel_tutorial.pod > "."/parallel_tutorial.7n \
+par_test_build_and_install	&& mv "."/parallel_tutorial.7n "."/parallel_tutorial.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_tutorial.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_tutorial.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_book.pod > ./parallel_book.7n \
-par_test_build_and_install	&& mv ./parallel_book.7n ./parallel_book.7 \
+par_test_build_and_install		--section=7 "."/parallel_book.pod > "."/parallel_book.7n \
+par_test_build_and_install	&& mv "."/parallel_book.7n "."/parallel_book.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_book.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_book.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_design.pod > ./parallel_design.7n \
-par_test_build_and_install	&& mv ./parallel_design.7n ./parallel_design.7 \
+par_test_build_and_install		--section=7 "."/parallel_design.pod > "."/parallel_design.7n \
+par_test_build_and_install	&& mv "."/parallel_design.7n "."/parallel_design.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_design.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_design.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=7 ./parallel_alternatives.pod > ./parallel_alternatives.7n \
-par_test_build_and_install	&& mv ./parallel_alternatives.7n ./parallel_alternatives.7 \
+par_test_build_and_install		--section=7 "."/parallel_alternatives.pod > "."/parallel_alternatives.7n \
+par_test_build_and_install	&& mv "."/parallel_alternatives.7n "."/parallel_alternatives.7 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parallel_alternatives.7"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parallel_alternatives.7
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./parcat.pod > ./parcat.1n \
-par_test_build_and_install	&& mv ./parcat.1n ./parcat.1 \
+par_test_build_and_install		--section=1 "."/parcat.pod > "."/parcat.1n \
+par_test_build_and_install	&& mv "."/parcat.1n "."/parcat.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parcat.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parcat.1
 par_test_build_and_install	pod2man --release='00000000' --center='parallel' \
-par_test_build_and_install		--section=1 ./parset.pod > ./parset.1n \
-par_test_build_and_install	&& mv ./parset.1n ./parset.1 \
+par_test_build_and_install		--section=1 "."/parset.pod > "."/parset.1n \
+par_test_build_and_install	&& mv "."/parset.1n "."/parset.1 \
 par_test_build_and_install	|| echo "Warning: pod2man not found. Using old parset.1"
 par_test_build_and_install	/bin/bash: pod2man: command not found
 par_test_build_and_install	Warning: pod2man not found. Using old parset.1

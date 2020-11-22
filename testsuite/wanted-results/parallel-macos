@@ -13,5 +13,5 @@ par_many_var	       1    5116  122784
 par_many_var	       1    1552   37220
 par_many_var_big_func	       1    4388  105312
 par_many_var_big_func	       1    2280   54692
-par_many_var_func	       1    6628  159072
-par_many_var_func	       1      40     932
+par_many_var_func	       1    4900  117600
+par_many_var_func	       1    1768   42404

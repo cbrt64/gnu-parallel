@@ -1,5 +1,13 @@
 Quote of the month:
 
+  I also prefer gnu parallel. Mainly because it makes embarrassingly
+  parallel tasks embarrassingly easy to run on the command line.
+    -- Vincent D. Warmerdam @fishnets88@twitter
+
+  GNU parallel should be taught in class, it is one of the best tools
+  to run grids of experiments
+    -- no love deep learning @tetraduzione@twitter
+
   It's not a data migration party until GNU Parallel is involved...
   involved
   involved

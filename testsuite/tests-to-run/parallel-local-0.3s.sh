@@ -12,6 +12,55 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_replacement_string_on_utf8() {
+    echo '### test {} {.} on UTF8 input'
+    inputlist() {
+	echo "中国 (Zhōngguó)/China's (中国) road.jpg"
+	echo "中国.(中国)"
+	echo /tmp/test-of-{.}-parallel/subdir/file
+	echo '/tmp/test-of-{.}-parallel/subdir/file{.}.funkyextension}}'
+    }
+    inputlist | parallel -k echo {} {.}
+}
+
+par_compress_stdout_stderr() {
+    echo '### Test compress - stdout'
+    parallel --compress echo ::: OK
+    echo '### Test compress - stderr'
+    parallel --compress ls /{} ::: OK-if-missing-file 2>&1 >/dev/null
+}
+
+par_regexp_chars_in_template() {
+    echo '### Test regexp chars in template'
+    seq 1 6 | parallel -j1 -I :: -X echo 'a::b::^c::[.}c'
+}
+
+par_test_m_X() {
+    echo '### Test -m vs -X'
+    (echo foo;echo bar;echo joe.gif) | parallel -j1 -km echo 1{}2{.}3 A{.}B{.}C
+    (echo foo;echo bar;echo joe.gif) | parallel -j1 -kX echo 1{}2{.}3 A{.}B{.}C
+    seq 1 6 | parallel -k printf '{}.gif\\n' | parallel -j1 -km echo a{}b{.}c{.}
+    seq 1 6 | parallel -k printf '{}.gif\\n' | parallel -j1 -kX echo a{}b{.}c{.}
+
+    echo '### Test -q {.}'
+    echo a | parallel -qX echo  "'"{.}"' "
+    echo a | parallel -qX echo  "'{.}'"
+}
+
+par_i_t() {
+    echo '### Test -i'
+    (echo a; echo END; echo b) | parallel -k -i -eEND echo repl{.}ce
+
+    echo '### Test --replace'
+    (echo a; echo END; echo b) | parallel -k --replace -eEND echo repl{.}ce
+
+    echo '### Test -t'
+    (echo b; echo c; echo f) | parallel -k -t echo {.}ar 2>&1 >/dev/null
+
+    echo '### Test --verbose'
+    (echo b; echo c; echo f) | parallel -k --verbose echo {.}ar 2>&1 >/dev/null
+}
+
 par_pipe_float_blocksize() {
     echo '### Test --block <<non int>>'
     seq 5 | parallel --block 3.1 --pipe wc
