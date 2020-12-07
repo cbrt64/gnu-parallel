@@ -624,6 +624,21 @@ par_test_cpu_detection_cpuinfo() {
 	YstArr0BOSgXJ4Xmpu4j9PRpQcgRCckdf4fcSFol9GuGecuj5uBxngHakML8
 	' | unpack
     }
+    cpu15() {
+	echo '1-1-1-1 Intel(R) Celeron(R) M (eee900)'
+	echo '
+	KLUv/QRo5Q0ABp9XIkBrqwCI2LZJIts7o1loU/RrgCM1Bkm4qbLeX6WzKj6uMAFQAE8ARwAL
+	JHEgV0hbZFGyfUlxhRq4zDo7PSwsEOTgX8Ao1WnCAxwArpC+BU+AuELIaYsvGVyhh9u3mDvM
+	ktMJGRSuA1XhCrVVZGxQn4RcIRm7lUXJAdxIyRVy+qh7W4cZjDtZmUOV1ofD60XGIAiTIrxC
+	jbMozzbmbu1cuGx5XSGVkSXEFeoGrlu2294ttv1gcEJoeIJIPGxfGWyxlEiQAYXQw0KHjdim
+	06c4zJwl7eT3XO6A14X/5rufaPdlO5g73vsyW+/ZzmjHMY79iY99NXwp5ztrX+FgV/auiy/7
+	nfW8Nl/b9T13mOlmuSmpCfVps+B6l9qInNxyptxH4D13eULQrbK1NaE+2KxbSoFBSiADCKLg
+	fbGJS5rL2Omcpyxu7rvh1eh3e2cmwr178WNRVMbZSoJ4FJWTKXcnKADAIKuqBxBI54gcFYp3
+	xUIMqhrUyHoLjYPwgszI7eGRdSUOFMYQlpP0pOoEAV0WM1zTXUey4OeJUEZtb+UNcgLSAYUj
+	iyXJQ3TVfIX50ANedGFbHwEc/JQzJup4YQ==
+	' | unpack
+    }
+
     export -f $(compgen -A function | grep ^cpu)
     
     test_one() {
@@ -809,6 +824,18 @@ par_test_cpu_detection_lscpu() {
 	YQqnBNP0ggo=
 	' | unpack
     }
+    cpu15() {
+	echo '1-1-1-1 Intel(R) Celeron(R) M (eee900)'
+	echo '
+	KLUv/QRohQoANpVBJCDJVgAHS35yk/0LNr7il7y4NiXZTi5J2xh8EMPkH0ICUAugATkAOAA5
+	AFDzg//KBxEyshyKJFqSPScHvrD7GRyq62rk2xnH6ldBJBQHNqybEUHnKZJoMR7GO7S16rb9
+	LK0GBJfkrAs3+uHAsJHJKw7BdVNajAx8kU1wW0JWvkpugQDkdTq5CcuZ9Cq0yVtntJzZXpc6
+	ttWCsJoH7dvil9FXjm/cX6Zf942XV3RiikGCtXiciQQiTWo61iLRADRNY+EhPZR8lG5P1sJD
+	appGnczbZqUB6zW9exVt564cI78V+thnfmKZXxkzHRPjH23s3O4WruAE2y8ztjOKvtaOp8tv
+	j7I/mB0gQIaMujr8eNMPYIxoDLDgY+WX46hwjTmVzU7HpqEtYHxLTLzqx8jKta+0nIvY4e1q
+	oiCpQLqitFXU0Fyo+a4q4SvbmVMCr0burQ==
+	' | unpack
+    }
     export -f $(compgen -A function | grep ^cpu)
     
     test_one() {
@@ -847,15 +874,16 @@ par_block_negative_prefix() {
 
 par_sql_colsep() {
     echo '### SQL should add Vn columns for --colsep'
-    parallel -k -C' ' --sqlandworker sqlite3:///%2ftmp%2ffoo/bar echo /{1}/{2}/{3}/{4}/ \
+    dburl=sqlite3:///%2ftmp%2fparallel-sql-colsep-$$/bar
+    parallel -k -C' ' --sqlandworker $dburl echo /{1}/{2}/{3}/{4}/ \
 	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33'
     parallel -k -C' ' echo /{1}/{2}/{3}/{4}/ \
 	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33'
-    # TODO this is wrong
-    parallel -k -C' ' -N3 --sqlandworker sqlite3:///%2ftmp%2ffoo/bar echo \
+    parallel -k -C' ' -N3 --sqlandworker $dburl echo \
 	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33' '4 44' '5 55' '6 66'
     parallel -k -C' ' -N3 echo \
 	     ::: 'a A' 'b B' 'c C' ::: '1 11' '2 22' '3 33' '4 44' '5 55' '6 66'
+    rm /tmp/parallel-sql-colsep-$$
 }
 
 par_sql_CSV() {

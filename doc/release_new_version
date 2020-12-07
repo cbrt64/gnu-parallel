@@ -105,9 +105,7 @@ git diff
 
 # Recheck OBS https://build.opensuse.org/package/show/home:tange/parallel
 
-export YYYYMMDD=`yyyymmdd`
-export YYYYMMDD=${YYYYMMDD:0:6}22
-TAG=MyTag
+. .last-doitag.txt
 echo "Released as $YYYYMMDD ('$TAG')." | grep MyTag && (STOP;STOP;STOP)
 echo "$TAG" | grep ' ' && (STOP;STOP;STOP)
 echo "Released as $YYYYMMDD ('$TAG')."
@@ -192,9 +190,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20201122 ('Biden') released <<[stable]>>
+Subject: GNU Parallel 20201222 ('Maradona') released <<[stable]>>
 
-GNU Parallel 20201122 ('Biden') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20201222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -208,15 +206,14 @@ Quote of the month:
   
 New in this release:
 <<>>
-
+https://www.youtube.com/watch?v=t_v2Otgt87g
 
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* https://bash-prompt.net/guides/gnu-parallel-multi-server/
-
+https://aws.amazon.com/blogs/storage/best-practices-for-accelerating-data-migrations-using-aws-snowball-edge/
 
 
 

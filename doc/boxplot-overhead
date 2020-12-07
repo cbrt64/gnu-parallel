@@ -13,15 +13,24 @@
 # Fixed cpu-speed: 50% spread=0.7-1.5 ms
 # 4-cpu: 30% faster: 9 ms -> 6 ms
 
+TMP=`pwd`/tmp
+export TMP
+mkdir -p $TMP
 
-if ! /tmp/bin/parallel-20140722 --version; then
-  wget -c ftp://ftp.gnu.org/old-gnu/parallel/p*
-  wget -c ftp://ftp.uni-kl.de/pub/gnu/parallel/p*
-  parallel 'gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve {}' ::: *.sig
-  parallel --plus 'tar xvf {.} && cd {...} && ./configure --prefix /tmp/{.}-bin && make && make install' ::: *sig
-  perl -i -pe 's/qw\(keys/(keys/' parallel*/src/parallel
-  mkdir /tmp/bin
-  parallel cp {} /tmp/bin/'{=s:/.*::=}' ::: parallel*/src/parallel
+if ! $TMP/bin/parallel-20140722 --version; then
+    mkdir -p $TMP/ftp
+    (
+	cd $TMP/ftp
+#	wget -c ftp://ftp.gnu.org/old-gnu/parallel/p*
+	wget -c ftp://ftp.uni-kl.de/pub/gnu/parallel/p*
+	parallel 'gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve {}' ::: *.sig
+	parallel --plus 'tar xvf {.} && cd {...} && ./configure --prefix '$TMP'/ftp/{.}-bin && make && make install' ::: *sig
+	perl -i -pe 's/qw\(keys/(keys/' parallel*/src/parallel
+	perl -i -pe 's/defined(\@/(\@/' parallel*/src/parallel
+	perl -i -pe 's/defined\s+\@/ \@/' parallel*/src/parallel
+	mkdir $TMP/bin
+	parallel cp {} $TMP/bin/'{=s:/.*::=}' ::: parallel*/src/parallel
+    )
 fi
 
 measure() {
@@ -35,30 +44,30 @@ measure() {
     MHZ=1700
 
     # Force cpuspeed at 1.7GHz - seems to give tighter results
-    forever 'parallel sudo cpufreq-set -g performance -u '$MHZ'MHz -d '$MHZ'MHz -c{} ::: {0..3};sleep 10' &
+    #forever 'parallel sudo cpufreq-set -g performance -u '$MHZ'MHz -d '$MHZ'MHz -c{} ::: {0..3};sleep 10' &
 
-    PATH=/tmp/bin:$PATH
-    cd /tmp/bin
+    PATH=$TMP/bin:$PATH
+    cd $TMP/bin
     ls parallel-* |
-	parallel --shuf -j$CORES --joblog ~/tmp/joblog$CORES-$INNER-$OUTER.csv 'seq '$INNER' | {2} true' :::: <(seq $OUTER) -
+	parallel --shuf -j$CORES --joblog +$TMP/joblog$CORES-$INNER-$OUTER.csv 'seq '$INNER' | {2} true' :::: <(seq $OUTER) -
 
     killall forever
 
     Rscript - <<_
-      jl<-read.csv("$HOME/tmp/joblog$CORES-$INNER-$OUTER.csv",sep="\t");
+      jl<-read.csv("$TMP/joblog$CORES-$INNER-$OUTER.csv",sep="\t");
       jl\$Command <- as.factor(substr(jl\$Command,
-				      nchar(as.character(jl\$Command))-23,
-				      nchar(as.character(jl\$Command))-5))
-      pdf("/tmp/boxplot.pdf");
+                                      nchar(as.character(jl\$Command))-12,
+                                      nchar(as.character(jl\$Command))-5));
+      pdf("$TMP/boxplot.pdf");
       par(cex.axis=0.5);
       boxplot(JobRuntime/$INNER*1000~Command,data=jl,las=2,outline=F,
               ylab="milliseconds/job",main="GNU Parallel overhead for different versions\n$OUTER trials each running $INNER jobs");
 _
-    cp /tmp/boxplot.pdf $HOME/tmp/boxplot-j$CORES-${MHZ}MHz-$OUTER-${INNER}v$VERSION.pdf
-    evince /tmp/boxplot.pdf
+    cp $TMP/boxplot.pdf $TMP/boxplot-j$CORES-${MHZ}MHz-$OUTER-${INNER}v$VERSION.pdf
+    evince $TMP/boxplot.pdf
 }
 
 #measure 3000 1000 2 1
-measure 30 10 2 1
-measure 300 100 2 1
-measure 3000 1000 2 1
+measure 30 10 50% 1
+measure 300 100 50% 1
+measure 3000 1000 50% 1

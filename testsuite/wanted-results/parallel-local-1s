@@ -811,6 +811,8 @@ par_test_cpu_detection_cpuinfo	1-2-2-2 AMD Neo N36L Dual-Core Processor
 par_test_cpu_detection_cpuinfo	1 2 2 2
 par_test_cpu_detection_cpuinfo	1-1-1-1 Intel Xeon X5675 (mandriva.p)
 par_test_cpu_detection_cpuinfo	1 1 1 1
+par_test_cpu_detection_cpuinfo	1-1-1-1 Intel(R) Celeron(R) M (eee900)
+par_test_cpu_detection_cpuinfo	1 1 1 1
 par_test_cpu_detection_cpuinfo	1-4-8-4 Core i7-3632QM Acer laptop
 par_test_cpu_detection_cpuinfo	1 4 8 4
 par_test_cpu_detection_cpuinfo	1-2-4-2 Core i5-2410M laptop firewall
@@ -834,6 +836,8 @@ par_test_cpu_detection_lscpu	4 8 8 8
 par_test_cpu_detection_lscpu	1-2-2-2 AMD Neo N36L Dual-Core Processor
 par_test_cpu_detection_lscpu	1 2 2 2
 par_test_cpu_detection_lscpu	1-1-1-1 Intel Xeon X5675 (mandriva.p)
+par_test_cpu_detection_lscpu	1 1 1 1
+par_test_cpu_detection_lscpu	1-1-1-1 Intel(R) Celeron(R) M (eee900)
 par_test_cpu_detection_lscpu	1 1 1 1
 par_test_cpu_detection_lscpu	1-4-8-4 Core i7-3632QM Acer laptop
 par_test_cpu_detection_lscpu	1 4 8 4

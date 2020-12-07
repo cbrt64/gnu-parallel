@@ -851,6 +851,15 @@ par_plus_slot_replacement() {
     parallel -k --plus echo '{slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
 }
 
+par_PARALLEL_HOME_with_+() {
+    echo 'bug #59453: PARALLEL_HOME with plus sign causes error: config not readable'
+    tmp=$(mktemp -d)
+    export PARALLEL_HOME="$tmp/  space  /a+b"
+    mkdir -p "$PARALLEL_HOME"
+    parallel echo ::: Parallel_home_with+
+    rm -rf "$tmp"
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |

@@ -2757,7 +2757,7 @@ sub read_options() {
 		}
 		close $in_fh;
 	    } else {
-		if(grep /^$profile$/, @config_profiles) {
+		if(grep /^\Q$profile\E$/, @config_profiles) {
 		    # config file is not required to exist
 		} else {
 		    ::error("$profile not readable.");

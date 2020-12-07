@@ -6,6 +6,8 @@ par_PARALLEL_ENV	### PARALLEL_ENV as file
 par_PARALLEL_ENV	OK as file
 par_PARALLEL_ENV	### PARALLEL_ENV as fifo
 par_PARALLEL_ENV	OK as fifo
+par_PARALLEL_HOME_with_+	bug #59453: PARALLEL_HOME with plus sign causes error: config not readable
+par_PARALLEL_HOME_with_+	Parallel_home_with+
 par_X_eta_div_zero	### bug #34422: parallel -X --eta crashes with div by zero
 par_X_eta_div_zero	Computers / CPU cores / Max jobs to run
 par_X_eta_div_zero	0:local / 0 / 0

@@ -3800,7 +3800,7 @@ way to know for certain is to test and measure.
 
 =head2 Limiting factor: RAM
 
-The normal B<grep -f regexs.txt bigfile> works no matter the size of
+The normal B<grep -f regexps.txt bigfile> works no matter the size of
 bigfile, but if regexps.txt is so big it cannot fit into memory, then
 you need to split this.
 
@@ -3854,13 +3854,13 @@ If you can live with duplicated lines and wrong order, it is faster to do:
 If the CPU is the limiting factor parallelization should be done on
 the regexps:
 
-  cat regexp.txt | parallel --pipe -L1000 --roundrobin --compress \
+  cat regexps.txt | parallel --pipe -L1000 --roundrobin --compress \
     grep -f - -n bigfile | \
     sort -un | perl -pe 's/^\d+://'
 
 The command will start one B<grep> per CPU and read I<bigfile> one
 time per CPU, but as that is done in parallel, all reads except the
-first will be cached in RAM. Depending on the size of I<regexp.txt> it
+first will be cached in RAM. Depending on the size of I<regexps.txt> it
 may be faster to use B<--block 10m> instead of B<-L1000>.
 
 Some storage systems perform better when reading multiple chunks in
@@ -3868,13 +3868,13 @@ parallel. This is true for some RAID systems and for some network file
 systems. To parallelize the reading of I<bigfile>:
 
   parallel --pipepart --block 100M -a bigfile -k --compress \
-    grep -f regexp.txt
+    grep -f regexps.txt
 
 This will split I<bigfile> into 100MB chunks and run B<grep> on each of
-these chunks. To parallelize both reading of I<bigfile> and I<regexp.txt>
-combine the two using B<--fifo>:
+these chunks. To parallelize both reading of I<bigfile> and I<regexps.txt>
+combine the two using B<--cat>:
 
-  parallel --pipepart --block 100M -a bigfile --fifo cat regexp.txt \
+  parallel --pipepart --block 100M -a bigfile --cat cat regexps.txt \
     \| parallel --pipe -L1000 --roundrobin grep -f - {}
 
 If a line matches multiple regexps, the line may be duplicated.

@@ -1,12 +1,12 @@
 Quote of the month:
 
+  Today I'm grateful for GNU parallel, especially with the --colsep and
+  --jobs parameters #GiveThanks
+    Erin Young @ErinYoun
+
   I also prefer gnu parallel. Mainly because it makes embarrassingly
   parallel tasks embarrassingly easy to run on the command line.
     -- Vincent D. Warmerdam @fishnets88@twitter
-
-  GNU parallel should be taught in class, it is one of the best tools
-  to run grids of experiments
-    -- no love deep learning @tetraduzione@twitter
 
   It's not a data migration party until GNU Parallel is involved...
   involved
@@ -74,6 +74,10 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  GNU parallel should be taught in class, it is one of the best tools
+  to run grids of experiments
+    -- no love deep learning @tetraduzione@twitter
 
   I get a weird sense of satisfaction every single time I see the
   lovely logo of #GNU Parallel (plus, what an underrated piece of
