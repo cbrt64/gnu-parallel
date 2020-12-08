@@ -860,14 +860,15 @@ sub column_perlexpr($$$) {
 sub group_by_loop($$) {
     # Generate perl code for group-by loop
     # Insert a $recsep when the column value changes
-    # The column value can be computed with $perexpr
+    # The column value can be computed with $perlexpr
     my($fh,$recsep) = @_;
     my $groupby = $opt::groupby;
     if($groupby =~ /^[a-z_][a-z_0-9]*(\s|$)/i) {
 	# Group by column name
 	# (Yes, this will also wrongly match a perlexpr like: chop)
 	my($read,$char,@line);
-	# A full line, but nothing more (the rest must be read by the child)
+	# Read a full line, but nothing more
+	# (the rest must be read by the child)
 	# $Global::header used to prepend block to each job
         do {
 	    $read = sysread($fh,$char,1);
@@ -918,12 +919,19 @@ sub group_by_stdin_filter() {
 	my $sep = $opt::colsep;
 	$sep =~ s/\t/\\t/g;
 	$sep =~ s/\"/\\"/g;
+	# man perlrun: -Fpattern [...] You can't use literal whitespace
+	$sep =~ s/ /\\040{1}/g;
 	push @filter, "-F$sep";
     }
     push @filter, "-pe";
     push @filter, group_by_loop(*STDIN,$opt::recstart);
     ::debug("init", "@filter\n");
     open(STDIN, '-|', @filter) || die ("Cannot start @filter");
+    if(which("mbuffer")) {
+	# You get a speed up of 30% by going through mbuffer
+	open(STDIN, '-|', "mbuffer", "-q","-m6M","-b5") ||
+	    die ("Cannot start mbuffer");
+    }
 }
 
 sub spreadstdin() {
@@ -2164,7 +2172,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20201122;
+    $Global::version = 20201207;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;

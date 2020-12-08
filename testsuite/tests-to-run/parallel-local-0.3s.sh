@@ -860,6 +860,19 @@ par_PARALLEL_HOME_with_+() {
     rm -rf "$tmp"
 }
 
+par_group-by_colsep_space() {
+    echo '### --colsep " " should work like ","'
+    input() {
+	sep="$1"
+	printf "a\t${sep}b\n"
+	printf "a${sep}${sep}b\n"
+	printf "b${sep}${sep}a\n"
+	printf "b${sep}a${sep}b\n"
+    }
+    input ',' | parallel --pipe --group-by 2 --colsep ',' -kN1 wc
+    input ' ' | parallel --pipe --group-by 2 --colsep ' ' -kN1 wc
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |

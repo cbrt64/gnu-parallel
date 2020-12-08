@@ -154,6 +154,13 @@ par_file_ending_in_newline	gzip '/tmp/parallel_f2
 par_file_ending_in_newline	'
 par_fish	### https://github.com/fish-shell/fish-shell/issues/5582
 par_fish	OK
+par_group-by_colsep_space	### --colsep " " should work like ","
+par_group-by_colsep_space	      1       2       5
+par_group-by_colsep_space	      2       2      10
+par_group-by_colsep_space	      1       1       6
+par_group-by_colsep_space	      1       2       5
+par_group-by_colsep_space	      2       4      10
+par_group-by_colsep_space	      1       3       6
 par_halt_on_error_division_by_zero	### --halt-on-error soon,fail=100% with no input should not give division by zero
 par_halt_on_error_division_by_zero	0
 par_halt_one_job	# Halt soon if there is a single job
