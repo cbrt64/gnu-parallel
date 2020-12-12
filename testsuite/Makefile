@@ -7,7 +7,7 @@ testsuite: 3
 	touch ~/.parallel/will-cite
 	make stopvm
 
-### Limited testsets - run once
+### Limited test sets - run once
 # No 100s, 300s, mem, polarhome, tutorial
 1: ../src/parallel tests-to-run/* wanted-results/* prereqlocal startdb prereqremote
 	TRIES=1 time bash Start.sh '' '00s|mem|polarhome|tutorial' || true
@@ -59,7 +59,7 @@ testlocalshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prer
 testdb: ../src/parallel tests-to-run/*sql* wanted-results/*sql* prereqdb
 	time bash Start.sh sql NONE
 
-# Portable tests that runs everywhere
+# Portable tests that run everywhere
 portable:
 	# Cache sudo password
 	sudo echo

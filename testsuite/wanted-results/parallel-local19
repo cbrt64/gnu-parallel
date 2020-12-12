@@ -1,4 +1,0 @@
-#echo '### Test compress'
-#  seq 5 | parallel -j2 --tag --compress 'seq {} | pv -q -L 10'
-#echo '### Test compress - stderr'
-#  seq 5 | parallel -j2 --tag --compress 'seq {} | pv -q -L 10 >&2' 2>&1 >/dev/null

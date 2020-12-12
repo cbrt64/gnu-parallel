@@ -1867,6 +1867,9 @@ sub parse_options(@) {
 	# Set --delay to --sshdelay if not set
 	$opt::delay = $opt::sshdelay;
     }
+    $Global::sshdelayauto = $opt::sshdelay =~ s/auto$//;
+    $opt::sshdelay = multiply_time_units($opt::sshdelay);
+    $Global::delayauto = $opt::delay =~ s/auto$//;
     $opt::delay = multiply_time_units($opt::delay);
     if($opt::compress_program) {
 	$opt::compress = 1;
@@ -4762,6 +4765,17 @@ sub reaper() {
     } else {
 	$job->set_exitstatus($? >> 8);
 	$job->set_exitsignal($? & 127);
+    }
+    if($Global::delayauto or $Global::sshdelayauto) {
+	if($job->exitstatus()) {
+	    # Job failed: Increase delay (if $opt::(ssh)delay set)
+	    $opt::delay &&= $opt::delay * 2;
+	    $opt::sshdelay &&= $opt::sshdelay * 2;
+	} else {
+	    # Job succeeded: Decrease delay (if $opt::(ssh)delay set)
+	    $opt::delay &&= $opt::delay * 0.9;
+	    $opt::sshdelay &&= $opt::sshdelay * 0.9;
+	}
     }
 
     debug("run", "seq ",$job->seq()," died (", $job->exitstatus(), ")");
@@ -11695,7 +11709,7 @@ sub binary_find_max($$$) {
 
 {
     my $prg;
-    
+
     sub is_acceptable_command_line_length($$) {
 	# Test if a command line of this length can run
 	# in the current environment

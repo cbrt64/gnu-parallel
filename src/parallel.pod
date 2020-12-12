@@ -711,13 +711,17 @@ Even quoted newlines are parsed correctly:
 When used with B<--pipe> only pass full CSV-records.
 
 
-=item B<--delay> I<mytime>
+=item B<--delay> I<mytime> (alpha testing)
 
 Delay starting next job by I<mytime>. GNU B<parallel> will pause
 I<mytime> after starting each job. I<mytime> is normally in seconds,
 but can be floats postfixed with B<s>, B<m>, B<h>, or B<d> which would
 multiply the float by 1, 60, 3600, or 86400. Thus these are
 equivalent: B<--delay 100000> and B<--delay 1d3.5h16.6m4s>.
+
+If you append 'auto' to I<mytime> (e.g. 13m3sauto) GNU B<parallel> will
+automatically try to find the optimal value: If a job fails, I<mytime>
+is doubled. If a job succeeds, I<mytime> is decreased by 10%.
 
 
 =item B<--delimiter> I<delim>
@@ -2416,11 +2420,12 @@ be overridden with B<--ssh>. It can also be set on a per server
 basis (see B<--sshlogin>).
 
 
-=item B<--sshdelay> I<secs>
+=item B<--sshdelay> I<mytime> (alpha testing)
 
-Delay starting next ssh by I<secs> seconds. GNU B<parallel> will pause
-I<secs> seconds after starting each ssh. I<secs> can be less than 1
-seconds.
+Delay starting next ssh by I<mytime>. GNU B<parallel> will not start
+another ssh for the next I<mytime>.
+
+For details on I<mytime> see B<--delay>.
 
 
 =item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]>

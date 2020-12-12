@@ -99,6 +99,34 @@ par_bug56403() {
 
 }
 
+par_delay_Xauto() {
+    echo 'TODO: --retries for those that fail and --sshdelay'
+    echo '### bug #58911: --delay Xauto'
+    tmp=$(tempfile)
+    doit() {
+	perl -e '$a=shift;
+	     $m = -M $a < 0.0000001;
+	     `touch $a`;
+	     print "$m\n";
+	     exit $m;' $1;
+    }
+    export -f doit
+    #seq 1000 | ppar --jl - -v --delay 0.1auto -q doit "$tmp"
+    before=`date +%s`
+    out=$(seq 30 | parallel --delay 0.03 -q doit "$tmp")
+    after=`date +%s`
+    normaldiff=$((after-before))
+    echo $normaldiff
+    
+    before=`date +%s`
+    out=$(seq 30 | parallel --delay 0.03auto -q doit "$tmp")
+    after=`date +%s`
+    autodiff=$((after-before))
+    echo $autodiff
+    
+    rm "$tmp"
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     #    parallel --joblog /tmp/jl-`basename $0` -j10 --tag -k '{} 2>&1'
