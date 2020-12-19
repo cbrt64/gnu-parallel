@@ -1886,6 +1886,10 @@ sub parse_options(@) {
 	    # CSV with TAB as separator
 	    $Global::csvsep = "\t";
 	    $Global::membuffer ||= 1;
+	} elsif($opt::results =~ /\.json$/i) {
+	    # JSON output
+	    $Global::jsonout ||= 1;
+	    $Global::membuffer ||= 1;
 	}
     }
     if($opt::compress) {
@@ -2093,7 +2097,7 @@ sub parse_options(@) {
 
     if(not defined $opt::jobs) { $opt::jobs = "100%"; }
     open_joblog();
-    open_csv();
+    open_json_csv();
     if($opt::sqlmaster or $opt::sqlworker) {
 	$Global::sql = SQL->new($opt::sqlmaster || $opt::sqlworker);
     }
@@ -2599,13 +2603,15 @@ sub open_joblog() {
     }
 }
 
-sub open_csv() {
+sub open_json_csv() {
     if($opt::results) {
-	# Output as CSV/TSV
+	# Output as JSON/CSV/TSV
 	if($opt::results eq "-.csv"
 	   or
-	   $opt::results eq "-.tsv") {
-	    # Output as CSV/TSV on stdout
+	   $opt::results eq "-.tsv"
+	   or
+	   $opt::results eq "-.json") {
+	    # Output as JSON/CSV/TSV on stdout
 	    open $Global::csv_fh, ">&", "STDOUT" or
 		::die_bug("Can't dup STDOUT in csv: $!");
 	    # Do not print any other output to STDOUT
@@ -10047,8 +10053,76 @@ sub print($) {
 	    # Add output to CSV when finished
 	    $self->print_csv();
 	}
+	if($Global::jsonout) {
+	    $self->print_json();
+	}
     }
     return $returnsize - $self->returnsize();
+}
+
+{
+    my %jsonmap;
+
+    sub print_json($) {
+	my $self = shift;
+	sub jsonquote($) {
+	    my $a = shift;
+	    if(not $jsonmap{"\001"}) {
+		map { $jsonmap{sprintf("%c",$_)} = sprintf '\u%04x', $_ } 0..31;
+	    }
+	    $a =~ s/\\/\\\\/g;
+	    $a =~ s/\"/\\"/g;
+	    $a =~ s/([\000-\037])/$jsonmap{$1}/g;
+	    return $a;
+	}
+
+	my $cmd;
+	if($Global::verbose <= 1) {
+	    $cmd = jsonquote($self->replaced());
+	} else {
+	    # Verbose level > 1: Print the rsync and stuff
+	    $cmd = jsonquote(join " ", @{$self->{'commandline'}});
+	}
+	my $record_ref = $self->{'commandline'}{'arg_list_flat_orig'};
+
+	# Memory optimization: Overwrite with the joined output
+	$self->{'output'}{1} = join("", @{$self->{'output'}{1}});
+	$self->{'output'}{2} = join("", @{$self->{'output'}{2}});
+	# {
+	#   "Seq": 12,
+	#   "Host": "/usr/bin/ssh foo@lo",
+	#   "Starttime": 1608344711.743,
+	#   "JobRuntime": 0.01,
+	#   "Send": 0,
+	#   "Receive": 10,
+	#   "Exitval": 0,
+	#   "Signal": 0,
+	#   "Command": "echo 1",
+	#   "V": [
+	#     "1"
+	#   ],
+	#   "Stdout": "1\n",
+	#   "Stderr": ""
+	# }
+	# 
+	printf($Global::csv_fh
+	       q({ "Seq": %s, "Host": "%s", "Starttime": %s, "JobRuntime": %s, ).
+	       q("Send": %s, "Receive": %s, "Exitval": %s, "Signal": %s, ).
+	       q("Command": "%s", "V": [ %s ], "Stdout": "%s", "Stderr": "%s" }).
+	       "\n",
+	       $self->seq(),
+	       jsonquote($self->sshlogin()->string()),
+	       $self->starttime(), sprintf("%0.3f",$self->runtime()),
+	       $self->transfersize(), $self->returnsize(),
+	       $self->exitstatus(), $self->exitsignal(), $cmd,
+	       #	  \@$record_ref[1..$#$record_ref],
+	       (join ",",
+		map { '"'.jsonquote($_).'"' } @$record_ref[1..$#$record_ref],
+		),
+	       jsonquote($self->{'output'}{1}),
+	       jsonquote($self->{'output'}{2})
+	    );
+    }
 }
 
 {

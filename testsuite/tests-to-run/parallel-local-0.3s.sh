@@ -873,6 +873,11 @@ par_group-by_colsep_space() {
     input ' ' | parallel --pipe --group-by 2 --colsep ' ' -kN1 wc
 }
 
+par_json() {
+    printf '"\t\\"' | parallel --results -.json echo :::: - ::: '"' '\\' |
+	perl -pe 's/\d/0/g'
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |

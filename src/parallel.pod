@@ -1858,7 +1858,16 @@ B<-.csv>/B<-.tsv> are special: It will give the file on stdout
 (standard output).
 
 
-B<Replacement string output file>
+B<JSON file output> (alpha testing)
+
+If I<name> ends in B<.json> the output will be a JSON-file
+named I<name>.
+
+B<-.json> is special: It will give the file on stdout (standard
+output).
+
+
+B<Replacement string output file> (alpha testing)
 
 If I<name> contains a replacement string and the replaced result does
 not end in /, then the standard output will be stored in a file named

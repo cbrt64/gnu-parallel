@@ -233,6 +233,8 @@ par_jobslot_jobnumber_pipe	1
 par_jobslot_jobnumber_pipe	1
 par_jobslot_jobnumber_pipe	1
 par_jobslot_jobnumber_pipe	1
+par_json	{ "Seq": 0, "Host": ":", "Starttime": 0000000000.000, "JobRuntime": 0.000, "Send": 0, "Receive": 0, "Exitval": 0, "Signal": 0, "Command": "echo '\"\u0000\\\"' '\"'", "V": [ "\"\u0000\\\"","\"" ], "Stdout": "\"\u0000\\\" \"\u000a", "Stderr": "" }
+par_json	{ "Seq": 0, "Host": ":", "Starttime": 0000000000.000, "JobRuntime": 0.000, "Send": 0, "Receive": 0, "Exitval": 0, "Signal": 0, "Command": "echo '\"\u0000\\\"' '\\\\'", "V": [ "\"\u0000\\\"","\\\\" ], "Stdout": "\"\u0000\\\" \\\\\u000a", "Stderr": "" }
 par_l0_is_l1	### Because of --tollef -l, then -l0 == -l1, sorry
 par_l0_is_l1	l0 1
 par_l0_is_l1	l0 2
