@@ -12,15 +12,14 @@ install_packages() {
     test_pkgs="$test_pkgs xterm libc6-i386 libcrypt1:i386"
     test_pkgs="$test_pkgs libtest-nowarnings-perl"
 
-    # DEBIAN package
+    # Debian package
     packaging_pkgs="dpkg-dev build-essential debhelper osc cvs automake-1.15"
     packaging_pkgs="$packaging_pkgs python3-m2crypto alien"
 
-    # SHEBANG TOOLS
+    # Shebang Tools
     shebang_pkgs="gnuplot octave ruby r-base-core"
-    # BUILD TOOLS
-    build_pkgs="bison"
-    # SQL TOOLS
+
+    # SQL Tools
     sql_pkgs="libdbd-pg-perl libdbd-sqlite3-perl libdbd-csv-perl"
     sql_pkgs="$sql_pkgs libdbd-mysql-perl rlwrap"
 
@@ -37,8 +36,8 @@ install_packages() {
     # Databases
     database_pkgs="postgresql mysql-server sqlite"
 
-    # Build packages
-    build_pkgs="libxxhash-dev libzstd-dev liblz4-dev libssl-dev"
+    # Build Tools
+    build_pkgs="bison libxxhash-dev libzstd-dev liblz4-dev libssl-dev"
     build_pkgs="$build_pkgs python3-cmarkgfm"
 
     sudo dpkg --add-architecture i386; sudo apt update
@@ -351,11 +350,13 @@ rsync_versions() {
 	 cd rsync-$1
 	 git reset --hard
 	 git checkout $1
+	 perl -i -pe 's/AC_DEFINE_UNQUOTED.HAVE_REMSH, .HAVE_REMSH./AC_DEFINE_UNQUOTED(HAVE_REMSH, \$HAVE_REMSH,[dummy])/;
+	 s/AC_DEFINE.HAVE_ERRNO_DECL.,/AC_DEFINE(HAVE_ERRNO_DECL,[1],[dummy]),/;
+	 s/AC_DEFINE.HAVE_FNMATCH.,/AC_DEFINE(HAVE_FNMATCH,[1],[dummy]),/;' configure.in
          autoreconf --install -W gnu
-	 make proto
 	 # Make "lib/addrinfo.h" ?
 	 LDFLAGS=-static ./configure &&
-	     make -j2 &&
+	     (make proto; make -j2) &&
 	     sudo cp rsync /usr/local/bin/rsync-$1
      }
      export -f make_one

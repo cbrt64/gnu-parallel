@@ -190,7 +190,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20201222 ('Maradona/Yeager') released <<[stable]>>
+Subject: GNU Parallel 20201222 ('Vaccine/Maradona/Yeager/Le Carre') released <<[stable]>>
 
 GNU Parallel 20201222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -206,16 +206,17 @@ Quote of the month:
   
 New in this release:
 <<>>
-https://www.youtube.com/watch?v=t_v2Otgt87g
 
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-https://aws.amazon.com/blogs/storage/best-practices-for-accelerating-data-migrations-using-aws-snowball-edge/
+* Best practices for accelerating data migrations using AWS Snowball Edge https://aws.amazon.com/blogs/storage/best-practices-for-accelerating-data-migrations-using-aws-snowball-edge/
 
+* Pass the Output of a Command as an Argument for Another https://www.baeldung.com/linux/pass-cmd-output-as-an-argument
 
+* Warwick RSE Drop-in - Workflow Management Part 2 - GNU Parallel https://www.youtube.com/watch?v=t_v2Otgt87g
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

@@ -232,13 +232,17 @@ par_delimiter() {
 par_argfile() {
     echo '### Test -a and --arg-file: Read input from file instead of stdin'
 
-    seq 1 10 >/tmp/parallel_$$-1; parallel -k -a /tmp/parallel_$$-1 echo; rm /tmp/parallel_$$-1
-    seq 1 10 >/tmp/parallel_$$-2; parallel -k --arg-file /tmp/parallel_$$-2 echo; rm /tmp/parallel_$$-2
+    tmp=$(mktemp)
+    seq 1 10 >$tmp
+    parallel -k -a $tmp echo
+    parallel -k --arg-file $tmp echo
+    rm $tmp
 }
 
 par_pipe_unneeded_procs() {
     echo '### Test bug #34241: --pipe should not spawn unneeded processes'
-    seq 3 | parallel -j30 --pipe --block-size 10 cat\;echo o 2> >(grep -Ev 'Warning: Starting|Warning: Consider')
+    seq 3 |
+	parallel -j30 --pipe --block-size 10 cat\;echo o 2> >(grep -Ev 'Warning: Starting|Warning: Consider')
 }
 
 par_results_arg_256() {
@@ -257,21 +261,28 @@ par_pipe_to_func() {
     echo pipefunc and more OK | parallel --pipe 'myfunc {#};echo and more OK'
 }
 
+par_roundrobin_k() {
+    echo '### Test -k --round-robin'
+    seq 1000000 | parallel -j4 -k --round-robin --pipe wc
+}
+
 par_pipepart_roundrobin() {
     echo '### bug #45769: --round-robin --pipepart gives wrong results'
 
-    seq 10000 >/tmp/seq10000
-    parallel -j2 --pipepart -a /tmp/seq10000 --block 14 --round-robin wc | wc -l
-    rm /tmp/seq10000
+    tmp=$(mktemp)
+    seq 10000 >$tmp
+    parallel -j2 --pipepart -a $tmp --block 14 --round-robin wc | wc -l
+    rm $tmp
 }
 
 par_pipepart_header() {
     echo '### bug #44614: --pipepart --header off by one'
 
-    seq 10 >/tmp/parallel_44616
-    parallel --pipepart -a /tmp/parallel_44616 -k --block 5 'echo foo; cat'
-    parallel --pipepart -a /tmp/parallel_44616 -k --block 2 --regexp --recend 3'\n' 'echo foo; cat'
-    rm /tmp/parallel_44616
+    tmp=$(mktemp)
+    seq 10 >$tmp
+    parallel --pipepart -a $tmp -k --block 5 'echo foo; cat'
+    parallel --pipepart -a $tmp -k --block 2 --regexp --recend 3'\n' 'echo foo; cat'
+    rm $tmp
 }
 
 par_quote() {
@@ -297,9 +308,10 @@ par_read_from_stdin() {
 
 par_total_from_joblog() {
     echo 'bug #47086: [PATCH] Initialize total_completed from joblog'
-    rm -f /tmp/parallel-47086
-    parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1          echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
-    parallel -j1 --joblog /tmp/parallel-47086 --halt now,fail=1 --resume echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
+    tmp=$(mktemp)
+    parallel -j1 --joblog $tmp --halt now,fail=1          echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
+    parallel -j1 --joblog $tmp --halt now,fail=1 --resume echo '{= $_=$Global::total_completed =};exit {}' ::: 0 0 0 1 0 0
+    rm $tmp
 }
 
 par_xapply() {
@@ -430,9 +442,11 @@ par_empty_line() {
 
 par_append_joblog() {
     echo '### can you append to a joblog using +'
-    parallel --joblog /tmp/parallel_append_joblog echo ::: 1
-    parallel --joblog +/tmp/parallel_append_joblog echo ::: 1
-    wc -l /tmp/parallel_append_joblog
+    tmp=$(mktemp)
+    parallel --joblog $tmp echo ::: 1
+    parallel --joblog +$tmp echo ::: 1
+    wc -l < $tmp
+    rm $tmp
 }
 
 par_file_ending_in_newline() {
@@ -441,7 +455,7 @@ par_file_ending_in_newline() {
     echo >/tmp/parallel_f2'
 '
     echo /tmp/parallel_f1 /tmp/parallel_f2 |
-    stdout parallel -kv --delimiter ' ' gzip
+	stdout parallel -kv --delimiter ' ' gzip
     rm /tmp/parallel_f*
 }
 
@@ -606,11 +620,12 @@ par_pipe_tag_v() {
 
 par_dryrun_append_joblog() {
     echo '--dry-run should not append to joblog'
-    rm -f /tmp/jl.$$
-    parallel -k --jl /tmp/jl.$$ echo ::: 1 2 3
-    parallel --dryrun -k --jl +/tmp/jl.$$ echo ::: 1 2 3 4
+    tmp=$(mktemp)
+    parallel -k --jl $tmp echo ::: 1 2 3
+    parallel --dryrun -k --jl +$tmp echo ::: 1 2 3 4
     # Job 4 should not show up: 3 lines + header = 4
-    wc -l < /tmp/jl.$$
+    wc -l < $tmp
+    rm $tmp
 }
 
 par_0_no_newline() {
@@ -660,8 +675,9 @@ par_slow_pipe_regexp() {
 
 par_results() {
     echo "### --results test.csv"
-    parallel -k --results /tmp/$$.csv echo ::: a b c
-    rm /tmp/$$.csv
+    tmp=$(mktemp)
+    parallel -k --results "$tmp"-dir echo ::: a b c
+    rm -r $tmp "$tmp"-dir
 }
 
 par_testquote() {
@@ -874,7 +890,7 @@ par_group-by_colsep_space() {
 }
 
 par_json() {
-    printf '"\t\\"' | parallel --results -.json echo :::: - ::: '"' '\\' |
+    printf '"\t\\"' | parallel -k --results -.json echo :::: - ::: '"' '\\' |
 	perl -pe 's/\d/0/g'
 }
 

@@ -14,7 +14,7 @@ par_X_eta_div_zero	0:local / 0 / 0
 par_append_joblog	### can you append to a joblog using +
 par_append_joblog	1
 par_append_joblog	1
-par_append_joblog	3 /tmp/parallel_append_joblog
+par_append_joblog	3
 par_argfile	### Test -a and --arg-file: Read input from file instead of stdin
 par_argfile	1
 par_argfile	2
@@ -828,6 +828,11 @@ par_retries_replacement_string	22
 par_retries_replacement_string	33
 par_retries_replacement_string	33
 par_retries_replacement_string	33
+par_roundrobin_k	### Test -k --round-robin
+par_roundrobin_k	 315464  315464 2097143
+par_roundrobin_k	 299592  299592 2097144
+par_roundrobin_k	 235148  235148 1646037
+par_roundrobin_k	 149796  149796 1048572
 par_rpl_that_is_substring_of_longer_rpl	### --rpl % that is a substring of longer --rpl %D
 par_rpl_that_is_substring_of_longer_rpl	a.b/c.d/e.f=a.b/c.d/e.f
 par_rpl_that_is_substring_of_longer_rpl	a.b/c.d=a.b/c.d

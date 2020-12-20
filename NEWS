@@ -1,3 +1,28 @@
+20201222
+
+* --pipe engine changed making --pipe alpha quality.
+
+* --results -.json outputs results as JSON objects on stdout (standard
+  output).
+
+* --delay 123auto will auto-adjust --delay. If jobs fail due to being
+  spawned too quickly, --delay will exponentially increase.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Best practices for accelerating data migrations using AWS Snowball
+  Edge
+  https://aws.amazon.com/blogs/storage/best-practices-for-accelerating-data-migrations-using-aws-snowball-edge/
+
+* Pass the Output of a Command as an Argument for Another
+  https://www.baeldung.com/linux/pass-cmd-output-as-an-argument
+
+* Warwick RSE Drop-in - Workflow Management Part 2 - GNU Parallel
+  https://www.youtube.com/watch?v=t_v2Otgt87g
+
+
 20201122
 
 * Bug fixes and man page updates.

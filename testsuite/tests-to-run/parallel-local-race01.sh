@@ -111,17 +111,17 @@ par_delay_Xauto() {
 	     exit $m;' $1;
     }
     export -f doit
-    #seq 1000 | ppar --jl - -v --delay 0.1auto -q doit "$tmp"
     before=`date +%s`
     out=$(seq 30 | parallel --delay 0.03 -q doit "$tmp")
     after=`date +%s`
-    normaldiff=$((after-before))
+    # Round to 5 seconds
+    normaldiff=$(( (after-before)/5 ))
     echo $normaldiff
     
     before=`date +%s`
     out=$(seq 30 | parallel --delay 0.03auto -q doit "$tmp")
     after=`date +%s`
-    autodiff=$((after-before))
+    autodiff=$(( (after-before)/5 ))
     echo $autodiff
     
     rm "$tmp"

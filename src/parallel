@@ -1292,7 +1292,6 @@ sub nindex($$) {
 			$job->set_block($header_ref, $buffer_ref,
 					$endpos, $recstart, $recend);
 			$block_passed = 1;
-			$job->set_virgin(0);
 			$written += $job->non_blocking_write();
 			last;
 		    }
@@ -1355,7 +1354,7 @@ sub rindex64($@) {
     # Default: search from end
     $pos = defined $pos ? $pos : $strlen;
     # No point in doing extra work if we don't need to.
-    if($strlen < $block_size) {
+    if($strlen < $block_size or $] > 5.022) {
 	return rindex($$ref, $match, $pos);
     }
 
@@ -1433,42 +1432,8 @@ sub write_record_to_pipe($$$$$$) {
 	start_more_jobs();
     }
     my $job = shift @Global::virgin_jobs;
-    # Job is no longer virgin
-    $job->set_virgin(0);
-
-    if($opt::retries) {
-	# Copy $buffer[0..$endpos] to $job->{'block'}
-	# Remove rec_sep
-	# Run $job->add_transfersize
-	$job->set_block($header_ref, $buffer_ref, $endpos,
-			$recstart, $recend);
-	if(fork()) {
-	    # Skip
-	} else {
-	    $job->write($job->block_ref());
-	    close $job->fh(0,"w");
-	    exit(0);
-	}
-    } else {
-	# We ignore the removed rec_sep which is technically wrong.
-	$job->add_transfersize($endpos + length $$header_ref);
-	if(fork()) {
-	    # Skip
-	} else {
-	    # Chop of at $endpos as we do not know how many rec_sep will
-	    # be removed.
-	    substr($$buffer_ref,$endpos,length $$buffer_ref) = "";
-	    # Remove rec_sep
-	    if($opt::remove_rec_sep) {
-		Job::remove_rec_sep($buffer_ref, $recstart, $recend);
-	    }
-	    $job->write($header_ref);
-	    $job->write($buffer_ref);
-	    close $job->fh(0,"w");
-	    exit(0);
-	}
-    }
-    close $job->fh(0,"w");
+    $job->set_block($header_ref, $buffer_ref, $endpos, $recstart, $recend);
+    $job->write_block();
     return 1;
 }
 
@@ -2179,7 +2144,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20201207;
+    $Global::version = 20201212;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -3455,15 +3420,7 @@ sub init_run_jobs() {
 			    push(@Global::virgin_jobs,$job);
 			} else {
 			    # Block already set: This is a retry
-			    if(fork()) {
-				::debug("pipe","\n\nWriting ",length ${$job->block_ref()},
-					" to ", $job->seq(),"\n");
-				close $job->fh(0,"w");
-			    } else {
-				$job->write($job->block_ref());
-				close $job->fh(0,"w");
-				exit(0);
-			    }
+			    $job->write_block();
 			}
 		    }
 		    debug("start", "Started as seq ", $job->seq(),
@@ -8468,8 +8425,6 @@ sub filter_through_compress($) {
     }
 }
 
-
-
 sub set_fh($$$$) {
     # Set file handle
     my ($self, $fd_no, $key, $fh) = @_;
@@ -8480,6 +8435,32 @@ sub fh($) {
     # Get file handle
     my ($self, $fd_no, $key) = @_;
     return $self->{'fd'}{$fd_no,$key};
+}
+
+sub write_block($) {
+    my $self = shift;
+    my $stdin_fh = $self->fh(0,"w");
+    if(fork()) {
+	# Close in parent
+	close $stdin_fh;
+    } else {
+	# If writing is to a closed pipe:
+	#   Do not call signal handler, but let nothing be written
+	local $SIG{PIPE} = undef;
+
+	for my $part (
+	    grep { defined $_ }
+	    $self->{'header'},$self->{'block'}) {
+	    # syswrite may not write all in one go,
+	    # so make sure everything is written.
+	    my $written;
+	    while($written = syswrite($stdin_fh,$$part)) {
+		substr($$part,0,$written) = "";
+	    }
+	}
+	close $stdin_fh;
+	exit(0);
+    }
 }
 
 sub write($) {
@@ -8514,21 +8495,36 @@ sub set_block($$$$$$) {
     #   N/A
     my $self = shift;
     my ($header_ref,$buffer_ref,$endpos,$recstart,$recend) = @_;
-    $self->{'block'} = ($self->virgin() ? $$header_ref : "").
-	substr($$buffer_ref,0,$endpos);
-    if($opt::remove_rec_sep) {
-	remove_rec_sep(\$self->{'block'},$recstart,$recend);
+    $self->{'header'} = $header_ref;
+    if($opt::roundrobin or $opt::remove_rec_sep or $opt::retries) {
+	my $a = "";
+	if(($opt::roundrobin or $opt::retries) and $self->virgin()) {
+	    $a .= $$header_ref;
+	}
+	# Job is no longer virgin
+	$self->set_virgin(0);
+	# Make a full copy because $buffer will change
+	$a .= substr($$buffer_ref,0,$endpos);
+	$self->{'block'} = \$a;
+	if($opt::remove_rec_sep) {
+	    remove_rec_sep($self->{'block'},$recstart,$recend);
+	}
+	$self->{'block_length'} = length ${$self->{'block'}};
+    } else {
+	$self->set_virgin(0);
+	for(substr($$buffer_ref,0,$endpos)) {
+	    $self->{'block'} = \$_;
+	}
+	$self->{'block_length'} = $endpos + length ${$self->{'header'}};
     }
-    $self->{'block_length'} = length $self->{'block'};
     $self->{'block_pos'} = 0;
     $self->add_transfersize($self->{'block_length'});
 }
 
 sub block_ref($) {
     my $self = shift;
-    return \$self->{'block'};
+    return $self->{'block'};
 }
-
 
 sub block_length($) {
     my $self = shift;
@@ -8564,7 +8560,7 @@ sub non_blocking_write($) {
 
     my $in = $self->fh(0,"w");
     my $rv = syswrite($in,
-		      substr($self->{'block'},$self->{'block_pos'}));
+		      substr(${$self->{'block'}},$self->{'block_pos'}));
     if (!defined($rv) && $! == ::EAGAIN()) {
 	# would block - but would have written
 	$something_written = 0;
