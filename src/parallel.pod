@@ -1073,9 +1073,9 @@ B<--header :> is an alias for B<--header '.*\n'>.
 If I<regexp> is a number, it is a fixed number of lines.
 
 
-=item B<--hostgroups>
+=item B<--hostgroups> (alpha testing)
 
-=item B<--hgrp>
+=item B<--hgrp> (alpha testing)
 
 Enable hostgroups on arguments. If an argument contains '@' the string
 after '@' will be removed and treated as a list of hostgroups on which
@@ -1093,7 +1093,7 @@ B<my_grp1_arg> may be run on either B<myserver1> or B<myserver2>,
 B<third> may be run on either B<myserver1> or B<myserver3>,
 but B<arg_for_grp2> will only be run on B<myserver2>.
 
-See also: B<--sshlogin>.
+See also: B<--sshlogin>, B<$PARALLEL_HOSTGROUPS>.
 
 
 =item B<-I> I<replace-str>
@@ -1494,9 +1494,9 @@ of each job is saved in a file and the filename is then printed.
 See also: B<--results>
 
 
-=item B<--pipe>
+=item B<--pipe> (alpha testing)
 
-=item B<--spreadstdin>
+=item B<--spreadstdin> (alpha testing)
 
 Spread input to jobs on stdin (standard input). Read a block of data
 from stdin (standard input) and give one block of data as input to one
@@ -1579,6 +1579,7 @@ Shorthands for variables:
   {slot}        $PARALLEL_JOBSLOT (see {%})
   {sshlogin}    $PARALLEL_SSHLOGIN
   {host}        $PARALLEL_SSHHOST
+  {hgrp}        $PARALLEL_HOSTGROUPS
 
 The following dynamic replacement strings are also activated. They are
 inspired by bash's parameter expansion:
@@ -4852,6 +4853,17 @@ the currently running jobs are finished before exiting.
 
 Dir where GNU B<parallel> stores config files, semaphores, and caches
 information between invocations. Default: $HOME/.parallel.
+
+
+=item $PARALLEL_HOSTGROUPS
+
+When using B<--hostgroups> GNU B<parallel> sets this to the
+intersection of the hostgroups of the job and the sshlogin that the
+job is run on.
+
+Remember to quote the $, so it gets evaluated by the correct shell. Or
+use B<--plus> and {hgrp}.
+
 
 =item $PARALLEL_JOBSLOT
 

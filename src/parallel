@@ -2212,6 +2212,8 @@ sub init_globals() {
 	 '{host}' => '1 $_="\${PARALLEL_SSHHOST}";uq()',
 	 # {sshlogin} = sshlogin
 	 '{sshlogin}' => '1 $_="\${PARALLEL_SSHLOGIN}";uq()',
+	 # {hgrp} = hostgroups
+	 '{hgrp}' => '1 $_="\${PARALLEL_HOSTGROUPS}";uq()',
 	);
     # Modifiable copy of %Global::replace
     %Global::rpl = %Global::replace;
@@ -9181,7 +9183,8 @@ sub sshlogin_wrap($) {
 	# So --env myfunc should look for BASH_FUNC_myfunc() and BASH_FUNC_myfunc%%
 
 	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ",
-	     "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST", "PARALLEL_JOBSLOT",
+	     "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST", "PARALLEL_HOSTGROUPS",
+	     "PARALLEL_JOBSLOT",
 	     map { ("BASH_FUNC_$_()", "BASH_FUNC_$_%%") } @vars);
 	# Keep only defined variables
 	return grep { defined($ENV{$_}) } @vars;
@@ -9243,6 +9246,10 @@ sub sshlogin_wrap($) {
 	$ENV{'PARALLEL_JOBSLOT'} = $self->slot();
 	$ENV{'PARALLEL_SSHLOGIN'} = $sshlogin->string();
 	$ENV{'PARALLEL_SSHHOST'} = $sshlogin->serverlogin();
+	if ($opt::hostgroups) {
+	    $ENV{'PARALLEL_HOSTGROUPS'} =
+		join',',$sshlogin->in_hostgroups($self->hostgroups());
+	}
 	$ENV{'PARALLEL_PID'} = $$;
 	if($serverlogin eq ":") {
 	    if($opt::workdir) {

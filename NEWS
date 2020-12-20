@@ -8,6 +8,9 @@
 * --delay 123auto will auto-adjust --delay. If jobs fail due to being
   spawned too quickly, --delay will exponentially increase.
 
+* --plus sets {hgrp} that gives the intersection of the hostgroups of
+  the job and the sshlogin that the job is run on.
+
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
