@@ -2144,7 +2144,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20201212;
+    $Global::version = 20201222;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4911,8 +4911,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2020, November 22). GNU Parallel 20201122 ('Biden').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.4284075",
+         "  Tange, O. (2020, December 22). GNU Parallel 20201222 ('Vaccine').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.4381888",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -4942,8 +4942,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2020, November 22). GNU Parallel 20201122 ('Biden').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.4284075",
+	     "  Tange, O. (2020, December 22). GNU Parallel 20201222 ('Vaccine').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.4381888",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5056,20 +5056,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2020_4284075,",
+	"\@software{tange_2020_4381888,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20201122 ('Biden')},",
-	"      month        = Nov,",
+	"      title        = {GNU Parallel 20201222 ('Vaccine')},",
+	"      month        = Dec,",
 	"      year         = 2020,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.4284075},",
-	"      url          = {https://doi.org/10.5281/zenodo.4284075}",
+	"      doi          = {10.5281/zenodo.4381888},",
+	"      url          = {https://doi.org/10.5281/zenodo.4381888}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2020_4284075})",
+	"(Feel free to use \\nocite{tange_2020_4381888})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -10107,7 +10107,7 @@ sub print($) {
 	#   "Stdout": "1\n",
 	#   "Stderr": ""
 	# }
-	# 
+	#
 	printf($Global::csv_fh
 	       q({ "Seq": %s, "Host": "%s", "Starttime": %s, "JobRuntime": %s, ).
 	       q("Send": %s, "Receive": %s, "Exitval": %s, "Signal": %s, ).
