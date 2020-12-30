@@ -40,7 +40,7 @@ doit() {
     $maxlen=-39+262144 - $envn - $envv - $onechar*5 - $envc*10;
     print("Computed max len = $maxlen\n");
     $bin='$binlen';
-    print("Actual:$bin Diff:",$bin-$maxlen," Vars: $onechar $envc $envn $envv\n");
+    print("Diff:",$bin-$maxlen," Actual:$bin Vars: $onechar $envc $envn $envv\n");
        '
 }
 export -f doit

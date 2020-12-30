@@ -16,6 +16,7 @@ par_filename_colon	remote-:.:
 par_filename_colon	content-of-:
 par_files_nonall	### bug #40002: --files and --nonall seem not to work together:
 par_files_nonall	1
+par_hgrp_agrp	### Test --hgrp {hgrp} {agrp}
 par_joblog_nonall	### bug #40001: --joblog and --nonall seem not to work together:
 par_joblog_nonall	3
 par_onall_transfer	### bug #46519: --onall ignores --transfer

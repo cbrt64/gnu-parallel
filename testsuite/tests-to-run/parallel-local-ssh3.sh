@@ -74,7 +74,14 @@ par_progress_text_max_jobs_to_run() {
 
 par_hgrp_rpl() {
     echo '### Implement {hgrp} replacement string'
-    parallel -k --plus --hgrp -S @b/bash@lo -S @c/csh@lo 'echo {sshlogin} {hgrp}' ::: b@b c@c
+    parallel -k --plus --hgrp -S @b/bash@lo -S @c/csh@lo 'echo {sshlogin} {hgrp}' ::: b@b c@c |
+	grep -v -F -f <(cat <<EOF
+bash@lo bash@lo+b
+bash@lo b+bash@lo
+csh@lo c+csh@lo
+csh@lo csh@lo+c
+EOF
+			)
 }
 
 par_header_in_return() {

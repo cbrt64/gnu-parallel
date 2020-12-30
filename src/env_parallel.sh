@@ -7,7 +7,7 @@
 # after which 'env_parallel' works
 #
 #
-# Copyright (C) 2016-2020 Ole Tange, http://ole.tange.dk and Free
+# Copyright (C) 2016-2021 Ole Tange, http://ole.tange.dk and Free
 # Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -382,8 +382,8 @@ _parset_main() {
 	return 255
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
-	echo "parset 20201222 (GNU parallel `parallel --minversion 1`)"
-	echo "Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software"
+	echo "parset 20201223 (GNU parallel `parallel --minversion 1`)"
+	echo "Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
 	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
 	echo "This is free software: you are free to change and redistribute it."

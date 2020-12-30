@@ -10,6 +10,22 @@ export TMP5G
 
 rm -f /tmp/*.{tmx,pac,arg,all,log,swp,loa,ssh,df,pip,tmb,chr,tms,par}
 
+par_squared() {
+    export PARALLEL="--load 300%"
+    squared() {
+	i=$1
+	i2=$[i*i]
+	seq $i2 | parallel -j0 --load 300% -kX echo {} | wc
+	seq 1 ${i2}0000 |
+	    parallel -kj20 --recend "\n" --spreadstdin gzip -1 |
+	    zcat | sort -n | md5sum
+    }
+    export -f squared
+
+    seq 10 -1 2 | stdout parallel -j5 -k squared |
+	grep -Ev 'processes took|Consider adjusting -j'
+}
+
 linebuffer_matters() {
     echo "### (--linebuffer) --compress $TAG should give different output"
     nolbfile=$(mktemp)

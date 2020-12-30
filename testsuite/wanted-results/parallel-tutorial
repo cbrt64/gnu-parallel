@@ -1374,7 +1374,7 @@ This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
   parallel --version
 GNU parallel VERSION
-Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software
+Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software
 Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
@@ -1424,4 +1424,4 @@ C
 echo A
 echo B
 echo C
-8
+7

@@ -108,12 +108,25 @@ par_delimiter	line 3
 par_delimiter_space	### Does space as delimiter work?
 par_delimiter_space	1
 par_delimiter_space	done
+par_dirnamereplace	### Test --dnr
+par_dirnamereplace	. a
+par_dirnamereplace	a a/b
+par_dirnamereplace	a/b a/b/c
+par_dirnamereplace	### Test --dirnamereplace
+par_dirnamereplace	. a
+par_dirnamereplace	a a/b
+par_dirnamereplace	a/b a/b/c
 par_disk_full	### Disk full
 par_disk_full	cat: write error: No space left on device
 par_disk_full	parallel: Error: Output is incomplete.
 par_disk_full	parallel: Error: Cannot append to buffer file in /mnt/ram.
 par_disk_full	parallel: Error: Is the disk full?
 par_disk_full	parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
+par_do_not_export_PARALLEL_ENV	### Do not export $PARALLEL_ENV to children
+par_do_not_export_PARALLEL_ENV	Should be 0
+par_do_not_export_PARALLEL_ENV	      1       0       1
+par_do_not_export_PARALLEL_ENV	Should give 60k and not overflow
+par_do_not_export_PARALLEL_ENV	      1       1   60001
 par_dryrun_append_joblog	--dry-run should not append to joblog
 par_dryrun_append_joblog	1
 par_dryrun_append_joblog	2
@@ -139,6 +152,8 @@ par_empty_input_on_stdin	This should give no output
 par_empty_line	### Test bug: empty line for | sh with -k
 par_empty_line	a
 par_empty_line	b
+par_empty_string_quote	bug #37694: Empty string argument skipped when using --quote
+par_empty_string_quote	3
 par_exit_val	### Test bug #45619: "--halt" erroneous error exit code (should give 0)
 par_exit_val	0
 par_exit_val	### Test exit val - true
@@ -476,6 +491,11 @@ par_maxproc	200% proc 7
 par_maxproc	200% proc 8
 par_maxproc	200% proc 9
 par_maxproc	200% proc 10
+par_negative_replacement	### Negative replacement strings
+par_negative_replacement	correct
+par_negative_replacement	correct
+par_negative_replacement	2 + 4 = 2 + 4= 6
+par_negative_replacement	correct
 par_newline_in_command	Command with newline and positional replacement strings
 par_newline_in_command	O K
 par_nice_locally	### Test --nice locally
@@ -822,6 +842,17 @@ par_results	c
 par_results_arg_256	### bug #42089: --results with arg > 256 chars (should be 1 char shorter)
 par_results_arg_256	1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
 par_results_arg_256	123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345
+par_resume_k	### --resume -k
+par_resume_k	job0id
+par_resume_k	job1id
+par_resume_k	job2id
+par_resume_k	job3id
+par_resume_k	job0id
+par_resume_k	job5id
+par_resume_k	try 2 = nothing
+par_resume_k	two extra
+par_resume_k	job6id
+par_resume_k	job7id
 par_retries_replacement_string	11
 par_retries_replacement_string	22
 par_retries_replacement_string	22
@@ -833,6 +864,13 @@ par_roundrobin_k	 315464  315464 2097143
 par_roundrobin_k	 299592  299592 2097144
 par_roundrobin_k	 235148  235148 1646037
 par_roundrobin_k	 149796  149796 1048572
+par_rpl_repeats	### Test {.} does not repeat more than {}
+par_rpl_repeats	a1.gifb1c1 a2.gifb2c2 a3.gifb3c3 a4.gifb4c4 a5.gifb5c5 a6.gifb6c6
+par_rpl_repeats	a7.gifb7c7 a8.gifb8c8 a9.gifb9c9 a10.gifb10c10 a11.gifb11c11 a12.gifb12c12
+par_rpl_repeats	a13.gifb13c13 a14.gifb14c14 a15.gifb15c15
+par_rpl_repeats	a1.gif 2.gif 3.gif 4.gif 5.gif 6.gif 7.gifb1 2 3 4 5 6 7c1 2 3 4 5 6 7
+par_rpl_repeats	a8.gif 9.gif 10.gif 11.gif 12.gif 13.gifb8 9 10 11 12 13c8 9 10 11 12 13
+par_rpl_repeats	a14.gif 15.gifb14 15c14 15
 par_rpl_that_is_substring_of_longer_rpl	### --rpl % that is a substring of longer --rpl %D
 par_rpl_that_is_substring_of_longer_rpl	a.b/c.d/e.f=a.b/c.d/e.f
 par_rpl_that_is_substring_of_longer_rpl	a.b/c.d=a.b/c.d
@@ -842,30 +880,6 @@ par_rpl_that_is_substring_of_longer_rpl	a.b/c.d/e.f=a.b/c.d/e.f
 par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
-par_show_limits	### Test --show-limits
-par_show_limits	Maximal size of command: 131xxx
-par_show_limits	Maximal used size of command: 131xxx
-par_show_limits	
-par_show_limits	Execution of  will continue now, and it will try to read its input
-par_show_limits	and run commands; if this is not what you wanted to happen, please
-par_show_limits	press CTRL-D or CTRL-C
-par_show_limits	bar
-par_show_limits	car
-par_show_limits	far
-par_show_limits	Maximal size of command: 131xxx
-par_show_limits	Maximal used size of command: 100
-par_show_limits	
-par_show_limits	Execution of  will continue now, and it will try to read its input
-par_show_limits	and run commands; if this is not what you wanted to happen, please
-par_show_limits	press CTRL-D or CTRL-C
-par_show_limits	bar car far
-par_show_limits	### BUG: empty lines with --show-limit
-par_show_limits	Maximal size of command: 131xxx
-par_show_limits	Maximal used size of command: 131xxx
-par_show_limits	
-par_show_limits	Execution of  will continue now, and it will try to read its input
-par_show_limits	and run commands; if this is not what you wanted to happen, please
-par_show_limits	press CTRL-D or CTRL-C
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	    980     981    5881
@@ -1074,6 +1088,8 @@ par_tricolonplus	3 22 b cc
 par_tricolonplus	3 23 c aa
 par_tricolonplus	3 23 c bb
 par_tricolonplus	3 23 c cc
+par_trim_illegal_value	### Test of --trim illegal
+par_trim_illegal_value	parallel: Error: --trim must be one of: r l rl lr.
 par_unquote_replacement_string	### Can part of the replacement string be unquoted using uq()?
 par_unquote_replacement_string	`echo foo`foo
 par_verbose_t	### Test --verbose and -t

@@ -292,6 +292,10 @@ add_freebsd() {
 tmux_versions() {
     (cd /tmp
      git clone https://github.com/tmux/tmux.git
+     listtags() {
+	 (cd tmux;
+	  git tag)
+     }
      make_one() {
 	 rsync -a --delete tmux/ tmux$1/
 	 cd tmux$1
@@ -304,9 +308,9 @@ tmux_versions() {
      }
      export -f make_one
      echo '# Building tmux'
-     seq 1.8 0.1 3.0 |
+     listtags |
 	 stdout parallel --lb --tag '/usr/local/bin/tmux-{} -V || make_one {}'
-     seq 1.8 0.1 3.0 |
+     listtags |
 	 parallel -k -v /usr/local/bin/tmux-{} -V
     )
 }

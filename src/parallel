@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free
+# Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free
 # Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -2144,7 +2144,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20201222;
+    $Global::version = 20201223;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2212,8 +2212,10 @@ sub init_globals() {
 	 '{host}' => '1 $_="\${PARALLEL_SSHHOST}";uq()',
 	 # {sshlogin} = sshlogin
 	 '{sshlogin}' => '1 $_="\${PARALLEL_SSHLOGIN}";uq()',
-	 # {hgrp} = hostgroups
+	 # {hgrp} = hostgroups of the host
 	 '{hgrp}' => '1 $_="\${PARALLEL_HOSTGROUPS}";uq()',
+	 # {agrp} = hostgroups of the argument
+	 '{agrp}' => '1 $_="\${PARALLEL_ARGHOSTGROUPS}";uq()',
 	);
     # Modifiable copy of %Global::replace
     %Global::rpl = %Global::replace;
@@ -2252,6 +2254,10 @@ sub init_globals() {
     # Use first dir as config dir
     $Global::config_dir = $Global::config_dirs[0] ||
 	$ENV{'HOME'} . "/.parallel";
+    if($ENV{'PARALLEL_HOME'} =~ /./ and not -d $ENV{'PARALLEL_HOME'}) {
+	::warning("\$PARALLEL_HOME ($ENV{'PARALLEL_HOME'}) does not exist.");
+	::warning("Using $Global::config_dir");
+    }
     # cache_dirs = $PARALLEL_HOME, $XDG_CACHE_HOME/parallel,
     # Keep only dirs that exist
     @Global::cache_dirs =
@@ -5028,7 +5034,7 @@ sub version() {
     print join
 	("\n",
 	 "GNU $Global::progname $Global::version",
-	 "Copyright (C) 2007-2020 Ole Tange, http://ole.tange.dk and Free Software",
+	 "Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software",
 	 "Foundation, Inc.",
 	 "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>",
 	 "This is free software: you are free to change and redistribute it.",
@@ -5161,7 +5167,7 @@ sub embed() {
 	}
 	print "#!$Global::shell
 
-# Copyright (C) 2007-2020 $user, Ole Tange, http://ole.tange.dk
+# Copyright (C) 2007-2021 $user, Ole Tange, http://ole.tange.dk
 # and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -7049,23 +7055,26 @@ sub compute_number_of_processes($) {
 	if($system_limit < $wanted_processes) {
 	    # The system_limit is less than the wanted_processes
 	    if($system_limit < 1 and not $Global::JobQueue->empty()) {
-		::warning("Cannot spawn any jobs. ".
-			  "Raising ulimit -u or 'nproc' in /etc/security/limits.conf",
-			  "or /proc/sys/kernel/pid_max may help.");
+		::warning("Cannot spawn any jobs.",
+			  "Try increasing 'ulimit -u' (try: ulimit -u `ulimit -Hu`)",
+			  "or increasing 'nproc' in /etc/security/limits.conf",
+			  "or increasing /proc/sys/kernel/pid_max");
 		::wait_and_exit(255);
 	    }
 	    if(not $more_filehandles) {
 		::warning("Only enough file handles to run ".
 			  $system_limit. " jobs in parallel.",
-			  "Running 'parallel -j0 -N $system_limit --pipe parallel -j0' or",
-			  "raising 'ulimit -n' or 'nofile' in /etc/security/limits.conf",
-			  "or /proc/sys/fs/file-max may help.");
+			  "Try running 'parallel -j0 -N $system_limit --pipe parallel -j0'",
+			  "or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)",
+			  "or increasing 'nofile' in /etc/security/limits.conf",
+			  "or increasing /proc/sys/fs/file-max");
 	    }
 	    if($max_system_proc_reached) {
 		::warning("Only enough available processes to run ".
 			  $system_limit. " jobs in parallel.",
-			  "Raising ulimit -u or /etc/security/limits.conf ",
-			  "or /proc/sys/kernel/pid_max may help.");
+			  "Try increasing 'ulimit -u' (try: ulimit -u `ulimit -Hu`)",
+			  "or increasing 'nproc' in /etc/security/limits.conf",
+			  "or increasing /proc/sys/kernel/pid_max");
 	    }
 	}
 	if($] == 5.008008 and $system_limit > 1000) {
@@ -9183,9 +9192,10 @@ sub sshlogin_wrap($) {
 	# So --env myfunc should look for BASH_FUNC_myfunc() and BASH_FUNC_myfunc%%
 
 	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ",
-	     "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST", "PARALLEL_HOSTGROUPS",
-	     "PARALLEL_JOBSLOT",
-	     map { ("BASH_FUNC_$_()", "BASH_FUNC_$_%%") } @vars);
+	     "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST",
+	     "PARALLEL_HOSTGROUPS", "PARALLEL_ARGHOSTGROUPS",
+	     "PARALLEL_JOBSLOT", map { ("BASH_FUNC_$_()",
+	     "BASH_FUNC_$_%%") } @vars);
 	# Keep only defined variables
 	return grep { defined($ENV{$_}) } @vars;
     }
@@ -9247,8 +9257,8 @@ sub sshlogin_wrap($) {
 	$ENV{'PARALLEL_SSHLOGIN'} = $sshlogin->string();
 	$ENV{'PARALLEL_SSHHOST'} = $sshlogin->serverlogin();
 	if ($opt::hostgroups) {
-	    $ENV{'PARALLEL_HOSTGROUPS'} =
-		join',',$sshlogin->in_hostgroups($self->hostgroups());
+	    $ENV{'PARALLEL_HOSTGROUPS'} = join '+', $sshlogin->hostgroups();
+	    $ENV{'PARALLEL_ARGHOSTGROUPS'} = join '+', $self->hostgroups();
 	}
 	$ENV{'PARALLEL_PID'} = $$;
 	if($serverlogin eq ":") {
@@ -11712,9 +11722,10 @@ sub max_length($) {
 	my $len_cache = $Global::cache_dir . "/tmp/sshlogin/" . ::hostname() .
 	    "/linelen";
 	my $cached_limit;
-	if(-e $len_cache) {
-	    open(my $fh, "<", $len_cache) || ::die_bug("Cannot read $len_cache");
+
+	if(open(my $fh, "<", $len_cache)) {
 	    $cached_limit = <$fh>;
+	    $cached_limit || ::die_bug("Cannot read $len_cache");
 	    close $fh;
 	}
 	if(not $cached_limit) {

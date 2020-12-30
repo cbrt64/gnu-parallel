@@ -266,9 +266,10 @@ par_null_resume	B
 par_null_resume	C
 par_open_files_blocks	bug #38439: "open files" with --files --pipe blocks after a while
 par_open_files_blocks	parallel: Warning: Only enough file handles to run 2 jobs in parallel.
-par_open_files_blocks	parallel: Warning: Running 'parallel -j0 -N 2 --pipe parallel -j0' or
-par_open_files_blocks	parallel: Warning: raising 'ulimit -n' or 'nofile' in /etc/security/limits.conf
-par_open_files_blocks	parallel: Warning: or /proc/sys/fs/file-max may help.
+par_open_files_blocks	parallel: Warning: Try running 'parallel -j0 -N 2 --pipe parallel -j0'
+par_open_files_blocks	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+par_open_files_blocks	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+par_open_files_blocks	parallel: Warning: or increasing /proc/sys/fs/file-max
 par_open_files_blocks	1 of 21
 par_open_files_blocks	2 of 21
 par_open_files_blocks	3 of 21
@@ -327,6 +328,53 @@ par_pipe_unneeded_procs	bug #34241: --pipe should not spawn unneeded processes -
 par_pipe_unneeded_procs	2
 par_pipe_unneeded_procs	No .par should exist
 par_pipe_unneeded_procs	ls: cannot access '*.par': No such file or directory
+par_pipepart_block	### --pipepart --block -# (# < 0)
+par_pipepart_block	1
+par_pipepart_block	2
+par_pipepart_block	3
+par_pipepart_block	4
+par_pipepart_block	5
+par_pipepart_block	6
+par_pipepart_block	7
+par_pipepart_block	8
+par_pipepart_block	9
+par_pipepart_block	10
+par_pipepart_block	11
+par_pipepart_block	12
+par_pipepart_block	13
+par_pipepart_block	14
+par_pipepart_block	15
+par_pipepart_block	16
+par_pipepart_block	17
+par_pipepart_block	18
+par_pipepart_block	19
+par_pipepart_block	20
+par_pipepart_block	1-2
+par_pipepart_block	2-2
+par_pipepart_block	1-4
+par_pipepart_block	2-4
+par_pipepart_block	3-4
+par_pipepart_block	4-4
+par_pipepart_block	1-20
+par_pipepart_block	2-20
+par_pipepart_block	3-20
+par_pipepart_block	4-20
+par_pipepart_block	5-20
+par_pipepart_block	6-20
+par_pipepart_block	7-20
+par_pipepart_block	8-20
+par_pipepart_block	9-20
+par_pipepart_block	10-20
+par_pipepart_block	11-20
+par_pipepart_block	12-20
+par_pipepart_block	13-20
+par_pipepart_block	14-20
+par_pipepart_block	15-20
+par_pipepart_block	16-20
+par_pipepart_block	17-20
+par_pipepart_block	18-20
+par_pipepart_block	19-20
+par_pipepart_block	20-20
 par_profiles_with_space	### bug #42902: profiles containing arguments with space
 par_profiles_with_space	/bin/bash=/bin/bash
 par_profiles_with_space	echo '/bin/bash=/bin/bash'
@@ -650,6 +698,8 @@ par_result_replace	/tmp/par__49983-baz C
 par_result_replace	/tmp/par__49983-baz C/seq
 par_result_replace	/tmp/par__49983-baz C/stderr
 par_result_replace	/tmp/par__49983-baz C/stdout
+par_results_compress	0
+par_results_compress	1
 par_seqreplace_long_line	### Test --seqreplace and line too long
 par_seqreplace_long_line	      9       1       1     101
 par_seqreplace_long_line	     90       1       1     201
@@ -689,6 +739,9 @@ par_sql_colsep	b B 1 11 b B 2 22 b B 3 33
 par_sql_colsep	b B 4 44 b B 5 55 b B 6 66
 par_sql_colsep	c C 1 11 c C 2 22 c C 3 33
 par_sql_colsep	c C 4 44 c C 5 55 c C 6 66
+par_sqlandworker_uninstalled_dbd	bug #56096: dbi-csv no such column
+par_sqlandworker_uninstalled_dbd	parallel: Error: CSV not supported. Are you missing a perl DBD::CSV module?
+par_sqlandworker_uninstalled_dbd	works
 par_test_E	### Test -E
 par_test_E	1 2 3
 par_test_E	1 2 4
@@ -876,5 +929,3 @@ par_trailing_space_line_continuation	### Test of trailing space continuation wit
 par_trailing_space_line_continuation	foo ole
 par_trailing_space_line_continuation	foo ole 
 par_trailing_space_line_continuation	foo ole 
-par_trim_illegal_value	### Test of --trim illegal
-par_trim_illegal_value	parallel: Error: --trim must be one of: r l rl lr.

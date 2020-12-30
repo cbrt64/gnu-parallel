@@ -66,14 +66,6 @@ par_delay_human_readable	c
 par_delay_human_readable	a
 par_delay_human_readable	b
 par_delay_human_readable	c
-par_dirnamereplace	### Test --dnr
-par_dirnamereplace	. a
-par_dirnamereplace	a a/b
-par_dirnamereplace	a/b a/b/c
-par_dirnamereplace	### Test --dirnamereplace
-par_dirnamereplace	. a
-par_dirnamereplace	a a/b
-par_dirnamereplace	a/b a/b/c
 par_distribute_args_at_EOF	### Test distribute arguments at EOF to 2 jobslots
 par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34
 par_distribute_args_at_EOF	35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65
@@ -122,13 +114,6 @@ par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9
 par_distribute_args_at_EOF	### Test -N is not broken by distribution - two lines
 par_distribute_args_at_EOF	1 2 3 4 5 6 7 8 9 10
 par_distribute_args_at_EOF	11 12 13 14 15 16 17 18 19
-par_do_not_export_PARALLEL_ENV	### Do not export $PARALLEL_ENV to children
-par_do_not_export_PARALLEL_ENV	Should be 0
-par_do_not_export_PARALLEL_ENV	      1       0       1
-par_do_not_export_PARALLEL_ENV	Should give 60k and not overflow
-par_do_not_export_PARALLEL_ENV	      1       1   60001
-par_empty_string_quote	bug #37694: Empty string argument skipped when using --quote
-par_empty_string_quote	3
 par_eta	### Test of --eta
 par_eta	16
 par_eta	### Test of --eta with no jobs
@@ -223,58 +208,6 @@ par_multiline_commands	echo finish 4
 par_multiline_commands	parallel: Warning: Command lines contain newline. Forcing --null.
 par_multiline_commands	4
 par_multiline_commands	finish 4
-par_negative_replacement	### Negative replacement strings
-par_negative_replacement	correct
-par_negative_replacement	correct
-par_negative_replacement	2 + 4 = 2 + 4= 6
-par_negative_replacement	correct
-par_pipepart_block	### --pipepart --block -# (# < 0)
-par_pipepart_block	1
-par_pipepart_block	2
-par_pipepart_block	3
-par_pipepart_block	4
-par_pipepart_block	5
-par_pipepart_block	6
-par_pipepart_block	7
-par_pipepart_block	8
-par_pipepart_block	9
-par_pipepart_block	10
-par_pipepart_block	11
-par_pipepart_block	12
-par_pipepart_block	13
-par_pipepart_block	14
-par_pipepart_block	15
-par_pipepart_block	16
-par_pipepart_block	17
-par_pipepart_block	18
-par_pipepart_block	19
-par_pipepart_block	20
-par_pipepart_block	1-2
-par_pipepart_block	2-2
-par_pipepart_block	1-4
-par_pipepart_block	2-4
-par_pipepart_block	3-4
-par_pipepart_block	4-4
-par_pipepart_block	1-20
-par_pipepart_block	2-20
-par_pipepart_block	3-20
-par_pipepart_block	4-20
-par_pipepart_block	5-20
-par_pipepart_block	6-20
-par_pipepart_block	7-20
-par_pipepart_block	8-20
-par_pipepart_block	9-20
-par_pipepart_block	10-20
-par_pipepart_block	11-20
-par_pipepart_block	12-20
-par_pipepart_block	13-20
-par_pipepart_block	14-20
-par_pipepart_block	15-20
-par_pipepart_block	16-20
-par_pipepart_block	17-20
-par_pipepart_block	18-20
-par_pipepart_block	19-20
-par_pipepart_block	20-20
 par_progress	### Test of --progress
 par_progress	16
 par_progress	### Test of --progress with no jobs
@@ -320,31 +253,34 @@ par_replacement_slashslash	/a/b /a/b/c.jpg
 par_replacement_slashslash	. ./a.jpg
 par_replacement_slashslash	./a ./a/b.jpg
 par_replacement_slashslash	./a/b ./a/b/c.jpg
-par_resume_k	### --resume -k
-par_resume_k	job0id
-par_resume_k	job1id
-par_resume_k	job2id
-par_resume_k	job3id
-par_resume_k	job0id
-par_resume_k	job5id
-par_resume_k	try 2 = nothing
-par_resume_k	two extra
-par_resume_k	job6id
-par_resume_k	job7id
-par_rpl_repeats	### Test {.} does not repeat more than {}
-par_rpl_repeats	a1.gifb1c1 a2.gifb2c2 a3.gifb3c3 a4.gifb4c4 a5.gifb5c5 a6.gifb6c6
-par_rpl_repeats	a7.gifb7c7 a8.gifb8c8 a9.gifb9c9 a10.gifb10c10 a11.gifb11c11 a12.gifb12c12
-par_rpl_repeats	a13.gifb13c13 a14.gifb14c14 a15.gifb15c15
-par_rpl_repeats	a1.gif 2.gif 3.gif 4.gif 5.gif 6.gif 7.gifb1 2 3 4 5 6 7c1 2 3 4 5 6 7
-par_rpl_repeats	a8.gif 9.gif 10.gif 11.gif 12.gif 13.gifb8 9 10 11 12 13c8 9 10 11 12 13
-par_rpl_repeats	a14.gif 15.gifb14 15c14 15
+par_show_limits	### Test --show-limits
+par_show_limits	Maximal size of command: 131xxx
+par_show_limits	Maximal used size of command: 131xxx
+par_show_limits	
+par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	and run commands; if this is not what you wanted to happen, please
+par_show_limits	press CTRL-D or CTRL-C
+par_show_limits	bar
+par_show_limits	car
+par_show_limits	far
+par_show_limits	Maximal size of command: 131xxx
+par_show_limits	Maximal used size of command: 100
+par_show_limits	
+par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	and run commands; if this is not what you wanted to happen, please
+par_show_limits	press CTRL-D or CTRL-C
+par_show_limits	bar car far
+par_show_limits	### BUG: empty lines with --show-limit
+par_show_limits	Maximal size of command: 131xxx
+par_show_limits	Maximal used size of command: 131xxx
+par_show_limits	
+par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	and run commands; if this is not what you wanted to happen, please
+par_show_limits	press CTRL-D or CTRL-C
 par_slow_args_generation	### Test slow arguments generation - https://savannah.gnu.org/bugs/?32834
 par_slow_args_generation	1
 par_slow_args_generation	2
 par_slow_args_generation	3
-par_sqlandworker_uninstalled_dbd	bug #56096: dbi-csv no such column
-par_sqlandworker_uninstalled_dbd	parallel: Error: CSV not supported. Are you missing a perl DBD::CSV module?
-par_sqlandworker_uninstalled_dbd	works
 par_sqlworker_hostname	bug #50901: --sqlworker should use hostname in the joblog instead of :
 par_sqlworker_hostname	1
 par_sqlworker_hostname	2
@@ -415,6 +351,10 @@ par_test_X_with_multiple_source	b-b f-f
 par_test_X_with_multiple_source	c-c d-d
 par_test_X_with_multiple_source	c-c e-e
 par_test_X_with_multiple_source	c-c f-f
+par_test_delimiter	### Test : as delimiter. This can be confusing for uptime ie. --load
+par_test_delimiter	a
+par_test_delimiter	b
+par_test_delimiter	c
 par_totaljob_repl	{##} bug #45841: Replacement string for total no of jobs
 par_totaljob_repl	10
 par_totaljob_repl	10

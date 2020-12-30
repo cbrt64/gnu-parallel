@@ -4,6 +4,23 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_sqlandworker_uninstalled_dbd() {
+    echo 'bug #56096: dbi-csv no such column'
+    mkdir -p /tmp/parallel-bug-56096
+    sudo mv /usr/share/perl5/DBD/CSV.pm /usr/share/perl5/DBD/CSV.pm.gone
+    parallel --sqlandworker csv:///%2Ftmp%2Fparallel-bug-56096/mytable echo ::: must_fail
+    sudo cp /usr/share/perl5/DBD/CSV.pm.gone /usr/share/perl5/DBD/CSV.pm
+    parallel --sqlandworker csv:///%2Ftmp%2Fparallel-bug-56096/mytable echo ::: works
+}
+
+par_results_compress() {
+    tmp=$(mktemp)
+    rm "$tmp"
+    parallel --results $tmp --compress echo ::: 1 | wc -l
+    parallel --results $tmp echo ::: 1 | wc -l
+    rm -r "$tmp"
+}
+
 par_I_X_m() {
     echo '### Test -I with -X and -m'
 
@@ -127,11 +144,6 @@ par_test_gt_quoting() {
 
     echo '### Test of quoting of > bug if line continuation'
     (echo '> '; echo '> '; echo '>') | parallel --max-lines 3 echo
-}
-
-par_trim_illegal_value() {
-    echo '### Test of --trim illegal'
-    stdout parallel --trim fj ::: echo
 }
 
 par_eof_on_command_line_input_source() {
@@ -862,6 +874,17 @@ par_null_resume() {
     printf "%s\0" A B C | parallel --null --resume -k --jl $log echo
     printf "%s\0" A B C | parallel --null --resume -k --jl $log echo
     rm "$log"
+}
+
+par_pipepart_block() {
+    echo '### --pipepart --block -# (# < 0)'
+
+    seq 1000 > /run/shm/parallel$$
+    parallel -j2 -k --pipepart echo {#} :::: /run/shm/parallel$$
+    parallel -j2 -k --block -1 --pipepart echo {#}-2 :::: /run/shm/parallel$$
+    parallel -j2 -k --block -2 --pipepart echo {#}-4 :::: /run/shm/parallel$$
+    parallel -j2 -k --block -10 --pipepart echo {#}-20 :::: /run/shm/parallel$$
+    rm /run/shm/parallel$$
 }
 
 par_block_negative_prefix() {

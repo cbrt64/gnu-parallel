@@ -4,6 +4,88 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_shard() {
+    echo '### --shard'
+    # Each of the 5 lines should match:
+    #   ##### ##### ######
+    seq 100000 | parallel --pipe --shard 1 -j5  wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Data should be sharded to all processes
+    shard_on_col() {
+	col=$1
+	seq 10 99 | shuf | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard $col -j2 --colsep "\t" sort -k$col |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col 1
+    shard_on_col 2
+
+    shard_on_col_name() {
+	colname=$1
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard $colname -j2 --colsep "\t" sort -k$col |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_name A 1
+    shard_on_col_name B 2
+
+    shard_on_col_expr() {
+	colexpr="$1"
+	col=$2
+	(seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_expr '1 $_%=3' 1
+    shard_on_col_expr '2 $_%=3' 2
+
+    shard_on_col_name_expr() {
+	colexpr="$1"
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_name_expr 'A $_%=3' 1
+    shard_on_col_name_expr 'B $_%=3' 2
+    
+    echo '*** broken'
+    # Shorthand for --pipe -j+0
+    seq 100000 | parallel --shard 1 wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Combine with arguments
+    seq 100000 | parallel --shard 1 echo {}\;wc ::: {1..5} ::: a b |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+}
+
+par_bin() {
+    echo '### Test --bin'
+    seq 10 | parallel --pipe --bin 1 -j4 wc | sort
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin 2 -j4 wc | sort
+    echo '### Test --bin with expression that gives 1..n'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_=$_%2+1' -j4 wc | sort
+    echo '### Test --bin with expression that gives 0..n-1'
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin '2 $_%=2' -j4 wc | sort
+    # Fails - blocks!
+    # paste <(seq 10) <(seq 10 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
+}
+
+par_load_blocks() {
+    echo "### Test if --load blocks. Bug.";
+    export PARALLEL="--load 300%"
+    (seq 1 1000 |
+	 parallel -kj2 --load 300% --recend "\n" --spreadstdin gzip -1 |
+	 zcat | sort -n | md5sum
+     seq 1 1000 |
+	 parallel -kj200 --load 300% --recend "\n" --spreadstdin gzip -1 |
+	 zcat | sort -n | md5sum) 2>&1 |
+	grep -Ev 'processes took|Consider adjusting -j'
+}
+
 par_compress_prg_fails() {
     echo '### bug #44546: If --compress-program fails: fail'
     doit() {
@@ -544,14 +626,6 @@ par_results_csv() {
     parallel -k --tag doit ::: '--header :' '' \
 	::: --tag '' ::: --files '' ::: --compress '' |
     perl -pe 's:/par......par:/tmpfile:g;s/\d+\.\d+/999.999/g'
-}
-
-par_results_compress() {
-    tmp=$(mktemp)
-    rm "$tmp"
-    parallel --results $tmp --compress echo ::: 1 | wc -l
-    parallel --results $tmp echo ::: 1 | wc -l
-    rm -r "$tmp"
 }
 
 par_kill_children_timeout() {

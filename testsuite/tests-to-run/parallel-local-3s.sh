@@ -4,6 +4,22 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_show_limits() {
+    echo '### Test --show-limits'
+    (
+	(echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
+	(echo b; echo c; echo f) | parallel -j1 -kX --show-limits -s 100 echo {}ar
+	echo "### BUG: empty lines with --show-limit"
+	echo | stdout parallel --show-limits
+    ) | perl -pe 's/131\d\d\d/131xxx/'
+}
+
+par_test_delimiter() {
+    echo "### Test : as delimiter. This can be confusing for uptime ie. --load";
+    export PARALLEL="--load 300%"
+    parallel -k --load 300% -d : echo ::: a:b:c
+}
+
 par_10000_m_X() {
     echo '### Test -m with 10000 args'
     seq 10000 | perl -pe 's/$/.gif/' |
@@ -25,12 +41,6 @@ par_10000_5_rpl_X() {
     seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b | wc -l
 }
 
-par_rpl_repeats() {
-    echo '### Test {.} does not repeat more than {}'
-    seq 15 | perl -pe 's/$/.gif/'   | parallel -j1 -s 80 -kX echo a{}b{.}c{.}
-    seq 15 | perl -pe 's/$/.gif/'   | parallel -j1 -s 80 -km echo a{}b{.}c{.}
-}
-
 par_X_I_meta() {
     echo '### Test -X -I with shell meta chars'
 
@@ -50,11 +60,6 @@ par_sshdelay() {
     echo '### test --sshdelay'
     stdout /usr/bin/time -f %e parallel -j0 --sshdelay 0.5 -S localhost true ::: 1 2 3 |
 	perl -ne 'print($_ > 1.30 ? "OK\n" : "Not OK\n")'
-}
-
-par_empty_string_quote() {
-    echo "bug #37694: Empty string argument skipped when using --quote"
-    parallel -q --nonall perl -le 'print scalar @ARGV' 'a' 'b' ''
 }
 
 par_compute_command_len() {
@@ -81,22 +86,6 @@ par_replacement_slashslash() {
     parallel -k echo {1//} {} ::: a.jpg a/b.jpg a/b/c.jpg
     parallel -k echo {1//} {} ::: /a.jpg /a/b.jpg /a/b/c.jpg
     parallel -k echo {1//} {} ::: ./a.jpg ./a/b.jpg ./a/b/c.jpg
-}
-
-par_dirnamereplace() {
-    echo '### Test --dnr'
-    parallel --dnr II -k echo II {} ::: a a/b a/b/c
-
-    echo '### Test --dirnamereplace'
-    parallel --dirnamereplace II -k echo II {} ::: a a/b a/b/c
-}
-
-par_negative_replacement() {
-    echo '### Negative replacement strings'
-    parallel -X -j1 -N 6 echo {-1}orrec{1} ::: t B X D E c
-    parallel -N 6 echo {-1}orrect ::: A B X D E c
-    parallel --colsep ' ' echo '{2} + {4} = {2} + {-1}=' '$(( {2} + {-1} ))' ::: "1 2 3 4"
-    parallel --colsep ' ' echo '{-3}orrect' ::: "1 c 3 4"
 }
 
 par_eta() {
@@ -224,17 +213,6 @@ par_test_X_with_multiple_source() {
     parallel -j0 -kX  echo {}-{.} ::: a b c ::: d e f
 }
 
-par_resume_k() {
-    echo '### --resume -k'
-    tmp=$(tempfile)
-    parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
-    echo try 2 = nothing
-    parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
-    echo two extra
-    parallel -k --resume --joblog $tmp echo job{}id\;exit 0 ::: 0 1 2 3 0 5 6 7
-    rm -f $tmp
-}
-
 par_slow_args_generation() {
     echo '### Test slow arguments generation - https://savannah.gnu.org/bugs/?32834'
     seq 1 3 | parallel -j1 "sleep 2; echo {}" | parallel -kj2 echo
@@ -289,17 +267,6 @@ par_wrong_slot_rpl_resume() {
 	'sleep 1; echo {%} {=$_==110 and exit =}'
 }
 
-par_pipepart_block() {
-    echo '### --pipepart --block -# (# < 0)'
-
-    seq 1000 > /run/shm/parallel$$
-    parallel -j2 -k --pipepart echo {#} :::: /run/shm/parallel$$
-    parallel -j2 -k --block -1 --pipepart echo {#}-2 :::: /run/shm/parallel$$
-    parallel -j2 -k --block -2 --pipepart echo {#}-4 :::: /run/shm/parallel$$
-    parallel -j2 -k --block -10 --pipepart echo {#}-20 :::: /run/shm/parallel$$
-    rm /run/shm/parallel$$
-}
-
 par_multiline_commands() {
     echo 'bug #50781: joblog format with multiline commands'
     rm -f /tmp/jl.$$
@@ -319,15 +286,6 @@ par_sqlworker_hostname() {
     hostname=`hostname`
     sql $MY 'select host from hostname;' |
 	perl -pe "s/$hostname/<hostname>/g"
-}
-
-par_sqlandworker_uninstalled_dbd() {
-    echo 'bug #56096: dbi-csv no such column'
-    mkdir -p /tmp/parallel-bug-56096
-    sudo mv /usr/share/perl5/DBD/CSV.pm /usr/share/perl5/DBD/CSV.pm.gone
-    parallel --sqlandworker csv:///%2Ftmp%2Fparallel-bug-56096/mytable echo ::: must_fail
-    sudo cp /usr/share/perl5/DBD/CSV.pm.gone /usr/share/perl5/DBD/CSV.pm
-    parallel --sqlandworker csv:///%2Ftmp%2Fparallel-bug-56096/mytable echo ::: works
 }
 
 par_commandline_with_newline() {
@@ -381,20 +339,6 @@ par_exitval_signal() {
     grep -q '[^0-9]6[^0-9]' /tmp/parallel_joblog_signal && echo signal OK
 
     rm -f /tmp/parallel_joblog_exitval /tmp/parallel_joblog_signal
-}
-
-par_do_not_export_PARALLEL_ENV() {
-    echo '### Do not export $PARALLEL_ENV to children'
-    doit() {
-	echo Should be 0
-	echo "$PARALLEL_ENV" | wc
-	echo Should give 60k and not overflow
-	PARALLEL_ENV="$PARALLEL_ENV" parallel echo '{=$_="\""x$_=}' ::: 60000 | wc
-    }
-    . `which env_parallel.bash`
-    # Make PARALLEL_ENV as big as possible
-    PARALLEL_ENV="a='$(seq 100000 | head -c $((139000-$(set|wc -c) )) )'"
-    env_parallel doit ::: 1
 }
 
 par_lb_mem_usage() {

@@ -711,7 +711,7 @@ Even quoted newlines are parsed correctly:
 When used with B<--pipe> only pass full CSV-records.
 
 
-=item B<--delay> I<mytime> (alpha testing)
+=item B<--delay> I<mytime> (beta testing)
 
 Delay starting next job by I<mytime>. GNU B<parallel> will pause
 I<mytime> after starting each job. I<mytime> is normally in seconds,
@@ -883,7 +883,7 @@ B<--group> is the default. Can be reversed with B<-u>.
 See also: B<--line-buffer> B<--ungroup>
 
 
-=item B<--group-by> I<val> (alpha testing)
+=item B<--group-by> I<val> (beta testing)
 
 Group input by value. Combined with B<--pipe>/B<--pipepart>
 B<--group-by> groups lines with the same value into a record.
@@ -1093,7 +1093,7 @@ B<my_grp1_arg> may be run on either B<myserver1> or B<myserver2>,
 B<third> may be run on either B<myserver1> or B<myserver3>,
 but B<arg_for_grp2> will only be run on B<myserver2>.
 
-See also: B<--sshlogin>, B<$PARALLEL_HOSTGROUPS>.
+See also: B<--sshlogin>, B<$PARALLEL_HOSTGROUPS>, B<$PARALLEL_ARGHOSTGROUPS>.
 
 
 =item B<-I> I<replace-str>
@@ -1494,9 +1494,9 @@ of each job is saved in a file and the filename is then printed.
 See also: B<--results>
 
 
-=item B<--pipe> (alpha testing)
+=item B<--pipe> (beta testing)
 
-=item B<--spreadstdin> (alpha testing)
+=item B<--spreadstdin> (beta testing)
 
 Spread input to jobs on stdin (standard input). Read a block of data
 from stdin (standard input) and give one block of data as input to one
@@ -1579,6 +1579,7 @@ Shorthands for variables:
   {slot}        $PARALLEL_JOBSLOT (see {%})
   {sshlogin}    $PARALLEL_SSHLOGIN
   {host}        $PARALLEL_SSHHOST
+  {agrp}        $PARALLEL_ARGHOSTGROUPS
   {hgrp}        $PARALLEL_HOSTGROUPS
 
 The following dynamic replacement strings are also activated. They are
@@ -1859,7 +1860,7 @@ B<-.csv>/B<-.tsv> are special: It will give the file on stdout
 (standard output).
 
 
-B<JSON file output> (alpha testing)
+B<JSON file output> (beta testing)
 
 If I<name> ends in B<.json> the output will be a JSON-file
 named I<name>.
@@ -1868,7 +1869,7 @@ B<-.json> is special: It will give the file on stdout (standard
 output).
 
 
-B<Replacement string output file> (alpha testing)
+B<Replacement string output file> (beta testing)
 
 If I<name> contains a replacement string and the replaced result does
 not end in /, then the standard output will be stored in a file named
@@ -2430,7 +2431,7 @@ be overridden with B<--ssh>. It can also be set on a per server
 basis (see B<--sshlogin>).
 
 
-=item B<--sshdelay> I<mytime> (alpha testing)
+=item B<--sshdelay> I<mytime> (beta testing)
 
 Delay starting next ssh by I<mytime>. GNU B<parallel> will not start
 another ssh for the next I<mytime>.
@@ -4855,11 +4856,19 @@ Dir where GNU B<parallel> stores config files, semaphores, and caches
 information between invocations. Default: $HOME/.parallel.
 
 
+=item $PARALLEL_ARGHOSTGROUPS
+
+When using B<--hostgroups> GNU B<parallel> sets this to the hostgroups
+of the job.
+
+Remember to quote the $, so it gets evaluated by the correct shell. Or
+use B<--plus> and {agrp}.
+
+
 =item $PARALLEL_HOSTGROUPS
 
-When using B<--hostgroups> GNU B<parallel> sets this to the
-intersection of the hostgroups of the job and the sshlogin that the
-job is run on.
+When using B<--hostgroups> GNU B<parallel> sets this to the hostgroups
+of the sshlogin that the job is run on.
 
 Remember to quote the $, so it gets evaluated by the correct shell. Or
 use B<--plus> and {hgrp}.
@@ -5301,7 +5310,7 @@ Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
 Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010-2020 Ole Tange, http://ole.tange.dk and Free
+Copyright (C) 2010-2021 Ole Tange, http://ole.tange.dk and Free
 Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by

@@ -7,7 +7,7 @@
 # after which 'env_parallel' works
 #
 #
-# Copyright (C) 2016-2020 Ole Tange, http://ole.tange.dk and Free
+# Copyright (C) 2016-2021 Ole Tange, http://ole.tange.dk and Free
 # Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify

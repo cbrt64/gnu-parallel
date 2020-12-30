@@ -100,6 +100,24 @@ par_linebuffer_matters_compress	### (--linebuffer) --compress  should give diffe
 par_linebuffer_matters_compress	OK: --linebuffer makes a difference
 par_linebuffer_matters_compress_tag	### (--linebuffer) --compress --tag should give different output
 par_linebuffer_matters_compress_tag	OK: --linebuffer makes a difference
+par_squared	    100     100     292
+par_squared	8a7095c1c23bfadc311fe6b16d950582  -
+par_squared	     81      81     234
+par_squared	c88e1757ddc619efd9ee507a7702b53c  -
+par_squared	     64      64     183
+par_squared	f78c5b3d13146c60c9b586f51d05a4ae  -
+par_squared	     49      49     138
+par_squared	2af8be7306df18164a68e30e427217e0  -
+par_squared	     36      36      99
+par_squared	5ee21398ecde0f3ea9b6093fbaf5a3c2  -
+par_squared	     25      25      66
+par_squared	17e914b4a407dccd370c13173865deb1  -
+par_squared	     16      16      39
+par_squared	6f5db0373227d2281dc26b1bf63b4027  -
+par_squared	      9       9      18
+par_squared	fa364205fcf6665c6f3e6cb868f65fd6  -
+par_squared	      4       4       8
+par_squared	1c0f34fee7176dc367bead8f96cba6bc  -
 par_timeout	### test --timeout
 par_timeout	OK
 par_timeout	OK

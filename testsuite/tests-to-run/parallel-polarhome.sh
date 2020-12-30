@@ -17,7 +17,8 @@ MAXTIME=50
 RETRIES=3
 # 11 too much for debian
 MAXPROC=${maxproc:-9}
-MAXINNERPROC=${maxinnerproc:-3}
+# 3 is too much for freebsd
+MAXINNERPROC=${maxinnerproc:-2}
 
 export PARALLEL_SSH="ssh -oLogLevel=quiet"
 

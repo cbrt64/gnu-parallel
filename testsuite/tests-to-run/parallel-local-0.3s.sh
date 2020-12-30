@@ -12,6 +12,43 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_resume_k() {
+    echo '### --resume -k'
+    tmp=$(tempfile)
+    parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
+    echo try 2 = nothing
+    parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
+    echo two extra
+    parallel -k --resume --joblog $tmp echo job{}id\;exit 0 ::: 0 1 2 3 0 5 6 7
+    rm -f $tmp
+}
+
+par_empty_string_quote() {
+    echo "bug #37694: Empty string argument skipped when using --quote"
+    parallel -q --nonall perl -le 'print scalar @ARGV' 'a' 'b' ''
+}
+
+par_trim_illegal_value() {
+    echo '### Test of --trim illegal'
+    stdout parallel --trim fj ::: echo
+}
+
+par_dirnamereplace() {
+    echo '### Test --dnr'
+    parallel --dnr II -k echo II {} ::: a a/b a/b/c
+
+    echo '### Test --dirnamereplace'
+    parallel --dirnamereplace II -k echo II {} ::: a a/b a/b/c
+}
+
+par_negative_replacement() {
+    echo '### Negative replacement strings'
+    parallel -X -j1 -N 6 echo {-1}orrec{1} ::: t B X D E c
+    parallel -N 6 echo {-1}orrect ::: A B X D E c
+    parallel --colsep ' ' echo '{2} + {4} = {2} + {-1}=' '$(( {2} + {-1} ))' ::: "1 2 3 4"
+    parallel --colsep ' ' echo '{-3}orrect' ::: "1 c 3 4"
+}
+
 par_replacement_string_on_utf8() {
     echo '### test {} {.} on UTF8 input'
     inputlist() {
@@ -21,6 +58,26 @@ par_replacement_string_on_utf8() {
 	echo '/tmp/test-of-{.}-parallel/subdir/file{.}.funkyextension}}'
     }
     inputlist | parallel -k echo {} {.}
+}
+
+par_rpl_repeats() {
+    echo '### Test {.} does not repeat more than {}'
+    seq 15 | perl -pe 's/$/.gif/' | parallel -j1 -s 80 -kX echo a{}b{.}c{.}
+    seq 15 | perl -pe 's/$/.gif/' | parallel -j1 -s 80 -km echo a{}b{.}c{.}
+}
+
+par_do_not_export_PARALLEL_ENV() {
+    echo '### Do not export $PARALLEL_ENV to children'
+    doit() {
+	echo Should be 0
+	echo "$PARALLEL_ENV" | wc
+	echo Should give 60k and not overflow
+	PARALLEL_ENV="$PARALLEL_ENV" parallel echo '{=$_="\""x$_=}' ::: 60000 | wc
+    }
+    . `which env_parallel.bash`
+    # Make PARALLEL_ENV as big as possible
+    PARALLEL_ENV="a='$(seq 100000 | head -c $((139000-$(set|wc -c) )) )'"
+    env_parallel doit ::: 1
 }
 
 par_compress_stdout_stderr() {
@@ -152,16 +209,6 @@ par_verbose_t() {
 
     (echo b; echo c; echo f) | parallel -k -t echo {}ar 2>&1 >/dev/null
     (echo b; echo c; echo f) | parallel -k --verbose echo {}ar 2>&1 >/dev/null
-}
-
-par_show_limits() {
-    echo '### Test --show-limits'
-    (
-	(echo b; echo c; echo f) | parallel -k --show-limits echo {}ar
-	(echo b; echo c; echo f) | parallel -j1 -kX --show-limits -s 100 echo {}ar
-	echo "### BUG: empty lines with --show-limit"
-	echo | stdout parallel --show-limits
-    ) | perl -pe 's/131\d\d\d/131xxx/'
 }
 
 par_test_zero_args() {

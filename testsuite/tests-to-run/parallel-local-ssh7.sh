@@ -1719,9 +1719,9 @@ par_bash_environment_too_big() {
     len_var_remote=$len_overhead+50+25
     len_var_quote=$len_overhead+50+25-12-6
     len_var_quote_remote=$len_overhead+50-25+12+6-3
-    len_fun=$len_overhead+100
+    len_fun=$len_overhead+110
     len_fun_remote=$len_overhead+50+25
-    len_fun_quote=$len_overhead+100
+    len_fun_quote=$len_overhead+110
     len_fun_quote_remote=$len_overhead+50+25
     
     . `which env_parallel.bash`;

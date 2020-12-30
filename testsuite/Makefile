@@ -7,10 +7,8 @@ testsuite: 3
 	touch ~/.parallel/will-cite
 	make stopvm
 
-### Limited test sets - run once
-# No 100s, 300s, mem, polarhome, tutorial
 1: ../src/parallel tests-to-run/* wanted-results/* prereqlocal startdb prereqremote
-	TRIES=1 time bash Start.sh '' '00s|mem|polarhome|tutorial' || true
+	TRIES=1 time bash Start.sh '' mem || true
 	touch ~/.parallel/will-cite
 	make stopvm
 
@@ -104,7 +102,7 @@ stopvm:
 	parallel --tag -k 'ping -w 1 -c 1 {} && cd vagrant/*/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8 centos3
 
 startdb:
-	true should start Oracle in vagrant
+	true TODO should start Oracle in vagrant
 startdb-old:
 	#echo shutdown abort | sudo su - oracle -c "sqlplus / as sysdba"
 	sudo parallel /etc/init.d/{} status '||' /etc/init.d/{} restart ::: postgresql mysql # oracle-xe

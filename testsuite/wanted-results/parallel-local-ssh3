@@ -4,8 +4,6 @@ par_export_functions_csh	OK
 par_header_in_return	### bug #45907: --header : + --return {header}
 par_header_in_return	returnfile45907
 par_hgrp_rpl	### Implement {hgrp} replacement string
-par_hgrp_rpl	bash@lo b
-par_hgrp_rpl	csh@lo c
 par_hostgroup_only_on_args	### Auto add hostgroup if given on on argument
 par_hostgroup_only_on_args	parallel: Warning: Adding hostgroups: sh@lo
 par_hostgroup_only_on_args	sh

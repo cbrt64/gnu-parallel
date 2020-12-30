@@ -24,6 +24,25 @@ par__pipepart_spawn	1:local / 2+ / 2+2+2+
 par__pipepart_tee	bug #45479: --pipe/--pipepart --tee
 par__pipepart_tee	--pipepart --tee
 par__pipepart_tee	314572800
+par_bin	### Test --bin
+par_bin	      2       2       4
+par_bin	      2       2       4
+par_bin	      3       3       6
+par_bin	      3       3       7
+par_bin	      2       4       8
+par_bin	      2       4       8
+par_bin	      3       6      13
+par_bin	      3       6      13
+par_bin	### Test --bin with expression that gives 1..n
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
+par_bin	### Test --bin with expression that gives 0..n-1
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      5      10      21
+par_bin	      5      10      21
 par_colsep	### Test of --colsep
 par_colsep	a b c
 par_colsep	a b c
@@ -277,9 +296,10 @@ par_jobs_file	sleep 5
 par_jobs_file	sleep 4
 par_k	### Test -k
 par_k	parallel: Warning: Only enough file handles to run X jobs in parallel.
-par_k	parallel: Warning: Running 'parallel -jX -N X --pipe parallel -jX' or
-par_k	parallel: Warning: raising 'ulimit -n' or 'nofile' in /etc/security/limits.conf
-par_k	parallel: Warning: or /proc/sys/fs/file-max may help.
+par_k	parallel: Warning: Try running 'parallel -jX -N X --pipe parallel -jX'
+par_k	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+par_k	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+par_k	parallel: Warning: or increasing /proc/sys/fs/file-max
 par_k	begin
 par_k	1
 par_k	2
@@ -492,6 +512,9 @@ par_kill_children_timeout	      0       0       0
 par_line_buffer	### --line-buffer
 par_line_buffer	     55      55     120
 par_line_buffer	These must diff: 1
+par_load_blocks	### Test if --load blocks. Bug.
+par_load_blocks	53d025127ae99ab79e8502aae2d9bea6  -
+par_load_blocks	53d025127ae99ab79e8502aae2d9bea6  -
 par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      2       6   30006
 par_long_line_remote	      3      50  250050
@@ -711,8 +734,6 @@ par_pipe_line_buffer	    200     400    1202
 par_pipe_line_buffer	These must diff: 1
 par_pipe_line_buffer_compress	### --pipe --line-buffer --compress
 par_pipe_line_buffer_compress	    200     400    1202
-par_results_compress	0
-par_results_compress	1
 par_results_csv	bug #: --results csv
 par_results_csv	--header : --tag --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header : --tag --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",
@@ -911,6 +932,97 @@ par_semaphore	job3a 4
 par_semaphore	job2b 5
 par_semaphore	job3b 6
 par_semaphore	done
+par_shard	### --shard
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      2 c1
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	      2 c2
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      2 c1
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	      2 c2
+par_shard	*** broken
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
 par_shellquote	### Test --shellquote in all shells
 par_shellquote	ash	'	
 par_shellquote	ash	par_shellquote	ash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'

@@ -35,6 +35,8 @@ gpl v3
 
 [Save]
 
+
+10.5281/zenodo.4381888
 DOINO=3956817
 TAG='PrivacyShield'
 
@@ -190,16 +192,15 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20201222 ('Vaccine/Maradona/Yeager/Le Carre') released <<[stable]>>
+Subject: GNU Parallel 20210122 ('') released <<[stable]>>
 
-GNU Parallel 20201222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20210122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Please help spreading GNU Parallel by making a testimonial video like Juan Sierra Pons: http://www.elsotanillo.net/wp-content/uploads/GnuParallel_JuanSierraPons.mp4
 
-It does not have to be as detailed as Juan's. It is perfectly fine if
-you just say your name, and what field you are using GNU Parallel for.
+It does not have to be as detailed as Juan's. It is perfectly fine if you just say your name, and what field you are using GNU Parallel for.
 
 Quote of the month:
 <<>>
@@ -212,17 +213,13 @@ New in this release:
 
 News about GNU Parallel:
 
-* Best practices for accelerating data migrations using AWS Snowball Edge https://aws.amazon.com/blogs/storage/best-practices-for-accelerating-data-migrations-using-aws-snowball-edge/
-
-* Pass the Output of a Command as an Argument for Another https://www.baeldung.com/linux/pass-cmd-output-as-an-argument
-
-* Warwick RSE Drop-in - Workflow Management Part 2 - GNU Parallel https://www.youtube.com/watch?v=t_v2Otgt87g
+<<>>
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
 GNU Parallel - For people who live life in the parallel lane.
 
-If you like GNU Parallel record a video testimonial: Say who you are, what you use GNU Parallel for, how it helps you, and what you like most about it. Include command that uses GNU Parallel if you feel like it.
+If you like GNU Parallel record a video testimonial: Say who you are, what you use GNU Parallel for, how it helps you, and what you like most about it. Include a command that uses GNU Parallel if you feel like it.
 
 
 = About GNU Parallel =
@@ -241,7 +238,6 @@ Or you can generate big, medium, and small thumbnails of all jpeg files in sub d
 
   find . -name '*.jpg' |
     parallel convert -geometry {2} {1} {1//}/thumb{2}_{1/} :::: - ::: 50 100 200
-
 
 You can find more about GNU Parallel at: http://www.gnu.org/s/parallel/
 
