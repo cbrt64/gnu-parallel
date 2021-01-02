@@ -41,7 +41,7 @@ On a 48 core machine you should see a speedup of 3x over B<sort>.
 
 =head1 AUTHOR
 
-Copyright (C) 2020 Ole Tange,
+Copyright (C) 2020-2021 Ole Tange,
 http://ole.tange.dk and Free Software Foundation, Inc.
 
 
@@ -118,9 +118,10 @@ GetOptions(
     "help" => \$opt::dummy,
     ) || exit(255);
 $Global::progname = ($0 =~ m:(^|/)([^/]+)$:)[1];
-$Global::version = 20201223;
+$Global::version = 20210102;
 if($opt::version) { version(); exit 0; }
-@Global::sortoptions = @ARGV_before[0..($#ARGV_before-$#ARGV-1)];
+@Global::sortoptions =
+    shell_quote(@ARGV_before[0..($#ARGV_before-$#ARGV-1)]);
 #if($opt::zero_terminated) { $/ = "\0"; }
 
 $ENV{'TMPDIR'} ||= "/tmp";
@@ -217,7 +218,7 @@ sub version() {
     print join
 	("\n",
 	 "GNU $Global::progname $Global::version",
-	 "Copyright (C) 2020 Ole Tange, http://ole.tange.dk and Free Software",
+	 "Copyright (C) 2020-2021 Ole Tange, http://ole.tange.dk and Free Software",
 	 "Foundation, Inc.",
 	 "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>",
 	 "This is free software: you are free to change and redistribute it.",
@@ -226,6 +227,107 @@ sub version() {
 	 "Web site: https://www.gnu.org/software/parallel\n",
         );
 }
+
+sub shell_quote(@) {
+    # Input:
+    #   @strings = strings to be quoted
+    # Returns:
+    #   @shell_quoted_strings = string quoted as needed by the shell
+    return wantarray ? (map { Q($_) } @_) : (join" ",map { Q($_) } @_);
+}
+
+sub shell_quote_scalar_rc($) {
+    # Quote for the rc-shell
+    my $a = $_[0];
+    if(defined $a) {
+	if(($a =~ s/'/''/g)
+	   +
+	   ($a =~ s/[\n\002-\011\013-\032\\\#\?\`\(\)\{\}\[\]\^\*\<\=\>\~\|\; \"\!\$\&\'\202-\377]+/'$&'/go)) {
+	    # A string was replaced
+	    # No need to test for "" or \0
+	} elsif($a eq "") {
+	    $a = "''";
+	} elsif($a eq "\0") {
+	    $a = "";
+	}
+    }
+    return $a;
+}
+
+sub shell_quote_scalar_csh($) {
+    # Quote for (t)csh
+    my $a = $_[0];
+    if(defined $a) {
+	# $a =~ s/([\002-\011\013-\032\\\#\?\`\(\)\{\}\[\]\^\*\>\<\~\|\; \"\!\$\&\'\202-\377])/\\$1/g;
+	# This is 1% faster than the above
+	if(($a =~ s/[\002-\011\013-\032\\\#\?\`\(\)\{\}\[\]\^\*\<\=\>\~\|\; \"\!\$\&\'\202-\377]/\\$&/go)
+	   +
+	   # quote newline in csh as \\\n
+	   ($a =~ s/[\n]/"\\\n"/go)) {
+	    # A string was replaced
+	    # No need to test for "" or \0
+	} elsif($a eq "") {
+	    $a = "''";
+	} elsif($a eq "\0") {
+	    $a = "";
+	}
+    }
+    return $a;
+}
+
+sub shell_quote_scalar_default($) {
+    # Quote for other shells (Bourne compatibles)
+    # Inputs:
+    #   $string = string to be quoted
+    # Returns:
+    #   $shell_quoted = string quoted as needed by the shell
+    my $s = $_[0];
+    if($s =~ /[^-_.+a-z0-9\/]/i) {
+	$s =~ s/'/'"'"'/g; # "-quote single quotes
+	$s = "'$s'";       # '-quote entire string
+	$s =~ s/^''//;     # Remove unneeded '' at ends
+	$s =~ s/''$//;     # (faster than s/^''|''$//g)
+	return $s;
+    } elsif ($s eq "") {
+	return "''";
+    } else {
+	# No quoting needed
+	return $s;
+    }
+}
+
+sub shell_quote_scalar($) {
+    # Quote the string so the shell will not expand any special chars
+    # Inputs:
+    #   $string = string to be quoted
+    # Returns:
+    #   $shell_quoted = string quoted as needed by the shell
+
+    # Speed optimization: Choose the correct shell_quote_scalar_*
+    # and call that directly from now on
+    no warnings 'redefine';
+    if($Global::cshell) {
+	# (t)csh
+	*shell_quote_scalar = \&shell_quote_scalar_csh;
+    } elsif($Global::shell =~ m:(^|/)rc$:) {
+	# rc-shell
+	*shell_quote_scalar = \&shell_quote_scalar_rc;
+    } else {
+	# other shells
+	*shell_quote_scalar = \&shell_quote_scalar_default;
+    }
+    # The sub is now redefined. Call it
+    return shell_quote_scalar($_[0]);
+}
+
+sub Q($) {
+    # Q alias for ::shell_quote_scalar
+    my $ret = shell_quote_scalar($_[0]);
+    no warnings 'redefine';
+    *Q = \&::shell_quote_scalar;
+    return $ret;
+}
+
 
 if(@ARGV) {
     sort_files(@ARGV);
