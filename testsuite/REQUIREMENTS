@@ -262,10 +262,14 @@ lsh_setup() {
     lsh -c aes256-ctr --sloppy-host-authentication \
 	--capture-to ~/.lsh/host-acls localhost echo Added host-auth
     lsh-keygen | lsh-writekey -c none
-    lsh-export-key --openssh < ~/.lsh/identity.pub |
-	lsh -c aes256-ctr lo 'cat >>.ssh/authorized_keys'
-    lsh-export-key --openssh < ~/.lsh/identity.pub |
-	ssh csh@lo 'cat >>.ssh/authorized_keys'
+    export_key_to_local_users() {
+	lsh-export-key --openssh < ~/.lsh/identity.pub |
+	    ssh -l $1 lo 'cat >>.ssh/authorized_keys'
+    }
+    export -f export_key_to_local_users
+    shellsplus | parallel --bar --timeout 5 export_key_to_local_users
+    shellsplus | parallel --bar --timeout 5 'lsh -l {} lo true || export_key_to_local_users {}'
+    shellsplus | parallel --bar --timeout 5 'lsh -l {} lo true || echo Fail {}'
 }
 
 add_freebsd() {

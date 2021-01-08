@@ -277,6 +277,7 @@ E	agrp=c+b+csh@lo+lo+bash@lo
 E	agrp=c+b+lo+bash@lo+csh@lo
 E	agrp=c+b+lo+csh@lo+bash@lo
 E	agrp=c+bash@lo+b+csh@lo+lo
+E	agrp=c+bash@lo+csh@lo+b+lo
 E	agrp=c+bash@lo+b+lo+csh@lo
 E	agrp=c+bash@lo+csh@lo+lo+b
 E	agrp=c+bash@lo+lo+b+csh@lo

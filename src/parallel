@@ -322,6 +322,7 @@ sub parcat_script() {
 		    for $infh (@ready) {
 			# There is only one key, namely the output file descriptor
 			for my $outfd (keys %{$buffer{$infh}}) {
+			    # TODO test if 65536 is optimal (2^17 is used elsewhere)
 			    $rv = sysread($infh, $buf, 65536);
 			    if (!$rv) {
 				if($! == EAGAIN) {
@@ -624,6 +625,7 @@ sub find_split_positions($$$) {
     }
     # The optimal dd blocksize for mint, redhat, solaris, openbsd = 2^17..2^20
     # The optimal dd blocksize for freebsd = 2^15..2^17
+    # The optimal dd blocksize for ubuntu (AMD6376) = 2^16
     my $dd_block_size = 131072; # 2^17
     my @pos;
     my ($recstart,$recend) = recstartrecend();
@@ -1232,6 +1234,11 @@ sub recstartrecend() {
 	# this should only apply to the regexp
 	$recstart = "(?:".$recstart.")";
 	$recend = "(?:".$recend.")";
+	# Quote # and space
+	$recstart =~ s/#/\\#/g;
+	$recend =~ s/#/\\#/g;
+	$recstart =~ s/ /\\ /g;
+	$recend =~ s/ /\\ /g;
     } else {
 	# $recstart/$recend = printf strings (\n)
 	$recstart =~ s/\\([0rnt\'\"\\])/"qq|\\$1|"/gee;
@@ -2017,8 +2024,8 @@ sub parse_options(@) {
     # the alternatives instead?
     # See a list in: 'man parallel_alternatives'
     #
-    # If you want GNU Parallel to be maintained in the future keep
-    # this line.
+    # If you want GNU Parallel to be maintained in the future you
+    # should keep this line.
     citation_notice();
     # Seriously: _YOU_ will be harming free software by removing the
     # notice.  _YOU_ make it harder to justify spending time developing
@@ -11722,7 +11729,6 @@ sub max_length($) {
 	my $len_cache = $Global::cache_dir . "/tmp/sshlogin/" . ::hostname() .
 	    "/linelen";
 	my $cached_limit;
-
 	if(open(my $fh, "<", $len_cache)) {
 	    $cached_limit = <$fh>;
 	    $cached_limit || ::die_bug("Cannot read $len_cache");

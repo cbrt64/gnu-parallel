@@ -384,6 +384,15 @@ par_pxz_complains	bug #44250: pxz complains File format not recognized but decom
 par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_pxz_complains	can not seek in input: Illegal seek
 par_pxz_complains	ls: cannot access '/OK-if-missing-file': No such file or directory
+par_recend_recstart_hash	### bug #59843: --regexp --recstart '#' fails
+par_recend_recstart_hash	      2       2      10
+par_recend_recstart_hash	      1       1       6
+par_recend_recstart_hash	      2       2      10
+par_recend_recstart_hash	      1       1       6
+par_recend_recstart_hash	      1       2       9
+par_recend_recstart_hash	      2       1       6
+par_recend_recstart_hash	      1       2       9
+par_recend_recstart_hash	      2       1       6
 par_replacement_rename	### Test --basenamereplace
 par_replacement_rename	b.c b.c b.c b b b
 par_replacement_rename	b.c

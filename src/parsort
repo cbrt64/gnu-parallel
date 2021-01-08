@@ -18,7 +18,7 @@ B<parsort> uses GNU B<sort> to sort in parallel. It works just like
 B<sort> but faster on inputs with more than 1 M lines, if you have a
 multicore machine.
 
-Hopefully these ideas will make it into GNU Sort in the future.
+Hopefully these ideas will make it into GNU B<sort> in the future.
 
 
 =head1 EXAMPLE

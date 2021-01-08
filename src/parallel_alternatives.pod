@@ -23,7 +23,7 @@ developers with irregular releases and only maintained for a few
 years.
 
 
-=head2 SUMMARY TABLE
+=head2 SUMMARY LEGEND
 
 The following features are in some of the comparable tools:
 
@@ -52,7 +52,7 @@ B<Outputs>
  O5. Stdout only contains stdout (standard output) from the command
  O6. Stderr only contains stderr (standard error) from the command
  O7. Buffering on disk
- O8. Cleanup of file if killed
+ O8. Cleanup of temporary files if killed
  O9. Test if disk runs full during run
  O10. Output of a line bigger than 4 GB
 
@@ -86,7 +86,7 @@ B<Legend>
  ID = yes
 
 As every new version of the programs are not tested the table may be
-outdated. Please file a bug-report if you find errors (See REPORTING
+outdated. Please file a bug report if you find errors (See REPORTING
 BUGS).
 
 parallel:
@@ -97,26 +97,10 @@ E1 E2 E3 E4 E5 E6 E7
 R1 R2 R3 R4 R5 R6 R7 R8 R9
 S1 S2
 
-find -exec:
--  -  -  x  -  x  -
--  M2 M3 -  -  -  -
--  O2 O3 O4 O5 O6
--  -  -  -  -  -  -
--  -  -  -  -  -  -  -  -
-x  x
-
-make -j:
--  -  -  -  -  -  -
--  -  -  -  -  -
-O1 O2 O3 -  x  O6
-E1 -  -  -  E5 -
--  -  -  -  -  -  -  -  -
--  -
-
 
 =head2 DIFFERENCES BETWEEN xargs AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 I1 I2 - - - - -
 - M2 M3 - - -
 - O2 O3 - O5 O6
@@ -212,6 +196,14 @@ https://www.gnu.org/software/findutils/
 
 =head2 DIFFERENCES BETWEEN find -exec AND GNU Parallel
 
+Summary (see legend above):
+-  -  -  x  -  x  -
+-  M2 M3 -  -  -  -
+-  O2 O3 O4 O5 O6
+-  -  -  -  -  -  -
+-  -  -  -  -  -  -  -  -
+x  x
+
 B<find -exec> offers some of the same possibilities as GNU B<parallel>.
 
 B<find -exec> only works on files. Processing other input (such as
@@ -222,6 +214,14 @@ https://www.gnu.org/software/findutils/ (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN make -j AND GNU Parallel
+
+Summary (see legend above):
+-  -  -  -  -  -  -
+-  -  -  -  -  -
+O1 O2 O3 -  x  O6
+E1 -  -  -  E5 -
+-  -  -  -  -  -  -  -  -
+-  -
 
 B<make -j> can run jobs in parallel, but requires a crafted Makefile
 to do this. That results in extra quoting to get filenames containing
@@ -238,7 +238,7 @@ https://www.gnu.org/software/make/ (Last checked: 2019-01)
 
 =head2 DIFFERENCES BETWEEN ppss AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 I1 I2 - - - - I7
 M1 - M3 - - M6
 O1 - - x - -
@@ -323,7 +323,7 @@ https://github.com/louwrentius/PPSS
 
 =head2 DIFFERENCES BETWEEN pexec AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 I1 I2 - I4 I5 - -
 M1 - M3 - - M6
 O1 O2 O3 - O5 O6
@@ -646,7 +646,7 @@ https://github.com/cheusov/paexec
 
 =head2 DIFFERENCES BETWEEN map(sitaramc) AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 I1 - - I4 - - (I7)
 M1 (M2) M3 (M4) M5 M6
 - O2 O3 - O5 - - N/A N/A O10
@@ -1962,7 +1962,7 @@ https://github.com/fd0/machma (Last checked: 2019-06)
 
 =head2 DIFFERENCES BETWEEN interlace AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 - I2 I3 I4 - - -
 M1 - M3 - - M6
 - O2 O3 - - - - x x
@@ -2337,7 +2337,7 @@ https://github.com/amritb/with-this.git (Last checked: 2019-03)
 
 =head2 DIFFERENCES BETWEEN Tollef's parallel (moreutils) AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 - - - I4 - - I7
 - - M3 - - M6
 - O2 O3 - O5 O6 - x x
@@ -2363,7 +2363,7 @@ B<GNU> parallel -j 3 ::: ls df "echo hi"
 
 =head2 DIFFERENCES BETWEEN rargs AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 I1 - - - - - I7
 - - M3 M4 - -
 - O2 O3 - O5 O6 - O8 -
@@ -2422,7 +2422,7 @@ https://github.com/lotabout/rargs (Last checked: 2020-01)
 
 =head2 DIFFERENCES BETWEEN threader AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 I1 - - - - - -
 M1 - M3 - - M6
 O1 - O3 - O5 - - N/A N/A
@@ -2444,7 +2444,7 @@ https://github.com/voodooEntity/threader (Last checked: 2020-04)
 
 =head2 DIFFERENCES BETWEEN runp AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 I1 I2 - - - - -
 M1 - (M3) - - M6
 O1 O2 O3 - O5 O6 - N/A N/A -
@@ -2570,7 +2570,7 @@ https://github.com/jreisinger/runp (Last checked: 2020-04)
 
 =head2 DIFFERENCES BETWEEN papply AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 - - - I4 - - -
 M1 - M3 - - M6
 - - O3 - O5 - - N/A N/A O10
@@ -2616,7 +2616,7 @@ https://pypi.org/project/papply/ (Last checked: 2020-04)
 
 =head2 DIFFERENCES BETWEEN async AND GNU Parallel
 
-Summary table (see legend above):
+Summary (see legend above):
 - - - I4 - - I7
 - - - - - M6
 - O2 O3 - O5 O6 - N/A N/A O10
@@ -2690,88 +2690,35 @@ composed commands.
 
 https://github.com/ctbur/async/ (Last checked: 2020-11)
 
+
+=head2 DIFFERENCES BETWEEN pardi AND GNU Parallel
+
+Summary (see legend above):
+I1 I2 - - - - I7
+M1 - - - - M6
+O1 O2 O3 O4 O5 - O7 - - O10
+E1 - - E4 - - -
+- - - - - - - - -
+- -
+
+B<pardi> is very similar to B<parallel --pipe --cat>: It reads blocks
+of data and not arguments. So it cannot insert an argument in the
+command line. It puts the block into a temporary file, and this file
+name (%IN) can be put in the command line. You can only use %IN once.
+
+It can also run full command lines in parallel (like: B<cat file |
+parallel>).
+
+https://github.com/UnixJunkie/pardi (Last checked: 2021-01)
+
+
 =head2 Todo
 
-test_many_var() {
-gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
-for a in `seq 11000`; do eval "export a$a=1" ; done
-gen500k | stdout parallel --timeout 5 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
-}
-
-test_many_var_func() {
-gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
-for a in `seq 5100`; do eval "export a$a=1" ; done
-for a in `seq 5100`; do eval "a$a() { 1; }" ; done
-for a in `seq 5100`; do eval export -f a$a ; done
-gen500k | stdout parallel --timeout 21 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
-}
-
-test_many_var_func() {
-gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
-for a in `seq 8000`; do eval "a$a() { 1; }" ; done
-for a in `seq 8000`; do eval export -f a$a ; done
-gen500k | stdout parallel --timeout 6 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
-}
-
-test_big_func() {
-gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
-big=`seq 1000`
-for a in `seq 50`; do eval "a$a() { '$big'; }" ; done
-for a in `seq 50`; do eval export -f a$a ; done
-gen500k | stdout parallel --timeout 4 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
-}
-
-test_many_var_big_func() {
-gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
-big=`seq 1000`
-for a in `seq 5100`; do eval "export a$a=1" ; done
-for a in `seq 20`; do eval "a$a() { '$big'; }" ; done
-for a in `seq 20`; do eval export -f a$a ; done
-gen500k | stdout parallel --timeout 6 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
-}
-
-test_big_func_name() {
-gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
-big=`perl -e print\"x\"x10000`
-for a in `seq 20`; do eval "export a$big$a=1" ; done
-gen500k | stdout parallel --timeout 8 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
-}
-
-test_big_var_func_name() {
-gen500k() { seq -f %f 1000000000000000 1000000000050000 | head -c 131000; }
-big=`perl -e print\"x\"x10000`
-for a in `seq 2`; do eval "export a$big$a=1" ; done
-for a in `seq 2`; do eval "a$big$a() { '$big'; }" ; done
-for a in `seq 2`; do eval export -f a$big$a ; done
-gen500k | stdout parallel --timeout 1000 -Xj1  'echo {} {} {} {} | wc' | perl -pe 's/\d{3,5} //g'
-}
-
-
-
-tange@macosx:~$ for a in `seq 100`; do eval export a$a=fffffffffffffffffffffffff ; donetange@macosx:~$ seq 50000 | stdout parallel -Xj1  'echo {} {} | wc' | perl -pe 's/\d{3,5} //g'
-tange@macosx:~$ for a in `seq 100`; do eval export a$a=fffffffffffffffffffffffff ; donetange@macosx:~$ seq 50000 | stdout parallel -Xj1  'echo {} {} | wc' | perl -pe 's/\d{3,5} //g'
-tange@macosx:~$ for a in `seq 100`; do eval export -f a$a ; done
-
-
-seq 100000 | stdout parallel -Xj1  'echo {} {} | wc'
-export a=`seq 10000`
-seq 100000 | stdout parallel -Xj1  'echo {} {} | wc'
-
-
-
-    my $already_spread;
-    my $env_size;
-
-        if($^O eq "darwin") {
-            $env_size ||= 500+length(join'',%ENV);
-            $max_len -= $env_size;
-        }
-
-
 PASH: Light-touch Data-Parallel Shell Processing
-https://arxiv.org/pdf/2007.09436.pdf
 
-https://github.com/UnixJunkie/pardi
+https://arxiv.org/pdf/2012.15443.pdf KumQuat
+
+https://arxiv.org/pdf/2007.09436.pdf
 
 https://github.com/UnixJunkie/PAR (Same as http://savannah.nongnu.org/projects/par above?)
 

@@ -4,6 +4,18 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_recend_recstart_hash() {
+    echo "### bug #59843: --regexp --recstart '#' fails"
+    (echo '#rec1'; echo 'bar'; echo '#rec2') |
+	parallel -k --regexp --pipe -N1 --recstart '#' wc 
+    (echo ' rec1'; echo 'bar'; echo ' rec2') |
+	parallel -k --regexp --pipe -N1 --recstart ' ' wc 
+    (echo 'rec2';  echo 'bar#';echo 'rec2' ) |
+	parallel -k --regexp --pipe -N1 --recend '#' wc 
+    (echo 'rec2';  echo 'bar ';echo 'rec2' ) |
+	parallel -k --regexp --pipe -N1 --recend ' ' wc 
+}
+
 par_sqlandworker_uninstalled_dbd() {
     echo 'bug #56096: dbi-csv no such column'
     mkdir -p /tmp/parallel-bug-56096
