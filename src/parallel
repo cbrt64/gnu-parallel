@@ -10624,16 +10624,15 @@ sub set_exitsignal($$) {
 	    } elsif($Global::halt_success) {
 		$Global::halt_exitstatus = 0;
 	    }
-	    if($Global::halt_when eq "soon"
-	       and
-	       (scalar(keys %Global::running) > 0
-		or
-		$Global::max_jobs_running == 1)) {
-		::status
-		    ("$Global::progname: Starting no more jobs. ".
-		     "Waiting for ". (keys %Global::running).
-		     " jobs to finish.");
+	    if($Global::halt_when eq "soon") {
 		$Global::start_no_new_jobs ||= 1;
+		if(scalar(keys %Global::running) > 0) {
+		    # Only warn if there are more jobs running
+		    ::status
+			("$Global::progname: Starting no more jobs. ".
+			 "Waiting for ". (keys %Global::running).
+			 " jobs to finish.");
+		}
 	    }
 	    return($Global::halt_when);
 	}

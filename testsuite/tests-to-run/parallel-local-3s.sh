@@ -4,6 +4,12 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_delay_halt_soon() {
+    echo "bug #59893: --halt soon doesn't work with --delay"
+    seq 0 10 |
+	stdout parallel --delay 1 -uj2 --halt soon,fail=1 'sleep 0.{};echo {};exit {}'
+}
+
 par_show_limits() {
     echo '### Test --show-limits'
     (

@@ -192,7 +192,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210122 ('Capitol Riots') released <<[stable]>>
+Subject: GNU Parallel 20210122 ('Ask/Capitol Riots') released <<[stable]>>
 
 GNU Parallel 20210122 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -206,6 +206,11 @@ Quote of the month:
 <<>>
   
 New in this release:
+
+* $PARALLEL_ARGHOSTGROUPS and the replacement string {agrp} will give the hostgroup given on the argument when using --hostgroup.
+
+* Handy time functions for {= =}: yyyy_mm_dd_hh_mm_ss() yyyy_mm_dd_hh_mm() yyyy_mm_dd() yyyymmddhhmmss() yyyymmddhhmm() yyyymmdd()
+
 <<>>
 
 
@@ -214,6 +219,10 @@ New in this release:
 News about GNU Parallel:
 
 https://www.codenong.com/25172209/
+
+https://qiita.com/hana_shin/items/53c3c78525c9c758ae7c
+
+https://canvas.stanford.edu/courses/133091
 
 <<>>
 

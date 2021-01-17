@@ -2201,7 +2201,9 @@ is sendt to stdout (standard output) and prepended with e:.
 For short jobs with little output B<par> is 20% faster than GNU
 B<parallel> and 60% slower than B<xargs>.
 
-http://savannah.nongnu.org/projects/par (Last checked: 2019-02)
+https://github.com/UnixJunkie/PAR
+
+https://savannah.nongnu.org/projects/par (Last checked: 2019-02)
 
 
 =head2 DIFFERENCES BETWEEN fd AND GNU Parallel
@@ -2555,15 +2557,17 @@ output to stderr (this can be prevented with -q)
   scanme.nmap.org 443
   EOF
   
-  cat /tmp/host-port.txt | \
-    runp -q -p 'netcat -v -w2 -z' 2>&1 | egrep '(succeeded!|open)$'
-
+  1$ cat /tmp/host-port.txt |
+       runp -q -p 'netcat -v -w2 -z' 2>&1 | egrep '(succeeded!|open)$'
+  
   # --colsep is needed to split the line
-  cat /tmp/host-port.txt | \
-    parallel --colsep ' ' netcat -v -w2 -z 2>&1 | egrep '(succeeded!|open)$'
+  1$ cat /tmp/host-port.txt |
+       parallel --colsep ' ' netcat -v -w2 -z 2>&1 |
+       egrep '(succeeded!|open)$'
   # or use uq for unquoted:
-  cat /tmp/host-port.txt | \
-    parallel netcat -v -w2 -z {=uq=} 2>&1 | egrep '(succeeded!|open)$'
+  1$ cat /tmp/host-port.txt |
+       parallel netcat -v -w2 -z {=uq=} 2>&1 |
+       egrep '(succeeded!|open)$'
 
 https://github.com/jreisinger/runp (Last checked: 2020-04)
 
@@ -2603,11 +2607,11 @@ seconds (compared to 10 seconds with GNU B<parallel>).
 =head3 Examples as GNU Parallel
 
   1$ papply gzip *.txt
-
+  
   1$ parallel gzip ::: *.txt
-
+  
   2$ papply "convert %F %n.jpg" *.png
-
+  
   2$ parallel convert {} {.}.jpg ::: *.png
 
 
@@ -2633,18 +2637,18 @@ composed commands.
 =head3 Examples as GNU Parallel
 
   1$ S="/tmp/example_socket"
-
+  
   1$ ID=myid
-
+  
   2$ async -s="$S" server --start
-
+  
   2$ # GNU Parallel does not need a server to run
-
+  
   3$ for i in {1..20}; do
          # prints command output to stdout
          async -s="$S" cmd -- bash -c "sleep 1 && echo test $i"
      done
-
+  
   3$ for i in {1..20}; do
          # prints command output to stdout
          sem --id "$ID" -j100% "sleep 1 && echo test $i"
@@ -2653,38 +2657,38 @@ composed commands.
          # use -u or --line-buffer
          sem --id "$ID" -j100% --line-buffer "sleep 1 && echo test $i"
      done
-
+  
   4$ # wait until all commands are finished
      async -s="$S" wait
-
+  
   4$ sem --id "$ID" --wait
-
+  
   5$ # configure the server to run four commands in parallel
      async -s="$S" server -j4
-
+  
   5$ export PARALLEL=-j4
-
+  
   6$ mkdir "/tmp/ex_dir"
      for i in {21..40}; do
        # redirects command output to /tmp/ex_dir/file*
        async -s="$S" cmd -o "/tmp/ex_dir/file$i" -- \
          bash -c "sleep 1 && echo test $i"
      done
-
+  
   6$ mkdir "/tmp/ex_dir"
      for i in {21..40}; do
        # redirects command output to /tmp/ex_dir/file*
        sem --id "$ID" --result '/tmp/my-ex/file-{=$_=""=}'"$i" \
          "sleep 1 && echo test $i"
      done
-
+  
   7$ sem --id "$ID" --wait
-
+  
   7$ async -s="$S" wait
-
+  
   8$ # stops server
      async -s="$S" server --stop
-
+  
   8$ # GNU Parallel does not need to stop a server
 
 
@@ -2709,10 +2713,188 @@ name (%IN) can be put in the command line. You can only use %IN once.
 It can also run full command lines in parallel (like: B<cat file |
 parallel>).
 
+=head3 EXAMPLES FROM pardi test.sh
+
+  1$ time pardi -v -c 100 -i data/decoys.smi -ie .smi -oe .smi \
+       -o data/decoys_std_pardi.smi \
+          -w '(standardiser -i %IN -o %OUT 2>&1) > /dev/null'
+  
+  1$ cat data/decoys.smi |
+       time parallel -N 100 --pipe --cat \
+         '(standardiser -i {} -o {#} 2>&1) > /dev/null; cat {#}; rm {#}' \
+         > data/decoys_std_pardi.smi
+  
+  2$ pardi -n 1 -i data/test_in.types -o data/test_out.types \
+             -d 'r:^#atoms:' -w 'cat %IN > %OUT'
+  
+  2$ cat data/test_in.types | parallel -n 1 -k --pipe --cat \
+             --regexp --recstart '^#atoms' 'cat {}' > data/test_out.types
+  
+  3$ pardi -c 6 -i data/test_in.types -o data/test_out.types \
+             -d 'r:^#atoms:' -w 'cat %IN > %OUT'
+  
+  3$ cat data/test_in.types | parallel -n 6 -k --pipe --cat \
+             --regexp --recstart '^#atoms' 'cat {}' > data/test_out.types
+  
+  4$ pardi -i data/decoys.mol2 -o data/still_decoys.mol2 \
+             -d 's:@<TRIPOS>MOLECULE' -w 'cp %IN %OUT'
+  
+  4$ cat data/decoys.mol2 |
+       parallel -n 1 --pipe --cat --recstart '@<TRIPOS>MOLECULE' \
+         'cp {} {#}; cat {#}; rm {#}' > data/still_decoys.mol2
+  
+  5$ pardi -i data/decoys.mol2 -o data/decoys2.mol2 \
+             -d b:10000 -w 'cp %IN %OUT' --preserve
+  
+  5$ cat data/decoys.mol2 |
+       parallel -k --pipe --block 10k --recend '' --cat \
+         'cat {} > {#}; cat {#}; rm {#}' > data/decoys2.mol2
+
 https://github.com/UnixJunkie/pardi (Last checked: 2021-01)
 
 
+=head2 DIFFERENCES BETWEEN bthread AND GNU Parallel
+
+Summary (see legend above):
+- - - I4 -  - -
+- - - - - M6
+O1 - O3 - - - O7 O8 - -
+E1 - - - - - -
+- - - - - - - - -
+- -
+
+B<bthread> takes around 1 sec per MB of output. The maximal output
+line length is 1073741759.
+
+You cannot quote space in the command, so you cannot run composed
+commands like B<sh -c "echo a; echo b">.
+
+https://gitlab.com/netikras/bthread (Last checked: 2021-01)
+
+
+=head2 DIFFERENCES BETWEEN simple_gpu_scheduler AND GNU Parallel
+
+Summary (see legend above):
+I1 - - - - - I7
+M1 - - - - M6
+- O2 O3 - - O6 - N/A N/A O10
+E1 - - - - - -
+- - - - - - - - -
+- -
+
+=head3 EXAMPLES FROM simple_gpu_scheduler MANUAL
+
+  1$ simple_gpu_scheduler --gpus 0 1 2 < gpu_commands.txt
+
+  1$ parallel -j3 --shuf \
+     CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' < gpu_commands.txt
+
+  2$ simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" \
+       -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 |
+       simple_gpu_scheduler --gpus 0,1,2
+
+  2$ parallel --header : --shuf -j3 -v \
+       CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =}' \
+       python3 train_dnn.py --lr {lr} --batch_size {bs} \
+       ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
+
+  3$ simple_hypersearch \
+       "python3 train_dnn.py --lr {lr} --batch_size {bs}" \
+       --n-samples 5 -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 |
+       simple_gpu_scheduler --gpus 0,1,2
+
+  3$ parallel --header : --shuf \
+       CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1; seq() > 5 and skip() =}' \
+       python3 train_dnn.py --lr {lr} --batch_size {bs} \
+       ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
+
+  4$ touch gpu.queue
+     tail -f -n 0 gpu.queue | simple_gpu_scheduler --gpus 0,1,2 &
+     echo "my_command_with | and stuff > logfile" >> gpu.queue
+
+  4$ touch gpu.queue
+     tail -f -n 0 gpu.queue |
+       parallel -j3 CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' &
+     # Needed to fill job slots once
+     seq 3 | parallel echo true >> gpu.queue
+     # Add jobs
+     echo "my_command_with | and stuff > logfile" >> gpu.queue
+     # Needed to flush output from completed jobs
+     seq 3 | parallel echo true >> gpu.queue
+
+https://github.com/ExpectationMax/simple_gpu_scheduler (Last checked:
+2021-01)
+
+
+=head2 DIFFERENCES BETWEEN parasweep AND GNU Parallel
+
+B<parasweep> is a Python module for facilitating parallel parameter
+sweeps.
+
+A B<parasweep> job will normally take a text file as input. The text
+file contains arguments for the job. Some of these arguments will be
+fixed and some of them will be changed by B<parasweep>.
+
+It does this by having a template file such as template.txt:
+
+  Xval: {x}
+  Yval: {y}
+  FixedValue: 9
+  # x with 2 decimals
+  DecimalX: {x:.2f}
+  TenX: ${x*10}
+  RandomVal: {r}
+
+and from this template it generates the file to be used by the job by
+replacing the replacement strings.
+
+Being a Python module B<parasweep> integrates tighter with Python than
+GNU B<parallel>. You get the parameters directly in a Python data
+structure. With GNU B<parallel> you can use the JSON or CSV output
+format to get something similar, but you would have to read the
+output.
+
+B<parasweep> has a filtering method to ignore parameter combinations
+you do not need.
+
+Instead of calling the jobs directly, B<parasweep> can use Python's
+Distributed Resource Management Application API to make jobs run with
+different cluster software.
+
+
+=head3 Future support in GNU Parallel
+
+B<Future> versions of GNU B<parallel> may support templates
+with replacement strings. Such as:
+
+  Xval: {x}
+  Yval: {y}
+  FixedValue: 9
+  # x with 2 decimals
+  DecimalX: {=x $_=sprintf("%.2f",$_) =}
+  TenX: {=x $_=$_*10 =}
+  RandomVal: {= $_=rand() =}
+
+that can be used like:
+
+  parallel --header : --tmpl my.tmpl {#}.t myprog {#}.t ::: x 1 2 3 ::: y 1 2 3
+
+Filtering may also be supported as:
+
+  parallel --filter '{1} > {2}' echo ::: 1 2 3 ::: 1 2 3
+
+which will basically do:
+
+  parallel echo '{= $arg[1] > $arg[2] and skip() =}' ::: 1 2 3 ::: 1 2 3
+
+https://github.com/eviatarbach/parasweep (Last checked: 2021-01)
+
+
 =head2 Todo
+
+https://reposhub.com/python/command-line-tools/Akianonymus-parallel-bash.html
+
+https://github.com/Nukesor/pueue
 
 PASH: Light-touch Data-Parallel Shell Processing
 
@@ -2720,11 +2902,9 @@ https://arxiv.org/pdf/2012.15443.pdf KumQuat
 
 https://arxiv.org/pdf/2007.09436.pdf
 
-https://github.com/UnixJunkie/PAR (Same as http://savannah.nongnu.org/projects/par above?)
-
-https://gitlab.com/netikras/bthread
-
 https://github.com/JeiKeiLim/simple_distribute_job
+
+https://github.com/Akianonymus/parallel-bash
 
 https://github.com/reggi/pkgrun
 
@@ -2737,29 +2917,6 @@ https://github.com/xuchenCN/go-pssh
 https://github.com/flesler/parallel
 
 https://github.com/Julian/Verge
-
-https://github.com/ExpectationMax/simple_gpu_scheduler
-    simple_gpu_scheduler --gpus 0 1 2 < gpu_commands.txt
-    parallel -j3 --shuf CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' < gpu_commands.txt
-
-    simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 | simple_gpu_scheduler --gpus 0,1,2
-    parallel --header : --shuf -j3 -v CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =}' python3 train_dnn.py --lr {lr} --batch_size {bs} ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
-
-    simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" --n-samples 5 -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 | simple_gpu_scheduler --gpus 0,1,2
-    parallel --header : --shuf CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1; seq() > 5 and skip() =}' python3 train_dnn.py --lr {lr} --batch_size {bs} ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
-
-    touch gpu.queue
-    tail -f -n 0 gpu.queue | simple_gpu_scheduler --gpus 0,1,2 &
-    echo "my_command_with | and stuff > logfile" >> gpu.queue
-
-    touch gpu.queue
-    tail -f -n 0 gpu.queue | parallel -j3 CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' &
-    # Needed to fill job slots once
-    seq 3 | parallel echo true >> gpu.queue
-    # Add jobs
-    echo "my_command_with | and stuff > logfile" >> gpu.queue
-    # Needed to flush output from completed jobs
-    seq 3 | parallel echo true >> gpu.queue
 
 
 =head1 TESTING OTHER TOOLS

@@ -14,6 +14,15 @@ that it is cited. The citation notice makes users aware of this.
 
 See also: https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html
 
+The funding of free software is hard. There does not seem to be a
+single solution that just works:
+
+* https://stackoverflow.blog/2021/01/07/open-source-has-a-funding-problem/
+* https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
+* https://www.youtube.com/watch?v=vTsc1m78BUk
+* https://blog.licensezero.com/2019/08/24/process-of-elimination.html
+* https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
+
 
 > Is the citation notice compatible with GPLv3?
 
@@ -95,6 +104,7 @@ refer to peer-reviewed articles - others do not:
 * https://www.open-mpi.org/papers/
 * https://www.tensorflow.org/about/bib
 * http://www.fon.hum.uva.nl/paul/praat.html
+* https://github.com/UnixJunkie/PAR/blob/master/README
 
 
 > I do not like the notice. Can I fork GNU Parallel and remove it?

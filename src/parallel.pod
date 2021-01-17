@@ -322,6 +322,10 @@ perl quote a string
 
 do not quote current replacement string
 
+=item Z<> B<hash(val)>
+
+compute B::hash(val)
+
 =item Z<> B<total_jobs()>
 
 number of jobs in total
