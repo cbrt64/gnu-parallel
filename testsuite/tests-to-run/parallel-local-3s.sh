@@ -31,11 +31,6 @@ par_10000_m_X() {
     seq 10000 | perl -pe 's/$/.gif/' |
         parallel -j1 -km echo a{}b{.}c{.} |
         parallel -k --pipe --tee ::: wc md5sum
-    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.}{} | wc -l
-    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.}{.} | wc -l
-    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c{.} | wc -l
-    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b{.}c | wc -l
-    seq 10000 | perl -pe 's/$/.gif/' | parallel -j1 -kX echo a{}b | wc -l
 }
 
 par_10000_5_rpl_X() {
@@ -49,7 +44,6 @@ par_10000_5_rpl_X() {
 
 par_X_I_meta() {
     echo '### Test -X -I with shell meta chars'
-
     seq 10000 | parallel -j1 -I :: -X echo a::b::c:: | wc -l
     seq 10000 | parallel -j1 -I '<>' -X echo 'a<>b<>c<>' | wc -l
     seq 10000 | parallel -j1 -I '<' -X echo 'a<b<c<' | wc -l

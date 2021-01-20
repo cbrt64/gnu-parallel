@@ -941,6 +941,20 @@ par_json() {
 	perl -pe 's/\d/0/g'
 }
 
+par_hash_and_time_functions() {
+    echo '### Functions for replacement string'
+    parallel echo '{= $_=join(" ",
+                              yyyy_mm_dd_hh_mm_ss(),
+                              yyyy_mm_dd_hh_mm(),
+                              yyyy_mm_dd(),
+                              yyyymmddhhmmss(),
+			      yyyymmddhhmm(),
+			      yyyymmdd()) =}' ::: 1 |
+	perl -pe 's/\d/9/g'
+    parallel echo '{= $_=hash($_) =}' ::: 1 |
+	perl -pe 's/[a-f0-9]/X/g'
+}
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |

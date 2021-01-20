@@ -28,17 +28,8 @@ sleep .3
 /usr/bin/bash: -c: line 0: `   perl -e 'for(1..10){print "$_\n"}') > num_%header'
   perl -e 'print "HHHHAAABBBCCC"' > fixedlen
   parallel echo ::: A B C
-A
-B
-C
   parallel -a abc-file echo
-A
-B
-C
   cat abc-file | parallel echo
-A
-B
-C
   parallel echo ::: A B C ::: D E F
 A D
 A E
@@ -143,16 +134,8 @@ C D
 C E
 C F
   parallel -d _ echo :::: abc_-file
-A
-B
-C
   parallel -d '\0' echo :::: abc0-file
-A
-B
-C
   parallel -E stop echo ::: A B stop C D
-A
-B
   (echo 1; echo; echo 2) | parallel --no-run-if-empty echo
 9
   parallel ::: ls 'echo foo' pwd
@@ -185,9 +168,7 @@ A/B
   parallel echo {/} ::: A/B.C
 B.C
   parallel echo {//} ::: A/B.C
-A
   parallel echo {/.} ::: A/B.C
-B
   parallel echo {#} ::: A B C
 9
   parallel -j 2 echo {%} ::: A B C
@@ -199,9 +180,7 @@ A/B
   parallel --basenamereplace ,, echo ,, ::: A/B.C
 B.C
   parallel --dirnamereplace ,, echo ,, ::: A/B.C
-A
   parallel --basenameextensionreplace ,, echo ,, ::: A/B.C
-B
   parallel --seqreplace ,, echo ,, ::: A B C
 9
   parallel -j2 --slotreplace ,, echo ,, ::: A B C
@@ -365,7 +344,6 @@ G H
   parallel -N0 echo foo ::: 1 2 3
 foo
   perl -e 'print "@ARGV\n"' A
-A
   parallel perl -e 'print "@ARGV\n"' ::: This wont work
   Warning: Input is read from the terminal. You either know what you
   Warning: are doing (in which case: YOU ARE AWESOME!) or you forgot
@@ -420,9 +398,6 @@ echo A
 echo B
 echo C
   parallel --verbose echo {} ::: A B C
-A
-B
-C
 echo A
 echo B
 echo C
@@ -468,9 +443,6 @@ echo C
   parallel --tmpdir /var/tmp --files echo ::: A B C
 /var/tmp/parXXXXX.par
   parallel --results outdir echo ::: A B C
-A
-B
-C
   outdir/1/A/seq
   outdir/1/A/stderr
   outdir/1/A/stdout
@@ -804,87 +776,6 @@ in my_func baz
   cat ~/.parallel/ignored_vars|sort
 BASH_FUNC_run_once%%
 BASH_FUNC_run_test%%
-COLORFGBG
-COLORTERM
-DBUS_SESSION_BUS_ADDRESS
-DEBEMAIL
-DEBFULLNAME
-DESKTOP_SESSION
-DISPLAY
-EDITOR
-GOPATH
-GPG_AGENT_INFO
-HISTCONTROL
-HOME
-KDE_FULL_SESSION
-KDE_SESSION_UID
-KDE_SESSION_VERSION
-KONSOLE_DBUS_SERVICE
-KONSOLE_DBUS_SESSION
-KONSOLE_DBUS_WINDOW
-KONSOLE_VERSION
-LANG
-LANGUAGE
-LC_ALL
-LESS
-LESSCLOSE
-LESSOPEN
-LOGNAME
-LS_COLORS
-MAKEFLAGS
-MAKELEVEL
-MAKE_TERMERR
-MAKE_TERMOUT
-MFLAGS
-OLDPWD
-ORACLE_HOME
-ORACLE_SID
-PARALLEL
-PARALLEL_HOME
-PARALLEL_JOBSLOT
-PARALLEL_PID
-PARALLEL_RSYNC_OPTS
-PARALLEL_SEQ
-PARALLEL_SSHHOST
-PARALLEL_SSHLOGIN
-PARALLEL_TMP
-PATH
-PERL_MB_OPT
-PERL_MM_OPT
-PROFILEHOME
-PWD
-QT_ACCESSIBILITY
-QT_AUTO_SCREEN_SCALE_FACTOR
-SERVER1
-SERVER2
-SESSION_MANAGER
-SHELL
-SHELL_SESSION_ID
-SHLVL
-SSH_AGENT_PID
-SSH_AUTH_SOCK
-TERM
-TIMEOUT
-TMPDIR
-TRIES
-USER
-VISUAL
-WINDOWID
-XAUTHORITY
-XCURSOR_SIZE
-XCURSOR_THEME
-XDG_CONFIG_DIRS
-XDG_CURRENT_DESKTOP
-XDG_DATA_DIRS
-XDG_RUNTIME_DIR
-XDG_SEAT
-XDG_SEAT_PATH
-XDG_SESSION_CLASS
-XDG_SESSION_DESKTOP
-XDG_SESSION_ID
-XDG_SESSION_PATH
-XDG_SESSION_TYPE
-XDG_VTNR
 _
 mysqlrootpass
   # The function is only copied if using Bash
@@ -1133,61 +1024,35 @@ parallel: Error: echo is not a valid DBURL
   cat fixedlen | parallel --pipe --header .{4} --block 3 --recend '' \
     'echo start; cat; echo'
 start
-HHHHAAA
-start
-HHHHBBB
-start
-HHHHCCC
   echo /foo, bar/, /baz, qux/, | \
     parallel -kN1 --recend ', ' --pipe echo JOB{#}\;cat\;echo END
-JOB1
 /foo, END
-JOB2
 bar/, END
-JOB3
 /baz, END
-JOB4
 qux/,
-END
   echo /foo, bar/, /baz, qux/, | \
     parallel -kN1 --recstart / --pipe echo JOB{#}\;cat\;echo END
-JOB1
 /foo, barEND
-JOB2
 /, END
-JOB3
 /baz, quxEND
-JOB4
 /,
-END
   echo /foo, bar/, /baz, qux/, | \
     parallel -kN1 --recend ', ' --recstart / --pipe \
     echo JOB{#}\;cat\;echo END
-JOB1
 /foo, bar/, END
-JOB2
 /baz, qux/,
-END
   echo foo,bar,_baz,__qux, | \
     parallel -kN1 --regexp --recend ,_+ --pipe \
     echo JOB{#}\;cat\;echo END
-JOB1
 foo,bar,_END
-JOB2
 baz,__END
-JOB3
 qux,
-END
   echo foo,bar,_baz,__qux, | \
     parallel -kN1 --rrs --regexp --recend ,_+ --pipe \
     echo JOB{#}\;cat\;echo END
-JOB1
 foo,barEND
-JOB2
 bazEND
-JOB3
 qux,
-END
   cat num_%header | \
     parallel --header '(%.*\n)*' --pipe -N3 echo JOB{#}\;cat
 cat: num_%header: No such file or directory
@@ -1384,7 +1249,6 @@ When using programs that use GNU Parallel to process data for publication
 please cite as described in 'parallel --citation'.
   parallel --minversion VERSION && \
     echo Your version is at least VERSION.
-VERSION
 Your version is at least VERSION.
   parallel --citation
 Academic tradition requires you to cite works you base your article on.
@@ -1416,9 +1280,6 @@ mentioned in the release notes of next version of GNU Parallel.
   echo '--nice 17' > ~/.parallel/nicetimeout
   echo '--timeout 300%' >> ~/.parallel/nicetimeout
   parallel --profile nicetimeout echo ::: A B C
-A
-B
-C
   echo '-vv --dry-run' > ~/.parallel/dryverbose
   parallel --profile dryverbose --profile nicetimeout echo ::: A B C
 echo A

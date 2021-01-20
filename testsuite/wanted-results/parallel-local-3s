@@ -7,11 +7,6 @@ par_10000_5_rpl_X	1
 par_10000_m_X	### Test -m with 10000 args
 par_10000_m_X	      2   29996  186684
 par_10000_m_X	c606aec1723ee5cc15f2a1b95d83d3cf  -
-par_10000_m_X	3
-par_10000_m_X	2
-par_10000_m_X	2
-par_10000_m_X	2
-par_10000_m_X	1
 par_X_I_meta	### Test -X -I with shell meta chars
 par_X_I_meta	2
 par_X_I_meta	2

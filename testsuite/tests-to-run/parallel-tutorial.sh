@@ -74,8 +74,8 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
             # Timings are often off
             s/^(\d)$/9/;
             s/^(\d\d)$/99/;
-	    # Sometime these vars are not present
-            s/^PAM_KWALLET5*_LOGIN$//;
+	    # Remove variable names - they vary
+	    s/^[A-Z][A-Z0-9_]*\s$//;
 	    # Fails often due to race
 	    s/cat: input_file: No such file or directory\n//;
 	    s{rsync: link_stat ".*/home/parallel/input_file.out" .*\n}{};
@@ -93,11 +93,7 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
 	    s/doi.*=.*//;
 	    s/url.*= .*doi.org.*//;
 	    s/.Feel free to use .nocite.*//;
-	    ' |
-  perl -ne '/GTK2_RC_FILES/ and next;
-    /GTK_RC_FILES/ and next;
-    print' |
-  uniq
+	    ' | uniq
 # 3+3 .par files (from --files), 1 .tms-file from tmux attach
 find {$TMPDIR,/var/tmp,/tmp}/{fif,tms,par[^a]}* -mmin -10 2>/dev/null | wc -l
 find {$TMPDIR,/var/tmp,/tmp}/{fif,tms,par[^a]}* -mmin -10 2>/dev/null | parallel rm

@@ -3,6 +3,7 @@ echo '### --env _'
   fUbAr="OK FUBAR" parallel -S parallel@lo --env _ echo '$fUbAr $DEBEMAIL' ::: test
 OK FUBAR test
   fUbAr="OK FUBAR" parallel -S csh@lo --env _ echo '$fUbAr $DEBEMAIL' ::: test
+OK FUBAR test
 echo '### --env _ with explicit mentioning of normally ignored var $DEBEMAIL'
 ### --env _ with explicit mentioning of normally ignored var $DEBEMAIL
   fUbAr="OK FUBAR" parallel -S parallel@lo --env DEBEMAIL,_ echo '$fUbAr $DEBEMAIL' ::: test

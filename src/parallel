@@ -2151,7 +2151,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20201223;
+    $Global::version = 20210113;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4661,8 +4661,17 @@ sub save_original_signal_handler() {
     $SIG{CONT} = sub {
 	# Set $SIG{TSTP} again (it is undef'ed in sigtstp() )
 	$SIG{TSTP} = \&sigtstp;
-	# Send continue signal to all children process groups
-	kill "CONT", map { -$_ } keys %Global::running;
+	for my $job (values %Global::running) {
+	    if($job->suspended()) {
+		# Force jobs to suspend, if they are marked as suspended.
+		# --memsupspend can suspend a job that will be resumed
+		# if the user presses CTRL-Z followed by `fg`.
+		$job->suspend();
+	    } else {
+		# Resume the rest of the jobs
+		$job->resume();
+	    }
+	}
     };
 }
 
@@ -4791,7 +4800,7 @@ sub reaper() {
 	::status_no_nl("\r",$progress{'status'});
     }
 
-    debug("run", "done ");
+    debug("run", "jobdone \n");
     return $stiff;
 }
 
@@ -5888,7 +5897,7 @@ sub reap_usleep() {
 	    kill_youngster_if_not_enough_mem($opt::memfree*0.5);
 	}
 	if($opt::memsuspend) {
-	    kill_youngster_if_not_enough_mem($opt::memsuspend*0.5);
+	    suspend_young_if_not_enough_mem($opt::memsuspend);
 	}
 	if($opt::limit) {
 	    kill_youngest_if_over_limit();
@@ -5953,6 +5962,58 @@ sub kill_youngest_if_over_limit() {
     }
 }
 
+sub suspend_young_if_not_enough_mem() {
+    # Check each $sshlogin if there is enough mem.
+    # If less than $limit free mem: suspend some of the young children
+    # Else: Resume all jobs
+    # Uses:
+    #   %Global::running
+    my $limit = shift;
+    my %jobs_of;
+    my @sshlogins;
+
+    for my $job (values %Global::running) {
+	if(not $jobs_of{$job->sshlogin()}) {
+	    push @sshlogins, $job->sshlogin();
+	}
+	push @{$jobs_of{$job->sshlogin()}}, $job;
+    }
+    for my $sshlogin (@sshlogins) {
+	my $free = $sshlogin->memfree();
+	if($free < 2*$limit) {
+	    # Suspend all jobs (resume some of them later)
+	    map { $_->suspended() or $_->suspend(); } @{$jobs_of{$sshlogin}};
+	    my @jobs = sort { $b->seq() <=> $a->seq() } @{$jobs_of{$sshlogin}};
+	    # how many should be running?
+	    # limit*1 => 1;
+	    # limit*1.5 => 2;
+	    # limit*1.75 => 4;
+	    # free < limit*(2-1/2^n);
+	    # =>
+	    # 1/(2-free/limit) < 2^n;
+	    my $run = int(1/(2-$free/$limit));
+	    $run = ::min($run,$#jobs);
+	    # Resume the oldest running
+	    for my $job ((sort { $a->seq() <=> $b->seq() } @jobs)[0..$run]) {
+		::debug("mem","\nResume ",$run+1, " jobs. Seq ",
+			$job->seq(), " resumed ",
+			$sshlogin->memfree()," < ",2*$limit);
+		$job->resume();
+	    }
+	} else {
+	    for my $job (@{$jobs_of{$sshlogin}}) {
+		if($job->suspended()) {
+		    $job->resume();
+		    ::debug("mem","\nResume ",$#{$jobs_of{$sshlogin}}+1, " jobs. Seq ",
+			    $job->seq(), " resumed ",
+			    $sshlogin->memfree()," > ",2*$limit);
+		    last;
+		}
+	    }
+	}
+    }
+}
+
 sub kill_youngster_if_not_enough_mem() {
     # Check each $sshlogin if there is enough mem.
     # If less than 50% enough free mem: kill off the youngest child
@@ -5977,11 +6038,7 @@ sub kill_youngster_if_not_enough_mem() {
 			 @{$jobs_of{$sshlogin}}));
 		::debug("mem","\n", $job->seq(), "killed ",
 			$sshlogin->memfree()," < ",$limit);
-		if($opt::memsuspend) {
-		    $job->suspend();
-		} else {
-		    $job->kill();
-		}
+		$job->kill();
 		$sshlogin->memfree_recompute();
 	    } else {
 		last;
@@ -8684,8 +8741,6 @@ sub suspend($) {
     my @pgrps = map { -$_ } $self->pid();
     kill "STOP", @pgrps;
     $self->set_suspended(1);
-    # push job onto start stack
-    $Global::JobQueue->unget($self);
 }
 
 sub set_suspended($$) {
@@ -9723,11 +9778,6 @@ sub start($) {
     }
 
     my $job = shift;
-    if($job->suspended()) {
-	# Job is kill -STOP'ped: Restart it.
-	$job->resume();
-	return $job;
-    }
     # Get the shell command to be executed (possibly with ssh infront).
     my $command = $job->wrapped();
     my $pid;
@@ -12379,6 +12429,11 @@ sub pQ($) {
     return $ret;
 }
 
+sub hash($) {
+    $Global::use{"DBI"} ||= eval "use B; 1;";
+    B::hash(@_);
+}
+
 sub total_jobs() {
     return $Global::JobQueue->total_jobs();
 }
@@ -12401,6 +12456,24 @@ sub total_jobs() {
     sub uq() {
 	# Do not quote this arg
 	$Global::unquote_arg = 1;
+    }
+    sub yyyy_mm_dd_hh_mm_ss() {
+	::strftime("%Y-%m-%dT%H:%M:%S", localtime(time()));
+    }
+    sub yyyy_mm_dd_hh_mm() {
+	::strftime("%Y-%m-%dT%H:%M", localtime(time()));
+    }
+    sub yyyy_mm_dd() {
+	::strftime("%Y-%m-%d", localtime(time()));
+    }
+    sub yyyymmddhhmmss() {
+	::strftime("%Y%m%d%H%M%S", localtime(time()));
+    }
+    sub yyyymmddhhmm() {
+	::strftime("%Y%m%d%H%M", localtime(time()));
+    }
+    sub yyyymmdd() {
+	::strftime("%Y%m%d", localtime(time()));
     }
 
     sub replace($$$$) {
@@ -13448,8 +13521,8 @@ sub main() {
 	while(start_more_jobs()) {}
 	spreadstdin();
     } else {
-	# Reap one - start one
-	while(reaper() + start_more_jobs()) {}
+	# Reap the finished jobs - start more
+	while(reapers() + start_more_jobs()) {}
     }
     ::debug("init", "Start draining\n");
     drain_job_queue(@command);
