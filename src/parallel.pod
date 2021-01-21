@@ -467,7 +467,7 @@ contains B<a b c>.  B<-a foo> B<-a bar> will result in the combinations
 (1,a) (1,b) (1,c) (2,a) (2,b) (2,c). This is useful for replacing
 nested for-loops.
 
-See also B<--link> and B<{>I<n>B<}>.
+See also: B<--link> and B<{>I<n>B<}>.
 
 
 =item B<--arg-file-sep> I<sep-str>
@@ -549,7 +549,7 @@ I<bincol> is small (<10), slower if it is big (>100).
 
 B<--bin> requires B<--pipe> and a fixed numeric value for B<--jobs>.
 
-See also B<--shard>, B<--group-by>, B<--roundrobin>.
+See also: B<--shard>, B<--group-by>, B<--roundrobin>.
 
 
 =item B<--bg>
@@ -645,7 +645,7 @@ you can do: B<parallel --pipe --cat wc {}>.
 
 Implies B<--pipe> unless B<--pipepart> is used.
 
-See also B<--fifo>.
+See also: B<--fifo>.
 
 
 =item B<--cleanup>
@@ -846,7 +846,7 @@ foreground (opposite B<--bg>), and wait for completion of the command
 before exiting.
 
 
-See also B<--bg>, B<man sem>.
+See also: B<--bg>, B<man sem>.
 
 
 =item B<--fifo>
@@ -860,7 +860,7 @@ Beware: If data is not read from the fifo, the job will block forever.
 
 Implies B<--pipe> unless B<--pipepart> is used.
 
-See also B<--cat>.
+See also: B<--cat>.
 
 
 =item B<--filter-hosts>
@@ -971,7 +971,7 @@ UserID when grouping:
   cat table.csv | parallel --pipe --colsep , --header : \
     --group-by 'UserID s/\D//g' -kN1 wc
 
-See also B<--shard>, B<--roundrobin>.
+See also: B<--shard>, B<--roundrobin>.
 
 
 =item B<--help>
@@ -1151,7 +1151,7 @@ If the host is long, you can use B<column -t> to pretty print it:
 
   cat joblog | column -t
 
-See also B<--resume> B<--resume-failed>.
+See also: B<--resume> B<--resume-failed>.
 
 
 =item B<--jobs> I<N>
@@ -1427,6 +1427,34 @@ to be run later.
 B<--retries> must be set to determine how many times GNU B<parallel>
 should retry a given job.
 
+See also: B<--memsuspend>
+
+
+=item B<--memsuspend> I<size> (alpha testing)
+
+Suspend jobs when there is less than 2 * I<size> memory free. The
+I<size> can be postfixed with K, M, G, T, P, k, m, g, t, or p which
+would multiply the size with 1024, 1048576, 1073741824, 1099511627776,
+1125899906842624, 1000, 1000000, 1000000000, 1000000000000, or
+1000000000000000, respectively.
+
+If the available memory falls below 2 * I<size>, GNU B<parallel>
+will suspend some of the running jobs. If the available memory falls
+below I<size>, only one job will be running.
+
+If a single job takes up at most I<size> RAM, all jobs will complete
+without running out of memory. If you have swap available, you can
+usually lower I<size> to around half the size of a single job - with
+the slight risk of swapping a little.
+
+Jobs will be resumed when more RAM is available - typically when the
+oldest job completes.
+
+B<--memsuspend> only works on local jobs because there is no obvious
+way to suspend remote jobs.
+
+See also: B<--memfree>
+
 
 =item B<--minversion> I<version>
 
@@ -1629,7 +1657,7 @@ everything at startup.
 By sending GNU B<parallel> SIGUSR2 you can toggle turning on/off
 B<--progress> on a running GNU B<parallel> process.
 
-See also B<--eta> and B<--bar>.
+See also: B<--eta> and B<--bar>.
 
 
 =item B<--max-line-length-allowed>
@@ -1767,7 +1795,7 @@ B<--memfree> may give better results, so try using that first.
 Record current environment variables in ~/.parallel/ignored_vars. This
 is useful before using B<--env _>.
 
-See also B<--env>, B<--session>.
+See also: B<--env>, B<--session>.
 
 
 =item B<--recstart> I<startstring>
@@ -1933,7 +1961,7 @@ will generate the files:
   my_foo/stderr
   my_foo/stdout
 
-See also B<--files>, B<--tag>, B<--header>, B<--joblog>.
+See also: B<--files>, B<--tag>, B<--header>, B<--joblog>.
 
 
 =item B<--resume>
@@ -1945,7 +1973,7 @@ sequence numbers in B<--joblog> then the input, the command, and
 B<--joblog> all have to remain unchanged; otherwise GNU B<parallel>
 may run wrong commands.
 
-See also B<--joblog>, B<--results>, B<--resume-failed>, B<--retries>.
+See also: B<--joblog>, B<--results>, B<--resume-failed>, B<--retries>.
 
 
 =item B<--resume-failed>
@@ -1958,7 +1986,7 @@ numbers in B<--joblog> then the input, the command, and B<--joblog>
 all have to remain unchanged; otherwise GNU B<parallel> may run wrong
 commands.
 
-See also B<--joblog>, B<--resume>, B<--retry-failed>, B<--retries>.
+See also: B<--joblog>, B<--resume>, B<--retry-failed>, B<--retries>.
 
 
 =item B<--retry-failed>
@@ -2028,7 +2056,7 @@ line:
   6	[...]	2	0	echo 5;sleep .5; exit 2
   4	[...]	1	0	echo 7;sleep .7; exit 1
 
-See also B<--joblog>, B<--resume>, B<--resume-failed>, B<--retries>.
+See also: B<--joblog>, B<--resume>, B<--resume-failed>, B<--retries>.
 
 
 =item B<--retries> I<n>
@@ -2095,7 +2123,7 @@ impossible to track which input block corresponds to which output.
 
 B<--roundrobin> implies B<--pipe>, except if B<--pipepart> is given.
 
-See also B<--group-by>, B<--shard>.
+See also: B<--group-by>, B<--shard>.
 
 
 =item B<--rpl> 'I<tag> I<perl expression>'
@@ -2220,7 +2248,7 @@ Used with B<--fg>, B<--wait>, and B<--semaphorename>.
 
 The command B<sem> is an alias for B<parallel --semaphore>.
 
-See also B<man sem>.
+See also: B<man sem>.
 
 
 =item B<--semaphorename> I<name>
@@ -2238,7 +2266,7 @@ The semaphore is stored in ~/.parallel/semaphores/
 
 Implies B<--semaphore>.
 
-See also B<man sem>.
+See also: B<man sem>.
 
 
 =item B<--semaphoretimeout> I<secs>
@@ -2251,7 +2279,7 @@ If I<secs> < 0: If the semaphore is not released within I<secs> seconds, exit.
 
 Implies B<--semaphore>.
 
-See also B<man sem>.
+See also: B<man sem>.
 
 
 =item B<--seqreplace> I<replace-str>
@@ -2268,7 +2296,7 @@ variables with names in B<$PARALLEL_IGNORED_NAMES> will not be copied.
 
 Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
 
-See also B<--env>, B<--record-env>.
+See also: B<--env>, B<--record-env>.
 
 
 =item B<--shard> I<shardexpr>
@@ -2290,7 +2318,7 @@ I<shardcol> is small (<10), slower if it is big (>100).
 
 B<--shard> requires B<--pipe> and a fixed numeric value for B<--jobs>.
 
-See also B<--bin>, B<--group-by>, B<--roundrobin>.
+See also: B<--bin>, B<--group-by>, B<--roundrobin>.
 
 
 =item B<--shebang>
@@ -2695,7 +2723,7 @@ B<--timeout 1d3.5h16.6m4s>.
 
 Print the job to be run on stderr (standard error).
 
-See also B<-v>, B<-p>.
+See also: B<-v>, B<-p>.
 
 
 =item B<--transfer>
@@ -2900,7 +2928,7 @@ Wait for all commands to complete.
 
 Used with B<--semaphore> or B<--sqlmaster>.
 
-See also B<man sem>.
+See also: B<man sem>.
 
 
 =item B<-X>
@@ -2920,7 +2948,7 @@ unexpected results if B<{}> is used as part of a word.
 
 Support for B<-X> with B<--sshlogin> is limited and may fail.
 
-See also B<-m>.
+See also: B<-m>.
 
 
 =item B<--exit>

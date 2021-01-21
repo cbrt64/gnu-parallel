@@ -952,7 +952,7 @@ par_hash_and_time_functions() {
 			      yyyymmdd()) =}' ::: 1 |
 	perl -pe 's/\d/9/g'
     parallel echo '{= $_=hash($_) =}' ::: 1 |
-	perl -pe 's/[a-f0-9]/X/g'
+	perl -pe 's/[a-f0-9]+/X/g'
 }
 
 export -f $(compgen -A function | grep par_)

@@ -147,6 +147,10 @@ par_retries_bug_from_2010	4
 par_retries_bug_from_2010	4
 par_retries_bug_from_2010	4
 par_retries_bug_from_2010	2
+par_sql_CSV	### CSV write to the right place
+par_sql_CSV	ran OK
+par_sql_CSV	ok
+par_sql_CSV	parallel: Error: /must/fail is not a directory.
 par_testhalt	now fail 0 true	### testhalt --halt now,fail=0
 par_testhalt	now fail 0 true	job 1
 par_testhalt	now fail 0 true	parallel: This job failed:

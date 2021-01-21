@@ -63,9 +63,9 @@ around 100 machines - depending on the duration of each job.
 
 GNU B<parallel> busy waits. This is because the reason why a job is
 not started may be due to load average (when using B<--load>), and
-thus it will not make sense to wait for a job to finish. Instead the
-load average must be checked again. Load average is not the only
-reason: B<--timeout> has a similar problem.
+thus it will not make sense to just wait for a job to finish. Instead
+the load average must be rechecked regularly. Load average is not the
+only reason: B<--timeout> has a similar problem.
 
 To not burn up too much CPU GNU B<parallel> sleeps exponentially
 longer and longer if nothing happens, maxing out at 1 second.

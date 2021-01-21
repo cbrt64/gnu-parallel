@@ -1,3 +1,33 @@
+20210122
+
+* --memsuspend suspends jobs when there is little memory free. This
+  way you can run jobs in parallel that added up potentially will take
+  up more RAM than is available.
+
+* $PARALLEL_ARGHOSTGROUPS and the replacement string {agrp} will give
+  the hostgroup given on the argument when using --hostgroup.
+
+* Handy time functions for {= =}: yyyy_mm_dd_hh_mm_ss()
+  yyyy_mm_dd_hh_mm() yyyy_mm_dd() yyyymmddhhmmss() yyyymmddhhmm()
+  yyyymmdd() hash($str)
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Software Engineering For Scientists
+  https://canvas.stanford.edu/courses/133091
+
+* Optional Individual Submission 4 Job Handling - GNU Parallel
+  https://www.youtube.com/watch?v=-tX0bFAYAxM
+
+* 关于gnu parallel：GnuParallel：在集群上并行化脚本，脚本将文件写入主
+  节点https://www.codenong.com/25172209/
+
+* すぐ忘れてしまう、仕事で使う技
+  https://qiita.com/hana_shin/items/53c3c78525c9c758ae7c
+
+
 20201222
 
 * --pipe engine changed making --pipe alpha quality.

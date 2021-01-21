@@ -2151,7 +2151,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210113;
+    $Global::version = 20210122;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4933,8 +4933,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2020, December 22). GNU Parallel 20201222 ('Vaccine').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.4381888",
+         "  Tange, O. (2021, January 22). GNU Parallel 20210122 ('Capitol Riots').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.4454976",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -4964,8 +4964,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2020, December 22). GNU Parallel 20201222 ('Vaccine').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.4381888",
+	     "  Tange, O. (2021, January 22). GNU Parallel 20210122 ('Capitol Riots').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.4454976",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5078,20 +5078,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2020_4381888,",
+	"\@software{tange_2021_4454976,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20201222 ('Vaccine')},",
-	"      month        = Dec,",
+	"      title        = {GNU Parallel 20210122 ('Capitol Riots')},",
+	"      month        = Jan,",
 	"      year         = 2020,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.4381888},",
-	"      url          = {https://doi.org/10.5281/zenodo.4381888}",
+	"      doi          = {10.5281/zenodo.4454976},",
+	"      url          = {https://doi.org/10.5281/zenodo.4454976}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2020_4381888})",
+	"(Feel free to use \\nocite{tange_2021_4454976})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -9280,12 +9280,12 @@ sub sshlogin_wrap($) {
 	my @bashfunc = map {
 	    my $v=$_;
 	    s/BASH_FUNC_(.*)(\(\)|%%)/$1/;
-	    "$_$ENV{$v};export -f $_ >/dev/null;" } @bash_functions;
+	    "$_$ENV{$v};\nexport -f $_ 2> /dev/null;\n" } @bash_functions;
 	# eval $bashfuncset will set $bashfunc
 	my $bashfuncset;
 	if(@bashfunc) {
 	    # Functions are not supported for all shells
-	    if($Global::shell !~ m:(bash|rbash|zsh|rzsh|dash|ksh):) {
+	    if($Global::shell !~ m:(^|/)(ash|bash|rbash|zsh|rzsh|dash|ksh):) {
 		::warning("Shell functions may not be supported in $Global::shell.");
 	    }
 	    $bashfuncset =

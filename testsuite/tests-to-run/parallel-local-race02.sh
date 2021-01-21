@@ -29,6 +29,16 @@
       echo 1=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
 #}
 
+par_sql_CSV() {
+    echo '### CSV write to the right place'
+    rm -rf /tmp/parallel-CSV
+    mkdir /tmp/parallel-CSV
+    parallel --sqlandworker csv:///%2Ftmp%2Fparallel-CSV/OK echo ::: 'ran OK'
+    ls /tmp/parallel-CSV
+    stdout parallel --sqlandworker csv:///%2Fmust%2Ffail/fail echo ::: 1 |
+	perl -pe 's/\d/0/g'
+}
+
 par_hostgroup() {
     echo '### --hostgroup force ncpu'
     parallel --delay 0.1 --hgrp -S @g1/1/parallel@lo -S @g2/3/lo whoami\;sleep 0.4{} ::: {1..8} | sort

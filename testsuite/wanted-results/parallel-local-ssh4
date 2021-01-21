@@ -1,118 +1,81 @@
-echo '### --env _'
-### --env _
-  fUbAr="OK FUBAR" parallel -S parallel@lo --env _ echo '$fUbAr $DEBEMAIL' ::: test
-OK FUBAR test
-  fUbAr="OK FUBAR" parallel -S csh@lo --env _ echo '$fUbAr $DEBEMAIL' ::: test
-OK FUBAR test
-echo '### --env _ with explicit mentioning of normally ignored var $DEBEMAIL'
-### --env _ with explicit mentioning of normally ignored var $DEBEMAIL
-  fUbAr="OK FUBAR" parallel -S parallel@lo --env DEBEMAIL,_ echo '$fUbAr $DEBEMAIL' ::: test
-OK FUBAR ole@tange.dk test
-  fUbAr="OK FUBAR" parallel -S csh@lo --env DEBEMAIL,_ echo '$fUbAr $DEBEMAIL' ::: test
-OK FUBAR ole@tange.dk test
-echo 'bug #40137: SHELL not bash: Warning when exporting funcs'
-bug #40137: SHELL not bash: Warning when exporting funcs
-  . <(printf 'myfunc() {\necho $1\n}'); export -f myfunc; parallel --env myfunc -S lo myfunc ::: no_warning
-no_warning
-  . <(printf 'myfunc() {\necho $1\n}'); export -f myfunc; SHELL=/bin/sh parallel --env myfunc -S lo myfunc ::: warning
-warning
-echo '### zsh'
-### zsh
-echo 'env in zsh'
-env in zsh
-  echo 'Normal variable export'
-Normal variable export
-  export B=\';   PARALLEL_SHELL=/usr/bin/zsh parallel --env B echo '$B' ::: a
-' a
-  echo 'Function export as variable'
-Function export as variable
-  export myfuncvar="() { echo myfuncvar \$*; }";   PARALLEL_SHELL=/usr/bin/zsh parallel --env myfuncvar myfuncvar ::: a
-myfuncvar a
-  echo 'Function export as function'
-Function export as function
-  myfunc() { echo myfunc $*; };   export -f myfunc;   PARALLEL_SHELL=/usr/bin/zsh parallel --env myfunc myfunc ::: a
-myfunc a
-  ssh zsh@lo 'fun="() { echo function from zsh to zsh \$*; }";               export fun;               parallel --env fun fun ::: OK'
-function from zsh to zsh OK
-  ssh zsh@lo 'fun="() { echo function from zsh to bash \$*; }";               export fun;               parallel -S parallel@lo --env fun fun ::: OK'
-function from zsh to bash OK
-echo '### csh'
-### csh
-  echo "3 big vars run remotely - length(base64) > 1000"
-3 big vars run remotely - length(base64) > 1000
-  stdout ssh csh@lo 'setenv A `seq 200|xargs`;                      setenv B `seq 200 -1 1|xargs`;                      setenv C `seq 300 -2 1|xargs`;                      parallel -Scsh@lo --env A,B,C -k echo \$\{\}\|wc ::: A B C'
-      1     200     692
-      1     200     692
-      1     150     547
-echo '### csh2'
-### csh2
-  echo "3 big vars run locally"
-3 big vars run locally
-  stdout ssh csh@lo 'setenv A `seq 200|xargs`;                      setenv B `seq 200 -1 1|xargs`;                      setenv C `seq 300 -2 1|xargs`;                      parallel --env A,B,C -k echo \$\{\}\|wc ::: A B C'
-      1     200     692
-      1     200     692
-      1     150     547
-echo '### rc'
-### rc
-  echo "3 big vars run remotely - length(base64) > 1000"
-3 big vars run remotely - length(base64) > 1000
-  stdout ssh rc@lo 'A=`{seq 200};                     B=`{seq 200 -1 1};                     C=`{seq 300 -2 1};                     parallel -Src@lo --env A,B,C -k echo '"'"'${}|wc'"'"' ::: A B C'
-      1     200     692
-      1     200     692
-      1     150     547
-echo '### rc2'
-### rc2
-  echo "3 big vars run locally"
-3 big vars run locally
-  stdout ssh rc@lo 'A=`{seq 200};                     B=`{seq 200 -1 1};                     C=`{seq 300 -2 1};                     parallel --env A,B,C -k echo '"'"'${}|wc'"'"' ::: A B C'
-      1     200     692
-      1     200     692
-      1     150     547
-echo '### Test tmux works on different shells'
-### Test tmux works on different shells
-  (stdout parallel -Scsh@lo,tcsh@lo,parallel@lo,zsh@lo --tmux echo ::: 1 2 3 4; echo $?) | grep -v 'See output';
-0
-  (stdout parallel -Scsh@lo,tcsh@lo,parallel@lo,zsh@lo --tmux false ::: 1 2 3 4; echo $?) | grep -v 'See output';
-4
-  export PARTMUX='parallel -Scsh@lo,tcsh@lo,parallel@lo,zsh@lo --tmux ';   stdout ssh zsh@lo      "$PARTMUX" 'true  ::: 1 2 3 4; echo $status' | grep -v 'See output';   stdout ssh zsh@lo      "$PARTMUX" 'false ::: 1 2 3 4; echo $status' | grep -v 'See output';   stdout ssh parallel@lo "$PARTMUX" 'true  ::: 1 2 3 4; echo $?'      | grep -v 'See output';   stdout ssh parallel@lo "$PARTMUX" 'false ::: 1 2 3 4; echo $?'      | grep -v 'See output';   stdout ssh tcsh@lo     "$PARTMUX" 'true  ::: 1 2 3 4; echo $status' | grep -v 'See output';   stdout ssh tcsh@lo     "$PARTMUX" 'false ::: 1 2 3 4; echo $status' | grep -v 'See output';   echo "# command is currently too long for csh. Maybe it can be fixed?";   stdout ssh csh@lo      "$PARTMUX" 'true  ::: 1 2 3 4; echo $status' | grep -v 'See output';   stdout ssh csh@lo      "$PARTMUX" 'false ::: 1 2 3 4; echo $status' | grep -v 'See output'
-0
-4
-0
-4
-0
-4
-# command is currently too long for csh. Maybe it can be fixed?
-0
-4
-echo '### works'
-### works
-  stdout parallel -Sparallel@lo --tmux echo ::: \\\\\\\"\\\\\\\"\\\;\@ | grep -v 'See output'
-  stdout parallel -Sparallel@lo --tmux echo ::: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | grep -v 'See output'
-echo '### These blocked due to length'
-### These blocked due to length
-  stdout parallel -Slo      --tmux echo ::: \\\\\\\"\\\\\\\"\\\;\@ | grep -v 'See output'
-  stdout parallel -Scsh@lo  --tmux echo ::: \\\\\\\"\\\\\\\"\\\;\@ | grep -v 'See output'
-  stdout parallel -Stcsh@lo --tmux echo ::: \\\\\\\"\\\\\\\"\\\;\@ | grep -v 'See output'
-  stdout parallel -Szsh@lo  --tmux echo ::: \\\\\\\"\\\\\\\"\\\;\@ | grep -v 'See output'
-  stdout parallel -Scsh@lo  --tmux echo ::: 111111111111111111111111111111111111111111111111111111111 | grep -v 'See output'
-echo '### bug #43746: --transfer and --return of multiple inputs {1} and {2}'
-### bug #43746: --transfer and --return of multiple inputs {1} and {2}
-echo '### and:'
-### and:
-echo '### bug #44371: --trc with csh complains'
-### bug #44371: --trc with csh complains
-  cd /tmp; echo 1 > file1; echo 2 > file2;   parallel -Scsh@lo --transferfile {1} --transferfile {2} --trc {1}.a --trc {2}.b    '(cat {1}; echo A {1}) > {1}.a; (cat {2};echo B {2}) > {2}.b' ::: file1 ::: file2;   cat file1.a file2.b;   rm /tmp/file1 /tmp/file2 /tmp/file1.a /tmp/file2.b
-1
-A file1
-2
-B file2
-echo '### bug #44143: csh and nice'
-### bug #44143: csh and nice
-  parallel --nice 1 -S csh@lo setenv B {}\; echo '$B' ::: OK
-OK
-echo '### bug #45575: -m and multiple hosts repeats first args'
-### bug #45575: -m and multiple hosts repeats first args
-  seq 1 3 | parallel -X -S 2/lo,2/: -k echo 
-1
-2
-3
+par_bigvar_csh	### csh
+par_bigvar_csh	3 big vars run remotely - length(base64) > 1000
+par_bigvar_csh	      1     200     692
+par_bigvar_csh	      1     200     692
+par_bigvar_csh	      1     150     547
+par_bigvar_csh	### csh2
+par_bigvar_csh	3 big vars run locally
+par_bigvar_csh	      1     200     692
+par_bigvar_csh	      1     200     692
+par_bigvar_csh	      1     150     547
+par_bigvar_rc	### rc
+par_bigvar_rc	3 big vars run remotely - length(base64) > 1000
+par_bigvar_rc	      1     200     692
+par_bigvar_rc	      1     200     692
+par_bigvar_rc	      1     150     547
+par_bigvar_rc	### rc2
+par_bigvar_rc	3 big vars run locally
+par_bigvar_rc	      1     200     692
+par_bigvar_rc	      1     200     692
+par_bigvar_rc	      1     150     547
+par_csh_nice	### bug #44143: csh and nice
+par_csh_nice	OK
+par_env_underscore	### --env _
+par_env_underscore	OK FUBAR test
+par_env_underscore	In csh this may fail with ignored_var: Undefined variable.
+par_env_underscore	ignored_var: Undefined variable.
+par_env_underscore	### --env _ with explicit mentioning of normally ignored var $ignored_var
+par_env_underscore	OK FUBAR should be copied test
+par_env_underscore	OK FUBAR should be copied test
+par_exporting_in_zsh	### zsh
+par_exporting_in_zsh	env in zsh
+par_exporting_in_zsh	Normal variable export
+par_exporting_in_zsh	'  Var with quote OK
+par_exporting_in_zsh	Function export as variable
+par_exporting_in_zsh	myfuncvar as var OK
+par_exporting_in_zsh	Function export as function
+par_exporting_in_zsh	myfunc ran OK
+par_exporting_in_zsh	function from zsh to zsh OK
+par_exporting_in_zsh	function from zsh to bash OK
+par_multiple_hosts_repeat_arg	### bug #45575: -m and multiple hosts repeats first args
+par_multiple_hosts_repeat_arg	parallel: Warning: Using -X or -m with --sshlogin may fail.
+par_multiple_hosts_repeat_arg	1
+par_multiple_hosts_repeat_arg	2
+par_multiple_hosts_repeat_arg	3
+par_tmux_different_shells	### Test tmux works on different shells
+par_tmux_different_shells	0
+par_tmux_different_shells	4
+par_tmux_different_shells	0
+par_tmux_different_shells	4
+par_tmux_different_shells	0
+par_tmux_different_shells	4
+par_tmux_different_shells	0
+par_tmux_different_shells	4
+par_tmux_different_shells	# command is currently too long for csh. Maybe it can be fixed?
+par_tmux_different_shells	0
+par_tmux_different_shells	4
+par_tmux_length	### works
+par_tmux_length	### These blocked due to length
+par_transfer_return_multiple_inputs	### bug #43746: --transfer and --return of multiple inputs {1} and {2}
+par_transfer_return_multiple_inputs	### and:
+par_transfer_return_multiple_inputs	### bug #44371: --trc with csh complains
+par_transfer_return_multiple_inputs	file1 output line 1
+par_transfer_return_multiple_inputs	A file1 output line 2
+par_transfer_return_multiple_inputs	file2 output line 3
+par_transfer_return_multiple_inputs	B file2 output line 4
+par_warn_when_exporting_func	bug #40137: SHELL not bash: Warning when exporting funcs
+par_warn_when_exporting_func	/bin/sh	Run function in /bin/sh
+par_warn_when_exporting_func	/bin/sh	parallel: Warning: Shell functions may not be supported in /bin/sh.
+par_warn_when_exporting_func	/bin/bash	Run function in /bin/bash
+par_warn_when_exporting_func	/bin/bash	Function run: OK
+par_warn_when_exporting_func	/bin/ash	Run function in /bin/ash
+par_warn_when_exporting_func	/bin/csh	Run function in /bin/csh
+par_warn_when_exporting_func	/bin/csh	parallel: Warning: Shell functions may not be supported in /bin/csh.
+par_warn_when_exporting_func	/bin/csh	CSH/TCSH DO NOT SUPPORT newlines IN VARIABLES/FUNCTIONS. Unset myfunc
+par_warn_when_exporting_func	/bin/dash	Run function in /bin/dash
+par_warn_when_exporting_func	/bin/ksh	Run function in /bin/ksh
+par_warn_when_exporting_func	/bin/tcsh	Run function in /bin/tcsh
+par_warn_when_exporting_func	/bin/tcsh	parallel: Warning: Shell functions may not be supported in /bin/tcsh.
+par_warn_when_exporting_func	/bin/tcsh	CSH/TCSH DO NOT SUPPORT newlines IN VARIABLES/FUNCTIONS. Unset myfunc
+par_warn_when_exporting_func	/bin/zsh	Run function in /bin/zsh
+par_warn_when_exporting_func	/bin/zsh	Function run: OK
