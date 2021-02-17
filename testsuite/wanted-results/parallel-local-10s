@@ -20,7 +20,7 @@ par__pipe_tee	bug #45479: --pipe/--pipepart --tee
 par__pipe_tee	--pipe --tee
 par__pipe_tee	314572800
 par__pipepart_spawn	### bug #46214: Using --pipepart doesnt spawn multiple jobs in version 20150922
-par__pipepart_spawn	1:local / 2+ / 2+2+2+
+par__pipepart_spawn	1:local / 2+ / 2+
 par__pipepart_tee	bug #45479: --pipe/--pipepart --tee
 par__pipepart_tee	--pipepart --tee
 par__pipepart_tee	314572800
@@ -297,6 +297,10 @@ par_jobs_file	sleep 4
 par_k	### Test -k
 par_k	parallel: Warning: Only enough file handles to run X jobs in parallel.
 par_k	parallel: Warning: Try running 'parallel -jX -N X --pipe parallel -jX'
+par_k	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+par_k	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+par_k	parallel: Warning: or increasing /proc/sys/fs/file-max
+par_k	parallel: Warning: Try running 'parallel -jX -N XXX --pipe parallel -jX'
 par_k	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
 par_k	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
 par_k	parallel: Warning: or increasing /proc/sys/fs/file-max

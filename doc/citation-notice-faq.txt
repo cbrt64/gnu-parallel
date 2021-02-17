@@ -146,12 +146,12 @@ removed (and staying in main).
 In other words: It is preferable having fewer users, who all know they
 should cite, over having many users, who do not know they should cite.
 
-If the goal had been to get more users, then the license would have
-been public domain.
-
 This is because a long-term survival with funding is more important
 than short-term gains in popularity that can be achieved by being
 distributed as part of a distribution.
+
+If the goal had been to get more users, then the license would have
+been public domain.
 
 
 > Is there another way I can get rid of the citation notice?

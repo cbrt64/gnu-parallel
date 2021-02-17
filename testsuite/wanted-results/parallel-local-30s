@@ -1544,7 +1544,7 @@ par_memfree	Free mem: 1k
 par_memfree	parallel: Warning: This job was killed because it timed out:
 par_memfree	parallel: Warning: parallel --memfree 1t echo Free mem: ::: 1t
 par_memory_leak	### Test for memory leaks
-par_memory_leak	Of 100 runs of 1 job at least one should be bigger than a 3000 job run
+par_memory_leak	Of 300 runs of 1 job at least one should be bigger than a 3000 job run
 par_memory_leak	Good: No memleak detected.
 par_no_newline_compress	bug #41613: --compress --line-buffer - no newline
 par_no_newline_compress	tagstring=--tagstring {#} compress=--compress

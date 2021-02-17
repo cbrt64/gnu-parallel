@@ -13,13 +13,14 @@ all:
 	cd home\:tange/parallel/ && osc up
 	cd home\:tange/parallel/ && parallel osc add ::: *.spec *.dsc *.tar.gz *.tar.bz2 && echo Src added OK || true
 	cd home\:tange/parallel/ && osc ci -m "New release"
-	# wait for "building" state
-	cd home\:tange/parallel/ && yes building | parallel -j1 --delay 10 --halt now,success=1 'osc results|G -E {}'
-	# wait for "building" state to end
-	# Ignore RedHat_RHEL-6 and Univention_3.2 that are broken
-	cd home\:tange/parallel/ && yes building | parallel -j1 --delay 10 --halt now,fail=1 'osc results|G -v RedHat_RHEL-6 -v Univention_3.2 -E {}' || true
-	# wait for "finished" state of .deb
-	cd home\:tange/parallel/ && echo succeeded | parallel -j1 --retries 30 --delay 10 --halt now,success=1 'osc results|G -E "(Debian|Ubuntu).*{}"'
-	# wait for "finished" state of .rpm
-	cd home\:tange/parallel/ && echo succeeded | parallel -j1 --retries 30 --delay 10 --halt now,success=1 'osc results|G -E "(SUSE|SLE|Scientific|RHEL|Fedora|CentOS).*{}"'
+	### Wait for "building" state to complete
+	echo '### Wait for "building" state'
+	cd home\:tange/parallel/ && yes building | parallel -vj1 --delay 10 --halt now,success=1 'osc results|G -E {}'
+	echo '### Wait for "building" state to end'
+	echo '### Ignore RedHat_RHEL-6 and Univention_3.2 that are broken'
+	cd home\:tange/parallel/ && yes building | parallel -vj1 --delay 10 --halt now,fail=1 'osc results|G -v RedHat_RHEL-6 -v Univention_3.2 -E {}' || true
+	echo '### Wait for "finished" state of .deb'
+	cd home\:tange/parallel/ && echo succeeded | parallel -vj1 --retries 30 --delay 10 --halt now,success=1 'osc results|G -E "(Debian|Ubuntu).*{}"'
+	echo '### Wait for "finished" state of .rpm'
+	cd home\:tange/parallel/ && echo succeeded | parallel -vj1 --retries 30 --delay 10 --halt now,success=1 'osc results|G -E "(SUSE|SLE|Scientific|RHEL|Fedora|CentOS).*{}"'
 

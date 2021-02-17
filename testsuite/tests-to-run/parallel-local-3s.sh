@@ -134,6 +134,12 @@ par_tee_with_premature_close() {
     fi
 }
 
+par_tee_too_many_args() {
+    echo '### Fail if there are more arguments than --jobs'
+    seq 11 | stdout parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
+    seq 11 | stdout parallel -k --tag --pipe -j0 --tee grep {} ::: {1..10000}
+}
+
 par_maxargs() {
     echo '### Test -n and --max-args: Max number of args per line (only with -X and -m)'
 

@@ -69,7 +69,7 @@ par_export_functions_csh() {
 par_progress_text_max_jobs_to_run() {
     echo '### bug #49404: "Max jobs to run" does not equal the number of jobs specified when using GNU Parallel on remote server?'
     echo should give 10 running jobs
-    stdout parallel -S 16/lo --progress true ::: {1..10} | grep /.10
+    stdout parallel -S 16/lo --progress true ::: {1..10} | grep /.16
 }
 
 par_hgrp_rpl() {

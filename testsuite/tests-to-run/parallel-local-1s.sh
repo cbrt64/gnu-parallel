@@ -4,16 +4,24 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_plus_slot_replacement() {
+    echo '### show {slot} {0%} {0#}'
+    parallel -k --plus echo '{slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
+    parallel -j15 -k --plus 'echo Seq: {000#} {00#} {0#}' ::: {1..100} | sort
+    parallel -j15 -k --plus 'sleep 0.0{}; echo Slot: {000%} {00%} {0%}' ::: {1..100} |
+	sort -u
+}
+
 par_recend_recstart_hash() {
     echo "### bug #59843: --regexp --recstart '#' fails"
     (echo '#rec1'; echo 'bar'; echo '#rec2') |
-	parallel -k --regexp --pipe -N1 --recstart '#' wc 
+	parallel -k --regexp --pipe -N1 --recstart '#' wc
     (echo ' rec1'; echo 'bar'; echo ' rec2') |
-	parallel -k --regexp --pipe -N1 --recstart ' ' wc 
+	parallel -k --regexp --pipe -N1 --recstart ' ' wc
     (echo 'rec2';  echo 'bar#';echo 'rec2' ) |
-	parallel -k --regexp --pipe -N1 --recend '#' wc 
+	parallel -k --regexp --pipe -N1 --recend '#' wc
     (echo 'rec2';  echo 'bar ';echo 'rec2' ) |
-	parallel -k --regexp --pipe -N1 --recend ' ' wc 
+	parallel -k --regexp --pipe -N1 --recend ' ' wc
 }
 
 par_sqlandworker_uninstalled_dbd() {
@@ -222,7 +230,9 @@ par_test_job_number() {
 
 par_seqreplace_long_line() {
     echo '### Test --seqreplace and line too long'
-    seq 1 1000 | stdout parallel -j1 -s 210 -k --seqreplace I echo IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII \|wc | uniq -c
+    seq 1 1000 |
+	stdout parallel -j1 -s 210 -k --seqreplace I echo IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII \|wc |
+	uniq -c
 }
 
 par_bug37042() {
@@ -238,11 +248,12 @@ par_bug37042() {
 
 par_header() {
     echo "### Test --header with -N"
-    (echo h1; echo h2; echo 1a;echo 1b; echo 2a;echo 2b; echo 3a)| parallel -j1 --pipe -N2 -k --header '.*\n.*\n' echo Start\;cat \; echo Stop
+    (echo h1; echo h2; echo 1a;echo 1b; echo 2a;echo 2b; echo 3a) |
+	parallel -j1 --pipe -N2 -k --header '.*\n.*\n' echo Start\;cat \; echo Stop
     
     echo "### Test --header with --block 1k"
     (echo h1; echo h2; perl -e '$a="x"x110;for(1..22){print $_,$a,"\n"}') |
-    parallel -j1 --pipe -k --block 1k --header '.*\n.*\n' echo Start\;cat \; echo Stop
+	parallel -j1 --pipe -k --block 1k --header '.*\n.*\n' echo Start\;cat \; echo Stop
 
     echo "### Test --header with multiple :::"
     parallel --header : echo {a} {b} {1} {2} ::: b b1 ::: a a2

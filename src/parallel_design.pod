@@ -1153,7 +1153,7 @@ multiple B<:::>.
 When B<:::> was chosen, B<::::> came as a fairly natural extension.
 
 Linking input sources meant having to decide for some way to indicate
-linking of B<:::> and B<::::>. B<:::+> and B<::::+> was chosen, so
+linking of B<:::> and B<::::>. B<:::+> and B<::::+> were chosen, so
 that they were similar to B<:::> and B<::::>.
 
 

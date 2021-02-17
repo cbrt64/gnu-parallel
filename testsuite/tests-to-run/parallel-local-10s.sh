@@ -539,7 +539,7 @@ par__pipepart_spawn() {
     echo '### bug #46214: Using --pipepart doesnt spawn multiple jobs in version 20150922'
     seq 1000000 > /tmp/num1000000
     stdout parallel --pipepart --progress -a /tmp/num1000000 --block 10k -j0 true |
-	grep 1:local | perl -pe 's/\d\d\d/999/g; s/[2-9]/2+/g;'
+	grep 1:local | perl -pe 's/\d\d\d/999/g; s/\d\d+|[2-9]/2+/g;'
 }
 
 par__pipe_tee() {

@@ -1,5 +1,35 @@
 Quote of the month:
 
+  Parallel is amazing!
+    -- fatboy93@reddit
+
+  parallel is my new kink
+    -- python_noob_001@reddit
+
+  GNU Parallel makes my life so much easier.
+  I'm glad I don't have to implement multi-threaded Python scripts on the regular.
+    -- Fredrick Brennan @fr_brennan@twitter
+
+  If you work with lots of files at once
+  Take a good look at GNU parallel
+  Change your life for the better
+    -- French @notareverser@twitter
+
+  @GnuParallel the best thing ever and it's not up for debate #EOchat
+    -- Nathan Thomas @DrNASApants@twitter
+
+  Using [GNU Parallel is] super easy if you use xargs, and it is magic for making things multi-process. Then adding in the ssh magic it can do it is an incredible tool that is completely underutilized.
+     -- Ancients @Ancients@twitter
+
+  GNU Parallel is one of the most helpful tools I've been using recently, and it's just something like: parallel -j4 'gzip {}' ::: folder/*.csv
+     -- Milton Pividori @miltondp@twitter
+
+  We use gnu parallel now - and happier for it.
+     -- Ben Davies @benjamindavies@twitter
+
+  This is a fantastic tool, and I wish I had upgraded from xargs years ago!
+    -- Stuart Anderson
+
   GNU Parallel and ripgrep would be your friend here. Ripgrep is fast, really fast.
     -- CENAPT @cenaptech@twitter
 

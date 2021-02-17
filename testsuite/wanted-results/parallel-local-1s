@@ -270,6 +270,10 @@ par_open_files_blocks	parallel: Warning: Try running 'parallel -j0 -N 2 --pipe p
 par_open_files_blocks	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
 par_open_files_blocks	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
 par_open_files_blocks	parallel: Warning: or increasing /proc/sys/fs/file-max
+par_open_files_blocks	parallel: Warning: Try running 'parallel -j0 -N 100 --pipe parallel -j0'
+par_open_files_blocks	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+par_open_files_blocks	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+par_open_files_blocks	parallel: Warning: or increasing /proc/sys/fs/file-max
 par_open_files_blocks	1 of 21
 par_open_files_blocks	2 of 21
 par_open_files_blocks	3 of 21
@@ -375,6 +379,125 @@ par_pipepart_block	17-20
 par_pipepart_block	18-20
 par_pipepart_block	19-20
 par_pipepart_block	20-20
+par_plus_slot_replacement	### show {slot} {0%} {0#}
+par_plus_slot_replacement	1=1=1
+par_plus_slot_replacement	2=2=2
+par_plus_slot_replacement	3=3=3
+par_plus_slot_replacement	Seq: 001 01 1
+par_plus_slot_replacement	Seq: 002 02 2
+par_plus_slot_replacement	Seq: 003 03 3
+par_plus_slot_replacement	Seq: 004 04 4
+par_plus_slot_replacement	Seq: 005 05 5
+par_plus_slot_replacement	Seq: 006 06 6
+par_plus_slot_replacement	Seq: 007 07 7
+par_plus_slot_replacement	Seq: 008 08 8
+par_plus_slot_replacement	Seq: 009 09 9
+par_plus_slot_replacement	Seq: 010 10 10
+par_plus_slot_replacement	Seq: 011 11 11
+par_plus_slot_replacement	Seq: 012 12 12
+par_plus_slot_replacement	Seq: 013 13 13
+par_plus_slot_replacement	Seq: 014 14 14
+par_plus_slot_replacement	Seq: 015 15 15
+par_plus_slot_replacement	Seq: 016 16 16
+par_plus_slot_replacement	Seq: 017 17 17
+par_plus_slot_replacement	Seq: 018 18 18
+par_plus_slot_replacement	Seq: 019 19 19
+par_plus_slot_replacement	Seq: 020 20 20
+par_plus_slot_replacement	Seq: 021 21 21
+par_plus_slot_replacement	Seq: 022 22 22
+par_plus_slot_replacement	Seq: 023 23 23
+par_plus_slot_replacement	Seq: 024 24 24
+par_plus_slot_replacement	Seq: 025 25 25
+par_plus_slot_replacement	Seq: 026 26 26
+par_plus_slot_replacement	Seq: 027 27 27
+par_plus_slot_replacement	Seq: 028 28 28
+par_plus_slot_replacement	Seq: 029 29 29
+par_plus_slot_replacement	Seq: 030 30 30
+par_plus_slot_replacement	Seq: 031 31 31
+par_plus_slot_replacement	Seq: 032 32 32
+par_plus_slot_replacement	Seq: 033 33 33
+par_plus_slot_replacement	Seq: 034 34 34
+par_plus_slot_replacement	Seq: 035 35 35
+par_plus_slot_replacement	Seq: 036 36 36
+par_plus_slot_replacement	Seq: 037 37 37
+par_plus_slot_replacement	Seq: 038 38 38
+par_plus_slot_replacement	Seq: 039 39 39
+par_plus_slot_replacement	Seq: 040 40 40
+par_plus_slot_replacement	Seq: 041 41 41
+par_plus_slot_replacement	Seq: 042 42 42
+par_plus_slot_replacement	Seq: 043 43 43
+par_plus_slot_replacement	Seq: 044 44 44
+par_plus_slot_replacement	Seq: 045 45 45
+par_plus_slot_replacement	Seq: 046 46 46
+par_plus_slot_replacement	Seq: 047 47 47
+par_plus_slot_replacement	Seq: 048 48 48
+par_plus_slot_replacement	Seq: 049 49 49
+par_plus_slot_replacement	Seq: 050 50 50
+par_plus_slot_replacement	Seq: 051 51 51
+par_plus_slot_replacement	Seq: 052 52 52
+par_plus_slot_replacement	Seq: 053 53 53
+par_plus_slot_replacement	Seq: 054 54 54
+par_plus_slot_replacement	Seq: 055 55 55
+par_plus_slot_replacement	Seq: 056 56 56
+par_plus_slot_replacement	Seq: 057 57 57
+par_plus_slot_replacement	Seq: 058 58 58
+par_plus_slot_replacement	Seq: 059 59 59
+par_plus_slot_replacement	Seq: 060 60 60
+par_plus_slot_replacement	Seq: 061 61 61
+par_plus_slot_replacement	Seq: 062 62 62
+par_plus_slot_replacement	Seq: 063 63 63
+par_plus_slot_replacement	Seq: 064 64 64
+par_plus_slot_replacement	Seq: 065 65 65
+par_plus_slot_replacement	Seq: 066 66 66
+par_plus_slot_replacement	Seq: 067 67 67
+par_plus_slot_replacement	Seq: 068 68 68
+par_plus_slot_replacement	Seq: 069 69 69
+par_plus_slot_replacement	Seq: 070 70 70
+par_plus_slot_replacement	Seq: 071 71 71
+par_plus_slot_replacement	Seq: 072 72 72
+par_plus_slot_replacement	Seq: 073 73 73
+par_plus_slot_replacement	Seq: 074 74 74
+par_plus_slot_replacement	Seq: 075 75 75
+par_plus_slot_replacement	Seq: 076 76 76
+par_plus_slot_replacement	Seq: 077 77 77
+par_plus_slot_replacement	Seq: 078 78 78
+par_plus_slot_replacement	Seq: 079 79 79
+par_plus_slot_replacement	Seq: 080 80 80
+par_plus_slot_replacement	Seq: 081 81 81
+par_plus_slot_replacement	Seq: 082 82 82
+par_plus_slot_replacement	Seq: 083 83 83
+par_plus_slot_replacement	Seq: 084 84 84
+par_plus_slot_replacement	Seq: 085 85 85
+par_plus_slot_replacement	Seq: 086 86 86
+par_plus_slot_replacement	Seq: 087 87 87
+par_plus_slot_replacement	Seq: 088 88 88
+par_plus_slot_replacement	Seq: 089 89 89
+par_plus_slot_replacement	Seq: 090 90 90
+par_plus_slot_replacement	Seq: 091 91 91
+par_plus_slot_replacement	Seq: 092 92 92
+par_plus_slot_replacement	Seq: 093 93 93
+par_plus_slot_replacement	Seq: 094 94 94
+par_plus_slot_replacement	Seq: 095 95 95
+par_plus_slot_replacement	Seq: 096 96 96
+par_plus_slot_replacement	Seq: 097 97 97
+par_plus_slot_replacement	Seq: 098 98 98
+par_plus_slot_replacement	Seq: 099 99 99
+par_plus_slot_replacement	Seq: 100 100 100
+par_plus_slot_replacement	Slot: 001 01 1
+par_plus_slot_replacement	Slot: 002 02 2
+par_plus_slot_replacement	Slot: 003 03 3
+par_plus_slot_replacement	Slot: 004 04 4
+par_plus_slot_replacement	Slot: 005 05 5
+par_plus_slot_replacement	Slot: 006 06 6
+par_plus_slot_replacement	Slot: 007 07 7
+par_plus_slot_replacement	Slot: 008 08 8
+par_plus_slot_replacement	Slot: 009 09 9
+par_plus_slot_replacement	Slot: 010 10 10
+par_plus_slot_replacement	Slot: 011 11 11
+par_plus_slot_replacement	Slot: 012 12 12
+par_plus_slot_replacement	Slot: 013 13 13
+par_plus_slot_replacement	Slot: 014 14 14
+par_plus_slot_replacement	Slot: 015 15 15
 par_profiles_with_space	### bug #42902: profiles containing arguments with space
 par_profiles_with_space	/bin/bash=/bin/bash
 par_profiles_with_space	echo '/bin/bash=/bin/bash'

@@ -68,6 +68,25 @@ par_compress_stdout_stderr	### Test compress - stderr
 par_compress_stdout_stderr	ls: cannot access '/OK-if-missing-file': No such file or directory
 par_cr_newline_header	### --header : should set named replacement string if input line ends in \r\n
 par_cr_newline_header	bar
+par_crnl	### Give a warning if input is DOS-ascii
+par_crnl	parallel: Warning: The first three values end in CR-NL. Consider using -d "\r\n"
+par_crnl	bpar_crnl	a
+par_crnl	cpar_crnl	a
+par_crnl	dpar_crnl	a
+par_crnl	epar_crnl	a
+par_crnl	fpar_crnl	a
+par_crnl	This should give no warning because -d is set
+par_crnl	ba
+par_crnl	ca
+par_crnl	da
+par_crnl	ea
+par_crnl	fa
+par_crnl	This should give no warning because line2 has newline only
+par_crnl	bpar_crnl	a
+par_crnl	ca
+par_crnl	dpar_crnl	a
+par_crnl	epar_crnl	a
+par_crnl	fpar_crnl	a
 par_csv	col1"x3"-new
 par_csv	line col2-new2
 par_csv	line col3-col 4
@@ -692,10 +711,6 @@ par_pipepart_recend_recstart	9
 par_pipepart_recend_recstart	10
 par_pipepart_roundrobin	### bug #45769: --round-robin --pipepart gives wrong results
 par_pipepart_roundrobin	2
-par_plus_slot_replacement	### show {slot}
-par_plus_slot_replacement	1=1=1
-par_plus_slot_replacement	2=2=2
-par_plus_slot_replacement	3=3=3
 par_profile	### Test -J profile, -J /dir/profile, -J ./profile
 par_profile	local	local
 par_profile	abs	abs
@@ -936,14 +951,6 @@ par_tee	4 -l	122853
 par_tee	4 -c	815290
 par_tee	5 -l	122853
 par_tee	5 -c	815290
-par_tee_too_many_args	### Fail if there are more arguments than --jobs
-par_tee_too_many_args	1	1
-par_tee_too_many_args	1	10
-par_tee_too_many_args	1	11
-par_tee_too_many_args	2	2
-par_tee_too_many_args	3	3
-par_tee_too_many_args	4	4
-par_tee_too_many_args	parallel: Error: --tee requires --jobs to be higher. Try --jobs 0.
 par_test_L_context_replace	### Test -N context replace
 par_test_L_context_replace	a1b a2b a3b a4b a5b a6b a7b a8b a9b a10b
 par_test_L_context_replace	a11b a12b a13b a14b a15b a16b a17b a18b a19b
@@ -1014,6 +1021,150 @@ par_testquote	yash	"#&/
 par_testquote	yash	()*=?'
 par_testquote	zsh	"#&/
 par_testquote	zsh	()*=?'
+par_tmpl	1.t1 /tmp/tmpl-1.1-111.111.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 1.1
+par_tmpl	    Yval: 111.111
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 1
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 1.10
+par_tmpl	    TenX: 11
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 1.1,111.111
+par_tmpl	    val1,val2: 1.1,111.111
+par_tmpl	
+par_tmpl	2.t1 /tmp/tmpl-1.1-222.222.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 1.1
+par_tmpl	    Yval: 222.222
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 2
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 1.10
+par_tmpl	    TenX: 11
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 1.1,222.222
+par_tmpl	    val1,val2: 1.1,222.222
+par_tmpl	
+par_tmpl	3.t1 /tmp/tmpl-1.1-333.333.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 1.1
+par_tmpl	    Yval: 333.333
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 3
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 1.10
+par_tmpl	    TenX: 11
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 1.1,333.333
+par_tmpl	    val1,val2: 1.1,333.333
+par_tmpl	
+par_tmpl	4.t1 /tmp/tmpl-2.22-111.111.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 2.22
+par_tmpl	    Yval: 111.111
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 4
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 2.22
+par_tmpl	    TenX: 22.2
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 2.22,111.111
+par_tmpl	    val1,val2: 2.22,111.111
+par_tmpl	
+par_tmpl	5.t1 /tmp/tmpl-2.22-222.222.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 2.22
+par_tmpl	    Yval: 222.222
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 5
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 2.22
+par_tmpl	    TenX: 22.2
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 2.22,222.222
+par_tmpl	    val1,val2: 2.22,222.222
+par_tmpl	
+par_tmpl	6.t1 /tmp/tmpl-2.22-333.333.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 2.22
+par_tmpl	    Yval: 333.333
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 6
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 2.22
+par_tmpl	    TenX: 22.2
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 2.22,333.333
+par_tmpl	    val1,val2: 2.22,333.333
+par_tmpl	
+par_tmpl	7.t1 /tmp/tmpl-3.333-111.111.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 3.333
+par_tmpl	    Yval: 111.111
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 7
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 3.33
+par_tmpl	    TenX: 33.33
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 3.333,111.111
+par_tmpl	    val1,val2: 3.333,111.111
+par_tmpl	
+par_tmpl	8.t1 /tmp/tmpl-3.333-222.222.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 3.333
+par_tmpl	    Yval: 222.222
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 8
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 3.33
+par_tmpl	    TenX: 33.33
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 3.333,222.222
+par_tmpl	    val1,val2: 3.333,222.222
+par_tmpl	
+par_tmpl	9.t1 /tmp/tmpl-3.333-333.333.t2
+par_tmpl	    Template1
+par_tmpl	    Xval: 3.333
+par_tmpl	    Yval: 333.333
+par_tmpl	    FixedValue: 9
+par_tmpl	    Seq: 9
+par_tmpl	    Slot: X
+par_tmpl	    # x with 2 decimals
+par_tmpl	    DecimalX: 3.33
+par_tmpl	    TenX: 33.33
+par_tmpl	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl	
+par_tmpl	    Template2
+par_tmpl	    X,Y: 3.333,333.333
+par_tmpl	    val1,val2: 3.333,333.333
+par_tmpl	
 par_tmux_command_not_found	### PARALLEL_TMUX not found
 par_tmux_command_not_found	parallel: Error: not-existing not found in $PATH.
 par_total_from_joblog	bug #47086: [PATCH] Initialize total_completed from joblog

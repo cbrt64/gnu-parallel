@@ -27,8 +27,8 @@ par_path_remote_bash() {
   export A="`seq 1000`"
   PATH=$PATH:/tmp
   . /usr/local/bin/env_parallel.bash
-  # --filter to see if $PATH with parallel is transferred
-  env_parallel --filter --env A,PATH -Slo echo '$PATH' ::: OK
+  # --filter-hosts to see if $PATH with parallel is transferred
+  env_parallel --filter-hosts --env A,PATH -Slo echo '$PATH' ::: OK
 _EOS
   stdout ssh nopathbash@lo -T |
       perl -ne '/StArT/..0 and print' |
@@ -55,8 +55,8 @@ par_path_remote_csh() {
   if ("`alias env_parallel`" == '') then
     source `which env_parallel.csh`
   endif
-  # --filter to see if $PATH with parallel is transferred
-  env_parallel --filter --env A,PATH -Slo echo '$PATH' ::: OK
+  # --filter-hosts to see if $PATH with parallel is transferred
+  env_parallel --filter-hosts --env A,PATH -Slo echo '$PATH' ::: OK
   # Sleep needed to avoid stderr/stdout mixing
   sleep 1
   echo Done

@@ -251,9 +251,9 @@ par_memory_leak() {
     }
     export -f a_run
     echo "### Test for memory leaks"
-    echo "Of 100 runs of 1 job at least one should be bigger than a 3000 job run"
+    echo "Of 300 runs of 1 job at least one should be bigger than a 3000 job run"
     . `which env_parallel.bash`
-    parset small_max,big ::: 'seq 100 | parallel a_run 1 | jq -s max' 'a_run 3000'
+    parset small_max,big ::: 'seq 300 | parallel a_run 1 | jq -s max' 'a_run 3000'
     if [ $small_max -lt $big ] ; then
 	echo "Bad: Memleak likely."
     else

@@ -2777,7 +2777,7 @@ https://gitlab.com/netikras/bthread (Last checked: 2021-01)
 Summary (see legend above):
 I1 - - - - - I7
 M1 - - - - M6
-- O2 O3 - - O6 - N/A N/A O10
+- O2 O3 - - O6 - x x O10
 E1 - - - - - -
 - - - - - - - - -
 - -
@@ -2877,7 +2877,7 @@ with replacement strings. Such as:
 
 that can be used like:
 
-  parallel --header : --tmpl my.tmpl {#}.t myprog {#}.t \
+  parallel --header : --tmpl my.tmpl={#}.t myprog {#}.t \
     ::: x 1 2 3 ::: y 1 2 3
 
 Filtering may also be supported as:
@@ -2891,23 +2891,62 @@ which will basically do:
 https://github.com/eviatarbach/parasweep (Last checked: 2021-01)
 
 
-=head2 Todo
+=head2 DIFFERENCES BETWEEN parallel-bash AND GNU Parallel
+
+Summary (see legend above):
+I1 I2 - - - - -
+- - M3 - - M6
+- O2 O3 - O5 O6 - O8 x O10
+E1 - - - - - -
+- - - - - - - - -
+- -
+
+B<parallel-bash> is written in pure bash. It is really fast (overhead
+of ~0.05 ms/job compared to GNU B<parallel>'s ~3 ms/job). So if your
+jobs are extremely short lived, and you can live with the quite
+limited command, this may be useful.
+
+B<parallel-bash> will not start the first job, until it has read all
+input. The input can at most be 20935 lines and the lines cannot be
+all be empty.
+
+Ctrl-C does not stop spawning new jobs. Ctrl-Z does not suspend
+running jobs.
+
+
+=head3 EXAMPLES FROM parallel-bash
+
+  1$ some_input | parallel-bash -p 5 -c echo
+
+  1$ some_input | parallel -j 5 echo
+
+  2$ parallel-bash -p 5 -c echo < some_file
+
+  2$ parallel -j 5 echo < some_file
+
+  3$ parallel-bash -p 5 -c echo <<< 'some string'
+
+  3$ parallel -j 5 -c echo <<< 'some string'
+
+  4$ something | parallel-bash -p 5 -c echo {} {}
+
+  4$ something | parallel -j 5 echo {} {}
 
 https://reposhub.com/python/command-line-tools/Akianonymus-parallel-bash.html
+(Last checked: 2021-02)
+
+
+=head2 Todo
 
 https://github.com/Nukesor/pueue
 
-PASH: Light-touch Data-Parallel Shell Processing
-
 https://arxiv.org/pdf/2012.15443.pdf KumQuat
 
-https://arxiv.org/pdf/2007.09436.pdf
+https://arxiv.org/pdf/2007.09436.pdf PaSH: Light-touch Data-Parallel Shell Processing
 
 https://github.com/JeiKeiLim/simple_distribute_job
 
-https://github.com/Akianonymus/parallel-bash
-
-https://github.com/reggi/pkgrun
+https://github.com/reggi/pkgrun - not obvious how to use
 
 https://github.com/benoror/better-npm-run - not obvious how to use
 
@@ -2918,6 +2957,11 @@ https://github.com/xuchenCN/go-pssh
 https://github.com/flesler/parallel
 
 https://github.com/Julian/Verge
+
+http://manpages.ubuntu.com/manpages/xenial/man1/tsp.1.html
+
+http://vicerveza.homeunix.net/~viric/soft/ts/
+
 
 
 =head1 TESTING OTHER TOOLS

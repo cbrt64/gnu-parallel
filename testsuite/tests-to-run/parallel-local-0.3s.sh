@@ -12,6 +12,53 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_crnl() {
+    echo '### Give a warning if input is DOS-ascii'
+    printf "b\r\nc\r\nd\r\ne\r\nf\r\n" | stdout parallel -k echo {}a
+    echo This should give no warning because -d is set
+    printf "b\r\nc\r\nd\r\ne\r\nf\r\n" | parallel -k -d '\r\n' echo {}a
+    echo This should give no warning because line2 has newline only
+    printf "b\r\nc\nd\r\ne\r\nf\r\n" | parallel -k echo {}a
+}
+
+par_tmpl() {
+    tmp1=$(mktemp)
+    tmp2=$(mktemp)
+    cat <<'EOF' > "$tmp1"
+    Template1
+    Xval: {x}
+    Yval: {y}
+    FixedValue: 9
+    Seq: {#}
+    Slot: {%}
+    # x with 2 decimals
+    DecimalX: {=x $_=sprintf("%.2f",$_) =}
+    TenX: {=x $_=$_*10 =}
+    RandomVal: {=1 $_=rand() =}
+
+EOF
+
+    cat <<'EOF' > "$tmp2"
+    Template2
+    X,Y: {x},{y}
+    val1,val2: {1},{2}
+
+EOF
+    myprog() {
+	echo "$@"
+	cat "$@"
+    }
+    export -f myprog
+    parallel -k --header : --tmpl "$tmp1"={#}.t1 \
+	     --tmpl "$tmp2"=/tmp/tmpl-{x}-{y}.t2 \
+	     myprog {#}.t1 /tmp/tmpl-{x}-{y}.t2 \
+	     ::: x 1.1 2.22 3.333 ::: y 111.111 222.222 333.333 |
+	perl -pe 's/0.\d{13,}/0.RANDOM_NUMBER/' |
+	perl -pe 's/Slot: \d/Slot: X/'
+    rm "$tmp1" "$tmp2"
+}
+
+
 par_resume_k() {
     echo '### --resume -k'
     tmp=$(tempfile)
@@ -795,12 +842,6 @@ par_empty_input_on_stdin() {
     true | stdout parallel --shuf echo
 }
 
-par_tee_too_many_args() {
-    echo '### Fail if there are more arguments than --jobs'
-    seq 11 | parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
-    seq 11 | parallel -k --tag --pipe -j4 --tee grep {} ::: {1..5}
-}
-
 par_space_envvar() {
     echo "### bug: --gnu was ignored if env var started with space: PARALLEL=' --gnu'"
     export PARALLEL=" -v" && parallel echo ::: 'space in envvar OK'
@@ -907,11 +948,6 @@ par_cr_newline_header() {
     echo '### --header : should set named replacement string if input line ends in \r\n'
     printf "foo\r\nbar\r\n" |
 	parallel --colsep , --header : echo {foo}
-}
-
-par_plus_slot_replacement() {
-    echo '### show {slot}'
-    parallel -k --plus echo '{slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
 }
 
 par_PARALLEL_HOME_with_+() {

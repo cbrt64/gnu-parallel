@@ -1,129 +1,126 @@
-### Test use special ssh
-TODO test ssh with > 9 simultaneous
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
-99
-100
-echo '### test --timeout --retries'
-### test --timeout --retries
-  parallel -j0 --timeout 5 --retries 3 -k ssh {} echo {} ::: 192.168.1.197 8.8.8.8 vagrant@parallel-server1 vagrant@parallel-server2 vagrant@parallel-server3
-vagrant@parallel-server1
-vagrant@parallel-server2
-vagrant@parallel-server3
-echo '### test --filter-hosts with server w/o ssh, non-existing server'
-### test --filter-hosts with server w/o ssh, non-existing server
-  parallel -S 192.168.1.197,8.8.8.8,vagrant@parallel-server1,vagrant@parallel-server2,vagrant@parallel-server3 --filter-hosts --nonall -k --tag echo
-vagrant@parallel-server1	
-vagrant@parallel-server2	
-vagrant@parallel-server3	
-echo '### bug #41964: --controlmaster not seems to reuse OpenSSH connections to the same host'
-### bug #41964: --controlmaster not seems to reuse OpenSSH connections to the same host
-  (parallel -S vagrant@parallel-server1 true ::: {1..20}; echo No --controlmaster - finish last) &   (parallel -M -S vagrant@parallel-server1 true ::: {1..20}; echo With --controlmaster - finish first) &   wait
-With --controlmaster - finish first
-No --controlmaster - finish last
-echo '### --filter-hosts - OK, non-such-user, connection refused, wrong host'
-### --filter-hosts - OK, non-such-user, connection refused, wrong host
-  parallel --nonall --filter-hosts -S localhost,NoUser@localhost,154.54.72.206,"ssh 5.5.5.5" hostname
-aspire
-echo '### test --workdir . in $HOME'
-### test --workdir . in $HOME
-  cd && mkdir -p parallel-test && cd parallel-test &&     echo OK > testfile && parallel --workdir . --transfer -S vagrant@parallel-server1 cat {} ::: testfile
-OK
+par_controlmaster_is_faster	### bug #41964: --controlmaster not seems to reuse OpenSSH connections to the same host
+par_controlmaster_is_faster	With --controlmaster - finish first
+par_controlmaster_is_faster	No --controlmaster - finish last
+par_filter_hosts_different_errors	### --filter-hosts - OK, non-such-user, connection refused, wrong host
+par_filter_hosts_different_errors	aspire
+par_filter_hosts_no_ssh_nxserver	### test --filter-hosts with server w/o ssh, non-existing server
+par_filter_hosts_no_ssh_nxserver	vagrant@parallel-server1	
+par_filter_hosts_no_ssh_nxserver	vagrant@parallel-server2	
+par_filter_hosts_no_ssh_nxserver	vagrant@parallel-server3	
+par_special_ssh	### Test use special ssh
+par_special_ssh	TODO test ssh with > 9 simultaneous
+par_special_ssh	1
+par_special_ssh	2
+par_special_ssh	3
+par_special_ssh	4
+par_special_ssh	5
+par_special_ssh	6
+par_special_ssh	7
+par_special_ssh	8
+par_special_ssh	9
+par_special_ssh	10
+par_special_ssh	11
+par_special_ssh	12
+par_special_ssh	13
+par_special_ssh	14
+par_special_ssh	15
+par_special_ssh	16
+par_special_ssh	17
+par_special_ssh	18
+par_special_ssh	19
+par_special_ssh	20
+par_special_ssh	21
+par_special_ssh	22
+par_special_ssh	23
+par_special_ssh	24
+par_special_ssh	25
+par_special_ssh	26
+par_special_ssh	27
+par_special_ssh	28
+par_special_ssh	29
+par_special_ssh	30
+par_special_ssh	31
+par_special_ssh	32
+par_special_ssh	33
+par_special_ssh	34
+par_special_ssh	35
+par_special_ssh	36
+par_special_ssh	37
+par_special_ssh	38
+par_special_ssh	39
+par_special_ssh	40
+par_special_ssh	41
+par_special_ssh	42
+par_special_ssh	43
+par_special_ssh	44
+par_special_ssh	45
+par_special_ssh	46
+par_special_ssh	47
+par_special_ssh	48
+par_special_ssh	49
+par_special_ssh	50
+par_special_ssh	51
+par_special_ssh	52
+par_special_ssh	53
+par_special_ssh	54
+par_special_ssh	55
+par_special_ssh	56
+par_special_ssh	57
+par_special_ssh	58
+par_special_ssh	59
+par_special_ssh	60
+par_special_ssh	61
+par_special_ssh	62
+par_special_ssh	63
+par_special_ssh	64
+par_special_ssh	65
+par_special_ssh	66
+par_special_ssh	67
+par_special_ssh	68
+par_special_ssh	69
+par_special_ssh	70
+par_special_ssh	71
+par_special_ssh	72
+par_special_ssh	73
+par_special_ssh	74
+par_special_ssh	75
+par_special_ssh	76
+par_special_ssh	77
+par_special_ssh	78
+par_special_ssh	79
+par_special_ssh	80
+par_special_ssh	81
+par_special_ssh	82
+par_special_ssh	83
+par_special_ssh	84
+par_special_ssh	85
+par_special_ssh	86
+par_special_ssh	87
+par_special_ssh	88
+par_special_ssh	89
+par_special_ssh	90
+par_special_ssh	91
+par_special_ssh	92
+par_special_ssh	93
+par_special_ssh	94
+par_special_ssh	95
+par_special_ssh	96
+par_special_ssh	97
+par_special_ssh	98
+par_special_ssh	99
+par_special_ssh	100
+par_timeout_retries	### test --timeout --retries
+par_timeout_retries	ssh: connect to host 192.168.1.197 port 22: No route to hostpar_timeout_retries	
+par_timeout_retries	parallel: Warning: This job was killed because it timed out:
+par_timeout_retries	parallel: Warning: ssh 8.8.8.8 echo 8.8.8.8
+par_timeout_retries	parallel: Warning: This job was killed because it timed out:
+par_timeout_retries	parallel: Warning: ssh 8.8.8.8 echo 8.8.8.8
+par_timeout_retries	parallel: Warning: This job was killed because it timed out:
+par_timeout_retries	parallel: Warning: ssh 8.8.8.8 echo 8.8.8.8
+par_timeout_retries	vagrant@parallel-server1
+par_timeout_retries	vagrant@parallel-server2
+par_timeout_retries	vagrant@parallel-server3
+par_workdir_in_HOME	### test --workdir . in $HOME
+par_workdir_in_HOME	OK
 echo '### TODO: test --filter-hosts proxied through the one host'
 ### TODO: test --filter-hosts proxied through the one host
