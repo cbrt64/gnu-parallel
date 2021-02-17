@@ -2155,7 +2155,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210201;
+    $Global::version = 20210202;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -3464,7 +3464,9 @@ sub init_run_jobs() {
 		    ::usleep(rand()*300);
 		    ::warning("No more processes: ".
 			      "Decreasing number of running jobs to $max.",
-			      "Raising ulimit -u or /etc/security/limits.conf may help.");
+			      "Try increasing 'ulimit -u' (try: ulimit -u `ulimit -Hu`)",
+			      "or increasing 'nproc' in /etc/security/limits.conf",
+			      "or increasing /proc/sys/kernel/pid_max");
 		    return 0;
 		}
 	    }
@@ -3472,7 +3474,10 @@ sub init_run_jobs() {
 	    # No more file handles
 	    $no_more_file_handles_warned++ or
 		::warning("No more file handles. ",
-			  "Raising ulimit -n or /etc/security/limits.conf may help.");
+			  "Try running 'parallel -j0 -N 100 --pipe parallel -j0'",
+			  "or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)",
+			  "or increasing 'nofile' in /etc/security/limits.conf",
+			  "or increasing /proc/sys/fs/file-max");
 	    debug("start", "No more file handles. ");
 	    return 0;
 	}
@@ -11553,7 +11558,6 @@ sub new($) {
 	    }
 	}
     }
-
     # Add {} if no replacement strings in @command
     ($replacecount_ref, $len_ref, @command) =
 	replacement_counts_and_lengths($transfer_files,$return_files,@command);
@@ -12297,76 +12301,95 @@ sub nest_get($) {
     return shift @{$self->{'unget'}};
 }
 
-sub read_arg_from_fh($) {
-    # Read one Arg from filehandle
-    # Returns:
-    #   Arg-object with one read line
-    #   undef if end of file
-    my $fh = shift;
-    my $prepend;
-    my $arg;
-    my $half_record = 0;
-    do {{
-	# This makes 10% faster
-	if(not defined ($arg = <$fh>)) {
+{
+    my $cr_count = 0;
+    my $nl_count = 0;
+    my $dos_crnl_determined;
+    sub read_arg_from_fh($) {
+	# Read one Arg from filehandle
+	# Returns:
+	#   Arg-object with one read line
+	#   undef if end of file
+	my $fh = shift;
+	my $prepend;
+	my $arg;
+	my $half_record = 0;
+	do {{
+	    # This makes 10% faster
+	    if(not defined ($arg = <$fh>)) {
+		if(defined $prepend) {
+		    return Arg->new($prepend);
+		} else {
+		    return undef;
+		}
+	    }
+	    if(not $dos_crnl_determined and not $opt::d) {
+		# Warn if input has CR-NL and -d is not set
+		if($arg =~ /\r$/) {
+		    $cr_count++;
+		} else {
+		    $nl_count++;
+		}
+		if($cr_count == 3 or $nl_count == 3) {
+		    $dos_crnl_determined = 1;
+		    if($nl_count == 0 and $cr_count == 3) {
+			::warning('The first three values end in CR-NL. Consider using -d "\r\n"');
+		    }
+		}
+	    }
+	    if($opt::csv) {
+		# We need to read a full CSV line.
+		if(($arg =~ y/"/"/) % 2 ) {
+		    # The number of " on the line is uneven:
+		    # If we were in a half_record => we have a full record now
+		    # If we were ouside a half_record => we are in a half record now
+		    $half_record = not $half_record;
+		}
+		if($half_record) {
+		    # CSV half-record with quoting:
+		    #   col1,"col2 2""x3"" board newline  <-this one
+		    #   cont",col3
+		    $prepend .= $arg;
+		    redo;
+		} else {
+		    # Now we have a full CSV record
+		}
+	    }
+	    # Remove delimiter
+	    chomp $arg;
+	    if($Global::end_of_file_string and
+	       $arg eq $Global::end_of_file_string) {
+		# Ignore the rest of input file
+		close $fh;
+		::debug("run", "EOF-string ($arg) met\n");
+		if(defined $prepend) {
+		    return Arg->new($prepend);
+		} else {
+		    return undef;
+		}
+	    }
 	    if(defined $prepend) {
-		return Arg->new($prepend);
-	    } else {
-		return undef;
+		$arg = $prepend.$arg; # For line continuation
+		undef $prepend;
 	    }
-	}
-	if($opt::csv) {
-	    # We need to read a full CSV line.
-	    if(($arg =~ y/"/"/) % 2 ) {
-		# The number of " on the line is uneven:
-		# If we were in a half_record => we have a full record now
-		# If we were ouside a half_record => we are in a half record now
-		$half_record = not $half_record;
+	    if($Global::ignore_empty) {
+		if($arg =~ /^\s*$/) {
+		    redo; # Try the next line
+		}
 	    }
-	    if($half_record) {
-		# CSV half-record with quoting:
-		#   col1,"col2 2""x3"" board newline  <-this one
-		#   cont",col3
-		$prepend .= $arg;
-		redo;
-	    } else {
-		# Now we have a full CSV record
+	    if($Global::max_lines) {
+		if($arg =~ /\s$/) {
+		    # Trailing space => continued on next line
+		    $prepend = $arg;
+		    redo;
+		}
 	    }
+	    }} while (1 == 0); # Dummy loop {{}} for redo
+	if(defined $arg) {
+	    return Arg->new($arg);
+	} else {
+	    ::die_bug("multiread arg undefined");
 	}
-	# Remove delimiter
-	chomp $arg;
-	if($Global::end_of_file_string and
-	   $arg eq $Global::end_of_file_string) {
-	    # Ignore the rest of input file
-	    close $fh;
-	    ::debug("run", "EOF-string ($arg) met\n");
-	    if(defined $prepend) {
-		return Arg->new($prepend);
-	    } else {
-		return undef;
-	    }
-	}
-	if(defined $prepend) {
-	    $arg = $prepend.$arg; # For line continuation
-	    undef $prepend;
-	}
-	if($Global::ignore_empty) {
-	    if($arg =~ /^\s*$/) {
-		redo; # Try the next line
-	    }
-	}
-	if($Global::max_lines) {
-	    if($arg =~ /\s$/) {
-		# Trailing space => continued on next line
-		$prepend = $arg;
-		redo;
-	    }
-	}
-    }} while (1 == 0); # Dummy loop {{}} for redo
-    if(defined $arg) {
-	return Arg->new($arg);
-    } else {
-	::die_bug("multiread arg undefined");
     }
 }
 
