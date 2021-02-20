@@ -2212,6 +2212,12 @@ sub init_globals() {
 	 '{choose_k}' => 'for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } }',
 	 # {##} = number of jobs
 	 '{##}' => '$_=total_jobs()',
+	 # {0%} = 0-padded jobslot
+	 '{0%}' => '$f=1+int((log($Global::max_jobs_running||1)/log(10))); $_=sprintf("%0${f}d",slot())',
+	 # {0%} = 0-padded seq
+	 '{0#}' => '$f=1+int((log(total_jobs())/log(10))); $_=sprintf("%0${f}d",seq())',
+
+	 ## Bash inspired replacement strings
 	 # Bash ${a:-myval}
 	 '{:-([^}]+?)}' => '$_ ||= $$1',
 	 # Bash ${a:2}
@@ -6301,6 +6307,7 @@ sub set_max_jobs_running($$) {
         $Global::max_jobs_running -= $self->{'max_jobs_running'};
     }
     $self->{'max_jobs_running'} = shift;
+
     if(defined $self->{'max_jobs_running'}) {
         # max_jobs_running could be resat if -j is a changed file
         $Global::max_jobs_running += $self->{'max_jobs_running'};
@@ -10811,12 +10818,13 @@ sub new($) {
 
 sub flush_cache() {
     my $self = shift;
-    for my $arglist (@{$self->{'arglist'}}) {
+    for my $arglist (@{$self->{'arg_list'}}) {
 	for my $arg (@$arglist) {
 	    $arg->flush_cache();
 	}
     }
     $self->{'arg_queue'}->flush_cache();
+    $self->{'replaced'} = undef;
 }
 
 sub seq($) {
@@ -13657,6 +13665,7 @@ sub main() {
     # Compute $Global::max_jobs_running
     # Must be done after ungetting any --pipepart jobs.
     max_jobs_running();
+
     init_run_jobs();
     my $sem;
     if($Global::semaphore) {

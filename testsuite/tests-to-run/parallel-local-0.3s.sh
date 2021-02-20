@@ -69,12 +69,12 @@ EOF
     cat <<'EOF' > "$tmp2"
     2: Job:{#} Slot:{%} All:{} Arg[1]:{1} Arg[-1]:{-1} Perl({}+4):{=$_+=4=}
 EOF
-    parallel -j2 --cleanup --tmpl $tmp1=t1.{#} --tmpl $tmp2=t2.{%} \
-	     'cat t1.{#} t2.{%}' ::: 1 2 ::: a b
+    parallel --colsep , -j2 --cleanup --tmpl $tmp1=t1.{#} --tmpl $tmp2=t2.{%} \
+	     'sleep 0.{#}; cat t1.{#} t2.{%}' ::: 1,a 1,b 2,a 2,b
     echo should give no files
     ls t[12].*
-    parallel --cleanup --colsep , -j2 --tmpl $tmp1=t1.{#} --tmpl $tmp2=t2.{%} \
-	     'cat t1.{#} t2.{%}' ::: 1,a 1,b 2,a 2,b
+    parallel            -j2 --cleanup --tmpl $tmp1=t1.{#} --tmpl $tmp2=t2.{%} \
+	     'sleep 0.{#}; cat t1.{#} t2.{%}' ::: 1 2 ::: a b
     echo should give no files
     ls t[12].*
 }

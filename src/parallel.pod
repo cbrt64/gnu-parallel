@@ -299,14 +299,20 @@ directory (if any) and extension removed.
 To understand positional replacement strings see B<{>I<n>B<}>.
 
 
-=item B<{=>I<perl expression>B<=}>
+=item B<{=>I<perl expression>B<=}> (alpha testing)
 
 Replace with calculated I<perl expression>. B<$_> will contain the
 same as B<{}>. After evaluating I<perl expression> B<$_> will be used
 as the value. It is recommended to only change $_ but you have full
 access to all of GNU B<parallel>'s internal functions and data
-structures. A few convenience functions and data structures have been
-made:
+structures.
+
+The expression must give the same result if evaluated twice -
+otherwise the behaviour is undefined. E.g. this will not work as expected:
+
+    parallel echo '{= $_= ++$wrong_counter =}' ::: a b c
+
+A few convenience functions and data structures have been made:
 
 =over 15
 
@@ -870,7 +876,7 @@ replacement strings and Perl code. Example:
 
    parallel --filter '{1} < {2}+1' echo ::: {1..3} ::: {1..3}
 
-Runs: 1,1 1,2 1,3 2,2 2,3 3,3
+Outputs: 1,1 1,2 1,3 2,2 2,3 3,3
 
 
 =item B<--filter-hosts>
@@ -1625,11 +1631,9 @@ Activate additional replacement strings: {+/} {+.} {+..} {+...} {..}
 B<{##}> is the total number of jobs to be run. It is incompatible with
 B<-X>/B<-m>/B<--xargs>.
 
-B<{0%}>, B<{00%}>, B<{000%}>, ... B<{0..0%}> prefix jobslot with
-zeros. (alpha testing)
+B<{0%}> zero-padded jobslot. (alpha testing)
 
-B<{0#}>, B<{00#}>, B<{000#}>, ... B<{0..0#}> prefix sequence numbers
-with zeros. (alpha testing)
+B<{0#}> zero-padded sequence number. (alpha testing)
 
 B<{choose_k}> is inspired by n choose k: Given a list of n elements,
 choose k. k is the number of input sources and n is the number of
@@ -2639,6 +2643,23 @@ I<file> will be replaced. All replacement strings in the name I<repl>
 will be replaced.
 
 With B<--cleanup> the new file will be removed when the job is done.
+
+If I<my.tmpl> contains this:
+
+  Xval: {x}
+  Yval: {y}
+  FixedValue: 9
+  # x with 2 decimals
+  DecimalX: {=x $_=sprintf("%.2f",$_) =}
+  TenX: {=x $_=$_*10 =}
+  RandomVal: {=1 $_=rand() =}
+
+it can be used like this:
+
+  myprog() { echo Using "$@"; cat "$@"; }
+  export -f myprog
+  parallel --cleanup --header : --tmpl my.tmpl={#}.t myprog {#}.t \
+    ::: x 1.234 2.345 3.45678 ::: y 1 2 3
 
 
 =item B<--tty>

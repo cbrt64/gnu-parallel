@@ -2862,10 +2862,8 @@ Distributed Resource Management Application API to make jobs run with
 different cluster software.
 
 
-=head3 Future support in GNU Parallel
-
-B<Future> versions of GNU B<parallel> may support templates
-with replacement strings. Such as:
+GNU B<parallel> B<--tmpl> supports templates with replacement
+strings. Such as:
 
   Xval: {x}
   Yval: {y}
@@ -2873,20 +2871,16 @@ with replacement strings. Such as:
   # x with 2 decimals
   DecimalX: {=x $_=sprintf("%.2f",$_) =}
   TenX: {=x $_=$_*10 =}
-  RandomVal: {= $_=rand() =}
+  RandomVal: {=1 $_=rand() =}
 
 that can be used like:
 
   parallel --header : --tmpl my.tmpl={#}.t myprog {#}.t \
     ::: x 1 2 3 ::: y 1 2 3
 
-Filtering may also be supported as:
+Filtering is supported as:
 
   parallel --filter '{1} > {2}' echo ::: 1 2 3 ::: 1 2 3
-
-which will basically do:
-
-  parallel echo '{= $arg[1] > $arg[2] and skip() =}' ::: 1 2 3 ::: 1 2 3
 
 https://github.com/eviatarbach/parasweep (Last checked: 2021-01)
 
@@ -2933,6 +2927,28 @@ running jobs.
   4$ something | parallel -j 5 echo {} {}
 
 https://reposhub.com/python/command-line-tools/Akianonymus-parallel-bash.html
+(Last checked: 2021-02)
+
+
+=head2 DIFFERENCES BETWEEN bash-concurrent AND GNU Parallel
+
+B<bash-concurrent> is more an alternative to B<make> than to GNU
+B<parallel>. Its input is very similar to a Makefile, where jobs
+depend on other jobs.
+
+It has a nice progress indicator where you can see which jobs
+completed successfully, which jobs are currently running, which jobs
+failed, and which jobs were skipped due to a depending job failed.
+The indicator does not deal well with resizing the window.
+
+Output is cached in tempfiles on disk, but is only shown if there is
+an error, so it is not meant to be part of a UNIX pipeline. If
+B<bash-concurrent> crashes these tempfiles are not removed.
+
+It uses an O(n*n) algorithm, so if you have 1000 independent jobs it
+takes 22 seconds to start it.
+
+https://github.com/themattrix/bash-concurrent
 (Last checked: 2021-02)
 
 

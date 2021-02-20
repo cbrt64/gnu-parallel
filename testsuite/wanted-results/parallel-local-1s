@@ -282,6 +282,10 @@ par_open_files_blocks	9 of 21
 par_open_files_blocks	10 of 21
 par_open_files_blocks	11 of 21
 par_open_files_blocks	12 of 21
+par_open_files_blocks	parallel: Warning: Try running 'parallel -j0 -N 100 --pipe parallel -j0'
+par_open_files_blocks	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+par_open_files_blocks	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+par_open_files_blocks	parallel: Warning: or increasing /proc/sys/fs/file-max
 par_open_files_blocks	13 of 21
 par_open_files_blocks	14 of 21
 par_open_files_blocks	15 of 21
@@ -479,21 +483,21 @@ par_plus_slot_replacement	Seq: 097 97
 par_plus_slot_replacement	Seq: 098 98
 par_plus_slot_replacement	Seq: 099 99
 par_plus_slot_replacement	Seq: 100 100
-par_plus_slot_replacement	Slot: 1 1
+par_plus_slot_replacement	Slot: 01 1
+par_plus_slot_replacement	Slot: 02 2
+par_plus_slot_replacement	Slot: 03 3
+par_plus_slot_replacement	Slot: 04 4
+par_plus_slot_replacement	Slot: 05 5
+par_plus_slot_replacement	Slot: 06 6
+par_plus_slot_replacement	Slot: 07 7
+par_plus_slot_replacement	Slot: 08 8
+par_plus_slot_replacement	Slot: 09 9
 par_plus_slot_replacement	Slot: 10 10
 par_plus_slot_replacement	Slot: 11 11
 par_plus_slot_replacement	Slot: 12 12
 par_plus_slot_replacement	Slot: 13 13
 par_plus_slot_replacement	Slot: 14 14
 par_plus_slot_replacement	Slot: 15 15
-par_plus_slot_replacement	Slot: 2 2
-par_plus_slot_replacement	Slot: 3 3
-par_plus_slot_replacement	Slot: 4 4
-par_plus_slot_replacement	Slot: 5 5
-par_plus_slot_replacement	Slot: 6 6
-par_plus_slot_replacement	Slot: 7 7
-par_plus_slot_replacement	Slot: 8 8
-par_plus_slot_replacement	Slot: 9 9
 par_profiles_with_space	### bug #42902: profiles containing arguments with space
 par_profiles_with_space	/bin/bash=/bin/bash
 par_profiles_with_space	echo '/bin/bash=/bin/bash'
