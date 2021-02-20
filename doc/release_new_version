@@ -194,7 +194,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210222 ('AngSangSuKyi/Navalny/Håndbold/Larry King<<>>') released <<[stable]>>
+Subject: GNU Parallel 20210222 ('Perseverance/AngSangSuKyi/Navalny/Håndbold/Larry King<<>>') released <<[stable]>>
 
 GNU Parallel 20210222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -211,16 +211,13 @@ Quote of the month:
   
 New in this release:
 
-* --filter filter out jobs to run based on a GNU Parallel expression. 
+* --filter only run jobs where the filter is true. The filter can contain replacement strings and Perl code such as: '{1} < {2}+1'
 
-* --tmpl <<>>
+* --template takes a text file as a template with replacement strings. Then it replaces the replacement strings and saves it under a new filename.
 
-* --plus implements {0%} {0..0%} dynamic replacement string for slot and {0#} {0..0#} dynamic replacement string for seq
+* --plus implements {0%} {0#} replacement string for zero padded slot and sequence.
 
-* crnl
-
-* New scheduling code, which makes -S alpha quality.
-
+* Warn if the first 3 values end in \r\n (DOS newline).
 
 * Bug fixes and man page updates.
 

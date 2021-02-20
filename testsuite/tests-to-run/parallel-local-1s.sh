@@ -7,8 +7,8 @@
 par_plus_slot_replacement() {
     echo '### show {slot} {0%} {0#}'
     parallel -k --plus echo '{slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
-    parallel -j15 -k --plus 'echo Seq: {000#} {00#} {0#}' ::: {1..100} | sort
-    parallel -j15 -k --plus 'sleep 0.0{}; echo Slot: {000%} {00%} {0%}' ::: {1..100} |
+    parallel -j15 -k --plus 'echo Seq: {0#} {#}' ::: {1..100} | sort
+    parallel -j15 -k --plus 'sleep 0.0{}; echo Slot: {0%} {%}' ::: {1..100} |
 	sort -u
 }
 

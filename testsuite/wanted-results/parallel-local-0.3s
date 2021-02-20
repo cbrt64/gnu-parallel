@@ -1021,150 +1021,178 @@ par_testquote	yash	"#&/
 par_testquote	yash	()*=?'
 par_testquote	zsh	"#&/
 par_testquote	zsh	()*=?'
-par_tmpl	1.t1 /tmp/tmpl-1.1-111.111.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 1.1
-par_tmpl	    Yval: 111.111
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 1
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 1.10
-par_tmpl	    TenX: 11
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 1.1,111.111
-par_tmpl	    val1,val2: 1.1,111.111
-par_tmpl	
-par_tmpl	2.t1 /tmp/tmpl-1.1-222.222.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 1.1
-par_tmpl	    Yval: 222.222
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 2
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 1.10
-par_tmpl	    TenX: 11
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 1.1,222.222
-par_tmpl	    val1,val2: 1.1,222.222
-par_tmpl	
-par_tmpl	3.t1 /tmp/tmpl-1.1-333.333.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 1.1
-par_tmpl	    Yval: 333.333
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 3
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 1.10
-par_tmpl	    TenX: 11
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 1.1,333.333
-par_tmpl	    val1,val2: 1.1,333.333
-par_tmpl	
-par_tmpl	4.t1 /tmp/tmpl-2.22-111.111.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 2.22
-par_tmpl	    Yval: 111.111
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 4
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 2.22
-par_tmpl	    TenX: 22.2
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 2.22,111.111
-par_tmpl	    val1,val2: 2.22,111.111
-par_tmpl	
-par_tmpl	5.t1 /tmp/tmpl-2.22-222.222.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 2.22
-par_tmpl	    Yval: 222.222
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 5
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 2.22
-par_tmpl	    TenX: 22.2
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 2.22,222.222
-par_tmpl	    val1,val2: 2.22,222.222
-par_tmpl	
-par_tmpl	6.t1 /tmp/tmpl-2.22-333.333.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 2.22
-par_tmpl	    Yval: 333.333
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 6
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 2.22
-par_tmpl	    TenX: 22.2
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 2.22,333.333
-par_tmpl	    val1,val2: 2.22,333.333
-par_tmpl	
-par_tmpl	7.t1 /tmp/tmpl-3.333-111.111.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 3.333
-par_tmpl	    Yval: 111.111
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 7
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 3.33
-par_tmpl	    TenX: 33.33
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 3.333,111.111
-par_tmpl	    val1,val2: 3.333,111.111
-par_tmpl	
-par_tmpl	8.t1 /tmp/tmpl-3.333-222.222.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 3.333
-par_tmpl	    Yval: 222.222
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 8
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 3.33
-par_tmpl	    TenX: 33.33
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 3.333,222.222
-par_tmpl	    val1,val2: 3.333,222.222
-par_tmpl	
-par_tmpl	9.t1 /tmp/tmpl-3.333-333.333.t2
-par_tmpl	    Template1
-par_tmpl	    Xval: 3.333
-par_tmpl	    Yval: 333.333
-par_tmpl	    FixedValue: 9
-par_tmpl	    Seq: 9
-par_tmpl	    Slot: X
-par_tmpl	    # x with 2 decimals
-par_tmpl	    DecimalX: 3.33
-par_tmpl	    TenX: 33.33
-par_tmpl	    RandomVal: 0.RANDOM_NUMBER
-par_tmpl	
-par_tmpl	    Template2
-par_tmpl	    X,Y: 3.333,333.333
-par_tmpl	    val1,val2: 3.333,333.333
-par_tmpl	
+par_tmpl1	1.t1 /tmp/tmpl-1.1-111.111.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 1.1
+par_tmpl1	    Yval: 111.111
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 1
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 1.10
+par_tmpl1	    TenX: 11
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 1.1,111.111
+par_tmpl1	    val1,val2: 1.1,111.111
+par_tmpl1	
+par_tmpl1	2.t1 /tmp/tmpl-1.1-222.222.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 1.1
+par_tmpl1	    Yval: 222.222
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 2
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 1.10
+par_tmpl1	    TenX: 11
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 1.1,222.222
+par_tmpl1	    val1,val2: 1.1,222.222
+par_tmpl1	
+par_tmpl1	3.t1 /tmp/tmpl-1.1-333.333.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 1.1
+par_tmpl1	    Yval: 333.333
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 3
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 1.10
+par_tmpl1	    TenX: 11
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 1.1,333.333
+par_tmpl1	    val1,val2: 1.1,333.333
+par_tmpl1	
+par_tmpl1	4.t1 /tmp/tmpl-2.22-111.111.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 2.22
+par_tmpl1	    Yval: 111.111
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 4
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 2.22
+par_tmpl1	    TenX: 22.2
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 2.22,111.111
+par_tmpl1	    val1,val2: 2.22,111.111
+par_tmpl1	
+par_tmpl1	5.t1 /tmp/tmpl-2.22-222.222.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 2.22
+par_tmpl1	    Yval: 222.222
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 5
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 2.22
+par_tmpl1	    TenX: 22.2
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 2.22,222.222
+par_tmpl1	    val1,val2: 2.22,222.222
+par_tmpl1	
+par_tmpl1	6.t1 /tmp/tmpl-2.22-333.333.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 2.22
+par_tmpl1	    Yval: 333.333
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 6
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 2.22
+par_tmpl1	    TenX: 22.2
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 2.22,333.333
+par_tmpl1	    val1,val2: 2.22,333.333
+par_tmpl1	
+par_tmpl1	7.t1 /tmp/tmpl-3.333-111.111.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 3.333
+par_tmpl1	    Yval: 111.111
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 7
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 3.33
+par_tmpl1	    TenX: 33.33
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 3.333,111.111
+par_tmpl1	    val1,val2: 3.333,111.111
+par_tmpl1	
+par_tmpl1	8.t1 /tmp/tmpl-3.333-222.222.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 3.333
+par_tmpl1	    Yval: 222.222
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 8
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 3.33
+par_tmpl1	    TenX: 33.33
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 3.333,222.222
+par_tmpl1	    val1,val2: 3.333,222.222
+par_tmpl1	
+par_tmpl1	9.t1 /tmp/tmpl-3.333-333.333.t2
+par_tmpl1	    Template1
+par_tmpl1	    Xval: 3.333
+par_tmpl1	    Yval: 333.333
+par_tmpl1	    FixedValue: 9
+par_tmpl1	    Seq: 9
+par_tmpl1	    Slot: X
+par_tmpl1	    # x with 2 decimals
+par_tmpl1	    DecimalX: 3.33
+par_tmpl1	    TenX: 33.33
+par_tmpl1	    RandomVal: 0.RANDOM_NUMBER
+par_tmpl1	
+par_tmpl1	    Template2
+par_tmpl1	    X,Y: 3.333,333.333
+par_tmpl1	    val1,val2: 3.333,333.333
+par_tmpl1	
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:1 Slot:1 All:1a Arg[1]:1 Arg[-1]:a Perl(1a+4):54
+par_tmpl2	    2: Job:1 Slot:1 All:1a Arg[1]:1 Arg[-1]:a Perl(1a+4):54
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:2 Slot:2 All:1b Arg[1]:1 Arg[-1]:b Perl(1b+4):54
+par_tmpl2	    2: Job:2 Slot:2 All:1b Arg[1]:1 Arg[-1]:b Perl(1b+4):54
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:3 Slot:1 All:2a Arg[1]:2 Arg[-1]:a Perl(2a+4):64
+par_tmpl2	    2: Job:3 Slot:1 All:2a Arg[1]:2 Arg[-1]:a Perl(2a+4):64
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:4 Slot:2 All:2b Arg[1]:2 Arg[-1]:b Perl(2b+4):64
+par_tmpl2	    2: Job:4 Slot:2 All:2b Arg[1]:2 Arg[-1]:b Perl(2b+4):64
+par_tmpl2	should give no files
+par_tmpl2	ls: cannot access 't[12].*': No such file or directory
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:1 Slot:1 All:1a Arg[1]:1 Arg[-1]:a Perl(1a+4):54
+par_tmpl2	    2: Job:1 Slot:1 All:1a Arg[1]:1 Arg[-1]:a Perl(1a+4):54
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:2 Slot:2 All:1b Arg[1]:1 Arg[-1]:b Perl(1b+4):54
+par_tmpl2	    2: Job:2 Slot:2 All:1b Arg[1]:1 Arg[-1]:b Perl(1b+4):54
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:3 Slot:1 All:2a Arg[1]:2 Arg[-1]:a Perl(2a+4):64
+par_tmpl2	    2: Job:3 Slot:1 All:2a Arg[1]:2 Arg[-1]:a Perl(2a+4):64
+par_tmpl2	    === Start tmpl1 ===
+par_tmpl2	    1: Job:4 Slot:2 All:2b Arg[1]:2 Arg[-1]:b Perl(2b+4):64
+par_tmpl2	    2: Job:4 Slot:2 All:2b Arg[1]:2 Arg[-1]:b Perl(2b+4):64
+par_tmpl2	should give no files
+par_tmpl2	ls: cannot access 't[12].*': No such file or directory
 par_tmux_command_not_found	### PARALLEL_TMUX not found
 par_tmux_command_not_found	parallel: Error: not-existing not found in $PATH.
 par_total_from_joblog	bug #47086: [PATCH] Initialize total_completed from joblog

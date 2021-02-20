@@ -57,6 +57,7 @@ sub set_input_source_header($$) {
 		for(@$command_ref, @Global::ret_files,
 		    @Global::transfer_files, $opt::tagstring,
 		    $opt::workdir, $opt::results, $opt::retries,
+		    @Global::template_contents, @Global::template_names,
 		    @opt::filter) {
 		    # Skip if undefined
 		    $_ or next;
@@ -1551,6 +1552,7 @@ sub options_hash() {
 	 "transfer" => \$opt::transfer,
 	 "cleanup" => \$opt::cleanup,
 	 "basefile|bf=s" => \@opt::basefile,
+	 "template|tmpl=s" => \%opt::template,
 	 "B=s" => \$opt::retired,
 	 "ctrlc|ctrl-c" => \$opt::retired,
 	 "noctrlc|no-ctrlc|no-ctrl-c" => \$opt::retired,
@@ -1811,6 +1813,20 @@ sub parse_options(@) {
 	push @Global::transfer_files, $opt::i || $opt::I || "{}";
     }
     push @Global::transfer_files, @opt::transfer_files;
+    if(%opt::template) {
+	while (my ($source, $template_name) = each %opt::template) {
+	    if(open(my $tmpl, "<", $source)) {
+		local $/; # $/ = undef => slurp whole file
+		my $content = <$tmpl>;
+		push @Global::template_names, $template_name;
+		push @Global::template_contents, $content;
+		::debug("tmpl","Name: $template_name\n$content\n");
+	    } else {
+		::error("Cannot open '$source'.");
+		wait_and_exit(255);
+	    }
+	}
+    }
     if(not defined $opt::recstart and
        not defined $opt::recend) { $opt::recend = "\n"; }
     $Global::blocksize = multiply_binary_prefix($opt::blocksize || "1M");
@@ -2080,7 +2096,6 @@ sub parse_options(@) {
     if($opt::sqlworker) { $Global::membuffer ||= 1; }
     # The sqlmaster groups the arguments, so the should just read one
     if($opt::sqlworker and not $opt::sqlmaster) { $Global::max_number_of_args = 1; }
-
 }
 
 sub check_invalid_option_combinations() {
@@ -2155,7 +2170,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210202;
+    $Global::version = 20210205;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2217,6 +2232,7 @@ sub init_globals() {
 	 '{,([^}]+?)}' => 's/^($$1)/lc($1)/e;',
 	 # Bash ${a,,A}
 	 '{,,([^}]+?)}' => 's/($$1)/lc($1)/eg;',
+
 	 # {slot} = $PARALLEL_JOBSLOT
 	 '{slot}' => '1 $_="\${PARALLEL_JOBSLOT}";uq()',
 	 # {host} = ssh host
@@ -4084,7 +4100,7 @@ sub parse_sshlogin() {
 		::warning("--transferfile ignored as there are no remote --sshlogin.");
             } elsif (@opt::return) {
                 ::warning("--return ignored as there are no remote --sshlogin.");
-            } elsif (defined $opt::cleanup) {
+            } elsif (defined $opt::cleanup and not %opt::template) {
 		::warning("--cleanup ignored as there are no remote --sshlogin.");
             } elsif (@opt::basefile) {
                 ::warning("--basefile ignored as there are no remote --sshlogin.");
@@ -7056,7 +7072,7 @@ sub compute_number_of_processes($) {
 	    delete $Global::unkilled_children{$pid};
 	}
 	# Cleanup: Unget the command_lines or the @args
-	$Global::JobQueue->{'commandlinequeue'}->{'arg_queue'}->unget(@args);
+	$Global::JobQueue->{'commandlinequeue'}{'arg_queue'}->unget(@args);
 	@args = ();
 	$Global::JobQueue->unget(@jobs);
 	@jobs = ();
@@ -8019,9 +8035,11 @@ sub new($) {
     my $max_number_of_args = shift;
     my $transfer_files = shift;
     my $return_files = shift;
+    my $template_names = shift;
+    my $template_contents = shift;
     my $commandlinequeue = CommandLineQueue->new
 	($commandref, $read_from, $context_replace, $max_number_of_args,
-	 $transfer_files, $return_files);
+	 $transfer_files, $return_files, $template_names, $template_contents);
     my @unget = ();
     return bless {
         'unget' => \@unget,
@@ -8036,7 +8054,10 @@ sub get($) {
 
     $self->{'this_job_no'}++;
     if(@{$self->{'unget'}}) {
-        return shift @{$self->{'unget'}};
+	my $job = shift @{$self->{'unget'}};
+	# {%} may have changed, so flush computed values
+	$job && $job->flush_cache();
+	return $job;
     } else {
         my $commandline = $self->{'commandlinequeue'}->get();
         if(defined $commandline) {
@@ -8163,6 +8184,11 @@ sub new($) {
 	'output' => { 1 => [], 2 => [] },
 	'halfline' => { 1 => [], 2 => [] },
     }, ref($class) || $class;
+}
+
+sub flush_cache($) {
+    my $self = shift;
+    $self->{'commandline'}->flush_cache();
 }
 
 sub replaced($) {
@@ -9421,6 +9447,29 @@ sub sshlogin_wrap($) {
     return $self->{'sshlogin_wrap'}{$command};
 }
 
+sub fill_templates($) {
+    # Replace replacement strings in template(s)
+    # Returns:
+    #   @templates - File names of replaced templates
+    my $self = shift;
+    
+    if(%opt::template) {
+	my @template_name =
+	    map { $self->{'commandline'}->replace_placeholders([$_],0,0) }
+	@{$self->{'commandline'}{'template_names'}};
+	::debug("tmpl","Names: @template_name\n");
+	for(my $i = 0; $i <= $#template_name; $i++) {
+	    open(my $fh, ">", $template_name[$i]) || die;
+	    print $fh $self->{'commandline'}->
+		replace_placeholders([$self->{'commandline'}{'template_contents'}[$i]],0,0);
+	    close $fh;
+	}
+	if($opt::cleanup) {
+	    $self->add_rm(@template_name);
+	}
+    }
+}
+
 sub filter($) {
     # Replace replacement strings in filter(s) and evaluate them
     # Returns:
@@ -9827,6 +9876,7 @@ sub start($) {
     $ENV{'PARALLEL_JOBSLOT'} = $job->slot();
     $ENV{'PARALLEL_TMP'} = ::tmpname("par");
     $job->add_rm($ENV{'PARALLEL_TMP'});
+    $job->fill_templates();
     ::debug("run", $Global::total_running, " processes . Starting (",
 	    $job->seq(), "): $command\n");
     if($opt::pipe) {
@@ -10730,6 +10780,8 @@ sub new($) {
     my $max_number_of_args = shift; # for -N and normal (-n1)
     my $transfer_files = shift;
     my $return_files = shift;
+    my $template_names = shift;
+    my $template_contents = shift;
     my $replacecount_ref = shift;
     my $len_ref = shift;
     my %replacecount = %$replacecount_ref;
@@ -10751,8 +10803,20 @@ sub new($) {
 	'context_replace' => $context_replace,
 	'transfer_files' => $transfer_files,
 	'return_files' => $return_files,
+	'template_names' => $template_names,
+	'template_contents' => $template_contents,
 	'replaced' => undef,
     }, ref($class) || $class;
+}
+
+sub flush_cache() {
+    my $self = shift;
+    for my $arglist (@{$self->{'arglist'}}) {
+	for my $arg (@$arglist) {
+	    $arg->flush_cache();
+	}
+    }
+    $self->{'arg_queue'}->flush_cache();
 }
 
 sub seq($) {
@@ -11440,6 +11504,8 @@ sub new($) {
     my $max_number_of_args = shift;
     my $transfer_files = shift;
     my $return_files = shift;
+    my $template_names = shift;
+    my $template_contents = shift;
     my @unget = ();
     my $posrpl;
     my ($replacecount_ref, $len_ref);
@@ -11455,6 +11521,7 @@ sub new($) {
     # @command, --transferfile, --return,
     # --tagstring, --workdir, --results
     for(@command, @$transfer_files, @$return_files,
+	@$template_names, @$template_contents,
 	$opt::tagstring, $opt::workdir, $opt::results, $opt::retries,
 	@opt::filter) {
 	# Skip if undefined
@@ -11560,7 +11627,9 @@ sub new($) {
     }
     # Add {} if no replacement strings in @command
     ($replacecount_ref, $len_ref, @command) =
-	replacement_counts_and_lengths($transfer_files,$return_files,@command);
+	replacement_counts_and_lengths($transfer_files, $return_files,
+				       $template_names, $template_contents,
+				       @command);
     if("@command" =~ /^[^ \t\n=]*\257</) {
 	# Replacement string is (part of) the command (and not just
 	# argument or variable definition V1={})
@@ -11574,17 +11643,20 @@ sub new($) {
     }
 
     return bless {
-	'unget' => \@unget,
-	'command' => \@command,
-	'replacecount' => $replacecount_ref,
-	'arg_queue' => RecordQueue->new($read_from,$opt::colsep),
-	'context_replace' => $context_replace,
-	'len' => $len_ref,
-	'max_number_of_args' => $max_number_of_args,
-	'size' => undef,
-	'transfer_files' => $transfer_files,
-	'return_files' => $return_files,
-	'seq' => $seq,
+	('unget' => \@unget,
+	 'command' => \@command,
+	 'replacecount' => $replacecount_ref,
+	 'arg_queue' => RecordQueue->new($read_from,$opt::colsep),
+	 'context_replace' => $context_replace,
+	 'len' => $len_ref,
+	 'max_number_of_args' => $max_number_of_args,
+	 'size' => undef,
+	 'transfer_files' => $transfer_files,
+	 'return_files' => $return_files,
+	 'template_names' => $template_names,
+	 'template_contents' => $template_contents,
+	 'seq' => $seq,
+	 )
     }, ref($class) || $class;
 }
 
@@ -11632,11 +11704,15 @@ sub replacement_counts_and_lengths($$@) {
     # Input:
     #   \@transfer_files = array of filenames to transfer
     #   \@return_files = array of filenames to return
+    #   \@template_names = array of names to copy to
+    #   \@template_contents = array of contents to write
     #   @command = command template
     # Output:
     #   \%replacecount, \%len, @command
     my $transfer_files = shift;
     my $return_files = shift;
+    my $template_names = shift;
+    my $template_contents = shift;
     my @command = @_;
     my (%replacecount,%len);
     my $sum = 0;
@@ -11666,6 +11742,7 @@ sub replacement_counts_and_lengths($$@) {
 	    $noncontextlen += length $c;
 	}
 	for(@$transfer_files, @$return_files,
+	    @$template_names, @$template_contents,
 	    @opt::filter,
 	    $opt::tagstring, $opt::workdir, $opt::results, $opt::retries) {
 	    # Options that can contain replacement strings
@@ -11725,6 +11802,8 @@ sub get($) {
 	     $self->{'len'}, @command) =
 		replacement_counts_and_lengths($self->{'transfer_files'},
 					       $self->{'return_files'},
+					       $self->{'template_name'},
+					       $self->{'template_contents'},
 					       @$SQL::command_ref);
 	    if("@command" =~ /^[^ \t\n=]*\257</) {
 		# Replacement string is (part of) the command (and not just
@@ -11742,6 +11821,8 @@ sub get($) {
 					$self->{'max_number_of_args'},
 					$self->{'transfer_files'},
 					$self->{'return_files'},
+					$self->{'template_names'},
+					$self->{'template_contents'},
 					$self->{'replacecount'},
 					$self->{'len'},
 	    );
@@ -12024,6 +12105,16 @@ sub empty($) {
     return $empty;
 }
 
+sub flush_cache($) {
+    my $self = shift;
+    for my $record (@{$self->{'unget'}}) {
+	for my $arg (@$record) {
+	    $arg->flush_cache();
+	}
+    }
+    $self->{'arg_sub_queue'}->flush_cache();
+}
+
 sub arg_number($) {
     my $self = shift;
     return $self->{'arg_number'};
@@ -12050,7 +12141,6 @@ sub get($) {
     if(@{$self->{'unget'}}) {
 	return shift @{$self->{'unget'}};
     }
-    my $unget_ref = $self->{'unget'};
     if($self->{'arg_sub_queue'}->empty()) {
 	return undef;
     }
@@ -12063,7 +12153,7 @@ sub get($) {
 	    ::debug("run", "line='$line'\n");
 	    if($line ne "") {
 		if($opt::csv) {
-		    # Parse CSV
+		    # Parse CSV and put it into a record
 		    chomp $line;
 		    if(not $Global::csv->parse($line)) {
 			die "CSV has unexpected format: ^$line^";
@@ -12072,6 +12162,7 @@ sub get($) {
 			push @out_record, Arg->new($_);
 		    }
 		} else {
+		    # Split --colsep into record
 		    for my $s (split /$opt::colsep/o, $line, -1) {
 			push @out_record, Arg->new($s);
 		    }
@@ -12098,6 +12189,14 @@ sub empty($) {
 	$self->{'arg_sub_queue'}->empty();
     ::debug("run", "RecordColQueue->empty $empty");
     return $empty;
+}
+
+sub flush_cache($) {
+    my $self = shift;
+    for my $arg (@{$self->{'unget'}}) {
+	$arg->flush_cache();
+    }
+    $self->{'arg_sub_queue'}->flush_cache();
 }
 
 
@@ -12137,6 +12236,15 @@ sub empty($) {
     my $empty = not $get;
     ::debug("run", "SQLRecordQueue->empty $empty");
     return $empty;
+}
+
+sub flush_cache($) {
+    my $self = shift;
+    for my $record (@{$self->{'unget'}}) {
+	for my $arg (@$record) {
+	    $arg->flush_cache();
+	}
+    }
 }
 
 
@@ -12189,6 +12297,15 @@ sub empty($) {
     return $empty;
 }
 
+sub flush_cache($) {
+    my $self = shift;
+    for my $record (@{$self->{'unget'}}, @{$self->{'arg_matrix'}}) {
+	for my $arg (@$record) {
+	    $arg->flush_cache();
+	}
+    }
+}
+
 sub link_get($) {
     my $self = shift;
     if(@{$self->{'unget'}}) {
@@ -12197,19 +12314,20 @@ sub link_get($) {
     my @record = ();
     my $prepend;
     my $empty = 1;
-    for my $fh (@{$self->{'fhs'}}) {
+    for my $i (0..$#{$self->{'fhs'}}) {
+	my $fh = $self->{'fhs'}[$i];
 	my $arg = read_arg_from_fh($fh);
 	if(defined $arg) {
 	    # Record $arg for recycling at end of file
-	    push @{$self->{'arg_matrix'}{$fh}}, $arg;
+	    push @{$self->{'arg_matrix'}[$i]}, $arg;
 	    push @record, $arg;
 	    $empty = 0;
 	} else {
 	    ::debug("run", "EOA ");
 	    # End of file: Recycle arguments
-	    push @{$self->{'arg_matrix'}{$fh}}, shift @{$self->{'arg_matrix'}{$fh}};
+	    push @{$self->{'arg_matrix'}[$i]}, shift @{$self->{'arg_matrix'}[$i]};
 	    # return last @{$args->{'args'}{$fh}};
-	    push @record, @{$self->{'arg_matrix'}{$fh}}[-1];
+	    push @record, @{$self->{'arg_matrix'}[$i]}[-1];
 	}
     }
     if($empty) {
@@ -13498,8 +13616,10 @@ sub main() {
     }
 
     $Global::JobQueue = JobQueue->new(
-	\@command,\@input_source_fh,$Global::ContextReplace,
-	$number_of_args,\@Global::transfer_files,\@Global::ret_files);
+	\@command, \@input_source_fh, $Global::ContextReplace,
+	$number_of_args, \@Global::transfer_files, \@Global::ret_files,
+	\@Global::template_names, \@Global::template_contents
+	);
 
     if($opt::sqlmaster) {
 	# Create SQL table to hold joblog + output

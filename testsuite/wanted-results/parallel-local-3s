@@ -119,7 +119,7 @@ par_eta	16
 par_eta	### Test of --eta with no jobs
 par_eta	
 par_eta	Computers / CPU cores / Max jobs to run
-par_eta	1:local / 8 / 8
+par_eta	1:local / 8 / 1
 par_eta	par_eta	ETA: 0s Left: 0 AVG: 0.00s  0
 par_exitval_signal	### Test --joblog with exitval and Test --joblog with signal -- timing dependent
 par_exitval_signal	exitval=128+6 OK
@@ -213,7 +213,7 @@ par_progress	16
 par_progress	### Test of --progress with no jobs
 par_progress	
 par_progress	Computers / CPU cores / Max jobs to run
-par_progress	1:local / 8 / 8
+par_progress	1:local / 8 / 1
 par_progress	par_progress	0
 par_replacement_slashslash	### Test {//}
 par_replacement_slashslash	. a
@@ -300,11 +300,6 @@ par_tee_too_many_args	3	3
 par_tee_too_many_args	4	4
 par_tee_too_many_args	parallel: Warning: Only enough file handles to run 251 jobs in parallel.
 par_tee_too_many_args	parallel: Warning: Try running 'parallel -j0 -N 251 --pipe parallel -j0'
-par_tee_too_many_args	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
-par_tee_too_many_args	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
-par_tee_too_many_args	parallel: Warning: or increasing /proc/sys/fs/file-max
-par_tee_too_many_args	parallel: Warning: No more file handles. 
-par_tee_too_many_args	parallel: Warning: Try running 'parallel -j0 -N 100 --pipe parallel -j0'
 par_tee_too_many_args	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
 par_tee_too_many_args	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
 par_tee_too_many_args	parallel: Warning: or increasing /proc/sys/fs/file-max

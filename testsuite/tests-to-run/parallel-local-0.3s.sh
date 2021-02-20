@@ -21,7 +21,7 @@ par_crnl() {
     printf "b\r\nc\nd\r\ne\r\nf\r\n" | parallel -k echo {}a
 }
 
-par_tmpl() {
+par_tmpl1() {
     tmp1=$(mktemp)
     tmp2=$(mktemp)
     cat <<'EOF' > "$tmp1"
@@ -58,6 +58,26 @@ EOF
     rm "$tmp1" "$tmp2"
 }
 
+par_tmpl2() {
+    tmp1=$(mktemp)
+    tmp2=$(mktemp)
+    cat <<'EOF' > "$tmp1"
+    === Start tmpl1 ===
+    1: Job:{#} Slot:{%} All:{} Arg[1]:{1} Arg[-1]:{-1} Perl({}+4):{=$_+=4=}
+EOF
+
+    cat <<'EOF' > "$tmp2"
+    2: Job:{#} Slot:{%} All:{} Arg[1]:{1} Arg[-1]:{-1} Perl({}+4):{=$_+=4=}
+EOF
+    parallel -j2 --cleanup --tmpl $tmp1=t1.{#} --tmpl $tmp2=t2.{%} \
+	     'cat t1.{#} t2.{%}' ::: 1 2 ::: a b
+    echo should give no files
+    ls t[12].*
+    parallel --cleanup --colsep , -j2 --tmpl $tmp1=t1.{#} --tmpl $tmp2=t2.{%} \
+	     'cat t1.{#} t2.{%}' ::: 1,a 1,b 2,a 2,b
+    echo should give no files
+    ls t[12].*
+}
 
 par_resume_k() {
     echo '### --resume -k'
