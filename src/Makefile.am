@@ -20,7 +20,7 @@ doc_DATA = parallel.html env_parallel.html sem.html sql.html		\
 	niceload.texi parallel_tutorial.texi parallel_book.texi		\
 	parallel_design.texi parallel_alternatives.texi parcat.texi	\
 	parset.texi parsort.texi \
-        parallel.rst env_parallel.rst sem.rst sql.rst		\
+        parallel.rst env_parallel.rst sem.rst sql.rst 			\
 	niceload.rst parallel_tutorial.rst parallel_book.rst		\
 	parallel_design.rst parallel_alternatives.rst parcat.rst	\
 	parset.rst parsort.rst \
@@ -348,10 +348,14 @@ DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	sem.texi sql.texi niceload.texi parallel_tutorial.texi		\
 	parallel_book.texi parallel_design.texi				\
 	parallel_alternatives.texi parcat.texi parset.texi		\
-	parsort.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf	\
-	niceload.pdf parallel_tutorial.pdf parallel_book.pdf		\
-	parallel_design.pdf parallel_alternatives.pdf parcat.pdf	\
-	parset.pdf parsort.pdf parallel_cheat_bw.pdf
+	parsort.texi \
+	parallel.rst env_parallel.rst sem.rst sql.rst niceload.rst	\
+	parallel_tutorial.rst parallel_book.rst parallel_design.rst	\
+	parallel_alternatives.rst parcat.rst parset.rst parsort.rst	\
+	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
+	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
+	parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf	\
+	parallel_cheat_bw.pdf
 
 EXTRA_DIST = parallel sem sql niceload parcat parset parsort		\
 	env_parallel env_parallel.ash env_parallel.bash			\

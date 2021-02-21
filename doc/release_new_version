@@ -40,7 +40,7 @@ gpl v3
 
 10.5281/zenodo.4381888
 DOINO=3956817
-TAG='PrivacyShield'
+TAG='Privacy Shield'
 
 # Update version
 . packager/releasescripts/updateversion
@@ -194,7 +194,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210222 ('Perseverance/AngSangSuKyi/Navalny/Håndbold/Larry King<<>>') released <<[stable]>>
+Subject: GNU Parallel 20210222 ('AngSangSuKyi<<>>') released <<[stable]>>
 
 GNU Parallel 20210222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
@@ -206,8 +206,9 @@ It does not have to be as detailed as Juan's. It is perfectly fine if you just s
 
 Quote of the month:
 
-  <<>>
-  
+  GNU Parallel is a priceless timesaver
+    -- June "Wakalix" @TWakalix@twitter
+
   
 New in this release:
 
@@ -217,25 +218,29 @@ New in this release:
 
 * --plus implements {0%} {0#} replacement string for zero padded slot and sequence.
 
-* Warn if the first 3 values end in \r\n (DOS newline).
+* Warn that you probably mean -d '\r\n' if the first 3 values end in \r\n (DOS newline).
+
+* {= perlexpression =} must return the same value, if run twice on the same input.
+
+* Man pages available as .rst-format.
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-https://www.polarmicrobes.org/a-short-tutorial-on-gnu-parallel/
+* A short tutorial on Gnu Parallel https://www.polarmicrobes.org/a-short-tutorial-on-gnu-parallel/
 
-https://opensource.com/article/21/2/linux-programming
+* 5 reasons why I love coding on Linux https://opensource.com/article/21/2/linux-programming
 
-https://medium.com/analytics-vidhya/simple-tutorial-to-install-use-gnu-parallel-79251120d618
+* Simple Tutorial to install & use GNU Parallel https://medium.com/analytics-vidhya/simple-tutorial-to-install-use-gnu-parallel-79251120d618
 
-https://www.lido.tu-dortmund.de/cms/de/LiDO3/LiDO3_first_contact_handout.pdf
+* LiDO3 - first contact https://www.lido.tu-dortmund.de/cms/de/LiDO3/LiDO3_first_contact_handout.pdf
 
-https://blog.jastix.biz/post/rill-stage-2-1-cli-data-analysis/
+* Rill Stage 2-1: Ways of command-line data analysis https://blog.jastix.biz/post/rill-stage-2-1-cli-data-analysis/
 
-https://blog.knoldus.com/introduction-to-gnu-parallel/
+* Introduction to GNU Parallel https://blog.knoldus.com/introduction-to-gnu-parallel/
 
-https://www.hahwul.com/cullinan/parallel/
+* GNU Parallel https://www.hahwul.com/cullinan/parallel/
 
 * <<>>
 

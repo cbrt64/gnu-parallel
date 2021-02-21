@@ -2170,7 +2170,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210205;
+    $Global::version = 20210222;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4724,7 +4724,6 @@ sub start_no_new_jobs() {
     #    %Global::unlink
     #    $Global::start_no_new_jobs
     # Returns: N/A
-#    $SIG{TERM} = $Global::original_sig{TERM};
     unlink keys %Global::unlink;
     ::status
         ("$Global::progname: SIGHUP received. No new jobs will be started.",
@@ -4965,8 +4964,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2021, January 22). GNU Parallel 20210122 ('Capitol Riots').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.4454976",
+         "  Tange, O. (2021, February 22). GNU Parallel 20210222 ('AngSangSuKyi').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.4554342",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -4996,8 +4995,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2021, January 22). GNU Parallel 20210122 ('Capitol Riots').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.4454976",
+	     "  Tange, O. (2021, February 22). GNU Parallel 20210222 ('AngSangSuKyi').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.4554342",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5110,20 +5109,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2021_4454976,",
+	"\@software{tange_2021_4554342,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20210122 ('Capitol Riots')},",
-	"      month        = Jan,",
+	"      title        = {GNU Parallel 20210222 ('AngSangSuKyi')},",
+	"      month        = Feb,",
 	"      year         = 2020,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.4454976},",
-	"      url          = {https://doi.org/10.5281/zenodo.4454976}",
+	"      doi          = {10.5281/zenodo.4554342},",
+	"      url          = {https://doi.org/10.5281/zenodo.4554342}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2021_4454976})",
+	"(Feel free to use \\nocite{tange_2021_4554342})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and

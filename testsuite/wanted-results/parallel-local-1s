@@ -282,10 +282,6 @@ par_open_files_blocks	9 of 21
 par_open_files_blocks	10 of 21
 par_open_files_blocks	11 of 21
 par_open_files_blocks	12 of 21
-par_open_files_blocks	parallel: Warning: Try running 'parallel -j0 -N 100 --pipe parallel -j0'
-par_open_files_blocks	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
-par_open_files_blocks	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
-par_open_files_blocks	parallel: Warning: or increasing /proc/sys/fs/file-max
 par_open_files_blocks	13 of 21
 par_open_files_blocks	14 of 21
 par_open_files_blocks	15 of 21

@@ -247,7 +247,7 @@ bin_SCRIPTS = parallel sql niceload parcat parset parsort	\
 @DOCUMENTATION_TRUE@	niceload.texi parallel_tutorial.texi parallel_book.texi		\
 @DOCUMENTATION_TRUE@	parallel_design.texi parallel_alternatives.texi parcat.texi	\
 @DOCUMENTATION_TRUE@	parset.texi parsort.texi \
-@DOCUMENTATION_TRUE@        parallel.rst env_parallel.rst sem.rst sql.rst		\
+@DOCUMENTATION_TRUE@        parallel.rst env_parallel.rst sem.rst sql.rst 			\
 @DOCUMENTATION_TRUE@	niceload.rst parallel_tutorial.rst parallel_book.rst		\
 @DOCUMENTATION_TRUE@	parallel_design.rst parallel_alternatives.rst parcat.rst	\
 @DOCUMENTATION_TRUE@	parset.rst parsort.rst \
@@ -266,10 +266,14 @@ DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	sem.texi sql.texi niceload.texi parallel_tutorial.texi		\
 	parallel_book.texi parallel_design.texi				\
 	parallel_alternatives.texi parcat.texi parset.texi		\
-	parsort.texi parallel.pdf env_parallel.pdf sem.pdf sql.pdf	\
-	niceload.pdf parallel_tutorial.pdf parallel_book.pdf		\
-	parallel_design.pdf parallel_alternatives.pdf parcat.pdf	\
-	parset.pdf parsort.pdf parallel_cheat_bw.pdf
+	parsort.texi \
+	parallel.rst env_parallel.rst sem.rst sql.rst niceload.rst	\
+	parallel_tutorial.rst parallel_book.rst parallel_design.rst	\
+	parallel_alternatives.rst parcat.rst parset.rst parsort.rst	\
+	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
+	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
+	parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf	\
+	parallel_cheat_bw.pdf
 
 EXTRA_DIST = parallel sem sql niceload parcat parset parsort		\
 	env_parallel env_parallel.ash env_parallel.bash			\

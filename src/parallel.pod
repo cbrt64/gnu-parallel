@@ -5142,8 +5142,8 @@ is seen as a relative path from current dir.
 Example: Profile for running a command on every sshlogin in
 ~/.ssh/sshlogins and prepend the output with the sshlogin:
 
-  echo --tag -S .. --nonall > ~/.parallel/n
-  parallel -Jn uptime
+  echo --tag -S .. --nonall > ~/.parallel/nonall_profile
+  parallel -J nonall_profile uptime
 
 Example: Profile for running every command with B<-j-1> and B<nice>
 

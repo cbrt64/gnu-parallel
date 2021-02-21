@@ -33,9 +33,6 @@ Quote of the month:
   GNU Parallel and ripgrep would be your friend here. Ripgrep is fast, really fast.
     -- CENAPT @cenaptech@twitter
 
-  GNU Parallel is a priceless timesaver
-    -- June "Wakalix" @TWakalix@twitter
-
   GNU Parallel is great
     -- Newton's Flaming Laser Sword @swordgoesfwoosh@twitter
 
@@ -123,6 +120,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  GNU Parallel is a priceless timesaver
+    -- June "Wakalix" @TWakalix@twitter
 
   I think many people would be surprised to learn that GNU parallel is
   "just" a single Perl script.
