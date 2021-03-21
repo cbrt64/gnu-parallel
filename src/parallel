@@ -17,6 +17,9 @@
 # along with this program; if not, see <http://www.gnu.org/licenses/>
 # or write to the Free Software Foundation, Inc., 51 Franklin St,
 # Fifth Floor, Boston, MA 02110-1301 USA
+#
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 # open3 used in Job::start
 use IPC::Open3;
@@ -2209,14 +2212,15 @@ sub init_globals() {
 	 '{...}' => 's:\.[^/.]+$::; s:\.[^/.]+$::; s:\.[^/.]+$::',
 	 '{/..}' => 's:.*/::; s:\.[^/.]+$::; s:\.[^/.]+$::',
 	 '{/...}' => 's:.*/::; s:\.[^/.]+$::; s:\.[^/.]+$::; s:\.[^/.]+$::',
+	 # n choose k = Binomial coefficient
 	 '{choose_k}' => 'for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } }',
 	 # {##} = number of jobs
-	 '{##}' => '$_=total_jobs()',
+	 '{##}' => '1 $_=total_jobs()',
 	 # {0%} = 0-padded jobslot
-	 '{0%}' => '$f=1+int((log($Global::max_jobs_running||1)/log(10))); $_=sprintf("%0${f}d",slot())',
+	 '{0%}' => '1 $f=1+int((log($Global::max_jobs_running||1)/log(10))); $_=sprintf("%0${f}d",slot())',
 	 # {0%} = 0-padded seq
-	 '{0#}' => '$f=1+int((log(total_jobs())/log(10))); $_=sprintf("%0${f}d",seq())',
-
+	 '{0#}' => '1 $f=1+int((log(total_jobs())/log(10))); $_=sprintf("%0${f}d",seq())',
+	 
 	 ## Bash inspired replacement strings
 	 # Bash ${a:-myval}
 	 '{:-([^}]+?)}' => '$_ ||= $$1',
@@ -5053,6 +5057,16 @@ sub warning(@) {
     status_no_nl(map { ($prog, ": Warning: ", $_, "\n"); } @w);
 }
 
+{
+    my %warnings;
+    sub warning_once(@) {
+	my @w = @_;
+	my $prog = $Global::progname || "parallel";
+	$warnings{@w}++ or
+	    status_no_nl(map { ($prog, ": Warning: ", $_, "\n"); } @w);
+    }
+}
+
 sub error(@) {
     my @w = @_;
     my $prog = $Global::progname || "parallel";
@@ -7136,14 +7150,13 @@ sub compute_number_of_processes($) {
 		    " (processes so far: ", $system_limit,")\n");
 	    if($system_limit > 10 and
 	       $forktime > 1 and
-	       $forktime > $system_limit * 0.01
-	       and not $slow_spawning_warning_printed) {
+	       $forktime > $system_limit * 0.01) {
 		# It took more than 0.01 second to fork a processes on avg.
 		# Give the user a warning. He can press Ctrl-C if this
 		# sucks.
-		::warning("Starting $system_limit processes took > $forktime sec.",
-			  "Consider adjusting -j. Press CTRL-C to stop.");
-		$slow_spawning_warning_printed = 1;
+		::warning_once(
+		      "Starting $system_limit processes took > $forktime sec.",
+		      "Consider adjusting -j. Press CTRL-C to stop.");
 	    }
 	}
 	cleanup();
@@ -8330,6 +8343,7 @@ sub openoutputfiles($) {
 	# Return immediately because we do not need setting filenames
 	return;
     } elsif($opt::results and not $Global::csvsep) {
+	# If --results, but not --results *.csv/*.tsv
 	my $out = $self->{'commandline'}->results_out();
 	my $seqname;
 	if($out eq $opt::results or $out =~ m:/$:) {
@@ -10062,6 +10076,17 @@ sub is_already_in_results($) {
     # Returns:
     #   $job_already_run = bool whether there is output for this or not
     my $job = $_[0];
+    if($Global::csvsep) {
+	if($opt::joblog) {
+	    # OK: You can look for job run in joblog
+	    return 0
+	} else {
+	    ::warning_once(
+		  "--resume --results .csv/.tsv/.json is not supported yet\n");
+	    # TODO read and parse the file
+	    return 0
+	}
+    }
     my $out = $job->{'commandline'}->results_out();
     ::debug("run", "Test ${out}stdout", -e "${out}stdout", "\n");
     return(-e $out."stdout" or -f $out);
@@ -10686,7 +10711,6 @@ sub set_exitsignal($$) {
 }
 
 {
-    my $status_printed;
     my $total_jobs;
 
     sub should_we_halt {
@@ -11933,7 +11957,8 @@ sub find_max($) {
     my $string = shift;
     # This is slow on Cygwin, so give Cygwin users a warning
     if($^O eq "cygwin") {
-	::warning("Finding the maximal command line length. This may take up to 30 seconds.")
+	::warning("Finding the maximal command line length. ".
+		  "This may take up to 30 seconds.")
     }
     # Use an upper bound of 100 MB if the shell allows for infinite long lengths
     my $upper = 100_000_000;
@@ -12264,11 +12289,12 @@ sub new($$) {
     my $fhs = shift;
     for my $fh (@$fhs) {
 	if(-t $fh and -t ($Global::status_fd || *STDERR)) {
-	    ::warning("Input is read from the terminal. You are either an expert",
-		      "(in which case: YOU ARE AWESOME!) or maybe you forgot",
-		      "::: or :::: or -a or to pipe data into parallel. If so",
-		      "consider going through the tutorial: man parallel_tutorial",
-		      "Press CTRL-D to exit.");
+	    ::warning(
+		  "Input is read from the terminal. You are either an expert",
+		  "(in which case: YOU ARE AWESOME!) or maybe you forgot",
+		  "::: or :::: or -a or to pipe data into parallel. If so",
+		  "consider going through the tutorial: man parallel_tutorial",
+		  "Press CTRL-D to exit.");
 	}
     }
     return bless {
@@ -12458,7 +12484,8 @@ sub nest_get($) {
 		if($cr_count == 3 or $nl_count == 3) {
 		    $dos_crnl_determined = 1;
 		    if($nl_count == 0 and $cr_count == 3) {
-			::warning('The first three values end in CR-NL. Consider using -d "\r\n"');
+			::warning('The first three values end in CR-NL. '.
+				  'Consider using -d "\r\n"');
 		    }
 		}
 	    }
@@ -12467,7 +12494,8 @@ sub nest_get($) {
 		if(($arg =~ y/"/"/) % 2 ) {
 		    # The number of " on the line is uneven:
 		    # If we were in a half_record => we have a full record now
-		    # If we were ouside a half_record => we are in a half record now
+		    # If we were outside a half_record =>
+		    #    we are in a half record now
 		    $half_record = not $half_record;
 		}
 		if($half_record) {
@@ -12658,7 +12686,8 @@ sub total_jobs() {
 	# This is actually a CommandLine-object,
 	# but it looks nice to be able to say {= $job->slot() =}
 	$job = shift;
-	$perlexpr =~ s/^(-?\d+)? *//; # Positional replace treated as normal replace
+	# Positional replace treated as normal replace
+	$perlexpr =~ s/^(-?\d+)? *//;
 	if(not $Global::cache_replacement_eval
 	   or
 	   not $self->{'cache'}{$perlexpr}) {
@@ -12828,7 +12857,7 @@ sub process_timeouts($) {
 	    # because kill calls usleep that calls process_timeouts
 	    shift @{$self->{'queue'}};
 	    ::warning("This job was killed because it timed out:",
-		$job->replaced());
+		      $job->replaced());
 	    $job->kill();
 	} else {
 	    # Because they are sorted by start time the rest are later
