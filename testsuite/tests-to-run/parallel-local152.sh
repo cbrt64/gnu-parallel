@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 echo "### test global config - must run alone so the global config does not confuse others"
 echo "### test --tollef in global config"
   echo /etc/parallel/config | sudo parallel "mkdir -p /etc/parallel; echo --tollef > "

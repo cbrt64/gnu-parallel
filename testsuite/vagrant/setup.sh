@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 setup_one() {
     # setup_one ubuntu/trusty64 172.27.27.2
     if [ -z "$2" ] ; then

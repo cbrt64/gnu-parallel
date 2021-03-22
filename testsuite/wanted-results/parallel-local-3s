@@ -389,19 +389,39 @@ par_totaljob_repl	10
 par_totaljob_repl	10
 par_totaljob_repl	10
 par_totaljob_repl	10
-par_totaljob_repl	1 2 2 2 2 2 2 2
-par_totaljob_repl	2 2 2 2 2 2 2 2
-par_totaljob_repl	1 3 3 3 3 3 3 3
-par_totaljob_repl	2 3 3 3 3 3 3 3
+par_totaljob_repl	1 2
+par_totaljob_repl	2 2
+par_totaljob_repl	1 3
+par_totaljob_repl	2 3
 par_totaljob_repl	3 3
-par_totaljob_repl	1 15 15
-par_totaljob_repl	2 14 14
-par_totaljob_repl	3 14 14
-par_totaljob_repl	4 14 14
-par_totaljob_repl	5 14 14
-par_totaljob_repl	6 14 14
-par_totaljob_repl	7 14 14
+par_totaljob_repl	1 15
+par_totaljob_repl	2 14
+par_totaljob_repl	3 14
+par_totaljob_repl	4 14
+par_totaljob_repl	5 14
+par_totaljob_repl	6 14
+par_totaljob_repl	7 14
 par_totaljob_repl	8 14
+par_totaljob_repl	01/20:01
+par_totaljob_repl	02/20:02
+par_totaljob_repl	03/20:03
+par_totaljob_repl	04/20:04
+par_totaljob_repl	05/20:05
+par_totaljob_repl	06/20:06
+par_totaljob_repl	07/20:07
+par_totaljob_repl	08/20:08
+par_totaljob_repl	09/20:09
+par_totaljob_repl	10/20:10
+par_totaljob_repl	11/20:01
+par_totaljob_repl	12/20:02
+par_totaljob_repl	13/20:03
+par_totaljob_repl	14/20:04
+par_totaljob_repl	15/20:05
+par_totaljob_repl	16/20:06
+par_totaljob_repl	17/20:07
+par_totaljob_repl	18/20:08
+par_totaljob_repl	19/20:09
+par_totaljob_repl	20/20:10
 par_wrong_slot_rpl_resume	### bug #47644: Wrong slot number replacement when resuming
 par_wrong_slot_rpl_resume	1 0
 par_wrong_slot_rpl_resume	2 1

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2002-2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 SUBDIRS = src
 
 test:
@@ -118,6 +122,22 @@ alphaupload:
 monitorman:
 # If man page changed: open new pdfman
 	inotifywait -qmre MOVED_TO -e CLOSE_WRITE --format %w%f . | parallel -uj1 'echo {=/\.pod$$/ or skip()=};make -j && sudo make install; pdfman {/.} &'
+
+reuse:
+	rm -rf /tmp/reuse
+	mkdir /tmp/reuse
+	git commit -a -m dummy
+	(wd=`pwd`; \
+	cd /tmp/reuse; \
+	git clone "$$wd"; \
+	reuse lint || \
+	(echo Use; \
+	echo '  reuse addheader --copyright="Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc." --license="GPL-3.0-or-later" source-files'; \
+	echo or; \
+	echo '  reuse addheader --copyright="Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc." --license="GPL-3.0-or-later" --explicit-license bin-files' \
+	) )
+	git reset HEAD~ >/dev/null
+	git commit -c ORIG_HEAD >/dev/null
 
 testurls:
 	mkdir -p urls

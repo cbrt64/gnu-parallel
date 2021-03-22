@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 par_space() {
     echo '### Test --env  - https://savannah.gnu.org/bugs/?37351'
     export TWOSPACES='  2  spaces  '

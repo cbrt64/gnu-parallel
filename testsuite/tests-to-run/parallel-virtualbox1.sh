@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 stdout ping -w 1 -c 1 centos3 >/dev/null || (
     # Vagrant does not set the IP addr
     cd testsuite/vagrant/tange/centos3/ 2>/dev/null

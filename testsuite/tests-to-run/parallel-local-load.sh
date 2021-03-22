@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Force load 12 in 10 seconds
 seq 12 |
     stdout parallel --nice 11 --timeout 10 -j0 -N0 "bzip2 < /dev/zero" > /dev/null &

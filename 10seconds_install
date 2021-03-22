@@ -2,13 +2,6 @@
 
 true <<'EOF'
 <p>
-     Copyright (C) 2013-2020 Ole Tange and Free Software Foundation, Inc.
-<p>
-     This program is free software; you can redistribute it and/or
-     modify it under the terms of the GNU General Public License as
-     published by the Free Software Foundation; either version 3 of
-     the License, or (at your option) any later version.
-<p>
      This script downloads the latest version of GNU Parallel, checks
      the signature and installs it.
 
@@ -33,6 +26,15 @@ true <<'EOF'
 <br><br><br><br>
 EOF
 
+# SPDX-FileCopyrightText: 2013-2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 3 of
+# the License, or (at your option) any later version.
+
 run() {
     # FreeBSD prefers 'fetch', MacOS prefers 'curl', Linux prefers 'wget'
     get=$(
@@ -43,11 +45,11 @@ run() {
 	    echo 'No lynx, wget, curl, fetch: Please inform parallel@gnu.org what you use for downloading URLs' >&2
        )
     if test "$get" = ""; then
-	exit 1
+ 	exit 1
     fi
 
     if ! perl -e 1; then
-	echo No perl installed. GNU Parallel depends on perl. Install perl and retry.
+       	echo No perl installed. GNU Parallel depends on perl. Install perl and retry.
 	exit 1
     fi
 
@@ -66,7 +68,7 @@ run() {
 	if gpg -h 2>/dev/null >/dev/null ; then
 	    # GnuPG installed
 	    # Setup .gnupg/gpg.conf if not already done
-	    echo | gpg 2>/dev/null >/dev/null
+     	    echo | gpg 2>/dev/null >/dev/null
 	    if gpg --list-keys 0xFFFFFFF1 && gpg --list-keys 0x88888888 ; then
 		echo Keys fetched
 		# OK
@@ -90,12 +92,12 @@ run() {
 		    echo "Cannot fetch keyID 0xFFFFFFF1, so the signature cannot be checked."
 		    return 1
 		fi
-	    fi
+      	    fi
 	else
 	    # GnuPG not installed
 	    echo
 	    echo "GnuPG (gpg) is not installed so the signature cannot be checked."
-	    return 1
+       	    return 1
 	fi
     }
 
@@ -104,7 +106,7 @@ run() {
 	if gpg --with-fingerprint "$latest".tar.bz2.sig 2>&1 |
 	       perl -e 'exit not grep /^Primary key fingerprint: BE9C B493 81DE 3166 A3BC  66C1 2C62 29E2 FFFF FFF1|^Primary key fingerprint: CDA0 1A42 08C4 F745 0610  7E7B D1AB 4516 8888 8888/, <>'; then
 	    # Source code signed by Ole Tange <ole@tange.dk>
-	    # KeyID FFFFFFF1/88888888
+    	    # KeyID FFFFFFF1/88888888
 	    true
 	else
 	    # GnuPG signature failed
@@ -116,17 +118,17 @@ run() {
 	    exit 1
 	fi
     else
-	# GnuPG not installed or public keys not downloaded
+   	# GnuPG not installed or public keys not downloaded
 	echo "This means that if the code has been changed by criminals, you will not discover that!"
 	echo
-	echo "Continue anyway? (y/n)"
+ 	echo "Continue anyway? (y/n)"
 	read YN </dev/tty
 	if test "$YN" = "n"; then
 	    # Stop
 	    exit 2
 	else
 	    # Continue
-	    true
+      	    true
 	fi
     fi
 
@@ -165,7 +167,7 @@ run() {
 	    # Add $HOME/share/man to $MANPATH for both bash and csh
 	    echo 'export MANPATH=$MANPATH:$HOME/share/man' >> "$HOME"/.bashrc
 	    echo 'setenv MANPATH ${MANPATH}:${HOME}/share/man' >> "$HOME"/.cshrc
-	fi
+  	fi
     fi
 }
 

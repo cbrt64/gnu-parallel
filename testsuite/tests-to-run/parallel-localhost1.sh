@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 echo '### Test --env all chars except \n,\92,\160 - single and double - no output is good'
 # 92 and 160 are special for csh
 

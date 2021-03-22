@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 make stopvm >/dev/null 2>/dev/null
 TMPDIR=${TMPDIR:-/tmp}
 mkdir -p $TMPDIR

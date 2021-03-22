@@ -1,5 +1,9 @@
 #!/usr/bin/perl -w
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-License-Identifier: GFDL-1.3-or-later
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 =encoding utf8
 
 =head1 NAME
@@ -299,7 +303,7 @@ directory (if any) and extension removed.
 To understand positional replacement strings see B<{>I<n>B<}>.
 
 
-=item B<{=>I<perl expression>B<=}> (alpha testing)
+=item B<{=>I<perl expression>B<=}> (beta testing)
 
 Replace with calculated I<perl expression>. B<$_> will contain the
 same as B<{}>. After evaluating I<perl expression> B<$_> will be used
@@ -869,7 +873,7 @@ Implies B<--pipe> unless B<--pipepart> is used.
 See also: B<--cat>.
 
 
-=item B<--filter> I<filter> (alpha testing)
+=item B<--filter> I<filter> (beta testing)
 
 Only run jobs where I<filter> is true. I<filter> can contain
 replacement strings and Perl code. Example:
@@ -1107,9 +1111,9 @@ B<--header :> is an alias for B<--header '.*\n'>.
 If I<regexp> is a number, it is a fixed number of lines.
 
 
-=item B<--hostgroups> (beta testing)
+=item B<--hostgroups>
 
-=item B<--hgrp> (beta testing)
+=item B<--hgrp>
 
 Enable hostgroups on arguments. If an argument contains '@' the string
 after '@' will be removed and treated as a list of hostgroups on which
@@ -1369,9 +1373,9 @@ mix. Compare:
 See also: B<--group> B<--ungroup>
 
 
-=item B<--xapply> (alpha testing)
+=item B<--xapply> (beta testing)
 
-=item B<--link> (alpha testing)
+=item B<--link> (beta testing)
 
 Link input sources. Read multiple input sources like B<xapply>. If
 multiple input sources are given, one argument will be read from each
@@ -1446,7 +1450,7 @@ should retry a given job.
 See also: B<--memsuspend>
 
 
-=item B<--memsuspend> I<size> (beta testing)
+=item B<--memsuspend> I<size>
 
 Suspend jobs when there is less than 2 * I<size> memory free. The
 I<size> can be postfixed with K, M, G, T, P, k, m, g, t, or p which
@@ -2634,9 +2638,9 @@ Silent.  The job to be run will not be printed. This is the default.
 Can be reversed with B<-v>.
 
 
-=item B<--template> I<file>=I<repl> (alpha testing)
+=item B<--template> I<file>=I<repl> (beta testing)
 
-=item B<--tmpl> I<file>=I<repl> (alpha testing)
+=item B<--tmpl> I<file>=I<repl> (beta testing)
 
 Copy I<file> to I<repl>. All replacement strings in the contents of
 I<file> will be replaced. All replacement strings in the name I<repl>
@@ -3149,7 +3153,7 @@ solution is to quote the whole command:
 
   parallel "zcat {} >{.}" ::: *.gz
 
-Other special shell characters (such as * ; $ > < | >> <<) also need
+Other special shell characters (such as * ; $ > < |  >> <<) also need
 to be put in quotes, as they may otherwise be interpreted by the shell
 and not given to GNU B<parallel>.
 
@@ -4690,14 +4694,16 @@ changes.
 There is a a small issue when using GNU B<parallel> as queue
 system/batch manager: You have to submit JobSlot number of jobs before
 they will start, and after that you can submit one at a time, and job
-will start immediately if free slots are available.  Output from the
-running or completed jobs are held back and will only be printed when
-JobSlots more jobs has been started (unless you use --ungroup or
+will start immediately if free slots are available.
+
+Output from the running or completed jobs are held back and will only
+be printed when the next job is started (unless you use --ungroup or
 --line-buffer, in which case the output from the jobs are printed
-immediately).  E.g. if you have 10 jobslots then the output from the
-first completed job will only be printed when job 11 has started, and
-the output of second completed job will only be printed when job 12
-has started.
+immediately).
+
+E.g. if you have 10 jobslots then the output from the first completed
+job will only be printed when job 11 has started, and the output of
+second completed job will only be printed when job 12 has started.
 
 
 =head2 EXAMPLE: GNU Parallel as dir processor
@@ -4952,7 +4958,7 @@ Dir where GNU B<parallel> stores config files, semaphores, and caches
 information between invocations. Default: $HOME/.parallel.
 
 
-=item $PARALLEL_ARGHOSTGROUPS (beta testing)
+=item $PARALLEL_ARGHOSTGROUPS
 
 When using B<--hostgroups> GNU B<parallel> sets this to the hostgroups
 of the job.
@@ -5320,6 +5326,11 @@ not exist with PostgreSQL.
 Report bugs to <bug-parallel@gnu.org> or
 https://savannah.gnu.org/bugs/?func=additem&group=parallel
 
+When you write your report, please keep in mind, that you must give
+the reader enough information to be able to run exactly what you
+run. So you need to include all data and programs that you use to
+show the problem.
+
 See a perfect bug report on
 https://lists.gnu.org/archive/html/bug-parallel/2015-01/msg00000.html
 
@@ -5348,17 +5359,22 @@ https://stackoverflow.com/help/mcve).
 It should be a complete example that others can run which shows the
 problem including all files needed to run the example. This should
 preferably be small and simple, so try to remove as many options as
-possible. A combination of B<yes>, B<seq>, B<cat>, B<echo>, B<wc>, and
-B<sleep> can reproduce most errors. If your example requires large
-files, see if you can make them with something like B<seq 100000000> >
-B<bigfile> or B<yes | head -n 1000000000> > B<file>. If you need
-multiple columns: B<paste <(seq 1000) <(seq 1000 1999)>
+possible.
+
+A combination of B<yes>, B<seq>, B<cat>, B<echo>, B<wc>, and B<sleep>
+can reproduce most errors.
+
+If your example requires large files, see if you can make them with
+something like B<seq 100000000> > B<bigfile> or B<yes | head -n
+1000000000> > B<file>. If you need multiple columns: B<paste <(seq
+1000) <(seq 1000 1999)>
 
 If your example requires remote execution, see if you can use
 B<localhost> - maybe using another login.
 
 If you have access to a different system (maybe a VirtualBox on your
-own machine), test if the MCVE shows the problem on that system.
+own machine), test if your MCVE shows the problem on that system. If
+it does not, read below.
 
 =item *
 
@@ -5390,6 +5406,31 @@ done through you. That will put more burden on you and it is extra
 important you give any information that help. In general the problem
 will be fixed faster and with less work for you if you can reproduce
 the error on a VirtualBox.
+
+=head2 In summary
+
+Your report must include:
+
+=over 2
+
+=item *
+
+B<parallel --version>
+
+=item *
+
+output + error message
+
+=item *
+
+full example including all files
+
+=item *
+
+VirtualBox image, if you cannot reproduce it on other systems
+
+=back
+
 
 
 =head1 AUTHOR
@@ -5430,11 +5471,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 =head2 Documentation license I
 
-Permission is granted to copy, distribute and/or modify this documentation
-under the terms of the GNU Free Documentation License, Version 1.3 or
-any later version published by the Free Software Foundation; with no
-Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
-Texts.  A copy of the license is included in the file fdl.txt.
+Permission is granted to copy, distribute and/or modify this
+documentation under the terms of the GNU Free Documentation License,
+Version 1.3 or any later version published by the Free Software
+Foundation; with no Invariant Sections, with no Front-Cover Texts, and
+with no Back-Cover Texts.  A copy of the license is included in the
+file LICENSES/GFDL-1.3-or-later.txt.
 
 =head2 Documentation license II
 
@@ -5517,7 +5559,8 @@ license terms of this work.
 
 =back
 
-A copy of the full license is included in the file as cc-by-sa.txt.
+A copy of the full license is included in the file as
+LICENCES/CC-BY-SA-4.0.txt
 
 
 =head1 DEPENDENCIES

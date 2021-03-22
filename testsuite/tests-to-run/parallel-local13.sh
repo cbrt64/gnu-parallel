@@ -1,5 +1,9 @@
 #!/bin/bash -x
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 echo '### Tests from xargs'
 
 rsync -Ha --delete input-files/xargs-inputs/ tmp/

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 rm -rf tmp 2>/dev/null
 cd input-files
 tar xjf random_dirs_no_newline.tar.bz2 

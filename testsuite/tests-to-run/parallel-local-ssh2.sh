@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # /tmp/parallel-local-ssh2 will by default be owned by me and should be writable by *@localhost
 chmod 777 "$TMPDIR" 2>/dev/null
 

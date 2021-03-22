@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 PAR="nice nice parallel -j2 --pipe --keeporder --block 150000 --tmpdir=/dev/shm"
 export PAR
 XAP="nice nice parallel --xapply"

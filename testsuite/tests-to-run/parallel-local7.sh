@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 par_tmux_filter() {
     # /tmp/parallel-local7/tmsOU2Ig
     perl -pe 's:(/tmp\S+/tms).....:$1XXXXX:;s/ p\d+/pID/;'

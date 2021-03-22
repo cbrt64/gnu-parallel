@@ -1,3 +1,40 @@
+20210322
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* The very first version of Parallel dated 2002-01-06 was found in an
+  old backup:
+
+  #!/usr/bin/perl
+
+  $processes=shift;
+
+  chomp(@jobs=<>);
+  for (@jobs) {
+      $jobnr++;
+      push @makefile,
+      (".PHONY : job$jobnr\n",
+       "job$jobnr :\n",
+       "\t$_\n");
+  }
+  unshift @makefile, "all : ",(map { "job$_ " } 1 .. $jobnr),"\n";
+  
+  open (MAKE, "| make -k -f - -j $processes") || die;
+  print MAKE @makefile;
+  close MAKE;
+
+* Introduction to GNU Parallel
+  https://www.youtube.com/watch?v=Kj-6JkAqw-8
+
+* Using GNU Parallel with GooseSLURM
+  https://readthedocs.org/projects/gooseslurm/downloads/pdf/latest/#chapter.7
+
+* Why GNU-parallel?
+  https://github.com/lijingbu/omics/blob/main/why_gnu_parallel.md
+
+
 20210222
 
 * --filter only run jobs where the filter is true. The filter can

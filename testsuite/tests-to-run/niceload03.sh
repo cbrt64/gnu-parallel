@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # force load > 10
 while uptime | grep -v age:.[1-9]\\+[0-9].[0-9][0-9] >/dev/null ; do
     (timeout 5 nice perl -e 'while(1){}' 2>/dev/null &)

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Simple jobs that never fails
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
@@ -165,6 +169,7 @@ par_totaljob_repl() {
     parallel -k -N7 --plus echo {#} {##} ::: {1..14}
     parallel -k -N7 --plus echo {#} {##} ::: {1..15}
     parallel -k -S 8/: -X --plus echo {#} {##} ::: {1..15}
+    parallel -k --plus -j 10 echo '{0#}/{##}:{0%}' ::: {1..5} ::: {1..4}
 }
 
 par_jobslot_repl() {

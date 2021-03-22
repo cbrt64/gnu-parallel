@@ -98,7 +98,8 @@ cp src/parallel.html  ../parallel-web/parallel/man.html
 
 pushd ../parallel-web/parallel
 # Bug at Savannah makes this take 30 seconds
-(cd ..; cvs -z3 -d:ext:tange@cvs.savannah.gnu.org:/web/parallel co parallel)
+(cd ..;
+ torsocks cvs -z3 -d:ext:tange@cvs.savannah.gnu.org:/web/parallel co parallel)
 torsocks cvs up
 torsocks cvs ci -m "New release"
 pushd
@@ -148,6 +149,12 @@ Modified => alpha
 
 make testurls
 
+== Check REUSE ==
+
+make reuse
+
+https://api.reuse.software/info/git.savannah.gnu.org/git/parallel
+https://api.reuse.software/status/git.savannah.gnu.org/git/parallel
 
 == Update Savannah ==
 
@@ -194,9 +201,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210222 ('AngSangSuKyi<<>>') released <<[stable]>>
+Subject: GNU Parallel 20210322 ('Sarkozy/Sarah Everard/AstraZeneca/ Meghan<<>>') released <<[stable]>>
 
-GNU Parallel 20210222 ('') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20210322 ('2002-01-06') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -206,43 +213,42 @@ It does not have to be as detailed as Juan's. It is perfectly fine if you just s
 
 Quote of the month:
 
-  GNU Parallel is a priceless timesaver
-    -- June "Wakalix" @TWakalix@twitter
-
+  GNU Parallel is my new favorite thing
+    -- Will Tejeda @thewilltejeda
   
 New in this release:
-
-* --filter only run jobs where the filter is true. The filter can contain replacement strings and Perl code such as: '{1} < {2}+1'
-
-* --template takes a text file as a template with replacement strings. Then it replaces the replacement strings and saves it under a new filename.
-
-* --plus implements {0%} {0#} replacement string for zero padded slot and sequence.
-
-* Warn that you probably mean -d '\r\n' if the first 3 values end in \r\n (DOS newline).
-
-* {= perlexpression =} must return the same value, if run twice on the same input.
-
-* Man pages available as .rst-format.
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* A short tutorial on Gnu Parallel https://www.polarmicrobes.org/a-short-tutorial-on-gnu-parallel/
+* The very first version of Parallel dated 2002-01-06 was found in an
+  old backup:
 
-* 5 reasons why I love coding on Linux https://opensource.com/article/21/2/linux-programming
+  #!/usr/bin/perl
 
-* Simple Tutorial to install & use GNU Parallel https://medium.com/analytics-vidhya/simple-tutorial-to-install-use-gnu-parallel-79251120d618
+  $processes=shift;
 
-* LiDO3 - first contact https://www.lido.tu-dortmund.de/cms/de/LiDO3/LiDO3_first_contact_handout.pdf
+  chomp(@jobs=<>);
+  for (@jobs) {
+      $jobnr++;
+      push @makefile,
+      (".PHONY : job$jobnr\n",
+       "job$jobnr :\n",
+       "\t$_\n");
+  }
+  unshift @makefile, "all : ",(map { "job$_ " } 1 .. $jobnr),"\n";
+  
+  open (MAKE, "| make -k -f - -j $processes") || die;
+  print MAKE @makefile;
+  close MAKE;
 
-* Rill Stage 2-1: Ways of command-line data analysis https://blog.jastix.biz/post/rill-stage-2-1-cli-data-analysis/
+* Introduction to GNU Parallel https://www.youtube.com/watch?v=Kj-6JkAqw-8
 
-* Introduction to GNU Parallel https://blog.knoldus.com/introduction-to-gnu-parallel/
+* Using GNU Parallel with GooseSLURM https://readthedocs.org/projects/gooseslurm/downloads/pdf/latest/#chapter.7
 
-* GNU Parallel https://www.hahwul.com/cullinan/parallel/
-
-* <<>>
+* Why GNU-parallel?
+  https://github.com/lijingbu/omics/blob/main/why_gnu_parallel.md
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

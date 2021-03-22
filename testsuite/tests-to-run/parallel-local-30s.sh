@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Simple jobs that never fails
 # Each should be taking 30-100s and be possible to run in parallel
 # I.e.: No race conditions, no logins

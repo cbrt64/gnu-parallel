@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 cpuburn=$(tempfile)
 (echo '#!/usr/bin/perl'
  echo "eval{setpriority(0,0,9)}; while(1){}") > $cpuburn

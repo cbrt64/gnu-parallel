@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 mysqlrootpass=${mysqlrootpass:-M-b+Ydjq4ejT4E}
 MYSQL_ADMIN_DBURL=mysql://root:$mysqlrootpass@/mysql
 

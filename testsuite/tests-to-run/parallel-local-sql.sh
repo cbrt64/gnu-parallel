@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 export SQLITE=sqlite3:///%2Frun%2Fshm%2Fparallel.db
 export PG=pg://`whoami`:`whoami`@lo/`whoami`
 export MYSQL=mysql://`whoami`:`whoami`@lo/`whoami`

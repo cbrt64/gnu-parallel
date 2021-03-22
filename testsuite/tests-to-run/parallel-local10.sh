@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 echo '### Test with old perl libs'
 # Old libraries are put into input-files/perllib
 PERL5LIB=input-files/perllib:../input-files/perllib; export PERL5LIB

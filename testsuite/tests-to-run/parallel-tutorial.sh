@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 find {$TMPDIR,/var/tmp,/tmp}/{fif,tms,par[^a]}* -mmin -10 2>/dev/null | parallel rm
 cd testsuite 2>/dev/null
 rm -rf tmp
