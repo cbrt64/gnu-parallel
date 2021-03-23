@@ -887,7 +887,7 @@ par_test_cpu_detection_lscpu() {
     }
     export -f test_one
     compgen -A function | grep ^cpu | sort | parallel -j0 -k test_one
-    rm ~/.parallel/tmp/sshlogin/*/cpuspec
+    rm ~/.parallel/tmp/sshlogin/*/cpuspec 2>/dev/null
 }
 
 par_null_resume() {

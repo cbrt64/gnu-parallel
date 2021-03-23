@@ -969,6 +969,7 @@ sub spreadstdin() {
     my $header = find_header(\$buf,$in);
     my $anything_written;
     my $eof;
+    my $garbage_read;
 
     sub read_block() {
 	# Read a --blocksize from STDIN
@@ -1023,23 +1024,37 @@ sub spreadstdin() {
 	# Pass records of N regexps
 	# -N => (start..*?end){n}
 	# -L -N => (start..*?end){n*l}
-	my $read_n_lines = -1+
+	if(not $garbage_read) {
+	    $garbage_read = 1;
+	    if($buf !~ /^$recstart/o) {
+		# Buf does not start with $recstart => There is garbage.
+		# Make a single record of the garbage
+		if($buf =~
+		   /(?s)^(?-s)(
+		   (?:(?:(?!$recend$recstart)(?s).(?-s))*?$recend)
+		   )
+		   # Followed by recstart
+		   (?=$recstart)/mox and length $1 > 0) {
+		    $anything_written +=
+			write_record_to_pipe($chunk_number++,\$header,\$buf,
+					     $recstart,$recend,length $1);
+		    shorten(\$buf,length $1);
+		}
+	    }
+	}
+
+	my $n_records =
 	    $Global::max_number_of_args * ($Global::max_lines || 1);
 	# (?!negative lookahead) is needed to avoid backtracking
 	# See: https://unix.stackexchange.com/questions/439356/
+	# (?s).(?-s) = (.|[\n]) but faster
 	while($buf =~
-	      /(
-	      # Either recstart or at least one char from start
-	      ^(?: $recstart | .)
-	      # followed something
-	      (?:(?!$recend$recstart).)*?
-	      # and then recend
-	      $recend
-	      # Then n-1 times recstart.*recend
-	      (?:$recstart(?:(?!$recend$recstart).)*?$recend){$read_n_lines}
+	      /(?s)^(?-s)(
+	      # n more times recstart.*recend
+	      (?:$recstart(?:(?!$recend$recstart)(?s)(.)(?-s))*?$recend){$n_records}
 	      )
 	      # Followed by recstart
-	      (?=$recstart)/osx) {
+	      (?=$recstart)/mox and length $1 > 0) {
 	    $anything_written +=
 		write_record_to_pipe($chunk_number++,\$header,\$buf,
 				     $recstart,$recend,length $1);
@@ -1050,7 +1065,8 @@ sub spreadstdin() {
     sub pass_regexp() {
 	# Find the last recend-recstart in $buf
 	$eof and return;
-	if($buf =~ /^(.*$recend)$recstart.*?$/os) {
+	# (?s).(?-s) = (.|[\n]) but faster
+	if($buf =~ /^((?s).(?-s)*$recend)$recstart(?s).(?-s)*?$/mox) {
 	    $anything_written +=
 		write_record_to_pipe($chunk_number++,\$header,\$buf,
 				     $recstart,$recend,length $1);
@@ -1230,13 +1246,13 @@ sub recstartrecend() {
 	$recend = $opt::recend;
 	if($opt::regexp and $recend eq '') {
 	    # --regexp --recend ''
-	    $recend = '.';
+	    $recend = '(?s).(?-s)';
 	}
     }
 
     if($opt::regexp) {
 	# If $recstart/$recend contains '|'
-	# this should only apply to the regexp
+	# the | should only apply to the regexp
 	$recstart = "(?:".$recstart.")";
 	$recend = "(?:".$recend.")";
 	# Quote # and space
@@ -2173,7 +2189,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210322;
+    $Global::version = 20210323;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -8675,11 +8691,11 @@ sub remove_rec_sep($) {
     my ($block_ref,$recstart,$recend) = @_;
     # Remove record separator
     if($opt::regexp) {
-	$$block_ref =~ s/$recend$recstart//gos;
+	$$block_ref =~ s/$recend$recstart//gom;
 	$$block_ref =~ s/^$recstart//os;
 	$$block_ref =~ s/$recend$//os;
     } else {
-	$$block_ref =~ s/\Q$recend$recstart\E//gos;
+	$$block_ref =~ s/\Q$recend$recstart\E//gom;
 	$$block_ref =~ s/^\Q$recstart\E//os;
 	$$block_ref =~ s/\Q$recend\E$//os;
     }

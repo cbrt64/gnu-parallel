@@ -16,6 +16,18 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_env_parallel_pipefail() {
+    cat <<'EOF' | bash
+    echo "### test env_parallel with pipefail + inherit_errexit"
+    . $(which env_parallel.bash)
+    env_parallel --session
+    set -Eeuo pipefail
+    shopt -s inherit_errexit
+
+    env_parallel echo ::: OK
+EOF
+}
+
 par_crnl() {
     echo '### Give a warning if input is DOS-ascii'
     printf "b\r\nc\r\nd\r\ne\r\nf\r\n" | stdout parallel -k echo {}a

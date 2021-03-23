@@ -208,6 +208,80 @@ par_multiline_commands	echo finish 4
 par_multiline_commands	parallel: Warning: Command lines contain newline. Forcing --null.
 par_multiline_commands	4
 par_multiline_commands	finish 4
+par_pipe_regexp	### --pipe --regexp
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 5
+par_pipe_regexp	A2, 00100, 5
+par_pipe_regexp	A2, 00200, 6
+par_pipe_regexp	A2, 00300, 6
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00100, 7
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00200, 8
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 5
+par_pipe_regexp	A2, 00100, 5
+par_pipe_regexp	A2, 00200, 6
+par_pipe_regexp	A2, 00300, 6
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00100, 7
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00200, 8
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 5
+par_pipe_regexp	A2, 00100, 5
+par_pipe_regexp	A2, 00200, 6
+par_pipe_regexp	A2, 00300, 6
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00100, 7
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00200, 8
+par_pipe_regexp	### Prepend first record with garbage
+par_pipe_regexp	Record
+par_pipe_regexp	Garbage
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 5
+par_pipe_regexp	A2, 00100, 5
+par_pipe_regexp	A2, 00200, 6
+par_pipe_regexp	A2, 00300, 6
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00100, 7
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00200, 8
+par_pipe_regexp	Record
+par_pipe_regexp	Garbage
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 5
+par_pipe_regexp	A2, 00100, 5
+par_pipe_regexp	A2, 00200, 6
+par_pipe_regexp	A2, 00300, 6
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00100, 7
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00200, 8
+par_pipe_regexp	Record
+par_pipe_regexp	Garbage
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 5
+par_pipe_regexp	A2, 00100, 5
+par_pipe_regexp	A2, 00200, 6
+par_pipe_regexp	A2, 00300, 6
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00100, 7
+par_pipe_regexp	Record
+par_pipe_regexp	A2, Start, 7
+par_pipe_regexp	A2, 00200, 8
 par_progress	### Test of --progress
 par_progress	16
 par_progress	### Test of --progress with no jobs

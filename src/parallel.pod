@@ -303,7 +303,7 @@ directory (if any) and extension removed.
 To understand positional replacement strings see B<{>I<n>B<}>.
 
 
-=item B<{=>I<perl expression>B<=}> (beta testing)
+=item B<{=>I<perl expression>B<=}>
 
 Replace with calculated I<perl expression>. B<$_> will contain the
 same as B<{}>. After evaluating I<perl expression> B<$_> will be used
@@ -873,7 +873,7 @@ Implies B<--pipe> unless B<--pipepart> is used.
 See also: B<--cat>.
 
 
-=item B<--filter> I<filter> (beta testing)
+=item B<--filter> I<filter>
 
 Only run jobs where I<filter> is true. I<filter> can contain
 replacement strings and Perl code. Example:
@@ -1373,9 +1373,9 @@ mix. Compare:
 See also: B<--group> B<--ungroup>
 
 
-=item B<--xapply> (beta testing)
+=item B<--xapply>
 
-=item B<--link> (beta testing)
+=item B<--link>
 
 Link input sources. Read multiple input sources like B<xapply>. If
 multiple input sources are given, one argument will be read from each
@@ -2638,9 +2638,9 @@ Silent.  The job to be run will not be printed. This is the default.
 Can be reversed with B<-v>.
 
 
-=item B<--template> I<file>=I<repl> (beta testing)
+=item B<--template> I<file>=I<repl>
 
-=item B<--tmpl> I<file>=I<repl> (beta testing)
+=item B<--tmpl> I<file>=I<repl>
 
 Copy I<file> to I<repl>. All replacement strings in the contents of
 I<file> will be replaced. All replacement strings in the name I<repl>

@@ -173,6 +173,8 @@ par_empty_line	a
 par_empty_line	b
 par_empty_string_quote	bug #37694: Empty string argument skipped when using --quote
 par_empty_string_quote	3
+par_env_parallel_pipefail	### test env_parallel with pipefail + inherit_errexit
+par_env_parallel_pipefail	OK
 par_exit_val	### Test bug #45619: "--halt" erroneous error exit code (should give 0)
 par_exit_val	0
 par_exit_val	### Test exit val - true
@@ -898,7 +900,8 @@ par_sem_quote	echo
 par_sem_quote	
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
-par_slow_pipe_regexp	    980     981    5881
+par_slow_pipe_regexp	      0       1       1
+par_slow_pipe_regexp	    980     981    5880
 par_slow_pipe_regexp	  25021   25021  150125
 par_slow_pipe_regexp	### These should give same output
 par_slow_pipe_regexp	6e72d7f86f6a423b9a7fa97630587815  -

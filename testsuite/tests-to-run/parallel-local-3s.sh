@@ -8,6 +8,34 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_pipe_regexp() {
+    echo '### --pipe --regexp'
+    gen() {
+	cat <<EOF
+A2, Start, 5
+A2, 00100, 5
+A2, 00200, 6
+A2, 00300, 6
+A2, Start, 7
+A2, 00100, 7
+A2, Start, 7
+A2, 00200, 8
+EOF
+	true
+    }
+    p="parallel --pipe --regexp -k"
+    gen | $p --recstart 'A\d+, Start' -N1 'echo Record;cat'
+    gen | $p --recstart '[A-Z]\d+, Start' -N1 'echo Record;cat'
+    gen | $p --recstart '.*, Start' -N1 'echo Record;cat'
+    echo '### Prepend first record with garbage'
+    (echo Garbage; gen) |
+	$p --recstart 'A\d+, Start' -N1 'echo Record;cat'
+    (echo Garbage; gen) |
+	$p --recstart '[A-Z]\d+, Start' -N1 'echo Record;cat'
+    (echo Garbage; gen) |
+	$p --recstart '.*, Start' -N1 'echo Record;cat'
+}
+
 par_delay_halt_soon() {
     echo "bug #59893: --halt soon doesn't work with --delay"
     seq 0 10 |
