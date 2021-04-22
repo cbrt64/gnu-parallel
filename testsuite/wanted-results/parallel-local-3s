@@ -282,6 +282,62 @@ par_pipe_regexp	A2, 00100, 7
 par_pipe_regexp	Record
 par_pipe_regexp	A2, Start, 7
 par_pipe_regexp	A2, 00200, 8
+par_pipe_regexp_non_quoted	### --pipe --regexp non_quoted \n
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	foo
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	Start this line is a false Start line
+par_pipe_regexp_non_quoted	End this line is a false End line
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	foo
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	Start this line is a false Start line
+par_pipe_regexp_non_quoted	End this line is a false End line
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	foo
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	Start this line is a false Start line
+par_pipe_regexp_non_quoted	End this line is a false End line
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	foo
+par_pipe_regexp_non_quoted	End:::Single record
+par_pipe_regexp_non_quoted	
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	Start this line is a false Start line
+par_pipe_regexp_non_quoted	End this line is a false End line
+par_pipe_regexp_non_quoted	End:::Single record
+par_pipe_regexp_non_quoted	
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	foo
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	Start this line is a false Start line
+par_pipe_regexp_non_quoted	End this line is a false End line
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	foo
+par_pipe_regexp_non_quoted	End
+par_pipe_regexp_non_quoted	:::Single record
+par_pipe_regexp_non_quoted	Start
+par_pipe_regexp_non_quoted	Start this line is a false Start line
+par_pipe_regexp_non_quoted	End this line is a false End line
+par_pipe_regexp_non_quoted	End
 par_progress	### Test of --progress
 par_progress	16
 par_progress	### Test of --progress with no jobs
@@ -327,6 +383,28 @@ par_replacement_slashslash	/a/b /a/b/c.jpg
 par_replacement_slashslash	. ./a.jpg
 par_replacement_slashslash	./a ./a/b.jpg
 par_replacement_slashslash	./a/b ./a/b/c.jpg
+par_shebang	### Test different shebangs
+par_shebang	gp	A
+par_shebang	gp	B
+par_shebang	gp	C
+par_shebang	oct	A
+par_shebang	oct	B
+par_shebang	oct	C
+par_shebang	pl	A
+par_shebang	pl	B
+par_shebang	pl	C
+par_shebang	py	A
+par_shebang	py	B
+par_shebang	py	C
+par_shebang	r	[1] "A"
+par_shebang	r	[1] "B"
+par_shebang	r	[1] "C"
+par_shebang	rb	["A"]
+par_shebang	rb	["B"]
+par_shebang	rb	["C"]
+par_shebang	sh	A
+par_shebang	sh	B
+par_shebang	sh	C
 par_show_limits	### Test --show-limits
 par_show_limits	Maximal size of command: 131xxx
 par_show_limits	Maximal used size of command: 131xxx
@@ -372,12 +450,12 @@ par_tee_too_many_args	1	11
 par_tee_too_many_args	2	2
 par_tee_too_many_args	3	3
 par_tee_too_many_args	4	4
-par_tee_too_many_args	parallel: Warning: Only enough file handles to run 251 jobs in parallel.
-par_tee_too_many_args	parallel: Warning: Try running 'parallel -j0 -N 251 --pipe parallel -j0'
+par_tee_too_many_args	parallel: Warning: Only enough file handles to run 999 jobs in parallel.
+par_tee_too_many_args	parallel: Warning: Try running 'parallel -j999 -N 999 --pipe parallel -j999'
 par_tee_too_many_args	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
 par_tee_too_many_args	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
 par_tee_too_many_args	parallel: Warning: or increasing /proc/sys/fs/file-max
-par_tee_too_many_args	parallel: Error: --tee requires --jobs to be higher. Try --jobs 0.
+par_tee_too_many_args	parallel: Error: --tee requires --jobs to be higher. Try --jobs 999.
 par_tee_with_premature_close	--tee --pipe should send all data to all commands
 par_tee_with_premature_close	even if a command closes stdin before reading everything
 par_tee_with_premature_close	tee with --output-error=warn-nopipe support

@@ -130,6 +130,7 @@ reuse:
 	(wd=`pwd`; \
 	cd /tmp/reuse; \
 	git clone "$$wd"; \
+	cd parallel; \
 	reuse lint || \
 	(echo Use; \
 	echo '  reuse addheader --copyright="Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc." --license="GPL-3.0-or-later" source-files'; \

@@ -67,12 +67,12 @@ how-to, reference and explanation.
 =head3 Tutorial
 
 If you prefer reading a book buy B<GNU Parallel 2018> at
-http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
+https://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 or download it at: https://doi.org/10.5281/zenodo.1146014 Read at
 least chapter 1+2. It should take you less than 20 minutes.
 
 Otherwise start by watching the intro videos for a quick introduction:
-http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
+https://youtube.com/playlist?list=PL284C9FF2488BC6D1
 
 If you want to dive deeper: spend a couple of hours walking through
 the tutorial (B<man parallel_tutorial>). Your command line will love
@@ -351,6 +351,10 @@ sequence number of job
 =item Z<> B<@arg>
 
 the arguments
+
+=item Z<> B<skip()>
+
+skip this job (see also B<--filter>)
 
 =item Z<> B<yyyy_mm_dd_hh_mm_ss()>
 
@@ -668,12 +672,12 @@ files on the remote computer after processing is done.
     --return {.}.bz2 --cleanup "zcat {} | bzip -9 >{.}.bz2"
 
 With B<--transferfile {}> the file transferred to the remote computer
-will be removed on the remote computer.  Directories created will not
-be removed - even if they are empty.
+will be removed on the remote computer. Directories on the remote
+computer containing the file will be removed if they are empty.
 
 With B<--return> the file transferred from the remote computer will be
-removed on the remote computer.  Directories created will not be
-removed - even if they are empty.
+removed on the remote computer. Directories on the remote
+computer containing the file will be removed if they are empty.
 
 B<--cleanup> is ignored when not used with B<--transferfile> or
 B<--return>.
@@ -697,7 +701,7 @@ B<--colsep> implies B<--trim rl>, which can be overridden with
 B<--trim n>.
 
 I<regexp> is a Perl Regular Expression:
-http://perldoc.perl.org/perlre.html
+https://perldoc.perl.org/perlre.html
 
 
 =item B<--compress>
@@ -2132,6 +2136,8 @@ B<--return> is often used with B<--transferfile> and B<--cleanup>.
 B<--return> is ignored when used with B<--sshlogin :> or when not used
 with B<--sshlogin>.
 
+For details on transferring see B<--transferfile>.
+
 
 =item B<--round-robin>
 
@@ -2372,7 +2378,7 @@ On FreeBSD B<env> is needed:
   https://ftpmirror.gnu.org/parallel/parallel-20140822.tar.bz2
 
 There are many limitations of shebang (#!) depending on your operating
-system. See details on http://www.in-ulm.de/~mascheck/various/shebang/
+system. See details on https://www.in-ulm.de/~mascheck/various/shebang/
 
 
 =item B<--shebang-wrap>
@@ -2789,29 +2795,41 @@ Transfer files to remote computers. Shorthand for: B<--transferfile {}>.
 
 B<--transferfile> is used with B<--sshlogin> to transfer files to the
 remote computers. The files will be transferred using B<rsync> and
-will be put relative to the default work dir. If the path contains /./
-the remaining path will be relative to the work dir. E.g.
+will be put relative to the work dir (see B<--workdir>).
+
+The I<filename> will normally contain a replacement string.
+
+If the path contains /./ the remaining path will be relative to the
+work dir (for details: see B<rsync>). If the work dir is
+B</home/user>, the transferring will be as follows:
+
+  /tmp/foo/bar   => /tmp/foo/bar
+  tmp/foo/bar    => /home/user/tmp/foo/bar
+  /tmp/./foo/bar => /home/user/foo/bar
+  tmp/./foo/bar  => /home/user/foo/bar
+
+I<Examples>
+
+This will transfer the file I<foo/bar.txt> to the computer
+I<server.example.com> to the file I<$HOME/foo/bar.txt> before running
+B<wc foo/bar.txt> on I<server.example.com>:
 
   echo foo/bar.txt | parallel --transferfile {} \
     --sshlogin server.example.com wc
 
-This will transfer the file I<foo/bar.txt> to the computer
-I<server.example.com> to the file I<$HOME/foo/bar.txt> before running
-B<wc foo/bar.txt> on I<server.example.com>.
+This will transfer the file I</tmp/foo/bar.txt> to the computer
+I<server.example.com> to the file I</tmp/foo/bar.txt> before running
+B<wc /tmp/foo/bar.txt> on I<server.example.com>:
 
   echo /tmp/foo/bar.txt | parallel --transferfile {} \
     --sshlogin server.example.com wc
 
 This will transfer the file I</tmp/foo/bar.txt> to the computer
-I<server.example.com> to the file I</tmp/foo/bar.txt> before running
-B<wc /tmp/foo/bar.txt> on I<server.example.com>.
+I<server.example.com> to the file I<foo/bar.txt> before running
+B<wc ./foo/bar.txt> on I<server.example.com>:
 
   echo /tmp/./foo/bar.txt | parallel --transferfile {} \
-    --sshlogin server.example.com wc {= s:.*/./:./: =}
-
-This will transfer the file I</tmp/foo/bar.txt> to the computer
-I<server.example.com> to the file I<foo/bar.txt> before running
-B<wc ./foo/bar.txt> on I<server.example.com>.
+    --sshlogin server.example.com wc {= s:.*/\./:./: =}
 
 B<--transferfile> is often used with B<--return> and B<--cleanup>. A
 shorthand for B<--transferfile {}> is B<--transfer>.
@@ -2950,7 +2968,8 @@ Print the version GNU B<parallel> and exit.
 
 =item B<--wd> I<mydir>
 
-Jobs will be run in the dir I<mydir>.
+Jobs will be run in the dir I<mydir>. The default is the current dir
+for the local machine, and the login dir for remote computers.
 
 Files transferred using B<--transferfile> and B<--return> will be
 relative to I<mydir> on remote computers.
@@ -3335,7 +3354,7 @@ To remove a string anywhere you can use regular expressions with
 
 Let us assume a website stores images like:
 
-  http://www.example.com/path/to/YYYYMMDD_##.jpg
+  https://www.example.com/path/to/YYYYMMDD_##.jpg
 
 where YYYYMMDD is the date and ## is the number 01-24. This will
 download images for the past 30 days:
@@ -3343,7 +3362,7 @@ download images for the past 30 days:
   getit() {
     date=$(date -d "today -$1 days" +%Y%m%d)
     num=$2
-    echo wget http://www.example.com/path/to/${date}_${num}.jpg
+    echo wget https://www.example.com/path/to/${date}_${num}.jpg
   }
   export -f getit
   
@@ -3871,13 +3890,13 @@ parallel.
 
 To download byte 10000000-19999999 you can use B<curl>:
 
-  curl -r 10000000-19999999 http://example.com/the/big/file >file.part
+  curl -r 10000000-19999999 https://example.com/the/big/file >file.part
 
 To download a 1 GB file we need 100 10MB chunks downloaded and
 combined in the correct order.
 
   seq 0 99 | parallel -k curl -r \
-    {}0000000-{}9999999 http://example.com/the/big/file > file
+    {}0000000-{}9999999 https://example.com/the/big/file > file
 
 
 =head2 EXAMPLE: Parallel grep
@@ -4144,6 +4163,15 @@ the special short hand I<-S ..> can be used:
 
   find logs/ -name '*.gz' | parallel -S .. \
     --trc {.}.bz2 "zcat {} | bzip2 -9 >{.}.bz2"
+
+
+=head2 EXAMPLE: Advanced file transfer 
+
+Assume you have files in in/*, want them processed on server,
+and transferred back into /other/dir:
+
+  parallel -S server --trc /other/dir/./{/}.out \
+    cp {/} {/}.out ::: in/./*
 
 
 =head2 EXAMPLE: Distributing work to local and remote computers
@@ -5347,7 +5375,7 @@ this.
 =item *
 
 The complete output of B<parallel --version>. If you are not running
-the latest released version (see http://ftp.gnu.org/gnu/parallel/) you
+the latest released version (see https://ftp.gnu.org/gnu/parallel/) you
 should specify why you believe the problem is not fixed in that
 version.
 
@@ -5384,7 +5412,7 @@ by others, the output might help them figure out the problem.
 =item *
 
 Whether you have watched the intro videos
-(http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1), walked
+(https://www.youtube.com/playlist?list=PL284C9FF2488BC6D1), walked
 through the tutorial (man parallel_tutorial), and read the EXAMPLE
 section in the man page (man parallel - search for EXAMPLE:).
 
@@ -5393,8 +5421,8 @@ section in the man page (man parallel - search for EXAMPLE:).
 If you suspect the error is dependent on your environment or
 distribution, please see if you can reproduce the error on one of
 these VirtualBox images:
-http://sourceforge.net/projects/virtualboximage/files/
-http://www.osboxes.org/virtualbox-images/
+https://sourceforge.net/projects/virtualboximage/files/
+https://www.osboxes.org/virtualbox-images/
 
 Specifying the name of your distribution is not enough as you may have
 installed software that is not in the VirtualBox images.
@@ -5467,7 +5495,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 =head2 Documentation license I
 

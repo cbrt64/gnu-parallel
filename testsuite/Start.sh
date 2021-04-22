@@ -1,5 +1,9 @@
 #!/bin/bash -x
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Argument can be substring of tests (such as 'local')
 
 export LANG=C

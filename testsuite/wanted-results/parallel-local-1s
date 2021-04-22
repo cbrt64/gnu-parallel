@@ -265,11 +265,6 @@ par_null_resume	A
 par_null_resume	B
 par_null_resume	C
 par_open_files_blocks	bug #38439: "open files" with --files --pipe blocks after a while
-par_open_files_blocks	parallel: Warning: Only enough file handles to run 2 jobs in parallel.
-par_open_files_blocks	parallel: Warning: Try running 'parallel -j0 -N 2 --pipe parallel -j0'
-par_open_files_blocks	parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
-par_open_files_blocks	parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
-par_open_files_blocks	parallel: Warning: or increasing /proc/sys/fs/file-max
 par_open_files_blocks	1 of 21
 par_open_files_blocks	2 of 21
 par_open_files_blocks	3 of 21

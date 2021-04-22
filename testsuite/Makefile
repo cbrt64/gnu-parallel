@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 ### Full test set (except mem)
 testsuite: 3
 	true
@@ -40,17 +44,15 @@ polar: ../src/parallel tests-to-run/*polar* wanted-results/*polar* prereqlocal
 	touch ~/.parallel/will-cite
 
 # *local* only
-local:	testlocal
-	true
-
-testlocal: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
+local:	../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
 	time bash Start.sh local mem
 
-# short and local
-short:	testlocalshort
-	true
+# short
+short:	 ../src/parallel tests-to-run/* wanted-results/* prereqlocal installparallel
+	TRIES=1 time bash Start.sh '' 'polar|mem|100s|300s'
 
-testlocalshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
+# short and local
+localshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel
 	TRIES=1 time bash Start.sh local 'mem|100s|300s'
 
 # sql
@@ -71,7 +73,6 @@ REQUIRE=bash -c '\
   export -f is_installed; \
   parallel -n2 --tag is_installed ::: \
 	script	"echo | script -c echo -q /dev/null"				\
-	lsh	"lsh lo echo lsh is installed"					\
 	"ssh sh@lo"	"timeout 20 ssh sh@lo true"				\
 	"ssh csh@lo"	"timeout 5 ssh csh@lo true"				\
 	niceload	"niceload echo niceload is installed"			\
@@ -86,6 +87,7 @@ REQUIRE=bash -c '\
 	pv	"echo | pv -qL 10"						\
 	timeout	"timeout 1 echo timeout is installed"				\
 '
+#	lsh	"lsh lo echo lsh is installed"					\
 
 prereqlocal: installparallel startvm
 	${REQUIRE}

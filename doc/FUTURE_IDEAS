@@ -1,8 +1,5 @@
-Luk filen ved EOF - lad være med bare at læse videre.
-
-> /tmp/ged; tail -f /tmp/ged| xargs -n1 -E eof & sleep 1; echo echo a >>/tmp/ged; echo eof >>/tmp/ged; seq 4 >>/tmp/ged; wait
-
-> /tmp/ged; tail -f /tmp/ged| parallel -n1 -E eof & sleep 1; echo echo a >>/tmp/ged; echo eof >>/tmp/ged; seq 4 >>/tmp/ged; wait
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 niceload seeks last column:
 
@@ -10,16 +7,7 @@ iostat -x 1 2
 
 niceload --start-condition
 
-niceload should prioritize jobs and only unsuspend the highest
-priority job. If the running job with lowest pri has run for 1 sec:
-Consider unsuspending next pri job.
-
-
 Til QUOTING:
-
-cat <<'_EOF' | parallel -v echo
-awk -v FS="\",\"" '{print $1, $3, $4, $5, $9, $14}' | grep -v "#" | sed -e '1d' -e 's/\"//g' -e 's/\/\/\//\t/g' | cut -f1-6,11 | sed -e 's/\/\//\t/g' -e 's/ /\t/g
-_EOF
 
 FN="two  spaces"
 echo 1 | parallel -q echo {} "$FN"
@@ -49,28 +37,12 @@ echo 1 | parallel echo {} $FN4 \; echo $FN4 {}
 locate .gz | parallel -X find {} -size +1000 -size -2000 | parallel --workdir ... -S .. --trc {/}.bz2 'zcat {} | bzip2 > {/}.bz2'
 
 
-== Compare ==
-
-Unchanged since 2008 http://code.google.com/p/spawntool/
-Unchanged since 2011 http://code.google.com/p/push/
-
-== Bug? ==
-
-.parallel/config with --long-options
-
-
 == SQL ==
 
 Example with %0a as newline
 sql :my_postgres?'\dt %0a SELECT * FROM users'
 
 cat ~/.sql/aliases | parallel --colsep '\s' sql {1} '"select 0.14+3;" | grep -q 3.14 || (echo dead: {1}; exit 1)'
-
-== FEX ==
-
-fex syntax for splitting fields
-http://www.semicomplete.com/projects/fex/
-sql :foo 'select * from bar' | parallel --fex '|{1,2}' do_stuff {2} {1}
 
 
 --autocolsep: Læs alle linjer.
@@ -102,13 +74,17 @@ colsep = [sepchars]{no_of_sepchars}
 
 Til inspiration.
 
-Hvis du stadig er ved at lave post- eller visitkort ting, så kunne du evt tilføje en QR code under frimærket. Med MECARD tagget kan flere tags gemmes i en og samme fil:
+Hvis du stadig er ved at lave post- eller visitkort ting, så kunne du
+evt tilføje en QR code under frimærket. Med MECARD tagget kan flere
+tags gemmes i en og samme fil:
 
-qrencode -l L -o x.png "MECARD:N:GNU Parallel;EMAIL:parallel@gnu.org;URL:gnu.org/software/parallel;"
+qrencode -l L -o x.png "MECARD:N:GNU
+Parallel;EMAIL:parallel@gnu.org;URL:gnu.org/software/parallel;"
 
 Den ser OK ud i en Androide tlf.
 
-Husk at skrive indholdet under billedet, det er irreterende at skulle gætte.
+Husk at skrive indholdet under billedet, det er irreterende at skulle
+gætte.
 
 
 GNU parallel is a UNIX-tool for running commands in parallel.
@@ -117,25 +93,6 @@ To gzip all files running one job per CPU write:
 Watch the intro video to learn more: http://pi.dk/1
 Or read more about GNU parallel: http://gnu.org/s/parallel
 
-job->start():
-$jobslot = Global::jobslot->$sshlogin
-
-sub get_jobslot {
-    my $sshlogin = shift;
-    my $jobslot_id = pop @Global::jobslots{$sshlogin};
-    if not defined $jobslot_id {
-       $jobslot_id = ++$Global::max_jobslot_id;
-    }
-    return $jobslot_id;
-}
-
-sub release_jobslot {
-    my $sshlogin = shift;
-    my $jobslot_id = shift;
-    push @Global::jobslots{$sshlogin}, $jobslot_id;
-}
-
-Test sshlogins in parallel. Assume parallel is in path
 
 seq 1 10 | parallel -I {o} 'seq 1 255 | parallel echo ssh -oNoHostAuthenticationForLocalhost=true 127.0.{o}.{}' >/tmp/sshloginfile
 seq 1 1000 | parallel --sshloginfile /tmp/sshloginfile echo
@@ -719,51 +676,4 @@ parallel -a table_file.tsv --colsep '\t' mycmd -o {2} {3} -i {1}
 
 # Run traceroute in parallel, but keep the output order the same
 parallel -k traceroute ::: foss.org.my debian.org freenetproject.org
-
-
-Test of signal passing through ssh
-#!/bin/bash
-
-SERVER1=parallel-server3
-SERVER2=parallel-server2
-
-export BG_PROC
-
-start_remote_sleep() {
-  parallel -D -u -S parallel@$SERVER2 sleep ::: 370 &
-  BG_PROC=$!
-  while ! ssh parallel@$SERVER2 ps -A -o cmd | grep -q '^sleep 370' ; do
-    sleep 0.3
-  done
-}
-
-stop_local_parallel() {
-  kill -9 $BG_PROC
-}
-
-check_and_stop_remote_sleep() {
-  ssh parallel@$SERVER2 ps -A -o cmd | grep '^sleep 370' 
-  ssh parallel@$SERVER2 killall sleep
-}
-
-echo '### Test kill signals'
-start_remote_sleep 2>/dev/null
-kill -1 $BG_PROC
-check_and_stop_remote_sleep
-
-sub propagate_signal {
-    my $signal = shift;
-#    $signal = "KILL";
-    ::debug("Sending $signal to ",keys %Global::running);
-    kill $signal, keys %Global::running;
-    if(defined $Global::original_sig{$signal}) {
-	&{$Global::original_sig{$signal}};
-    }
-}
-
-my %do_not_propagate = map { $_ => 1 } qw(TTOU TTIN CONT TSTP __WARN__ __DIE__);
-for (keys %SIG) {
-    $do_not_propagate{$_} and next;
-    $SIG{$_} = eval 'sub { propagate_signal("'.$_.'"); };';
-}
 

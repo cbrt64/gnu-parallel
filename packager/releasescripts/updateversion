@@ -1,8 +1,12 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 updater() {
   export DOINO
   export TAG
+  export SPCTAG
   export YYYYMMDD=`yyyymmdd`
   export DOI=10.5281/zenodo.$DOINO
   export YYYY=${YYYYMMDD:0:4}
@@ -10,8 +14,9 @@ updater() {
   export YYYYMMDD=${YYYYMM}22
   export MON=`date +%b`
   export MONTH=`date +%B`
-  echo Tag=$TAG Date:$YYYYMMDD Year:$YYYY Mon:$MON Month:$MONTH DOI:$DOI
-  export TITLE="GNU Parallel $YYYYMMDD ('$TAG')"
+  TAG=$(echo $SPCTAG | perl -pe 's/ //g')
+  echo Tag=$TAG = "$SPCTAG" Date:$YYYYMMDD Year:$YYYY Mon:$MON Month:$MONTH DOI:$DOI
+  export TITLE="GNU Parallel $YYYYMMDD ('$SPCTAG')"
 
   if [ -z "$DOINO" ] ; then
       echo '*** Set DOINO and try again ***'
@@ -21,14 +26,15 @@ updater() {
       echo . .last-doitag.txt
       return
   fi
-  if [ -z "$TAG" ] ; then
-      echo '*** Set TAG and try again ***'
+  if [ -z "$SPCTAG" ] ; then
+      echo '*** Set SPCTAG and try again ***'
       cat .last-doitag.txt
       echo . .last-doitag.txt
       return
   fi
   echo "export DOINO=$DOINO" > .last-doitag.txt
-  echo "export TAG=$TAG" >> .last-doitag.txt
+  echo "export TAG='$TAG'" >> .last-doitag.txt
+  echo "export SPCTAG='$SPCTAG'" >> .last-doitag.txt
   echo "export YYYYMMDD=$YYYYMMDD" >> .last-doitag.txt
   echo 'echo "$DOINO $YYYYMMDD ($TAG)"' >> .last-doitag.txt
   

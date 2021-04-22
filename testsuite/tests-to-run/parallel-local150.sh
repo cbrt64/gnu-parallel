@@ -4,7 +4,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-rsync -Ha --delete input-files/segfault/ tmp/
 cd tmp
 
 median() { perl -e '@a=sort {$a<=>$b} <>;print $a[$#a/2]';} 
@@ -70,11 +69,6 @@ echo "### bug #35268: shell_quote doesn't treats [] brackets correctly"
 echo '### Test make .deb package'; 
   cd ~/privat/parallel/packager/debian; 
   stdout make | grep 'To install the GNU Parallel Debian package, run:'
-
-echo '### Test of segfaulting issue'
-  echo 'This gave ~/bin/stdout: line 3: 20374 Segmentation fault      "$@" 2>&1'; 
-  echo 'before adding wait() before exit'; 
-  seq 1 300 | stdout parallel ./trysegfault
 
 echo '### Test basic --arg-sep'
   parallel -k echo ::: a b

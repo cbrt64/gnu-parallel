@@ -14,11 +14,11 @@ real world.
 =head2 Reader's guide
 
 If you prefer reading a book buy B<GNU Parallel 2018> at
-http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
+https://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 or download it at: https://doi.org/10.5281/zenodo.1146014
 
 Otherwise start by watching the intro videos for a quick introduction:
-http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
+https://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
 
 Then browse through the B<EXAMPLE>s after the list of B<OPTIONS> in
 B<man parallel> (Use B<LESS=+/EXAMPLE: man parallel>). That will give
@@ -3006,11 +3006,11 @@ Output:
   GNU parallel 20210122
   Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software
   Foundation, Inc.
-  License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+  License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
   This is free software: you are free to change and redistribute it.
   GNU parallel comes with no warranty.
   
-  Web site: http://www.gnu.org/software/parallel
+  Web site: https://www.gnu.org/software/parallel
   
   When using programs that use GNU Parallel to process data for publication
   please cite as described in 'parallel --citation'.
@@ -3045,7 +3045,7 @@ Output:
     month = {Feb},
     number = {1},
     volume = {36},
-    url = {http://www.gnu.org/s/parallel},
+    url = {https://www.gnu.org/s/parallel},
     year = {2011},
     pages = {42-47},
     doi = {10.5281/zenodo.16303}
@@ -3121,7 +3121,7 @@ If you like GNU B<parallel>:
 =item *
 
 (Re-)walk through the tutorial if you have not done so in the past year
-(http://www.gnu.org/software/parallel/parallel_tutorial.html)
+(https://www.gnu.org/software/parallel/parallel_tutorial.html)
 
 =item *
 

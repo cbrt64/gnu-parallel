@@ -8,6 +8,75 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_shebang() {
+    echo '### Test different shebangs'
+    gp() {
+	cat <<'EOF'
+#!/usr/local/bin/parallel --shebang-wrap -k A={} /usr/bin/gnuplot
+name=system("echo $A")
+print name
+EOF
+	true
+    }
+    oct() {
+	cat <<'EOF'
+#!/usr/local/bin/parallel --shebang-wrap -k /usr/bin/octave -qf
+arg_list = argv ();
+filename = arg_list{1};
+printf(filename);
+printf("\n");
+EOF
+	true
+    }
+    pl() {
+	cat <<'EOF'
+#!/usr/local/bin/parallel --shebang-wrap -k /usr/bin/perl
+print @ARGV,"\n";
+EOF
+	true
+    }
+    py() {
+	cat <<'EOF'
+#!/usr/local/bin/parallel --shebang-wrap -k /usr/bin/python3
+import sys
+print(str(sys.argv[1]))
+EOF
+	true
+    }
+    r() {
+	cat <<'EOF'
+#!/usr/local/bin/parallel --shebang-wrap -k /usr/bin/Rscript --vanilla --slave
+options <- commandArgs(trailingOnly = TRUE)
+options
+EOF
+	true
+    }
+    rb() {
+	cat <<'EOF'
+#!/usr/local/bin/parallel --shebang-wrap -k /usr/bin/ruby
+p ARGV
+EOF
+	true
+    }
+    sh() {
+	cat <<'EOF'
+#!/usr/local/bin/parallel --shebang-wrap -k /bin/sh
+echo "$@"
+EOF
+	true
+    }
+    run() {
+	tmp=`tempfile`
+	"$@" > "$tmp"
+	chmod +x "$tmp"
+	"$tmp" A B C
+	rm "$tmp"
+    }
+    export -f run gp oct pl py r rb sh
+    
+    parallel --tag -k run  ::: gp oct pl py r rb sh
+}
+
 par_pipe_regexp() {
     echo '### --pipe --regexp'
     gen() {
@@ -34,6 +103,33 @@ EOF
 	$p --recstart '[A-Z]\d+, Start' -N1 'echo Record;cat'
     (echo Garbage; gen) |
 	$p --recstart '.*, Start' -N1 'echo Record;cat'
+}
+
+par_pipe_regexp_non_quoted() {
+    echo '### --pipe --regexp non_quoted \n'
+    gen() {
+	cat <<EOF
+Start
+foo
+End
+Start
+Start this line is a false Start line
+End this line is a false End line
+End
+EOF
+	true
+    }
+    p="ppar --pipe --regexp -k"
+    p="parallel --pipe --regexp -k"
+    gen | $p --recend '' --recstart '^Start$' -N1 'echo :::Single record;cat'
+    gen | $p --recend '' --recstart 'Start\n' -N1 'echo :::Single record;cat'
+    gen | $p --recend '' --recstart 'Start
+'  -N1 'echo :::Single record;cat'
+    
+    gen | $p --recend 'End$' --recstart '' -N1 'echo :::Single record;cat'
+    gen | $p --recend 'End\n' --recstart '' -N1 'echo :::Single record;cat'
+    gen | $p --recend 'End
+' --recstart '' -N1 'echo :::Single record;cat'
 }
 
 par_delay_halt_soon() {
@@ -169,7 +265,10 @@ par_tee_with_premature_close() {
 par_tee_too_many_args() {
     echo '### Fail if there are more arguments than --jobs'
     seq 11 | stdout parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
-    seq 11 | stdout parallel -k --tag --pipe -j0 --tee grep {} ::: {1..10000}
+    tmp=`tempfile`
+    seq 11 | parallel -k --tag --pipe -j0 --tee grep {} ::: {1..10000} 2> "$tmp"
+    cat "$tmp" | perl -pe 's/\d+/999/g'
+    rm "$tmp"
 }
 
 par_maxargs() {
@@ -197,7 +296,7 @@ par_totaljob_repl() {
     parallel -k -N7 --plus echo {#} {##} ::: {1..14}
     parallel -k -N7 --plus echo {#} {##} ::: {1..15}
     parallel -k -S 8/: -X --plus echo {#} {##} ::: {1..15}
-    parallel -k --plus -j 10 echo '{0#}/{##}:{0%}' ::: {1..5} ::: {1..4}
+    parallel -k --plus --delay 0.1 -j 10 'echo {0#}/{##}:{0%}' ::: {1..5} ::: {1..4}
 }
 
 par_jobslot_repl() {

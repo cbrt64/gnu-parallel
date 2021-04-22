@@ -37,8 +37,9 @@ env_parallel() {
     }
     _bodies_of_ALIASES() {
 	local _i
-	for _i in $@; do
-	    if [ $(alias $_i | wc -l) == 1 ] ; then
+	for _i in "$@"; do
+	    # shellcheck disable=SC2046
+	    if [ $(alias "$_i" | wc -l) == 1 ] ; then
 		true Alias is a single line. Good.
 	    else
 		_warning_PAR "Alias '$_i' contains newline."
@@ -65,6 +66,7 @@ env_parallel() {
 	echo '(_|TIMEOUT|GROUPS|FUNCNAME|DIRSTACK|PIPESTATUS|USERNAME|BASHPID|BASH_[A-Z_]+)'
     }
     _ignore_READONLY() {
+	# shellcheck disable=SC1078,SC1079,SC2026
 	readonly | perl -e '@r = map {
                 chomp;
                 # sh on UnixWare: readonly TIMEOUT
@@ -196,15 +198,16 @@ env_parallel() {
                       END { exit not $exit }'
     }
     _warning_PAR() {
-	echo "env_parallel: Warning: $@" >&2
+	echo "env_parallel: Warning: $*" >&2
     }
     _error_PAR() {
-	echo "env_parallel: Error: $@" >&2
+	echo "env_parallel: Error: $*" >&2
     }
 
     # Bash is broken in version 3.2.25 and 4.2.39
     # The crazy '[ "`...`" == "" ]' is needed for the same reason
     if [ "`_which_PAR parallel`" == "" ]; then
+	# shellcheck disable=SC2016
 	_error_PAR 'parallel must be in $PATH.'
 	return 255
     fi
@@ -226,7 +229,7 @@ env_parallel() {
 	(_names_of_ALIASES;
 	 _names_of_FUNCTIONS;
 	 _names_of_VARIABLES) |
-	    cat > $HOME/.parallel/ignored_vars
+	    cat > "$HOME"/.parallel/ignored_vars
 	return 0
     fi
 
@@ -388,7 +391,7 @@ _parset_main() {
 	return 255
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
-	echo "parset 20210323 (GNU parallel `parallel --minversion 1`)"
+	echo "parset 20210422 (GNU parallel `parallel --minversion 1`)"
 	echo "Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
 	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
@@ -420,12 +423,13 @@ _parset_main() {
     if perl -e 'exit not grep /,| /, @ARGV' "$_parset_NAME" ; then
 	# $_parset_NAME contains , or space
 	# Split on , or space to get the names
+	# shellcheck disable=SC2016,SC2046
 	eval "$(
 	    # Compute results into files
 	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
 		# var1=`cat tmpfile1; rm tmpfile1`
 		# var2=`cat tmpfile2; rm tmpfile2`
-		parallel --plain -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
+		parallel --plain -q echo '{2}=`cat {1}; rm {1}`' :::: - :::+ $(
 		    echo "$_parset_NAME" | perl -pe 's/,/ /g'
 			 )
 	    );

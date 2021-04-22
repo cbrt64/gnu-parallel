@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-License-Identifier: GFDL-1.3-or-later
+# SPDX-License-Identifier: CC-BY-SA-4.0
+
 = Notes on how to release new version =
 
 == alpha/beta/production ==
@@ -40,7 +44,7 @@ gpl v3
 
 10.5281/zenodo.4381888
 DOINO=3956817
-TAG='Privacy Shield'
+SPCTAG='Privacy Shield'
 
 # Update version
 . packager/releasescripts/updateversion
@@ -50,6 +54,7 @@ TAG='Privacy Shield'
 
 === Reconfig autoconf/automake, build tar.bz2 and test it ===
 
+. .last-doitag.txt
 make reconf &&
 make pack_unpack_and_test_build
 
@@ -80,6 +85,41 @@ make
 # Reload build-status:
 https://build.opensuse.org/package/show/home:tange/parallel
 # Check that one .deb (Debian 5.0) and one .rpm (CentOS) end with 'succeeded'
+
+== Upload LBRY ==
+
+lbry://@GnuParallel#4/parallel-20210322#4
+
+An easy way to support GNU Parallel is to tip on LBRY.
+
+:
+
+If you like GNU Parallel record a video testimonial: Say who you are, what you use GNU Parallel for, how it helps you, and what you like most about it. Include a command that uses GNU Parallel if you feel like it.
+
+Thumbnail: https://www.gnu.org/software/parallel/logo-gray+black10000.png
+
+Tags: gnu parallel software
+
+
+file_path="parallel-20210422.tar.bz2"
+name="GNU Parallel $YYYYMMDD ('$SPCTAG')"
+title="$name"
+description="$description"
+
+lbrynet publish \
+  --bid=0.01 \
+  --file_path="$file_path" \
+  --name="$name" \
+  --title="$title" \
+  --description="$description" \
+  --author="$author" \
+  $languages_opt \
+  $tags_opt \
+  --license="$license" \
+  --thumbnail_url="$thumbnail_url" \
+  --release_time="$release_time" \
+  --channel_name="$channel_name" \
+
 
 == Update website ==
 
@@ -113,11 +153,11 @@ git diff
 . .last-doitag.txt
 echo "Released as $YYYYMMDD ('$TAG')." | grep MyTag && (STOP;STOP;STOP)
 echo "$TAG" | grep ' ' && (STOP;STOP;STOP)
-echo "Released as $YYYYMMDD ('$TAG')."
+echo "Released as $YYYYMMDD ('$SPCTAG')."
 
-git commit -a -m "Released as $YYYYMMDD ('$TAG')"
-git tag -s -u 88888888 -m "Released as $YYYYMMDD ('$TAG')" $TAG
-git tag -s -u 88888888 -m "Released as $YYYYMMDD ('$TAG')" $YYYYMMDD
+git commit -a -m "Released as $YYYYMMDD ('$SPCTAG')"
+git tag -s -u 88888888 -m "Released as $YYYYMMDD ('$SPCTAG')" $TAG
+git tag -s -u 88888888 -m "Released as $YYYYMMDD ('$SPCTAG')" $YYYYMMDD
 
 torsocks git push
 torsocks git push origin $TAG
@@ -201,9 +241,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210422 ('<<>>') released <<[stable]>>
+Subject: GNU Parallel 20210422 ('Ever Given') released <<[stable]>>
 
-GNU Parallel 20210322 ('<<>>') <<[stable]>> has been released. It is available for download at: http://ftpmirror.gnu.org/parallel/
+GNU Parallel 20210322 ('Ever Given') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -213,7 +253,9 @@ It does not have to be as detailed as Juan's. It is perfectly fine if you just s
 
 Quote of the month:
 
-  <<>>
+  GNU Parallel is your friend.
+  Can shorten that time by X cores.
+    -- iRODS @irods@twitter
   
 New in this release:
 
@@ -221,7 +263,19 @@ New in this release:
 
 News about GNU Parallel:
 
-<<>>
+* Bioinformatics tutorials - linux and shell advanced - parallel https://www.youtube.com/watch?v=5leL8pyl0XA
+
+* GNU Parallel for quick gains https://edbennett.github.io/high-performance-python/04-gnu-parallel/index.html
+
+* Processing Linux Commands in Parallel https://www.baeldung.com/linux/processing-commands-in-parallel
+
+* GNU parallel https://docs-research-it.berkeley.edu/services/high-performance-computing/user-guide/running-your-jobs/gnu-parallel/
+
+* GNU Parallel 활용 가이드https://genoglobe.com/kribb/gnu_parallel
+
+* Parallel Grep and Awk  https://www.highonscience.com/blog/2021/03/21/parallel-grep/
+
+* Getting things done with shell scripting https://doma.dev/blog/get-things-done-with-bash/
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

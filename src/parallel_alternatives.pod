@@ -575,7 +575,7 @@ using GNU B<parallel>:
      echo unzip 1.zip >> /var/run/my_named_pipe;
      echo tar cf /backup/myhome.tar /home/me >> /var/run/my_named_pipe
 
-http://www.maier-komor.de/xjobs.html (Last checked: 2019-01)
+https://www.maier-komor.de/xjobs.html (Last checked: 2019-01)
 
 
 =head2 DIFFERENCES BETWEEN prll AND GNU Parallel
@@ -1096,9 +1096,9 @@ https://github.com/reconquest/orgalorg
 
 =head2 DIFFERENCES BETWEEN Rust parallel AND GNU Parallel
 
-Rust parallel focuses on speed. It is almost as fast as B<xargs>. It
-implements a few features from GNU B<parallel>, but lacks many
-functions. All these fail:
+Rust parallel focuses on speed. It is almost as fast as B<xargs>, but
+not as fast as B<parallel-bash>. It implements a few features from GNU
+B<parallel>, but lacks many functions. All these fail:
 
   # Read arguments from file
   parallel -a file echo
@@ -3216,6 +3216,10 @@ https://github.com/themattrix/bash-concurrent
 
 =head2 Todo
 
+http://code.google.com/p/spawntool/
+
+http://code.google.com/p/push/
+
 https://github.com/mylanconnolly/parallel
 
 https://github.com/krashanoff/parallel
@@ -3240,9 +3244,9 @@ https://github.com/flesler/parallel
 
 https://github.com/Julian/Verge
 
-http://manpages.ubuntu.com/manpages/xenial/man1/tsp.1.html
+https://manpages.ubuntu.com/manpages/xenial/man1/tsp.1.html
 
-http://vicerveza.homeunix.net/~viric/soft/ts/
+https://vicerveza.homeunix.net/~viric/soft/ts/
 
 https://github.com/chapmanjacobd/que
 
@@ -3533,7 +3537,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 =head2 Documentation license I
 

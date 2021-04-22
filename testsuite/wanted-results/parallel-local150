@@ -144,11 +144,6 @@ echo "### bug #35268: shell_quote doesn't treats [] brackets correctly"
 echo '### Test make .deb package';   cd ~/privat/parallel/packager/debian;   stdout make | grep 'To install the GNU Parallel Debian package, run:'
 ### Test make .deb package
 To install the GNU Parallel Debian package, run:
-echo '### Test of segfaulting issue'
-### Test of segfaulting issue
-  echo 'This gave ~/bin/stdout: line 3: 20374 Segmentation fault      "$@" 2>&1';   echo 'before adding wait() before exit';   seq 1 300 | stdout parallel ./trysegfault
-This gave ~/bin/stdout: line 3: 20374 Segmentation fault      "$@" 2>&1
-before adding wait() before exit
 echo '### Test basic --arg-sep'
 ### Test basic --arg-sep
   parallel -k echo ::: a b

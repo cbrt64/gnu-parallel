@@ -14,7 +14,7 @@
 # General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, see <http://www.gnu.org/licenses/>
+# along with this program; if not, see <https://www.gnu.org/licenses/>
 # or write to the Free Software Foundation, Inc., 51 Franklin St,
 # Fifth Floor, Boston, MA 02110-1301 USA
 #
@@ -1030,8 +1030,8 @@ sub spreadstdin() {
 		# Buf does not start with $recstart => There is garbage.
 		# Make a single record of the garbage
 		if($buf =~
-		   /(?s)^(?-s)(
-		   (?:(?:(?!$recend$recstart)(?s).(?-s))*?$recend)
+		   /(?s:^)(
+		   (?:(?:(?!$recend$recstart)(?s:.))*?$recend)
 		   )
 		   # Followed by recstart
 		   (?=$recstart)/mox and length $1 > 0) {
@@ -1047,11 +1047,11 @@ sub spreadstdin() {
 	    $Global::max_number_of_args * ($Global::max_lines || 1);
 	# (?!negative lookahead) is needed to avoid backtracking
 	# See: https://unix.stackexchange.com/questions/439356/
-	# (?s).(?-s) = (.|[\n]) but faster
+	# (?s:.) = (.|[\n]) but faster
 	while($buf =~
-	      /(?s)^(?-s)(
+	      /(?s:^)(
 	      # n more times recstart.*recend
-	      (?:$recstart(?:(?!$recend$recstart)(?s)(.)(?-s))*?$recend){$n_records}
+	      (?:$recstart(?:(?!$recend$recstart)(?s:.))*?$recend){$n_records}
 	      )
 	      # Followed by recstart
 	      (?=$recstart)/mox and length $1 > 0) {
@@ -1065,8 +1065,8 @@ sub spreadstdin() {
     sub pass_regexp() {
 	# Find the last recend-recstart in $buf
 	$eof and return;
-	# (?s).(?-s) = (.|[\n]) but faster
-	if($buf =~ /^((?s).(?-s)*$recend)$recstart(?s).(?-s)*?$/mox) {
+	# (?s:.) = (.|[\n]) but faster
+	if($buf =~ /^((?s:.)*$recend)$recstart(?s:.)*?$/mox) {
 	    $anything_written +=
 		write_record_to_pipe($chunk_number++,\$header,\$buf,
 				     $recstart,$recend,length $1);
@@ -1246,20 +1246,18 @@ sub recstartrecend() {
 	$recend = $opt::recend;
 	if($opt::regexp and $recend eq '') {
 	    # --regexp --recend ''
-	    $recend = '(?s).(?-s)';
+	    $recend = '(?s:.)';
 	}
     }
 
     if($opt::regexp) {
+	# Do not allow /x comments - to avoid having to quote space
+	$recstart = "(?-x:".$recstart.")";
+	$recend = "(?-x:".$recend.")";
 	# If $recstart/$recend contains '|'
 	# the | should only apply to the regexp
 	$recstart = "(?:".$recstart.")";
 	$recend = "(?:".$recend.")";
-	# Quote # and space
-	$recstart =~ s/#/\\#/g;
-	$recend =~ s/#/\\#/g;
-	$recstart =~ s/ /\\ /g;
-	$recend =~ s/ /\\ /g;
     } else {
 	# $recstart/$recend = printf strings (\n)
 	$recstart =~ s/\\([0rnt\'\"\\])/"qq|\\$1|"/gee;
@@ -2189,7 +2187,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210323;
+    $Global::version = 20210422;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2246,8 +2244,12 @@ sub init_globals() {
 	 '{:(\d+?):(\d+?)}' => '$_ = substr($_,$$1,$$2);',
 	 # Bash ${a#bc}
 	 '{#([^#}][^}]*?)}' => 's/^$$1//;',
+	 # Bash ${a##bc}
+	 '{##([^#}][^}]*?)}' => 's/^$$1//;',
 	 # Bash ${a%def}
 	 '{%([^}]+?)}' => 's/$$1$//;',
+	 # Bash ${a%%def}
+	 '{%%([^}]+?)}' => 's/$$1$//;',
 	 # Bash ${a/def/ghi} ${a/def/}
 	 '{/([^}]+?)/([^}]*?)}' => 's/$$1/$$2/;',
 	 # Bash ${a^a}
@@ -4984,8 +4986,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2021, March 22). GNU Parallel 20210322 ('2002-01-06').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.4628277",
+         "  Tange, O. (2021, April 22). GNU Parallel 20210422 ('Ever Given').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.4710607",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -5015,8 +5017,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2021, March 22). GNU Parallel 20210322 ('2002-01-06').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.4628277",
+	     "  Tange, O. (2021, April 22). GNU Parallel 20210422 ('Ever Given').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.4710607",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5139,20 +5141,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2021_4628277,",
+	"\@software{tange_2021_4710607,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20210322 ('2002-01-06')},",
-	"      month        = Mar,",
-	"      year         = 2020,",
+	"      title        = {GNU Parallel 20210422 ('Ever Given')},",
+	"      month        = Apr,",
+	"      year         = 2021,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.4628277},",
-	"      url          = {https://doi.org/10.5281/zenodo.4628277}",
+	"      doi          = {10.5281/zenodo.4710607},",
+	"      url          = {https://doi.org/10.5281/zenodo.4710607}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2021_4628277})",
+	"(Feel free to use \\nocite{tange_2021_4710607})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -8020,15 +8022,15 @@ sub cleanup_cmd($$$) {
 	$dir .= $_."/";
 	unshift @rmdir, ::shell_quote_file($dir);
     }
-    my $rmdir = @rmdir ? "sh -c ".::Q("rmdir @rmdir 2>/dev/null;") : "";
+    my $rmdir = @rmdir ? "rmdir @rmdir 2>/dev/null;" : "";
     if(defined $opt::workdir and $opt::workdir eq "...") {
-	$rmdir .= ::Q("rm -rf " . ::shell_quote_file($workdir).';');
+	$rmdir .= "rm -rf " . ::shell_quote_file($workdir).';';
     }
-
-    $f = ::shell_quote_file($f);
+    my $rmf = "sh -c ".
+	::Q("rm -f ".::shell_quote_file($f)." 2>/dev/null;".$rmdir);
     my $sshcmd = $self->sshcommand();
     my $serverlogin = $self->serverlogin();
-    return "$sshcmd $serverlogin -- ".::Q("rm -f $f; $rmdir");
+    return "$sshcmd $serverlogin -- ".::Q("$rmf");
 }
 
 {
@@ -9263,12 +9265,13 @@ sub sshlogin_wrap($) {
 		    exec $shell, "-c", ($bashfunc."@ARGV");
 		    die "exec: $!\n";
 		}
+		my $parent = getppid;
 		do {
-		    # Parent is not init (ppid=1), so sshd is alive
+		    # Parent pid is not changed, so sshd is alive
 		    # Exponential sleep up to 1 sec
                     $s = $s < 1 ? 0.001 + $s * 1.03 : $s;
                     select(undef, undef, undef, $s);
-                } until ($done || getppid == 1);
+                } until ($done || getppid != $parent);
 		if(not $done) {
 		    # Kill as per --termseq
 		    my @term_seq = split/,/,$termseq;
@@ -12674,21 +12677,27 @@ sub total_jobs() {
 	$Global::unquote_arg = 1;
     }
     sub yyyy_mm_dd_hh_mm_ss() {
+	# ISO8601 2038-01-19T03:14:08
 	::strftime("%Y-%m-%dT%H:%M:%S", localtime(time()));
     }
     sub yyyy_mm_dd_hh_mm() {
+	# ISO8601 2038-01-19T03:14
 	::strftime("%Y-%m-%dT%H:%M", localtime(time()));
     }
     sub yyyy_mm_dd() {
+	# ISO8601 2038-01-19
 	::strftime("%Y-%m-%d", localtime(time()));
     }
     sub yyyymmddhhmmss() {
+	# ISO8601 20380119031408
 	::strftime("%Y%m%d%H%M%S", localtime(time()));
     }
     sub yyyymmddhhmm() {
+	# ISO8601 203801190314
 	::strftime("%Y%m%d%H%M", localtime(time()));
     }
     sub yyyymmdd() {
+	# ISO8601 20380119
 	::strftime("%Y%m%d", localtime(time()));
     }
 

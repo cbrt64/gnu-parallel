@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2002-2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 bin_SCRIPTS = parallel sql niceload parcat parset parsort	\
 	env_parallel env_parallel.ash env_parallel.bash		\
 	env_parallel.csh env_parallel.dash env_parallel.fish	\

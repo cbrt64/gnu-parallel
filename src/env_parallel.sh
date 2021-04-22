@@ -27,6 +27,7 @@
 #
 # SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GPL-3.0-or-later
+# shellcheck disable=SC2006
 
 env_parallel() {
     # env_parallel.sh
@@ -36,8 +37,8 @@ env_parallel() {
 	for _i in `alias 2>/dev/null | perl -ne 's/^alias //;s/^(\S+)=.*/$1/ && print' 2>/dev/null`; do
 	    # Check if this name really is an alias
 	    # or just part of a multiline alias definition
-	    if alias $_i >/dev/null 2>/dev/null; then
-		echo $_i
+	    if alias "$_i" >/dev/null 2>/dev/null; then
+		echo "$_i"
 	    fi
 	done
     }
@@ -47,7 +48,7 @@ env_parallel() {
 	#   alias myalias='definition' (FreeBSD ash)
 	# so remove 'alias ' from first line
 	for _i in "$@"; do
-		echo 'alias '"`alias $_i | perl -pe '1..1 and s/^alias //'`"
+		echo 'alias '"`alias "$_i" | perl -pe '1..1 and s/^alias //'`"
 	done
     }
     _names_of_maybe_FUNCTIONS() {
@@ -55,6 +56,7 @@ env_parallel() {
     }
     _names_of_FUNCTIONS() {
 	# myfunc is a function
+	# shellcheck disable=SC2046
 	LANG=C type `_names_of_maybe_FUNCTIONS` |
 	    perl -ne '/^(\S+) is a function$/ and not $seen{$1}++ and print "$1\n"'
     }
@@ -70,7 +72,7 @@ env_parallel() {
 	for _i in "$@"
 	do
 	    perl -e 'print @ARGV' "$_i="
-	    eval echo \"\$$_i\" | perl -e '$/=undef; $a=<>; chop($a); print $a' |
+	    eval echo "\"\$$_i\"" | perl -e '$/=undef; $a=<>; chop($a); print $a' |
 		perl -pe 's/[\002-\011\013-\032\\\#\?\`\(\)\{\}\[\]\^\*\<\=\>\~\|\; \"\!\$\&\202-\377]/\\$&/go;'"s/'/\\\'/g; s/[\n]/'\\n'/go;";
 	    echo
 	done
@@ -80,6 +82,7 @@ env_parallel() {
 	echo '(_|TIMEOUT)'
     }
     _ignore_READONLY() {
+	# shellcheck disable=SC1078,SC1079,SC2026
 	readonly | perl -e '@r = map {
                 chomp;
                 # sh on UnixWare: readonly TIMEOUT
@@ -203,15 +206,16 @@ env_parallel() {
                       END { exit not $exit }'
     }
     _warning_PAR() {
-	echo "env_parallel: Warning: $@" >&2
+	echo "env_parallel: Warning: $*" >&2
     }
     _error_PAR() {
-	echo "env_parallel: Error: $@" >&2
+	echo "env_parallel: Error: $*" >&2
     }
 
     if _which_PAR parallel >/dev/null; then
 	true parallel found in path
     else
+	# shellcheck disable=SC2016
 	_error_PAR 'parallel must be in $PATH.'
 	return 255
     fi
@@ -231,7 +235,7 @@ env_parallel() {
 	(_names_of_ALIASES;
 	 _names_of_FUNCTIONS;
 	 _names_of_VARIABLES) |
-	    cat > $HOME/.parallel/ignored_vars
+	    cat > "$HOME"/.parallel/ignored_vars
 	return 0
     fi
 
@@ -310,6 +314,7 @@ env_parallel() {
     unset _remove_bad_NAMES _grep_REGEXP
     unset _prefix_PARALLEL_ENV
     # Test if environment is too big
+    # shellcheck disable=SC2092
     if `_which_PAR true` >/dev/null 2>/dev/null ; then
 	parallel "$@"
 	_parallel_exit_CODE=$?
@@ -385,7 +390,7 @@ _parset_main() {
 	return 255
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
-	echo "parset 20210323 (GNU parallel `parallel --minversion 1`)"
+	echo "parset 20210422 (GNU parallel `parallel --minversion 1`)"
 	echo "Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
 	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
@@ -417,12 +422,13 @@ _parset_main() {
     if perl -e 'exit not grep /,| /, @ARGV' "$_parset_NAME" ; then
 	# $_parset_NAME contains , or space
 	# Split on , or space to get the names
+	# shellcheck disable=SC2016,SC2046
 	eval "`
 	    # Compute results into files
 	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
 		# var1= cat tmpfile1; rm tmpfile1
 		# var2= cat tmpfile2; rm tmpfile2
-		parallel -q echo {2}='\`cat {1}; rm {1}\`' :::: - :::+ \`
+		parallel --plain -q echo '{2}=\`cat {1}; rm {1}\`' :::: - :::+ \`
 		    echo "$_parset_NAME" |
 			perl -pe 's/,/ /g'
 			 \`

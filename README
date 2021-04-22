@@ -57,11 +57,11 @@ document.
 
 Full installation of GNU Parallel is as simple as:
 
-    wget https://ftpmirror.gnu.org/parallel/parallel-20210322.tar.bz2
-    wget https://ftpmirror.gnu.org/parallel/parallel-20210322.tar.bz2.sig
-    gpg parallel-20210322.tar.bz2.sig
-    bzip2 -dc parallel-20210322.tar.bz2 | tar xvf -
-    cd parallel-20210322
+    wget https://ftpmirror.gnu.org/parallel/parallel-20210422.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20210422.tar.bz2.sig
+    gpg parallel-20210422.tar.bz2.sig
+    bzip2 -dc parallel-20210422.tar.bz2 | tar xvf -
+    cd parallel-20210422
     ./configure && make && sudo make install
 
 
@@ -70,11 +70,11 @@ Full installation of GNU Parallel is as simple as:
 If you are not root you can add ~/bin to your path and install in
 ~/bin and ~/share:
 
-    wget https://ftpmirror.gnu.org/parallel/parallel-20210322.tar.bz2
-    wget https://ftpmirror.gnu.org/parallel/parallel-20210322.tar.bz2.sig
-    gpg parallel-20210322.tar.bz2.sig
-    bzip2 -dc parallel-20210322.tar.bz2 | tar xvf -
-    cd parallel-20210322
+    wget https://ftpmirror.gnu.org/parallel/parallel-20210422.tar.bz2
+    wget https://ftpmirror.gnu.org/parallel/parallel-20210422.tar.bz2.sig
+    gpg parallel-20210422.tar.bz2.sig
+    bzip2 -dc parallel-20210422.tar.bz2 | tar xvf -
+    cd parallel-20210422
     ./configure --prefix=$HOME && make && make install
 
 Or if your system lacks 'make' you can simply copy src/parallel
@@ -122,8 +122,8 @@ will love you for it.
 When using programs that use GNU Parallel to process data for
 publication please cite:
 
-    Tange, O. (2021, March 22). GNU Parallel 20210322 ('2002-01-06').
-    Zenodo. https://doi.org/10.5281/zenodo.4628277
+    Tange, O. (2021, April 22). GNU Parallel 20210422 ('Ever Given').
+    Zenodo. https://doi.org/10.5281/zenodo.4710607
 
 Copyright (C) 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015,
 2016, 2017, 2018, 2019, 2020, 2021 Ole Tange, http://ole.tange.dk and
@@ -142,3 +142,6 @@ if you system has split up Perl into multiple packages then these are
 the important ones:
 
     opkg install perlbase-getopt perlbase-ipc procps-ng-ps perlbase-mime
+
+SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+SPDX-License-Identifier: GPL-3.0-or-later

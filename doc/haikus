@@ -1,4 +1,9 @@
+# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-License-Identifier: GFDL-1.3-or-later
+# SPDX-License-Identifier: CC-BY-SA-4.0
+ 
 Quote of the month:
+
 
   Parallel is amazing!
     -- fatboy93@reddit
@@ -121,10 +126,14 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
 === Used ===
 
+  GNU Parallel is your friend.
+  Can shorten that time by X cores.
+    -- iRODS @irods@twitter
+
   GNU Parallel is my new favorite thing
     -- Will Tejeda @thewilltejeda
 
-GNU Parallel is a priceless timesaver
+  GNU Parallel is a priceless timesaver
     -- June "Wakalix" @TWakalix@twitter
 
   I think many people would be surprised to learn that GNU parallel is

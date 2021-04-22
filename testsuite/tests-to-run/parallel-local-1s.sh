@@ -59,8 +59,13 @@ par_open_files_blocks() {
     yes "`seq 3000`" |
 	head -c 20M |
 	stdout parallel -j10 --pipe -k echo {#} of 21 |
-	grep -v 'parallel: Warning: No more file handles.' |
-	grep -v 'Warning: Raising ulimit -n or /etc/security/limits.conf'
+	grep -v 'No more file handles.' |
+	grep -v 'Only enough file handles to run .* jobs in parallel.' |
+	grep -v 'Raising ulimit -n or /etc/security/limits.conf' |
+	grep -v 'Try running .parallel -j0 -N .* --pipe parallel -j0.' |
+	grep -v 'or increasing .ulimit -n. .try: ulimit -n .ulimit -Hn..' |
+	grep -v 'or increasing .nofile. in /etc/security/limits.conf' |
+	grep -v 'or increasing /proc/sys/fs/file-max'
 }
 
 par_pipe_unneeded_procs() {
@@ -690,7 +695,7 @@ par_test_cpu_detection_cpuinfo() {
     }
     export -f test_one
     compgen -A function | grep ^cpu | sort | parallel -j0 -k test_one
-    rm ~/.parallel/tmp/sshlogin/*/cpuspec
+    rm ~/.parallel/tmp/sshlogin/*/cpuspec 2>/dev/null
 }
 
 par_test_cpu_detection_lscpu() {

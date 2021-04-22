@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# SPDX-FileCopyrightText: 2002-2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 install_packages() {
     # After first run, set this:
     #   export INSTALL=echo
@@ -10,7 +14,7 @@ install_packages() {
     test_pkgs="$test_pkgs pod2pdf gawk lua5.3 clisp php-cli nodejs"
     test_pkgs="$test_pkgs mono-csharp-shell libevent-dev tcl libtext-csv-perl"
     test_pkgs="$test_pkgs xterm libc6-i386 libcrypt1:i386"
-    test_pkgs="$test_pkgs libtest-nowarnings-perl"
+    test_pkgs="$test_pkgs libtest-nowarnings-perl xemacs21-bin"
 
     # Debian package
     packaging_pkgs="dpkg-dev build-essential debhelper osc cvs automake-1.15"
@@ -377,25 +381,32 @@ rsync_versions() {
     )
 }
 
+install_tangetools() {
+    git clone https://gitlab.com/ole.tange/tangetools.git
+    cd tangetools &&
+	make &&
+	sudo make install
+}
+
 misc() {
     parallel --record-env
 
-    #sudo cp /usr/bin/tmux /usr/local/bin/tmux1.8
     # Build locale for LC_ALL=zh_HK.big5hkscs perl -e 1
     sudo locale-gen zh_HK
 }
 
 run() {
     install_packages &&
-    install_oracle_client &&
-    setup_databases &&
-    add_server_to_hosts &&
-    create_shell_logins &&
-    copy_ssh_keys &&
-    lsh_setup &&
-    add_freebsd &&
-    tmux_versions &&
-    bash_versions &&
-    rsync_versions &&
-    misc
+	install_tangetools &&
+	install_oracle_client &&
+	setup_databases &&
+	add_server_to_hosts &&
+	create_shell_logins &&
+	copy_ssh_keys &&
+	lsh_setup &&
+	add_freebsd &&
+	tmux_versions &&
+	bash_versions &&
+	rsync_versions &&
+	misc
 }

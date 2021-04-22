@@ -66,9 +66,6 @@ echo '### --header regexp --round-robin'
 echo '### --header num --round-robin'
   (echo %head1; echo %head2; seq 5) | $NICEPAR -kj2 --pipe -N2 --round --header 2  echo JOB{#}\;wc | sort
 
-echo '### shebang-wrap'
-  $NICEPAR -k {} {} A B C ::: ./input-files/shebang/shebangwrap.*[^~]
-
 echo 'bug #43967: Error if there exists a bin/zsh or bin/bash dir (with zsh or bash).'
   mkdir -p /tmp/bash$$/bash; PATH=/tmp/bash$$:$PATH parallel echo ::: OK; rm -rf /tmp/bash$$
 
