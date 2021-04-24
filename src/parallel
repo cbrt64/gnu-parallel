@@ -2187,7 +2187,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210422;
+    $Global::version = 20210423;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5094,8 +5094,8 @@ sub error(@) {
 sub die_bug($) {
     my $bugid = shift;
     print STDERR
-	("$Global::progname: This should not happen. You have found a bug.\n",
-	 "Please contact <parallel\@gnu.org> and follow\n",
+	("$Global::progname: This should not happen. You have found a bug. ",
+	 "Please follow\n",
 	 "https://www.gnu.org/software/parallel/man.html#REPORTING-BUGS\n",
 	 "\n",
 	 "Include this in the report:\n",

@@ -473,4 +473,4 @@ par_keeporder_roundrobin() {
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |
     #    parallel --delay 0.3 --timeout 1000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
-    parallel --delay 0.3 --timeout 1000% -j1 --lb --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'
+    parallel --delay 0.3 --timeout 1000% -j6 --lb --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1'

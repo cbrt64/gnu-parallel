@@ -6,7 +6,8 @@
 
 TMP=/run/shm/parallel_$$
 
-rsync -Ha --delete input-files/testdir/ $TMP/
+#rsync -Ha --delete input-files/testdir/ $TMP/
+mkdir -p $TMP
 cd $TMP/
 
 echo echo test of cat pipe sh | parallel -j 50 2>&1
