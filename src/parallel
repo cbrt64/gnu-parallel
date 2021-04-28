@@ -9520,6 +9520,7 @@ sub filter($) {
 		      replace_placeholders(\@opt::filter,0,0)) {
 	    $run &&= eval $eval;
 	}
+	$self->{'commandline'}{'skip'} ||= not $run;
     }
     return $run;
 }
@@ -13767,3 +13768,4 @@ sub main() {
 }
 
 main();
+
