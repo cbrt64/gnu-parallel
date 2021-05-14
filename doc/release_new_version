@@ -241,9 +241,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210422 ('Ever Given') released <<[stable]>>
+Subject: GNU Parallel 20210522 ('Palestine/Lag Ba'Omer celebrations at Mt. Meron Israel/Michael Collins <<>>') released <<[stable]>>
 
-GNU Parallel 20210322 ('Ever Given') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20210522 ('<<>>') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -253,9 +253,7 @@ It does not have to be as detailed as Juan's. It is perfectly fine if you just s
 
 Quote of the month:
 
-  GNU Parallel is your friend.
-  Can shorten that time by X cores.
-    -- iRODS @irods@twitter
+  <<>>
   
 New in this release:
 
@@ -263,19 +261,17 @@ New in this release:
 
 News about GNU Parallel:
 
-* Bioinformatics tutorials - linux and shell advanced - parallel https://www.youtube.com/watch?v=5leL8pyl0XA
+* Batch Calculate and Verify MD5 Checksum With GNU Parallel https://omicx.cc/posts/2021-04-28-calculate-and-verify-md5-checksum-with-gnu-parallel/
 
-* GNU Parallel for quick gains https://edbennett.github.io/high-performance-python/04-gnu-parallel/index.html
+* HerrComp Gnu parallel, c++11 threads 2021 04 28 https://www.youtube.com/watch?v=wDd9F9nn0qA
 
-* Processing Linux Commands in Parallel https://www.baeldung.com/linux/processing-commands-in-parallel
+news??https://ulhpc-tutorials.readthedocs.io/en/latest/sequential/gnu-parallel/
+news?https://edbennett.github.io/high-performance-python/04-gnu-parallel/index.html
+https://www.maryamdaryalal.com/post/job-parallelization-on-niagara
+https://omicx.cc/posts/2021-04-28-calculate-and-verify-md5-checksum-with-gnu-parallel/
+https://madflex.de/use-parallel-to-split-by-line/
 
-* GNU parallel https://docs-research-it.berkeley.edu/services/high-performance-computing/user-guide/running-your-jobs/gnu-parallel/
-
-* GNU Parallel 활용 가이드https://genoglobe.com/kribb/gnu_parallel
-
-* Parallel Grep and Awk  https://www.highonscience.com/blog/2021/03/21/parallel-grep/
-
-* Getting things done with shell scripting https://doma.dev/blog/get-things-done-with-bash/
+<<>>
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

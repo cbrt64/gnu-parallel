@@ -2242,12 +2242,18 @@ sub init_globals() {
 	 '{:(\d+?)}' => 'substr($_,0,$$1) = ""',
 	 # Bash ${a:2:3}
 	 '{:(\d+?):(\d+?)}' => '$_ = substr($_,$$1,$$2);',
+	 # echo {#z.*z.} ::: z.z.z.foo => z.foo
+	 # echo {##z.*z.} ::: z.z.z.foo => foo
 	 # Bash ${a#bc}
-	 '{#([^#}][^}]*?)}' => 's/^$$1//;',
+	 '{#([^#}][^}]*?)}' =>
+ 	 '$nongreedy=::make_regexp_ungreedy($$1);s/^$nongreedy(.*)/$1/;',
 	 # Bash ${a##bc}
 	 '{##([^#}][^}]*?)}' => 's/^$$1//;',
+	 # echo {%.z.*z} ::: foo.z.z.z => foo.z
+	 # echo {%%.z.*z} ::: foo.z.z.z => foo
 	 # Bash ${a%def}
-	 '{%([^}]+?)}' => 's/$$1$//;',
+	 '{%([^}]+?)}' =>
+	 '$nongreedy=::make_regexp_ungreedy($$1);s/(.*)$nongreedy$/$1/;',
 	 # Bash ${a%%def}
 	 '{%%([^}]+?)}' => 's/$$1$//;',
 	 # Bash ${a/def/ghi} ${a/def/}
@@ -5931,6 +5937,37 @@ sub usleep($) {
     select(undef, undef, undef, $ms/1000);
 }
 
+sub make_regexp_ungreedy {
+    my $regexp = shift;
+    
+    my $class_state = 0;
+    my $escape_state = 0;
+    my $found = 0;
+    my $ungreedy = "";
+    my $c;
+
+    for $c (split (//, $regexp)) {
+        if ($found) {
+	    if($c ne "?") { $ungreedy .= "?"; }
+            $found = 0;
+        }
+        $ungreedy .= $c;
+
+	if ($escape_state) { $escape_state = 0; next; }
+	if ($c eq "\\") { $escape_state = 1; next; }
+	if ($c eq '[') { $class_state  = 1; next; }
+        if ($class_state) {
+	    if($c eq ']') { $class_state = 0; }
+            next;
+        }
+	# Quantifiers: + * {...}
+        if ($c =~ /[*}+]/) { $found = 1; }
+    }
+    if($found) { $ungreedy .= '?'; }
+    return $ungreedy;
+}
+
+
 sub __KILLER_REAPER__() {}
 
 sub reap_usleep() {
@@ -6481,16 +6518,15 @@ sub limit($) {
 	         limit=$1;
                  io_file=$2;
 	         # Do the measurement in the background
-	         (tmp=$(tempfile);
+	         ((tmp=$(tempfile);
 	         LANG=C iostat -x 1 2 > $tmp;
-	         mv $tmp $io_file) &
+	         mv $tmp $io_file) </dev/null >/dev/null & );
 	         perl -e '-e $ARGV[0] or exit(1);
                    for(reverse <>) {
                      /Device/ and last;
                      /(\S+)$/ and $max = $max > $1 ? $max : $1; }
-                   exit ($max < '$limit')' $io_file;
+                   exit ('$limit' < $max)' $io_file;
 	     };
-             export -f io;
              io %s %s
              !,
 	     "mem" => q!
@@ -6533,6 +6569,7 @@ sub limit($) {
     local %ENV = %env;
     $ENV{'SSHLOGIN'} = $self->string();
     system($Global::shell,"-c",$self->{'limitscript'});
+    #::qqx($self->{'limitscript'});
     ::debug("limit","limit `".$self->{'limitscript'}."` result ".($?>>8)."\n");
     return $?>>8;
 }

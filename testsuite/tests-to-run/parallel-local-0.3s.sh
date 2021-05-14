@@ -16,6 +16,21 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_pct() {
+    echo '### Test {%...} {%%...} {#...} {##...}'
+    a=z.z.z.foo
+    echo ${a#z*z.}
+    parallel --plus echo {#z.*z.} ::: z.z.z.foo
+    echo ${a##z*z.}
+    parallel --plus echo {##z.*z.} ::: z.z.z.foo
+
+    a=foo.z.z.z
+    echo ${a%.z.z}
+    parallel --plus echo {%.z.z} ::: foo.z.z.z
+    echo ${a%%.z*z}
+    parallel --plus echo {%%.z.*z} ::: foo.z.z.z
+}
+
 par_env_parallel_pipefail() {
     cat <<'EOF' | bash
     echo "### test env_parallel with pipefail + inherit_errexit"

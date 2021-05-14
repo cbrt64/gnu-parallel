@@ -555,6 +555,15 @@ par_parcat_args_stdin	OK2
 par_parcat_rm	bug #51691: parcat --rm remove fifo when opened
 par_parcat_rm	OK1
 par_parcat_rm	OK file removed
+par_pct	### Test {%...} {%%...} {#...} {##...}
+par_pct	z.foo
+par_pct	z.foo
+par_pct	foo
+par_pct	foo
+par_pct	foo.z
+par_pct	foo.z
+par_pct	foo
+par_pct	foo
 par_perlexpr_with_newline	Perl expression spanning 2 lines
 par_pipe_N1_regexp	bug #55131: --regexp --recstart hangs
 par_pipe_N1_regexp	These should give the same

@@ -1662,9 +1662,11 @@ inspired by bash's parameter expansion:
   {:-str}       str if the value is empty
   {:num}        remove the first num characters
   {:num1:num2}  characters from num1 to num2
-  {#str}        remove prefix str
-  {%str}        remove postfix str
-  {/str1/str2}  replace str1 with str2
+  {#regexp}     remove prefix regexp (non-greedy)
+  {##regexp}    remove prefix regexp (greedy)
+  {%regexp}     remove postfix regexp (non-greedy)
+  {%%regexp}    remove postfix regexp (greedy)
+  {/regexp/str} replace regexp with str
   {^str}        uppercase str if found at the start
   {^^str}       uppercase str
   {,str}        lowercase str if found at the start
@@ -4282,6 +4284,38 @@ If not all hosts are accessible through TOR:
     echo ::: a b c
 
 See more B<ssh> tricks on https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts
+
+
+=head2 EXAMPLE: Use outrun instead of ssh
+
+B<outrun> lets you run a command on a remote server. B<outrun> sets up
+a connection to access files at the source server, and automatically
+transfers files. B<outrun> must be installed on the remote system.
+
+You can use B<outrun> in an sshlogin this way:
+
+  parallel -S 'outrun user@server eval' command
+
+
+=head2 EXAMPLE: Slurm cluster
+
+The Slurm Workload Manager is used in many clusters.
+
+Here is a simple example of using GNU B<parallel> to call B<srun>:
+
+  #!/bin/bash
+  
+  #SBATCH --time 00:02:00
+  #SBATCH --ntasks=4
+  #SBATCH --job-name GnuParallelDemo
+  #SBATCH --output gnuparallel.out
+  
+  module purge
+  module load gnu_parallel
+  
+  my_parallel="parallel --delay .2 -j $SLURM_NTASKS"
+  my_srun="srun --export=all --exclusive -n1 --cpus-per-task=1 --cpu-bind=cores"
+  $my_parallel "$my_srun" echo This is job {} ::: {1..20}
 
 
 =head2 EXAMPLE: Parallelizing rsync
