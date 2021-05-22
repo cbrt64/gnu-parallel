@@ -351,9 +351,9 @@ par_disk_full() {
 	sudo umount -l smalldisk.img
 	dd if=/dev/zero of=smalldisk.img bs=100k count=1k
 	yes|mkfs smalldisk.img
-	sudo mkdir -p /mnt/ram
-	sudo mount smalldisk.img /mnt/ram
-	sudo chmod 777 /mnt/ram
+	sudo mkdir -p $SMALLDISK
+	sudo mount smalldisk.img $SMALLDISK
+	sudo chmod 777 $SMALLDISK
     ) >/dev/null 2>/dev/null
 
     cat /dev/zero >$SMALLDISK/out

@@ -2187,7 +2187,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210423;
+    $Global::version = 20210522;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2246,7 +2246,7 @@ sub init_globals() {
 	 # echo {##z.*z.} ::: z.z.z.foo => foo
 	 # Bash ${a#bc}
 	 '{#([^#}][^}]*?)}' =>
- 	 '$nongreedy=::make_regexp_ungreedy($$1);s/^$nongreedy(.*)/$1/;',
+	 '$nongreedy=::make_regexp_ungreedy($$1);s/^$nongreedy(.*)/$1/;',
 	 # Bash ${a##bc}
 	 '{##([^#}][^}]*?)}' => 's/^$$1//;',
 	 # echo {%.z.*z} ::: foo.z.z.z => foo.z
@@ -4992,8 +4992,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2021, April 22). GNU Parallel 20210422 ('Ever Given').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.4710607",
+         "  Tange, O. (2021, May 22). GNU Parallel 20210522 ('Gaza').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.4781603",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -5023,8 +5023,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2021, April 22). GNU Parallel 20210422 ('Ever Given').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.4710607",
+	     "  Tange, O. (2021, May 22). GNU Parallel 20210522 ('Gaza').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.4781603",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5147,20 +5147,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2021_4710607,",
+	"\@software{tange_2021_4781603,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20210422 ('Ever Given')},",
-	"      month        = Apr,",
+	"      title        = {GNU Parallel 20210522 ('Gaza')},",
+	"      month        = May,",
 	"      year         = 2021,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.4710607},",
-	"      url          = {https://doi.org/10.5281/zenodo.4710607}",
+	"      doi          = {10.5281/zenodo.4781603},",
+	"      url          = {https://doi.org/10.5281/zenodo.4781603}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2021_4710607})",
+	"(Feel free to use \\nocite{tange_2021_4781603})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and

@@ -33,7 +33,9 @@ cat >/tmp/parallel-script-for-script <<EOF
 echo 3 | parallel --tty -k -P 1 -n 1 -a /tmp/files cat -
 EOF
 chmod 755 /tmp/parallel-script-for-script
-echo via pseudotty | script -q -f -c /tmp/parallel-script-for-script /dev/null
+echo via pseudotty |
+    script -q -f -c /tmp/parallel-script-for-script /dev/null |
+    perl -ne '/tange|  .*/ or print'
 sleep 1
 
 echo 'xargs Expect: 1 3'
@@ -44,7 +46,9 @@ cat >/tmp/parallel-script-for-script2 <<EOF
 echo 3 | parallel --tty -k -I {} -P 1 -n 1 -a /tmp/files cat {} -
 EOF
 chmod 755 /tmp/parallel-script-for-script2
-echo via pseudotty | script -q -f -c /tmp/parallel-script-for-script2 /dev/null
+echo via pseudotty |
+    script -q -f -c /tmp/parallel-script-for-script2 /dev/null |
+    perl -ne '/tange|  .*/ or print'
 sleep 1
 
 echo '### Test stdin goes to first command only ("cat" as argument)'

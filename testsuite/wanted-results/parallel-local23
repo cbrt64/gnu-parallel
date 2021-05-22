@@ -10,21 +10,7 @@ c^@
 ^@a
 ^@b
 ^@c
-echo '### Test filenames containing UTF-8';   cd tmp;   find . -name '*.jpg' | $NICEPAR -j +0 convert -geometry 120 {} {//}/thumb_{/};   find |grep -v CVS | sort; echo '### bug #39554: Feature request: line buffered output';   parallel -j0 --linebuffer 'echo -n start {};sleep 0.{#};echo middle -n {};sleep 1.{#}5;echo next to last {};sleep 1.{#};echo -n last {}' ::: A B C
-### Test filenames containing UTF-8
-.
-./1-col.txt
-./2-col.txt
-./a
-./a/bar
-./a/foo
-./a/foo2
-./b
-./b/bar
-./b/foo
-./中国 (Zhōngguó)
-./中国 (Zhōngguó)/China's (中国) road.jpg
-./中国 (Zhōngguó)/thumb_China's (中国) road.jpg
+echo '### bug #39554: Feature request: line buffered output';   parallel -j0 --linebuffer 'echo -n start {};sleep 0.{#};echo middle -n {};sleep 1.{#}5;echo next to last {};sleep 1.{#};echo -n last {}' ::: A B C
 ### bug #39554: Feature request: line buffered output
 start Amiddle -n A
 start Bmiddle -n B

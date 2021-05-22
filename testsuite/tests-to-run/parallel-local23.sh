@@ -19,11 +19,6 @@ echo '### Test \0 as recend';
   printf "a\0b\0c\0" | $NICEPAR --recend   '\0' -k -N1 --pipe cat -v  \; echo; 
   printf "\0a\0b\0c" | $NICEPAR --recstart '\0' -k -N1 --pipe cat -v  \; echo
 
-echo '### Test filenames containing UTF-8'; 
-  cd tmp; 
-  find . -name '*.jpg' | $NICEPAR -j +0 convert -geometry 120 {} {//}/thumb_{/}; 
-  find |grep -v CVS | sort; 
-
 echo '### bug #39554: Feature request: line buffered output'; 
   parallel -j0 --linebuffer 'echo -n start {};sleep 0.{#};echo middle -n {};sleep 1.{#}5;echo next to last {};sleep 1.{#};echo -n last {}' ::: A B C
 echo

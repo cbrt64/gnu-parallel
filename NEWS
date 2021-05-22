@@ -1,3 +1,32 @@
+20210522
+
+New in this release:
+
+* --plus includes {%%regexp} and {##regexp}.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Batch Calculate and Verify MD5 Checksum With GNU Parallel
+  https://omicx.cc/posts/2021-04-28-calculate-and-verify-md5-checksum-with-gnu-parallel/
+
+* HerrComp Gnu parallel, c++11 threads 2021 04 28
+  https://www.youtube.com/watch?v=wDd9F9nn0qA
+
+* Distributing embarrassingly parallel tasks GNU Parallel
+  https://ulhpc-tutorials.readthedocs.io/en/latest/sequential/gnu-parallel/
+
+* Job Parallelization on Niagara
+  https://www.maryamdaryalal.com/post/job-parallelization-on-niagara
+
+* Use Parallel to split by line
+  https://madflex.de/use-parallel-to-split-by-line/
+
+* m1 multi-core batch convert with gpu parallel + ffmpeg
+  https://www.youtube.com/watch?v=hAuc0YsXv6A
+
+
 20210422
 
 New in this release:

@@ -4,7 +4,6 @@
  
 Quote of the month:
 
-
   Parallel is amazing!
     -- fatboy93@reddit
 
@@ -15,10 +14,6 @@ Quote of the month:
   I'm glad I don't have to implement multi-threaded Python scripts on the regular.
     -- Fredrick Brennan @fr_brennan@twitter
 
-  If you work with lots of files at once
-  Take a good look at GNU parallel
-  Change your life for the better
-    -- French @notareverser@twitter
 
   @GnuParallel the best thing ever and it's not up for debate #EOchat
     -- Nathan Thomas @DrNASApants@twitter
@@ -125,6 +120,11 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  If you work with lots of files at once
+  Take a good look at GNU parallel
+  Change your life for the better
+    -- French @notareverser@twitter
 
   GNU Parallel is your friend.
   Can shorten that time by X cores.
