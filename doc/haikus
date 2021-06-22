@@ -10,10 +10,6 @@ Quote of the month:
   parallel is my new kink
     -- python_noob_001@reddit
 
-  GNU Parallel makes my life so much easier.
-  I'm glad I don't have to implement multi-threaded Python scripts on the regular.
-    -- Fredrick Brennan @fr_brennan@twitter
-
 
   @GnuParallel the best thing ever and it's not up for debate #EOchat
     -- Nathan Thomas @DrNASApants@twitter
@@ -120,6 +116,10 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  GNU Parallel makes my life so much easier.
+  I'm glad I don't have to implement multi-threaded Python scripts on the regular.
+     -- Fredrick Brennan @fr_brennan@twitter
 
   If you work with lots of files at once
   Take a good look at GNU parallel

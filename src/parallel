@@ -2187,7 +2187,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210522;
+    $Global::version = 20210622;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4812,6 +4812,8 @@ sub reaper() {
 	$job->set_exitstatus($? >> 8);
 	$job->set_exitsignal($? & 127);
     }
+
+    debug("run", "\nseq ",$job->seq()," died (", $job->exitstatus(), ")");
     if($Global::delayauto or $Global::sshdelayauto) {
 	if($job->exitstatus()) {
 	    # Job failed: Increase delay (if $opt::(ssh)delay set)
@@ -4822,9 +4824,8 @@ sub reaper() {
 	    $opt::delay &&= $opt::delay * 0.9;
 	    $opt::sshdelay &&= $opt::sshdelay * 0.9;
 	}
+	debug("run", "delay:$opt::delay ssh:$opt::sshdelay ");
     }
-
-    debug("run", "seq ",$job->seq()," died (", $job->exitstatus(), ")");
     $job->set_endtime(::now());
     my $sshlogin = $job->sshlogin();
     $sshlogin->dec_jobs_running();
@@ -4992,8 +4993,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2021, May 22). GNU Parallel 20210522 ('Gaza').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.4781603",
+         "  Tange, O. (2021, June 22). GNU Parallel 20210622 ('Protasevich').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.5013933",
 	 "",
 	 # Before changing this line,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -5023,8 +5024,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2021, May 22). GNU Parallel 20210522 ('Gaza').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.4781603",
+	     "  Tange, O. (2021, June 22). GNU Parallel 20210622 ('Protasevich').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.5013933",
 	     "",
 	     # Before changing this line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5147,20 +5148,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2021_4781603,",
+	"\@software{tange_2021_5013933,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20210522 ('Gaza')},",
-	"      month        = May,",
+	"      title        = {GNU Parallel 20210622 ('Protasevich')},",
+	"      month        = Jun,",
 	"      year         = 2021,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.4781603},",
-	"      url          = {https://doi.org/10.5281/zenodo.4781603}",
+	"      doi          = {10.5281/zenodo.5013933},",
+	"      url          = {https://doi.org/10.5281/zenodo.5013933}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2021_4781603})",
+	"(Feel free to use \\nocite{tange_2021_5013933})",
 	"",
 	# Before changing this line, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -6023,8 +6024,12 @@ sub reap_usleep() {
 	    $SIG{CHLD} = sub { kill "ALRM", $$ };
 	    if($opt::delay) {
 		# The 0.004s is approximately the time it takes for one round
-		usleep(1000*($Global::newest_starttime +
-			     $opt::delay - 0.004 - ::now()));
+		my $next_earliest_start =
+		    $Global::newest_starttime +	$opt::delay - 0.004;
+		my $remaining_ms = 1000 * ($next_earliest_start - ::now());
+		# The next job can only start at $next_earliest_start
+		# so sleep until then (but sleep at least $ms)
+		usleep(::max($ms,$remaining_ms));
 	    } else {
 		usleep($ms);
 	    }

@@ -1,3 +1,27 @@
+20210622
+
+New in this release:
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* How to use GNU Parallel
+  https://techtipbits.com/linux/how-to-use-gnu-parallel/
+
+* How to Speed Up Bash Scripts with Multithreading and GNU Parallel
+  https://adamtheautomator.com/how-to-speed-up-bash-scripts-with-multithreading-and-gnu-parallel/
+
+* Use Parallel to split by line
+  https://madflex.de/use-parallel-to-split-by-line/
+
+* Optimizing long batch processes or ETL by using buff/cache properly
+  II (parallelizing network operations)
+  http://www.elsotanillo.net/2021/06/optimizing-long-batch-processes-or-etl-by-using-buff-cache-properly-ii-parallelizing-network-operations/
+
+* Parallelization 3: GNU Parallel https://www.youtube.com/watch?v=Rl06WD60afA
+
+
 20210522
 
 New in this release:

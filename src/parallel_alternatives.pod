@@ -3162,9 +3162,17 @@ of ~0.05 ms/job compared to GNU B<parallel>'s ~3 ms/job). So if your
 jobs are extremely short lived, and you can live with the quite
 limited command, this may be useful.
 
-B<parallel-bash> will not start the first job, until it has read all
-input. The input can at most be 20935 lines and the lines cannot be
-all be empty.
+It works by making a queue for each process. Then the jobs are
+distributed to the queues in a round robin fashion. Finally the queues
+are started in parallel. This works fine, if you are lucky, but if
+not, all the long jobs may end up in the same queue, so you may see:
+
+  $ printf "%b\n" 1 1 1 4 1 1 1 4 1 1 1 4 |
+      time parallel -P4 sleep {}
+  (7 seconds)
+  $ printf "%b\n" 1 1 1 4 1 1 1 4 1 1 1 4 |
+      time ./parallel-bash.bash -p 4 -c sleep {}
+  (12 seconds)
 
 Ctrl-C does not stop spawning new jobs. Ctrl-Z does not suspend
 running jobs.
@@ -3189,7 +3197,7 @@ running jobs.
   4$ something | parallel -j 5 echo {} {}
 
 https://reposhub.com/python/command-line-tools/Akianonymus-parallel-bash.html
-(Last checked: 2021-02)
+(Last checked: 2021-06)
 
 
 =head2 DIFFERENCES BETWEEN bash-concurrent AND GNU Parallel

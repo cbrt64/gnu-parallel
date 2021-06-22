@@ -1639,9 +1639,9 @@ Activate additional replacement strings: {+/} {+.} {+..} {+...} {..}
 B<{##}> is the total number of jobs to be run. It is incompatible with
 B<-X>/B<-m>/B<--xargs>.
 
-B<{0%}> zero-padded jobslot. (alpha testing)
+B<{0%}> zero-padded jobslot. (beta testing)
 
-B<{0#}> zero-padded sequence number. (alpha testing)
+B<{0#}> zero-padded sequence number. (beta testing)
 
 B<{choose_k}> is inspired by n choose k: Given a list of n elements,
 choose k. k is the number of input sources and n is the number of

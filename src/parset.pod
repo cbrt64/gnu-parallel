@@ -102,6 +102,18 @@ or Bash/Zsh/Ksh process substitution:
   echo "${res[1]}"
   echo "${res[99]}"
 
+Put output into an associative array (Bash only):
+
+  input=("value  A" "value  B")
+  parset res echo This is ::: "${input[@]}"
+  
+  # Zip the input and res arrays to a single associative array
+  declare -A myassoc
+  for ((i=0; $i<${#input[@]}; i++)); do
+    myassoc[${input[i]}]=${res[i]}
+  done
+  echo "${myassoc["value  A"]}"
+
 =head3 Installation
 
 Put this in the relevant B<$HOME/.bashrc> or B<$HOME/.zshenv> or B<$HOME/.kshrc>:

@@ -101,10 +101,53 @@ Thumbnail: https://www.gnu.org/software/parallel/logo-gray+black10000.png
 Tags: gnu parallel software
 
 
-file_path="parallel-20210422.tar.bz2"
-name="GNU Parallel $YYYYMMDD ('$SPCTAG')"
-title="$name"
-description="$description"
+file_path="parallel-20210622.tar.bz2"
+title="GNU Parallel $YYYYMMDD ('$SPCTAG') [stable]"
+name="GNU-Parallel-$YYYYMMDD-$SPCTAG"
+author="Ole Tange"
+license="GNU GPLv3 or later"
+thumbnail_url=https://www.gnu.org/software/parallel/logo-gray+black10000.png
+channel_name="@GnuParallel"
+tags_opt='--tag gnu --tag parallel --tag free --tag software'
+description="An easy way to support GNU Parallel is to tip on LBRY.
+
+GNU Parallel 20210622 ('Protasevich') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
+
+No new functionality was introduced so this is a good candidate for a stable release.
+
+Please help spreading GNU Parallel by making a testimonial video like Juan Sierra Pons: http://www.elsotanillo.net/wp-content/uploads/GnuParallel_JuanSierraPons.mp4
+
+It does not have to be as detailed as Juan's. It is perfectly fine if you just say your name, and what field you are using GNU Parallel for.
+
+Quote of the month:
+
+  GNU Parallel makes my life so much easier.
+  I'm glad I don't have to implement multi-threaded Python scripts on the regular.
+     -- Fredrick Brennan @fr_brennan@twitter
+  
+New in this release:
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* How to use GNU Parallel https://techtipbits.com/linux/how-to-use-gnu-parallel/
+
+* How to Speed Up Bash Scripts with Multithreading and GNU Parallel https://adamtheautomator.com/how-to-speed-up-bash-scripts-with-multithreading-and-gnu-parallel/
+
+* Use Parallel to split by line https://madflex.de/use-parallel-to-split-by-line/
+
+* Optimizing long batch processes or ETL by using buff/cache properly II (parallelizing network operations) http://www.elsotanillo.net/2021/06/optimizing-long-batch-processes-or-etl-by-using-buff-cache-properly-ii-parallelizing-network-operations/
+
+* Parallelization 3: GNU Parallel https://www.youtube.com/watch?v=Rl06WD60afA
+
+Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
+
+GNU Parallel - For people who live life in the parallel lane.
+
+If you like GNU Parallel record a video testimonial: Say who you are, what you use GNU Parallel for, how it helps you, and what you like most about it. Include a command that uses GNU Parallel if you feel like it.
+"
+
 
 lbrynet publish \
   --bid=0.01 \
@@ -117,9 +160,9 @@ lbrynet publish \
   $tags_opt \
   --license="$license" \
   --thumbnail_url="$thumbnail_url" \
-  --release_time="$release_time" \
   --channel_name="$channel_name" \
 
+  --release_time="$release_time" \
 
 == Update website ==
 
@@ -241,9 +284,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210522 ('Gaza/Lag Ba'Omer celebrations at Mt. Meron Israel/Michael Collins <<>>') released <<[stable]>>
+Subject: GNU Parallel 20210622 ('Protasevich') released <<[stable]>>
 
-GNU Parallel 20210522 ('<<>>') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20210622 ('Protasevich') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -253,22 +296,27 @@ It does not have to be as detailed as Juan's. It is perfectly fine if you just s
 
 Quote of the month:
 
+  GNU Parallel makes my life so much easier.
+  I'm glad I don't have to implement multi-threaded Python scripts on the regular.
+     -- Fredrick Brennan @fr_brennan@twitter
   <<>>
   
 New in this release:
-
-* --plus includes {%%regexp} and {##regexp}.
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* Batch Calculate and Verify MD5 Checksum With GNU Parallel https://omicx.cc/posts/2021-04-28-calculate-and-verify-md5-checksum-with-gnu-parallel/
-* HerrComp Gnu parallel, c++11 threads 2021 04 28 https://www.youtube.com/watch?v=wDd9F9nn0qA
-* Distributing embarrassingly parallel tasks GNU Parallel https://ulhpc-tutorials.readthedocs.io/en/latest/sequential/gnu-parallel/
-* Job Parallelization on Niagara https://www.maryamdaryalal.com/post/job-parallelization-on-niagara
+* How to use GNU Parallel https://techtipbits.com/linux/how-to-use-gnu-parallel/
+
+* How to Speed Up Bash Scripts with Multithreading and GNU Parallel https://adamtheautomator.com/how-to-speed-up-bash-scripts-with-multithreading-and-gnu-parallel/
+
 * Use Parallel to split by line https://madflex.de/use-parallel-to-split-by-line/
-* m1 multi-core batch convert with gpu parallel + ffmpeg https://www.youtube.com/watch?v=hAuc0YsXv6A
+
+* Optimizing long batch processes or ETL by using buff/cache properly II (parallelizing network operations) http://www.elsotanillo.net/2021/06/optimizing-long-batch-processes-or-etl-by-using-buff-cache-properly-ii-parallelizing-network-operations/
+
+* Parallelization 3: GNU Parallel https://www.youtube.com/watch?v=Rl06WD60afA
+
 
 <<>>
 

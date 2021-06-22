@@ -362,7 +362,7 @@ _parset_main() {
 	return 255
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
-	echo "parset 20210522 (GNU parallel `parallel --minversion 1`)"
+	echo "parset 20210622 (GNU parallel `parallel --minversion 1`)"
 	echo "Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
 	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
@@ -394,11 +394,11 @@ _parset_main() {
     if perl -e 'exit not grep /,| /, @ARGV' "$_parset_NAME" ; then
 	# $_parset_NAME contains , or space
 	# Split on , or space to get the names
+	# Compute results into files
+	# var1=`cat tmpfile1; rm tmpfile1`
+	# var2=`cat tmpfile2; rm tmpfile2`
 	eval "$(
-	    # Compute results into files
 	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
-		# var1=`cat tmpfile1; rm tmpfile1`
-		# var2=`cat tmpfile2; rm tmpfile2`
 		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
 		    echo "$_parset_NAME" | perl -pe 's/,/ /g'
 			 )
@@ -409,8 +409,8 @@ _parset_main() {
 	# => $_parset_NAME is the name of the array to put data into
 	# Supported in: bash zsh ksh mksh
 	# Arrays do not work in: sh ash dash
+	# Compute results into files. Save exit value
 	eval "$_parset_NAME=( $(
-	    # Compute results into files. Save exit value
 	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
                 perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "'
             ) )"
