@@ -102,6 +102,16 @@ par_dummy() {
     #   --files0-from=$files0
 }
 
+par_tmpdir() {
+    export TMPDIR="/tmp/parsort  dir"
+    rm -rf "$TMPDIR"
+    echo Fail: no such dir | parsort
+    mkdir "$TMPDIR"
+    echo OK | parsort
+    chmod -w "$TMPDIR"
+    echo Fail: writeable | parsort
+}
+
 setup
 
 export -f $(compgen -A function | grep par_)
