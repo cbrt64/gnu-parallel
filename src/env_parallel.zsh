@@ -208,7 +208,7 @@ env_parallel() {
 	(_names_of_ALIASES;
 	 _names_of_FUNCTIONS;
 	 _names_of_VARIABLES) |
-	    cat > $HOME/.parallel/ignored_vars
+	    cat > "$HOME"/.parallel/ignored_vars
 	return 0
     fi
 
@@ -340,13 +340,6 @@ _parset_main() {
     #   parset "var_a4 var_b4 var_c4" echo ::: {1..3}
     #   echo $var_c4
 
-    _make_TEMP() {
-	# mktemp does not exist on some OS
-	perl -e 'use File::Temp qw(tempfile);
-                 $ENV{"TMPDIR"} ||= "/tmp";
-                 print((tempfile(DIR=>$ENV{"TMPDIR"}, TEMPLATE => "parXXXXX"))[1])'
-    }
-
     _parset_NAME="$1"
     if [ "$_parset_NAME" = "" ] ; then
 	echo parset: Error: No destination variable given. >&2
@@ -362,7 +355,7 @@ _parset_main() {
 	return 255
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
-	echo "parset 20210622 (GNU parallel `parallel --minversion 1`)"
+	echo "parset 20210623 (GNU parallel `parallel --minversion 1`)"
 	echo "Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
 	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"
@@ -377,45 +370,18 @@ _parset_main() {
 	return 255
     fi
     shift
-    echo "$_parset_NAME" |
-	perl -ne 'chomp;for (split /[, ]/) {
-            # Allow: var_32 var[3]
-	    if(not /^[a-zA-Z_][a-zA-Z_0-9]*(\[\d+\])?$/) {
-                print STDERR "parset: Error: $_ is an invalid variable name.\n";
-                print STDERR "parset: Error: Variable names must be letter followed by letters or digits.\n";
-		print STDERR "parset: Error: Usage:\n";
-		print STDERR "parset: Error:   parset varname GNU Parallel options and command\n";
-                $exitval = 255;
-            }
-        }
-        exit $exitval;
-        ' || return 255
-    _exit_FILE=`_make_TEMP`
-    if perl -e 'exit not grep /,| /, @ARGV' "$_parset_NAME" ; then
-	# $_parset_NAME contains , or space
-	# Split on , or space to get the names
-	# Compute results into files
-	# var1=`cat tmpfile1; rm tmpfile1`
-	# var2=`cat tmpfile2; rm tmpfile2`
-	eval "$(
-	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
-		parallel -q echo {2}='`cat {1}; rm {1}`' :::: - :::+ $(
-		    echo "$_parset_NAME" | perl -pe 's/,/ /g'
-			 )
-	    );
-	"
+
+    # Bash: declare -A myassoc=( )
+    # Zsh: typeset -A myassoc=( )
+    # Ksh: typeset -A myassoc=( )
+    if (typeset -p "$_parset_NAME" 2>/dev/null; echo) |
+	    perl -ne 'exit not (/^declare[^=]+-A|^typeset[^=]+-A/)' ; then
+	# This is an associative array
+	eval "`$_parset_PARALLEL_PRG -k --parset assoc,"$_parset_NAME" "$@"`"
+	# The eval returns the function!
     else
-	# $_parset_NAME does not contain , or space
-	# => $_parset_NAME is the name of the array to put data into
-	# Supported in: bash zsh ksh mksh
-	# Arrays do not work in: sh ash dash
-	# Compute results into files. Save exit value
-	eval "$_parset_NAME=( $(
-	    ($_parset_PARALLEL_PRG --files -k "$@"; echo $? > "$_exit_FILE") |
-                perl -pe 'chop;$_="\"\`cat $_; rm $_\`\" "'
-            ) )"
+	# This is a normal array or a list of variable names
+	eval "`$_parset_PARALLEL_PRG -k --parset var,"$_parset_NAME" "$@"`"
+	# The eval returns the function!
     fi
-    unset _parset_NAME _parset_PARALLEL_PRG _parallel_exit_CODE
-    # Unset _exit_FILE before return
-    eval "unset _exit_FILE; return \`cat $_exit_FILE; rm $_exit_FILE\`"
 }

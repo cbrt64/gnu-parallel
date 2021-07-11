@@ -887,6 +887,7 @@ par_empty_command() {
     echo B: $b
 }
 
+
 par_empty_input_on_stdin() {
     echo 'https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=910470'
     echo 'This should give no output'

@@ -65,6 +65,12 @@ Put output into vars B<$seq, $pwd, $ls>:
   parset "${into_vars[*]}" ::: "seq 10" pwd ls
   echo "$ls"
 
+Put output into associative array B<myassoc> (not supported for mksh):
+
+  typeset -A myassoc
+  parset myassoc seq ::: 4 5 ::: 6 7
+  echo "${myassoc[4 7]}"
+
 The commands to run can be an array:
 
   cmd=("echo first" "echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
@@ -102,17 +108,6 @@ or Bash/Zsh/Ksh process substitution:
   echo "${res[1]}"
   echo "${res[99]}"
 
-Put output into an associative array (Bash only):
-
-  input=("value  A" "value  B")
-  parset res echo This is ::: "${input[@]}"
-  
-  # Zip the input and res arrays to a single associative array
-  declare -A myassoc
-  for ((i=0; $i<${#input[@]}; i++)); do
-    myassoc[${input[i]}]=${res[i]}
-  done
-  echo "${myassoc["value  A"]}"
 
 =head3 Installation
 

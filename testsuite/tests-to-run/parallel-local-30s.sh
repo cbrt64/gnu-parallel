@@ -289,7 +289,7 @@ par_test_detected_shell() {
 	rm -f "$tmp"
 	cp $(which "$shell") "$tmp"
 	chmod +x "$tmp"
-	$tmp -c 'parallel -Dinit echo ::: 1; true' |
+	stdout $tmp -c 'parallel -Dinit echo ::: 1; true' |
 	    grep Global::shell
 	rm "$tmp"
     }
@@ -297,7 +297,7 @@ par_test_detected_shell() {
 
     test_known_shell_c() {
 	shell="$1"
-	$shell -c 'parallel -Dinit echo ::: 1; true' |
+	stdout $shell -c 'parallel -Dinit echo ::: 1; true' |
 	    grep Global::shell
     }
     export -f test_known_shell_c
@@ -305,7 +305,7 @@ par_test_detected_shell() {
     test_known_shell_pipe() {
 	shell="$1"
 	echo 'parallel -Dinit echo ::: 1; true' |
-	    $shell | grep Global::shell
+	    stdout $shell | grep Global::shell
     }
     export -f test_known_shell_pipe
 

@@ -1196,9 +1196,9 @@ par_ksh_man	work,
 par_ksh_man	too
 par_ksh_man	This may never work
 par_ksh_man	https://unix.stackexchange.com/questions/457031/extract-full-function-definitions
-par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
-par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
-par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `(' unexpected
+par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
+par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
+par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
 par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255

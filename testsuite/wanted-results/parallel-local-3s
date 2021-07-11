@@ -208,6 +208,69 @@ par_multiline_commands	echo finish 4
 par_multiline_commands	parallel: Warning: Command lines contain newline. Forcing --null.
 par_multiline_commands	4
 par_multiline_commands	finish 4
+par_parset_assoc_arr	bash@lo	parset into an assoc array
+par_parset_assoc_arr	bash@lo	val  1 val  2 val  3
+par_parset_assoc_arr	bash@lo	val  1 val  2 val  3
+par_parset_assoc_arr	bash@lo	val  1 val  2 val  3
+par_parset_assoc_arr	bash@lo	Bad var name
+par_parset_assoc_arr	bash@lo	parset: Error: -badname is an invalid variable name.
+par_parset_assoc_arr	bash@lo	parset: Error: Variable names must be letter followed by letters or digits.
+par_parset_assoc_arr	bash@lo	parset: Error: Usage:
+par_parset_assoc_arr	bash@lo	parset: Error:   parset varname GNU Parallel options and command
+par_parset_assoc_arr	bash@lo	Too few var names
+par_parset_assoc_arr	bash@lo	parset: Error: Too few named destination variables
+par_parset_assoc_arr	bash@lo	val  2
+par_parset_assoc_arr	bash@lo	Exit value
+par_parset_assoc_arr	bash@lo	2
+par_parset_assoc_arr	bash@lo	2
+par_parset_assoc_arr	bash@lo	2
+par_parset_assoc_arr	bash@lo	Stderr to stderr
+par_parset_assoc_arr	bash@lo	ls: cannot access 'no-such-file': No such file or directory
+par_parset_assoc_arr	bash@lo	ls: cannot access 'no-such-file': No such file or directory
+par_parset_assoc_arr	bash@lo	ls: cannot access 'no-such-file1': No such file or directory
+par_parset_assoc_arr	bash@lo	ls: cannot access 'no-such-file2': No such file or directory
+par_parset_assoc_arr	ksh@lo	parset into an assoc array
+par_parset_assoc_arr	ksh@lo	val  1 val  2 val  3
+par_parset_assoc_arr	ksh@lo	val  1 val  2 val  3
+par_parset_assoc_arr	ksh@lo	val  1 val  2 val  3
+par_parset_assoc_arr	ksh@lo	Bad var name
+par_parset_assoc_arr	ksh@lo	parset: Error: -badname is an invalid variable name.
+par_parset_assoc_arr	ksh@lo	parset: Error: Variable names must be letter followed by letters or digits.
+par_parset_assoc_arr	ksh@lo	parset: Error: Usage:
+par_parset_assoc_arr	ksh@lo	parset: Error:   parset varname GNU Parallel options and command
+par_parset_assoc_arr	ksh@lo	Too few var names
+par_parset_assoc_arr	ksh@lo	parset: Error: Too few named destination variables
+par_parset_assoc_arr	ksh@lo	val  2
+par_parset_assoc_arr	ksh@lo	Exit value
+par_parset_assoc_arr	ksh@lo	2
+par_parset_assoc_arr	ksh@lo	2
+par_parset_assoc_arr	ksh@lo	2
+par_parset_assoc_arr	ksh@lo	Stderr to stderr
+par_parset_assoc_arr	ksh@lo	ls: cannot access 'no-such-file': No such file or directory
+par_parset_assoc_arr	ksh@lo	ls: cannot access 'no-such-file': No such file or directory
+par_parset_assoc_arr	ksh@lo	ls: cannot access 'no-such-file1': No such file or directory
+par_parset_assoc_arr	ksh@lo	ls: cannot access 'no-such-file2': No such file or directory
+par_parset_assoc_arr	zsh@lo	parset into an assoc array
+par_parset_assoc_arr	zsh@lo	val  1 val  2 val  3
+par_parset_assoc_arr	zsh@lo	 val  1 val  2
+par_parset_assoc_arr	zsh@lo	val  1 val  2 val  3
+par_parset_assoc_arr	zsh@lo	Bad var name
+par_parset_assoc_arr	zsh@lo	parset: Error: -badname is an invalid variable name.
+par_parset_assoc_arr	zsh@lo	parset: Error: Variable names must be letter followed by letters or digits.
+par_parset_assoc_arr	zsh@lo	parset: Error: Usage:
+par_parset_assoc_arr	zsh@lo	parset: Error:   parset varname GNU Parallel options and command
+par_parset_assoc_arr	zsh@lo	Too few var names
+par_parset_assoc_arr	zsh@lo	parset: Error: Too few named destination variables
+par_parset_assoc_arr	zsh@lo	val  2
+par_parset_assoc_arr	zsh@lo	Exit value
+par_parset_assoc_arr	zsh@lo	2
+par_parset_assoc_arr	zsh@lo	2
+par_parset_assoc_arr	zsh@lo	2
+par_parset_assoc_arr	zsh@lo	Stderr to stderr
+par_parset_assoc_arr	zsh@lo	ls: cannot access 'no-such-file': No such file or directory
+par_parset_assoc_arr	zsh@lo	ls: cannot access 'no-such-file': No such file or directory
+par_parset_assoc_arr	zsh@lo	ls: cannot access 'no-such-file1': No such file or directory
+par_parset_assoc_arr	zsh@lo	ls: cannot access 'no-such-file2': No such file or directory
 par_pipe_regexp	### --pipe --regexp
 par_pipe_regexp	Record
 par_pipe_regexp	A2, Start, 5

@@ -8,6 +8,38 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_parset_assoc_arr() {
+    mytest=$(cat <<'EOF'
+    mytest() {
+	shell=`basename $SHELL`
+	echo 'parset into an assoc array'
+	. `which env_parallel.$shell`
+	parset "var1,var2 var3" echo ::: 'val  1' 'val  2' 'val  3'
+	echo "$var1 $var2 $var3"
+	parset array echo ::: 'val  1' 'val  2' 'val  3'
+	echo "${array[0]} ${array[1]} ${array[2]}"
+	typeset -A assoc
+	parset assoc echo ::: 'val  1' 'val  2' 'val  3'
+	echo "${assoc[val  1]} ${assoc[val  2]} ${assoc[val  3]}"
+	echo Bad var name
+	parset -badname echo ::: 'val  1' 'val  2' 'val  3'
+	echo Too few var names
+	parset v1,v2 echo ::: 'val  1' 'val  2' 'val  3'
+	echo "$v2"
+	echo Exit value
+	parset assoc exit ::: 1 0 0 1; echo $?
+	parset array exit ::: 1 0 0 1; echo $?
+	parset v1,v2,v3,v4 exit ::: 1 0 0 1; echo $?
+	echo Stderr to stderr
+	parset assoc ls ::: no-such-file
+	parset array ls ::: no-such-file
+	parset v1,v2 ls ::: no-such-file1 no-such-file2
+    }
+EOF
+	  )
+    parallel -k --tag --nonall -Sksh@lo,bash@lo,zsh@lo "$mytest;mytest 2>&1"
+}
+
 par_shebang() {
     echo '### Test different shebangs'
     gp() {

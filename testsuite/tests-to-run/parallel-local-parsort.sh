@@ -105,11 +105,14 @@ par_dummy() {
 par_tmpdir() {
     export TMPDIR="/tmp/parsort  dir"
     rm -rf "$TMPDIR"
+    echo Should fail
     echo Fail: no such dir | parsort
     mkdir "$TMPDIR"
     echo OK | parsort
     chmod -w "$TMPDIR"
+    echo Should fail
     echo Fail: writeable | parsort
+    rm -rf "$TMPDIR"
 }
 
 setup

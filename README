@@ -40,13 +40,13 @@ installation.
 
     $ (wget -O - pi.dk/3 || lynx -source pi.dk/3 || curl pi.dk/3/ || \
        fetch -o - http://pi.dk/3 ) > install.sh
-    $ sha1sum install.sh | grep c82233e7da3166308632ac8c34f850c0
-    12345678 c82233e7 da316630 8632ac8c 34f850c0
-    $ md5sum install.sh | grep ae3d7aac5e15cf3dfc87046cfc5918d2
-    ae3d7aac 5e15cf3d fc87046c fc5918d2
-    $ sha512sum install.sh | grep dfc00d823137271a6d96225cea9e89f533ff6c81f
-    9c5198d5 31a3b755 b7910ece 3a42d206 c804694d fc00d823 137271a6 d96225ce
-    a9e89f53 3ff6c81f f52b298b ef9fb613 2d3f9ccd 0e2c7bd3 c35978b5 79acb5ca
+    $ sha1sum install.sh | grep 883c667e01eed62f975ad28b6d50e22a
+    12345678 883c667e 01eed62f 975ad28b 6d50e22a
+    $ md5sum install.sh | grep cc21b4c943fd03e93ae1ae49e28573c0
+    cc21b4c9 43fd03e9 3ae1ae49 e28573c0
+    $ sha512sum install.sh | grep da012ec113b49a54e705f86d51e784ebced224fdf
+    79945d9d 250b42a4 2067bb00 99da012e c113b49a 54e705f8 6d51e784 ebced224
+    fdff3f52 ca588d64 e75f6033 61bd543f d631f592 2f87ceb2 ab034149 6df84a35
     $ bash install.sh
 
 This will literally install faster than reading the rest of this

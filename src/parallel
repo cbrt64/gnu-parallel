@@ -1672,6 +1672,7 @@ sub options_hash() {
 	 "hgrp|hostgrp|hostgroup|hostgroups" => \$opt::hostgroups,
 	 "embed" => \$opt::embed,
 	 "filter=s" => \@opt::filter,
+	 "parset=s" => \$opt::parset,
 	);
 }
 
@@ -1717,6 +1718,40 @@ sub get_options_from_array($@) {
     return $retval;
 }
 
+sub parse_parset() {
+    $Global::progname = "parset";
+    @Global::parset_vars = split /[ ,]/, $opt::parset;
+    my $var_or_assoc = shift @Global::parset_vars;
+    # Legal names: var _v2ar arrayentry[2]
+    my @illegal = (grep { not /^[a-zA-Z_][a-zA-Z_0-9]*(\[\d+\])?$/ }
+		   @Global::parset_vars);
+    if(@illegal) {
+	::error
+	    ("@illegal is an invalid variable name.",
+	     "Variable names must be letter followed by letters or digits.",
+	     "Usage:",
+	     "  parset varname GNU Parallel options and command");
+	wait_and_exit(255);
+    }
+    if($var_or_assoc eq "assoc") {
+	my $var = shift @Global::parset_vars;
+	print "$var=(";
+	$Global::parset = "assoc";
+	$Global::parset_endstring=")\n";
+    } elsif($var_or_assoc eq "var") {
+	if($#Global::parset_vars > 0) {
+	    $Global::parset = "var";
+	} else {
+	    my $var = shift @Global::parset_vars;
+	    print "$var=(";
+	    $Global::parset = "array";
+	    $Global::parset_endstring=")\n";
+	}
+    } else {
+	::die_bug("parset: unknown '$opt::parset'");
+    }
+}
+
 sub parse_options(@) {
     # Returns: N/A
     init_globals();
@@ -1744,6 +1779,7 @@ sub parse_options(@) {
     }
     ::debug("init","Global::shell $Global::shell\n");
     $Global::cshell = $Global::shell =~ m:(/[-a-z]*)?csh:;
+    if(defined $opt::parset) { parse_parset(); }
     if(defined $opt::X) { $Global::ContextReplace = 1; }
     if(defined $opt::silent) { $Global::verbose = 0; }
     if(defined $opt::null) { $/ = "\0"; }
@@ -2187,7 +2223,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210622;
+    $Global::version = 20210623;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -3859,7 +3895,8 @@ sub progress() {
 	my $arg = $Global::newest_job ?
 	    $Global::newest_job->{'commandline'}->
 	    replace_placeholders(["\257<\257>"],0,0) : "";
-	# These chars mess up display in the terminal
+	# These chars mess up display in the terminal in US-ASCII
+	# and in some combinations as UTF8 (e.g. ঐ ও ঔ ক 𐅪 𐅫 𐅬)
 	$arg =~ tr/[\011-\016\033\302-\365]//d;
 	my $eta_dhms = ::seconds_to_time_units($eta);
 	my $bar_text =
@@ -4949,6 +4986,10 @@ sub wait_and_exit($) {
     # Avoid: Warning: unable to close filehandle properly: No space
     #        left on device during global destruction.
     $SIG{__WARN__} = sub {};
+    if($opt::parset) {
+	# Make the shell script return $error
+	print "$Global::parset_endstring\nreturn $error";
+    }
     exit($error);
 }
 
@@ -5737,9 +5778,9 @@ sub which(@) {
 	    # ash bash csh dash fdsh fish fizsh ksh ksh93 mksh pdksh
 	    # posh rbash rc rush rzsh sash sh static-sh tcsh yash zsh
 
-	    my @shells = (qw(ash bash bsd-csh csh dash fdsh fish fizsh
-	    ksh ksh93 lksh mksh pdksh posh rbash rc rush rzsh sash sh
-	    static-sh tcsh yash zsh -sh -csh -bash),
+	    my @shells = (qw(ash bash bsd-csh csh dash fdsh fish fizsh ksh 
+			  ksh93 lksh mksh pdksh posh rbash rc rush rzsh sash sh
+			  static-sh tcsh yash zsh -sh -csh -bash),
 			  '-sh (sh)' # sh on FreeBSD
 		);
 	    # Can be formatted as:
@@ -6166,12 +6207,12 @@ sub debug(@) {
     $Global::debug or return;
     @_ = grep { defined $_ ? $_ : "" } @_;
     if($Global::debug eq "all" or $Global::debug eq $_[0]) {
-	if($Global::fd{1}) {
-	    # Original stdout was saved
-	    my $stdout = $Global::fd{1};
-	    print $stdout @_[1..$#_];
+	if($Global::fd{2}) {
+	    # Original stderr was saved
+	    my $stderr = $Global::fd{2};
+	    print $stderr @_[1..$#_];
 	} else {
-	    print @_[1..$#_];
+	    print STDERR @_[1..$#_];
 	}
     }
 }
@@ -10272,8 +10313,6 @@ sub print($) {
 	    $self->print_linebuffer($fdno,$in_fh,$out_fd);
 	} elsif($opt::files) {
 	    $self->print_files($fdno,$in_fh,$out_fd);
-	} elsif($opt::tag or defined $opt::tagstring) {
-	    $self->print_tag($fdno,$in_fh,$out_fd);
 	} else {
 	    $self->print_normal($fdno,$in_fh,$out_fd);
 	}
@@ -10624,10 +10663,6 @@ sub print_linebuffer($) {
     }
 }
 
-sub print_tag(@) {
-    return print_normal(@_);
-}
-
 sub free_ressources() {
     my $self = shift;
     if(not $opt::ungroup) {
@@ -10641,9 +10676,54 @@ sub free_ressources() {
     }
 }
 
+sub print_parset($) {
+    # Wrap output with shell script code to set as variables
+    my $self = shift;
+    my ($fdno,$in_fh,$out_fh) = @_;
+    my $outputlength = 0;
+
+    ::debug("parset","print $Global::parset");
+    if($Global::parset eq "assoc") {
+	#   eval "`echo 'declare -A myassoc; myassoc=(
+	# Each:
+	#   [$'a\tb']=$'a\tb\tc  ddd'
+	# End:
+	#   )'`"
+	print '[',::Q($self->{'commandline'}->
+		      replace_placeholders(["\257<\257>"],0,0)),']=';
+    } elsif($Global::parset eq "array") {
+	#   eval "`echo 'myassoc=(
+	# Each:
+	#   $'a\tb\tc  ddd'
+	# End:
+	#   )'`"
+    } elsif($Global::parset eq "var") {
+	#   var=$'a\tb\tc  ddd'
+	if(not @Global::parset_vars) {
+	    ::error("Too few named destination variables");
+	    ::wait_and_exit(255);
+	}
+	print shift @Global::parset_vars,"=";
+    }
+    local $/ = "\n";
+    my $tag = $self->tag();
+    my @out;
+    while(<$in_fh>) {
+	$outputlength += length $_;
+	# Tag lines with \r, too
+	$_ =~ s/(?<=[\r])(?=.|$)/$tag/gs;
+	push @out, $tag,$_;
+    }
+    # Remove last newline
+    # This often makes it easier to use the output in shell
+    @out and ${out[$#out]} =~ s/\n$//s;
+    print ::Q(join("",@out)),"\n";
+    return $outputlength;
+}
+
 sub print_normal($) {
     my $self = shift;
-    my ($fdno,$in_fh,$out_fd) = @_;
+    my ($fdno,$in_fh,$out_fh) = @_;
     my $buf;
     close $self->fh($fdno,"w");
     if($? and $opt::compress) {
@@ -10656,7 +10736,9 @@ sub print_normal($) {
 	my $outputlength = 0;
 	my @output;
 
-	if($opt::tag or $opt::tagstring) {
+	if($Global::parset and $fdno == 1) {
+	    $outputlength += $self->print_parset($fdno,$in_fh,$out_fh);
+	} elsif($opt::tag or $opt::tagstring) {
 	    # Read line by line
 	    local $/ = "\n";
 	    my $tag = $self->tag();
@@ -10664,14 +10746,15 @@ sub print_normal($) {
 		$outputlength += length $_;
 		# Tag lines with \r, too
 		$_ =~ s/(?<=[\r])(?=.|$)/$tag/gs;
-		print $out_fd $tag,$_;
+		print $out_fh $tag,$_;
 		if($Global::membuffer) {
 		    push @{$self->{'output'}{$fdno}}, $tag, $_;
 		}
 	    }
 	} else {
+	    # Most efficient way of copying data from $in_fh to $out_fh
 	    while(sysread($in_fh,$buf,131072)) {
-		print $out_fd $buf;
+		print $out_fh $buf;
 		$outputlength += length $buf;
 		if($Global::membuffer) {
 		    push @{$self->{'output'}{$fdno}}, $buf;

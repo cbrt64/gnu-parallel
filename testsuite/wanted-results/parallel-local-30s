@@ -1676,12 +1676,9 @@ par_test_detected_shell	test_unknown_shell ksh93	Global::shell /usr/bin/bash
 par_test_detected_shell	test_unknown_shell mksh	Global::shell /usr/bin/bash
 par_test_detected_shell	test_unknown_shell posh	Global::shell /usr/bin/bash
 par_test_detected_shell	test_unknown_shell rbash	Global::shell /usr/bin/bash
-par_test_detected_shell	test_unknown_shell rush	Local configuration error occurred.
-par_test_detected_shell	test_unknown_shell rush	Contact the systems administrator for further assistance.
 par_test_detected_shell	test_unknown_shell rzsh	Global::shell /usr/bin/bash
 par_test_detected_shell	test_unknown_shell sash	Global::shell /usr/bin/sh
 par_test_detected_shell	test_unknown_shell sh	Global::shell /usr/bin/bash
-par_test_detected_shell	test_unknown_shell static-sh	test_unknown_shell_static-sh: applet not found
 par_test_detected_shell	test_unknown_shell tcsh	Global::shell /usr/bin/bash
 par_test_detected_shell	test_unknown_shell yash	Global::shell /usr/bin/bash
 par_test_detected_shell	test_unknown_shell zsh	Global::shell /usr/bin/bash
@@ -1696,8 +1693,6 @@ par_test_detected_shell	test_known_shell_c ksh93	Global::shell /usr/bin/ksh93
 par_test_detected_shell	test_known_shell_c mksh	Global::shell /usr/bin/mksh
 par_test_detected_shell	test_known_shell_c posh	Global::shell /usr/bin/posh
 par_test_detected_shell	test_known_shell_c rbash	Global::shell /usr/bin/rbash
-par_test_detected_shell	test_known_shell_c rush	Local configuration error occurred.
-par_test_detected_shell	test_known_shell_c rush	Contact the systems administrator for further assistance.
 par_test_detected_shell	test_known_shell_c rzsh	Global::shell /usr/bin/rzsh
 par_test_detected_shell	test_known_shell_c sash	Global::shell /usr/bin/sh
 par_test_detected_shell	test_known_shell_c sh	Global::shell /usr/bin/sh
@@ -1716,8 +1711,6 @@ par_test_detected_shell	test_known_shell_pipe ksh93	Global::shell /usr/bin/ksh93
 par_test_detected_shell	test_known_shell_pipe mksh	Global::shell /usr/bin/mksh
 par_test_detected_shell	test_known_shell_pipe posh	Global::shell /usr/bin/posh
 par_test_detected_shell	test_known_shell_pipe rbash	Global::shell /usr/bin/rbash
-par_test_detected_shell	test_known_shell_pipe rush	Local configuration error occurred.
-par_test_detected_shell	test_known_shell_pipe rush	Contact the systems administrator for further assistance.
 par_test_detected_shell	test_known_shell_pipe rzsh	Global::shell /usr/bin/rzsh
 par_test_detected_shell	test_known_shell_pipe sash	Global::shell /usr/bin/sh
 par_test_detected_shell	test_known_shell_pipe sh	Global::shell /usr/bin/sh
