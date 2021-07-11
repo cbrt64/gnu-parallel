@@ -393,6 +393,7 @@ par_pipe_unneeded_procs() {
 par_results_arg_256() {
     echo '### bug #42089: --results with arg > 256 chars (should be 1 char shorter)'
     parallel --results parallel_test_dir echo ::: 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456;
+    cat parallel_test_dir/1/*/stdout
     ls parallel_test_dir/1/
     rm -rf parallel_test_dir
 }
@@ -822,6 +823,7 @@ par_results() {
     echo "### --results test.csv"
     tmp=$(mktemp)
     parallel -k --results "$tmp"-dir echo ::: a b c
+    cat "$tmp"-dir/*/*/stdout
     rm -r $tmp "$tmp"-dir
 }
 

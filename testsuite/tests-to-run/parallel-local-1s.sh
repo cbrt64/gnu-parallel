@@ -38,11 +38,24 @@ par_sqlandworker_uninstalled_dbd() {
 }
 
 par_results_compress() {
-    tmp=$(mktemp)
-    rm "$tmp"
-    parallel --results $tmp --compress echo ::: 1 | wc -l
-    parallel --results $tmp echo ::: 1 | wc -l
-    rm -r "$tmp"
+    tmpdir=$(mktemp)
+    rm -r "$tmpdir"
+    parallel --results $tmpdir --compress echo ::: 1
+    cat "$tmpdir"/*/*/stdout | pzstd -qdc
+
+    rm -r "$tmpdir"
+    parallel --results $tmpdir echo ::: 1
+    cat "$tmpdir"/*/*/stdout
+
+    rm -r "$tmpdir"
+    parallel --results $tmpdir --compress echo ::: '  ' /
+    cat "$tmpdir"/*/*/stdout | pzstd -qdc
+    
+    rm -r "$tmpdir"
+    parallel --results $tmpdir echo ::: '  ' /
+    cat "$tmpdir"/*/*/stdout
+
+    rm -r "$tmpdir"
 }
 
 par_I_X_m() {
@@ -302,36 +315,42 @@ par_result() {
     echo "### Test --results"
     mkdir -p /tmp/parallel_results_test
     parallel -k --results /tmp/parallel_results_test/testA echo {1} {2} ::: I II ::: III IIII
+    cat /tmp/parallel_results_test/testA/*/*/*/*/stdout | LC_ALL=C sort
     ls /tmp/parallel_results_test/testA/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testA*
 
     echo "### Test --res"
     mkdir -p /tmp/parallel_results_test
     parallel -k --res /tmp/parallel_results_test/testD echo {1} {2} ::: I II ::: III IIII
+    cat /tmp/parallel_results_test/testD/*/*/*/*/stdout | LC_ALL=C sort
     ls /tmp/parallel_results_test/testD/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testD*
 
     echo "### Test --result"
     mkdir -p /tmp/parallel_results_test
     parallel -k --result /tmp/parallel_results_test/testE echo {1} {2} ::: I II ::: III IIII
+    cat /tmp/parallel_results_test/testE/*/*/*/*/stdout | LC_ALL=C sort
     ls /tmp/parallel_results_test/testE/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testE*
 
     echo "### Test --results --header :"
     mkdir -p /tmp/parallel_results_test
     parallel -k --header : --results /tmp/parallel_results_test/testB echo {1} {2} ::: a I II ::: b III IIII
+    cat /tmp/parallel_results_test/testB/*/*/*/*/stdout | LC_ALL=C sort
     ls /tmp/parallel_results_test/testB/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testB*
 
     echo "### Test --results --header : named - a/b swapped"
     mkdir -p /tmp/parallel_results_test
     parallel -k --header : --results /tmp/parallel_results_test/testC echo {a} {b} ::: b III IIII ::: a I II
+    cat /tmp/parallel_results_test/testC/*/*/*/*/stdout | LC_ALL=C sort
     ls /tmp/parallel_results_test/testC/*/*/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testC*
 
     echo "### Test --results --header : piped"
     mkdir -p /tmp/parallel_results_test
     (echo Col; perl -e 'print "backslash\\tab\tslash/null\0eof\n"') | parallel  --header : --result /tmp/parallel_results_test/testF true
+    cat /tmp/parallel_results_test/testF/*/*/*/*/stdout | LC_ALL=C sort
     find /tmp/parallel_results_test/testF/*/*/* | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testF*
 
@@ -339,6 +358,7 @@ par_result() {
     mkdir -p /tmp/parallel_results_test
     (printf "Col1\t\n"; printf "v1\tv2\tv3\n"; perl -e 'print "backslash\\tab\tslash/null\0eof\n"') |
 	parallel --header : --result /tmp/parallel_results_test/testG true
+    cat /tmp/parallel_results_test/testG/*/*/*/*/stdout | LC_ALL=C sort
     find /tmp/parallel_results_test/testG/ | LC_ALL=C sort
     rm -rf /tmp/parallel_results_test/testG*
 }
@@ -346,21 +366,32 @@ par_result() {
 par_result_replace() {
     echo '### bug #49983: --results with {1}'
     parallel --results /tmp/par_{}_49983 -k echo ::: foo bar baz
+    cat /tmp/par_*_49983
     find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
+
     parallel --results /tmp/par_{}_49983 -k echo ::: foo bar baz ::: A B C
+    cat /tmp/par_*_49983
     find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
+
     parallel --results /tmp/par_{1}-{2}_49983 -k echo ::: foo bar baz ::: A B C
+    cat /tmp/par_*_49983
     find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
+
     parallel --results /tmp/par__49983 -k echo ::: foo bar baz ::: A B C
+    cat /tmp/par_*_49983/*/*/*/*/stdout
     find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
+
     parallel --results /tmp/par__49983 --header : -k echo ::: foo bar baz ::: A B C
+    cat /tmp/par_*_49983/*/*/*/*/stdout
     find /tmp/par_*_49983 | LC_ALL=C sort
     rm -rf /tmp/par_*_49983
+
     parallel --results /tmp/par__49983-{}/ --header : -k echo ::: foo bar baz ::: A B C
+    cat /tmp/par_*_49983*/stdout
     find /tmp/par_*_49983-* | LC_ALL=C sort
     rm -rf /tmp/par_*_49983-*
 }

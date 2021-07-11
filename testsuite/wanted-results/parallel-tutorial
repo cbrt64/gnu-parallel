@@ -462,10 +462,6 @@ echo C
 /usr/bin/bash: line 7: outdir/1/C/stderr: No such file or directory
 /usr/bin/bash: line 8: outdir/1/C/stdout: No such file or directory
   parallel --header : --results outdir echo ::: f1 A B ::: f2 C D
-A C
-A D
-B C
-B D
   outdir/f1/A/f2/C/seq
   outdir/f1/A/f2/C/stderr
   outdir/f1/A/f2/C/stdout
@@ -979,7 +975,6 @@ Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,_Signal,Command,V1,V2,Stdout,
   parallel --results outdir --sqlandworker csv:///%2Ftmp/log2.csv \
     seq ::: 10 ::: 12 13 14
   cat /tmp/log2.csv
-99
 Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,_Signal,Command,V1,V2,Stdout,Stderr
 1,:,000000000.000,0.000,0,9,0,0,"seq 10 12",10,12,outdir/1/10/2/12/stdout,outdir/1/10/2/12/stderr
 2,:,000000000.000,0.000,0,12,0,0,"seq 10 13",10,13,outdir/1/10/2/13/stdout,outdir/1/10/2/13/stderr
@@ -1285,4 +1280,4 @@ mentioned in the release notes of next version of GNU Parallel.
 echo A
 echo B
 echo C
-8
+7

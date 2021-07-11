@@ -2553,7 +2553,7 @@ sub open_joblog() {
     #   $opt::joblog
     #   $opt::results
     #   $Global::job_already_run
-    #   %Global::fd
+    #   %Global::fh
     my $append = 0;
     if(($opt::resume or $opt::resume_failed)
        and
@@ -2659,7 +2659,7 @@ sub open_joblog() {
 	} else {
 	    if($opt::joblog eq "-") {
 		# Use STDOUT as joblog
-		$Global::joblog = $Global::fd{1};
+		$Global::joblog = $Global::fh{1};
 	    } elsif(not open($Global::joblog, ">", $opt::joblog)) {
 		# Overwrite the joblog
 		::error("Cannot write to --joblog $opt::joblog.");
@@ -2688,8 +2688,8 @@ sub open_json_csv() {
 	    # by forcing all other output to /dev/null
 	    open my $fd, ">", "/dev/null" or
 		::die_bug("Can't >/dev/null in csv: $!");
-	    $Global::fd{1} = $fd;
-	    $Global::fd{2} = $fd;
+	    $Global::fh{1} = $fd;
+	    $Global::fh{2} = $fd;
 	} elsif($Global::csvsep) {
 	    if(not open($Global::csv_fh,">",$opt::results)) {
 		::error("Cannot open results file `$opt::results': ".
@@ -3168,7 +3168,7 @@ sub save_stdin_stdout_stderr() {
     # Remember the original STDIN, STDOUT and STDERR
     # and file descriptors opened by the shell (e.g. 3>/tmp/foo)
     # Uses:
-    #   %Global::fd
+    #   %Global::fh
     #   $Global::original_stderr
     #   $Global::original_stdin
     # Returns: N/A
@@ -3183,7 +3183,7 @@ sub save_stdin_stdout_stderr() {
      	# 2-argument-open is used to be compatible with old perl 5.8.0
      	# bug #43570: Perl 5.8.0 creates 61 files
      	if(open($fh,">&=$fdno")) {
-     	    $Global::fd{$fdno}=$fh;
+     	    $Global::fh{$fdno}=$fh;
      	}
     }
     open $Global::original_stderr, ">&", "STDERR" or
@@ -3199,7 +3199,7 @@ sub enough_file_handles() {
     # another job
     # Uses:
     #   $opt::ungroup
-    #   %Global::fd
+    #   %Global::fh
     # Returns:
     #   1 if ungrouped (thus not needing extra filehandles)
     #   0 if too few filehandles
@@ -3211,7 +3211,7 @@ sub enough_file_handles() {
         # open3 uses 2 extra filehandles temporarily
         # We need a filehandle for each redirected file descriptor
 	# (normally just STDOUT and STDERR)
-	for my $i (1..(7+2+keys %Global::fd)) {
+	for my $i (1..(7+2+keys %Global::fh)) {
             $enough_filehandles &&= open($fh{$i}, "<", "/dev/null");
         }
         for (values %fh) { close $_; }
@@ -6202,14 +6202,14 @@ sub __DEBUGGING__() {}
 sub debug(@) {
     # Uses:
     #   $Global::debug
-    #   %Global::fd
+    #   %Global::fh
     # Returns: N/A
     $Global::debug or return;
     @_ = grep { defined $_ ? $_ : "" } @_;
     if($Global::debug eq "all" or $Global::debug eq $_[0]) {
-	if($Global::fd{2}) {
+	if($Global::fh{2}) {
 	    # Original stderr was saved
-	    my $stderr = $Global::fd{2};
+	    my $stderr = $Global::fh{2};
 	    print $stderr @_[1..$#_];
 	} else {
 	    print STDERR @_[1..$#_];
@@ -8503,8 +8503,8 @@ sub openoutputfiles($) {
 	}
     } else {
 	# --ungroup
-	open($outfhw,">&",$Global::fd{1}) || die;
-	open($errfhw,">&",$Global::fd{2}) || die;
+	open($outfhw,">&",$Global::fh{1}) || die;
+	open($errfhw,">&",$Global::fh{2}) || die;
 	# File name must be empty as it will otherwise be printed
 	$outname = "";
 	$errname = "";
@@ -8643,7 +8643,7 @@ sub filter_through_compress($) {
 	# thus output file can then be removed by the decompressor.
         my $wpid = open(my $fdw,"|-", "(echo > $comfile; ".
 			empty_input_wrapper($opt::compress_program).") >".
-			$self->fh($fdno,'name')) || die $?;
+			::Q($self->fh($fdno,'name'))) || die $?;
 	$self->set_fh($fdno,'w',$fdw);
 	$self->set_fh($fdno,'wpid',$wpid);
 	# Decompressor: open output; -s $comfile > 0: rm $comfile output;
@@ -10296,10 +10296,10 @@ sub print($) {
     }
 
     my $returnsize = $self->returnsize();
-    for my $fdno (sort { $a <=> $b } keys %Global::fd) {
+    for my $fdno (sort { $a <=> $b } keys %Global::fh) {
 	# Sort by file descriptor numerically: 1,2,3,..,9,10,11
 	$fdno == 0 and next;
-	my $out_fd = $Global::fd{$fdno};
+	my $out_fh = $Global::fh{$fdno};
 	my $in_fh = $self->fh($fdno,"r");
 	if(not $in_fh) {
 	    if(not $Job::file_descriptor_warning_printed{$fdno}++) {
@@ -10310,13 +10310,15 @@ sub print($) {
 	::debug("print", "File descriptor $fdno (", $self->fh($fdno,"name"), "):\n");
 	if($opt::linebuffer) {
 	    # Line buffered print out
-	    $self->print_linebuffer($fdno,$in_fh,$out_fd);
+	    $self->print_linebuffer($fdno,$in_fh,$out_fh);
 	} elsif($opt::files) {
-	    $self->print_files($fdno,$in_fh,$out_fd);
+	    $self->print_files($fdno,$in_fh,$out_fh);
+	} elsif($opt::results) {
+	    $self->print_results($fdno,$in_fh,$out_fh);
 	} else {
-	    $self->print_normal($fdno,$in_fh,$out_fd);
+	    $self->print_normal($fdno,$in_fh,$out_fh);
 	}
-	flush $out_fd;
+	flush $out_fh;
     }
     ::debug("print", "<<joboutput\n");
     if(defined $self->{'exitstatus'}
@@ -10512,7 +10514,7 @@ sub print_files($) {
     #   $opt::linebuffer = Print ASAP
     # Returns: N/A
     my $self = shift;
-    my ($fdno,$in_fh,$out_fd) = @_;
+    my ($fdno,$in_fh,$out_fh) = @_;
 
     # If the job is dead: close printing fh. Needed for --compress
     close $self->fh($fdno,"w");
@@ -10534,7 +10536,7 @@ sub print_files($) {
 	    ::rm($self->fh($fdno,"unlink"));
 	}
     } elsif($fdno == 1 and $self->fh($fdno,"name")) {
-	print $out_fd $self->tag(),$self->fh($fdno,"name"),"\n";
+	print $out_fh $self->tag(),$self->fh($fdno,"name"),"\n";
 	if($Global::membuffer) {
 	    push @{$self->{'output'}{$fdno}},
 		$self->tag(), $self->fh($fdno,"name");
@@ -10547,7 +10549,7 @@ sub print_files($) {
 
 sub print_linebuffer($) {
     my $self = shift;
-    my ($fdno,$in_fh,$out_fd) = @_;
+    my ($fdno,$in_fh,$out_fh) = @_;
     if(defined $self->{'exitstatus'}) {
 	# If the job is dead: close printing fh. Needed for --compress
 	close $self->fh($fdno,"w");
@@ -10566,7 +10568,7 @@ sub print_linebuffer($) {
 	if($opt::files or ($opt::results and not $Global::csvsep)) {
 	    # Print filename
 	    if($fdno == 1 and not $self->fh($fdno,"printed")) {
-		print $out_fd $self->tag(),$self->fh($fdno,"name"),"\n";
+		print $out_fh $self->tag(),$self->fh($fdno,"name"),"\n";
 		if($Global::membuffer) {
 		    push(@{$self->{'output'}{$fdno}}, $self->tag(),
 			 $self->fh($fdno,"name"));
@@ -10607,7 +10609,7 @@ sub print_linebuffer($) {
 			}
 		    }
 		    # Print the partial line (halfline) and the last half
-		    print $out_fd @$halfline_ref, substr($buf,0,$i);
+		    print $out_fh @$halfline_ref, substr($buf,0,$i);
 		    # Buffer in memory for SQL and CSV-output
 		    if($Global::membuffer) {
 			push(@{$self->{'output'}{$fdno}},
@@ -10640,7 +10642,7 @@ sub print_linebuffer($) {
 			unshift @$halfline_ref, $self->tag();
 		    }
 		    # Print the partial line (halfline)
-		    print $out_fd @{$self->{'halfline'}{$fdno}};
+		    print $out_fh @{$self->{'halfline'}{$fdno}};
 		    # Buffer in memory for SQL and CSV-output
 		    if($Global::membuffer) {
 			push(@{$self->{'output'}{$fdno}}, @$halfline_ref);
@@ -10667,7 +10669,7 @@ sub free_ressources() {
     my $self = shift;
     if(not $opt::ungroup) {
 	my $fh;
-	for my $fdno (sort { $a <=> $b } keys %Global::fd) {
+	for my $fdno (sort { $a <=> $b } keys %Global::fh) {
 	    $fh = $self->fh($fdno,"w");
 	    $fh and close $fh;
 	    $fh = $self->fh($fdno,"r");
@@ -10759,6 +10761,61 @@ sub print_normal($) {
 		if($Global::membuffer) {
 		    push @{$self->{'output'}{$fdno}}, $buf;
 		}
+	    }
+	}
+	if($fdno == 1) {
+	    $self->add_returnsize($outputlength);
+	}
+	close $in_fh;
+	if($? and $opt::compress) {
+	    ::error($opt::decompress_program." failed.");
+	    $self->set_exitstatus(255);
+	}
+    }
+}
+
+sub print_results($) {
+    my $self = shift;
+    my ($fdno,$in_fh,$out_fh) = @_;
+    my $buf;
+    close $self->fh($fdno,"w");
+    if($? and $opt::compress) {
+	::error($opt::compress_program." failed.");
+	$self->set_exitstatus(255);
+    }
+    if(not $self->virgin()) {
+	seek $in_fh, 0, 0;
+	# $in_fh is now ready for reading at position 0
+	my $outputlength = 0;
+	my @output;
+
+	if($Global::membuffer) {
+	    # Read data into membuffer
+	    if($opt::tag or $opt::tagstring) {
+		# Read line by line
+		local $/ = "\n";
+		my $tag = $self->tag();
+		while(<$in_fh>) {
+		    $outputlength += length $_;
+		    # Tag lines with \r, too
+		    $_ =~ s/(?<=[\r])(?=.|$)/$tag/gs;
+		    push @{$self->{'output'}{$fdno}}, $tag, $_;
+		}
+	    } else {
+		# Most efficient way of copying data from $in_fh to $out_fh
+		while(sysread($in_fh,$buf,131072)) {
+		    $outputlength += length $buf;
+		    push @{$self->{'output'}{$fdno}}, $buf;
+		}
+	    }
+	} else {
+	    # Not membuffer: No need to read the file
+	    if($opt::compress) {
+		$outputlength = -1;
+	    } else {
+		# Determine $outputlength = file length
+		seek($in_fh, 0, 2) || ::die_bug("cannot seek result");
+		$outputlength = tell($in_fh);
 	    }
 	}
 	if($fdno == 1) {
@@ -13747,7 +13804,7 @@ sub main() {
     save_stdin_stdout_stderr();
     save_original_signal_handler();
     parse_options();
-    ::debug("init", "Open file descriptors: ", join(" ",keys %Global::fd), "\n");
+    ::debug("init", "Open file descriptors: ", join(" ",keys %Global::fh), "\n");
     my $number_of_args;
     if($Global::max_number_of_args) {
 	$number_of_args = $Global::max_number_of_args;

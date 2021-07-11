@@ -635,8 +635,8 @@ par_result	/tmp/parallel_results_test/testB/a/II/b/IIII/stderr
 par_result	/tmp/parallel_results_test/testB/a/II/b/IIII/stdout
 par_result	### Test --results --header : named - a/b swapped
 par_result	I III
-par_result	II III
 par_result	I IIII
+par_result	II III
 par_result	II IIII
 par_result	/tmp/parallel_results_test/testC/a/I/b/III/seq
 par_result	/tmp/parallel_results_test/testC/a/I/b/III/stderr
@@ -680,21 +680,21 @@ par_result	/tmp/parallel_results_test/testG/Col1/v1/2/v2/3/v3/seq
 par_result	/tmp/parallel_results_test/testG/Col1/v1/2/v2/3/v3/stderr
 par_result	/tmp/parallel_results_test/testG/Col1/v1/2/v2/3/v3/stdout
 par_result_replace	### bug #49983: --results with {1}
-par_result_replace	foo
 par_result_replace	bar
 par_result_replace	baz
+par_result_replace	foo
 par_result_replace	/tmp/par_bar_49983
 par_result_replace	/tmp/par_baz_49983
 par_result_replace	/tmp/par_foo_49983
-par_result_replace	foo A
-par_result_replace	foo B
-par_result_replace	foo C
 par_result_replace	bar A
 par_result_replace	bar B
 par_result_replace	bar C
 par_result_replace	baz A
 par_result_replace	baz B
 par_result_replace	baz C
+par_result_replace	foo A
+par_result_replace	foo B
+par_result_replace	foo C
 par_result_replace	/tmp/par_bar A_49983
 par_result_replace	/tmp/par_bar B_49983
 par_result_replace	/tmp/par_bar C_49983
@@ -704,15 +704,15 @@ par_result_replace	/tmp/par_baz C_49983
 par_result_replace	/tmp/par_foo A_49983
 par_result_replace	/tmp/par_foo B_49983
 par_result_replace	/tmp/par_foo C_49983
-par_result_replace	foo A
-par_result_replace	foo B
-par_result_replace	foo C
 par_result_replace	bar A
 par_result_replace	bar B
 par_result_replace	bar C
 par_result_replace	baz A
 par_result_replace	baz B
 par_result_replace	baz C
+par_result_replace	foo A
+par_result_replace	foo B
+par_result_replace	foo C
 par_result_replace	/tmp/par_bar-A_49983
 par_result_replace	/tmp/par_bar-B_49983
 par_result_replace	/tmp/par_bar-C_49983
@@ -722,15 +722,15 @@ par_result_replace	/tmp/par_baz-C_49983
 par_result_replace	/tmp/par_foo-A_49983
 par_result_replace	/tmp/par_foo-B_49983
 par_result_replace	/tmp/par_foo-C_49983
-par_result_replace	foo A
-par_result_replace	foo B
-par_result_replace	foo C
 par_result_replace	bar A
 par_result_replace	bar B
 par_result_replace	bar C
 par_result_replace	baz A
 par_result_replace	baz B
 par_result_replace	baz C
+par_result_replace	foo A
+par_result_replace	foo B
+par_result_replace	foo C
 par_result_replace	/tmp/par__49983
 par_result_replace	/tmp/par__49983/1
 par_result_replace	/tmp/par__49983/1/bar
@@ -776,8 +776,8 @@ par_result_replace	/tmp/par__49983/1/foo/2/C/seq
 par_result_replace	/tmp/par__49983/1/foo/2/C/stderr
 par_result_replace	/tmp/par__49983/1/foo/2/C/stdout
 par_result_replace	bar B
-par_result_replace	bar C
 par_result_replace	baz B
+par_result_replace	bar C
 par_result_replace	baz C
 par_result_replace	/tmp/par__49983
 par_result_replace	/tmp/par__49983/A
@@ -821,8 +821,12 @@ par_result_replace	/tmp/par__49983-baz C
 par_result_replace	/tmp/par__49983-baz C/seq
 par_result_replace	/tmp/par__49983-baz C/stderr
 par_result_replace	/tmp/par__49983-baz C/stdout
-par_results_compress	0
 par_results_compress	1
+par_results_compress	1
+par_results_compress	  
+par_results_compress	/
+par_results_compress	  
+par_results_compress	/
 par_seqreplace_long_line	### Test --seqreplace and line too long
 par_seqreplace_long_line	      9       1       1     101
 par_seqreplace_long_line	     90       1       1     201
