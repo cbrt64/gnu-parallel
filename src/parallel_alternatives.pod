@@ -1321,7 +1321,7 @@ Contrary to B<rush> this also works if the value is complex like:
   My brother's 12" records
 
 
-B<14. B<Preset variable> (`-v`), avoid repeatedly writing verbose replacement strings>
+B<14. Preset variable (`-v`), avoid repeatedly writing verbose replacement strings>
 
   14$ # naive way
       echo read_1.fq.gz | rush 'echo {:^_1} {:^_1}_2.fq.gz'
@@ -3174,6 +3174,10 @@ not, all the long jobs may end up in the same queue, so you may see:
       time ./parallel-bash.bash -p 4 -c sleep {}
   (12 seconds)
 
+Because it uses bash lists, the total number of jobs is limited to
+167000..265000 depending on your environment. You get a segmentation
+fault, when you reach the limit.
+
 Ctrl-C does not stop spawning new jobs. Ctrl-Z does not suspend
 running jobs.
 
@@ -3257,29 +3261,6 @@ https://manpages.ubuntu.com/manpages/xenial/man1/tsp.1.html
 https://vicerveza.homeunix.net/~viric/soft/ts/
 
 https://github.com/chapmanjacobd/que
-
-https://github.com/ExpectationMax/simple_gpu_scheduler
-    simple_gpu_scheduler --gpus 0 1 2 < gpu_commands.txt
-    parallel -j3 --shuf CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' < gpu_commands.txt
-
-    simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 | simple_gpu_scheduler --gpus 0,1,2
-    parallel --header : --shuf -j3 -v CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =}' python3 train_dnn.py --lr {lr} --batch_size {bs} ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
-
-    simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" --n-samples 5 -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 | simple_gpu_scheduler --gpus 0,1,2
-    parallel --header : --shuf CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1; seq() > 5 and skip() =}' python3 train_dnn.py --lr {lr} --batch_size {bs} ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
-
-    touch gpu.queue
-    tail -f -n 0 gpu.queue | simple_gpu_scheduler --gpus 0,1,2 &
-    echo "my_command_with | and stuff > logfile" >> gpu.queue
-
-    touch gpu.queue
-    tail -f -n 0 gpu.queue | parallel -j3 CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' &
-    # Needed to fill job slots once
-    seq 3 | parallel echo true >> gpu.queue
-    # Add jobs
-    echo "my_command_with | and stuff > logfile" >> gpu.queue
-    # Needed to flush output from completed jobs
-    seq 3 | parallel echo true >> gpu.queue
 
 https://github.com/Overv/outrun#outrun
 

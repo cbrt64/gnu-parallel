@@ -11,19 +11,69 @@ Welcome to GNU Parallel's documentation!
 ========================================
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Contents:
+   :maxdepth: 1
+   :caption: parallel
 
    parallel
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: sem
+
    sem
+
+.. toctree::
+   :maxdepth: 3
+   :caption: env_parallel
+
    env_parallel
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: parset
+
    parset
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: parsort
+
    parsort
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: parallel_design
+
    parallel_design
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: parallel_tutorial
+
    parallel_tutorial
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: parallel_alternatives
+
    parallel_alternatives
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: parcat
+
    parcat
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: niceload
+
    niceload
+   
+.. toctree::
+   :maxdepth: 3
+   :caption: sql
+
    sql
 
 

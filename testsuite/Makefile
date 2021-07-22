@@ -3,7 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 ### Full test set (except mem)
-testsuite: 3
+testsuite: short
+	true
+
+all: mem short long polar 
 	true
 
 3: ../src/parallel tests-to-run/* wanted-results/* startdb prereqlocal prereqremote
@@ -50,6 +53,10 @@ local:	../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal i
 # short
 short:	 ../src/parallel tests-to-run/* wanted-results/* prereqlocal installparallel
 	TRIES=1 time bash Start.sh '' 'polar|mem|100s|300s'
+
+# long
+long:	 ../src/parallel tests-to-run/* wanted-results/* prereqlocal installparallel
+	TRIES=1 time bash Start.sh '00s' NONE
 
 # short and local
 localshort: ../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal installparallel

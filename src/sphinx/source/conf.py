@@ -18,19 +18,23 @@
 #
 import os
 import sys
+import subprocess
 sys.path.insert(0, os.path.abspath('.'))
 
+
+short_version = (subprocess.run(['parallel', '--minversion', '1'], stdout=subprocess.PIPE)).stdout.decode('utf-8')
+year = short_version[0:4]
 
 # -- Project information -----------------------------------------------------
 
 project = 'GNU Parallel'
-copyright = '2021, Ole Tange'
+copyright = year+', Ole Tange'
 author = 'Ole Tange'
 
 # The short X.Y version
-version = ''
+version = short_version
 # The full version, including alpha/beta/rc tags
-release = '20210122'
+release = short_version
 
 
 # -- General configuration ---------------------------------------------------

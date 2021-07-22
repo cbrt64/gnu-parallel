@@ -2,8 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-SUBDIRS = sphinx
-
 bin_SCRIPTS = parallel sql niceload parcat parset parsort	\
 	env_parallel env_parallel.ash env_parallel.bash		\
 	env_parallel.csh env_parallel.dash env_parallel.fish	\
@@ -343,6 +341,12 @@ parallel_cheat_bw.pdf: parallel_cheat_bw.fodt
 
 sem: parallel
 	ln -fs parallel sem
+
+sphinx: parallel.rst env_parallel.rst sem.rst sql.rst 			\
+	niceload.rst parallel_tutorial.rst parallel_book.rst		\
+	parallel_design.rst parallel_alternatives.rst parcat.rst	\
+	parset.rst parsort.rst
+	cd sphinx && make
 
 DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	parallel_tutorial.7 parallel_book.7 parallel_design.7		\

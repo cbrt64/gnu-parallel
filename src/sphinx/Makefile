@@ -13,6 +13,9 @@ BUILDDIR      = build
 all: copy
 	make html
 
+install:
+	true dummy
+
 copy:
 	cp -a ../*.rst source/
 

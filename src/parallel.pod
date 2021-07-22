@@ -1639,9 +1639,9 @@ Activate additional replacement strings: {+/} {+.} {+..} {+...} {..}
 B<{##}> is the total number of jobs to be run. It is incompatible with
 B<-X>/B<-m>/B<--xargs>.
 
-B<{0%}> zero-padded jobslot. (beta testing)
+B<{0%}> zero-padded jobslot.
 
-B<{0#}> zero-padded sequence number. (beta testing)
+B<{0#}> zero-padded sequence number.
 
 B<{choose_k}> is inspired by n choose k: Given a list of n elements,
 choose k. k is the number of input sources and n is the number of
@@ -1817,7 +1817,8 @@ Swap activity is computed as (swap-in)*(swap-out) which in practice is
 a good value: swapping out is not a problem, swapping in is not a
 problem, but both swapping in and out usually indicates a problem.
 
-B<--memfree> may give better results, so try using that first.
+B<--memfree> and B<--memsuspend> may give better results, so try using
+those first.
 
 
 =item B<--record-env>
@@ -1868,9 +1869,9 @@ it to the command.
 Only used with B<--pipe>.
 
 
-=item B<--results> I<name>
+=item B<--results> I<name> (alpha testing)
 
-=item B<--res> I<name>
+=item B<--res> I<name> (alpha testing)
 
 Save the output into files.
 

@@ -10,7 +10,6 @@ Quote of the month:
   parallel is my new kink
     -- python_noob_001@reddit
 
-
   @GnuParallel the best thing ever and it's not up for debate #EOchat
     -- Nathan Thomas @DrNASApants@twitter
 
@@ -19,9 +18,6 @@ Quote of the month:
 
   GNU Parallel is one of the most helpful tools I've been using recently, and it's just something like: parallel -j4 'gzip {}' ::: folder/*.csv
      -- Milton Pividori @miltondp@twitter
-
-  We use gnu parallel now - and happier for it.
-     -- Ben Davies @benjamindavies@twitter
 
   This is a fantastic tool, and I wish I had upgraded from xargs years ago!
     -- Stuart Anderson
@@ -116,6 +112,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  We use gnu parallel now - and happier for it.
+     -- Ben Davies @benjamindavies@twitter
 
   GNU Parallel makes my life so much easier.
   I'm glad I don't have to implement multi-threaded Python scripts on the regular.

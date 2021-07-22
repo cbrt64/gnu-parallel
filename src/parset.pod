@@ -29,12 +29,13 @@ The B<parset> and B<env_parset> functions are defined as part of
 B<env_parallel>.
 
 If I<variablename> is a single variable name, this will be treated as
-the destination variable and made into an array.
+the destination variable. If the variable is defined as an associative
+array (using B<typeset -A myassoc>), this will be used. Otherwise the
+variable will be made into a normal array.
 
 If I<variablename> contains multiple names separated by ',' or space,
 the names will be the destination variables. The number of names must
-be at least the number of jobs - otherwise some tmp files will not be
-cleaned up.
+be at least the number of jobs.
 
 
 =head1 OPTIONS
@@ -82,8 +83,8 @@ B<parset> can read from stdin (standard input) if it is a file:
 
   parset res echo < parallel_input_file
 
-but B<parset> can not be part of a pipe. In particular this means it
-cannot read from a pipe or write to a pipe:
+but B<parset> can I<not> be part of a pipe. In particular this means
+it cannot read from a pipe or write to a pipe:
 
   seq 10 | parset res echo Does not work
 
