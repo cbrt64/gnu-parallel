@@ -692,8 +692,7 @@ using GNU B<parallel>:
 
   11$ parallel '[ -f {} ] && echo {}' < List | ...
 
-https://web.archive.org/web/20160702211113/
-http://carrera.databits.net/~ksb/msrc/local/bin/xapply/xapply.html
+https://www.databits.net/~ksb/msrc/local/bin/xapply/xapply.html
 
 
 =head2 DIFFERENCES BETWEEN AIX apply AND GNU Parallel
@@ -930,19 +929,19 @@ RELPATH
 These can be simulated using GNU B<parallel> by putting this in
 B<~/.parallel/config>:
 
-    --rpl 'FULLPATH $_=Q($_);chomp($_=qx{readlink -f $_});'
-    --rpl 'DIRNAME $_=Q(::dirname($_));chomp($_=qx{readlink -f $_});'
-    --rpl 'BASENAME s:.*/::;s:\.[^/.]+$::;'
-    --rpl 'EXT s:.*\.::'
-    --rpl 'RELDIR $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
-           s:\Q$c/\E::;$_=::dirname($_);'
-    --rpl 'RELPATH $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
-           s:\Q$c/\E::;'
+  --rpl 'FULLPATH $_=Q($_);chomp($_=qx{readlink -f $_});'
+  --rpl 'DIRNAME $_=Q(::dirname($_));chomp($_=qx{readlink -f $_});'
+  --rpl 'BASENAME s:.*/::;s:\.[^/.]+$::;'
+  --rpl 'EXT s:.*\.::'
+  --rpl 'RELDIR $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
+         s:\Q$c/\E::;$_=::dirname($_);'
+  --rpl 'RELPATH $_=Q($_);chomp(($_,$c)=qx{readlink -f $_;pwd});
+         s:\Q$c/\E::;'
 
 B<ladon> deals badly with filenames containing " and newline, and it
 fails for output larger than 200k:
 
-    ladon '*' -- seq 36000 | wc
+  ladon '*' -- seq 36000 | wc
 
 =head3 EXAMPLES FROM ladon MANUAL
 
@@ -3226,13 +3225,131 @@ https://github.com/themattrix/bash-concurrent
 (Last checked: 2021-02)
 
 
-=head2 Todo
+=head2 DIFFERENCES BETWEEN spawntool AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item I1 - - - - - -
+
+=item M1 - - - - M6
+
+=item - O2 O3 - O5 O6 - x x O10
+
+=item E1 - - - - - -
+
+=item - - - - - - - - -
+
+=item - -
+
+=back
+
+B<spawn> reads a full command line from stdin which it executes in
+parallel.
+
 
 http://code.google.com/p/spawntool/
+(Last checked: 2021-07)
 
-http://code.google.com/p/push/
+
+=head2 DIFFERENCES BETWEEN go-pssh AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item - - - - - - -
+
+=item M1 - - - - -
+
+=item O1 - - - - - - x x O10
+
+=item E1 - - - - - -
+
+=item R1 R2 - - - R6 - - -
+
+=item - -
+
+=back
+
+B<go-pssh> does B<ssh> in parallel to multiple machines. It runs the
+same command on multiple machines similar to B<--nonall>.
+
+The hostnames must be given as IP-addresses (not as hostnames).
+
+Output is sent to stdout (standard output) if command is successful,
+and to stderr (standard error) if the command fails.
+
+=head3 EXAMPLES FROM go-pssh
+
+  1$ go-pssh -l <ip>,<ip> -u <user> -p <port> -P <passwd> -c "<command>"
+
+  1$ parallel -S 'sshpass -p <passwd> ssh -p <port> <user>@<ip>' \
+       --nonall "<command>"
+
+  2$ go-pssh scp -f host.txt -u <user> -p <port> -P <password> \
+       -s /local/file_or_directory -d /remote/directory
+
+  2$ parallel --nonall --slf host.txt \
+       --basefile /local/file_or_directory/./ --wd /remote/directory
+       --ssh 'sshpass -p <password> ssh -p <port> -l <user>' true
+
+  3$ go-pssh scp -l <ip>,<ip> -u <user> -p <port> -P <password> \
+       -s /local/file_or_directory -d /remote/directory
+
+  3$ parallel --nonall -S <ip>,<ip> \
+       --basefile /local/file_or_directory/./ --wd /remote/directory
+       --ssh 'sshpass -p <password> ssh -p <port> -l <user>' true
+
+https://github.com/xuchenCN/go-pssh
+(Last checked: 2021-07)
+
+
+=head2 DIFFERENCES BETWEEN go-parallel AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item I1 I2 - - - - I7
+
+=item - - M3 - - M6
+
+=item - O2 O3 - O5 - - x x - O10
+
+=item E1 - - E4 - - -
+
+=item - - - - - - - - -
+
+=item - -
+
+=back
+
+B<go-parallel> uses Go templates for replacement strings. Quite
+similar to the I<{= perl expr =}> replacement string.
+
+=head3 EXAMPLES FROM go-parallel
+
+  1$ go-parallel -a ./files.txt -t 'cp {{.Input}} {{.Input | dirname | dirname}}'
+
+  1$ parallel -a ./files.txt cp {} '{= $_=::dirname(::dirname($_)) =}'
+
+  2$ go-parallel -a ./files.txt -t 'mkdir -p {{.Input}} {{noExt .Input}}'
+
+  2$ parallel -a ./files.txt echo mkdir -p {} {.}
+
+  3$ go-parallel -a ./files.txt -t 'mkdir -p {{.Input}} {{.Input | basename | noExt}}'
+
+  3$ parallel -a ./files.txt echo mkdir -p {} {/.}
 
 https://github.com/mylanconnolly/parallel
+(Last checked: 2021-07)
+
+
+=head2 Todo
+
+http://code.google.com/p/push/ (cannot compile)
 
 https://github.com/krashanoff/parallel
 
@@ -3250,8 +3367,6 @@ https://github.com/benoror/better-npm-run - not obvious how to use
 
 https://github.com/bahmutov/with-package
 
-https://github.com/xuchenCN/go-pssh
-
 https://github.com/flesler/parallel
 
 https://github.com/Julian/Verge
@@ -3262,7 +3377,6 @@ https://vicerveza.homeunix.net/~viric/soft/ts/
 
 https://github.com/chapmanjacobd/que
 
-https://github.com/Overv/outrun#outrun
 
 =head1 TESTING OTHER TOOLS
 

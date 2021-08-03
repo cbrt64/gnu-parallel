@@ -34,6 +34,12 @@ doc_DATA = parallel.html env_parallel.html sem.html sql.html		\
 	parallel_cheat_bw.pdf
 endif
 
+web: sphinx
+	true
+
+sphinx: *.rst
+	cd sphinx && make && cd ..
+
 # Build documentation file if the tool to build exists.
 # Otherwise: Use the distributed version
 parallel.1: parallel.pod
@@ -341,12 +347,6 @@ parallel_cheat_bw.pdf: parallel_cheat_bw.fodt
 
 sem: parallel
 	ln -fs parallel sem
-
-sphinx: parallel.rst env_parallel.rst sem.rst sql.rst 			\
-	niceload.rst parallel_tutorial.rst parallel_book.rst		\
-	parallel_design.rst parallel_alternatives.rst parcat.rst	\
-	parset.rst parsort.rst
-	cd sphinx && make
 
 DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	parallel_tutorial.7 parallel_book.7 parallel_design.7		\

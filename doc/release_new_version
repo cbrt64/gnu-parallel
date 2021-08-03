@@ -144,6 +144,7 @@ http://www.gnu.org/software/parallel/parset.html
 http://www.gnu.org/software/parallel/parsort.html
 http://www.gnu.org/software/parallel/niceload.html
 
+make web
 cp -r src/*.pdf src/sphinx/build/html/* ../parallel-web/parallel
 cp ../parallel-web/parallel/parallel.html  ../parallel-web/parallel/man.html
 
@@ -228,8 +229,10 @@ http://freshmeat.net/projects/parallel/releases/new
 
 https://joindiaspora.com/stream
 
-New release of #GNU Parallel pi.dk/0 New in this release pi.dk/2 See the intro videos pi.dk/1
-10 secs installation: wget -O - pi.dk/3|bash
+New release of #GNU Parallel pi.dk/0
+New in this release pi.dk/2
+See the intro videos pi.dk/1
+10 secs installation: https://git.savannah.gnu.org/cgit/parallel.git/tree/README
 
 [x] Twitter
 Aspect: Public
@@ -252,9 +255,9 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210722 ('Blue Unity') released <<[stable]>>
+Subject: GNU Parallel 20210822 ('turkish fire/greek fire/tysk syndflod/Tunesia') released <<[stable]>>
 
-GNU Parallel 20210722 ('Blue Unity') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20210822 ('') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
 
 <<No new functionality was introduced so this is a good candidate for a stable release.>>
 
@@ -271,6 +274,12 @@ New in this release:
 News about GNU Parallel:
 
 <<>>
+https://cdmana.com/2021/07/20210728132344693t.html
+
+https://github.com/gibbslab/biobash uses GNU Parallel
+
+https://net2.com/how-to-execute-commands-in-parallel-in-linux/
+
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

@@ -8,6 +8,16 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_prefix_for_L_n_N_s() {
+    echo Must give xxx000 args
+    seq 10000 | parallel -N 1k 'echo {} | wc -w' | sort
+    seq 10000 | parallel -n 1k 'echo {} | wc -w' | sort
+    echo Must give xxx000 lines
+    seq 1000000 | parallel -L 1k --pipe wc -l | sort
+    echo Must give max 1000 chars per line
+    seq 10000 | parallel -mj1 -s 1k 'echo {} | wc -w' | sort
+}
+
 par_parset_assoc_arr() {
     mytest=$(cat <<'EOF'
     mytest() {

@@ -608,10 +608,7 @@ alternatives in B<man parallel_alternatives>.
 =item B<--block-size> I<size>
 
 Size of block in bytes to read at a time. The I<size> can be postfixed
-with K, M, G, T, P, E, k, m, g, t, p, or e which would multiply the
-size with 1024, 1048576, 1073741824, 1099511627776, 1125899906842624,
-1152921504606846976, 1000, 1000000, 1000000000, 1000000000000,
-1000000000000000, or 1000000000000000000 respectively.
+with K, M, G, T, P, k, m, g, t, or p (see UNIT PREFIX).
 
 GNU B<parallel> tries to meet the block size but can be off by the
 length of one record. For performance reasons I<size> should be bigger
@@ -1283,6 +1280,9 @@ continued on the next input line.
 B<-L 0> means read one line, but insert 0 arguments on the command
 line.
 
+I<recsize> can be postfixed with K, M, G, T, P, k, m, g, t, or p (see
+UNIT PREFIX).
+
 Implies B<-X> unless B<-m>, B<--xargs>, or B<--pipe> is set.
 
 
@@ -1437,10 +1437,7 @@ most likely do what is needed.
 =item B<--memfree> I<size>
 
 Minimum memory free when starting another job. The I<size> can be
-postfixed with K, M, G, T, P, k, m, g, t, or p which would multiply
-the size with 1024, 1048576, 1073741824, 1099511627776,
-1125899906842624, 1000, 1000000, 1000000000, 1000000000000, or
-1000000000000000, respectively.
+postfixed with K, M, G, T, P, k, m, g, t, or p (see UNIT PREFIX).
 
 If the jobs take up very different amount of RAM, GNU B<parallel> will
 only start as many as there is memory for. If less than I<size> bytes
@@ -1457,10 +1454,8 @@ See also: B<--memsuspend>
 =item B<--memsuspend> I<size>
 
 Suspend jobs when there is less than 2 * I<size> memory free. The
-I<size> can be postfixed with K, M, G, T, P, k, m, g, t, or p which
-would multiply the size with 1024, 1048576, 1073741824, 1099511627776,
-1125899906842624, 1000, 1000000, 1000000000, 1000000000000, or
-1000000000000000, respectively.
+I<size> can be postfixed with K, M, G, T, P, k, m, g, t, or p (see
+UNIT PREFIX).
 
 If the available memory falls below 2 * I<size>, GNU B<parallel>
 will suspend some of the running jobs. If the available memory falls
@@ -1502,6 +1497,9 @@ GNU B<parallel> will exit.
 B<-n 0> means read one argument, but insert 0 arguments on the command
 line.
 
+I<max-args> can be postfixed with K, M, G, T, P, k, m, g, t, or p (see
+UNIT PREFIX).
+
 Implies B<-X> unless B<-m> is set.
 
 
@@ -1522,6 +1520,9 @@ This will set the owner of the homedir to the user:
   tr ':' '\n' < /etc/passwd | parallel -N7 chown {1} {6}
 
 Implies B<-X> unless B<-m> or B<--pipe> is set.
+
+I<max-args> can be postfixed with K, M, G, T, P, k, m, g, t, or p (see
+UNIT PREFIX).
 
 When used with B<--pipe> B<-N> is the number of records to read. This
 is somewhat slower than B<--block>.
@@ -2253,6 +2254,9 @@ command and initial-arguments and the terminating nulls at the ends of
 the argument strings.  The largest allowed value is system-dependent,
 and is calculated as the argument length limit for exec, less the size
 of your environment.  The default value is the maximum.
+
+I<max-chars> can be postfixed with K, M, G, T, P, k, m, g, t, or p
+(see UNIT PREFIX).
 
 Implies B<-X> unless B<-m> is set.
 
@@ -4858,6 +4862,18 @@ chunk border.
 
 B<--group-by> can be combined with B<--round-robin> or B<--pipe-part>.
 
+
+=head1 UNIT PREFIX
+
+Many numerical arguments in GNU B<parallel> can be postfixed with K,
+M, G, T, P, k, m, g, t, or p which would multiply the number with
+1024, 1048576, 1073741824, 1099511627776, 1125899906842624, 1000,
+1000000, 1000000000, 1000000000000, or 1000000000000000, respectively.
+
+You can even give it as a math expression. E.g. 1000000 can be written
+as 1M-12*2.024*2k.
+
+
 =head1 QUOTING
 
 GNU B<parallel> is very liberal in quoting. You only need to quote
@@ -5452,6 +5468,8 @@ through the tutorial (man parallel_tutorial), and read the EXAMPLE
 section in the man page (man parallel - search for EXAMPLE:).
 
 =back
+
+=head2 Bug dependent on environment
 
 If you suspect the error is dependent on your environment or
 distribution, please see if you can reproduce the error on one of

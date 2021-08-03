@@ -1617,18 +1617,18 @@ sub options_hash() {
 	 # xargs-compatibility - implemented, man, testsuite
 	 "max-procs|P=s" => \$opt::jobs,
 	 "delimiter|d=s" => \$opt::d,
-	 "max-chars|s=i" => \$opt::max_chars,
+	 "max-chars|s=s" => \$opt::max_chars,
 	 "arg-file|a=s" => \@opt::a,
 	 "no-run-if-empty|r" => \$opt::r,
 	 "replace|i:s" => \$opt::i,
 	 "E=s" => \$opt::eof,
 	 "eof|e:s" => \$opt::eof,
-	 "max-args|maxargs|n=i" => \$opt::max_args,
-	 "max-replace-args|N=i" => \$opt::max_replace_args,
+	 "max-args|maxargs|n=s" => \$opt::max_args,
+	 "max-replace-args|N=s" => \$opt::max_replace_args,
 	 "colsep|col-sep|C=s" => \$opt::colsep,
 	 "csv"=> \$opt::csv,
 	 "help|h" => \$opt::help,
-	 "L=f" => \$opt::L,
+	 "L=s" => \$opt::L,
 	 "max-lines|l:f" => \$opt::max_lines,
 	 "interactive|p" => \$opt::interactive,
 	 "verbose|t" => \$opt::verbose,
@@ -1801,6 +1801,7 @@ sub parse_options(@) {
     if(defined $opt::verbose) { $Global::stderr_verbose = 1; }
     if(defined $opt::eof) { $Global::end_of_file_string = $opt::eof; }
     if(defined $opt::max_args) {
+	$opt::max_args = multiply_binary_prefix($opt::max_args);
 	$Global::max_number_of_args = $opt::max_args;
     }
     if(defined $opt::blocktimeout) {
@@ -1855,6 +1856,9 @@ sub parse_options(@) {
     }
     if(defined $opt::max_line_length_allowed) {
         print Limits::Command::real_max_length(),"\n"; wait_and_exit(0);
+    }
+    if(defined $opt::max_chars) {
+	$opt::max_chars = multiply_binary_prefix($opt::max_chars);
     }
     if(defined $opt::version) { version(); wait_and_exit(0); }
     if(defined $opt::record_env) { record_env(); wait_and_exit(0); }
@@ -1989,10 +1993,14 @@ sub parse_options(@) {
 	    $opt::max_lines = 1;
 	    $opt::null = 1;
 	    $/ = "\0";
-	} elsif ($opt::max_lines == 0) {
-	    # If not given (or if 0 is given) => 1
-	    $opt::max_lines = 1;
+	} else {
+	    $opt::max_lines = multiply_binary_prefix($opt::max_lines);
+	    if ($opt::max_lines == 0) {
+		# If not given (or if 0 is given) => 1
+		$opt::max_lines = 1;
+	    }
 	}
+
 	$Global::max_lines = $opt::max_lines;
 	if(not $opt::pipe) {
 	    # --pipe -L means length of record - not max_number_of_args
@@ -2002,6 +2010,7 @@ sub parse_options(@) {
 
     # Read more than one arg at a time (-L, -N)
     if(defined $opt::L) {
+	$opt::L = multiply_binary_prefix($opt::L);
 	$Global::max_lines = $opt::L;
 	if(not $opt::pipe) {
 	    # --pipe -L means length of record - not max_number_of_args
@@ -2009,6 +2018,7 @@ sub parse_options(@) {
 	}
     }
     if(defined $opt::max_replace_args) {
+	$opt::max_replace_args = multiply_binary_prefix($opt::max_replace_args);
 	$Global::max_number_of_args = $opt::max_replace_args;
 	$Global::ContextReplace = 1;
     }
@@ -2223,7 +2233,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210722;
+    $Global::version = 20210723;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5361,6 +5371,8 @@ env_parallel --session
 env_parallel -k echo ::: Put your code here
 parset p,y,c,h -k echo ::: Put your code here
 echo $p $y $c $h
+echo You can also activate GNU Parallel for interactive use by:
+echo . "$0"
 !;
     } else {
 	::error("Cannot open $0");

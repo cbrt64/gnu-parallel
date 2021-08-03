@@ -7,6 +7,9 @@ SUBDIRS = src
 test:
 	cd testsuite; make 1
 
+web:
+	cd src; make web
+
 upload:
 	eval `gpg-agent --daemon`
 # make sure $YYYYMMDD is set
