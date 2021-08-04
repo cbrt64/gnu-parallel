@@ -16,6 +16,14 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_ctagstring() {
+    echo '### --ctag --ctagstring should be different from --tag --tagstring'
+    parallel --tag echo ::: 1 ::: a| wc -c
+    parallel --ctag echo ::: 1 ::: a | wc -c
+    parallel --tagstring 'I{1}\tB{2}' echo ::: 1 ::: a | wc -c
+    parallel --ctagstring 'I{1}\tB{2}' echo ::: 1 ::: a | wc -c
+}
+
 par_pct() {
     echo '### Test {%...} {%%...} {#...} {##...}'
     a=z.z.z.foo

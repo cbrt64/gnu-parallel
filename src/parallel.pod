@@ -740,6 +740,16 @@ Even quoted newlines are parsed correctly:
 When used with B<--pipe> only pass full CSV-records.
 
 
+=item B<--ctag> I<str> (alpha testing)
+
+Color tag. See B<--tag>.
+
+
+=item B<--ctagstring> I<str> (alpha testing)
+
+Color tagstring. See B<--tagstring>.
+
+
 =item B<--delay> I<mytime>
 
 Delay starting next job by I<mytime>. GNU B<parallel> will pause
@@ -2695,7 +2705,7 @@ to GNU B<parallel> giving each child its own process group, which is
 then killed. Process groups are dependant on the tty.
 
 
-=item B<--tag>
+=item B<--tag> (alpha testing)
 
 Tag lines with arguments. Each output line will be prepended with the
 arguments and TAB (\t). When combined with B<--onall> or B<--nonall>
@@ -2703,14 +2713,18 @@ the lines will be prepended with the sshlogin instead.
 
 B<--tag> is ignored when using B<-u>.
 
+B<--ctag> gives the tag a color.
 
-=item B<--tagstring> I<str>
+
+=item B<--tagstring> I<str> (alpha testing)
 
 Tag lines with a string. Each output line will be prepended with
 I<str> and TAB (\t). I<str> can contain replacement strings such as
 B<{}>.
 
 B<--tagstring> is ignored when using B<-u>, B<--onall>, and B<--nonall>.
+
+B<--ctagstring> gives the tag a color.
 
 
 =item B<--tee>

@@ -108,6 +108,11 @@ par_csv_pipe	11000"
 par_csv_pipe	More records in single block
 par_csv_pipe	9000"
 par_csv_pipe	11000"
+par_ctagstring	### --ctag --ctagstring should be different from --tag --tagstring
+par_ctagstring	8
+par_ctagstring	33
+par_ctagstring	10
+par_ctagstring	35
 par_delimiter	### Test --delimiter and -d: Delimiter instead of newline
 par_delimiter	# Yes there is supposed to be an extra newline for -d N
 par_delimiter	This is line 1

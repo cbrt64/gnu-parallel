@@ -1555,6 +1555,8 @@ sub options_hash() {
 	 "nice=i" => \$opt::nice,
 	 "tag" => \$opt::tag,
 	 "tagstring|tag-string=s" => \$opt::tagstring,
+	 "ctag" => \$opt::ctag,
+	 "ctagstring|ctag-string=s" => \$opt::ctagstring,
 	 "onall" => \$opt::onall,
 	 "nonall" => \$opt::nonall,
 	 "filter-hosts|filterhosts|filter-host" => \$opt::filter_hosts,
@@ -1785,6 +1787,15 @@ sub parse_options(@) {
     if(defined $opt::null) { $/ = "\0"; }
     if(defined $opt::d) { $/ = unquote_printf($opt::d) }
     parse_replacement_string_options();
+    $opt::tag ||= $opt::ctag;
+    $opt::tagstring ||= $opt::ctagstring;
+    if(defined $opt::ctag or defined $opt::ctagstring) {
+	$Global::color = 1;
+    }
+    if(defined $opt::tag and not defined $opt::tagstring) {
+	# Default = {}
+	$opt::tagstring = $Global::parensleft.$Global::parensright;
+    }
     if(defined $opt::tagstring) {
 	$opt::tagstring = unquote_printf($opt::tagstring);
 	if($opt::tagstring =~ /\Q$Global::parensleft\E.*\Q$Global::parensright\E/
@@ -2026,10 +2037,6 @@ sub parse_options(@) {
        and
        not ($opt::xargs or $opt::m)) {
 	$Global::ContextReplace = 1;
-    }
-    if(defined $opt::tag and not defined $opt::tagstring) {
-	# Default = {}
-	$opt::tagstring = $Global::parensleft.$Global::parensright;
     }
     if(grep /^$Global::arg_sep\+?$|^$Global::arg_file_sep\+?$/o, @ARGV) {
         # Deal with ::: :::+ :::: and ::::+
@@ -5840,13 +5847,15 @@ sub which(@) {
 			    if($shellpath = readlink "/proc/$testpid/exe") {
 				::debug("init","procpath $shellpath\n");
 				if($shellpath =~ m:/$shell$:o) {
-				    ::debug("init", "proc which ".$shellpath." => ");
+				    ::debug("init",
+					    "proc which ".$shellpath." => ");
 				    return $shellpath;
 				}
 			    }
 			}
 			::debug("init", "which ".$shellname." => ");
-			$shellpath = (which($shellname,@{$fakename{$shellname}}))[0];
+			$shellpath = (which($shellname,
+					    @{$fakename{$shellname}}))[0];
 			::debug("init", "shell path $shellpath\n");
 			return $shellpath;
 		    }
@@ -5907,11 +5916,13 @@ sub which(@) {
 
        	if(not %pid_parentpid_cmd) {
 	    # Filter for SysV-style `ps`
-	    my $sysv = q( ps -ef | perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
+	    my $sysv = q( ps -ef |).
+		q(perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}//; print "@F[1,2] $_"' );
 	    # Minix uses cols 2,3 and can have newlines in the command
 	    # so lines not having numbers in cols 2,3 must be ignored
-	    my $minix = q( ps -ef | perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
+	    my $minix = q( ps -ef |).
+		q(perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}// and $F[2]>0 and $F[3]>0 and print "@F[2,3] $_"' );
 	    # BSD-style `ps`
 	    my $bsd = q(ps -o pid,ppid,command -ax);
@@ -5939,7 +5950,8 @@ sub which(@) {
 	     'syllable' => "echo ps not supported",
 	    );
 	}
-	$pid_parentpid_cmd{$^O} or ::die_bug("pid_parentpid_cmd for $^O missing");
+	$pid_parentpid_cmd{$^O} or
+	    ::die_bug("pid_parentpid_cmd for $^O missing");
 
 	my (@pidtable,%parent_of,%children_of,%name_of);
 	# Table with pid -> children of pid
@@ -6111,7 +6123,8 @@ sub kill_youngest_if_over_limit() {
 	push @{$jobs_of{$job->sshlogin()}}, $job;
     }
     for my $sshlogin (@sshlogins) {
-	for my $job (sort { $b->seq() <=> $a->seq() } @{$jobs_of{$sshlogin}}) {
+	for my $job (sort { $b->seq() <=> $a->seq() }
+		     @{$jobs_of{$sshlogin}}) {
 	    if($sshlogin->limit() == 2) {
 		$job->kill();
 		last;
@@ -6141,7 +6154,8 @@ sub suspend_young_if_not_enough_mem() {
 	if($free < 2*$limit) {
 	    # Suspend all jobs (resume some of them later)
 	    map { $_->suspended() or $_->suspend(); } @{$jobs_of{$sshlogin}};
-	    my @jobs = sort { $b->seq() <=> $a->seq() } @{$jobs_of{$sshlogin}};
+	    my @jobs = (sort { $b->seq() <=> $a->seq() }
+			@{$jobs_of{$sshlogin}});
 	    # how many should be running?
 	    # limit*1 => 1;
 	    # limit*1.5 => 2;
@@ -6162,8 +6176,8 @@ sub suspend_young_if_not_enough_mem() {
 	    for my $job (@{$jobs_of{$sshlogin}}) {
 		if($job->suspended()) {
 		    $job->resume();
-		    ::debug("mem","\nResume ",$#{$jobs_of{$sshlogin}}+1, " jobs. Seq ",
-			    $job->seq(), " resumed ",
+		    ::debug("mem","\nResume ",$#{$jobs_of{$sshlogin}}+1,
+			    " jobs. Seq ", $job->seq(), " resumed ",
 			    $sshlogin->memfree()," > ",2*$limit);
 		    last;
 		}
@@ -6189,7 +6203,8 @@ sub kill_youngster_if_not_enough_mem() {
 	push @{$jobs_of{$job->sshlogin()}}, $job;
     }
     for my $sshlogin (@sshlogins) {
-	for my $job (sort { $b->seq() <=> $a->seq() } @{$jobs_of{$sshlogin}}) {
+	for my $job (sort { $b->seq() <=> $a->seq() }
+		     @{$jobs_of{$sshlogin}}) {
 	    if($sshlogin->memfree() < $limit) {
 		::debug("mem","\n",map { $_->seq()." " }
 			(sort { $b->seq() <=> $a->seq() }
@@ -10162,8 +10177,10 @@ sub interactive_start($) {
 	    ::status("See output with: $ENV{'PARALLEL_TMUX'} -S $tmuxsocket attach");
 	}
 	$tmux = "sh -c '".
-	    $ENV{'PARALLEL_TMUX'}." -S $tmuxsocket new-session -s p$$ -d \"sleep .2\" >/dev/null 2>&1';" .
-	    $ENV{'PARALLEL_TMUX'}." -S $tmuxsocket new-window -t p$$ -n $title";
+	    $ENV{'PARALLEL_TMUX'}.
+	    " -S $tmuxsocket new-session -s p$$ -d \"sleep .2\" >/dev/null 2>&1';" .
+	    $ENV{'PARALLEL_TMUX'}.
+	    " -S $tmuxsocket new-window -t p$$ -n $title";
 
 	::debug("tmux", "title len:", $l_tit, " act ", $l_act, " max ",
 		$Limits::Command::line_max_len, " tot ",
@@ -10175,7 +10192,8 @@ sub interactive_start($) {
 	    (
 	     "(".$actual_command.');'.
 	     # The triple print is needed - otherwise the testsuite fails
-	     q[ perl -e 'while($t++<3){ print $ARGV[0],"\n" }' $?h/$status >> ].$tmpfifo."&".
+	     q[ perl -e 'while($t++<3){ print $ARGV[0],"\n" }' $?h/$status >> ].
+	     $tmpfifo."&".
 	     "echo $title; echo \007Job finished at: `date`;sleep 10"
 	    ).
 	    # Run outside tmux
@@ -10361,7 +10379,8 @@ sub print($) {
 	sub jsonquote($) {
 	    my $a = shift;
 	    if(not $jsonmap{"\001"}) {
-		map { $jsonmap{sprintf("%c",$_)} = sprintf '\u%04x', $_ } 0..31;
+		map { $jsonmap{sprintf("%c",$_)} =
+			  sprintf '\u%04x', $_ } 0..31;
 	    }
 	    $a =~ s/\\/\\\\/g;
 	    $a =~ s/\"/\\"/g;
@@ -10609,15 +10628,19 @@ sub print_linebuffer($) {
 			    my $tag = $self->tag();
 			    unshift @$halfline_ref, $tag;
 			    # TODO --recend that can be partially in @$halfline_ref
-			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])(?=.|$)/$tag/gs;
+			    substr($buf,0,$i-1) =~
+				s/(?<=[\n\r])(?=.|$)/$tag/gs;
 			    # The length changed, so find the new ending pos
-			    $i = ::max((rindex($buf,"\n")+1), (rindex($buf,"\r")+1));
+			    $i = ::max((rindex($buf,"\n")+1),
+				       (rindex($buf,"\r")+1));
 			} else {
 			    # Replace with freshly computed value of tag
 			    unshift @$halfline_ref, $self->tag();
-			    substr($buf,0,$i-1) =~ s/(?<=[\n\r])(?=.|$)/$self->tag()/gse;
+			    substr($buf,0,$i-1) =~
+				s/(?<=[\n\r])(?=.|$)/$self->tag()/gse;
 			    # The length changed, so find the new ending pos
-			    $i = ::max((rindex($buf,"\n")+1), (rindex($buf,"\r")+1));
+			    $i = ::max((rindex($buf,"\n")+1),
+				       (rindex($buf,"\r")+1));
 			}
 		    }
 		    # Print the partial line (halfline) and the last half
@@ -10862,17 +10885,51 @@ sub print_joblog($) {
     $self->set_job_in_joblog();
 }
 
-sub tag($) {
-    my $self = shift;
-    if(not defined $self->{'tag'} or not $Global::cache_replacement_eval) {
-	if($opt::tag or defined $opt::tagstring) {
-	    $self->{'tag'} = $self->{'commandline'}->
-		replace_placeholders([$opt::tagstring],0,0)."\t";
-	} else {
-	    $self->{'tag'} = "";
+{
+    my @color;
+
+    sub tag($) {
+	sub init_color() {
+	    # color combinations that are readable: black/white text
+	    # on colored background, but not white on yellow
+	    @color =
+		# Force each color code to have the same length in chars
+		# This will make \t work as expected
+		((map { [sprintf("%03d",$_),"000"] }
+		  6..7,9..11,13..15,40..51,75..87,113..123,147..159,
+		  171..231,249..254),
+		 (map { [sprintf("%03d",$_),231] }
+		  1..9,12..13,16..45,52..81,88..116,124..151,153,
+		  160..180,182..185,187..189,196..214,232..252,
+		  255..254));
+	    # reorder list so adjacent colors are dissimilar
+	    # %7 and %17 were found experimentally
+	    @color = @color[
+		sort { ($b%7 <=> $a%7) or ($a%17 <=> $b%17) } 0..$#color
+		];
 	}
+	my $self = shift;
+	if(not defined $self->{'tag'} or not $Global::cache_replacement_eval) {
+	    if($opt::tag or defined $opt::tagstring) {
+		if($Global::color) {
+		    if(not @color) { init_color() }
+		    # Choose a value based on the seq
+		    my $col = @color[$self->seq() % ($#color+1)];
+		    $self->{'tag'} = "\033[48;5;".$col->[0].
+			";38;5;".$col->[1]."m".
+			($self->{'commandline'}->
+			 replace_placeholders([$opt::tagstring],0,0)).
+			"\033[00m\t";
+		} else {
+		    $self->{'tag'} = $self->{'commandline'}->
+			replace_placeholders([$opt::tagstring],0,0)."\t";
+		}
+	    } else {
+		$self->{'tag'} = "";
+	    }
+	}
+	return $self->{'tag'};
     }
-    return $self->{'tag'};
 }
 
 sub hostgroups($) {
