@@ -122,7 +122,7 @@ GetOptions(
     "help" => \$opt::dummy,
     ) || exit(255);
 $Global::progname = ($0 =~ m:(^|/)([^/]+)$:)[1];
-$Global::version = 20210723;
+$Global::version = 20210822;
 if($opt::version) { version(); exit 0; }
 @Global::sortoptions =
     shell_quote(@ARGV_before[0..($#ARGV_before-$#ARGV-1)]);

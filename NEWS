@@ -1,8 +1,32 @@
+20210822
+
+New in this release:
+
+* --ctag/--ctagstring colors the tag in different colors for each job.
+
+* You can use unit prefixes (k, m, g, etc) with -n -N -L.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Parallelising jobs with GNU parallel
+  https://blog.ronin.cloud/gnu-parallel/
+
+* Use multiple CPU Cores with your Linux commands - awk, sed, bzip2,
+  grep, wc, etc. https://cdmana.com/2021/07/20210728132344693t.html
+
+* How to execute commands in parallel in Linux
+  https://net2.com/how-to-execute-commands-in-parallel-in-linux/
+
+
 20210722
 
 New in this release:
 
-* --results no longer prints the result to standard output (stdout) as voted in https://lists.gnu.org/archive/html/parallel/2020-12/msg00003.html
+* --results no longer prints the result to standard output (stdout) as
+  voted in
+  https://lists.gnu.org/archive/html/parallel/2020-12/msg00003.html
 
 * parset supports associative arrays in bash, ksh, zsh.
 
@@ -12,7 +36,8 @@ New in this release:
 
 News about GNU Parallel:
 
-* Cleaning Up Scanned Documents with Open Source Tools https://kaerumy.medium.com/cleaning-up-scanned-documents-with-open-source-tools-9d87e15305b
+* Cleaning Up Scanned Documents with Open Source Tools
+  https://kaerumy.medium.com/cleaning-up-scanned-documents-with-open-source-tools-9d87e15305b
 
 
 20210622

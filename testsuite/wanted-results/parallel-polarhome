@@ -395,7 +395,7 @@ freebsd	Works on freebsd.polarhome.com
 hpux	Works on hpux64
 hpux-ia64	Works on hpux-ia64
 hurd	Works on hurd
-macosx	Works on macosx.polarhome.com
+macosx	Works on macosx
 mandriva	Works on mandriva.polarhome.com
 miros	Works on miros.polarhome.com
 netbsd	Works on netbsd.polarhome.com
@@ -1210,11 +1210,11 @@ mandriva	1 2 1 2 3 1 2 3 4
 miros	1 2 1 2 3 1 2 3 4
 netbsd	parset: Command not found.
 netbsd	arr: Undefined variable.
-openbsd	
+openbsd	1 2 1 2 3 1 2 3 4
 openindiana	1 2 1 2 3 1 2 3 4
 pidora	1 2 1 2 3 1 2 3 4
 qnx	
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
 qnx	/bin/sh: syntax error: `(' unexpected
 raspbian	1 2 1 2 3 1 2 3 4
 redhat	1 2 1 2 3 1 2 3 4
@@ -1241,14 +1241,14 @@ miros	1 2 1 2 1 2
 netbsd	start=2: Command not found.
 netbsd	env_parset: Command not found.
 netbsd	arr: Undefined variable.
-openbsd	
+openbsd	2 3 3 4 4 5
 openindiana	2 2 3 2 3 4
 pidora	2 2 3 2 3 4
 qnx	
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
 qnx	/bin/sh: syntax error: `(' unexpected
 raspbian	2 2 3 2 3 4
 redhat	2 2 3 2 3 4
@@ -1285,12 +1285,11 @@ mandriva	1 2,1 2 3,1 2 3 4
 miros	1 2,1 2 3,1 2 3 4
 netbsd	parset: Command not found.
 netbsd	var1: Undefined variable.
-openbsd	,,
+openbsd	1 2,1 2 3,1 2 3 4
 openindiana	1 2,1 2 3,1 2 3 4
 pidora	1 2,1 2 3,1 2 3 4
 qnx	,,
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	1 2,1 2 3,1 2 3 4
 redhat	1 2,1 2 3,1 2 3 4
 scosysv	1 2,1 2 3,1 2 3 4
@@ -1315,15 +1314,14 @@ miros	1 2,1 2,1 2
 netbsd	start=2: Command not found.
 netbsd	env_parset: Command not found.
 netbsd	var1: Undefined variable.
-openbsd	,,
+openbsd	2 3,3 4,4 5
 openindiana	2,2 3,2 3 4
 pidora	2,2 3,2 3 4
 qnx	,,
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
-qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
+qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	2,2 3,2 3 4
 redhat	2,2 3,2 3 4
 scosysv	2,2 3,2 3 4

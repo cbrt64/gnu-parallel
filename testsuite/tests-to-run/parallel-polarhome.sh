@@ -86,7 +86,7 @@ doit() {
     par_nonall() {
 	parallel -j$MAXPROC $RET_TIME_K --delay 0.1 --tag \
 		 --nonall $S_POLAR -S "1/sshwithpass minix" --argsep ,:- \
-		 'source setupenv 2>/dev/null; . `pwd`/setupenv;' "$@"
+		 'source ./setupenv 2>/dev/null; . `pwd`/setupenv;' "$@"
 	# setupenv contains something like this (adapted to the local path and shell)
 	#
 	# PATH=$HOME/bin:$PATH:/usr/local/bin

@@ -1621,14 +1621,16 @@ B<--pipepart> has a few limitations:
 
 The file must be a normal file or a block device (technically it must
 be seekable) and must be given using B<-a> or B<::::>. The file cannot
-be a pipe or a fifo as they are not seekable.
+be a pipe, a fifo, or a stream as they are not seekable.
 
 If using a block device with lot of NUL bytes, remember to set
 B<--recend ''>.
 
 =item *
 
-Record counting (B<-N>) and line counting (B<-L>/B<-l>) do not work.
+Record counting (B<-N>) and line counting (B<-L>/B<-l>) do not
+work. Instead use B<--recstart> and B<--recend> to determine
+where records end.
 
 =back
 
@@ -1880,9 +1882,9 @@ it to the command.
 Only used with B<--pipe>.
 
 
-=item B<--results> I<name> (alpha testing)
+=item B<--results> I<name> (beta testing)
 
-=item B<--res> I<name> (alpha testing)
+=item B<--res> I<name> (beta testing)
 
 Save the output into files.
 
@@ -4186,7 +4188,7 @@ the special short hand I<-S ..> can be used:
     --trc {.}.bz2 "zcat {} | bzip2 -9 >{.}.bz2"
 
 
-=head2 EXAMPLE: Advanced file transfer 
+=head2 EXAMPLE: Advanced file transfer
 
 Assume you have files in in/*, want them processed on server,
 and transferred back into /other/dir:
@@ -4530,6 +4532,31 @@ To call B<myprog> with the sequence as argument run:
   cat file.fasta |
     parallel --pipe -N1 --recstart '>' --rrs \
       'read a; echo Name: "$a"; myprog $(tr -d "\n")'
+
+
+=head2 EXAMPLE: Call program with interleaved FASTQ records
+
+FASTQ files have the format:
+
+  @M10991:61:000000000-A7EML:1:1101:14011:1001 1:N:0:28
+  CTCCTAGGTCGGCATGATGGGGGAAGGAGAGCATGGGAAGAAATGAGAGAGTAGCAAGG
+  +
+  #8BCCGGGGGFEFECFGGGGGGGGG@;FFGGGEG@FF<EE<@FFC,CEGCCGGFF<FGF
+
+Interleaved FASTQ starts with a line like these:
+
+  @HWUSI-EAS100R:6:73:941:1973#0/1
+  @EAS139:136:FC706VJ:2:2104:15343:197393 1:Y:18:ATCACG
+  @EAS139:136:FC706VJ:2:2104:15343:197393 1:N:18:1
+
+where '/1' and ' 1:' determines this is read 1.
+
+This will cut big.fq into one chunk per CPU core and pass it on
+stdin (standard input) to the program fastq-reader:
+
+  parallel --pipepart -a big.fq --block -1 --regexp \
+    --recend '\n' --recstart '@.*(/1| 1:.*)\n[A-Za-z\n\.~]' \
+    fastq-reader
 
 
 =head2 EXAMPLE: Processing a big file using more CPUs

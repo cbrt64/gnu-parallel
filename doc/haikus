@@ -4,7 +4,9 @@
  
 Quote of the month:
 
-Have you heard of our lord and saviour GNU parallel? https://gnu.org/software/pa
+  I really liked GNU Parallel http://gnu.org/software/parallel/
+  one of the best tool to execute parallel jobs in the shell
+    -- Luca Molteni @volothamp@twitter
 
   Have you heard of our lord and saviour GNU parallel?
     -- kxyne @Kxyne@twitter
@@ -126,7 +128,11 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
 === Used ===
 
-  We use gnu parallel now - and happier for it.
+  Safe to say, @GnuParallel was a life changer during my PhD! It helped
+  me optimise so many of my tasks and analyses.
+    -- Parice Brandies @PariceBrandies@twitter
+
+We use gnu parallel now - and happier for it.
      -- Ben Davies @benjamindavies@twitter
 
   GNU Parallel makes my life so much easier.

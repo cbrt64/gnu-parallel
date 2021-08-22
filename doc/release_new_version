@@ -100,7 +100,7 @@ lbry://@GnuParallel#4/parallel-20210322.tar.bz2
 # 
 # Tags: gnu parallel software
 
-
+. .last-doitag.txt
 file_path="`pwd`/parallel-$YYYYMMDD.tar.bz2"
 title="GNU Parallel $YYYYMMDD ('$SPCTAG')"
 name="GNU-Parallel-$YYYYMMDD-$TAG"
@@ -255,30 +255,32 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210822 ('South Africa/Kristina Timanovskaya/turkish fire/greek fire/tysk syndflod/Tunesia') released <<[stable]>>
+Subject: GNU Parallel 20210822 ('Kabul') released
 
-GNU Parallel 20210822 ('') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
-
-<<No new functionality was introduced so this is a good candidate for a stable release.>>
+GNU Parallel 20210822 ('Kabul') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-  <<>>
+  Safe to say, @GnuParallel was a life changer during my PhD! It helped
+  me optimise so many of my tasks and analyses.
+    -- Parice Brandies @PariceBrandies@twitter
   
 New in this release:
 
-<<>>
+* --ctag/--ctagstring colors the tag in different colors for each job.
+
+* You can use unit prefixes (k, m, g, etc) with -n -N -L.
 
 * Bug fixes and man page updates.
 
+
 News about GNU Parallel:
 
-<<>>
-https://cdmana.com/2021/07/20210728132344693t.html
+* Parallelising jobs with GNU parallel https://blog.ronin.cloud/gnu-parallel/
 
-https://github.com/gibbslab/biobash uses GNU Parallel
+* Use multiple CPU Cores with your Linux commands - awk, sed, bzip2, grep, wc, etc. https://cdmana.com/2021/07/20210728132344693t.html
 
-https://net2.com/how-to-execute-commands-in-parallel-in-linux/
+* How to execute commands in parallel in Linux https://net2.com/how-to-execute-commands-in-parallel-in-linux/
 
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
