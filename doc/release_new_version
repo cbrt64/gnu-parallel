@@ -255,33 +255,31 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210822 ('Kabul') released
+Subject: GNU Parallel 20210922 ('<<>>Vindelev/Chris Donahue/Ida') released <<[stable]>>
 
-GNU Parallel 20210822 ('Kabul') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20210922 ('Vindelev') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
+
+No new functionality was introduced so this is a good candidate for a
+stable release.
 
 Quote of the month:
 
-  Safe to say, @GnuParallel was a life changer during my PhD! It helped
-  me optimise so many of my tasks and analyses.
-    -- Parice Brandies @PariceBrandies@twitter
+  Take a look at GNU Parallel. It’s magnificent.
+    -- Siira@ycombinator.com
   
 New in this release:
 
-* --ctag/--ctagstring colors the tag in different colors for each job.
-
-* You can use unit prefixes (k, m, g, etc) with -n -N -L.
-
 * Bug fixes and man page updates.
-
 
 News about GNU Parallel:
 
-* Parallelising jobs with GNU parallel https://blog.ronin.cloud/gnu-parallel/
+* 3 Programs that will Level Up your Bash Game https://medium.com/codex/3-programs-that-will-level-up-your-bash-game-bf14e17e2291
 
-* Use multiple CPU Cores with your Linux commands - awk, sed, bzip2, grep, wc, etc. https://cdmana.com/2021/07/20210728132344693t.html
+* I Summarized 100+ Command-Line Tools for Data Scientists in 15 Minutes https://towardsdatascience.com/i-summarized-100-command-line-tools-for-data-scientists-in-15-minutes-976def544ffe
 
-* How to execute commands in parallel in Linux https://net2.com/how-to-execute-commands-in-parallel-in-linux/
+* Speed up Your Builds by Parallelizing https://www.incredibuild.com/blog/speed-up-your-builds-by-parallelizing
 
+* Bash: GNU Parallel with Curl https://gist.github.com/dinh/93b936a55de9a331199d6582bc2921d2
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

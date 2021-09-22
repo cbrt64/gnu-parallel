@@ -13,11 +13,13 @@ parallel_alternatives - Alternatives to GNU B<parallel>
 
 =head1 DIFFERENCES BETWEEN GNU Parallel AND ALTERNATIVES
 
-There are a lot programs with some of the functionality of GNU
-B<parallel>. GNU B<parallel> strives to include the best of the
-functionality without sacrificing ease of use.
+There are a lot programs that share functionality with GNU
+B<parallel>. Some of these are specialized tools, and while GNU
+B<parallel> can emulate many of them, a specialized tool can be better
+at a given task. GNU B<parallel> strives to include the best of the
+general functionality without sacrificing ease of use.
 
-B<parallel> has existed since 2002 and as GNU B<parallel> since
+B<parallel> has existed since 2002-01-06 and as GNU B<parallel> since
 2010. A lot of the alternatives have not had the vitality to survive
 that long, but have come and gone during that time.
 
@@ -292,6 +294,9 @@ contain space, " or ').
 
   ls | xargs -d "\n" -P8 -I {} bash -c "wc {} >{}.wc"
   ls | xargs -d "\n" -P8 -I {} bash -c "echo {}; ls {}|wc"
+
+A more extreme example can be found on:
+https://unix.stackexchange.com/q/405552/
 
 https://www.gnu.org/software/findutils/
 

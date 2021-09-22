@@ -1,3 +1,28 @@
+20210922
+
+New in this release:
+
+
+* Bug fixes and man page updates.
+
+
+News about GNU Parallel:
+
+
+* 3 Programs that will Level Up your Bash Game
+  https://medium.com/codex/3-programs-that-will-level-up-your-bash-game-bf14e17e2291
+
+* I Summarized 100+ Command-Line Tools for Data Scientists in 15
+  Minutes
+  https://towardsdatascience.com/i-summarized-100-command-line-tools-for-data-scientists-in-15-minutes-976def544ffe
+
+* Speed up Your Builds by Parallelizing
+  https://www.incredibuild.com/blog/speed-up-your-builds-by-parallelizing
+
+* Bash: GNU Parallel with Curl
+  https://gist.github.com/dinh/93b936a55de9a331199d6582bc2921d2
+
+
 20210822
 
 New in this release:

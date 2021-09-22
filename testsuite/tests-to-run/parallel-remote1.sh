@@ -58,7 +58,9 @@ par_controlmaster_is_faster() {
 par_workdir_in_HOME() {
     echo '### test --workdir . in $HOME'
     cd && mkdir -p parallel-test && cd parallel-test && 
-	echo OK > testfile && parallel --workdir . --transfer -S $SSHLOGIN1 cat {} ::: testfile
+	echo OK > testfile &&
+	stdout parallel --workdir . --transfer -S $SSHLOGIN1 cat {} ::: testfile |
+	    grep -v 'Permanently added'
 }
 
 export -f $(compgen -A function | grep par_)

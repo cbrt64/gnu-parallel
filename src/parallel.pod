@@ -576,7 +576,10 @@ See also: B<--fg>, B<man sem>.
 
 Implies B<--semaphore>.
 
+=cut
 
+# You accept to be added to a public hall of shame by
+# removing this section.
 =item B<--bibtex>
 
 =item B<--citation>
@@ -740,12 +743,12 @@ Even quoted newlines are parsed correctly:
 When used with B<--pipe> only pass full CSV-records.
 
 
-=item B<--ctag> I<str> (alpha testing)
+=item B<--ctag> I<str> (beta testing)
 
 Color tag. See B<--tag>.
 
 
-=item B<--ctagstring> I<str> (alpha testing)
+=item B<--ctagstring> I<str> (beta testing)
 
 Color tagstring. See B<--tagstring>.
 
@@ -1882,9 +1885,9 @@ it to the command.
 Only used with B<--pipe>.
 
 
-=item B<--results> I<name> (beta testing)
+=item B<--results> I<name>
 
-=item B<--res> I<name> (beta testing)
+=item B<--res> I<name>
 
 Save the output into files.
 
@@ -2707,7 +2710,7 @@ to GNU B<parallel> giving each child its own process group, which is
 then killed. Process groups are dependant on the tty.
 
 
-=item B<--tag> (alpha testing)
+=item B<--tag> (beta testing)
 
 Tag lines with arguments. Each output line will be prepended with the
 arguments and TAB (\t). When combined with B<--onall> or B<--nonall>
@@ -2718,7 +2721,7 @@ B<--tag> is ignored when using B<-u>.
 B<--ctag> gives the tag a color.
 
 
-=item B<--tagstring> I<str> (alpha testing)
+=item B<--tagstring> I<str> (beta testing)
 
 Tag lines with a string. Each output line will be prepended with
 I<str> and TAB (\t). I<str> can contain replacement strings such as

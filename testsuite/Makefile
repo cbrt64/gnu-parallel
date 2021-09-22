@@ -104,11 +104,20 @@ prereqlocal: installparallel startvm
 prereqremote: installparallel startvm
 	parallel -j0 --timeout 10 --tag ssh vagrant@parallel-server{} parallel --minversion 20121021 ::: 1 2 || (echo parallel on remote required for testsuite; /bin/true)
 
-startvm:
-	parallel --tag -k 'ping -w 1 -c 1 {} || (cd vagrant/*/{} && vagrant up; wssh vagrant@{} echo {} is up)' ::: centos8 freebsd11 freebsd12 rhel8 centos3 &
+ignore=bytes.of.data|ping.statistics|packets.transmitted|64.bytes.from|\
+  min/avg/max/mdev|default
+start=(stdout ping -w 1 -c 1 {} || \
+  (cd vagrant/*/{} && vagrant up; \
+   wssh vagrant@{} echo {} is up) ) | \
+  grep -Ev "${ignore}"
+stop=(stdout ping -w 1 -c 1 {} && \
+  (cd vagrant/*/{} && vagrant suspend) ) | \
+  grep -Ev "${ignore}"
 
+startvm:
+	parallel --tag -k '${start}' ::: centos8 freebsd11 freebsd12 rhel8 centos3 &
 stopvm:
-	parallel --tag -k 'ping -w 1 -c 1 {} && cd vagrant/*/{} && vagrant suspend' ::: centos8 freebsd11 freebsd12 rhel8 centos3 || true
+	parallel --tag -k '${stop}' ::: centos8 freebsd11 freebsd12 rhel8 centos3 || true
 
 startdb:
 	true TODO should start Oracle in vagrant
