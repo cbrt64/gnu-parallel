@@ -2244,7 +2244,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20210922;
+    $Global::version = 20210923;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -7263,6 +7263,9 @@ sub compute_number_of_processes($) {
 	$count_jobs_already_read = $Global::JobQueue->next_seq();
 	my $wait_time_for_getting_args = 0;
 	my $start_time = time;
+	if($wanted_processes < $Global::infinity) {
+	    $Global::dummy_jobs = 1;
+	}
 	while(1) {
 	    $system_limit >= $wanted_processes and last;
 	    not $more_filehandles and last;
@@ -11577,7 +11580,6 @@ sub len($) {
 	# Worst case is BASE64 encoding 3 bytes -> 4 bytes
 	$len = int($len*4/3);
     }
-
     return $len;
 }
 

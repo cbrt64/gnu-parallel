@@ -11,7 +11,7 @@ par_nonall_should_not_block	### bug #47608: parallel --nonall -S lo 'echo ::: ' 
 par_nonall_should_not_block	:::
 par_progress_text_max_jobs_to_run	### bug #49404: "Max jobs to run" does not equal the number of jobs specified when using GNU Parallel on remote server?
 par_progress_text_max_jobs_to_run	should give 10 running jobs
-par_progress_text_max_jobs_to_run	1:lo / 16 / 10
+par_progress_text_max_jobs_to_run	1:lo / 16 / 16
 par_quoting_for_onall	### bug #35427: quoting of {2} broken for --onall
 par_quoting_for_onall	/bin/ls
 par_remote_function_nice	### functions and --nice

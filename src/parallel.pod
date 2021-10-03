@@ -1197,8 +1197,17 @@ See also: B<--resume> B<--resume-failed>.
 =item B<-P> I<N>
 
 Number of jobslots on each machine. Run up to N jobs in parallel.  0
-means as many as possible. Default is 100% which will run one job per
-CPU on each machine.
+means as many as possible (this can take a while to
+determine). Default is 100% which will run one job per CPU on each
+machine.
+
+Due to a bug B<-j 0> will also evaluate replacement strings twice up
+to the number of joblots:
+
+  # This will not count from 1 but from number-of-jobslots
+  seq 10000 | parallel -j0   echo '{= $_ = $foo++; =}' | head
+  # This will count from 1
+  seq 10000 | parallel -j100 echo '{= $_ = $foo++; =}' | head
 
 If B<--semaphore> is set, the default is 1 thus making a mutex.
 
@@ -4773,6 +4782,10 @@ computers:
 
   true >jobqueue; tail -n+0 -f jobqueue | parallel -S ..
 
+Output only will be printed when reading the next input after a job
+has finished: So you need to submit a job after the first has finished
+to see the output from the first job.
+
 If you keep this running for a long time, jobqueue will grow. A way of
 removing the jobs already run is by making GNU B<parallel> stop when
 it hits a special value and then restart. To use B<--eof> to make GNU
@@ -4801,20 +4814,6 @@ In some cases you can run on more CPUs and computers during the night:
 
 GNU B<parallel> discovers if B<jobfile> or B<~/.parallel/sshloginfile>
 changes.
-
-There is a a small issue when using GNU B<parallel> as queue
-system/batch manager: You have to submit JobSlot number of jobs before
-they will start, and after that you can submit one at a time, and job
-will start immediately if free slots are available.
-
-Output from the running or completed jobs are held back and will only
-be printed when the next job is started (unless you use --ungroup or
---line-buffer, in which case the output from the jobs are printed
-immediately).
-
-E.g. if you have 10 jobslots then the output from the first completed
-job will only be printed when job 11 has started, and the output of
-second completed job will only be printed when job 12 has started.
 
 
 =head2 EXAMPLE: GNU Parallel as dir processor

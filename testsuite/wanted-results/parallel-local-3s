@@ -119,7 +119,7 @@ par_eta	16
 par_eta	### Test of --eta with no jobs
 par_eta	
 par_eta	Computers / CPU cores / Max jobs to run
-par_eta	1:local / 8 / 1
+par_eta	1:local / 8 / 8
 par_eta	par_eta	ETA: 0s Left: 0 AVG: 0.00s  0
 par_exitval_signal	### Test --joblog with exitval and Test --joblog with signal -- timing dependent
 par_exitval_signal	exitval=128+6 OK
@@ -486,7 +486,7 @@ par_progress	16
 par_progress	### Test of --progress with no jobs
 par_progress	
 par_progress	Computers / CPU cores / Max jobs to run
-par_progress	1:local / 8 / 1
+par_progress	1:local / 8 / 8
 par_progress	par_progress	0
 par_replacement_slashslash	### Test {//}
 par_replacement_slashslash	. a
@@ -674,10 +674,10 @@ par_totaljob_repl	10
 par_totaljob_repl	10
 par_totaljob_repl	10
 par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
-par_totaljob_repl	10
+par_totaljob_repl	1
+par_totaljob_repl	2
+par_totaljob_repl	3
+par_totaljob_repl	4
 par_totaljob_repl	10
 par_totaljob_repl	10
 par_totaljob_repl	10
@@ -725,17 +725,17 @@ par_wrong_slot_rpl_resume	4 3
 par_wrong_slot_rpl_resume	1 4
 par_wrong_slot_rpl_resume	2 5
 par_wrong_slot_rpl_resume	3 6
-par_wrong_slot_rpl_resume	4 7
-par_wrong_slot_rpl_resume	1 8
-par_wrong_slot_rpl_resume	2 9
-par_wrong_slot_rpl_resume	3 10
-par_wrong_slot_rpl_resume	4 11
-par_wrong_slot_rpl_resume	1 12
-par_wrong_slot_rpl_resume	2 13
-par_wrong_slot_rpl_resume	3 14
-par_wrong_slot_rpl_resume	4 15
-par_wrong_slot_rpl_resume	1 16
-par_wrong_slot_rpl_resume	2 17
-par_wrong_slot_rpl_resume	3 18
-par_wrong_slot_rpl_resume	4 19
-par_wrong_slot_rpl_resume	1 20
+par_wrong_slot_rpl_resume	1 7
+par_wrong_slot_rpl_resume	2 8
+par_wrong_slot_rpl_resume	3 9
+par_wrong_slot_rpl_resume	4 10
+par_wrong_slot_rpl_resume	1 11
+par_wrong_slot_rpl_resume	2 12
+par_wrong_slot_rpl_resume	3 13
+par_wrong_slot_rpl_resume	4 14
+par_wrong_slot_rpl_resume	1 15
+par_wrong_slot_rpl_resume	2 16
+par_wrong_slot_rpl_resume	3 17
+par_wrong_slot_rpl_resume	4 18
+par_wrong_slot_rpl_resume	1 19
+par_wrong_slot_rpl_resume	2 20

@@ -16,6 +16,23 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_long_input() {
+    echo '### Long input lines should not fail if they are not used'
+    perl -e 'map { print "$_\t"."X"x100000 ."\t".uc($_)."\n" } (a..c)' |
+	parallel --colsep '\t' echo {1}
+    perl -e 'map { print "$_\t"."X"x100000 ."\t".uc($_)."\n" } (a..c)' |
+	parallel --colsep '\t' echo {3}
+    perl -e 'map { print "$_\t"."X"x100000 ."\t".uc($_)."\n" } (a..c)' |
+	parallel --colsep '\t' echo {1} {3}
+
+    perl -e 'map { print "$_\t"."X"x1000000 ."\t".uc($_)."\n" } (a..c)' |
+	parallel --colsep '\t' echo {1}
+    perl -e 'map { print "$_\t"."X"x1000000 ."\t".uc($_)."\n" } (a..c)' |
+	parallel --colsep '\t' echo {3}
+    perl -e 'map { print "$_\t"."X"x1000000 ."\t".uc($_)."\n" } (a..c)' |
+	parallel --colsep '\t' echo {1} {3}
+}
+
 par_ctagstring() {
     echo '### --ctag --ctagstring should be different from --tag --tagstring'
     parallel --tag echo ::: 1 ::: a| wc -c
@@ -92,7 +109,7 @@ EOF
 	     --tmpl "$tmp2"=/tmp/tmpl-{x}-{y}.t2 \
 	     myprog {#}.t1 /tmp/tmpl-{x}-{y}.t2 \
 	     ::: x 1.1 2.22 3.333 ::: y 111.111 222.222 333.333 |
-	perl -pe 's/0.\d{13,}/0.RANDOM_NUMBER/' |
+	perl -pe 's/0.\d{12,}/0.RANDOM_NUMBER/' |
 	perl -pe 's/Slot: \d/Slot: X/'
     rm "$tmp1" "$tmp2"
 }

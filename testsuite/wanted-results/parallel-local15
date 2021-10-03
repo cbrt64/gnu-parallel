@@ -171,6 +171,11 @@ ls | parallel -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" "{=$_=
 4  ab
 4 b
 6 a
+parallel: Warning: Only enough file handles to run 252 jobs in parallel.
+parallel: Warning: Try running 'parallel -j0 -N 252 --pipe parallel -j0'
+parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+parallel: Warning: or increasing /proc/sys/fs/file-max
 ls | parallel --group -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" "{=$_=pQ($_)=}"\n\"}"' | LC_ALL=C sort
 1 1-col.txt
 1 1-col.txt.diff
@@ -280,6 +285,11 @@ ls | parallel --group -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\
 4  ab
 4 b
 6 a
+parallel: Warning: Only enough file handles to run 252 jobs in parallel.
+parallel: Warning: Try running 'parallel -j0 -N 252 --pipe parallel -j0'
+parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+parallel: Warning: or increasing /proc/sys/fs/file-max
 find . -type f | parallel --group  "perl -ne '/^\\S+\\s+\\S+$/ and print \$ARGV,\"\\n\"'" | LC_ALL=C sort
 ./ ab /c' d/ ef"g.diff
 ./ ab /c' d/ ef"g.diff

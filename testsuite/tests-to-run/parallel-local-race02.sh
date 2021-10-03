@@ -6,7 +6,7 @@
 
 # These fail regularly
 
-#par_ctrlz_should_suspend_children() {
+ctrlz_should_suspend_children() {
     echo 'bug #46120: Suspend should suspend (at least local) children'
     echo 'it should burn 1.9 CPU seconds, but no more than that'
     echo 'The 5 second sleep will make it be killed by timeout when it fgs'
@@ -31,7 +31,14 @@
       sleep 5;
       fg;
       echo 1=OK $?' | grep -v '\[1\]' | grep -v 'SHA256'
-#}
+}
+ctrlz_should_suspend_children
+
+par_more_than_9_relative_sshlogin() {
+    echo '### Check more than 9(relative) simultaneous sshlogins'
+    seq 1 11 | stdout parallel -k -j10000% -S "ssh lo" echo |
+	grep -v 'parallel: Warning:'
+}
 
 par_sql_CSV() {
     echo '### CSV write to the right place'

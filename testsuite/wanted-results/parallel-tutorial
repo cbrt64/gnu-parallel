@@ -499,6 +499,11 @@ echo C
   sleep 1
   echo 0 > my_jobs
   wait
+parallel: Warning: Only enough file handles to run 248 jobs in parallel.
+parallel: Warning: Try running 'parallel -j0 -N 248 --pipe parallel -j0'
+parallel: Warning: or increasing 'ulimit -n' (try: ulimit -n `ulimit -Hn`)
+parallel: Warning: or increasing 'nofile' in /etc/security/limits.conf
+parallel: Warning: or increasing /proc/sys/fs/file-max
 9
   parallel --use-cpus-instead-of-cores -N0 sleep 1 :::: num8
   parallel --shuf echo ::: 1 2 3 ::: a b c ::: A B C

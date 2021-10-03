@@ -698,38 +698,38 @@ par_perlexpr_repl	{=a
 par_perlexpr_repl	{= a
 par_perlexpr_repl	{= a =}
 par_perlexpr_repl	### bug #45842: Do not evaluate {= =} twice
-par_perlexpr_repl	5
-par_perlexpr_repl	6
-par_perlexpr_repl	7
-par_perlexpr_repl	8
-par_perlexpr_repl	5
-par_perlexpr_repl	6
-par_perlexpr_repl	7
-par_perlexpr_repl	8
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	1 2
+par_perlexpr_repl	3 4
+par_perlexpr_repl	5 6
+par_perlexpr_repl	7 8
+par_perlexpr_repl	9 10
+par_perlexpr_repl	11 12
+par_perlexpr_repl	13 14
+par_perlexpr_repl	15 16
 par_perlexpr_repl	17 18
 par_perlexpr_repl	19 20
 par_perlexpr_repl	21 22
 par_perlexpr_repl	23 24
-par_perlexpr_repl	25 26
-par_perlexpr_repl	27 28
-par_perlexpr_repl	29 30
-par_perlexpr_repl	31 32
-par_perlexpr_repl	33 34
-par_perlexpr_repl	35 36
-par_perlexpr_repl	37 38
-par_perlexpr_repl	39 40
+par_perlexpr_repl	1
+par_perlexpr_repl	2
+par_perlexpr_repl	3
+par_perlexpr_repl	4
+par_perlexpr_repl	5
+par_perlexpr_repl	6
+par_perlexpr_repl	7
+par_perlexpr_repl	8
 par_perlexpr_repl	9
 par_perlexpr_repl	10
 par_perlexpr_repl	11
 par_perlexpr_repl	12
-par_perlexpr_repl	13
-par_perlexpr_repl	14
-par_perlexpr_repl	15
-par_perlexpr_repl	16
-par_perlexpr_repl	17
-par_perlexpr_repl	18
-par_perlexpr_repl	19
-par_perlexpr_repl	20
 par_perlexpr_repl	### bug #45939: {2} in {= =} fails
 par_perlexpr_repl	OK
 par_perlexpr_repl	OK-OK

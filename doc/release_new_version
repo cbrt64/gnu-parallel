@@ -234,7 +234,6 @@ New in this release pi.dk/2
 See the intro videos pi.dk/1
 10 secs installation: https://git.savannah.gnu.org/cgit/parallel.git/tree/README
 
-[x] Twitter
 Aspect: Public
 
 GNU Parallel - for people who live life in the parallel lane.
@@ -255,31 +254,32 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20210922 ('<<>>Vindelev/Chris Donahue/Ida') released <<[stable]>>
+Subject: GNU Parallel 20211022 ('<<>>Scholz') released <<[stable]>>
 
-GNU Parallel 20210922 ('Vindelev') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20211022 ('<<>>') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
 
-No new functionality was introduced so this is a good candidate for a
-stable release.
+<<No new functionality was introduced so this is a good candidate for a
+stable release.>>
 
 Quote of the month:
 
-  Take a look at GNU Parallel. It’s magnificent.
-    -- Siira@ycombinator.com
+  <<>>
   
 New in this release:
 
+
 * Bug fixes and man page updates.
 
+
 News about GNU Parallel:
+https://medium.com/codex/3-programs-that-will-level-up-your-bash-game-bf14e17e2291
 
-* 3 Programs that will Level Up your Bash Game https://medium.com/codex/3-programs-that-will-level-up-your-bash-game-bf14e17e2291
+https://towardsdatascience.com/i-summarized-100-command-line-tools-for-data-scientists-in-15-minutes-976def544ffe
+https://www.incredibuild.com/blog/speed-up-your-builds-by-parallelizing
 
-* I Summarized 100+ Command-Line Tools for Data Scientists in 15 Minutes https://towardsdatascience.com/i-summarized-100-command-line-tools-for-data-scientists-in-15-minutes-976def544ffe
+https://gist.github.com/dinh/93b936a55de9a331199d6582bc2921d2
 
-* Speed up Your Builds by Parallelizing https://www.incredibuild.com/blog/speed-up-your-builds-by-parallelizing
 
-* Bash: GNU Parallel with Curl https://gist.github.com/dinh/93b936a55de9a331199d6582bc2921d2
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

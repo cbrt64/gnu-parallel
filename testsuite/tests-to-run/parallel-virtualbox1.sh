@@ -54,5 +54,7 @@ compgen -A function | grep par_ | LC_ALL=C sort |
 	grep -v 'If you believe this message is in error, please check the process' |
 	grep -v 'listing for any "ruby" or "vagrant" processes and kill them. Then' |
 	grep -v 'try again.' |
+	grep -v 'A new version of Vagrant is available:' |
+	grep -v 'To upgrade visit: ' |
 	grep .
 )

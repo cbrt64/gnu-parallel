@@ -998,7 +998,7 @@ echo '###  -s6 echo < files.xi'
 stdout xargs -s6 echo < files.xi
 xargs: argument line too long
 stdout parallel -k -X -s6 echo < files.xi
-parallel: Error: Command line too long (27 >= 6) at input -7: /src/gnu/autoconf-1.11
+parallel: Error: Command line too long (27 >= 6) at input 0: /src/gnu/autoconf-1.11
 echo '###  -iARG -s86 echo ARG is xARGx < files.xi'
 ###  -iARG -s86 echo ARG is xARGx < files.xi
 stdout xargs -iARG -s86 echo ARG is xARGx < files.xi

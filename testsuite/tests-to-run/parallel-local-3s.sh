@@ -338,21 +338,21 @@ par_totaljob_repl() {
     parallel -k -N7 --plus echo {#} {##} ::: {1..14}
     parallel -k -N7 --plus echo {#} {##} ::: {1..15}
     parallel -k -S 8/: -X --plus echo {#} {##} ::: {1..15}
-    parallel -k --plus --delay 0.1 -j 10 'echo {0#}/{##}:{0%}' ::: {1..5} ::: {1..4}
+    parallel -k --plus --delay 0.1 -j 10 'sleep 1; echo {0#}/{##}:{0%}' ::: {1..5} ::: {1..4}
 }
 
 par_jobslot_repl() {
     echo 'bug #46232: {%} with --bar/--eta/--shuf or --halt xx% broken'
 
-    parallel --bar -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-    parallel --halt now,fail=10% -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e
-    parallel --eta -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
-    parallel --shuf -kj2 --delay 0.1 echo {%} ::: a b  ::: c d e 2>/dev/null
+    parallel -kj2 --delay 0.1 --bar  'sleep 0.2;echo {%}' ::: a b  ::: c d e 2>/dev/null
+    parallel -kj2 --delay 0.1 --eta  'sleep 0.2;echo {%}' ::: a b  ::: c d e 2>/dev/null
+    parallel -kj2 --delay 0.1 --shuf 'sleep 0.2;echo {%}' ::: a b  ::: c d e 2>/dev/null
+    parallel -kj2 --delay 0.1 --halt now,fail=10% 'sleep 0.2;echo {%}' ::: a b  ::: c d e
 
     echo 'bug #46231: {%} with --pipepart broken. Should give 1+2'
 
     seq 10000 > /tmp/num10000
-    parallel -k --pipepart -ka /tmp/num10000 --block 10k -j2 --delay 0.05 echo {%}
+    parallel -k --pipepart -ka /tmp/num10000 --block 10k -j2 --delay 0.05 'sleep 0.1; echo {%}'
     rm /tmp/num10000
 }
 
@@ -440,11 +440,11 @@ par_children_receive_sig() {
 par_wrong_slot_rpl_resume() {
     echo '### bug #47644: Wrong slot number replacement when resuming'
     seq 0 20 |
-    parallel -kj 4 --delay 0.2 --joblog /tmp/parallel-bug-47558 \
-	'sleep 1; echo {%} {=$_==10 and exit =}'
+	parallel -kj 4 --delay 0.2 --joblog /tmp/parallel-bug-47558 \
+		 'sleep 1; echo {%} {=$_==10 and exit =}'
     seq 0 20 |
-    parallel -kj 4 --resume --delay 0.2 --joblog /tmp/parallel-bug-47558 \
-	'sleep 1; echo {%} {=$_==110 and exit =}'
+	parallel -kj 4 --resume --delay 0.2 --joblog /tmp/parallel-bug-47558 \
+		 'sleep 1; echo {%} {=$_==110 and exit =}'
 }
 
 par_multiline_commands() {
