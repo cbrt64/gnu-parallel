@@ -492,17 +492,6 @@ par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "
 par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 97
 par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 98
 par_long_cmd_mem_use	perl -e '$r=rand(shift); for($f = 0; $f < $r; $f++){ $a = "a"x100 } print shift,"\n"' 10000 99
-par_long_input	### Long input lines should not fail if they are not used
-par_long_input	a
-par_long_input	c
-par_long_input	b
-par_long_input	A
-par_long_input	C
-par_long_input	B
-par_long_input	parallel: Error: Command line too long (200014 >= 131063) at input 0: a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...
-par_long_input	parallel: Error: Command line too long (1000009 >= 131063) at input 0: a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...
-par_long_input	parallel: Error: Command line too long (1000009 >= 131063) at input 0: a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...
-par_long_input	parallel: Error: Command line too long (2000014 >= 131063) at input 0: a XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX...
 par_maxchar_s	### Test --max-chars and -s: Max number of chars in a line
 par_maxchar_s	line 1 line 1
 par_maxchar_s	line 2

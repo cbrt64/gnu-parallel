@@ -16,23 +16,6 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
-par_long_input() {
-    echo '### Long input lines should not fail if they are not used'
-    perl -e 'map { print "$_\t"."X"x100000 ."\t".uc($_)."\n" } (a..c)' |
-	parallel --colsep '\t' echo {1}
-    perl -e 'map { print "$_\t"."X"x100000 ."\t".uc($_)."\n" } (a..c)' |
-	parallel --colsep '\t' echo {3}
-    perl -e 'map { print "$_\t"."X"x100000 ."\t".uc($_)."\n" } (a..c)' |
-	parallel --colsep '\t' echo {1} {3}
-
-    perl -e 'map { print "$_\t"."X"x1000000 ."\t".uc($_)."\n" } (a..c)' |
-	parallel --colsep '\t' echo {1}
-    perl -e 'map { print "$_\t"."X"x1000000 ."\t".uc($_)."\n" } (a..c)' |
-	parallel --colsep '\t' echo {3}
-    perl -e 'map { print "$_\t"."X"x1000000 ."\t".uc($_)."\n" } (a..c)' |
-	parallel --colsep '\t' echo {1} {3}
-}
-
 par_ctagstring() {
     echo '### --ctag --ctagstring should be different from --tag --tagstring'
     parallel --tag echo ::: 1 ::: a| wc -c

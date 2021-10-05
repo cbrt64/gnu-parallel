@@ -178,6 +178,13 @@ par_interactive	sleep 0.1; echo opt-p 1 ?...y
 par_interactive	sleep 0.1; echo opt-p 2 ?...n
 par_interactive	sleep 0.1; echo opt-p 3 ?...y
 par_interactive	spawn /tmp/parallel-script-for-expect
+par_long_input	### Long input lines should not fail if they are not used
+par_long_input	a a a a
+par_long_input	b b b b
+par_long_input	c c c c
+par_long_input	a a a a
+par_long_input	b b b b
+par_long_input	c c c c
 par_mix_triple_colon_with_quad_colon	### Test :::: mixed with :::
 par_mix_triple_colon_with_quad_colon	### Test :::: < ::: :::
 par_mix_triple_colon_with_quad_colon	6 4 1

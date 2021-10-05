@@ -11266,7 +11266,8 @@ sub slot($) {
 	}
 
 	if($opt::sqlmaster) {
-	    # Insert the V1..Vn for this $seq in SQL table instead of generating one
+	    # Insert the V1..Vn for this $seq in SQL table
+	    # instead of generating one
 	    $Global::sql->insert_records($self->seq(), $self->{'command'},
 					 $self->{'arg_list_flat_orig'});
 	}
@@ -11285,12 +11286,16 @@ sub push($) {
     *Arg::arg = $self->{'arg_list_flat_orig'};
 
     my $quote_arg = ($Global::quote_replace and not $Global::quoting);
+    my $col;
     for my $perlexpr (keys %{$self->{'replacecount'}}) {
-	if($perlexpr =~ /^(\d+) /) {
-	    # Positional
-	    defined($record->[$1-1]) or next;
-	    $self->{'len'}{$perlexpr} +=
-		length $record->[$1-1]->replace($perlexpr,$quote_arg,$self);
+	if($perlexpr =~ /^(-?\d+)(?:\D.*|)$/) {
+	    # Positional replacement string
+	    # Deal with negative positional replacement string
+	    $col = ($1 < 0) ? $1 : $1-1;
+	    if(defined($record->[$col])) {
+		$self->{'len'}{$perlexpr} +=
+		    length $record->[$col]->replace($perlexpr,$quote_arg,$self);
+	    }
 	} else {
 	    for my $arg (@$record) {
 		if(defined $arg) {

@@ -8,6 +8,19 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_long_input() {
+    echo '### Long input lines should not fail if they are not used'
+    longline_tsv() {
+	perl -e '$a = "X"x3000000;
+	  map { print join "\t", $_, $a, "$_/$a.$a", "$a/$_.$a", "$a/$a.$_\n" }
+          (a..c)'
+    }
+    longline_tsv |
+	parallel --colsep '\t' echo {1} {3//} {4/.} '{=5 s/.*\.// =}'
+    longline_tsv |
+	parallel --colsep '\t' echo {-5} {-3//} {-2/.} '{=-1 s/.*\.// =}'
+}
+
 par_plus_slot_replacement() {
     echo '### show {slot} {0%} {0#}'
     parallel -k --plus 'sleep 0.{%};echo {slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
