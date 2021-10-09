@@ -74,8 +74,9 @@ run() {
 		# OK
 		return 0
 	    else
-		keyservers="pgp.surf.nl
-   			    keyserver.bazon.ru
+		keyservers="keyserver.ubuntu.com
+			    pgp.surf.nl
+			    keyserver.bazon.ru
 			    agora.cenditel.gob.ve
 			    pgp.benny-baumann.de"
 		for keyserver in $keyservers ; do
@@ -89,7 +90,7 @@ run() {
 		echo "Cannot fetch keyID 0x88888888, so the signature cannot be checked."
 		return 1
 	    fi
-  	else
+	else
 	    # GnuPG not installed
 	    echo
 	    echo "GnuPG (gpg) is not installed so the signature cannot be checked."
@@ -103,7 +104,7 @@ run() {
 	       perl -e 'exit not grep /^Primary key fingerprint: BE9C B493 81DE 3166 A3BC..66C1 2C62 29E2 FFFF FFF1|^Primary key fingerprint: CDA0 1A42 08C4 F745 0610..7E7B D1AB 4516 8888 8888/, <>'; then
 	    # Source code signed by Ole Tange <ole@tange.dk>
 	    # KeyID FFFFFFF1/88888888
-     	    true
+	    true
 	else
 	    # GnuPG signature failed
 	    echo
@@ -116,8 +117,8 @@ run() {
     else
 	# GnuPG not installed or public keys not downloaded
 	echo "This means that if the code has been changed by criminals, you will not discover that!"
-     	echo
-       	echo "Continue anyway? (y/n)"
+	echo
+	echo "Continue anyway? (y/n)"
 	read YN </dev/tty
 	if test "$YN" = "n"; then
 	    # Stop
@@ -148,7 +149,7 @@ run() {
 	# Is $HOME/bin already in $PATH?
 	if echo "$PATH" | grep "$HOME"/bin >/dev/null; then
 	    # $HOME/bin is already in $PATH
-       	    true
+	    true
 	else
 	    # Add $HOME/bin to $PATH for both bash and csh
 	    echo 'PATH=$PATH:$HOME/bin' >> "$HOME"/.bashrc

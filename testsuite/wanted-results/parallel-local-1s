@@ -838,6 +838,31 @@ par_seqreplace_long_line	### Test --seqreplace and line too long
 par_seqreplace_long_line	      9       1       1     101
 par_seqreplace_long_line	     90       1       1     201
 par_seqreplace_long_line	      1 parallel: Error: Command line too long (309 >= 210) at input 0: 100
+par_skip_first_line	MyHeader
+par_skip_first_line	1
+par_skip_first_line	2
+par_skip_first_line	3
+par_skip_first_line	4
+par_skip_first_line	5
+par_skip_first_line	MyHeader
+par_skip_first_line	6
+par_skip_first_line	7
+par_skip_first_line	8
+par_skip_first_line	9
+par_skip_first_line	MyHeader
+par_skip_first_line	10
+par_skip_first_line	MyHeader
+par_skip_first_line	1
+par_skip_first_line	2
+par_skip_first_line	3
+par_skip_first_line	4
+par_skip_first_line	5
+par_skip_first_line	6
+par_skip_first_line	MyHeader
+par_skip_first_line	7
+par_skip_first_line	8
+par_skip_first_line	9
+par_skip_first_line	10
 par_sql_colsep	### SQL should add Vn columns for --colsep
 par_sql_colsep	/a/A/1/11/
 par_sql_colsep	/a/A/2/22/

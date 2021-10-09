@@ -8,6 +8,14 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_skip_first_line() {
+    tmpdir=$(mktemp)
+    (echo `seq 10000`;echo MyHeader; seq 10) |
+	parallel -k --skip-first-line --pipe --block 10 --header '1' cat
+    (echo `seq 10000`;echo MyHeader; seq 10) > "$tmpdir"
+    parallel -k --skip-first-line --pipepart -a "$tmpdir" --block 10 --header '1' cat
+}
+
 par_long_input() {
     echo '### Long input lines should not fail if they are not used'
     longline_tsv() {

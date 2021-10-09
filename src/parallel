@@ -566,14 +566,26 @@ sub pipe_part_files(@) {
 		"$file is not a seekable file.");
 	::wait_and_exit(255);
     }
-    my $header = find_header(\$buf,open_or_exit($file));
+
+    my $fh = open_or_exit($file);
+    my $firstlinelen = 0;
+    if($opt::skip_first_line) {
+	my $newline;
+	# Read a full line one byte at a time
+	while($firstlinelen += sysread($fh,$newline,1,0)) {
+	    $newline eq "\n" and last;
+	}
+    }
+    my $header = find_header(\$buf,$fh);
     # find positions
-    my @pos = find_split_positions($file,int($Global::blocksize),$header);
+    my @pos = find_split_positions($file,int($Global::blocksize),
+				   $header,$firstlinelen);
     # Make @cat_prepends
     my @cat_prepends = ();
     for(my $i=0; $i<$#pos; $i++) {
 	push(@cat_prepends,
-	     cat_partial($file, 0, length($header), $pos[$i], $pos[$i+1]));
+	     cat_partial($file, $firstlinelen, $firstlinelen+length($header),
+			 $pos[$i], $pos[$i+1]));
     }
     return @cat_prepends;
 }
@@ -618,8 +630,8 @@ sub find_split_positions($$$) {
     #   $opt::recend
     # Returns:
     #   @positions of block start/end
-    my($file, $block, $header) = @_;
-    my $headerlen = length $header;
+    my($file, $block, $header, $firstlinelen) = @_;
+    my $skiplen = $firstlinelen + length $header;
     my $size = -s $file;
     if(-b $file) {
 	# $file is a blockdevice
@@ -627,7 +639,8 @@ sub find_split_positions($$$) {
     }
     $block = int $block;
     if($opt::groupby) {
-	return split_positions_for_group_by($file,$size,$block,$header);
+	return split_positions_for_group_by($file,$size,$block,
+					    $header,$firstlinelen);
     }
     # The optimal dd blocksize for mint, redhat, solaris, openbsd = 2^17..2^20
     # The optimal dd blocksize for freebsd = 2^15..2^17
@@ -637,8 +650,8 @@ sub find_split_positions($$$) {
     my ($recstart,$recend) = recstartrecend();
     my $recendrecstart = $recend.$recstart;
     my $fh = ::open_or_exit($file);
-    push(@pos,$headerlen);
-    for(my $pos = $block+$headerlen; $pos < $size; $pos += $block) {
+    push(@pos,$skiplen);
+    for(my $pos = $block+$skiplen; $pos < $size; $pos += $block) {
 	my $buf;
 	if($recendrecstart eq "") {
 	    # records ends anywhere
@@ -745,14 +758,14 @@ sub split_positions_for_group_by($$$$) {
 	return($v,$vpos);
     }
 
-    my ($file,$size,$block,$header) = @_;
+    my ($file,$size,$block,$header,$firstlinelen) = @_;
     my ($a,$b,$c,$apos,$bpos,$cpos);
     my @pos;
     $fh = open_or_exit($file);
     # Set $Global::group_by_column $Global::group_by_perlexpr
     group_by_loop($fh,$opt::recsep);
     # $xpos = linestart, $x = value at $xpos, $apos < $bpos < $cpos
-    $apos = length $header;
+    $apos = $firstlinelen + length $header;
     for(($a,$apos) = value_at($apos); $apos < $size;) {
 	push @pos, $apos;
 	$bpos = $apos + $block;
@@ -967,6 +980,13 @@ sub spreadstdin() {
     my $in = *STDIN;
     my $timeout = $Global::blocktimeout;
 
+    if($opt::skip_first_line) {
+	my $newline;
+	# Read a full line one byte at a time
+	while(sysread($in,$newline,1,0)) {
+	    $newline eq "\n" and last;
+	}
+    }
     my $header = find_header(\$buf,$in);
     my $anything_written;
     my $eof;
