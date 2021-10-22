@@ -1,4 +1,4 @@
-AC_INIT([parallel], [20210922], [bug-parallel@gnu.org])
+AC_INIT([parallel], [20211022], [bug-parallel@gnu.org])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([

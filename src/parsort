@@ -122,9 +122,9 @@ GetOptions(
     "help" => \$opt::dummy,
     ) || exit(255);
 $Global::progname = ($0 =~ m:(^|/)([^/]+)$:)[1];
-$Global::version = 20210923;
+$Global::version = 20211022;
 if($opt::version) { version(); exit 0; }
-@Global::sortoptions =
+@Global::sortoptions = grep { ! /^-D$/ }
     shell_quote(@ARGV_before[0..($#ARGV_before-$#ARGV-1)]);
 #if($opt::zero_terminated) { $/ = "\0"; }
 
@@ -160,6 +160,7 @@ sub sort_files {
 	 @Global::sortoptions, '::::', @files) || die;
     my @cmd = merge(<$par>);
     close $par;
+    debug(@cmd);
     # The command uses <(...) so it is incompatible with /bin/sh
     open(my $bash,"|-","bash") || die;
     print $bash @cmd;
@@ -218,6 +219,13 @@ sub tmpfifo {
     my $tmpfifo = tmpname("psort");
     mkfifo($tmpfifo,0600);
     return $tmpfifo;
+}
+
+sub debug {
+    # Returns: N/A
+    $opt::D or return;
+    @_ = grep { defined $_ ? $_ : "" } @_;
+    print STDERR @_[1..$#_];
 }
 
 sub version() {

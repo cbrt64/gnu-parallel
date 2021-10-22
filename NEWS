@@ -1,13 +1,30 @@
+20211022
+
+New in this release:
+
+* Don't postpone output until $jobslots jobs have been started.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* How to Install GNU Parallel using Anaconda | Linux
+  https://www.youtube.com/watch?v=UwDNVP-L0qA
+
+* Install GNU Parallel from source code | Linux
+  https://www.youtube.com/watch?v=PIyJH4ben5o
+
+* Compiling GNU Parallel on CentOS-7
+  https://thelinuxcluster.com/2021/10/19/compiling-gnu-parallel-on-centos-7/
+
+
 20210922
 
 New in this release:
 
-
 * Bug fixes and man page updates.
 
-
 News about GNU Parallel:
-
 
 * 3 Programs that will Level Up your Bash Game
   https://medium.com/codex/3-programs-that-will-level-up-your-bash-game-bf14e17e2291

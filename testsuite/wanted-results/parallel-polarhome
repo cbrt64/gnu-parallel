@@ -1249,6 +1249,9 @@ qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
+qnx	/bin/sh: shopt: cannot execute - No such file or directory
+qnx	/bin/sh: shopt: cannot execute - No such file or directory
+qnx	/bin/sh: shopt: cannot execute - No such file or directory
 qnx	/bin/sh: syntax error: `(' unexpected
 raspbian	2 2 3 2 3 4
 redhat	2 2 3 2 3 4
@@ -1288,7 +1291,7 @@ netbsd	var1: Undefined variable.
 openbsd	1 2,1 2 3,1 2 3 4
 openindiana	1 2,1 2 3,1 2 3 4
 pidora	1 2,1 2 3,1 2 3 4
-qnx	,,
+qnx	1 2,1 2 3,1 2 3 4
 qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
 raspbian	1 2,1 2 3,1 2 3 4
 redhat	1 2,1 2 3,1 2 3 4
@@ -1322,6 +1325,9 @@ qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	/bin/sh: compgen: cannot execute - No such file or directory
 qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
+qnx	/bin/sh: shopt: cannot execute - No such file or directory
+qnx	/bin/sh: shopt: cannot execute - No such file or directory
+qnx	/bin/sh: shopt: cannot execute - No such file or directory
 raspbian	2,2 3,2 3 4
 redhat	2,2 3,2 3 4
 scosysv	2,2 3,2 3 4

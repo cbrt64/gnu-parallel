@@ -37,7 +37,9 @@ par_filter_hosts_different_errors() {
 
 par_timeout_retries() {
     echo '### test --timeout --retries'
-    parallel -j0 --timeout 5 --retries 3 -k ssh {} echo {} ::: 192.168.1.197 8.8.8.8 $SSHLOGIN1 $SSHLOGIN2 $SSHLOGIN3
+    stdout parallel -j0 --timeout 5 --retries 3 -k ssh {} echo {} \
+	   ::: 192.168.1.197 8.8.8.8 $SSHLOGIN1 $SSHLOGIN2 $SSHLOGIN3 |
+	grep -v 'Warning: Permanently added'
 }
 
 par_filter_hosts_no_ssh_nxserver() {

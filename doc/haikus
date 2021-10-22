@@ -14,10 +14,6 @@ Quote of the month:
   Have you heard of our lord and saviour GNU parallel?
     -- kxyne @Kxyne@twitter
 
-  GNU parallel is a severely underrated tool for just spawning a
-  shitload of tasks. I use it every day and fucking love it.
-    -- Jane @serialexpjane@twitter
-
   Installing GNU parallel is the second thing I do on any new Linux
   machine, right after uninstalling pulseaudio.
     -- Andy Cooper @integgroll@twitter
@@ -130,6 +126,10 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  GNU parallel is a severely underrated tool for just spawning a
+  shitload of tasks. I use it every day and fucking love it.
+    -- Jane @serialexpjane@twitter
 
   Take a look at GNU Parallel. It’s magnificent.
     -- Siira@ycombinator.com
