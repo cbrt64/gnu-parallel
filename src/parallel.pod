@@ -3293,7 +3293,7 @@ B<--env>:
   parallel --env doubleit -S server doubleit ::: 1 2 3 ::: a b
 
 If your environment (aliases, variables, and functions) is small you
-can copy the full environment without having to B<export -f>
+can copy the full environment without having to B<export -f >
 anything. See B<env_parallel>.
 
 

@@ -24,7 +24,14 @@ par_ctagstring() {
     parallel --ctagstring 'I{1}\tB{2}' echo ::: 1 ::: a | wc -c
 }
 
-par_pct() {
+par_plus() {
+    echo '### --plus'
+    echo '(It is OK to start with extra / or end with extra .)'
+    parallel -k --plus echo {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = \
+             {..}.{+..} = {+/}/{/..}.{+..} = {...}.{+...} = \
+             {+/}/{/...}.{+...} \
+	     ::: a a.b a.b.c a.b.c.d a/1 a.b/1.2 a.b.c/1.2.3 a.b.c.d/1.2.3.4
+    
     echo '### Test {%...} {%%...} {#...} {##...}'
     a=z.z.z.foo
     echo ${a#z*z.}
