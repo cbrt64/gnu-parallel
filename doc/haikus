@@ -4,6 +4,17 @@
  
 Quote of the month:
 
+
+@a201
+4
+  اليوم علمت بأداة تساعد على تشغيل أوامر الصدفة بشكل متوازي حسب عدد الأنوية الموجودة مما يجعلها أداة أساسية في عدة تنفيذ المهام.
+  الأداة اسمها gnu parallel
+    -- @AbuEsra2014@twitter زايد السعيدي
+
+  GNU parallel is very easy to use and has many features for
+  specialized use cases. It’s a Perl script.
+    -- @harlekyn@twitter uʎʞǝlɹɐɥ 
+
   GNU parallelという神ツールを発見した
     -- @schnell1232@twitter
 
@@ -132,6 +143,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  GNU parallel 便利すぎ
+    -- @butagannen@twitter 豚顔面
 
   GNU parallel is a severely underrated tool for just spawning a
   shitload of tasks. I use it every day and fucking love it.

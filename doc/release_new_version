@@ -254,31 +254,26 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20211022 ('Sinclair') released
+Subject: GNU Parallel 20211122 ('Peng Shuai') released [stable]
 
-GNU Parallel 20211022 ('Sinclair') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20211122 ('Peng Shuai') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
+
+No new functionality was introduced so this is a good candidate for a stable release.
 
 Quote of the month:
 
-  GNU parallel is a severely underrated tool for just spawning a
-  shitload of tasks. I use it every day and fucking love it.
-    -- Jane @serialexpjane@twitter
+  GNU parallel 便利すぎ
+    -- @butagannen@twitter 豚顔面
   
 New in this release:
 
-* Don't postpone output until $jobslots jobs have been started.
-
 * Bug fixes and man page updates.
-
 
 News about GNU Parallel:
 
-* How to Install GNU Parallel using Anaconda | Linux https://www.youtube.com/watch?v=UwDNVP-L0qA
+* Otimizando o seu Hacking com o GNU Parallel - Mateus Buogo https://www.youtube.com/watch?v=xIpPPZXDKGU
 
-* Install GNU Parallel from source code | Linux https://www.youtube.com/watch?v=PIyJH4ben5o
-
-* Compiling GNU Parallel on CentOS-7 https://thelinuxcluster.com/2021/10/19/compiling-gnu-parallel-on-centos-7/
-
+* SMACK 12 - Do it faster! Simple ways to use all those cores (and GPUs) efficiently. https://www.youtube.com/watch?v=lXDGY7NvOYk
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
