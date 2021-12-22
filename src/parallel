@@ -924,7 +924,7 @@ sub group_by_loop($$) {
     return $loop;
 }
 
-sub group_by_stdin_filter() {
+sub pipe_group_by_setup() {
     # Record separator with 119 bit random value
     $opt::recend = '';
     $opt::recstart =
@@ -2264,7 +2264,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20211122;
+    $Global::version = 20211222;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5077,8 +5077,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2021, November 22). GNU Parallel 20211122 ('Peng Shuai').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.5719513",
+         "  Tange, O. (2021, December 22). GNU Parallel 20211222 ('Støjberg').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.5797028",
 	 "",
 	 # Before changing these lines,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -5110,8 +5110,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2021, November 22). GNU Parallel 20211122 ('Peng Shuai').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.5719513",
+	     "  Tange, O. (2021, December 22). GNU Parallel 20211222 ('Støjberg').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.5797028",
 	     "",
 	     # Before changing these line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5236,20 +5236,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2021_5719513,",
+	"\@software{tange_2021_5797028,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20211122 ('Peng Shuai')},",
-	"      month        = Nov,",
+	"      title        = {GNU Parallel 20211222 ('Støjberg')},",
+	"      month        = Dec,",
 	"      year         = 2021,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.5719513},",
-	"      url          = {https://doi.org/10.5281/zenodo.5719513}",
+	"      doi          = {10.5281/zenodo.5797028},",
+	"      url          = {https://doi.org/10.5281/zenodo.5797028}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2021_5719513})",
+	"(Feel free to use \\nocite{tange_2021_5797028})",
 	"",
 	# Before changing these lines, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -13991,15 +13991,16 @@ sub main() {
 
     if($opt::pipepart) {
 	pipepart_setup();
-    } elsif($opt::pipe and $opt::tee) {
-	pipe_tee_setup();
-    } elsif($opt::pipe and $opt::shard or $opt::bin) {
-	pipe_shard_setup();
+    } elsif($opt::pipe) {
+	if($opt::tee) {
+	    pipe_tee_setup();
+	} elsif($opt::shard or $opt::bin) {
+	    pipe_shard_setup();
+	} elsif($opt::groupby) {
+	    pipe_group_by_setup();
+	}
     }
 
-    if(not $opt::pipepart and $opt::groupby) {
-	group_by_stdin_filter();
-    }
     if($opt::eta or $opt::bar or $opt::shuf or $Global::halt_pct) {
 	# Count the number of jobs or shuffle all jobs
 	# before starting any.

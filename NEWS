@@ -1,3 +1,26 @@
+20211222
+
+New in this release:
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* The first version of Parallel will be 20 years on 2022-01-06
+
+* HerrComp Intro HPC gnu parallel
+  https://www.youtube.com/watch?v=tcgjKWfgWQY
+
+* 多数のファイルを処理する場合の工夫
+  https://qiita.com/toramili/items/44a770cfb9ef1edc9e26
+
+* How To Install parallel on Ubuntu 20.04
+  https://installati.one/ubuntu/20.04/parallel/
+
+* Distributing embarrassingly parallel tasks GNU Parallel
+  https://ulhpc-tutorials.readthedocs.io/en/latest/sequential/gnu-parallel/
+
+
 20211122
 
 New in this release:

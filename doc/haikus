@@ -53,7 +53,7 @@ Quote of the month:
   This is a fantastic tool, and I wish I had upgraded from xargs years ago!
     -- Stuart Anderson
 
-  GNU Parallel and ripgrep would be your friend here. Ripgrep is fast, really fast.
+  GNU Parallel and ripgrep would be your friend here.
     -- CENAPT @cenaptech@twitter
 
   GNU Parallel is great
@@ -81,9 +81,6 @@ Quote of the month:
   involved
   involved
     -- rrees @rrees@twitter
-
-  My favorite man page is that of GNU parallel.
-    -- Jeroen Janssens @jeroenhjanssens@twitter
 
   I have gotten a *ton* of mileage out of jq, awk, and GNU parallel,
   even at multi-GB sizes.
@@ -143,6 +140,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  My favorite man page is that of GNU parallel.
+    -- Jeroen Janssens @jeroenhjanssens@twitter
 
   GNU parallel 便利すぎ
     -- @butagannen@twitter 豚顔面

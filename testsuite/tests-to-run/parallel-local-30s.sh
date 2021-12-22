@@ -8,6 +8,61 @@
 # Each should be taking 30-100s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_shard() {
+    echo '### --shard'
+    # Each of the 5 lines should match:
+    #   ##### ##### ######
+    seq 100000 | parallel --pipe --shard 1 -j5  wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Data should be sharded to all processes
+    shard_on_col() {
+	col=$1
+	seq 10 99 | shuf | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard $col -j2 --colsep "\t" sort -k$col |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col 1
+    shard_on_col 2
+
+    shard_on_col_name() {
+	colname=$1
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard $colname -j2 --colsep "\t" sort -k$col |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_name A 1
+    shard_on_col_name B 2
+
+    shard_on_col_expr() {
+	colexpr="$1"
+	col=$2
+	(seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_expr '1 $_%=3' 1
+    shard_on_col_expr '2 $_%=3' 2
+
+    shard_on_col_name_expr() {
+	colexpr="$1"
+	col=$2
+	(echo AB; seq 10 99 | shuf) | perl -pe 's/(.)/$1\t/g' |
+	    parallel --header : --pipe --shard "$colexpr" -j2 --colsep "\t" "sort -k$col; echo c1 c2" |
+	    field $col | sort | uniq -c
+    }
+    shard_on_col_name_expr 'A $_%=3' 1
+    shard_on_col_name_expr 'B $_%=3' 2
+    
+    echo '*** broken'
+    # Shorthand for --pipe -j+0
+    seq 200000 | parallel --pipe --shard 1 wc |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Combine with arguments
+    seq 200000 | parallel --pipe --shard 1 echo {}\;wc ::: {1..5} ::: a b |
+	perl -pe 's/(.*\d{5,}){3}/OK/'
+}
+
 par_test_diff_roundrobin_k() {
     echo '### test there is difference on -k'
     . $(which env_parallel.bash)

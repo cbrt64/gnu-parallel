@@ -254,16 +254,16 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20211122 ('Peng Shuai') released [stable]
+Subject: GNU Parallel 20211222 ('Støjberg') released [stable]
 
-GNU Parallel 20211122 ('Peng Shuai') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20211222 ('Støjberg') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
 
 No new functionality was introduced so this is a good candidate for a stable release.
 
 Quote of the month:
 
-  GNU parallel 便利すぎ
-    -- @butagannen@twitter 豚顔面
+  My favorite man page is that of GNU parallel.
+    -- Jeroen Janssens @jeroenhjanssens@twitter
   
 New in this release:
 
@@ -271,9 +271,16 @@ New in this release:
 
 News about GNU Parallel:
 
-* Otimizando o seu Hacking com o GNU Parallel - Mateus Buogo https://www.youtube.com/watch?v=xIpPPZXDKGU
+* The first version of Parallel will be 20 years on 2022-01-06
 
-* SMACK 12 - Do it faster! Simple ways to use all those cores (and GPUs) efficiently. https://www.youtube.com/watch?v=lXDGY7NvOYk
+* HerrComp Intro HPC gnu parallel https://www.youtube.com/watch?v=tcgjKWfgWQY
+
+* 多数のファイルを処理する場合の工夫 https://qiita.com/toramili/items/44a770cfb9ef1edc9e26
+
+* How To Install parallel on Ubuntu 20.04 https://installati.one/ubuntu/20.04/parallel/
+
+* Distributing embarrassingly parallel tasks GNU Parallel https://ulhpc-tutorials.readthedocs.io/en/latest/sequential/gnu-parallel/
+
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

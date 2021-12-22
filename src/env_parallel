@@ -30,10 +30,10 @@ installer() {
     source="$1"
     script="$2"
     into="$3"
-    if grepq $script $into; then
+    if grepq $script "$into"; then
 	true already installed
     else
-	echo $source \`which $script\` >> $into
+	echo $source \`which $script\` >> "$into"
     fi
 }
 
@@ -42,32 +42,32 @@ while test $# -gt 0; do
 
   case $key in
       -i|--install)
-	  installer . env_parallel.bash  $HOME/.bashrc
-	  installer . env_parallel.sh  $HOME/.shrc
-	  installer . env_parallel.zsh   $HOME/.zshenv
-	  installer source env_parallel.ksh $HOME/.kshrc
-	  installer source env_parallel.mksh $HOME/.mkshrc
+	  installer . env_parallel.bash  "$HOME"/.bashrc
+	  installer . env_parallel.sh  "$HOME"/.shrc
+	  installer . env_parallel.zsh   "$HOME"/.zshenv
+	  installer source env_parallel.ksh "$HOME"/.kshrc
+	  installer source env_parallel.mksh "$HOME"/.mkshrc
 	  echo $SHELL | grepq /pdksh &&
-	      installer . env_parallel.pdksh $HOME/.profile
+	      installer . env_parallel.pdksh "$HOME"/.profile
 	  echo $SHELL | grepq /ash &&
-	      installer . env_parallel.ash $HOME/.profile
+	      installer . env_parallel.ash "$HOME"/.profile
 	  echo $SHELL | grepq /dash &&
-	      installer . env_parallel.dash $HOME/.profile
-	  installer source env_parallel.csh $HOME/.cshrc
-	  installer source env_parallel.tcsh $HOME/.tcshrc
-	  mkdir -p $HOME/.config/fish
-	  grepq env_parallel.fish $HOME/.config/fish/config.fish ||
-  	    echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
+	      installer . env_parallel.dash "$HOME"/.profile
+	  installer source env_parallel.csh "$HOME"/.cshrc
+	  installer source env_parallel.tcsh "$HOME"/.tcshrc
+	  mkdir -p "$HOME"/.config/fish
+	  grepq env_parallel.fish "$HOME"/.config/fish/config.fish ||
+  	    echo '. (which env_parallel.fish)' >> "$HOME"/.config/fish/config.fish
   	  echo 'Installed env_parallel in:'
-  	  echo "    " $HOME/.bashrc
-  	  echo "    " $HOME/.shrc
-  	  echo "    " $HOME/.zshenv
-  	  echo "    " $HOME/.config/fish/config.fish
-  	  echo "    " $HOME/.kshrc
-  	  echo "    " $HOME/.mkshrc
-  	  echo "    " $HOME/.profile
-  	  echo "    " $HOME/.cshrc
-  	  echo "    " $HOME/.tcshrc
+  	  echo "    " "$HOME"/.bashrc
+  	  echo "    " "$HOME"/.shrc
+  	  echo "    " "$HOME"/.zshenv
+  	  echo "    " "$HOME"/.config/fish/config.fish
+  	  echo "    " "$HOME"/.kshrc
+  	  echo "    " "$HOME"/.mkshrc
+  	  echo "    " "$HOME"/.profile
+  	  echo "    " "$HOME"/.cshrc
+  	  echo "    " "$HOME"/.tcshrc
   	  exit
       ;;
       *)

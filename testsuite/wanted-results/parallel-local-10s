@@ -936,97 +936,6 @@ par_semaphore	job3a 4
 par_semaphore	job2b 5
 par_semaphore	job3b 6
 par_semaphore	done
-par_shard	### --shard
-par_shard	OK
-par_shard	OK
-par_shard	OK
-par_shard	OK
-par_shard	OK
-par_shard	     10 1
-par_shard	     10 2
-par_shard	     10 3
-par_shard	     10 4
-par_shard	     10 5
-par_shard	     10 6
-par_shard	     10 7
-par_shard	     10 8
-par_shard	     10 9
-par_shard	      9 0
-par_shard	      9 1
-par_shard	      9 2
-par_shard	      9 3
-par_shard	      9 4
-par_shard	      9 5
-par_shard	      9 6
-par_shard	      9 7
-par_shard	      9 8
-par_shard	      9 9
-par_shard	     10 1
-par_shard	     10 2
-par_shard	     10 3
-par_shard	     10 4
-par_shard	     10 5
-par_shard	     10 6
-par_shard	     10 7
-par_shard	     10 8
-par_shard	     10 9
-par_shard	      9 0
-par_shard	      9 1
-par_shard	      9 2
-par_shard	      9 3
-par_shard	      9 4
-par_shard	      9 5
-par_shard	      9 6
-par_shard	      9 7
-par_shard	      9 8
-par_shard	      9 9
-par_shard	     10 1
-par_shard	     10 2
-par_shard	     10 3
-par_shard	     10 4
-par_shard	     10 5
-par_shard	     10 6
-par_shard	     10 7
-par_shard	     10 8
-par_shard	     10 9
-par_shard	      2 c1
-par_shard	      9 0
-par_shard	      9 1
-par_shard	      9 2
-par_shard	      9 3
-par_shard	      9 4
-par_shard	      9 5
-par_shard	      9 6
-par_shard	      9 7
-par_shard	      9 8
-par_shard	      9 9
-par_shard	      2 c2
-par_shard	     10 1
-par_shard	     10 2
-par_shard	     10 3
-par_shard	     10 4
-par_shard	     10 5
-par_shard	     10 6
-par_shard	     10 7
-par_shard	     10 8
-par_shard	     10 9
-par_shard	      2 c1
-par_shard	      9 0
-par_shard	      9 1
-par_shard	      9 2
-par_shard	      9 3
-par_shard	      9 4
-par_shard	      9 5
-par_shard	      9 6
-par_shard	      9 7
-par_shard	      9 8
-par_shard	      9 9
-par_shard	      2 c2
-par_shard	*** broken
-par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
-par_shard	parallel: Error: arguments. Increase --jobs.
-par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
-par_shard	parallel: Error: arguments. Increase --jobs.
 par_shellquote	### Test --shellquote in all shells
 par_shellquote	ash	'	
 par_shellquote	ash	par_shellquote	ash	 !"#$%&'"'"'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~€‚ƒ„…†‡ˆ‰Š‹Œ‘’“”•–—˜™š›œŸ ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏĞÑÒÓÔÕÖ×ØÙÚÛÜİŞßàáâãäåæçèéêëìíîïğñòóôõö÷øùúûüışÿ'
