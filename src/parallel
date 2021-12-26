@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free
+# Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free
 # Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # or write to the Free Software Foundation, Inc., 51 Franklin St,
 # Fifth Floor, Boston, MA 02110-1301 USA
 #
-# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # open3 used in Job::start
@@ -196,14 +196,21 @@ sub pipe_tee_setup() {
 	`echo | tee --output-error=warn-nopipe /dev/null >/dev/null 2>/dev/null`;
 	my $opt = $? ? "" : "--output-error=warn-nopipe";
 	::debug("init","tee $opt");
-	# Let tee inherit our stdin
-	# and redirect stdout to null
-	open STDOUT, ">","/dev/null";
-	if($opt) {
-	    exec "tee", $opt, @fifos;
+	if($opt::dryrun) {
+	    # This is not exactly what is run, but it gives the basic idea
+	    print "mkfifo @fifos\n";
+	    print "tee $opt @fifos >/dev/null &\n";
 	} else {
-	    exec "tee", @fifos;
+	    # Let tee inherit our stdin
+	    # and redirect stdout to null
+	    open STDOUT, ">","/dev/null";
+	    if($opt) {
+		exec "tee", $opt, @fifos;
+	    } else {
+		exec "tee", @fifos;
+	    }
 	}
+	exit(0);
     }
     # For each fifo
     #   (rm fifo1; grep 1) < fifo1
@@ -2546,11 +2553,14 @@ sub parse_semaphore() {
     }
     if($Global::semaphore) {
 	if(@opt::a) {
-	    # A semaphore does not take input from neither stdin nor file
-	    ::error("A semaphore does not take input from neither stdin nor a file\n");
-	    ::wait_and_exit(255);
+	    # Assign the first -a to STDIN
+	    open(STDIN,"<",shift @opt::a);
+	    if(@opt::a) {
+		# We currently have no way of dealing with more -a
+		::error("A semaphore cannot take input from more files\n");
+		::wait_and_exit(255);
+	    }
 	}
-	@opt::a = ("/dev/null");
 	# Append a dummy empty argument
 	# \0 => nothing (not the empty string)
         push(@Global::unget_argv, [Arg->new("\0noarg")]);
@@ -5208,7 +5218,7 @@ sub version() {
     print join
 	("\n",
 	 "GNU $Global::progname $Global::version",
-	 "Copyright (C) 2007-2021 Ole Tange, http://ole.tange.dk and Free Software",
+	 "Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free Software",
 	 "Foundation, Inc.",
 	 "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>",
 	 "This is free software: you are free to change and redistribute it.",
@@ -5343,7 +5353,7 @@ sub embed() {
 	}
 	print "#!$Global::shell
 
-# Copyright (C) 2007-2021 $user, Ole Tange, http://ole.tange.dk
+# Copyright (C) 2007-2022 $user, Ole Tange, http://ole.tange.dk
 # and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -10073,8 +10083,8 @@ sub start($) {
 	}
 	$job->set_fh(0,"w",$stdin_fh);
 	if($opt::tee or $opt::shard or $opt::bin) { $job->set_virgin(0); }
-    } elsif ($opt::tty and -c "/dev/tty" and
-	     open(my $devtty_fh, "<", "/dev/tty")) {
+    } elsif($opt::tty and -c "/dev/tty" and
+	    open(my $devtty_fh, "<", "/dev/tty")) {
 	# Give /dev/tty to the command if no one else is using it
 	# The eval is needed to catch exception from open3
 	local (*IN,*OUT,*ERR);
@@ -10091,6 +10101,10 @@ sub start($) {
 	    1;
 	};
 	close $devtty_fh;
+	$job->set_virgin(0);
+    } elsif($opt::semaphore) {
+	# Allow sem to read from stdin
+	$pid = open3_setpgrp("<&STDIN",$stdout_fh,$stderr_fh,$command);
 	$job->set_virgin(0);
     } else {
 	$pid = open3_setpgrp(::gensym(),$stdout_fh,$stderr_fh,$command);

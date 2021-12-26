@@ -1,103 +1,98 @@
-echo '### Test mutex. This should not mix output';   parallel --semaphore --id mutex -u seq 1 10 '|' pv -qL 20;   parallel --semaphore --id mutex -u seq 11 20 '|' pv -qL 100;   parallel --semaphore --id mutex --wait;   echo done
-### Test mutex. This should not mix output
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-done
-echo '### Test similar example as from man page - run 2 jobs simultaneously'
-### Test similar example as from man page - run 2 jobs simultaneously
-echo 'Expect done: 1 2 5 3 4'
-Expect done: 1 2 5 3 4
-for i in 5 1 2 3 4 ; do   sleep 0.2;   echo Scheduling $i;   sem -j2 --id ex2jobs -u echo starting $i ";" sleep $i ";" echo done $i; done; sem --id ex2jobs --wait
-Scheduling 5
-starting 5
-Scheduling 1
-starting 1
-Scheduling 2
-done 1
-starting 2
-Scheduling 3
-done 2
-starting 3
-Scheduling 4
-done 5
-starting 4
-done 3
-done 4
-echo '### Test --fg followed by --bg'
-### Test --fg followed by --bg
-  parallel -u --id fgbg --fg --semaphore seq 1 10 '|' pv -qL 30;   parallel -u --id fgbg --bg --semaphore seq 11 20 '|' pv -qL 30;   parallel -u --id fgbg --fg --semaphore seq 21 30 '|' pv -qL 30;   parallel -u --id fgbg --bg --semaphore seq 31 40 '|' pv -qL 30;   sem --id fgbg --wait
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-echo '### Test bug #33621: --bg -p should give an error message'
-### Test bug #33621: --bg -p should give an error message
-  stdout parallel -p --bg echo x{}
-parallel: Error: Jobs running in the background cannot be interactive.
-echo '### Failed on 20141226'
-### Failed on 20141226
-  sem --fg --line-buffer --id bugin20141226 echo OK
-OK
-echo '### Test --st +1/-1'
-### Test --st +1/-1
-  stdout sem --id st --line-buffer "echo A normal-start;sleep 3;echo C normal-end";   stdout sem --id st --line-buffer --st 1 "echo B st1-start;sleep 3;echo D st1-end";   stdout sem --id st --line-buffer --st -1 "echo ERROR-st-1-start;sleep 3;echo ERROR-st-1-end";   stdout sem --id st --wait
-A normal-start
-parallel: Warning: Semaphore timed out. Stealing the semaphore.
-B st1-start
-C normal-end
-parallel: Warning: Semaphore timed out. Exiting.
-D st1-end
+par_2jobs	### Test similar example as from man page - run 2 jobs simultaneously
+par_2jobs	Expect done: 1 2 5 3 4
+par_2jobs	Scheduling 5
+par_2jobs	starting 5
+par_2jobs	Scheduling 1
+par_2jobs	starting 1
+par_2jobs	Scheduling 2
+par_2jobs	done 1
+par_2jobs	starting 2
+par_2jobs	Scheduling 3
+par_2jobs	done 2
+par_2jobs	starting 3
+par_2jobs	Scheduling 4
+par_2jobs	done 5
+par_2jobs	starting 4
+par_2jobs	done 3
+par_2jobs	done 4
+par_bg_p_should_error	### Test bug #33621: --bg -p should give an error message
+par_bg_p_should_error	parallel: Error: Jobs running in the background cannot be interactive.
+par_fg_line-buffer	### Failed on 20141226
+par_fg_line-buffer	OK
+par_fg_then_bg	### Test --fg followed by --bg
+par_fg_then_bg	1
+par_fg_then_bg	2
+par_fg_then_bg	3
+par_fg_then_bg	4
+par_fg_then_bg	5
+par_fg_then_bg	6
+par_fg_then_bg	7
+par_fg_then_bg	8
+par_fg_then_bg	9
+par_fg_then_bg	10
+par_fg_then_bg	11
+par_fg_then_bg	12
+par_fg_then_bg	13
+par_fg_then_bg	14
+par_fg_then_bg	15
+par_fg_then_bg	16
+par_fg_then_bg	17
+par_fg_then_bg	18
+par_fg_then_bg	19
+par_fg_then_bg	20
+par_fg_then_bg	21
+par_fg_then_bg	22
+par_fg_then_bg	23
+par_fg_then_bg	24
+par_fg_then_bg	25
+par_fg_then_bg	26
+par_fg_then_bg	27
+par_fg_then_bg	28
+par_fg_then_bg	29
+par_fg_then_bg	30
+par_fg_then_bg	31
+par_fg_then_bg	32
+par_fg_then_bg	33
+par_fg_then_bg	34
+par_fg_then_bg	35
+par_fg_then_bg	36
+par_fg_then_bg	37
+par_fg_then_bg	38
+par_fg_then_bg	39
+par_fg_then_bg	40
+par_mutex	### Test mutex. This should not mix output
+par_mutex	1
+par_mutex	2
+par_mutex	3
+par_mutex	4
+par_mutex	5
+par_mutex	6
+par_mutex	7
+par_mutex	8
+par_mutex	9
+par_mutex	10
+par_mutex	11
+par_mutex	12
+par_mutex	13
+par_mutex	14
+par_mutex	15
+par_mutex	16
+par_mutex	17
+par_mutex	18
+par_mutex	19
+par_mutex	20
+par_mutex	done
+par_semaphore-timeout	### Test --st +1/-1
+par_semaphore-timeout	A normal-start
+par_semaphore-timeout	parallel: Warning: Semaphore timed out. Stealing the semaphore.
+par_semaphore-timeout	B st1-start
+par_semaphore-timeout	C normal-end
+par_semaphore-timeout	parallel: Warning: Semaphore timed out. Exiting.
+par_semaphore-timeout	D st1-end
+par_stdin	### bug #60579: Sem: Allow reading from stdin and setting -a
+par_stdin	     10      10      21
+par_stdin	     10      10      21
+par_stdin	10 10 21
+par_stdin	10 10 21
+par_stdin	parallel: Error: A semaphore cannot take input from more files
+par_stdin	

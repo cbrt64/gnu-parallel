@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GFDL-1.3-or-later
 # SPDX-License-Identifier: CC-BY-SA-4.0
 
@@ -254,16 +254,15 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20211222 ('Støjberg') released [stable]
+Subject: GNU Parallel 20220122 ('James Webb/Tutu/Pillar of Shame<<>>') released <<[stable]>>
 
-GNU Parallel 20211222 ('Støjberg') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20220122 ('<<>>') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
 
-No new functionality was introduced so this is a good candidate for a stable release.
+<<No new functionality was introduced so this is a good candidate for a stable release.>>
 
 Quote of the month:
 
-  My favorite man page is that of GNU parallel.
-    -- Jeroen Janssens @jeroenhjanssens@twitter
+  <<>>
   
 New in this release:
 
@@ -271,16 +270,11 @@ New in this release:
 
 News about GNU Parallel:
 
-* The first version of Parallel will be 20 years on 2022-01-06
+* https://morioh.com/p/a01b883dc57c
 
-* HerrComp Intro HPC gnu parallel https://www.youtube.com/watch?v=tcgjKWfgWQY
-
-* 多数のファイルを処理する場合の工夫 https://qiita.com/toramili/items/44a770cfb9ef1edc9e26
-
-* How To Install parallel on Ubuntu 20.04 https://installati.one/ubuntu/20.04/parallel/
-
-* Distributing embarrassingly parallel tasks GNU Parallel https://ulhpc-tutorials.readthedocs.io/en/latest/sequential/gnu-parallel/
-
+https://sachachua.com/blog/2021/12/re-encoding-the-emacsconf-videos-with-ffmpeg-and-gnu-parallel/
+https://learntutorials.net/ja/bash/topic/10778/%E5%B9%B3%E8%A1%8C
+<<>>
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

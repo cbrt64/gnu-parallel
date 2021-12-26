@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-# SPDX-FileCopyrightText: 2021 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GFDL-1.3-or-later
 # SPDX-License-Identifier: CC-BY-SA-4.0
 
@@ -71,7 +71,7 @@ GNU B<parcat> is part of GNU B<parallel>. Report bugs to
 
 =head1 AUTHOR
 
-Copyright (C) 2016-2021 Ole Tange, http://ole.tange.dk and Free
+Copyright (C) 2016-2022 Ole Tange, http://ole.tange.dk and Free
 Software Foundation, Inc.
 
 =head1 LICENSE

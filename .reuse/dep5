@@ -4,7 +4,7 @@ Upstream-Contact: Ole Tange, http://ole.tange.dk
 Source: https://git.savannah.gnu.org/git/parallel.git
 
 Files: testsuite/input-files/testdir/* testsuite/input-files/testdir2/* testsuite/wanted-results/* testsuite/testdir/* packager/obs/* src/optional/* packager/debian/debian-template/* configure config.h.in aclocal.m4 install-sh missing testsuite/input-files/random_dirs_no_newline.tar.bz2 testsuite/input-files/random_dirs_with_newline.tar.bz2
-Copyright: 2007-2021 Ole Tange, http://ole.tange.dk and Free Software Foundation, Inc.
+Copyright: 2007-2022 Ole Tange, http://ole.tange.dk and Free Software Foundation, Inc.
 License: GPL-3.0-or-later
 
 Files: packager/0install/*
@@ -12,7 +12,7 @@ Copyright: 2010-2021 Tim Cuthbertson <tim3d.junk@gmail.com>
 License: GPL-3.0-or-later
 
 Files: doc/citation-notice-faq.txt CREDITS NEWS README src/parallel_cheat_bw.fodt packager/debian/README doc/parallel*directive doc/screenshot.png
-Copyright: 2007-2021 Ole Tange, http://ole.tange.dk and Free Software Foundation, Inc.
+Copyright: 2007-2022 Ole Tange, http://ole.tange.dk and Free Software Foundation, Inc.
 License: GFDL-1.3-or-later
 License: CC-BY-SA-4.0
 
@@ -21,5 +21,5 @@ Copyright: Perl is Copyright (C) 1993-2010 by Larry Wall and others.
 License: GPL-3.0-or-later
 
 Files: testsuite/input-files/xargs-inputs/* 
-Copyright: Copyright (C) 1998-2021 Free Software Foundation, Inc.
+Copyright: Copyright (C) 1998-2022 Free Software Foundation, Inc.
 License: GPL-3.0-or-later

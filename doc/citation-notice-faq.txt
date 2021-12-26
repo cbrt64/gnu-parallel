@@ -21,7 +21,7 @@ single solution that just works:
 * https://stackoverflow.blog/2021/01/07/open-source-has-a-funding-problem/
 * https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
 * https://www.youtube.com/watch?v=vTsc1m78BUk
-* https://blog.licensezero.com/2019/08/24/process-of-elimination.html
+* https://web.archive.org/web/20210203105621/https://blog.licensezero.com/2019/08/24/process-of-elimination.html
 * https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
 
 
@@ -65,8 +65,8 @@ Run this once:
   parallel --citation
 
 It takes less than 10 seconds to do and is thus comparable to an
-'OK. Do not show this again'-dialog box seen in Firefox and similar
-programs.
+'OK. Do not show this again'-dialog box seen in LibreOffice, Firefox
+and similar programs.
 
 It is even optional to run this, as GNU Parallel will work without
 having 'parallel --citation' run first (in other words it is _not_
@@ -90,11 +90,14 @@ suggests a way of citing, use that.
 * https://libguides.mit.edu/c.php?g=551454&p=3900280
 * https://www.software.ac.uk/how-cite-software
 * https://aut.ac.nz.libguides.com/APA6th/software
-* https://libguides.rgu.ac.uk/c.php?g=380081&p=2983956
+* https://library.rgu.ac.uk/RGUvancouver/computer-programmes
 * https://journals.aas.org/policy-statement-on-software/
 * https://guides.lib.monash.edu/c.php?g=219786&p=1454293
-* https://www.maxqda.com/how-to-cite-maxqda
+* https://www.maxqda.com/blogpost/how-to-cite-maxqda
 * https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files
+
+The CITATION.cff file format was designed to make it easy to cite
+software.
 
 If you feel the benefit from using GNU Parallel is too small to
 warrant a citation, then prove that by simply using another tool. If
@@ -109,7 +112,7 @@ big enough to warrant a citation.
 Here are other examples of software showing how to cite. Some of these
 refer to peer-reviewed articles - others do not:
 
-* https://www.scipy.org/citing.html
+* https://scipy.org/citing-scipy/
 * https://octave.org/doc/interpreter/Citing-Octave-in-Publications.html
   (Octave has citation for individual packages, too)
 * https://stat.ethz.ch/pipermail/r-help/2008-May/161481.html
@@ -117,7 +120,7 @@ refer to peer-reviewed articles - others do not:
   (R has citation for individual packages, too)
 * http://www.partek.com/citing-partek-software-in-a-publication/
 * http://www.fluortools.com/misc/cite
-* https://www.maxqda.com/how-to-cite-maxqda
+* https://www.maxqda.com/blogpost/how-to-cite-maxqda
 * https://www.open-mpi.org/papers/
 * https://www.tensorflow.org/about/bib
 * http://www.fon.hum.uva.nl/paul/praat.html
@@ -130,21 +133,27 @@ Yes. GNU Parallel is released under GNU GPLv3 and thus you are allowed
 to fork the code. But you have to make sure that your forked version
 cannot be confused with the original, so for one thing you cannot call
 it anything similar to GNU Parallel as that would cause confusion
-between your forked version and the original. Also documentation
-cannot be confused with the documentation for GNU Parallel.  This is
-also why we have CentOS (and not RedHat Free), and IceCat (and not
-Firefox Free). This is also covered in DFSG ("The license may require
-derived works to carry a different name or version number from the
-original software").
+between your forked version and the original.
+
+It should be clear to your users, that they are using a fork and that
+they should go to you for support and not the GNU Parallel community.
+
+The documentation must also be changed so it cannot be confused with
+the documentation for GNU Parallel.
+
+The requirement of avoiding confusion is also why we have CentOS (and
+not RedHat Free), and IceCat (and not Firefox Free). This is also
+covered in DFSG ("The license may require derived works to carry a
+different name or version number from the original software").
 
 This principle has even been tested in court:
 http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
 https://www.admody.com/urteilsdatenbank/cafe6fdaeed3/OLG-Duesseldorf_Urteil_vom_28-September-2010_Az_I-20-U-41-09
 
-Also know that if you fork GNU Parallel and remove the notice, you are
-not helping to fund further develpment. So if you like GNU Parallel
-and do not want to see it wither away like many of the competitors,
-then this is a bad idea, as it will lead to less funding.
+Please know that if you fork GNU Parallel and remove the notice, you
+are not helping to fund further develpment. So if you like GNU
+Parallel and do not want to see it wither away like many of the
+competitors, then this is a bad idea, as it will lead to less funding.
 
 
 == How important is the notice for the survival of GNU Parallel? ==
@@ -179,10 +188,9 @@ pay me a normal salary, I will be happy to remove the citation notice.
 The citation notice is about (indirect) funding - nothing else.
 
 
-== I do not think it is fair having to cite ==
+== I do not want to cite ==
 
-If the inconvenience of having to cite is too big for you, then you
-should use another tool.
+If you do not want to cite, then you should use another tool.
 
 If you do not want to help fund GNU Parallel, then you will not be a
 happy GNU Parallel user, and thus you using another tool is the best
@@ -217,12 +225,12 @@ If you care so little about GNU Parallel that you do not want to help
 finance development, then you should contemplate whether GNU Parallel
 is really the right tool for you.
 
-It is, however, doable (e.g. by forking and changing the code). But
-you will be going against the wishes of the author, because you make
-it harder to make a living, thus you will be making it harder to
-justify producing more free software. If you like GNU Parallel and
-want to see it maintained in the future, then this is not the way to
-go.
+It is, however, doable (e.g. by forking and changing the code; see
+above). But you will be going against the wishes of the author,
+because you make it harder to make a living, thus you will be making
+it harder to justify producing more free software. If you like GNU
+Parallel and want to see it maintained in the future, then this is not
+the way to go.
 
 Maybe it is you Nadia Eghbal addresses in
 https://www.slideshare.net/NadiaEghbal/consider-the-maintainer:
