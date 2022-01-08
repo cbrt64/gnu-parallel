@@ -4,6 +4,19 @@
  
 Quote of the month:
 
+  If I could only keep 5 GNU utils, parallel would make it to the list
+  :)
+    -- 5heikki@reddit
+
+
+  Gnu Parallel: installed in every computer i have access to.
+    -- raffaele messuti @atomotic@twitter
+
+  gnu parallel is a good program
+    -- Pwn A. Day @pwnaday@twitter
+
+  Deus salve o gnu parallel
+    -- marcos @guv_Tuv@twitter
 
 @a201
 4
@@ -158,7 +171,7 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
   me optimise so many of my tasks and analyses.
     -- Parice Brandies @PariceBrandies@twitter
 
-We use gnu parallel now - and happier for it.
+  We use gnu parallel now - and happier for it.
      -- Ben Davies @benjamindavies@twitter
 
   GNU Parallel makes my life so much easier.
@@ -213,7 +226,6 @@ We use gnu parallel now - and happier for it.
   tasks. Write for a chunk, let gnu manage the splitting, permutations
   and pool concurrency.
     -- Nick Ursa @nickursa@twitter
-
 
   I wish more command line software had example pages as robust as GNU Parallel
     -- Lucidbeaming @lucidbeaming

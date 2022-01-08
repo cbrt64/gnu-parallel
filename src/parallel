@@ -334,8 +334,8 @@ sub parcat_script() {
 		    for $infh (@ready) {
 			# There is only one key, namely the output file descriptor
 			for my $outfd (keys %{$buffer{$infh}}) {
-			    # TODO test if 65536 is optimal (2^17 is used elsewhere)
-			    $rv = sysread($infh, $buf, 65536);
+			    # TODO test if 60800 is optimal (2^17 is used elsewhere)
+			    $rv = sysread($infh, $buf, 60800);
 			    if (!$rv) {
 				if($! == EAGAIN) {
 				    # Would block: Nothing read
@@ -829,7 +829,30 @@ sub cat_partial($@) {
     my @start_len = map {
 	if(++$i % 2) { $start = $_; } else { $_-$start }
     } @start_end;
-    # This can read 7 GB/s using a single core
+    # The optimal block size differs
+    # It has been measured on:
+    # AMD 6376: n*4k-1; small n
+    # AMD Neo N36L: 44k-200k
+    # Intel i7-3632QM: 55k-
+    # ARM Cortex A53: 4k-28k
+    # Intel i5-2410M: 36k-46k
+    #
+    # I choose 2^15-1 = 32767
+    # q{
+    # 	expseq() {
+    # 	    perl -E '
+    # 		$last = pop @ARGV;
+    # 	    $first = shift || 1;
+    # 	    $inc = shift || 1.03;
+    # 	    for($i=$first; $i<=$last;$i*=$inc) { say int $i }
+    # 	    ' "$@"
+    # 	}
+    # 
+    # 	seq 111111111 > big;
+    # 	f() { ppar --test $1 -a big --pipepart --block -1 'md5sum > /dev/null'; }
+    # 	export -f f;
+    # 	expseq 1000 1.001 300000 | shuf | parallel -j1 --jl jl-md5sum f;
+    # };
     my $script = spacefree
 	(0,
 	 q{
@@ -837,7 +860,7 @@ sub cat_partial($@) {
 		 sysseek(STDIN,shift,0) || die;
 		 $left = shift;
 		 while($read =
-		       sysread(STDIN,$buf, $left > 131072 ? 131072 : $left)){
+		       sysread(STDIN,$buf, $left > 32767 ? 32767 : $left)){
 		     $left -= $read;
 		     syswrite(STDOUT,$buf);
 		 }
@@ -1635,7 +1658,7 @@ sub options_hash() {
 	 # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	 # You accept to be put in a public hall of shame by removing
-         # the lines.
+         # these lines.
 	 "bibtex|citation" => \$opt::citation,
 	 "wc|willcite|will-cite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
@@ -1670,7 +1693,7 @@ sub options_hash() {
 	 "exit|x" => \$opt::x,
 	 # Semaphore
 	 "semaphore" => \$opt::semaphore,
-	 "semaphoretimeout|st=i" => \$opt::semaphoretimeout,
+	 "semaphoretimeout|st=s" => \$opt::semaphoretimeout,
 	 "semaphorename|id=s" => \$opt::semaphorename,
 	 "fg" => \$opt::fg,
 	 "bg" => \$opt::bg,
@@ -1705,6 +1728,8 @@ sub options_hash() {
 	 "embed" => \$opt::embed,
 	 "filter=s" => \@opt::filter,
 	 "parset=s" => \$opt::parset,
+	 # Parameter for testing optimal values
+	 "test=s" => \$opt::test,
 	);
 }
 
@@ -2561,10 +2586,12 @@ sub parse_semaphore() {
 		::wait_and_exit(255);
 	    }
 	}
+	@opt::a = ("/dev/null");
 	# Append a dummy empty argument
 	# \0 => nothing (not the empty string)
         push(@Global::unget_argv, [Arg->new("\0noarg")]);
-        $Semaphore::timeout = $opt::semaphoretimeout || 0;
+	$Semaphore::timeout = int(multiply_time_units($opt::semaphoretimeout))
+	    || 0;
         if(defined $opt::semaphorename) {
             $Semaphore::name = $opt::semaphorename;
         } else {
@@ -4907,8 +4934,8 @@ sub reaper() {
     if($Global::delayauto or $Global::sshdelayauto) {
 	if($job->exitstatus()) {
 	    # Job failed: Increase delay (if $opt::(ssh)delay set)
-	    $opt::delay &&= $opt::delay * 2;
-	    $opt::sshdelay &&= $opt::sshdelay * 2;
+	    $opt::delay &&= $opt::delay * 1.3;
+	    $opt::sshdelay &&= $opt::sshdelay * 1.3;
 	} else {
 	    # Job succeeded: Decrease delay (if $opt::(ssh)delay set)
 	    $opt::delay &&= $opt::delay * 0.9;
@@ -5094,7 +5121,7 @@ sub usage() {
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
 	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt	 
 	 # You accept to be put in a public hall of shame by removing
-         # the lines.
+         # these lines.
 	 "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	 "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	 "",
@@ -5127,7 +5154,7 @@ sub citation_notice() {
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
 	     # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	     # You accept to be put in a public hall of shame by
-	     # removing the lines.
+	     # removing these lines.
 	     "This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	     "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	     "",
@@ -5265,7 +5292,7 @@ sub citation() {
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
 	# https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	# You accept to be put in a public hall of shame by removing
-	# the lines.
+	# these lines.
 	"This helps funding further development; AND IT WON'T COST YOU A CENT.",
 	"If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	"",
@@ -5839,7 +5866,7 @@ sub which(@) {
 	    # ash bash csh dash fdsh fish fizsh ksh ksh93 mksh pdksh
 	    # posh rbash rc rush rzsh sash sh static-sh tcsh yash zsh
 
-	    my @shells = (qw(ash bash bsd-csh csh dash fdsh fish fizsh ksh 
+	    my @shells = (qw(ash bash bsd-csh csh dash fdsh fish fizsh ksh
 			  ksh93 lksh mksh pdksh posh rbash rc rush rzsh sash sh
 			  static-sh tcsh yash zsh -sh -csh -bash),
 			  '-sh (sh)' # sh on FreeBSD
@@ -8665,16 +8692,16 @@ sub empty_input_wrapper($) {
     # Returns:
     #   $wrapped_command = the wrapped command
     my $command = shift;
+    # The optimal block size differs
+    # It has been measured on:
+    # AMD 6376: 59000
+    # <big ppar --pipe --block 100M --test $1 -j1 'cat >/dev/null';
     my $script =
 	::spacefree(0,q{
 	    if(sysread(STDIN, $buf, 1)) {
 		open($fh, "|-", @ARGV) || die;
 		syswrite($fh, $buf);
-		# Align up to 128k block
-		if($read = sysread(STDIN, $buf, 131071)) {
-		    syswrite($fh, $buf);
-		}
-		while($read = sysread(STDIN, $buf, 131072)) {
+		while($read = sysread(STDIN, $buf, 59000)) {
 		    syswrite($fh, $buf);
 		}
 		close $fh;
@@ -9098,6 +9125,11 @@ sub total_failed($) {
 	    # * cat > fifo
 	    # * waitpid to get the exit code from $command
 	    # * be less than 1000 chars long
+
+	    # The optimal block size differs
+	    # It has been measured on:
+	    # AMD 6376: 4095
+	    # ppar -a big --pipepart --block -1 --test $1 --fifo 'cat {} >/dev/null';
 	    $script = "perl -e '".
 		(::spacefree
 		 (0, q{
@@ -9108,7 +9140,7 @@ sub total_failed($) {
 		     $pid = fork || exec $s, "-c", $c;
 		     open($o,">",$f) || die $!;
 		     # cat > $PARALLEL_TMP
-		     while(sysread(STDIN,$buf,131072)){
+		     while(sysread(STDIN,$buf,4095)){
 			 syswrite $o, $buf;
 		     }
 		     close $o;
@@ -9207,7 +9239,7 @@ sub wrapped($) {
 	    # --pipepart: prepend:
 	    # < /tmp/foo perl -e 'while(@ARGV) {
 	    #   sysseek(STDIN,shift,0) || die; $left = shift;
-	    #   while($read = sysread(STDIN,$buf, ($left > 131072 ? 131072 : $left))){
+	    #   while($read = sysread(STDIN,$buf, ($left > 60800 ? 60800 : $left))){
 	    #     $left -= $read; syswrite(STDOUT,$buf);
 	    #   }
 	    # }'  0 0 0 11 |
@@ -9646,7 +9678,7 @@ sub fill_templates($) {
     # Returns:
     #   @templates - File names of replaced templates
     my $self = shift;
-    
+
     if(%opt::template) {
 	my @template_name =
 	    map { $self->{'commandline'}->replace_placeholders([$_],0,0) }
@@ -10663,11 +10695,21 @@ sub print_linebuffer($) {
 	    my ($buf,$i,$rv);
 	    # 1310720 gives 1.2 GB/s
 	    # 131072  gives 0.9 GB/s
-	    while($rv = sysread($in_fh, $buf,1310720)) {
+	    # The optimal block size differs
+	    # It has been measured on:
+	    # AMD 6376: 60800 (>70k is also reasonable)
+	    # Intel i7-3632QM: 52-59k, 170-175k
+	    # seq 64 | ppar --test $1 --lb 'yes {} `seq 1000`|head -c 10000000' >/dev/null
+	    while($rv = sysread($in_fh, $buf, 60800)) {
 		$outputlength += $rv;
 		# TODO --recend
 		# Treat both \n and \r as line end
-		$i = ::max((rindex($buf,"\n")+1), (rindex($buf,"\r")+1));
+		# Only test for \r if there is no \n
+		# Test:
+		#   perl -e '$a="x"x1000000;
+		#            $b="$a\r$a\n$a\r$a\n";
+                #            map { print $b,$_ } 1..10'
+		$i = ((rindex($buf,"\n")+1) || (rindex($buf,"\r")+1));
 		if($i) {
 		    # One or more complete lines were found
 		    if($opt::tag or defined $opt::tagstring) {
@@ -10839,7 +10881,8 @@ sub print_normal($) {
 	    }
 	} else {
 	    # Most efficient way of copying data from $in_fh to $out_fh
-	    while(sysread($in_fh,$buf,131072)) {
+	    # Intel i7-3632QM: 25k-
+	    while(sysread($in_fh,$buf,32767)) {
 		print $out_fh $buf;
 		$outputlength += length $buf;
 		if($Global::membuffer) {
@@ -10887,7 +10930,7 @@ sub print_results($) {
 		}
 	    } else {
 		# Most efficient way of copying data from $in_fh to $out_fh
-		while(sysread($in_fh,$buf,131072)) {
+		while(sysread($in_fh,$buf,60000)) {
 		    $outputlength += length $buf;
 		    push @{$self->{'output'}{$fdno}}, $buf;
 		}

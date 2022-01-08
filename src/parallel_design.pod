@@ -6,7 +6,6 @@
 
 =encoding utf8
 
-options as wrapper scripts
 
 =head1 Design of GNU Parallel
 

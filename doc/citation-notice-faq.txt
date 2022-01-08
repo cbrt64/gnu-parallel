@@ -53,9 +53,9 @@ to treat it as software that you have no license to use.
 
 == Do automated scripts break if the notice is not silenced? ==
 
-No. Not a single time has that happened. This is due to the notice
-only being printed, if the output is to the screen - not if the output
-is to a file or a pipe.
+No. Not a single time has that been demonstrated to happen. This is
+due to the notice only being printed, if the output is to the screen -
+not if the output is to a file or a pipe.
 
 
 == How do I silence the citation notice? ==
@@ -86,6 +86,8 @@ The notice is only relevant if you write scientific articles.
 These links say: Yes, you should cite software, and if the author
 suggests a way of citing, use that.
 
+* https://www.force11.org/software-citation-principles (refers to many others)
+* https://www.software.ac.uk/blog/2016-09-30-oh-research-software-how-shalt-i-cite-thee
 * https://blog.apastyle.org/apastyle/2015/01/how-to-cite-software-in-apa-style.html
 * https://libguides.mit.edu/c.php?g=551454&p=3900280
 * https://www.software.ac.uk/how-cite-software
@@ -94,17 +96,20 @@ suggests a way of citing, use that.
 * https://journals.aas.org/policy-statement-on-software/
 * https://guides.lib.monash.edu/c.php?g=219786&p=1454293
 * https://www.maxqda.com/blogpost/how-to-cite-maxqda
+* https://the-turing-way.netlify.app/communication/citable/citable-cite.html
 * https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-on-github/about-citation-files
-
-The CITATION.cff file format was designed to make it easy to cite
-software.
 
 If you feel the benefit from using GNU Parallel is too small to
 warrant a citation, then prove that by simply using another tool. If
 you replace your use of GNU Parallel with another tool, you obviously
 do not have to cite GNU Parallel. If it is too much work replacing the
-use of GNU Parallel, then it is a good indication that the benefit is
-big enough to warrant a citation.
+use of GNU Parallel, then it is a good indication that the
+contribution to the research is big enough to warrant a citation.
+
+The citation is also needed for reproducibility. Let us assume a bug
+in GNU Parallel skews the results. People replicating the research
+needs to have the information, so they can replicate the (possibly
+wrong) results.
 
 
 == Do other software tools show how to cite? ==
@@ -125,6 +130,9 @@ refer to peer-reviewed articles - others do not:
 * https://www.tensorflow.org/about/bib
 * http://www.fon.hum.uva.nl/paul/praat.html
 * https://github.com/UnixJunkie/PAR/blob/master/README
+
+The CITATION.cff file format was designed to make it easy to cite
+software, and
 
 
 == I do not like the notice. Can I fork GNU Parallel and remove it? ==
@@ -185,7 +193,25 @@ been public domain.
 Yes. Find a way to finance future development of GNU Parallel. If you
 pay me a normal salary, I will be happy to remove the citation notice.
 
+You can also pay to use a specific version, which you will then get
+without the citation notice.
+
 The citation notice is about (indirect) funding - nothing else.
+
+
+== Free software should be funded, but not this way ==
+
+OK. But then please take resposibility and do the funding. Show that
+it is indeed possible to fund GNU Parallel in a different way by
+actually doing it.
+
+Talk is cheap, and action speaks louder than words. Instead of just
+telling others what to do, prove that you are serious and actually
+*do* the work.
+
+I will be happy to get a "funding manager" and remove the citation
+notice, if that means I can stop worrying about rent, mortgages, bills
+and retirement.
 
 
 == I do not want to cite ==

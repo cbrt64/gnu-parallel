@@ -128,10 +128,11 @@ B<Zsh, Fish, Ksh, and Pdksh functions and aliases>: Use B<env_parallel>.
 
 =item B<{}>
 
-Input line. This replacement string will be replaced by a full line
-read from the input source. The input source is normally stdin
-(standard input), but can also be given with B<-a>, B<:::>, or
-B<::::>.
+Input line.
+
+This replacement string will be replaced by a full line read from the
+input source. The input source is normally stdin (standard input), but
+can also be given with B<-a>, B<:::>, or B<::::>.
 
 The replacement string B<{}> can be changed with B<-I>.
 
@@ -142,17 +143,21 @@ Replacement strings are normally quoted, so special characters are not
 parsed by the shell. The exception is if the command starts with a
 replacement string; then the string is not quoted.
 
+See also: B<--plus> B<{.}> B<{/}> B<{//}> B<{/.}> B<{#}> B<{%}>
+B<{>I<n>B<}> B<{=>I<perl expression>B<=}>
+
 
 =item B<{.}>
 
-Input line without extension. This replacement string will be replaced
-by the input with the extension removed. If the input line contains
-B<.> after the last B</>, the last B<.> until the end of the string
-will be removed and B<{.}> will be replaced with the
-remaining. E.g. I<foo.jpg> becomes I<foo>, I<subdir/foo.jpg> becomes
-I<subdir/foo>, I<sub.dir/foo.jpg> becomes I<sub.dir/foo>,
-I<sub.dir/bar> remains I<sub.dir/bar>. If the input line does not
-contain B<.> it will remain unchanged.
+Input line without extension.
+
+This replacement string will be replaced by the input with the
+extension removed. If the input line contains B<.> after the last
+B</>, the last B<.> until the end of the string will be removed and
+B<{.}> will be replaced with the remaining. E.g. I<foo.jpg> becomes
+I<foo>, I<subdir/foo.jpg> becomes I<subdir/foo>, I<sub.dir/foo.jpg>
+becomes I<sub.dir/foo>, I<sub.dir/bar> remains I<sub.dir/bar>. If the
+input line does not contain B<.> it will remain unchanged.
 
 The replacement string B<{.}> can be changed with B<--er>.
 
@@ -161,8 +166,10 @@ To understand replacement strings see B<{}>.
 
 =item B<{/}>
 
-Basename of input line. This replacement string will be replaced by
-the input with the directory part removed.
+Basename of input line.
+
+This replacement string will be replaced by the input with the
+directory part removed.
 
 The replacement string B<{/}> can be changed with
 B<--basenamereplace>.
@@ -172,8 +179,10 @@ To understand replacement strings see B<{}>.
 
 =item B<{//}>
 
-Dirname of input line. This replacement string will be replaced by the
-dir of the input line. See B<dirname>(1).
+Dirname of input line.
+
+This replacement string will be replaced by the dir of the input
+line. See B<dirname>(1).
 
 The replacement string B<{//}> can be changed with
 B<--dirnamereplace>.
@@ -183,9 +192,11 @@ To understand replacement strings see B<{}>.
 
 =item B<{/.}>
 
-Basename of input line without extension. This replacement string will
-be replaced by the input with the directory and extension part
-removed. It is a combination of B<{/}> and B<{.}>.
+Basename of input line without extension.
+
+This replacement string will be replaced by the input with the
+directory and extension part removed. It is a combination of B<{/}>
+and B<{.}>.
 
 The replacement string B<{/.}> can be changed with
 B<--basenameextensionreplace>.
@@ -195,9 +206,10 @@ To understand replacement strings see B<{}>.
 
 =item B<{#}>
 
-Sequence number of the job to run. This replacement string will be
-replaced by the sequence number of the job being run. It contains the
-same number as $PARALLEL_SEQ.
+Sequence number of the job to run.
+
+This replacement string will be replaced by the sequence number of the
+job being run. It contains the same number as $PARALLEL_SEQ.
 
 The replacement string B<{#}> can be changed with B<--seqreplace>.
 
@@ -206,10 +218,11 @@ To understand replacement strings see B<{}>.
 
 =item B<{%}>
 
-Job slot number. This replacement string will be replaced by the job's
-slot number between 1 and number of jobs to run in parallel. There
-will never be 2 jobs running at the same time with the same job slot
-number.
+Job slot number.
+
+This replacement string will be replaced by the job's slot number
+between 1 and number of jobs to run in parallel. There will never be 2
+jobs running at the same time with the same job slot number.
 
 The replacement string B<{%}> can be changed with B<--slotreplace>.
 
@@ -242,13 +255,17 @@ To understand replacement strings see B<{}>.
 
 =item B<{>I<n>B<}>
 
-Argument from input source I<n> or the I<n>'th argument. This
-positional replacement string will be replaced by the input from input
-source I<n> (when used with B<-a> or B<::::>) or with the I<n>'th
-argument (when used with B<-N>). If I<n> is negative it refers to the
-I<n>'th last argument.
+Argument from input source I<n> or the I<n>'th argument.
+
+This positional replacement string will be replaced by the input from
+input source I<n> (when used with B<-a> or B<::::>) or with the
+I<n>'th argument (when used with B<-N>). If I<n> is negative it refers
+to the I<n>'th last argument.
 
 To understand replacement strings see B<{}>.
+
+See also: B<{}> B<{>I<n>.B<}> B<{>I<n>/B<}> B<{>I<n>//B<}>
+B<{>I<n>/.B<}>
 
 
 =item B<{>I<n>.B<}>
@@ -305,11 +322,12 @@ To understand positional replacement strings see B<{>I<n>B<}>.
 
 =item B<{=>I<perl expression>B<=}>
 
-Replace with calculated I<perl expression>. B<$_> will contain the
-same as B<{}>. After evaluating I<perl expression> B<$_> will be used
-as the value. It is recommended to only change $_ but you have full
-access to all of GNU B<parallel>'s internal functions and data
-structures.
+Replace with calculated I<perl expression>.
+
+B<$_> will contain the same as B<{}>. After evaluating I<perl
+expression> B<$_> will be used as the value. It is recommended to only
+change $_ but you have full access to all of GNU B<parallel>'s
+internal functions and data structures.
 
 The expression must give the same result if evaluated twice -
 otherwise the behaviour is undefined. E.g. this will not work as expected:
@@ -386,7 +404,7 @@ See also: B<--rpl> B<--parens>
 Positional equivalent to B<{=perl expression=}>. To understand
 positional replacement strings see B<{>I<n>B<}>.
 
-See also: B<{=perl expression=}> B<{>I<n>B<}>.
+See also: B<{=perl expression=}> B<{>I<n>B<}>
 
 
 =item B<:::> I<arguments>
@@ -405,7 +423,7 @@ The following are equivalent:
   parallel ::: "gzip file1" "gzip file2"
 
 To avoid treating B<:::> as special use B<--arg-sep> to set the
-argument separator to something else. See also B<--arg-sep>.
+argument separator to something else.
 
 If multiple B<:::> are given, each group will be treated as an input
 source, and all combinations of input sources will be
@@ -427,6 +445,8 @@ B<:::> and B<::::> can be mixed. So these are equivalent:
   seq 4 5 | parallel echo {1} {2} {3} :::: <(seq 6 7) - \
     ::: 1 2 3
 
+See also: B<--arg-sep>
+
 
 =item B<:::+> I<arguments>
 
@@ -446,7 +466,7 @@ Another way to write B<-a> I<argfile1> B<-a> I<argfile2> ...
 
 B<:::> and B<::::> can be mixed.
 
-See B<-a>, B<:::> and B<--link>.
+See also: B<-a> B<:::> B<--link>
 
 
 =item B<::::+> I<argfiles>
@@ -465,6 +485,10 @@ Use NUL as delimiter.  Normally input lines will end in \n
 (newline). If they end in \0 (NUL), then use this option. It is useful
 for processing arguments that may contain \n (newline).
 
+Shortcut for B<-d '\0'>.
+
+See also: B<-d>
+
 
 =item B<--arg-file> I<input-file>
 
@@ -481,7 +505,7 @@ contains B<a b c>.  B<-a foo> B<-a bar> will result in the combinations
 (1,a) (1,b) (1,c) (2,a) (2,b) (2,c). This is useful for replacing
 nested for-loops.
 
-See also: B<--link> and B<{>I<n>B<}>.
+See also: B<--link> B<{>I<n>B<}>
 
 
 =item B<--arg-file-sep> I<sep-str>
@@ -490,7 +514,7 @@ Use I<sep-str> instead of B<::::> as separator string between command
 and argument files. Useful if B<::::> is used for something else by the
 command.
 
-See also: B<::::>.
+See also: B<::::>
 
 
 =item B<--arg-sep> I<sep-str>
@@ -502,7 +526,7 @@ Also useful if you command uses B<:::> but you still want to read
 arguments from stdin (standard input): Simply change B<--arg-sep> to a
 string that is not in the command line.
 
-See also: B<:::>.
+See also: B<:::>
 
 
 =item B<--bar>
@@ -546,8 +570,12 @@ Use the replacement string I<replace-str> instead of B<{/.}> for basename of inp
 
 Use I<binexpr> as binning key and bin input to the jobs.
 
-I<binexpr> is [column number|column name] [perlexpression] e.g. 3,
-Address, 3 $_%=100, Address s/\D//g.
+I<binexpr> is [column number|column name] [perlexpression] e.g.:
+
+  3
+  Address
+  3 $_%=100
+  Address s/\D//g
 
 Each input line is split using B<--colsep>. The value of the column is
 put into $_, the perl expression is executed, the resulting value is
@@ -563,7 +591,9 @@ I<bincol> is small (<10), slower if it is big (>100).
 
 B<--bin> requires B<--pipe> and a fixed numeric value for B<--jobs>.
 
-See also: B<--shard>, B<--group-by>, B<--roundrobin>.
+See the section: SPREADING BLOCKS OF DATA.
+
+See also: B<--group-by> B<--roundrobin> B<--shard>
 
 
 =item B<--bg>
@@ -572,9 +602,10 @@ Run command in background thus GNU B<parallel> will not wait for
 completion of the command before exiting. This is the default if
 B<--semaphore> is set.
 
-See also: B<--fg>, B<man sem>.
-
 Implies B<--semaphore>.
+
+See also: B<--fg> B<man sem>
+
 
 =cut
 
@@ -643,11 +674,8 @@ Time out for reading block when using B<--pipe>. If it takes longer
 than I<duration> to read a full block, use the partial block read so
 far.
 
-I<duration> must be in whole seconds, but can be expressed as floats
-postfixed with B<s>, B<m>, B<h>, or B<d> which would multiply the
-float by 1, 60, 3600, or 86400. Thus these are equivalent:
-B<--blocktimeout 100000> and B<--blocktimeout 1d3.5h16.6m4s>.
-
+I<duration> is in seconds, but can be postfixed with s, m, h, or d
+(see the section TIME POSTFIXES).
 
 
 =item B<--cat>
@@ -659,7 +687,7 @@ you can do: B<parallel --pipe --cat wc {}>.
 
 Implies B<--pipe> unless B<--pipepart> is used.
 
-See also: B<--fifo>.
+See also: B<--fifo>
 
 
 =item B<--cleanup>
@@ -706,14 +734,17 @@ https://perldoc.perl.org/perlre.html
 
 =item B<--compress>
 
-Compress temporary files. If the output is big and very compressible
-this will take up less disk space in $TMPDIR and possibly be faster
-due to less disk I/O.
+Compress temporary files.
+
+If the output is big and very compressible this will take up less disk
+space in $TMPDIR and possibly be faster due to less disk I/O.
 
 GNU B<parallel> will try B<pzstd>, B<lbzip2>, B<pbzip2>, B<zstd>,
 B<pigz>, B<lz4>, B<lzop>, B<plzip>, B<lzip>, B<lrz>, B<gzip>, B<pxz>,
 B<lzma>, B<bzip2>, B<xz>, B<clzip>, in that order, and use the first
 available.
+
+See also: B<--compress-program>
 
 
 =item B<--compress-program> I<prg>
@@ -745,21 +776,25 @@ When used with B<--pipe> only pass full CSV-records.
 
 =item B<--ctag> I<str>
 
-Color tag. See B<--tag>.
+Color tag.
+
+See also: B<--tag>
 
 
 =item B<--ctagstring> I<str>
 
-Color tagstring. See B<--tagstring>.
+Color tagstring.
+
+See also: B<--tagstring>
 
 
 =item B<--delay> I<mytime>
 
-Delay starting next job by I<mytime>. GNU B<parallel> will pause
-I<mytime> after starting each job. I<mytime> is normally in seconds,
-but can be floats postfixed with B<s>, B<m>, B<h>, or B<d> which would
-multiply the float by 1, 60, 3600, or 86400. Thus these are
-equivalent: B<--delay 100000> and B<--delay 1d3.5h16.6m4s>.
+Delay starting next job by I<mytime>.
+
+GNU B<parallel> will pause I<mytime> after starting each
+job. I<mytime> is in seconds, but can be postfixed with s, m, h, or d
+(see the section TIME POSTFIXES).
 
 If you append 'auto' to I<mytime> (e.g. 13m3sauto) GNU B<parallel> will
 automatically try to find the optimal value: If a job fails, I<mytime>
@@ -770,13 +805,12 @@ is doubled. If a job succeeds, I<mytime> is decreased by 10%.
 
 =item B<-d> I<delim>
 
-Input items are terminated by I<delim>.  Quotes and backslash are not
-special; every character in the input is taken literally.  Disables
-the end-of-file string, which is treated like any other argument. The
-specified delimiter may be characters, C-style character escapes such
-as \n, or octal or hexadecimal escape codes.  Octal and hexadecimal
-escape codes are understood as for the printf command.  Multibyte
-characters are not supported.
+Input items are terminated by I<delim>.
+
+The specified delimiter may be characters, C-style character escapes
+such as \n, or octal or hexadecimal escape codes.  Octal and
+hexadecimal escape codes are understood as for the printf command.
+Multibyte characters are not supported.
 
 
 =item B<--dirnamereplace> I<replace-str>
@@ -841,7 +875,7 @@ variables except for the ones mentioned in ~/.parallel/ignored_vars.
 To copy the full environment (both exported and not exported
 variables, arrays, and functions) use B<env_parallel>.
 
-See also: B<--record-env>, B<--session>.
+See also: B<--record-env> B<--session>
 
 
 =item B<--eta>
@@ -855,7 +889,7 @@ estimate will only be shown when the first job has finished.
 
 Implies B<--progress>.
 
-See also: B<--bar>, B<--progress>.
+See also: B<--bar> B<--progress>
 
 
 =item B<--fg>
@@ -870,21 +904,27 @@ foreground (opposite B<--bg>), and wait for completion of the command
 before exiting.
 
 
-See also: B<--bg>, B<man sem>.
+See also: B<--bg> B<man sem>
 
 
 =item B<--fifo>
 
-Create a temporary fifo with content. Normally B<--pipe> and
-B<--pipepart> will give data to the program on stdin (standard
-input). With B<--fifo> GNU B<parallel> will create a temporary fifo
-with the name in B<{}>, so you can do: B<parallel --pipe --fifo wc {}>.
+Create a temporary fifo with content.
 
-Beware: If data is not read from the fifo, the job will block forever.
+Normally B<--pipe> and B<--pipepart> will give data to the program on
+stdin (standard input). With B<--fifo> GNU B<parallel> will create a
+temporary fifo with the name in B<{}>, so you can do:
+
+  parallel --pipe --fifo wc {}
+
+Beware: If the fifo is never opened for reading, the job will block forever:
+
+  seq 1000000 | parallel --fifo echo This will block
+  seq 1000000 | parallel --fifo 'echo This will not block < {}'
 
 Implies B<--pipe> unless B<--pipepart> is used.
 
-See also: B<--cat>.
+See also: B<--cat>
 
 
 =item B<--filter> I<filter>
@@ -1005,7 +1045,9 @@ UserID when grouping:
   cat table.csv | parallel --pipe --colsep , --header : \
     --group-by 'UserID s/\D//g' -kN1 wc
 
-See also: B<--shard>, B<--roundrobin>.
+See the section: SPREADING BLOCKS OF DATA.
+
+See also: B<--bin> B<--shard> B<--roundrobin>
 
 
 =item B<--help>
@@ -1145,7 +1187,7 @@ B<my_grp1_arg> may be run on either B<myserver1> or B<myserver2>,
 B<third> may be run on either B<myserver1> or B<myserver3>,
 but B<arg_for_grp2> will only be run on B<myserver2>.
 
-See also: B<--sshlogin>, B<$PARALLEL_HOSTGROUPS>, B<$PARALLEL_ARGHOSTGROUPS>.
+See also: B<--sshlogin> B<$PARALLEL_HOSTGROUPS> B<$PARALLEL_ARGHOSTGROUPS>
 
 
 =item B<-I> I<replace-str>
@@ -1185,7 +1227,7 @@ If the host is long, you can use B<column -t> to pretty print it:
 
   cat joblog | column -t
 
-See also: B<--resume> B<--resume-failed>.
+See also: B<--resume> B<--resume-failed>
 
 
 =item B<--jobs> I<N>
@@ -1234,9 +1276,10 @@ B<--use-sockets-instead-of-threads>.
 =item B<-P> I<-N>
 
 Subtract N from the number of CPUs.  Run this many jobs in parallel.
-If the evaluated number is less than 1 then 1 will be used.  See also
-B<--use-cores-instead-of-threads> and
-B<--use-sockets-instead-of-threads>.
+If the evaluated number is less than 1 then 1 will be used.
+
+See also: B<--use-cores-instead-of-threads>
+B<--use-sockets-instead-of-threads>
 
 
 =item B<--jobs> I<N>%
@@ -1248,8 +1291,10 @@ B<--use-sockets-instead-of-threads>.
 =item B<-P> I<N>%
 
 Multiply N% with the number of CPUs.  Run this many jobs in
-parallel. See also B<--use-cores-instead-of-threads> and
-B<--use-sockets-instead-of-threads>.
+parallel.
+
+See also: B<--use-cores-instead-of-threads>
+B<--use-sockets-instead-of-threads>
 
 
 =item B<--jobs> I<procfile>
@@ -1284,8 +1329,13 @@ to see the difference:
 If used with B<--onall> or B<--nonall> the output will grouped by
 sshlogin in sorted order.
 
-If used with B<--pipe --roundrobin> and the same input, the jobslots
-will get the same blocks in the same order in every run.
+B<--keep-order> cannot keep the output order when used with B<--pipe
+--roundrobin>. Here it instead means, that the jobslots will get the
+same blocks as input in the same order in every run if the input is
+kept the same. Run each of these twice and compare:
+
+  seq 10000000 | parallel --pipe --roundrobin 'sleep 0.$RANDOM; wc'
+  seq 10000000 | parallel --pipe -k --roundrobin 'sleep 0.$RANDOM; wc'
 
 B<-k> only affects the order in which the output is printed - not the
 order in which jobs are run.
@@ -1403,12 +1453,12 @@ See also: B<--group> B<--ungroup>
 
 =item B<--link>
 
-Link input sources. Read multiple input sources like B<xapply>. If
-multiple input sources are given, one argument will be read from each
-of the input sources. The arguments can be accessed in the command as
-B<{1}> .. B<{>I<n>B<}>, so B<{1}> will be a line from the first input
-source, and B<{6}> will refer to the line with the same line number
-from the 6th input source.
+Link input sources. Read multiple input sources like the command
+B<xapply>. If multiple input sources are given, one argument will be
+read from each of the input sources. The arguments can be accessed in
+the command as B<{1}> .. B<{>I<n>B<}>, so B<{1}> will be a line from
+the first input source, and B<{6}> will refer to the line with the
+same line number from the 6th input source.
 
 Compare these two:
 
@@ -1458,19 +1508,21 @@ most likely do what is needed.
 
 =item B<--memfree> I<size>
 
-Minimum memory free when starting another job. The I<size> can be
-postfixed with K, M, G, T, P, k, m, g, t, or p (see UNIT PREFIX).
+Minimum memory free when starting another job.
+
+The I<size> can be postfixed with K, M, G, T, P, k, m, g, t, or p (see
+UNIT PREFIX).
 
 If the jobs take up very different amount of RAM, GNU B<parallel> will
 only start as many as there is memory for. If less than I<size> bytes
 are free, no more jobs will be started. If less than 50% I<size> bytes
-are free, the youngest job will be killed, and put back on the queue
-to be run later.
+are free, the youngest job will be killed (as per B<--termseq>), and
+put back on the queue to be run later.
 
 B<--retries> must be set to determine how many times GNU B<parallel>
 should retry a given job.
 
-See also: B<--memsuspend>
+See also: B<--termseq>, B<--retries>, B<--memsuspend>
 
 
 =item B<--memsuspend> I<size>
@@ -1595,29 +1647,30 @@ Spread input to jobs on stdin (standard input). Read a block of data
 from stdin (standard input) and give one block of data as input to one
 job.
 
-The block size is determined by B<--block>. The strings B<--recstart>
-and B<--recend> tell GNU B<parallel> how a record starts and/or
-ends. The block read will have the final partial record removed before
-the block is passed on to the job. The partial record will be
+The block size is determined by B<--block> (default: 1M). The strings
+B<--recstart> and B<--recend> tell GNU B<parallel> how a record starts
+and/or ends. The block read will have the final partial record removed
+before the block is passed on to the job. The partial record will be
 prepended to next block.
 
-If B<--recstart> is given this will be used to split at record start.
-
-If B<--recend> is given this will be used to split at record end.
-
-If both B<--recstart> and B<--recend> are given both will have to
-match to find a split position.
-
-If neither B<--recstart> nor B<--recend> are given B<--recend>
-defaults to '\n'. To have no record separator use B<--recend "">.
-
-B<--files> is often used with B<--pipe>.
+You can limit the number of records to be passed with B<-N>, and set
+the record size with B<-L>.
 
 B<--pipe> maxes out at around 1 GB/s input, and 100 MB/s output. If
 performance is important use B<--pipepart>.
 
-See also: B<--recstart>, B<--recend>, B<--fifo>, B<--cat>,
-B<--pipepart>, B<--files>.
+B<--fifo> and B<--cat> will give stdin (standard input) on a fifo or a
+temporary file.
+
+If data is arriving slowly, you can use B<--blocktimeout> to finish
+reading a block early.
+
+The data can be spread between the jobs in specific ways using
+B<--round-robin>, B<--bin>, B<--shard>, B<--group-by>. See the
+section: SPREADING BLOCKS OF DATA
+
+See also: B<--block>, B<--blocktimeout>, B<--recstart>, B<--recend>,
+B<--fifo>, B<--cat>, B<--pipepart>, B<-N>, B<-L>.
 
 
 =item B<--pipepart>
@@ -1645,6 +1698,8 @@ work. Instead use B<--recstart> and B<--recend> to determine
 where records end.
 
 =back
+
+See also: <--pipe>.
 
 
 =item B<--plain>
@@ -1805,17 +1860,19 @@ I<profilename> corresponds to the file ~/.parallel/I<profilename>.
 You can give multiple profiles by repeating B<--profile>. If parts of
 the profiles conflict, the later ones will be used.
 
-Default: config
+Default: ~/.parallel/config
 
 
 =item B<--quote>
 
 =item B<-q>
 
-Quote I<command>. If your command contains special characters that
-should not be interpreted by the shell (e.g. ; \ | *), use B<--quote> to
-escape these. The command must be a simple command (see B<man
-bash>) without redirections and without variable assignments.
+Quote I<command>.
+
+If your command contains special characters that should not be
+interpreted by the shell (e.g. ; \ | *), use B<--quote> to escape
+these. The command must be a simple command (see B<man bash>) without
+redirections and without variable assignments.
 
 See the section QUOTING. Most people will not need this.  Quoting is
 disabled by default.
@@ -1825,7 +1882,8 @@ disabled by default.
 
 =item B<-r>
 
-If the stdin (standard input) only contains whitespace, do not run the command.
+If the stdin (standard input) only contains whitespace, do not run the
+command.
 
 If used with B<--pipe> this is slow.
 
@@ -1845,13 +1903,15 @@ problem, but both swapping in and out usually indicates a problem.
 B<--memfree> and B<--memsuspend> may give better results, so try using
 those first.
 
+See also: B<--memfree> B<--memsuspend>
+
 
 =item B<--record-env>
 
 Record current environment variables in ~/.parallel/ignored_vars. This
 is useful before using B<--env _>.
 
-See also: B<--env>, B<--session>.
+See also: B<--env> B<--session>
 
 
 =item B<--recstart> I<startstring>
@@ -1867,13 +1927,19 @@ I<endstring>I<startstring> will have to match to find a split
 position. This is useful if either I<startstring> or I<endstring>
 match in the middle of a record.
 
-If neither B<--recstart> nor B<--recend> are given then B<--recend>
-defaults to '\n'. To have no record separator use B<--recend "">.
+If neither B<--recstart> nor B<--recend> are given, then B<--recend>
+defaults to '\n'. To have no record separator (e.g. for binary files)
+use B<--recend "">.
 
 B<--recstart> and B<--recend> are used with B<--pipe>.
 
 Use B<--regexp> to interpret B<--recstart> and B<--recend> as regular
 expressions. This is slow, however.
+
+Use B<--remove-rec-sep> to remove B<--recstart> and B<--recend> before
+passing the block to the job.
+
+See also: B<--pipe> B<--regexp> B<--remove-rec-sep>
 
 
 =item B<--regexp>
@@ -1891,7 +1957,7 @@ expressions. This is slow, however.
 Remove the text matched by B<--recstart> and B<--recend> before piping
 it to the command.
 
-Only used with B<--pipe>.
+Only used with B<--pipe>/B<--pipepart>.
 
 
 =item B<--results> I<name>
@@ -2017,7 +2083,7 @@ will generate the files:
   my_foo/stderr
   my_foo/stdout
 
-See also: B<--files>, B<--tag>, B<--header>, B<--joblog>.
+See also: B<--files> B<--tag> B<--header> B<--joblog>
 
 
 =item B<--resume>
@@ -2029,7 +2095,7 @@ sequence numbers in B<--joblog> then the input, the command, and
 B<--joblog> all have to remain unchanged; otherwise GNU B<parallel>
 may run wrong commands.
 
-See also: B<--joblog>, B<--results>, B<--resume-failed>, B<--retries>.
+See also: B<--joblog> B<--results> B<--resume-failed> B<--retries>
 
 
 =item B<--resume-failed>
@@ -2042,7 +2108,7 @@ numbers in B<--joblog> then the input, the command, and B<--joblog>
 all have to remain unchanged; otherwise GNU B<parallel> may run wrong
 commands.
 
-See also: B<--joblog>, B<--resume>, B<--retry-failed>, B<--retries>.
+See also: B<--joblog> B<--resume> B<--retry-failed> B<--retries>
 
 
 =item B<--retry-failed>
@@ -2112,7 +2178,7 @@ line:
   6	[...]	2	0	echo 5;sleep .5; exit 2
   4	[...]	1	0	echo 7;sleep .7; exit 1
 
-See also: B<--joblog>, B<--resume>, B<--resume-failed>, B<--retries>.
+See also: B<--joblog> B<--resume> B<--resume-failed> B<--retries>
 
 
 =item B<--retries> I<n>
@@ -2181,7 +2247,9 @@ impossible to track which input block corresponds to which output.
 
 B<--roundrobin> implies B<--pipe>, except if B<--pipepart> is given.
 
-See also: B<--group-by>, B<--shard>.
+See the section: SPREADING BLOCKS OF DATA.
+
+See also: B<--bin> B<--group-by> B<--shard>
 
 
 =item B<--rpl> 'I<tag> I<perl expression>'
@@ -2309,7 +2377,7 @@ Used with B<--fg>, B<--wait>, and B<--semaphorename>.
 
 The command B<sem> is an alias for B<parallel --semaphore>.
 
-See also: B<man sem>.
+See also: B<man sem>
 
 
 =item B<--semaphorename> I<name>
@@ -2327,20 +2395,25 @@ The semaphore is stored in ~/.parallel/semaphores/
 
 Implies B<--semaphore>.
 
-See also: B<man sem>.
+See also: B<man sem>
 
 
 =item B<--semaphoretimeout> I<secs>
 
 =item B<--st> I<secs>
 
-If I<secs> > 0: If the semaphore is not released within I<secs> seconds, take it anyway.
+If I<secs> > 0: If the semaphore is not released within I<secs>
+seconds, take it anyway.
 
-If I<secs> < 0: If the semaphore is not released within I<secs> seconds, exit.
+If I<secs> < 0: If the semaphore is not released within I<secs>
+seconds, exit.
+
+I<secs> is in seconds, but can be postfixed with s, m, h, or d (see
+the section TIME POSTFIXES).
 
 Implies B<--semaphore>.
 
-See also: B<man sem>.
+See also: B<man sem>
 
 
 =item B<--seqreplace> I<replace-str>
@@ -2357,15 +2430,19 @@ variables with names in B<$PARALLEL_IGNORED_NAMES> will not be copied.
 
 Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
 
-See also: B<--env>, B<--record-env>.
+See also: B<--env> B<--record-env>
 
 
 =item B<--shard> I<shardexpr>
 
 Use I<shardexpr> as shard key and shard input to the jobs.
 
-I<shardexpr> is [column number|column name] [perlexpression] e.g. 3,
-Address, 3 $_%=100, Address s/\d//g.
+I<shardexpr> is [column number|column name] [perlexpression] e.g.:
+
+  3
+  Address
+  3 $_%=100
+  Address s/\d//g
 
 Each input line is split using B<--colsep>. The value of the column is
 put into $_, the perl expression is executed, the resulting value is
@@ -2379,7 +2456,9 @@ I<shardcol> is small (<10), slower if it is big (>100).
 
 B<--shard> requires B<--pipe> and a fixed numeric value for B<--jobs>.
 
-See also: B<--bin>, B<--group-by>, B<--roundrobin>.
+See the section: SPREADING BLOCKS OF DATA.
+
+See also: B<--bin> B<--group-by> B<--roundrobin>
 
 
 =item B<--shebang>
@@ -2554,8 +2633,9 @@ For details on I<mytime> see B<--delay>.
 
 =item B<--sshlogin> I<@hostgroup>
 
-Distribute jobs to remote computers. The jobs will be run on a list of
-remote computers.
+Distribute jobs to remote computers.
+
+The jobs will be run on a list of remote computers.
 
 If I<hostgroups> is given, the I<sshlogin> will be added to that
 hostgroup. Multiple hostgroups are separated by '+'. The I<sshlogin>
@@ -2595,8 +2675,8 @@ The remote host must have GNU B<parallel> installed.
 
 B<--sshlogin> is known to cause problems with B<-m> and B<-X>.
 
-B<--sshlogin> is often used with B<--transferfile>, B<--return>,
-B<--cleanup>, and B<--trc>.
+See also: B<--transferfile> B<--return> B<--cleanup> B<--trc>
+B<--sshloginfile> B<--workdir>
 
 
 =item B<--sshloginfile> I<filename>
@@ -2721,9 +2801,11 @@ then killed. Process groups are dependant on the tty.
 
 =item B<--tag>
 
-Tag lines with arguments. Each output line will be prepended with the
-arguments and TAB (\t). When combined with B<--onall> or B<--nonall>
-the lines will be prepended with the sshlogin instead.
+Tag lines with arguments.
+
+Each output line will be prepended with the arguments and TAB
+(\t). When combined with B<--onall> or B<--nonall> the lines will be
+prepended with the sshlogin instead.
 
 B<--tag> is ignored when using B<-u>.
 
@@ -2762,9 +2844,11 @@ How many words contain a..z and how many bytes do they fill?
 
 =item B<--termseq> I<sequence>
 
-Termination sequence. When a job is killed due to B<--timeout>,
-B<--memfree>, B<--halt>, or abnormal termination of GNU B<parallel>,
-I<sequence> determines how the job is killed. The default is:
+Termination sequence.
+
+When a job is killed due to B<--timeout>, B<--memfree>, B<--halt>, or
+abnormal termination of GNU B<parallel>, I<sequence> determines how
+the job is killed. The default is:
 
     TERM,200,TERM,100,TERM,50,KILL,25
 
@@ -2776,10 +2860,13 @@ dies before the waiting time is up.
 
 =item B<--tmpdir> I<dirname>
 
-Directory for temporary files. GNU B<parallel> normally buffers output
-into temporary files in /tmp. By setting B<--tmpdir> you can use a
-different dir for the files. Setting B<--tmpdir> is equivalent to
-setting $TMPDIR.
+Directory for temporary files.
+
+GNU B<parallel> normally buffers output into temporary files in
+/tmp. By setting B<--tmpdir> you can use a different dir for the
+files. Setting B<--tmpdir> is equivalent to setting $TMPDIR.
+
+See also: B<--compress>
 
 
 =item B<--tmux> (Long beta testing)
@@ -2804,10 +2891,10 @@ If I<duration> is followed by a % then the timeout will dynamically be
 computed as a percentage of the median average runtime of successful
 jobs. Only values > 100% will make sense.
 
-I<duration> is normally in seconds, but can be floats postfixed with
-B<s>, B<m>, B<h>, or B<d> which would multiply the float by 1, 60,
-3600, or 86400. Thus these are equivalent: B<--timeout 100000> and
-B<--timeout 1d3.5h16.6m4s>.
+I<duration> is in seconds, but can be postfixed with s, m, h, or d
+(see the section TIME POSTFIXES).
+
+See also: B<--termseq>
 
 
 =item B<--verbose>
@@ -2816,7 +2903,7 @@ B<--timeout 1d3.5h16.6m4s>.
 
 Print the job to be run on stderr (standard error).
 
-See also: B<-v>, B<-p>.
+See also: B<-v> B<-p>
 
 
 =item B<--transfer>
@@ -2987,9 +3074,11 @@ compatibility.
 =item B<-v>
 
 Verbose.  Print the job to be run on stdout (standard output). Can be reversed
-with B<--silent>. See also B<-t>.
+with B<--silent>.
 
 Use B<-v> B<-v> to print the wrapping ssh command when running remotely.
+
+See also: B<-t>
 
 
 =item B<--version>
@@ -3034,7 +3123,7 @@ Wait for all commands to complete.
 
 Used with B<--semaphore> or B<--sqlmaster>.
 
-See also: B<man sem>.
+See also: B<man sem>
 
 
 =item B<-X>
@@ -3054,7 +3143,7 @@ unexpected results if B<{}> is used as part of a word.
 
 Support for B<-X> with B<--sshlogin> is limited and may fail.
 
-See also: B<-m>.
+See also: B<-m>
 
 
 =item B<--exit>
@@ -3075,8 +3164,7 @@ with all the arguments.
 
 Support for B<--xargs> with B<--sshlogin> is limited and may fail.
 
-See also B<-X> for context replace. If in doubt use B<-X> as that will
-most likely do what is needed.
+See also: B<-X>
 
 
 =back
@@ -4878,7 +4966,7 @@ a chunk to the program.
 B<--pipe-part> starts one job per chunk - just like normal
 B<--pipe>. It first finds record endings near all block borders in the
 file and then starts the jobs. By using B<--block -1> it will set the
-block size to 1/I<n> * size-of-file. Used this way it will start I<n>
+block size to size-of-file/I<n>. Used this way it will start I<n>
 jobs in total.
 
 B<--round-robin> starts I<n> jobs in total. It reads a block and
@@ -4904,6 +4992,14 @@ parsed, with B<--pipe-part> only a few lines are parsed to find the
 chunk border.
 
 B<--group-by> can be combined with B<--round-robin> or B<--pipe-part>.
+
+
+=head1 TIME POSTFIXES
+
+Arguments that give a duration are given in seconds, but can be
+expressed as floats postfixed with B<s>, B<m>, B<h>, or B<d> which
+would multiply the float by 1, 60, 60*60, or 60*60*24. Thus these are
+equivalent: 100000 and 1d3.5h16.6m4s.
 
 
 =head1 UNIT PREFIX

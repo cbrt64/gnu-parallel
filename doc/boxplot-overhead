@@ -24,8 +24,8 @@ if ! $TMP/bin/parallel-20140722 --version; then
     mkdir -p $TMP/ftp
     (
 	cd $TMP/ftp
-#	wget -c ftp://ftp.gnu.org/old-gnu/parallel/p*
-	wget -c ftp://ftp.uni-kl.de/pub/gnu/parallel/p*
+	wget -c ftp://ftp.gnu.org/old-gnu/parallel/p*
+	wget -c ftp://mirrors.dotsrc.org/gnu/parallel/p*
 	parallel 'gpg --auto-key-locate keyserver --keyserver-options auto-key-retrieve {}' ::: *.sig
 	parallel --plus 'tar xvf {.} && cd {...} && ./configure --prefix '$TMP'/ftp/{.}-bin && make && make install' ::: *sig
 	perl -i -pe 's/qw\(keys/(keys/' parallel*/src/parallel
@@ -45,7 +45,8 @@ measure() {
     CORES=$3
     VERSION=$4
     MHZ=1700
-
+    echo Running $OUTER test with $INNER jobs each on $CORES cores
+    
     # Force cpuspeed at 1.7GHz - seems to give tighter results
     #forever 'parallel sudo cpufreq-set -g performance -u '$MHZ'MHz -d '$MHZ'MHz -c{} ::: {0..3};sleep 10' &
 

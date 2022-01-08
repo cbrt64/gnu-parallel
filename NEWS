@@ -2994,7 +2994,7 @@ New in this release:
 
 20140922
 
-* If the file give as --sshloginfile is changed it will be re-read
+* If the file given as --sshloginfile is changed it will be re-read
   when a job finishes though at most once per second. This makes it
   possible to add and remove hosts while running.
 
@@ -3689,7 +3689,8 @@ New in this release:
   pretty cool!
 
 * GNU Parallel was used (unfortunately with improper citation) in:
-  Understanding the Impact of E-Commerce Software on the Adoption of Structured Data on the Web
+  Understanding the Impact of E-Commerce Software on the Adoption of
+  Structured Data on the Web
   http://link.springer.com/chapter/10.1007/978-3-642-38366-3_9#page-1
 
 * GNU Parallel was used (unfortunately with improper citation) in:
