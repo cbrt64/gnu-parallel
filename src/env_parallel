@@ -79,14 +79,15 @@ done
 
 
 cat <<'_EOS'
-env_parallel only works if it is a function. Do the below and restart your shell.
+env_parallel only works if it is a function.
+
+Do this and restart your shell:
 
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: variables, aliases, functions, arrays
 
-fish:  Put this in $HOME/.config/fish/config.fish:
-         . (which env_parallel.fish)
+fish:  Put this in $HOME/.config/fish/config.fish:  . (which env_parallel.fish)
        E.g. by doing:
          echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
        Supports: variables, aliases, functions, arrays

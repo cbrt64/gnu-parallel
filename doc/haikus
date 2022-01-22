@@ -4,6 +4,14 @@
  
 Quote of the month:
 
+  Igual @GnuParallel te puede echar una mano. Te permite pensar y
+  programar en serie pero ejecutar en paralelo usando cores de una
+  máquina o máquinas remotas. Una vez que lo has usando te lamentas no
+  haberlo conocido antes :)
+    -- Juan Sierra Pons @juasiepo
+
+
+
   If I could only keep 5 GNU utils, parallel would make it to the list
   :)
     -- 5heikki@reddit
@@ -154,7 +162,10 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
 === Used ===
 
-  My favorite man page is that of GNU parallel.
+  I'm going to make GNU parallel my new superpower this year.
+    -- Christian G. Warden @xn@twitter
+
+My favorite man page is that of GNU parallel.
     -- Jeroen Janssens @jeroenhjanssens@twitter
 
   GNU parallel 便利すぎ

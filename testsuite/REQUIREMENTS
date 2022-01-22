@@ -99,7 +99,10 @@ install_oracle_client() {
     fi
     perl -MCPAN -e 'install DBD::Oracle'
     # TODO set up vagrant oracle server
+    git clone https://github.com/oracle/vagrant-projects.git
     # TODO set up default passwd
+    echo sudo su - oracle -c "'/home/oracle/setPassword.sh $oracle_password'" |
+	vagrant ssh
     # test it works: sql oracle://
 }
 

@@ -778,6 +778,10 @@ When used with B<--pipe> only pass full CSV-records.
 
 Color tag.
 
+If the values look very similar looking at the output it can be hard
+to tell when a new value is used. B<--ctag> gives each value a random
+color.
+
 See also: B<--tag>
 
 
@@ -785,7 +789,7 @@ See also: B<--tag>
 
 Color tagstring.
 
-See also: B<--tagstring>
+See also: B<--ctag> B<--tagstring>
 
 
 =item B<--delay> I<mytime>
@@ -1453,12 +1457,14 @@ See also: B<--group> B<--ungroup>
 
 =item B<--link>
 
-Link input sources. Read multiple input sources like the command
-B<xapply>. If multiple input sources are given, one argument will be
-read from each of the input sources. The arguments can be accessed in
-the command as B<{1}> .. B<{>I<n>B<}>, so B<{1}> will be a line from
-the first input source, and B<{6}> will refer to the line with the
-same line number from the 6th input source.
+Link input sources.
+
+Read multiple input sources like the command B<xapply>. If multiple
+input sources are given, one argument will be read from each of the
+input sources. The arguments can be accessed in the command as B<{1}>
+.. B<{>I<n>B<}>, so B<{1}> will be a line from the first input source,
+and B<{6}> will refer to the line with the same line number from the
+6th input source.
 
 Compare these two:
 
@@ -1470,7 +1476,7 @@ Arguments will be recycled if one input source has more arguments than the other
   parallel --link echo {1} {2} {3} \
     ::: 1 2 ::: I II III ::: a b c d e f g
 
-See also B<--header>, B<:::+>, B<::::+>.
+See also: B<--header> B<:::+> B<::::+>
 
 
 =item B<--load> I<max-load>
@@ -1522,7 +1528,7 @@ put back on the queue to be run later.
 B<--retries> must be set to determine how many times GNU B<parallel>
 should retry a given job.
 
-See also: B<--termseq>, B<--retries>, B<--memsuspend>
+See also: B<--termseq> B<--retries> B<--memsuspend>
 
 
 =item B<--memsuspend> I<size>
@@ -1669,8 +1675,8 @@ The data can be spread between the jobs in specific ways using
 B<--round-robin>, B<--bin>, B<--shard>, B<--group-by>. See the
 section: SPREADING BLOCKS OF DATA
 
-See also: B<--block>, B<--blocktimeout>, B<--recstart>, B<--recend>,
-B<--fifo>, B<--cat>, B<--pipepart>, B<-N>, B<-L>.
+See also: B<--block> B<--blocktimeout> B<--recstart> B<--recend>
+B<--fifo> B<--cat> B<--pipepart> B<-N> B<-L>
 
 
 =item B<--pipepart>
@@ -1699,7 +1705,7 @@ where records end.
 
 =back
 
-See also: <--pipe>.
+See also: <--pipe>
 
 
 =item B<--plain>
@@ -1767,7 +1773,7 @@ everything at startup.
 By sending GNU B<parallel> SIGUSR2 you can toggle turning on/off
 B<--progress> on a running GNU B<parallel> process.
 
-See also: B<--eta> and B<--bar>.
+See also: B<--eta> B<--bar>
 
 
 =item B<--max-line-length-allowed>
@@ -2263,32 +2269,48 @@ it possible to define your own replacement strings. GNU B<parallel>'s
   --rpl '{%} 1 $_=$job->slot()'
   --rpl '{/} s:.*/::'
   --rpl '{//} $Global::use{"File::Basename"} ||=
-    eval "use File::Basename; 1;"; $_ = dirname($_);'
+              eval "use File::Basename; 1;"; $_ = dirname($_);'
   --rpl '{/.} s:.*/::; s:\.[^/.]+$::;'
   --rpl '{.} s:\.[^/.]+$::'
 
 The B<--plus> replacement strings are implemented as:
 
-  --rpl '{+/} s:/[^/]*$::'
-  --rpl '{+.} s:.*\.::'
-  --rpl '{+..} s:.*\.([^.]*\.):$1:'
-  --rpl '{+...} s:.*\.([^.]*\.[^.]*\.):$1:'
-  --rpl '{..} s:\.[^/.]+$::; s:\.[^/.]+$::'
-  --rpl '{...} s:\.[^/.]+$::; s:\.[^/.]+$::; s:\.[^/.]+$::'
-  --rpl '{/..} s:.*/::; s:\.[^/.]+$::; s:\.[^/.]+$::'
-  --rpl '{/...} s:.*/::;s:\.[^/.]+$::;s:\.[^/.]+$::;s:\.[^/.]+$::'
-  --rpl '{##} $_=total_jobs()'
-  --rpl '{:-(.+?)} $_ ||= $$1'
+  --rpl '{+/} s:/[^/]*$:: || s:.*$::'
+  --rpl '{+.} s:.*\.:: || s:.*$::'
+  --rpl '{+..} s:.*\.([^/.]+\.[^/.]+)$:$1: || s:.*$::'
+  --rpl '{+...} s:.*\.([^/.]+\.[^/.]+\.[^/.]+)$:$1: || s:.*$::'
+  --rpl '{..} s:\.[^/.]+\.[^/.]+$::'
+  --rpl '{...} s:\.[^/.]+\.[^/.]+\.[^/.]+$::'
+  --rpl '{/..} s:.*/::; s:\.[^/.]+\.[^/.]+$::'
+  --rpl '{/...} s:.*/::; s:\.[^/.]+\.[^/.]+\.[^/.]+$::'
+  --rpl '{choose_k}
+         for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } }'
+  --rpl '{##} 1 $_=total_jobs()'
+  --rpl '{0%} 1 $f=1+int((log($Global::max_jobs_running||1)/
+                          log(10))); $_=sprintf("%0${f}d",slot())'
+  --rpl '{0#} 1 $f=1+int((log(total_jobs())/log(10)));
+              $_=sprintf("%0${f}d",seq())'
+
+  --rpl '{:-([^}]+?)} $_ ||= $$1'
   --rpl '{:(\d+?)} substr($_,0,$$1) = ""'
   --rpl '{:(\d+?):(\d+?)} $_ = substr($_,$$1,$$2);'
-  --rpl '{#([^#].*?)} s/^$$1//;'
-  --rpl '{%(.+?)} s/$$1$//;'
-  --rpl '{/(.+?)/(.*?)} s/$$1/$$2/;'
-  --rpl '{^(.+?)} s/^($$1)/uc($1)/e;'
-  --rpl '{^^(.+?)} s/($$1)/uc($1)/eg;'
-  --rpl '{,(.+?)} s/^($$1)/lc($1)/e;'
-  --rpl '{,,(.+?)} s/($$1)/lc($1)/eg;'
+  --rpl '{#([^#}][^}]*?)} $nongreedy=::make_regexp_ungreedy($$1);
+                          s/^$nongreedy(.*)/$1/;'
+  --rpl '{##([^#}][^}]*?)} s/^$$1//;'
+  --rpl '{%([^}]+?)} $nongreedy=::make_regexp_ungreedy($$1);
+                     s/(.*)$nongreedy$/$1/;'
+  --rpl '{%%([^}]+?)} s/$$1$//;'
+  --rpl '{/([^}]+?)/([^}]*?)} s/$$1/$$2/;'
+  --rpl '{^([^}]+?)} s/^($$1)/uc($1)/e;'
+  --rpl '{^^([^}]+?)} s/($$1)/uc($1)/eg;'
+  --rpl '{,([^}]+?)} s/^($$1)/lc($1)/e;'
+  --rpl '{,,([^}]+?)} s/($$1)/lc($1)/eg;'
 
+  --rpl '{slot} 1 $_="\${PARALLEL_JOBSLOT}";uq()'
+  --rpl '{host} 1 $_="\${PARALLEL_SSHHOST}";uq()'
+  --rpl '{sshlogin} 1 $_="\${PARALLEL_SSHLOGIN}";uq()'
+  --rpl '{hgrp} 1 $_="\${PARALLEL_HOSTGROUPS}";uq()'
+  --rpl '{agrp} 1 $_="\${PARALLEL_ARGHOSTGROUPS}";uq()'
 
 If the user defined replacement string starts with '{' it can also be
 used as a positional replacement string (like B<{2.}>).
@@ -3381,8 +3403,8 @@ B<--env>:
   parallel --env doubleit -S server doubleit ::: 1 2 3 ::: a b
 
 If your environment (aliases, variables, and functions) is small you
-can copy the full environment without having to B<export -f >
-anything. See B<env_parallel>.
+can copy the full environment without having to
+B<export -f> anything. See B<env_parallel>.
 
 
 =head2 EXAMPLE: Function tester
@@ -4405,6 +4427,20 @@ If not all hosts are accessible through TOR:
     echo ::: a b c
 
 See more B<ssh> tricks on https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Proxies_and_Jump_Hosts
+
+
+=head2 EXAMPLE: Use sshpass with ssh
+
+If you cannot use passwordless login, you may be able to use B<sshpass>:
+
+  export SSHPASS=MyPa$$w0rd
+  seq 10 |
+    parallel -S '4/sshpass -e ssh user-with-password@server' echo
+  seq 10 |
+    parallel --ssh 'sshpass -e ssh' -S 4/user-with-password@server' echo
+
+Currently the remote detection of CPU cores is incompatible with
+B<sshpass> so use the '4/' syntax to tell the server has 4 cores.
 
 
 =head2 EXAMPLE: Use outrun instead of ssh

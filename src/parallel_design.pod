@@ -839,7 +839,7 @@ B<$PARALLEL_SHELL>.
 
 If the command is a simple command with no redirection and setting of
 variables, the command I<could> be run without spawning a
-shell. E.g. this simple B<grep> matching either 'ls ' or ' wc >> c':
+shell. E.g. this simple B<grep> matching either 'ls ' or ' wc E<gt>E<gt> c':
 
   parallel "grep -E 'ls | wc >> c' {}" ::: foo
 
@@ -853,11 +853,11 @@ be spawned:
   parallel "grep -E 'ls | wc >> c' {} | wc >> c" ::: foo
   parallel "LANG=C grep -E 'ls | wc >> c' {}" ::: foo
 
-It is impossible to tell how B<| wc >>>B< c> should be interpreted
-without parsing the string (is the B<|> a pipe in shell or an
-alternation in a B<grep> regexp?  Is B<LANG=C> a command in B<csh> or
-setting a variable in B<bash>? Is B<>>> redirection or part of a
-regexp?).
+It is impossible to tell how B<| wc E<gt>E<gt> c> should be
+interpreted without parsing the string (is the B<|> a pipe in shell or
+an alternation in a B<grep> regexp?  Is B<LANG=C> a command in B<csh>
+or setting a variable in B<bash>? Is B<E<gt>E<gt>> redirection or part
+of a regexp?).
 
 On top of this, wrapper scripts will often require a shell to be
 spawned.

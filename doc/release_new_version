@@ -254,27 +254,32 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220122 ('Kazakhstan/James Webb/Tutu/Pillar of Shame<<>>') released <<[stable]>>
+Subject: GNU Parallel 20220122 ('20 years') released [stable]
 
-GNU Parallel 20220122 ('<<>>') <<[stable]>> has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20220122 ('20 years') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
 
-<<No new functionality was introduced so this is a good candidate for a stable release.>>
+No new functionality was introduced so this is a good candidate for a stable release.
 
 Quote of the month:
 
-  <<>>
+  I'm going to make GNU parallel my new superpower this year.
+    -- Christian G. Warden @xn@twitter
   
 New in this release:
+
+* GNU Parallel turned 20 on the 2022-01-06 https://www.gnu.org/software/parallel/20th-birthday.html
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-* https://morioh.com/p/a01b883dc57c
+* Save Time with Modern Search Techniques https://www.eventbrite.com/e/ohio-information-security-forum-january-2022-monthly-meeting-tickets-240632737997
 
-https://sachachua.com/blog/2021/12/re-encoding-the-emacsconf-videos-with-ffmpeg-and-gnu-parallel/
-https://learntutorials.net/ja/bash/topic/10778/%E5%B9%B3%E8%A1%8C
-<<>>
+* Bash "Fail immediately if any fails" https://morioh.com/p/a01b883dc57c
+
+* Re-encoding the EmacsConf videos with FFmpeg and GNU Parallel https://sachachua.com/blog/2021/12/re-encoding-the-emacsconf-videos-with-ffmpeg-and-gnu-parallel/
+
+* Bash 平行 https://learntutorials.net/ja/bash/topic/10778/%E5%B9%B3%E8%A1%8C
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

@@ -62,8 +62,9 @@ env_parallel() {
 	typeset -p "$@"
     }
     _ignore_HARDCODED() {
-	# These names cannot be detected
-	echo '(_|TIMEOUT|GROUPS|FUNCNAME|DIRSTACK|PIPESTATUS|USERNAME|BASHPID|BASH_[A-Z_]+)'
+	# Copying $RANDOM will cause it not to be random
+	# The rest cannot be detected as read-only
+	echo '(RANDOM|_|TIMEOUT|GROUPS|FUNCNAME|DIRSTACK|PIPESTATUS|USERNAME|BASHPID|BASH_[A-Z_]+)'
     }
     _ignore_READONLY() {
 	# shellcheck disable=SC1078,SC1079,SC2026
@@ -384,7 +385,7 @@ _parset_main() {
 	return 255
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
-	echo "parset 20211222 (GNU parallel `parallel --minversion 1`)"
+	echo "parset 20220122 (GNU parallel `parallel --minversion 1`)"
 	echo "Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
 	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"

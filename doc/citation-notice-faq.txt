@@ -35,6 +35,10 @@ Therefore the notice is not adding a term that would require citation
 as mentioned on:
 https://www.gnu.org/licenses/gpl-faq.en.html#RequireCitation
 
+The link only addresses the license and copyright law. It does not
+address academic tradition, and the citation notice only refers to
+academic tradition.
+
 If you disagree with Richard M. Stallman's interpretation and feel the
 citation notice does not adhere to GPLv3, you should treat the
 software as if it is not available under GPLv3. And since GPLv3 is the
@@ -106,7 +110,7 @@ do not have to cite GNU Parallel. If it is too much work replacing the
 use of GNU Parallel, then it is a good indication that the
 contribution to the research is big enough to warrant a citation.
 
-The citation is also needed for reproducibility. Let us assume a bug
+The citation is also needed for reproducibility: Let us assume a bug
 in GNU Parallel skews the results. People replicating the research
 needs to have the information, so they can replicate the (possibly
 wrong) results.
@@ -132,7 +136,7 @@ refer to peer-reviewed articles - others do not:
 * https://github.com/UnixJunkie/PAR/blob/master/README
 
 The CITATION.cff file format was designed to make it easy to cite
-software, and
+software, and used by a wide range of tools.
 
 
 == I do not like the notice. Can I fork GNU Parallel and remove it? ==
@@ -249,14 +253,18 @@ should probably not be using it anyway.
 
 If you care so little about GNU Parallel that you do not want to help
 finance development, then you should contemplate whether GNU Parallel
-is really the right tool for you.
+is really the right tool for you. Personally I would prefer if you
+simply ignored GNU Parallel and treated it as if it did not exist.
 
-It is, however, doable (e.g. by forking and changing the code; see
-above). But you will be going against the wishes of the author,
-because you make it harder to make a living, thus you will be making
-it harder to justify producing more free software. If you like GNU
-Parallel and want to see it maintained in the future, then this is not
-the way to go.
+But if you really insist on not helping, it is possible (e.g. by
+forking and changing the code; see above). But you will be going
+against the wishes of the author, because you make it harder to make a
+living, thus you will be making it harder to justify producing more
+free software; not only for me, but also for others who see you
+actively working against the author's wishes.
+
+If you like GNU Parallel and want to see it maintained in the future,
+then this is not the way to go.
 
 Maybe it is you Nadia Eghbal addresses in
 https://www.slideshare.net/NadiaEghbal/consider-the-maintainer:

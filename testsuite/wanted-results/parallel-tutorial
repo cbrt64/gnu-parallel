@@ -727,12 +727,12 @@ Unknown option: parallel@lo
 Unknown option: myecho $myvar
 Unknown option: :::
 Unknown option: green
-env_parallel only works if it is a function. Do the below and restart your shell.
+env_parallel only works if it is a function.
+Do this and restart your shell:
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: variables, aliases, functions, arrays
-fish:  Put this in $HOME/.config/fish/config.fish:
-         . (which env_parallel.fish)
+fish:  Put this in $HOME/.config/fish/config.fish:  . (which env_parallel.fish)
        E.g. by doing:
          echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
        Supports: variables, aliases, functions, arrays
@@ -779,6 +779,7 @@ BASH_FUNC_run_once%%
 BASH_FUNC_run_test%%
 _
 mysqlrootpass
+withpassword
   # The function is only copied if using Bash
   my_func2() {
     echo in my_func2 $VAR $1
@@ -801,12 +802,12 @@ Unknown option: parallel@lo
 Unknown option: echo $NOT; not_ex
 Unknown option: :::
 Unknown option: bar
-env_parallel only works if it is a function. Do the below and restart your shell.
+env_parallel only works if it is a function.
+Do this and restart your shell:
 bash:  Put this in $HOME/.bashrc:  . `which env_parallel.bash`
        E.g. by doing:  echo '. `which env_parallel.bash`' >> $HOME/.bashrc
        Supports: variables, aliases, functions, arrays
-fish:  Put this in $HOME/.config/fish/config.fish:
-         . (which env_parallel.fish)
+fish:  Put this in $HOME/.config/fish/config.fish:  . (which env_parallel.fish)
        E.g. by doing:
          echo '. (which env_parallel.fish)' >> $HOME/.config/fish/config.fish
        Supports: variables, aliases, functions, arrays
@@ -838,7 +839,7 @@ To install in all shells run:
   env_parallel --install
 For details: see  man env_parallel
   parallel -vv --pipepart --block 1M wc :::: num30000
-<num30000 perl -e 'while(@ARGV){sysseek(STDIN,shift,0)||die;$left=shift;while($read=sysread(STDIN,$buf,$left>131072?131072:$left)){$left-=$read;syswrite(STDOUT,$buf);}}' 0 0 0 168894 |(wc)
+<num30000 perl -e 'while(@ARGV){sysseek(STDIN,shift,0)||die;$left=shift;while($read=sysread(STDIN,$buf,$left>32767?32767:$left)){$left-=$read;syswrite(STDOUT,$buf);}}' 0 0 0 168894 |(wc)
   30000   30000  168894
   my_func3() {
     echo in my_func $1 > $1.out
@@ -1285,4 +1286,4 @@ mentioned in the release notes of next version of GNU Parallel.
 echo A
 echo B
 echo C
-7
+8
