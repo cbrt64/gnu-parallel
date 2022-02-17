@@ -13052,6 +13052,14 @@ sub total_jobs() {
 	# ISO8601 2038-01-19
 	::strftime("%Y-%m-%d", localtime(time()));
     }
+    sub hh_mm_ss() {
+	# ISO8601 03:14:08
+	::strftime("%H:%M:%S", localtime(time()));
+    }
+    sub hh_mm() {
+	# ISO8601 03:14
+	::strftime("%H:%M", localtime(time()));
+    }
     sub yyyymmddhhmmss() {
 	# ISO8601 20380119031408
 	::strftime("%Y%m%d%H%M%S", localtime(time()));
@@ -13063,6 +13071,14 @@ sub total_jobs() {
     sub yyyymmdd() {
 	# ISO8601 20380119
 	::strftime("%Y%m%d", localtime(time()));
+    }
+    sub hhmmss() {
+	# ISO8601 031408
+	::strftime("%H%M%S", localtime(time()));
+    }
+    sub hhmm() {
+	# ISO8601 0314
+	::strftime("%H%M", localtime(time()));
     }
 
     sub replace($$$$) {

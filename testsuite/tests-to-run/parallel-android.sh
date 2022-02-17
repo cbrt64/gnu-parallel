@@ -9,7 +9,7 @@ torsocks bash <<'EOF'
 . `which env_parallel.bash`
 env_parallel --session
 
-host=$(parallel -j0 --halt now,success=1 ssh {} echo {} ::: koditor huator fairtor 2>/dev/null)
+host=$(parallel -j0 --halt now,success=1 ssh {} echo {} ::: kodi koditor huator fairtor 2>/dev/null)
 if [ -z "$host" ] ; then
     echo Error: no android host working
 else    

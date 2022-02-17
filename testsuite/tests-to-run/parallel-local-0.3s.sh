@@ -60,7 +60,8 @@ EOF
 
 par_crnl() {
     echo '### Give a warning if input is DOS-ascii'
-    printf "b\r\nc\r\nd\r\ne\r\nf\r\n" | stdout parallel -k echo {}a
+    printf "b\r\nc\r\nd\r\ne\r\nf\r\n" |
+	stdout parallel -k 'sleep 0.01; echo {}a'
     echo This should give no warning because -d is set
     printf "b\r\nc\r\nd\r\ne\r\nf\r\n" | parallel -k -d '\r\n' echo {}a
     echo This should give no warning because line2 has newline only
@@ -649,6 +650,14 @@ par_tee() {
     seq 300000 | parallel 'grep {1} | LC_ALL=C wc {2}' ::: {1..5} ::: -l -c
 }
 
+par_parset_tee() {
+    . $(which env_parallel.bash)
+    export PARALLEL='-k --tee --pipe --tag'
+    parset a,b 'grep {}|wc' ::: 1 5 < <(seq 10000)
+    echo $a
+    echo $b
+}
+
 par_tagstring_pipe() {
     echo 'bug #50228: --pipe --tagstring broken'
     seq 3000 | parallel -j4 --pipe -N1000 -k --tagstring {%} LC_ALL=C wc
@@ -1052,9 +1061,13 @@ par_hash_and_time_functions() {
                               yyyy_mm_dd_hh_mm_ss(),
                               yyyy_mm_dd_hh_mm(),
                               yyyy_mm_dd(),
+                              hh_mm_ss(),
+                              hh_mm(),
                               yyyymmddhhmmss(),
 			      yyyymmddhhmm(),
-			      yyyymmdd()) =}' ::: 1 |
+			      yyyymmdd(),
+                              hhmmss(),
+                              hhmm()) =}' ::: 1 |
 	perl -pe 's/\d/9/g'
     parallel echo '{= $_=hash($_) =}' ::: 1 |
 	perl -pe 's/[a-f0-9]+/X/g'

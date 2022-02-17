@@ -8,7 +8,7 @@
 
 par_transfer_special_char_names() {
     echo '### Test --return of weirdly named file'
-    ssh parallel@lo rm 'aa*b'
+    ssh parallel@lo rm -f 'aa*b'
     rm -f 'aa<${#}" b'
     stdout parallel --return {} -S parallel@lo echo '>'{} ::: 'aa<${#}" b'
     ls 'aa<${#}" b'
@@ -73,13 +73,13 @@ _EOS
 par_keep_order() {
     echo '### Test --keep-order'
     seq 0 2 |
-    parallel --keep-order -j100% -S 1/:,2/parallel@lo -q perl -e 'sleep 1;print "job{}\n";exit({})'
+	parallel --keep-order -j100% -S 1/:,2/parallel@lo -q perl -e 'sleep 1;print "job{}\n";exit({})'
 }
 
 par_keeporder() {
     echo '### Test --keeporder'
     seq 0 2 |
-    parallel --keeporder -j100% -S 1/:,2/parallel@lo -q perl -e 'sleep 1;print "job{}\n";exit({})'
+	parallel --keeporder -j100% -S 1/:,2/parallel@lo -q perl -e 'sleep 1;print "job{}\n";exit({})'
 }
 
 par_load_csh() {

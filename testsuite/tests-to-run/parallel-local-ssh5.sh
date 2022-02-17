@@ -44,6 +44,8 @@ par_lsh() {
     echo '### --ssh lsh'
     parallel --ssh 'lsh -c aes256-ctr' -S lo echo ::: OK
     echo OK | parallel --ssh 'lsh -c aes256-ctr' --pipe -S csh@lo cat
+    parallel --ssh lsh -S lo echo ::: OK
+    echo OK | parallel --ssh lsh --pipe -S csh@lo cat
     # Todo rsync/trc csh@lo
     # Test gl. parallel med --ssh lsh: Hvilke fejler? brug dem. Også hvis de fejler
 }

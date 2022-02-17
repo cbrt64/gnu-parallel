@@ -22,7 +22,7 @@ echo '### Check that we can have more input than max procs (-j 0) - touch'
 perl -e 'print map {"more_than_5000-$_\n" } (4000..9999)' | parallel -vj 0 touch | LC_ALL=C sort | tail
 echo '### rm'
 perl -e 'print map {"more_than_5000-$_\n" } (4000..9900)' | parallel -j 0 rm | LC_ALL=C sort
-cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 | egrep -v 'parallel: Warning: Starting|parallel: Warning: Consider'
+cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj0 -k --joblog /tmp/jl-`basename $0` -L1 | egrep -v 'parallel: Warning: (Starting|Consider|Only|Try)'
 ls | parallel -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" "{=$_=pQ($_)=}"\n\"}"' | LC_ALL=C sort
 ls | parallel --group -j500 'sleep 1; find {} -type f | perl -ne "END{print $..\" "{=$_=pQ($_)=}"\n\"}"' | LC_ALL=C sort
 find . -type f | parallel --group  "perl -ne '/^\\S+\\s+\\S+$/ and print \$ARGV,\"\\n\"'" | LC_ALL=C sort

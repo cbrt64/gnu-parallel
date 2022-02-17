@@ -8,6 +8,8 @@ par_pipe_retries	parallel: Error: --retries cannot be combined with --roundrobin
 par_lsh	### --ssh lsh
 par_lsh	OK
 par_lsh	OK
+par_lsh	OK
+par_lsh	OK
 par_input_loss_pipe	### bug #36595: silent loss of input with --pipe and --sshlogin
 par_input_loss_pipe	      1   10000   48894
 par_env_parallel_onall	bug #54352: env_parallel -Slo --nonall myfunc broken in 20180722

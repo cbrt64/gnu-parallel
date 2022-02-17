@@ -4,6 +4,14 @@
  
 Quote of the month:
 
+
+  GNU parallel すごいな、シェルスクリプトを make -jX みたいにして並列
+  に走らせたいときに超便利
+    -- びーる @debugordie@twitter
+
+  GNU parallel いいよ、大量のデータファイルをスクリプトで処理する人とかにマジおすすめ
+    -- びーる @debugordie@twitter
+
   Igual @GnuParallel te puede echar una mano. Te permite pensar y
   programar en serie pero ejecutar en paralelo usando cores de una
   máquina o máquinas remotas. Una vez que lo has usando te lamentas no

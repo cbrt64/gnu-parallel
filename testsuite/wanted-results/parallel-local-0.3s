@@ -224,7 +224,7 @@ par_halt_one_job	1
 par_halt_one_job	parallel: This job failed:
 par_halt_one_job	echo 1;exit 1
 par_hash_and_time_functions	### Functions for replacement string
-par_hash_and_time_functions	9999-99-99T99:99:99 9999-99-99T99:99 9999-99-99 99999999999999 999999999999 99999999
+par_hash_and_time_functions	9999-99-99T99:99:99 9999-99-99T99:99 9999-99-99 99:99:99 99:99 99999999999999 999999999999 99999999 999999 9999
 par_hash_and_time_functions	XxX
 par_help	### Test --help and -h: Help output (just check we get the same amount of lines)
 par_help	Output from -h and --help
@@ -560,6 +560,8 @@ par_parcat_args_stdin	OK2
 par_parcat_rm	bug #51691: parcat --rm remove fifo when opened
 par_parcat_rm	OK1
 par_parcat_rm	OK file removed
+par_parset_tee	1 3440 3440 16910
+par_parset_tee	5 3439 3439 16904
 par_perlexpr_with_newline	Perl expression spanning 2 lines
 par_pipe_N1_regexp	bug #55131: --regexp --recstart hangs
 par_pipe_N1_regexp	These should give the same

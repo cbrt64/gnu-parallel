@@ -187,8 +187,8 @@ par_remote_load() {
 
 par_remote_nice() {
     echo '### Test --nice remote'
-    stdout parallel --nice 1 -S lo -vv 'PAR=a bash -c "echo  \$PAR {}"' ::: b |
-	perl -pe 's/\S*parallel-server\S*/one-server/;s:="[0-9]+":="XXXXX":i;'
+    parallel --nice 5 -S lo 'ps -l $$|field 8; true' ::: a
+    nice -n5 parallel -S lo 'ps -l $$|field 8; true' ::: a
 }
 
 par_hgrp_agrp() {
