@@ -63,6 +63,28 @@ par_semaphore-timeout() {
     stdout sem --id st --wait
 }
 
+par_exit() {
+    echo '### Exit values'
+    test_exit() {
+	stdout sem --fg --id exit$1 exit $1
+	echo $?
+    }
+    export -f test_exit
+    parallel --tag -k test_exit ::: 0 1 10 100 101 102 222 255
+
+    echo '### Exit values - signal'
+    test_signal() {
+	bash -c 'kill -'$1' $$'
+	echo Bash exit value $?
+	stdout sem --fg --id signal$1 kill -$1 '$$'
+	echo Sem exit value $?
+    }
+    export -f test_signal
+    stdout parallel -k --timeout 3 --tag test_signal ::: {0..64} |
+	perl -pe 's/line 1: (\d+)/line 1: PID/'
+}
+
+
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 3000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |

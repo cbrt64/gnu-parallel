@@ -72,7 +72,7 @@ run() {
 	    if gpg --list-keys 0xFFFFFFF1 && gpg --list-keys 0x88888888 ; then
 		echo Keys fetched
 		# OK
-		return 0
+       		return 0
 	    else
 		keyservers="keyserver.ubuntu.com
 			    pgp.surf.nl
@@ -86,14 +86,14 @@ run() {
 			return 0
 		    fi
 		done
-		echo
-		echo "Cannot fetch keyID 0x88888888, so the signature cannot be checked."
+     		echo
+       		echo "Cannot fetch keyID 0x88888888, so the signature cannot be checked."
 		return 1
 	    fi
 	else
-	    # GnuPG not installed
+       	    # GnuPG not installed
 	    echo
-	    echo "GnuPG (gpg) is not installed so the signature cannot be checked."
+  	    echo "GnuPG (gpg) is not installed so the signature cannot be checked."
 	    return 1
 	fi
     }
@@ -109,7 +109,7 @@ run() {
 	    # GnuPG signature failed
 	    echo
 	    echo "The signature on $latest.tar.bz2 is wrong. This may indicate that a criminal has changed the code."
-	    echo "THIS IS BAD AND THE CODE WILL NOT BE INSTALLED."
+     	    echo "THIS IS BAD AND THE CODE WILL NOT BE INSTALLED."
 	    echo
 	    echo "See http://git.savannah.gnu.org/cgit/parallel.git/tree/README for other installation methods."
 	    exit 1
@@ -121,7 +121,7 @@ run() {
 	echo "Continue anyway? (y/n)"
 	read YN </dev/tty
 	if test "$YN" = "n"; then
-	    # Stop
+ 	    # Stop
 	    exit 2
 	else
 	    # Continue
@@ -152,7 +152,7 @@ run() {
 	    true
 	else
 	    # Add $HOME/bin to $PATH for both bash and csh
-	    echo 'PATH=$PATH:$HOME/bin' >> "$HOME"/.bashrc
+       	    echo 'PATH=$PATH:$HOME/bin' >> "$HOME"/.bashrc
 	    echo 'setenv PATH ${PATH}:${HOME}/bin' >> "$HOME"/.cshrc
 	fi
 

@@ -115,7 +115,16 @@ sub halt() {
 	}
 	wait_and_exit($Global::halt_exitstatus);
     } else {
-	wait_and_exit(min(undef_as_zero($Global::exitstatus),101));
+	if($Global::semaphore) {
+	    # --semaphore runs a single job:
+	    # Use exit value of that
+	    wait_and_exit($Global::halt_exitstatus);
+	} else {
+	    # 0 = all jobs succeeded
+	    # 1-100 = n jobs failed
+	    # 101 = >100 jobs failed
+	    wait_and_exit(min(undef_as_zero($Global::exitstatus),101));
+	}
     }
 }
 
@@ -2296,7 +2305,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220122;
+    $Global::version = 20220202;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -9978,7 +9987,7 @@ sub start($) {
 		eval{ setpgrp(0,0) };
 		eval{ setpriority(0,0,$opt::nice) };
 		exec($Global::shell,"-c",$command)
-		    || ::die_bug("open3-$stdin_fh $command");
+		    || ::die_bug("open3-$stdin_fh ".substr($command,0,200));
 	    }
 	};
 	return $pid;
@@ -10134,7 +10143,7 @@ sub start($) {
 	};
 	close $devtty_fh;
 	$job->set_virgin(0);
-    } elsif($opt::semaphore) {
+    } elsif($Global::semaphore) {
 	# Allow sem to read from stdin
 	$pid = open3_setpgrp("<&STDIN",$stdout_fh,$stderr_fh,$command);
 	$job->set_virgin(0);
@@ -11081,6 +11090,13 @@ sub set_exitsignal($$) {
 	# Returns: N/A
 	my $job = shift;
 	my $limit;
+	if($Global::semaphore) {
+	    # Emulate Bash's +128 if there is a signal
+	    $Global::halt_exitstatus =
+		($job->exitstatus()
+		 or
+		 $job->exitsignal() ? $job->exitsignal() + 128 : 0);
+	}
 	if($job->exitstatus() or $job->exitsignal()) {
 	    # Job failed
 	    $Global::exitstatus++;
@@ -12412,7 +12428,7 @@ sub tmux_length($) {
 	::debug("tmux","tmux-out ",@out);
 	chomp @out;
 	# The arguments is given 3 times on the command line
-	# and the wrapping is around 30 chars
+	# and the tmux wrapping is around 30 chars
 	# (29 for tmux1.9, 33 for tmux1.8)
 	my $tmux_len = ::max(@out);
 	$len = ::min($len,int($tmux_len/4-33));
