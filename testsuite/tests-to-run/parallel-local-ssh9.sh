@@ -152,9 +152,9 @@ par_propagate_env() {
 par_env_parallel_big_env() {
     echo '### bug #54128: command too long when exporting big env'
     . `which env_parallel.bash`
-    a=`rand | perl -pe 's/\0//g'| head -c 70000`
+    a=`rand | perl -pe 's/\0//g'| head -c 20000`
     env_parallel -Slo echo should not ::: fail 2>&1
-    a=`rand | perl -pe 's/\0//g'| head -c 80000`
+    a=`rand | perl -pe 's/\0//g'| head -c 25000`
     env_parallel -Slo echo should ::: fail 2>/dev/null || echo OK
 }
 

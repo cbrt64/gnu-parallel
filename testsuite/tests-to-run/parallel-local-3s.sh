@@ -187,7 +187,7 @@ par_show_limits() {
 	(echo b; echo c; echo f) | parallel -j1 -kX --show-limits -s 100 echo {}ar
 	echo "### BUG: empty lines with --show-limit"
 	echo | stdout parallel --show-limits
-    ) | perl -pe 's/131\d\d\d/131xxx/'
+    ) | perl -pe 's/(\d+)\d\d\d/${1}xxx/'
 }
 
 par_test_delimiter() {

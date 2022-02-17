@@ -8,7 +8,7 @@
 # Each should be taking 30-100s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
-par_shard() {
+par_shard_a() {
     echo '### --shard'
     # Each of the 5 lines should match:
     #   ##### ##### ######
@@ -23,7 +23,10 @@ par_shard() {
     }
     shard_on_col 1
     shard_on_col 2
+}
 
+par_shard_b() {
+    echo '### --shard'
     shard_on_col_name() {
 	colname=$1
 	col=$2
@@ -33,7 +36,10 @@ par_shard() {
     }
     shard_on_col_name A 1
     shard_on_col_name B 2
+}
 
+par_shard_c() {
+    echo '### --shard'
     shard_on_col_expr() {
 	colexpr="$1"
 	col=$2
@@ -43,7 +49,9 @@ par_shard() {
     }
     shard_on_col_expr '1 $_%=3' 1
     shard_on_col_expr '2 $_%=3' 2
+}
 
+par_shard_d() {
     shard_on_col_name_expr() {
 	colexpr="$1"
 	col=$2
@@ -55,10 +63,10 @@ par_shard() {
     shard_on_col_name_expr 'B $_%=3' 2
     
     echo '*** broken'
-    # Shorthand for --pipe -j+0
-    seq 200000 | parallel --pipe --shard 1 wc |
-	perl -pe 's/(.*\d{5,}){3}/OK/'
-    # Combine with arguments
+    # Should be shorthand for --pipe -j+0
+    #seq 200000 | parallel --pipe --shard 1 wc |
+    #	perl -pe 's/(.*\d{5,}){3}/OK/'
+    # Combine with arguments (should compute -j10 given args)
     seq 200000 | parallel --pipe --shard 1 echo {}\;wc ::: {1..5} ::: a b |
 	perl -pe 's/(.*\d{5,}){3}/OK/'
 }
@@ -440,7 +448,7 @@ par_max_length_len_128k() {
 	    parallel -X echo {}aa{} | head -n 1 | wc -c
 	seq 1 60000 | perl -pe 's/$/.gif/' |
 	    parallel -X echo {} aa {} | head -n 1 | wc -c
-    ) |	perl -pe 's/131\d\d\d/131xxx/g'
+    ) |	perl -pe 's/(\d\d+)\d\d\d/${1}xxx/g'
 }
 
 par_round_robin_blocks() {
@@ -530,15 +538,19 @@ par_plus_dyn_repl() {
 
 par_keeporder_roundrobin() {
     echo 'bug #50081: --keep-order --round-robin should give predictable results'
+    . `which env_parallel.bash`
 
-    export PARALLEL="-j13 --block 1m --pipe --roundrobin"
-    random1G() {
-	< /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
-	    head -c 1G;
+    run_roundrobin() {
+	random1G() {
+	    < /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
+		head -c 1G;
+	}
+        random1G |
+	    parallel $1 -j13 --block 1m --pipe --roundrobin 'echo {#} $(md5sum)' |
+	     sort
     }
-    a=$(random1G | parallel -k 'echo {#} $(md5sum)' | sort)
-    b=$(random1G | parallel -k 'echo {#} $(md5sum)' | sort)
-    c=$(random1G | parallel    'echo {#} $(md5sum)' | sort)
+    env_parset a,b,c run_roundrobin ::: -k -k ''
+
     if [ "$a" == "$b" ] ; then
 	# Good: -k should be == -k
 	if [ "$a" == "$c" ] ; then

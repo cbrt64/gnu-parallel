@@ -1071,8 +1071,10 @@ par_test_job_number	8
 par_test_job_number	9
 par_test_job_number	10
 par_too_long_line_X	bug #54869: Long lines break
-par_too_long_line_X	      1   29302  131012
-par_too_long_line_X	      1   12698   63490
+par_too_long_line_X	      1   15890   63952
+par_too_long_line_X	      1   12796   63980
+par_too_long_line_X	      1   12796   63980
+par_too_long_line_X	      1     518    2590
 par_trailing_space_line_continuation	### Test of trailing space continuation
 par_trailing_space_line_continuation	foo ole bar
 par_trailing_space_line_continuation	quux

@@ -8,7 +8,7 @@ par_bug56403	2	job2cjob2d
 par_delay_Xauto	TODO: --retries for those that fail and --sshdelay
 par_delay_Xauto	### bug #58911: --delay Xauto
 par_delay_Xauto	0
-par_delay_Xauto	5
+par_delay_Xauto	2
 par_distribute_input_by_ability	### bug #48290: round-robin does not distribute data based on business
 par_distribute_input_by_ability	### Distribute input to jobs that are ready
 par_distribute_input_by_ability	Job-slot n is 50% slower than n+1, so the order should be 1..7

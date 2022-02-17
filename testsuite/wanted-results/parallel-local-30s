@@ -1533,12 +1533,12 @@ par_macron	¯<¯<¯>¯> -k	/usr/bin/bash: -c: line 0: `echo ¯<¯<¯>¯>'
 par_macron	¯<¯<¯>¯> -k	/usr/bin/bash: ¯: No such file or directory
 par_macron	¯<¯<¯>¯> -k	/usr/bin/bash: ¯: No such file or directory
 par_max_length_len_128k	### BUG: The length for -X is not close to max (131072)
-par_max_length_len_128k	131xxx
-par_max_length_len_128k	131xxx
-par_max_length_len_128k	131xxx
-par_max_length_len_128k	131xxx
-par_max_length_len_128k	131xxx
-par_max_length_len_128k	131xxx
+par_max_length_len_128k	64xxx
+par_max_length_len_128k	64xxx
+par_max_length_len_128k	64xxx
+par_max_length_len_128k	64xxx
+par_max_length_len_128k	64xxx
+par_max_length_len_128k	64xxx
 par_memfree	### test memfree - it should be killed by timeout
 par_memfree	Free mem: 1k
 par_memfree	parallel: Warning: This job was killed because it timed out:
@@ -1727,6 +1727,8 @@ par_shard	      9 8
 par_shard	      9 9
 par_shard	      2 c2
 par_shard	*** broken
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
 par_sighup	### Test SIGHUP
 par_sighup	1
 par_sighup	10

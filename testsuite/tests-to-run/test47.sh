@@ -30,8 +30,10 @@ export LANG=C
 echo '### Test --transfer --return --cleanup'
 
 rm -rf /tmp/parallel.file*
-stdout ssh $SSHLOGIN1 rm -rf 'tmp/parallel.file*'  '/tmp/parallel.file*'
-stdout ssh $SSHLOGIN2 rm -rf 'tmp/parallel.file*' '/tmp/parallel.file*'
+stdout ssh $SSHLOGIN1 rm -rf 'tmp/parallel.file*'  '/tmp/parallel.file*' |
+    grep -v 'Warning: Permanently added.*known hosts'
+stdout ssh $SSHLOGIN2 rm -rf 'tmp/parallel.file*' '/tmp/parallel.file*' |
+    grep -v 'Warning: Permanently added.*known hosts'
 (seq 1 2) >/tmp/test17
 echo '# Create some weirdly files in /tmp'
 mkdir -p /tmp/parallel.file

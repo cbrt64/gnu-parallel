@@ -1939,7 +1939,6 @@ sub parse_options(@) {
     }
     if(defined $opt::version) { version(); wait_and_exit(0); }
     if(defined $opt::record_env) { record_env(); wait_and_exit(0); }
-    if(defined $opt::show_limits) { show_limits(); }
     if(@opt::sshlogin) { @Global::sshlogin = @opt::sshlogin; }
     if(@opt::sshloginfile) { read_sshloginfiles(@opt::sshloginfile); }
     if(@opt::return) { push @Global::ret_files, @opt::return; }
@@ -2214,6 +2213,7 @@ sub parse_options(@) {
     }
 
     parse_sshlogin();
+    if(defined $opt::show_limits) { show_limits(); }
 
     if(remote_hosts() and ($opt::X or $opt::m or $opt::xargs)) {
         # As we do not know the max line length on the remote machine
@@ -2412,6 +2412,7 @@ sub init_globals() {
     $Global::max_jobs_running = 0;
     $Global::job_already_run = '';
     $ENV{'TMPDIR'} ||= "/tmp";
+    $ENV{'PARALLEL_REMOTE_TMPDIR'} ||= "/tmp";
     $ENV{'OLDPWD'} = $ENV{'PWD'};
     if(not $ENV{HOME}) {
 	# $ENV{HOME} is sometimes not set if called from PHP
@@ -4239,6 +4240,17 @@ sub parse_sshlogin() {
 	    ::min($Global::minimal_command_line_length, $sshlogin->maxlength());
         $Global::host{$sshlogin_string} = $sshlogin;
     }
+    $Global::usable_command_line_length =
+	# Usable len = maxlen - 3000 for wrapping, div 2 for hexing
+	int(($Global::minimal_command_line_length - 3000)/2);
+    if($opt::max_chars) {
+	if($opt::max_chars <= $Global::usable_command_line_length) {
+	    $Global::usable_command_line_length = $opt::max_chars;
+	} else {
+	    ::warning("Value for option -s should be < ".
+		      $Global::usable_command_line_length.".");
+	}
+    }
     if(@allowed_hostgroups) {
 	# Remove hosts that are not in these groups
 	while (my ($string, $sshlogin) = each %Global::host) {
@@ -4436,9 +4448,6 @@ sub filter_hosts() {
 	}
 	$obj->set_time_to_login($time_to_login_ref->{$sshlogin});
         $obj->set_maxlength($maxlen_ref->{$sshlogin});
-	$Global::minimal_command_line_length =
-	    ::min($Global::minimal_command_line_length,
-		  int($maxlen_ref->{$sshlogin}/2));
 	::debug("init", "Timing from -S:$sshlogin ",
 		" nsockets:",$nsockets_ref->{$sshlogin},
 		" ncores:", $ncores_ref->{$sshlogin},
@@ -5356,7 +5365,7 @@ sub citation() {
 sub show_limits() {
     # Returns: N/A
     print("Maximal size of command: ",Limits::Command::real_max_length(),"\n",
-          "Maximal used size of command: ",Limits::Command::max_length(),"\n",
+          "Maximal usable size of command: ",$Global::usable_command_line_length,"\n",
           "\n",
           "Execution of  will continue now, and it will try to read its input\n",
           "and run commands; if this is not what you wanted to happen, please\n",
@@ -9443,23 +9452,39 @@ sub sshlogin_wrap($) {
 	    $monitor_parent_sshd_script =
 		# This will be packed in ', so only use "
 		::spacefree(0,'$shell = "'.($ENV{'PARALLEL_SHELL'} || '$ENV{SHELL}').'";'.
-			    '$tmpdir = "'.::perl_quote_scalar($ENV{'TMPDIR'}).'";'.
+			    '$tmpdir = $ENV{"TMPDIR"} || "'.
+			    ::perl_quote_scalar($ENV{'PARALLEL_REMOTE_TMPDIR'}).'";'.
 			    '$nice = '.$opt::nice.';'.
 			    '$termseq = "'.$opt::termseq.'";'.
+			    # }
 			    q{
+		# Check that $tmpdir is writable
+		-w $tmpdir ||
+		    die("$tmpdir\040is\040not\040writable.".
+			"\040Set\040PARALLEL_REMOTE_TMPDIR");
 		# Set $PARALLEL_TMP to a non-existent file name in $TMPDIR
 		do {
 		    $ENV{PARALLEL_TMP} = $tmpdir."/par".
 			join"", map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
 		} while(-e $ENV{PARALLEL_TMP});
+		# Set $script to a non-existent file name in $TMPDIR
+		do {
+		    $script = $tmpdir."/par".
+			join"", map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
+		} while(-e $script);
+		open($fh,">",$script) || die;
+		# \040 = space - but we remove spaces in the script
+		# ' needed due to rc-shell
+                print($fh("rm\040\'$script\'\n",$bashfunc.$cmd));
+                close $fh;
                 $SIG{CHLD} = sub { $done = 1; };
 		$pid = fork;
                 unless($pid) {
 		    # Make own process group to be able to kill HUP it later
 		    eval { setpgrp };
 		    eval { setpriority(0,0,$nice) };
-		    exec $shell, "-c", ($bashfunc."@ARGV");
-		    die "exec: $!\n";
+                    exec($shell,$script);
+		    die("exec failed: $!");
 		}
 		my $parent = getppid;
 		do {
@@ -9640,24 +9665,32 @@ sub sshlogin_wrap($) {
 		    qq{print(STDERR "parallel: Cannot chdir to $wd\\n") && exit 255;};
 	    }
 	    my ($csh_friendly,$envset,$bashfuncset) = env_as_eval();
-	    my $remote_command = $pwd.$envset.$bashfuncset.
-		'@ARGV="'.::perl_quote_scalar($command).'";'.
-		monitor_parent_sshd_script();
-	    $quoted_remote_command = "perl -e ". ::Q($remote_command);
-	    my $dq_remote_command = ::Q($quoted_remote_command);
-	    if(length $dq_remote_command > 999
-	       or
-	       not $csh_friendly
-	       or
-	       $command =~ /\n/) {
-		# csh does not deal well with > 1000 chars in one word
-		# csh does not deal well with $ENV with \n
-		$quoted_remote_command =
-		    "perl -e ". ::Q(::Q(base64_zip_eval()))." ".
-		    join" ",::shell_quote(::shell_quote(string_zip_base64($remote_command)));
-	    } else {
-		$quoted_remote_command = $dq_remote_command;
-	    }
+	    my $cmd = $command;
+	    # q// does not quote \, so we must do that
+	    $cmd =~ s/\\/\\\\/g;
+
+	    my $remote_command =
+		($pwd.$envset.$bashfuncset.
+		 '$cmd='."q\0".$cmd."\0;".
+		 monitor_parent_sshd_script());
+	   
+	    # "#" is needed because Perl on MacOS X adds NULs
+	    # when running pack q/H10000000/
+	    my $hex = unpack "H*", $remote_command."#";
+	    # csh does not deal well with > 1000 chars in one word
+	    # Insert space every 1000 char
+	    $hex =~ s/\G.{1000}\K/ /sg;
+	    # Explanation:
+	    # Write this without special chars: eval pack 'H*', join '',@ARGV
+	    # GNU_Parallel = String so people can see this is from GNU Parallel
+	    # eval+        = way to write 'eval ' without space (gives warning)
+	    # pack+        = way to write 'pack ' without space
+	    # q/H10000000/,= almost the same as "H*" but does not use *
+	    # join+q//,    = join '',
+	    $remote_command = 'GNU_Parallel,eval+pack+q/H10000000/,join+q//,@ARGV '
+		. $hex;
+
+	    $quoted_remote_command = "perl -X -e ". $remote_command;
 
 	    my $sshcmd = $sshlogin->sshcommand();
 	    my ($pre,$post,$cleanup)=("","","");
@@ -11264,7 +11297,7 @@ sub slot($) {
 	# Add arguments from arg_queue until the number of arguments or
 	# max line length is reached
 	# Uses:
-	#   $Global::minimal_command_line_length
+	#   $Global::usable_command_line_length
 	#   $opt::cat
 	#   $opt::fifo
 	#   $Global::JobQueue
@@ -11274,8 +11307,7 @@ sub slot($) {
 	# Returns: N/A
 	my $self = shift;
 	my $next_arg;
-	my $max_len = $Global::minimal_command_line_length
-	    || Limits::Command::max_length();
+	my $max_len = $Global::usable_command_line_length || die;
 	if($^O eq "darwin") {
 	    # Darwin's limit is affected by:
 	    # * number of environment names (variables+functions)
@@ -12317,13 +12349,6 @@ sub max_length($) {
 	    rename $len_cache.$$, $len_cache || ::die_bug("rename cache file");
 	}
 	$Limits::Command::line_max_len = tmux_length($cached_limit);
-	if($opt::max_chars) {
-	    if($opt::max_chars <= $cached_limit) {
-		$Limits::Command::line_max_len = $opt::max_chars;
-	    } else {
-		::warning("Value for -s option should be < $cached_limit.");
-	    }
-	}
     }
     return int($Limits::Command::line_max_len);
 }
@@ -12417,7 +12442,7 @@ sub tmux_length($) {
 	    ::wait_and_exit(255);
 	}
 	my @out;
-	for my $l (1, 2020, 16320, 100000, $len) {
+	for my $l (1, 2020, 16320, 30000, $len) {
 	    my $tmpfile = ::tmpname("tms");
 	    my $tmuxcmd = $ENV{'PARALLEL_TMUX'}.
 		" -S $tmpfile new-session -d -n echo $l".

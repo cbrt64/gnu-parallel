@@ -118,6 +118,7 @@ par_test_build_and_install() {
     rm -rf parallel-20??????/
     tar xf ~/privat/parallel/$LAST
     cd parallel-20??????/
+    rm -rf /tmp/parallel-install
 
     echo "### Test normal build and install"
     # Make sure files depending on *.pod have to be rebuilt
@@ -125,7 +126,9 @@ par_test_build_and_install() {
     ./configure --prefix=/tmp/parallel-install &&
 	(stdout nice make -j3 >/dev/null;
 	 stdout nice make install) |
-	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
+	    perl -pe 's/make\[\d\]/make[0]/g;
+		      s/rm: cannot remove.*\n//;
+		      s/\d{8}/00000000/g'
 
     echo '### Test installation missing pod2*'
     parallel which ::: pod2html pod2man pod2texi pod2pdf |
@@ -135,7 +138,9 @@ par_test_build_and_install() {
     ./configure --prefix=/tmp/parallel-install &&
 	(stdout nice make -j3 >/dev/null;
 	 stdout nice make install) |
-	    perl -pe 's/make\[\d\]/make[0]/g;s/\d{8}/00000000/g'
+	    perl -pe 's/make\[\d\]/make[0]/g;
+		      s/rm: cannot remove.*\n//;
+		      s/\d{8}/00000000/g'
 
     parallel which {}.hidden ::: pod2html pod2man pod2texi pod2pdf |
 	sudo parallel mv {} {.}

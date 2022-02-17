@@ -21,7 +21,7 @@ par_zsh_underscore	(eval):1: command not found: myecho
 par_zsh_underscore	OK if no .^^^^^^^^^^^^^^^^^^^^^^^^^ myecho
 par_zsh_underscore	zsh:1: command not found: myfunc
 par_zsh_underscore	OK if no .^^^^^^^^^^^^^^^^^^^^^^^^^ myfunc
-par_zsh_underscore	zsh:1: command not found: myfunc
+par_zsh_underscore	script:2: command not found: myfunc
 par_zsh_underscore	OK if no .^^^^^^^^^^^^^^^^^^^^^^^^^ myfunc
 par_zsh_parset	parset
 par_zsh_parset	### parset into array
@@ -327,9 +327,9 @@ par_zsh_env_parallel_session	l2func
 par_zsh_env_parallel_session	l2alias
 par_zsh_env_parallel_session	level2 array OK
 par_zsh_env_parallel_session	zsh:1: command not found: aliasbefore
-par_zsh_env_parallel_session	zsh:1: command not found: aliasbefore
+par_zsh_env_parallel_session	script:2: command not found: aliasbefore
 par_zsh_env_parallel_session	zsh:1: command not found: funcbefore
-par_zsh_env_parallel_session	zsh:1: command not found: funcbefore
+par_zsh_env_parallel_session	script:2: command not found: funcbefore
 par_zsh_env_parallel_session	no_before
 par_zsh_env_parallel_session	no_before
 par_zsh_env_parallel_session	no_before
@@ -480,13 +480,13 @@ par_sh_underscore	variables in aliases work
 par_sh_underscore	variables in aliases work
 par_sh_underscore	variables in aliases work
 par_sh_underscore	variables in aliases work
-par_sh_underscore	/bin/sh: 3: not_copied_alias: not found
+par_sh_underscore	script: 4: not_copied_alias: not found
 par_sh_underscore	error=OK
 par_sh_underscore	aliases work
 par_sh_underscore	aliases work
 par_sh_underscore	/bin/sh: 1: myecho: not found
 par_sh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_sh_underscore	/bin/sh: 1: myecho: not found
+par_sh_underscore	script: 2: myecho: not found
 par_sh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_sh_parset	parset
 par_sh_parset	### parset into vars with comma
@@ -581,27 +581,9 @@ par_sh_environment_too_big	OK_bigfunc_remote
 par_sh_environment_too_big	OK_bigfunc_quote
 par_sh_environment_too_big	OK_bigfunc_quote_remote
 par_sh_environment_too_big	Rest should fail - functions not supported in sh
-par_sh_environment_too_big	sh: XXX: perl: Argument list too long
-par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_sh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_sh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_sh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_sh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_sh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_sh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_sh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_sh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar
 par_sh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_sh_environment_too_big	sh: XXX: perl: Argument list too long
-par_sh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_sh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_sh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_sh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_sh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_sh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_sh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_sh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_sh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_sh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote
 par_sh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
 par_sh_environment_too_big	fail_bigfunc-not-supported
 par_sh_environment_too_big	fail_bigfunc_remote-not-supported
@@ -610,106 +592,106 @@ par_sh_environment_too_big	fail_bigfunc_quote_remote-not-supported
 par_sh_env_parallel_session	### Test env_parallel --session
 par_sh_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_sh_env_parallel_session	
-par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 30: level0func: not found
+par_sh_env_parallel_session	script: 30: level0alias: not found
+par_sh_env_parallel_session	script: 30: Bad substitution
 par_sh_env_parallel_session	
 par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	l1var
-par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 30: level1func: not found
+par_sh_env_parallel_session	script: 30: level1alias: not found
+par_sh_env_parallel_session	script: 30: Bad substitution
 par_sh_env_parallel_session	l1var
 par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_sh_env_parallel_session	
-par_sh_env_parallel_session	/bin/sh: 2: level0func: not found
-par_sh_env_parallel_session	/bin/sh: 2: level0alias: not found
-par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	script: 3: level0func: not found
+par_sh_env_parallel_session	script: 3: level0alias: not found
+par_sh_env_parallel_session	script: 3: Bad substitution
 par_sh_env_parallel_session	
 par_sh_env_parallel_session	/bin/sh: 2: level0func: not found
 par_sh_env_parallel_session	/bin/sh: 2: level0alias: not found
 par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
 par_sh_env_parallel_session	
-par_sh_env_parallel_session	/bin/sh: 2: level1func: not found
-par_sh_env_parallel_session	/bin/sh: 2: level1alias: not found
-par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	script: 3: level1func: not found
+par_sh_env_parallel_session	script: 3: level1alias: not found
+par_sh_env_parallel_session	script: 3: Bad substitution
 par_sh_env_parallel_session	
 par_sh_env_parallel_session	/bin/sh: 2: level1func: not found
 par_sh_env_parallel_session	/bin/sh: 2: level1alias: not found
 par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
 par_sh_env_parallel_session	l2var
-par_sh_env_parallel_session	/bin/sh: 2: level2func: not found
-par_sh_env_parallel_session	/bin/sh: 2: level2alias: not found
-par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
+par_sh_env_parallel_session	script: 3: level2func: not found
+par_sh_env_parallel_session	script: 3: level2alias: not found
+par_sh_env_parallel_session	script: 3: Bad substitution
 par_sh_env_parallel_session	l2var
 par_sh_env_parallel_session	/bin/sh: 2: level2func: not found
 par_sh_env_parallel_session	/bin/sh: 2: level2alias: not found
 par_sh_env_parallel_session	/bin/sh: 2: Bad substitution
 par_sh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_sh_env_parallel_session	
-par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 31: level0func: not found
+par_sh_env_parallel_session	script: 31: level0alias: not found
+par_sh_env_parallel_session	script: 31: Bad substitution
 par_sh_env_parallel_session	
 par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	l1var
-par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 31: level1func: not found
+par_sh_env_parallel_session	script: 31: level1alias: not found
+par_sh_env_parallel_session	script: 31: Bad substitution
 par_sh_env_parallel_session	l1var
 par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	l2var
-par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 31: level2func: not found
+par_sh_env_parallel_session	script: 31: level2alias: not found
+par_sh_env_parallel_session	script: 31: Bad substitution
 par_sh_env_parallel_session	l2var
 par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	### level0+1+2 should be transferred
 par_sh_env_parallel_session	l0var
-par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 29: level0func: not found
+par_sh_env_parallel_session	script: 29: level0alias: not found
+par_sh_env_parallel_session	script: 29: Bad substitution
 par_sh_env_parallel_session	l0var
 par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	l1var
-par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 29: level1func: not found
+par_sh_env_parallel_session	script: 29: level1alias: not found
+par_sh_env_parallel_session	script: 29: Bad substitution
 par_sh_env_parallel_session	l1var
 par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	l2var
-par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
-par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
-par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
+par_sh_env_parallel_session	script: 29: level2func: not found
+par_sh_env_parallel_session	script: 29: level2alias: not found
+par_sh_env_parallel_session	script: 29: Bad substitution
 par_sh_env_parallel_session	l2var
 par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	/bin/sh: 1: aliasbefore: not found
-par_sh_env_parallel_session	/bin/sh: 1: aliasbefore: not found
+par_sh_env_parallel_session	script: 2: aliasbefore: not found
 par_sh_env_parallel_session	/bin/sh: 1: funcbefore: not found
-par_sh_env_parallel_session	/bin/sh: 1: funcbefore: not found
+par_sh_env_parallel_session	script: 2: funcbefore: not found
 par_sh_env_parallel_session	no_before
 par_sh_env_parallel_session	no_before
 par_sh_env_parallel_session	after aliasafter_OK
 par_sh_env_parallel_session	after aliasafter_OK
 par_sh_env_parallel_session	/bin/sh: 3: funcafter: not found
-par_sh_env_parallel_session	/bin/sh: 3: funcafter: not found
+par_sh_env_parallel_session	script: 4: funcafter: not found
 par_sh_env_parallel_session	after varafter_OK
 par_sh_env_parallel_session	after varafter_OK
 par_sh_env_parallel	OK
@@ -736,8 +718,8 @@ par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
-par_mksh_underscore	/bin/mksh: not_copied_alias: inaccessible or not found
-par_mksh_underscore	/bin/mksh: not_copied_func: inaccessible or not found
+par_mksh_underscore	script[9]: not_copied_alias: inaccessible or not found
+par_mksh_underscore	script[9]: not_copied_func: inaccessible or not found
 par_mksh_underscore	error=OK
 par_mksh_underscore	error=OK
 par_mksh_underscore	aliases in and arrays in functions work
@@ -750,7 +732,7 @@ par_mksh_underscore	aliases in functions work
 par_mksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_mksh_underscore	/bin/mksh: myfunc: inaccessible or not found
 par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
-par_mksh_underscore	/bin/mksh: myfunc: inaccessible or not found
+par_mksh_underscore	script[9]: myfunc: inaccessible or not found
 par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
 par_mksh_parset	parset
 par_mksh_parset	### parset into array
@@ -886,56 +868,20 @@ par_mksh_environment_too_big	OK_bigfunc_remote
 par_mksh_environment_too_big	OK_bigfunc_quote
 par_mksh_environment_too_big	OK_bigfunc_quote_remote
 par_mksh_environment_too_big	Rest should fail
-par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
-par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
-par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
-par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
-par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_remote
-par_mksh_environment_too_big	mksh: /bin/perl: Argument list too long
-par_mksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_mksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_mksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_mksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_mksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_mksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_mksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_mksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_mksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote
 par_mksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote_remote
 par_mksh_env_parallel_session	### Test env_parallel --session
 par_mksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level0func: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
 par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
@@ -951,16 +897,16 @@ par_mksh_env_parallel_session	level1 array OK
 par_mksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level0func: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
 par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
 par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level1func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level1alias: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level1func: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level1alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
 par_mksh_env_parallel_session	/bin/mksh: level1func: inaccessible or not found
@@ -976,8 +922,8 @@ par_mksh_env_parallel_session	level2 array OK
 par_mksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level0func: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
 par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
@@ -1024,9 +970,9 @@ par_mksh_env_parallel_session	l2func
 par_mksh_env_parallel_session	l2alias
 par_mksh_env_parallel_session	level2 array OK
 par_mksh_env_parallel_session	/bin/mksh: aliasbefore: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: aliasbefore: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: aliasbefore: inaccessible or not found
 par_mksh_env_parallel_session	/bin/mksh: funcbefore: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: funcbefore: inaccessible or not found
+par_mksh_env_parallel_session	script[9]: funcbefore: inaccessible or not found
 par_mksh_env_parallel_session	no_before
 par_mksh_env_parallel_session	no_before
 par_mksh_env_parallel_session	no_before
@@ -1075,8 +1021,8 @@ par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
-par_ksh_underscore	/bin/ksh: line 4: not_copied_alias: not found
-par_ksh_underscore	/bin/ksh: line 4: not_copied_func: not found
+par_ksh_underscore	script[9]: not_copied_alias: not found [No such file or directory]
+par_ksh_underscore	script[9]: not_copied_func: not found [No such file or directory]
 par_ksh_underscore	error=OK
 par_ksh_underscore	error=OK
 par_ksh_underscore	aliases in and arrays in functions work
@@ -1085,11 +1031,11 @@ par_ksh_underscore	aliases in functions work
 par_ksh_underscore	aliases in functions work
 par_ksh_underscore	/bin/ksh: myecho: not found [No such file or directory]
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	/bin/ksh: myecho: not found [No such file or directory]
+par_ksh_underscore	script[9]: myecho: not found [No such file or directory]
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_ksh_underscore	/bin/ksh: myfunc: not found
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	/bin/ksh: myfunc: not found
+par_ksh_underscore	script[9]: myfunc: not found [No such file or directory]
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
 par_ksh_parset	parset
 par_ksh_parset	### parset into array
@@ -1229,65 +1175,20 @@ par_ksh_environment_too_big	OK_bigfunc_remote
 par_ksh_environment_too_big	OK_bigfunc_quote
 par_ksh_environment_too_big	OK_bigfunc_quote_remote
 par_ksh_environment_too_big	Rest should fail
-par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
-par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_ksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_ksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_ksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar
 par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
-par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_ksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_ksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_ksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote
 par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
-par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
-par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_ksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_ksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_ksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc
 par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_remote
-par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
-par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_ksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_ksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_ksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_ksh_environment_too_big	ksh[XXX]: perl: /bin/perl: cannot execute [Argument list too long]
-par_ksh_environment_too_big	env_parallel: Error: Your environment is too big.
-par_ksh_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_ksh_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_ksh_environment_too_big	env_parallel: Error:    variables or define functions.
-par_ksh_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_ksh_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_ksh_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_ksh_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_ksh_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote
+par_ksh_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote_remote
 par_ksh_env_parallel_session	### Test env_parallel --session
 par_ksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
 par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
@@ -1303,16 +1204,16 @@ par_ksh_env_parallel_session	level1 array OK
 par_ksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
 par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
 par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level1func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level1alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level1func: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level1alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
 par_ksh_env_parallel_session	/bin/ksh[XXX]: level1func: not found [No such file or directory]
@@ -1328,8 +1229,8 @@ par_ksh_env_parallel_session	level2 array OK
 par_ksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0func: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0alias: not found [No such file or directory]
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
 par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
@@ -1376,9 +1277,9 @@ par_ksh_env_parallel_session	l2func
 par_ksh_env_parallel_session	l2alias
 par_ksh_env_parallel_session	level2 array OK
 par_ksh_env_parallel_session	/bin/ksh: line 3: aliasbefore: not found
-par_ksh_env_parallel_session	/bin/ksh: line 3: aliasbefore: not found
+par_ksh_env_parallel_session	script[9]: aliasbefore: not found [No such file or directory]
 par_ksh_env_parallel_session	/bin/ksh: line 3: funcbefore: not found
-par_ksh_env_parallel_session	/bin/ksh: line 3: funcbefore: not found
+par_ksh_env_parallel_session	script[9]: funcbefore: not found [No such file or directory]
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
@@ -1426,8 +1327,10 @@ par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
+par_fish_underscore	script (line 15): 
 par_fish_underscore	not_copied_alias 'error=OK'
 par_fish_underscore	^
+par_fish_underscore	script (line 15): 
 par_fish_underscore	not_copied_func 'error=OK'
 par_fish_underscore	^
 par_fish_underscore	error=OK
@@ -1440,13 +1343,16 @@ par_fish_underscore	      myecho $myarray functions $argv
 par_fish_underscore	      ^
 par_fish_underscore	in function 'myfunc' with arguments 'work'
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
+par_fish_underscore	script (line 3): 
 par_fish_underscore	      myecho $myarray functions $argv
 par_fish_underscore	      ^
 par_fish_underscore	in function 'myfunc' with arguments 'work'
+par_fish_underscore		called on line 9 of file script
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
 par_fish_underscore	myfunc work
 par_fish_underscore	^
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myfunc
+par_fish_underscore	script (line 6): 
 par_fish_underscore	myfunc work
 par_fish_underscore	^
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myfunc
@@ -1540,7 +1446,7 @@ par_fish_env_parallel_session	fish:
 par_fish_env_parallel_session	aliasbefore must_fail
 par_fish_env_parallel_session	^
 par_fish_env_parallel_session	fish: Unknown command: aliasbefore
-par_fish_env_parallel_session	fish: 
+par_fish_env_parallel_session	script (line 6): 
 par_fish_env_parallel_session	aliasbefore must_fail
 par_fish_env_parallel_session	^
 par_fish_env_parallel_session	fish: Unknown command: funcbefore
@@ -1548,7 +1454,7 @@ par_fish_env_parallel_session	fish:
 par_fish_env_parallel_session	funcbefore must_fail
 par_fish_env_parallel_session	^
 par_fish_env_parallel_session	fish: Unknown command: funcbefore
-par_fish_env_parallel_session	fish: 
+par_fish_env_parallel_session	script (line 6): 
 par_fish_env_parallel_session	funcbefore must_fail
 par_fish_env_parallel_session	^
 par_fish_env_parallel_session	no_before
@@ -1580,13 +1486,13 @@ par_dash_underscore	variables in aliases work
 par_dash_underscore	variables in aliases work
 par_dash_underscore	variables in aliases work
 par_dash_underscore	variables in aliases work
-par_dash_underscore	/bin/dash: 3: not_copied_alias: not found
+par_dash_underscore	script: 4: not_copied_alias: not found
 par_dash_underscore	error=OK
 par_dash_underscore	aliases work
 par_dash_underscore	aliases work
 par_dash_underscore	/bin/dash: 1: myecho: not found
 par_dash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_dash_underscore	/bin/dash: 1: myecho: not found
+par_dash_underscore	script: 2: myecho: not found
 par_dash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_dash_parset	parset
 par_dash_parset	### parset into vars with comma
@@ -1667,27 +1573,9 @@ par_dash_environment_too_big	OK_bigfunc_remote
 par_dash_environment_too_big	OK_bigfunc_quote
 par_dash_environment_too_big	OK_bigfunc_quote_remote
 par_dash_environment_too_big	Rest should fail - functions not supported in dash
-par_dash_environment_too_big	dash: XXX: perl: Argument list too long
-par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_dash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_dash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_dash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_dash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_dash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_dash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_dash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_dash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar
 par_dash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_dash_environment_too_big	dash: XXX: perl: Argument list too long
-par_dash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_dash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_dash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_dash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_dash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_dash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_dash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_dash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_dash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_dash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote
 par_dash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
 par_dash_environment_too_big	fail_bigfunc-not-supported
 par_dash_environment_too_big	fail_bigfunc_remote-not-supported
@@ -1696,67 +1584,67 @@ par_dash_environment_too_big	fail_bigfunc_quote_remote-not-supported
 par_dash_env_parallel_session	### Test env_parallel --session
 par_dash_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_dash_env_parallel_session	
-par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 33: level0func: not found
+par_dash_env_parallel_session	script: 33: level0alias: not found
+par_dash_env_parallel_session	script: 33: Bad substitution
 par_dash_env_parallel_session	
 par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
-par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 33: level1func: not found
+par_dash_env_parallel_session	script: 33: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
 par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_dash_env_parallel_session	
-par_dash_env_parallel_session	/bin/dash: 3: level0func: not found
-par_dash_env_parallel_session	/bin/dash: 3: level0alias: not found
-par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	script: 4: level0func: not found
+par_dash_env_parallel_session	script: 4: level0alias: not found
+par_dash_env_parallel_session	script: 4: Bad substitution
 par_dash_env_parallel_session	
 par_dash_env_parallel_session	/bin/dash: 3: level0func: not found
 par_dash_env_parallel_session	/bin/dash: 3: level0alias: not found
 par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
 par_dash_env_parallel_session	
-par_dash_env_parallel_session	/bin/dash: 3: level1func: not found
-par_dash_env_parallel_session	/bin/dash: 3: level1alias: not found
-par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	script: 4: level1func: not found
+par_dash_env_parallel_session	script: 4: level1alias: not found
+par_dash_env_parallel_session	script: 4: Bad substitution
 par_dash_env_parallel_session	
 par_dash_env_parallel_session	/bin/dash: 3: level1func: not found
 par_dash_env_parallel_session	/bin/dash: 3: level1alias: not found
 par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
-par_dash_env_parallel_session	/bin/dash: 3: level2func: not found
-par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
+par_dash_env_parallel_session	script: 4: level2func: not found
+par_dash_env_parallel_session	script: 4: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
 par_dash_env_parallel_session	/bin/dash: 3: level2func: not found
 par_dash_env_parallel_session	/bin/dash: 3: Bad substitution
 par_dash_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_dash_env_parallel_session	
-par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 35: level0func: not found
+par_dash_env_parallel_session	script: 35: level0alias: not found
+par_dash_env_parallel_session	script: 35: Bad substitution
 par_dash_env_parallel_session	
 par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: level0alias: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
-par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 35: level1func: not found
+par_dash_env_parallel_session	script: 35: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
 par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
-par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 35: level2func: not found
+par_dash_env_parallel_session	script: 35: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
 par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
@@ -1764,30 +1652,30 @@ par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	### level0+1+2 should be transferred
 par_dash_env_parallel_session	l0var
 par_dash_env_parallel_session	l0alias
-par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 32: level0func: not found
+par_dash_env_parallel_session	script: 32: Bad substitution
 par_dash_env_parallel_session	l0var
 par_dash_env_parallel_session	l0alias
 par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
-par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 32: level1func: not found
+par_dash_env_parallel_session	script: 32: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
 par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
-par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
-par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
+par_dash_env_parallel_session	script: 32: level2func: not found
+par_dash_env_parallel_session	script: 32: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
 par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	/bin/dash: 1: aliasbefore: not found
-par_dash_env_parallel_session	/bin/dash: 1: aliasbefore: not found
+par_dash_env_parallel_session	script: 2: aliasbefore: not found
 par_dash_env_parallel_session	no_before
 par_dash_env_parallel_session	no_before
 par_dash_env_parallel_session	after aliasafter_OK
@@ -1927,8 +1815,8 @@ par_bash_underscore	variables in aliases in and arrays in functions work
 par_bash_underscore	variables in aliases in and arrays in functions work
 par_bash_underscore	variables in aliases in and arrays in functions work
 par_bash_underscore	variables in aliases in and arrays in functions work
-par_bash_underscore	/bin/bash: line XX: not_copied_alias: command not found
-par_bash_underscore	/bin/bash: line XX: not_copied_func: command not found
+par_bash_underscore	script: line XX: not_copied_alias: command not found
+par_bash_underscore	script: line XX: not_copied_func: command not found
 par_bash_underscore	error=OK
 par_bash_underscore	error=OK
 par_bash_underscore	aliases in and arrays in functions work
@@ -1937,11 +1825,11 @@ par_bash_underscore	aliases in functions work
 par_bash_underscore	aliases in functions work
 par_bash_underscore	/bin/bash: line XX: myecho: command not found
 par_bash_underscore	OK if no myecho      ^^^^^^^^^^^^^^^^^^^^^^^^^
-par_bash_underscore	/bin/bash: line XX: myecho: command not found
+par_bash_underscore	script: line XX: myecho: command not found
 par_bash_underscore	OK if no myecho      ^^^^^^^^^^^^^^^^^^^^^^^^^
 par_bash_underscore	/bin/bash: line XX: myfunc: command not found
 par_bash_underscore	OK if no myfunc      ^^^^^^^^^^^^^^^^^^^^^^^^^
-par_bash_underscore	/bin/bash: line XX: myfunc: command not found
+par_bash_underscore	script: line XX: myfunc: command not found
 par_bash_underscore	OK if no myfunc      ^^^^^^^^^^^^^^^^^^^^^^^^^
 par_bash_parset	parset
 par_bash_parset	### parset into array
@@ -2088,65 +1976,20 @@ par_bash_environment_too_big	OK_bigfunc_remote
 par_bash_environment_too_big	OK_bigfunc_quote
 par_bash_environment_too_big	OK_bigfunc_quote_remote
 par_bash_environment_too_big	Rest should fail
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc
 par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_remote
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
-par_bash_environment_too_big	/usr/local/bin/env_parallel.bash: line XXX: /bin/perl: Argument list too long
-par_bash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_bash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_bash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_bash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_bash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_bash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_bash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_bash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_bash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote
+par_bash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigfunc_quote_remote
 par_bash_env_parallel_session	### Test env_parallel --session / --end-session
 par_bash_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
-par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	script: line XXX: level0func: command not found
+par_bash_env_parallel_session	script: line XXX: level0alias: command not found
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
 par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
@@ -2162,16 +2005,16 @@ par_bash_env_parallel_session	level1 array OK
 par_bash_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
-par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	script: line XXX: level0func: command not found
+par_bash_env_parallel_session	script: line XXX: level0alias: command not found
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
 par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
 par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
-par_bash_env_parallel_session	/bin/bash: line XXX: level1func: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: level1alias: command not found
+par_bash_env_parallel_session	script: line XXX: level1func: command not found
+par_bash_env_parallel_session	script: line XXX: level1alias: command not found
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
 par_bash_env_parallel_session	/bin/bash: line XXX: level1func: command not found
@@ -2187,8 +2030,8 @@ par_bash_env_parallel_session	level2 array OK
 par_bash_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
-par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: level0alias: command not found
+par_bash_env_parallel_session	script: line XXX: level0func: command not found
+par_bash_env_parallel_session	script: line XXX: level0alias: command not found
 par_bash_env_parallel_session	
 par_bash_env_parallel_session	fail
 par_bash_env_parallel_session	/bin/bash: line XXX: level0func: command not found
@@ -2235,9 +2078,9 @@ par_bash_env_parallel_session	l2func
 par_bash_env_parallel_session	l2alias
 par_bash_env_parallel_session	level2 array OK
 par_bash_env_parallel_session	/bin/bash: line XXX: aliasl0: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: aliasl0: command not found
+par_bash_env_parallel_session	script: line XXX: aliasl0: command not found
 par_bash_env_parallel_session	/bin/bash: line XXX: funcl0: command not found
-par_bash_env_parallel_session	/bin/bash: line XXX: funcl0: command not found
+par_bash_env_parallel_session	script: line XXX: funcl0: command not found
 par_bash_env_parallel_session	no_before
 par_bash_env_parallel_session	no_before
 par_bash_env_parallel_session	no_before
@@ -2284,13 +2127,13 @@ par_ash_underscore	variables in aliases work
 par_ash_underscore	variables in aliases work
 par_ash_underscore	variables in aliases work
 par_ash_underscore	variables in aliases work
-par_ash_underscore	/bin/ash: 3: not_copied_alias: not found
+par_ash_underscore	script: 4: not_copied_alias: not found
 par_ash_underscore	error=OK
 par_ash_underscore	aliases work
 par_ash_underscore	aliases work
 par_ash_underscore	/bin/ash: 1: myecho: not found
 par_ash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_ash_underscore	/bin/ash: 1: myecho: not found
+par_ash_underscore	script: 2: myecho: not found
 par_ash_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_ash_parset	parset
 par_ash_parset	### parset into vars with comma
@@ -2371,27 +2214,9 @@ par_ash_environment_too_big	OK_bigfunc_remote
 par_ash_environment_too_big	OK_bigfunc_quote
 par_ash_environment_too_big	OK_bigfunc_quote_remote
 par_ash_environment_too_big	Rest should fail - functions not supported in ash
-par_ash_environment_too_big	ash: XXX: perl: Argument list too long
-par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_ash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_ash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_ash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_ash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_ash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_ash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_ash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar
 par_ash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_remote
-par_ash_environment_too_big	ash: XXX: perl: Argument list too long
-par_ash_environment_too_big	env_parallel: Error: Your environment is too big.
-par_ash_environment_too_big	env_parallel: Error: You can try 3 different approaches:
-par_ash_environment_too_big	env_parallel: Error: 1. Run 'env_parallel --session' before you set
-par_ash_environment_too_big	env_parallel: Error:    variables or define functions.
-par_ash_environment_too_big	env_parallel: Error: 2. Use --env and only mention the names to copy.
-par_ash_environment_too_big	env_parallel: Error: 3. Try running this in a clean environment once:
-par_ash_environment_too_big	env_parallel: Error:      env_parallel --record-env
-par_ash_environment_too_big	env_parallel: Error:    And then use '--env _'
-par_ash_environment_too_big	env_parallel: Error: For details see: man env_parallel
+par_ash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote
 par_ash_environment_too_big	parallel: Error: Command line too long (XXX >= XXX) at input 0: fail_bigvar_quote_remote
 par_ash_environment_too_big	fail_bigfunc-not-supported
 par_ash_environment_too_big	fail_bigfunc_remote-not-supported
@@ -2400,67 +2225,67 @@ par_ash_environment_too_big	fail_bigfunc_quote_remote-not-supported
 par_ash_env_parallel_session	### Test env_parallel --session
 par_ash_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_ash_env_parallel_session	
-par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 33: level0func: not found
+par_ash_env_parallel_session	script: 33: level0alias: not found
+par_ash_env_parallel_session	script: 33: Bad substitution
 par_ash_env_parallel_session	
 par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
-par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 33: level1func: not found
+par_ash_env_parallel_session	script: 33: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
 par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_ash_env_parallel_session	
-par_ash_env_parallel_session	/bin/ash: 3: level0func: not found
-par_ash_env_parallel_session	/bin/ash: 3: level0alias: not found
-par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	script: 4: level0func: not found
+par_ash_env_parallel_session	script: 4: level0alias: not found
+par_ash_env_parallel_session	script: 4: Bad substitution
 par_ash_env_parallel_session	
 par_ash_env_parallel_session	/bin/ash: 3: level0func: not found
 par_ash_env_parallel_session	/bin/ash: 3: level0alias: not found
 par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
 par_ash_env_parallel_session	
-par_ash_env_parallel_session	/bin/ash: 3: level1func: not found
-par_ash_env_parallel_session	/bin/ash: 3: level1alias: not found
-par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	script: 4: level1func: not found
+par_ash_env_parallel_session	script: 4: level1alias: not found
+par_ash_env_parallel_session	script: 4: Bad substitution
 par_ash_env_parallel_session	
 par_ash_env_parallel_session	/bin/ash: 3: level1func: not found
 par_ash_env_parallel_session	/bin/ash: 3: level1alias: not found
 par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
-par_ash_env_parallel_session	/bin/ash: 3: level2func: not found
-par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
+par_ash_env_parallel_session	script: 4: level2func: not found
+par_ash_env_parallel_session	script: 4: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
 par_ash_env_parallel_session	/bin/ash: 3: level2func: not found
 par_ash_env_parallel_session	/bin/ash: 3: Bad substitution
 par_ash_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_ash_env_parallel_session	
-par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 35: level0func: not found
+par_ash_env_parallel_session	script: 35: level0alias: not found
+par_ash_env_parallel_session	script: 35: Bad substitution
 par_ash_env_parallel_session	
 par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: level0alias: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
-par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 35: level1func: not found
+par_ash_env_parallel_session	script: 35: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
 par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
-par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 35: level2func: not found
+par_ash_env_parallel_session	script: 35: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
 par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
@@ -2468,30 +2293,30 @@ par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	### level0+1+2 should be transferred
 par_ash_env_parallel_session	l0var
 par_ash_env_parallel_session	l0alias
-par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 32: level0func: not found
+par_ash_env_parallel_session	script: 32: Bad substitution
 par_ash_env_parallel_session	l0var
 par_ash_env_parallel_session	l0alias
 par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
-par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 32: level1func: not found
+par_ash_env_parallel_session	script: 32: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
 par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
-par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
-par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
+par_ash_env_parallel_session	script: 32: level2func: not found
+par_ash_env_parallel_session	script: 32: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
 par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	/bin/ash: 1: aliasbefore: not found
-par_ash_env_parallel_session	/bin/ash: 1: aliasbefore: not found
+par_ash_env_parallel_session	script: 2: aliasbefore: not found
 par_ash_env_parallel_session	no_before
 par_ash_env_parallel_session	no_before
 par_ash_env_parallel_session	after aliasafter_OK

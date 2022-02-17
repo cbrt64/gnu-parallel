@@ -12,6 +12,9 @@ cd tmp
 touch ~/.parallel/will-cite
 echo '### test parallel_tutorial'
 rm -f /tmp/runs
+
+srcdir=$(pwd | perl -pe 's=$ENV{HOME}==')
+
 export SERVER1=parallel@lo
 export SERVER2=csh@lo
 export PARALLEL=-k
@@ -54,6 +57,8 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
             s/^(\d+)\.\d+$/$1/;
             # --workdir ...
             s:parallel/tmp/aspire-\d+-1:TMPWORKDIR:g;
+	    # .../privat/parallel2/
+	    s='$srcdir'==;
             # + cat ... | (Bash outputs these in random order)
             s/\+ cat.*\n//;
             # + echo ... | (Bash outputs these in random order)
@@ -97,6 +102,7 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
 	    s/doi.*=.*//;
 	    s/url.*= .*doi.org.*//;
 	    s/.Feel free to use .nocite.*//;
+	    s:^/tmp/par.*(.) my_func2:script$1 my_func2:;
 	    ' | uniq
 # 3+3 .par files (from --files), 1 .tms-file from tmux attach
 find {$TMPDIR,/var/tmp,/tmp}/{fif,tms,par[^a]}* -mmin -10 2>/dev/null | wc -l

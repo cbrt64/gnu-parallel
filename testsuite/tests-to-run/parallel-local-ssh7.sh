@@ -844,7 +844,8 @@ _EOF
   # Old versions of fish sometimes throw up bugs all over,
   # but seem to work OK otherwise. So ignore these errors.
   ssh fish@lo "$myscript" 2>&1 |
-  perl -ne '/fish:|fish\(/ and next; print'
+      perl -ne '/fish:|fish\(/ and next; print' |
+      perl -pe 's:/tmp/par.....:script:'
 }
 
 par_ksh_underscore() {
@@ -1648,14 +1649,14 @@ _EOF
 par_ash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+50-25
-    len_var_remote=100-50+25+12+6+3
-    len_var_quote=100-50+25-12-6+3-2
-    len_var_quote_remote=100-50-25+12+6-3
-    len_fun=100+50+25+12+6-3
-    len_fun_remote=100-50+25+12-6+3
-    len_fun_quote=100+50-25-12
-    len_fun_quote_remote=100-50+25+12-6
+    len_var=63
+    len_var_remote=47
+    len_var_quote=31
+    len_var_quote_remote=21
+    len_fun=1
+    len_fun_remote=1
+    len_fun_quote=1
+    len_fun_quote_remote=1
     
     . `which env_parallel.ash`;
 
@@ -1706,7 +1707,7 @@ par_ash_environment_too_big() {
 
     eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote-not-supported
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote_remote+10)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote-not-supported
 
     bigfunc() { true; }
@@ -1719,14 +1720,14 @@ par_bash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     len_overhead=-$( (shopt;alias;typeset -f;typeset -p) | wc -c)/1000
-    len_var=$len_overhead+108
-    len_var_remote=$len_overhead+50+25
-    len_var_quote=$len_overhead+50+25-12-6
-    len_var_quote_remote=$len_overhead+50-25+12+6-3
-    len_fun=$len_overhead+110
-    len_fun_remote=$len_overhead+50+25
-    len_fun_quote=$len_overhead+110
-    len_fun_quote_remote=$len_overhead+50+25
+    len_var=$len_overhead+56
+    len_var_remote=$len_overhead+40
+    len_var_quote=$len_overhead+31
+    len_var_quote_remote=$len_overhead+22
+    len_fun=$len_overhead+56
+    len_fun_remote=$len_overhead+40
+    len_fun_quote=$len_overhead+56
+    len_fun_quote_remote=$len_overhead+40
     
     . `which env_parallel.bash`;
 
@@ -1777,7 +1778,7 @@ par_bash_environment_too_big() {
 
     eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote_remote+20)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
     bigfunc() { true; }
@@ -1793,14 +1794,14 @@ par_csh_environment_too_big() {
 par_dash_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+50-25
-    len_var_remote=100-50+25+12+6+3
-    len_var_quote=100-50+25-12-6+3-2
-    len_var_quote_remote=100-50-25+12+6-3
-    len_fun=100+50+25+12+6-3
-    len_fun_remote=100-50+25+12-6+3
-    len_fun_quote=100+50-25-12
-    len_fun_quote_remote=100-50+25+12-6
+    len_var=63
+    len_var_remote=47
+    len_var_quote=31
+    len_var_quote_remote=21
+    len_fun=1
+    len_fun_remote=1
+    len_fun_quote=1
+    len_fun_quote_remote=1
     
     . `which env_parallel.dash`;
 
@@ -1851,7 +1852,7 @@ par_dash_environment_too_big() {
 
     eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote-not-supported
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote_remote+10)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote-not-supported
 
     bigfunc() { true; }
@@ -1870,15 +1871,15 @@ par_ksh_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     len_functions=-$(functions|wc -c)/1000
     len_variables=-$(typeset -p | wc -c)/1000
-    len_var=$len_variables+100
-    len_var_remote=$len_variables+100-50+25-12+6
-    len_var_quote=$len_variables+100
-    len_var_quote_remote=$len_variables+100-50+25-12
-    len_fun=$len_functions+100
-    len_fun_remote=$len_functions+100-50+25-12+6
-    len_fun_quote=$len_functions+100
-    len_fun_quote_remote=$len_functions+100-50
-    
+    len_var=$len_variables+45
+    len_var_remote=$len_variables+30
+    len_var_quote=$len_variables+43
+    len_var_quote_remote=$len_variables+30
+    len_fun=$len_functions+43
+    len_fun_remote=$len_functions+29
+    len_fun_quote=$len_functions+43
+    len_fun_quote_remote=$len_functions+29
+
     . `which env_parallel.ksh`;
 
     repeat() {
@@ -1928,7 +1929,7 @@ par_ksh_environment_too_big() {
 
     eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote_remote+20)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
     bigfunc() { true; }
@@ -1940,15 +1941,15 @@ _EOF
 par_mksh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+6
-    len_var_remote=100-50+25+12-6-3-2
-    len_var_quote=100+6
-    len_var_quote_remote=100-50+25-12
-    len_fun=100+6
-    len_fun_remote=100-50+25-6+3
-    len_fun_quote=100+6
-    len_fun_quote_remote=100-50+25
-    
+    len_var=47
+    len_var_remote=31
+    len_var_quote=47
+    len_var_quote_remote=31
+    len_fun=28
+    len_fun_remote=13
+    len_fun_quote=28
+    len_fun_quote_remote=23
+
     . `which env_parallel.mksh`;
 
     repeat() {
@@ -1999,7 +2000,7 @@ par_mksh_environment_too_big() {
 
     eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+20)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote_remote+10)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote
 
     bigfunc() { true; }
@@ -2011,14 +2012,14 @@ _EOF
 par_sh_environment_too_big() {
   myscript=$(cat <<'_EOF'
     echo 'bug #50815: env_parallel should warn if the environment is too big'
-    len_var=100+50-25
-    len_var_remote=100-12
-    len_var_quote=100-50+6
-    len_var_quote_remote=100-50-6
-    len_fun=100+25
-    len_fun_remote=100-50+25-6+3+10
-    len_fun_quote=100+6+10
-    len_fun_quote_remote=100-50+25+12-6
+    len_var=63
+    len_var_remote=47
+    len_var_quote=31
+    len_var_quote_remote=21
+    len_fun=1 # unsupported
+    len_fun_remote=1 # unsupported
+    len_fun_quote=1 # unsupported
+    len_fun_quote_remote=1 # unsupported
     
     . `which env_parallel.sh`;
 
@@ -2069,7 +2070,7 @@ par_sh_environment_too_big() {
 
     eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
     env_parallel echo ::: fail_bigfunc_quote-not-supported
-    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote+10)"'"; };'
+    eval 'bigfunc() { a="'"$(repeat \" $len_fun_quote_remote+10)"'"; };'
     env_parallel -S lo echo ::: fail_bigfunc_quote_remote-not-supported
 
     bigfunc() { true; }
@@ -2940,7 +2941,8 @@ par_fish_env_parallel_session() {
     set -e PARALLEL_IGNORED_NAMES
 _EOF
   )
-  ssh fish@lo "$myscript"
+  ssh fish@lo "$myscript" 2>&1 |
+      perl -pe 's:/tmp/par.....:script:g'
 }
 
 par_ksh_env_parallel_session() {
@@ -3330,4 +3332,6 @@ compgen -A function | grep par_ | LC_ALL=C sort -r |
               s/sh\[\d+\]/sh[XXX]/;
 	      s/.*(tange|zenodo).*//i;
 	      s:/usr/bin:/bin:g;
+	      s:/tmp/par.....\[\d+\]:script[9]:g;
+	      s!/tmp/par.....:!script:!g;
 	      '

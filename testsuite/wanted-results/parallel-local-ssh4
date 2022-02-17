@@ -55,6 +55,8 @@ par_tmux_different_shells	# command is currently too long for csh. Maybe it can 
 par_tmux_different_shells	0
 par_tmux_different_shells	4
 par_tmux_length	### works
+par_tmux_length	See output with: tmux -S  attach
+par_tmux_length	See output with: tmux -S  attach
 par_tmux_length	### These blocked due to length
 par_transfer_return_multiple_inputs	### bug #43746: --transfer and --return of multiple inputs {1} and {2}
 par_transfer_return_multiple_inputs	### and:

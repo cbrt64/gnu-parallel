@@ -641,7 +641,6 @@ export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
     parallel --timeout 1000% -j10 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
     perl -pe 's/,31,0/,15,0/' |
-    perl -pe 's/131\d\d\d/131XXX/' |
     # Replace $PWD with . even if given as ~/...
     perl -pe 's:~:'$HOME':g' |
     perl -pe 's:'$PWD':.:g' |

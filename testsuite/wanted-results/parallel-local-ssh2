@@ -35,24 +35,24 @@ par_pipepart_remote	     11      11      33
 par_pipepart_remote	     11      11      33
 par_pipepart_remote	     11      11      33
 par_pipepart_remote	      9       9      28
-par_pipepart_remote	     14      14      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	     11      11      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	     11      11      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	     11      11      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	     11      11      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	     11      11      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	     11      11      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	     11      11      33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	      9       9      28 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	14 14 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	11 11 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	11 11 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	11 11 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	11 11 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	11 11 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	11 11 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	11 11 33 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
-par_pipepart_remote	 9  9 28 /tmp/parallel-local-ssh2-tmpdir/parXXXXX
+par_pipepart_remote	     14      14      33 /tmp/parXXXXX
+par_pipepart_remote	     11      11      33 /tmp/parXXXXX
+par_pipepart_remote	     11      11      33 /tmp/parXXXXX
+par_pipepart_remote	     11      11      33 /tmp/parXXXXX
+par_pipepart_remote	     11      11      33 /tmp/parXXXXX
+par_pipepart_remote	     11      11      33 /tmp/parXXXXX
+par_pipepart_remote	     11      11      33 /tmp/parXXXXX
+par_pipepart_remote	     11      11      33 /tmp/parXXXXX
+par_pipepart_remote	      9       9      28 /tmp/parXXXXX
+par_pipepart_remote	14 14 33 /tmp/parXXXXX
+par_pipepart_remote	11 11 33 /tmp/parXXXXX
+par_pipepart_remote	11 11 33 /tmp/parXXXXX
+par_pipepart_remote	11 11 33 /tmp/parXXXXX
+par_pipepart_remote	11 11 33 /tmp/parXXXXX
+par_pipepart_remote	11 11 33 /tmp/parXXXXX
+par_pipepart_remote	11 11 33 /tmp/parXXXXX
+par_pipepart_remote	11 11 33 /tmp/parXXXXX
+par_pipepart_remote	 9  9 28 /tmp/parXXXXX
 par_tee_ssh	A 1	A 1
 par_tee_ssh	A 1	1000000 1000000 6888896
 par_tee_ssh	A 2	A 2

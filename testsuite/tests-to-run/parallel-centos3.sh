@@ -33,8 +33,9 @@ stdout ping -w 1 -c 1 centos3 >/dev/null || (
     cd vagrant/tange/centos3/ 2>/dev/null
     cd ../vagrant/tange/centos3/ 2>/dev/null
     cd ../../../..
+    ssh $SSHLOGIN1 'mkdir -p .parallel bin; touch .parallel/will-cite'
     scp -q .*/src/{parallel,sem,sql,niceload,env_parallel*} $SSHLOGIN1:bin/
-    ssh $SSHLOGIN1 'touch .parallel/will-cite; mkdir -p bin'
+    ssh $SSHLOGIN1 'echo PATH=\$PATH:\$HOME/bin >> .bashrc'
     # Allow login from centos3 to $SSHLOGIN2 (that is shellshock hardened)
     ssh $SSHLOGIN1 cat .ssh/id_rsa.pub | ssh $SSHLOGIN2 'cat >>.ssh/authorized_keys'
     ssh $SSHLOGIN1 'cat .ssh/id_rsa.pub >>.ssh/authorized_keys; chmod 600 .ssh/authorized_keys'
