@@ -1,0 +1,101 @@
+#!/usr/bin/perl
+
+# Convert .pod file containing:
+#
+#   =item --option
+#   
+#   See also: --other-option
+#
+# to a graph.pdf with link between --option and --other-option
+
+$pod=join("",<>);
+$pod=~s/^.*=head1 OPTIONS//s;
+$pod=~s/=head1 EXAMPLES.*//s;
+$pod=~s/^.*?=over//s;
+$pod=~s/=back\s*$//s;
+$pod=~s/=over.*?=back//sg;
+
+$in_text = 0;
+$in_item = 0;
+$in_see_also = 0;
+
+
+for(split(/\n\n+/,$pod)) {
+    if(/^See also:\s+(\S.*)/s) {
+	$lex = "seealso";
+	$in_text = 0;
+	$in_item = 0;
+	$in_see_only = 1;
+    } elsif(/^=item\s+(B<[{]=.*?perl expression.*?=[}]>|[IB]<.*?>)(\s|$)/s) {
+	$lex = "item";
+	$in_text = 0;
+	$in_item = 1;
+	$in_see_only = 0;
+    } elsif(/\S/) {
+	$lex = "text";
+	$in_text = 1;
+	$in_item = 0;
+	$in_see_only = 0;
+    }
+  
+    if($lex eq "seealso") {
+	if($lastlex eq "item") {
+	    @saveditems = @items;
+	    @items = ();
+	}
+	my $to = $1;
+	my $from = (join "/",
+		    map {
+			s/I<(.*?)>/$1/g;
+			s/B<(.*?)>/$1/g;
+			$_ }
+		    @saveditems[0]);
+	my @to;
+	while($to =~ s/(B<[{]=.*?perl expression.*?=[}]>|[BI]<.*?>)(\s|$)//) {
+	    my $v = $1;
+	    push @to, map {
+			      s/I<(.*?)>/$1/g;
+			      s/B<(.*?)>/$1/g;
+			      $_;
+	    } $v;
+	}
+	map {
+	    if(not $seen{$from,$_}++
+	       and
+	       not $seen{$_,$from}++) {
+		push @nodelines, "\"$from\" -- \"$_\"\n"
+	    }
+	} @to;
+	
+    } elsif($lex eq "text") {
+	if($lastlex eq "item") {
+	    @saveditems = @items;
+	    @items = ();
+	}
+    } elsif($lex eq "item") {
+	push(@items,$1);
+    }	
+    $lastlex=$lex;
+}
+
+
+sub header() {
+    return q[
+	graph test123 {
+	    graph [splines=true overlap=false;nodesep=2;
+		];
+	    labelloc="t";
+	    label="Related map for options for GNU Parallel\nFind which options relate to which";fontsize=33;
+	    
+	    "{}"[margin=0.3;]
+		"--sshlogin"[margin=0.3]
+		"--pipe"[margin=0.3;]
+		":::"[margin=0.3;]
+		"-N"[margin=0.3]
+	];
+}
+
+open(GRAPHVIZ,"|-","sfdp -Tpdf") || die;
+print GRAPHVIZ header(), (sort { rand()*3 -1 } @nodelines), "}";
+close GRAPHVIZ;
+

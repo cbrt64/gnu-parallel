@@ -31,7 +31,7 @@ doc_DATA = parallel.html env_parallel.html sem.html sql.html		\
 	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
 	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
 	parallel_alternatives.pdf parcat.pdf parset.pdf	parsort.pdf 	\
-	parallel_cheat_bw.pdf
+	parallel_cheat_bw.pdf parallel_options_map.pdf
 endif
 
 web: sphinx
@@ -345,6 +345,10 @@ parallel_cheat_bw.pdf: parallel_cheat_bw.fodt
 	libreoffice --headless --convert-to pdf parallel_cheat_bw.fodt \
 	|| echo "Warning: libreoffice failed. Using old parallel_cheat_bw.pdf"
 
+parallel_options_map.pdf: parallel.pod
+	./pod2graph parallel.pod > parallel_options_map.pdf \
+	|| echo "Warning: pod2graph failed. Using old parallel_options_map.pdf"
+
 sem: parallel
 	ln -fs parallel sem
 
@@ -365,7 +369,7 @@ DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
 	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
 	parallel_tutorial.pdf parallel_book.pdf parallel_design.pdf	\
 	parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf	\
-	parallel_cheat_bw.pdf
+	parallel_cheat_bw.pdf parallel_options_map.pdf
 
 EXTRA_DIST = parallel sem sql niceload parcat parset parsort		\
 	env_parallel env_parallel.ash env_parallel.bash			\
