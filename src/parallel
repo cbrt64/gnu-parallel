@@ -512,7 +512,8 @@ sub pipe_shard_setup() {
     my @parcatfifos;
     # TODO $opt::jobs should be evaluated (100%)
     # TODO $opt::jobs should be number of total_jobs if there are argugemts
-    my $njobs = $opt::jobs;
+    max_jobs_running();
+    my $njobs = $Global::max_jobs_running;
     for my $m (0..$njobs-1) {
 	for my $n (0..$njobs-1) {
 	    # sharding to A B C D
@@ -1564,9 +1565,9 @@ sub options_hash() {
 	 "X" => \$opt::X,
 	 "v" => \@opt::v,
 	 "sql=s" => \$opt::retired,
-	 "sqlmaster=s" => \$opt::sqlmaster,
-	 "sqlworker=s" => \$opt::sqlworker,
-	 "sqlandworker=s" => \$opt::sqlandworker,
+	 "sql-master|sqlmaster=s" => \$opt::sqlmaster,
+	 "sql-worker|sqlworker=s" => \$opt::sqlworker,
+	 "sql-and-worker|sqlandworker=s" => \$opt::sqlandworker,
 	 "joblog|jl=s" => \$opt::joblog,
 	 "results|result|res=s" => \$opt::results,
 	 "resume" => \$opt::resume,
@@ -1578,10 +1579,10 @@ sub options_hash() {
 	 "group" => \$opt::group,
 	 "g" => \$opt::retired,
 	 "ungroup|u" => \$opt::ungroup,
-	 "linebuffer|linebuffered|line-buffer|line-buffered|lb"
+	 "line-buffer|line-buffered|linebuffer|linebuffered|lb"
 	 => \$opt::linebuffer,
 	 "tmux" => \$opt::tmux,
-	 "tmuxpane" => \$opt::tmuxpane,
+	 "tmux-pane|tmuxpane" => \$opt::tmuxpane,
 	 "null|0" => \$opt::null,
 	 "quote|q" => \$opt::quote,
 	 # Replacement strings
@@ -1601,22 +1602,24 @@ sub options_hash() {
 	 "sshdelay=f" => \$opt::sshdelay,
 	 "load=s" => \$opt::load,
 	 "noswap" => \$opt::noswap,
-	 "max-line-length-allowed" => \$opt::max_line_length_allowed,
-	 "number-of-cpus" => \$opt::number_of_cpus,
-	 "number-of-sockets" => \$opt::number_of_sockets,
-	 "number-of-cores" => \$opt::number_of_cores,
-	 "number-of-threads" => \$opt::number_of_threads,
-	 "use-sockets-instead-of-threads"
+	 "max-line-length-allowed|maxlinelengthallowed"
+	 => \$opt::max_line_length_allowed,
+	 "number-of-cpus|numberofcpus" => \$opt::number_of_cpus,
+	 "number-of-sockets|numberofsockets" => \$opt::number_of_sockets,
+	 "number-of-cores|numberofcores" => \$opt::number_of_cores,
+	 "number-of-threads|numberofthreads" => \$opt::number_of_threads,
+	 "use-sockets-instead-of-threads|usesocketsinsteadofthreads"
 	 => \$opt::use_sockets_instead_of_threads,
-	 "use-cores-instead-of-threads"
+	 "use-cores-instead-of-threads|usecoresinsteadofthreads"
 	 => \$opt::use_cores_instead_of_threads,
-	 "use-cpus-instead-of-cores" => \$opt::use_cpus_instead_of_cores,
-	 "shellquote|shell_quote|shell-quote" => \@opt::shellquote,
+	 "use-cpus-instead-of-cores|usecpusinsteadofcores"
+	 => \$opt::use_cpus_instead_of_cores,
+	 "shell-quote|shellquote|shell_quote" => \@opt::shellquote,
 	 "nice=i" => \$opt::nice,
 	 "tag" => \$opt::tag,
-	 "tagstring|tag-string=s" => \$opt::tagstring,
+	 "tag-string|tagstring=s" => \$opt::tagstring,
 	 "ctag" => \$opt::ctag,
-	 "ctagstring|ctag-string=s" => \$opt::ctagstring,
+	 "ctag-string|ctagstring=s" => \$opt::ctagstring,
 	 "onall" => \$opt::onall,
 	 "nonall" => \$opt::nonall,
 	 "filter-hosts|filterhosts|filter-host" => \$opt::filter_hosts,
@@ -1633,14 +1636,16 @@ sub options_hash() {
 	 "basefile|bf=s" => \@opt::basefile,
 	 "template|tmpl=s" => \%opt::template,
 	 "B=s" => \$opt::retired,
-	 "ctrlc|ctrl-c" => \$opt::retired,
-	 "noctrlc|no-ctrlc|no-ctrl-c" => \$opt::retired,
-	 "workdir|work-dir|wd=s" => \$opt::workdir,
+	 "ctrl-c|ctrlc" => \$opt::retired,
+	 "no-ctrl-c|no-ctrlc|noctrlc" => \$opt::retired,
+	 "work-dir|workdir|wd=s" => \$opt::workdir,
 	 "W=s" => \$opt::retired,
 	 "rsync-opts|rsyncopts=s" => \$opt::rsync_opts,
 	 "tmpdir|tempdir=s" => \$opt::tmpdir,
-	 "use-compress-program|compress-program=s" => \$opt::compress_program,
-	 "use-decompress-program|decompress-program=s"
+	 "use-compress-program|compress-program|".
+	 "usecompressprogram|compressprogram=s" => \$opt::compress_program,
+	 "use-decompress-program|decompress-program|".
+	 "usedecompressprogram|decompressprogram=s"
 	 => \$opt::decompress_program,
 	 "compress" => \$opt::compress,
 	 "tty" => \$opt::tty,
@@ -1669,69 +1674,72 @@ sub options_hash() {
 	 # You accept to be put in a public hall of shame by removing
          # these lines.
 	 "bibtex|citation" => \$opt::citation,
-	 "wc|willcite|will-cite|nn|nonotice|no-notice" => \$opt::willcite,
+	 "will-cite|willcite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
-	 "halt-on-error|halt=s" => \$opt::halt,
+	 "halt-on-error|haltonerror|halt=s" => \$opt::halt,
 	 "limit=s" => \$opt::limit,
 	 "memfree=s" => \$opt::memfree,
 	 "memsuspend=s" => \$opt::memsuspend,
 	 "retries=s" => \$opt::retries,
 	 "timeout=s" => \$opt::timeout,
-	 "termseq|term-seq=s" => \$opt::termseq,
+	 "term-seq|termseq=s" => \$opt::termseq,
 	 # xargs-compatibility - implemented, man, testsuite
-	 "max-procs|P=s" => \$opt::jobs,
+	 "max-procs|maxprocs|P=s" => \$opt::jobs,
 	 "delimiter|d=s" => \$opt::d,
-	 "max-chars|s=s" => \$opt::max_chars,
-	 "arg-file|a=s" => \@opt::a,
-	 "no-run-if-empty|r" => \$opt::r,
+	 "max-chars|maxchars|s=s" => \$opt::max_chars,
+	 "arg-file|arg-file|a=s" => \@opt::a,
+	 "no-run-if-empty|norunifempty|r" => \$opt::r,
 	 "replace|i:s" => \$opt::i,
 	 "E=s" => \$opt::eof,
 	 "eof|e:s" => \$opt::eof,
 	 "max-args|maxargs|n=s" => \$opt::max_args,
-	 "max-replace-args|N=s" => \$opt::max_replace_args,
-	 "colsep|col-sep|C=s" => \$opt::colsep,
+	 "max-replace-args|maxreplaceargs|N=s"
+	 => \$opt::max_replace_args,
+	 "col-sep|colsep|C=s" => \$opt::colsep,
 	 "csv"=> \$opt::csv,
 	 "help|h" => \$opt::help,
 	 "L=s" => \$opt::L,
-	 "max-lines|l:f" => \$opt::max_lines,
+	 "max-lines|maxlines|l:f" => \$opt::max_lines,
 	 "interactive|p" => \$opt::interactive,
 	 "verbose|t" => \$opt::verbose,
 	 "version|V" => \$opt::version,
-	 "minversion|min-version=i" => \$opt::minversion,
+	 "min-version|minversion=i" => \$opt::minversion,
 	 "show-limits|showlimits" => \$opt::show_limits,
 	 "exit|x" => \$opt::x,
 	 # Semaphore
 	 "semaphore" => \$opt::semaphore,
-	 "semaphoretimeout|st=s" => \$opt::semaphoretimeout,
-	 "semaphorename|id=s" => \$opt::semaphorename,
+	 "semaphore-timeout|semaphoretimeout|st=s"
+	 => \$opt::semaphoretimeout,
+	 "semaphore-name|semaphorename|id=s" => \$opt::semaphorename,
 	 "fg" => \$opt::fg,
 	 "bg" => \$opt::bg,
 	 "wait" => \$opt::wait,
 	 # Shebang #!/usr/bin/parallel --shebang
 	 "shebang|hashbang" => \$opt::shebang,
-	 "internal-pipe-means-argfiles"
+	 "internal-pipe-means-argfiles|internalpipemeansargfiles"
 	 => \$opt::internal_pipe_means_argfiles,
 	 "Y" => \$opt::retired,
-         "skip-first-line" => \$opt::skip_first_line,
+         "skip-first-line|skipfirstline"
+	 => \$opt::skip_first_line,
 	 "bug" => \$opt::bug,
 	 # --pipe
 	 "pipe|spreadstdin" => \$opt::pipe,
-	 "robin|round-robin|roundrobin" => \$opt::roundrobin,
+	 "round-robin|roundrobin|round" => \$opt::roundrobin,
 	 "recstart=s" => \$opt::recstart,
 	 "recend=s" => \$opt::recend,
 	 "regexp|regex" => \$opt::regexp,
 	 "remove-rec-sep|removerecsep|rrs" => \$opt::remove_rec_sep,
-	 "files|output-as-files|outputasfiles" => \$opt::files,
-	 "block|block-size|blocksize=s" => \$opt::blocksize,
-	 "blocktimeout|block-timeout|bt=s" => \$opt::blocktimeout,
+	 "output-as-files|outputasfiles|files" => \$opt::files,
+	 "block-size|blocksize|block=s" => \$opt::blocksize,
+	 "block-timeout|blocktimeout|bt=s" => \$opt::blocktimeout,
 	 "header=s" => \$opt::header,
 	 "cat" => \$opt::cat,
 	 "fifo" => \$opt::fifo,
-	 "pipepart|pipe-part" => \$opt::pipepart,
+	 "pipe-part|pipepart" => \$opt::pipepart,
 	 "tee" => \$opt::tee,
 	 "shard=s" => \$opt::shard,
 	 "bin=s" => \$opt::bin,
-	 "groupby|group-by=s" => \$opt::groupby,
+	 "group-by|groupby=s" => \$opt::groupby,
 	 #
 	 "hgrp|hostgrp|hostgroup|hostgroups" => \$opt::hostgroups,
 	 "embed" => \$opt::embed,
