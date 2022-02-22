@@ -31,18 +31,19 @@ export -f par_tmux
 cat <<'EOF' | sed -e 's/;$/; /;s/$SERVER1/'$SERVER1'/;s/$SERVER2/'$SERVER2'/' | stdout parallel -vj8 --delay 1 --timeout 100 --retries 1 -k --joblog /tmp/jl-`basename $0` -L1 -r
 
 echo '### tmux-1.9'
-  seq 0000 10 1000 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 1001 10 2000 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 510 512 | PARALLEL_TMUX=tmux-1.9 par_tmux
+  seq 0000 10 510 | PARALLEL_TMUX=tmux-1.9 par_tmux
+
+echo '### tmux-1.9 fails' 
+  seq 512 10 2000 | PARALLEL_TMUX=tmux-1.9 par_tmux
   seq 2001 10 3000 | PARALLEL_TMUX=tmux-1.9 par_tmux
   seq 3001 10 4000 | PARALLEL_TMUX=tmux-1.9 par_tmux
-  seq 4001 10 4030 | PARALLEL_TMUX=tmux-1.9 par_tmux
-
-echo '### tmux-1.9 fails'
+  seq 4001 10 4030 | PARALLEL_TMUX=tmux-1.9 par_tm
   echo 4036 | PARALLEL_TMUX=tmux-1.9 par_tmux
   echo 4037 | PARALLEL_TMUX=tmux-1.9 par_tmux
   echo 4038 | PARALLEL_TMUX=tmux-1.9 par_tmux
 
-echo '### tmux-1.8'
+echo '### tmux-1.8 (fails for all in 20220222'
   seq   1 5 100 | PARALLEL_TMUX=tmux-1.8 par_tmux
   seq 101 5 200 | PARALLEL_TMUX=tmux-1.8 par_tmux
   seq 201 5 300 | PARALLEL_TMUX=tmux-1.8 par_tmux

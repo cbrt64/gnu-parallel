@@ -20,8 +20,9 @@ par_bin() {
     paste <(seq 10) <(seq 10 -1 1) |
 	parallel --pipe --colsep '\t' --bin '2 $_%=2' -j4 wc | sort
     echo '### Blocks in version 20220122'
-    echo 10 | ppar --pipe --bin 1 -j100% wc
-    paste <(seq 10) <(seq 10 -1 1) | parallel --pipe --colsep '\t' --bin 2 wc
+    echo 10 | parallel --pipe --bin 1 -j100% wc | sort
+    paste <(seq 10) <(seq 10 -1 1) |
+	parallel --pipe --colsep '\t' --bin 2 wc | sort
 }
 
 par_shard_a() {
@@ -563,7 +564,7 @@ par_keeporder_roundrobin() {
 	}
         random1G |
 	    parallel $1 -j13 --block 1m --pipe --roundrobin 'echo {#} $(md5sum)' |
-	     sort
+	    sort
     }
     env_parset a,b,c run_roundrobin ::: -k -k ''
 

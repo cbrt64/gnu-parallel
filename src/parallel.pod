@@ -403,7 +403,7 @@ See also: B<--rpl> B<--parens> B<{}> B<{=>I<n> I<perl expression>B<=}>
 
 =item B<{=>I<n> I<perl expression>B<=}>
 
-Positional equivalent to B<{=perl expression=}>.
+Positional equivalent to B<{=>I<perl expression>B<=}>.
 
 To understand positional replacement strings see B<{>I<n>B<}>.
 
@@ -1057,7 +1057,7 @@ but this means output from different commands can get mixed.
 
 B<--group> is the default. Can be reversed with B<-u>.
 
-See also: B<--line-buffer> B<--ungroup>
+See also: B<--line-buffer> B<--ungroup> B<--tag>
 
 
 =item B<--group-by> I<val>
@@ -1567,7 +1567,7 @@ mix. Compare:
   parallel -j0 --lb 'echo {};sleep {};echo {}' ::: 1 3 2 4
   parallel -j0 -k --lb 'echo {};sleep {};echo {}' ::: 1 3 2 4
 
-See also: B<--group> B<--ungroup> B<--keep-order>
+See also: B<--group> B<--ungroup> B<--keep-order> B<--tag>
 
 
 =item B<--link>
@@ -1889,6 +1889,8 @@ choose k. k is the number of input sources and n is the number of
 arguments in an input source.  The content of the input sources must
 be the same and the arguments must be unique.
 
+B<{uniq}> skips jobs where values from two input sources are the same.
+
 Shorthands for variables:
 
   {slot}        $PARALLEL_JOBSLOT (see {%})
@@ -1902,7 +1904,7 @@ inspired by bash's parameter expansion:
 
   {:-str}       str if the value is empty
   {:num}        remove the first num characters
-  {:num1:num2}  characters from num1 to num2
+  {:pos:len}    substring from position pos length len
   {#regexp}     remove prefix regexp (non-greedy)
   {##regexp}    remove prefix regexp (greedy)
   {%regexp}     remove postfix regexp (non-greedy)
@@ -2059,7 +2061,7 @@ redirections and without variable assignments.
 
 Most people will not need this. Quoting is disabled by default.
 
-See also: QUOTING I<command> B<--shell-quote> B<uq()>
+See also: QUOTING I<command> B<--shell-quote> B<uq()> B<Q()>
 
 
 =item B<--no-run-if-empty>
@@ -4116,6 +4118,13 @@ repeat the list and use replacement string B<{choose_k}>:
 B<{choose_k}> works for any number of input sources:
 
   parallel --plus echo {choose_k} ::: A B C D ::: A B C D ::: A B C D
+
+Where B<{choose_k}> does not care about order, B<{uniq}> cares about
+order. It simply skips jobs where values from different input sources
+are the same:
+
+  parallel --plus echo {uniq} ::: A B C  ::: A B C  ::: A B C
+  parallel --plus echo {1uniq}+{2uniq}+{3uniq} ::: A B C  ::: A B C  ::: A B C
 
 
 =head2 EXAMPLE: From a to b and b to c

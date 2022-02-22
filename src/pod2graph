@@ -82,20 +82,19 @@ for(split(/\n\n+/,$pod)) {
 sub header() {
     return q[
 	graph test123 {
-	    graph [splines=true overlap=false;nodesep=2;
-		];
+	    graph [splines=true; overlap=false;];
 	    labelloc="t";
-	    label="Related map for options for GNU Parallel\nFind which options relate to which";fontsize=33;
+	    label="Related map for options for GNU Parallel\nFind the options you use and learn about the options related to it";fontsize=33;
 	    
 	    "{}"[margin=0.3;]
-		"--sshlogin"[margin=0.3]
+		"--sshlogin"[margin=0.3;]
 		"--pipe"[margin=0.3;]
 		":::"[margin=0.3;]
-		"-N"[margin=0.3]
+		"-X"[margin=0.3;]
 	];
 }
 
-open(GRAPHVIZ,"|-","sfdp -Tpdf") || die;
+open(GRAPHVIZ,"|-","tee foo.dot |neato -Gepsilon=.000000001 -Tpdf") || die;
 print GRAPHVIZ header(), (sort { rand()*3 -1 } @nodelines), "}";
 close GRAPHVIZ;
 

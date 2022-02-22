@@ -739,6 +739,22 @@ par_plus	foo.z
 par_plus	foo.z
 par_plus	foo
 par_plus	foo
+par_plus	A B C
+par_plus	A C B
+par_plus	B A C
+par_plus	B C A
+par_plus	C A B
+par_plus	C B A
+par_plus	A+B+C
+par_plus	A+C+B
+par_plus	B+A+C
+par_plus	B+C+A
+par_plus	C+A+B
+par_plus	C+B+A
+par_plus	A B C
+par_plus	A B D
+par_plus	A C D
+par_plus	B C D
 par_profile	### Test -J profile, -J /dir/profile, -J ./profile
 par_profile	local	local
 par_profile	abs	abs

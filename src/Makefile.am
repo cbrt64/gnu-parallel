@@ -345,7 +345,7 @@ parallel_cheat_bw.pdf: parallel_cheat_bw.fodt
 	libreoffice --headless --convert-to pdf parallel_cheat_bw.fodt \
 	|| echo "Warning: libreoffice failed. Using old parallel_cheat_bw.pdf"
 
-parallel_options_map.pdf: parallel.pod
+parallel_options_map.pdf: parallel.pod pod2graph
 	./pod2graph parallel.pod > parallel_options_map.pdf \
 	|| echo "Warning: pod2graph failed. Using old parallel_options_map.pdf"
 
@@ -379,4 +379,4 @@ EXTRA_DIST = parallel sem sql niceload parcat parset parsort		\
 	parset.pod sem.pod parallel.pod env_parallel.pod niceload.pod	\
 	parallel_tutorial.pod parallel_book.pod parallel_design.pod	\
 	parallel_alternatives.pod parallel_cheat_bw.fodt		\
-	$(DISTCLEANFILES)
+	pod2graph $(DISTCLEANFILES)

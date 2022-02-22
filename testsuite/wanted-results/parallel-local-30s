@@ -20,20 +20,20 @@ par_bin	      5      10      21
 par_bin	### Blocks in version 20220122
 par_bin	      0       0       0
 par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      0       0       0
+par_bin	      0       0       0
 par_bin	      1       1       3
-par_bin	      0       0       0
-par_bin	      0       0       0
-par_bin	      0       0       0
-par_bin	      0       0       0
-par_bin	      0       0       0
+par_bin	      1       2       4
+par_bin	      1       2       4
+par_bin	      1       2       4
 par_bin	      1       2       4
 par_bin	      1       2       4
 par_bin	      1       2       4
 par_bin	      2       4       9
-par_bin	      1       2       4
 par_bin	      2       4       9
-par_bin	      1       2       4
-par_bin	      1       2       4
 par_exit_code	bug #52207: Exit status 0 when child job is killed, even with "now,fail=1"
 par_exit_code	# Ideally the command should return the same
 par_exit_code	#   with or without parallel

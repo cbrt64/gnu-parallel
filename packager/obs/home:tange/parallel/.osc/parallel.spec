@@ -1,7 +1,7 @@
 
 Summary:	Shell tool for executing jobs in parallel
 Name: 		parallel
-Version: 	20220122
+Version: 	20220222
 Release: 	1.3
 License: 	GPL-3.0-or-later
 Group: 		Productivity/File utilities
@@ -92,6 +92,7 @@ rm $RPM_BUILD_ROOT%{_docdir}/parcat.pdf
 rm $RPM_BUILD_ROOT%{_docdir}/parset.pdf
 rm $RPM_BUILD_ROOT%{_docdir}/parsort.pdf
 rm $RPM_BUILD_ROOT%{_docdir}/parallel_cheat_bw.pdf
+rm $RPM_BUILD_ROOT%{_docdir}/parallel_options_map.pdf
 rm $RPM_BUILD_ROOT%{_docdir}/parallel.rst
 rm $RPM_BUILD_ROOT%{_docdir}/env_parallel.rst
 rm $RPM_BUILD_ROOT%{_docdir}/parallel_tutorial.rst
@@ -113,7 +114,7 @@ rm -rf $RPM_BUILD_ROOT
 /usr/bin/*
 /usr/share/man/man1/*
 /usr/share/man/man7/*
-%doc README NEWS src/parallel.html src/env_parallel.html src/parallel_tutorial.html src/parallel_design.html src/parallel_alternatives.html src/parallel_book.html src/sem.html src/sql.html src/parcat.html src/parset.html src/parsort.html src/niceload.html src/parallel.texi src/env_parallel.texi src/parallel_tutorial.texi src/parallel_design.texi src/parallel_alternatives.texi src/parallel_book.texi src/niceload.texi src/sem.texi src/sql.texi src/parcat.texi src/parset.texi src/parsort.texi src/parallel.pdf src/env_parallel.pdf src/parallel_tutorial.pdf src/parallel_design.pdf src/parallel_alternatives.pdf src/parallel_book.pdf src/niceload.pdf src/sem.pdf src/sql.pdf src/parcat.pdf src/parset.pdf src/parsort.pdf src/parallel_cheat_bw.pdf src/parallel.rst src/env_parallel.rst src/parallel_tutorial.rst src/parallel_design.rst src/parallel_alternatives.rst src/parallel_book.rst src/niceload.rst src/sem.rst src/sql.rst src/parcat.rst src/parset.rst src/parsort.rst
+%doc README NEWS src/parallel.html src/env_parallel.html src/parallel_tutorial.html src/parallel_design.html src/parallel_alternatives.html src/parallel_book.html src/sem.html src/sql.html src/parcat.html src/parset.html src/parsort.html src/niceload.html src/parallel.texi src/env_parallel.texi src/parallel_tutorial.texi src/parallel_design.texi src/parallel_alternatives.texi src/parallel_book.texi src/niceload.texi src/sem.texi src/sql.texi src/parcat.texi src/parset.texi src/parsort.texi src/parallel.pdf src/env_parallel.pdf src/parallel_tutorial.pdf src/parallel_design.pdf src/parallel_alternatives.pdf src/parallel_book.pdf src/niceload.pdf src/sem.pdf src/sql.pdf src/parcat.pdf src/parset.pdf src/parsort.pdf src/parallel_cheat_bw.pdf src/parallel_options_map.pdf src/parallel.rst src/env_parallel.rst src/parallel_tutorial.rst src/parallel_design.rst src/parallel_alternatives.rst src/parallel_book.rst src/niceload.rst src/sem.rst src/sql.rst src/parcat.rst src/parset.rst src/parsort.rst
 
 %changelog
 * Sat Jan 22 2011 Ole Tange

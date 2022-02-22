@@ -44,6 +44,10 @@ par_plus() {
     parallel --plus echo {%.z.z} ::: foo.z.z.z
     echo ${a%%.z*z}
     parallel --plus echo {%%.z.*z} ::: foo.z.z.z
+
+    parallel -k --plus echo {uniq} ::: A B C  ::: A B C  ::: A B C
+    parallel -k --plus echo {1uniq}+{2uniq}+{3uniq} ::: A B C  ::: A B C  ::: A B C
+    parallel -k --plus echo {choose_k} ::: A B C D ::: A B C D ::: A B C D
 }
 
 par_env_parallel_pipefail() {

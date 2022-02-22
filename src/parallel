@@ -2313,7 +2313,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220202;
+    $Global::version = 20220222;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2356,6 +2356,8 @@ sub init_globals() {
 	 '{/...}' => 's:.*/::; s:\.[^/.]+\.[^/.]+\.[^/.]+$::',
 	 # n choose k = Binomial coefficient
 	 '{choose_k}' => 'for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } }',
+	 # unique values: Skip job if any args are the same
+	 '{uniq}' => 'if(::uniq(@arg) != @arg) { skip(); }',
 	 # {##} = number of jobs
 	 '{##}' => '1 $_=total_jobs()',
 	 # {0%} = 0-padded jobslot
@@ -5140,8 +5142,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-         "  Tange, O. (2022, January 22). GNU Parallel 20220122 ('20 years').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.5893336",
+         "  Tange, O. (2022, February 22). GNU Parallel 20220222 ('Donetsk Luhansk').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.6213471",
 	 "",
 	 # Before changing these lines,  please read
          # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
@@ -5173,8 +5175,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2022, January 22). GNU Parallel 20220122 ('20 years').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.5893336",
+	     "  Tange, O. (2022, February 22). GNU Parallel 20220222 ('Donetsk Luhansk').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.6213471",
 	     "",
 	     # Before changing these line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
@@ -5299,20 +5301,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2022_5893336,",
+	"\@software{tange_2022_6213471,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20220122 ('20 years')},",
-	"      month        = Jan,",
+	"      title        = {GNU Parallel 20220222 ('Donetsk Luhansk')},",
+	"      month        = Feb,",
 	"      year         = 2021,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
         "                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.5893336},",
-	"      url          = {https://doi.org/10.5281/zenodo.5893336}",
+	"      doi          = {10.5281/zenodo.6213471},",
+	"      url          = {https://doi.org/10.5281/zenodo.6213471}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2022_5893336})",
+	"(Feel free to use \\nocite{tange_2022_6213471})",
 	"",
 	# Before changing these lines, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and

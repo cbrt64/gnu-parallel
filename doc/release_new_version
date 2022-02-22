@@ -254,33 +254,37 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220222 ('Ukraine/Mali') released [stable]
+Subject: GNU Parallel 20220222 ('Donetsk Luhansk') released
 
-GNU Parallel 20220222 ('<<>>') [stable] has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20220222 ('Donetsk Luhansk') has been released. It is available for download at: lbry://@GnuParallel:4
 
-No new functionality was introduced so this is a good candidate for a stable release.
+This release has a major change in the remote code. This makes this release beta quality.
 
 Quote of the month:
 
-  <<>>
-  
+  I also prefer gnu parallel. Mainly because it makes embarrassingly
+  parallel tasks embarrassingly easy to run on the command line.
+    -- Vincent D. Warmerdam @fishnets88@twitter
+
 New in this release:
 
 * Encoding of remote commands has changed. This limits the length of remote commands to less than half. It also requires $REMOTE_TMPDIR to be writable.
 
 * Time functions hh_mm_ss() hhmmss() hh_mm() hhmm() are now available for {= =}.
 
-<<>>
+* parallel_options_map.pdf is a map showing which options other options relate to.
+
+* {uniq} added to --plus to only run jobs with unique values.
 
 * Bug fixes and man page updates: Many options now have a 'See also' section.
 
 News about GNU Parallel:
 
-https://kim.uni-hohenheim.de/en/96097?tx_ttnews%5Btt_news%5D=53919&cHash=985f4f4ac1a166d180d81f6e9be832a3
-https://blog.csdn.net/qq_38197157/article/details/112596389
-https://www.freelancer.com/projects/linux/gnu-parallel-processing-for-data/?ngsw-bypass=&w=f
+* HPC at Noon - GNU Parallel u SLURM srun , 22 February 2022 https://kim.uni-hohenheim.de/en/96097?tx_ttnews%5Btt_news%5D=53919&cHash=985f4f4ac1a166d180d81f6e9be832a3
 
-<<>>
+* linux 命令 -- parallel https://blog.csdn.net/qq_38197157/article/details/112596389
+
+* Iterating Over Each Line of ls -l Output https://www.baeldung.com/linux/iterating-ls-l-output
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
@@ -312,13 +316,13 @@ You can install GNU Parallel in just 10 seconds with:
 
     $ (wget -O - pi.dk/3 || lynx -source pi.dk/3 || curl pi.dk/3/ || \
        fetch -o - http://pi.dk/3 ) > install.sh
-    $ sha1sum install.sh | grep c82233e7da3166308632ac8c34f850c0
-    12345678 c82233e7 da316630 8632ac8c 34f850c0
-    $ md5sum install.sh | grep ae3d7aac5e15cf3dfc87046cfc5918d2
-    ae3d7aac 5e15cf3d fc87046c fc5918d2
-    $ sha512sum install.sh | grep dfc00d823137271a6d96225cea9e89f533ff6c81f
-    9c5198d5 31a3b755 b7910ece 3a42d206 c804694d fc00d823 137271a6 d96225ce
-    a9e89f53 3ff6c81f f52b298b ef9fb613 2d3f9ccd 0e2c7bd3 c35978b5 79acb5ca
+    $ sha1sum install.sh | grep 883c667e01eed62f975ad28b6d50e22a
+    12345678 883c667e 01eed62f 975ad28b 6d50e22a
+    $ md5sum install.sh | grep cc21b4c943fd03e93ae1ae49e28573c0
+    cc21b4c9 43fd03e9 3ae1ae49 e28573c0
+    $ sha512sum install.sh | grep ec113b49a54e705f86d51e784ebced224fdff3f52
+    79945d9d 250b42a4 2067bb00 99da012e c113b49a 54e705f8 6d51e784 ebced224
+    fdff3f52 ca588d64 e75f6033 61bd543f d631f592 2f87ceb2 ab034149 6df84a35
     $ bash install.sh
 
 Watch the intro video on http://www.youtube.com/playlist?list=PL284C9FF2488BC6D1
