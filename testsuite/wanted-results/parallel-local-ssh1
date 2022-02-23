@@ -83,6 +83,16 @@ par_remote_nice	5
 par_ssh	### use --ssh
 par_ssh	Run through BARSSH?
 par_ssh	BARSSH
+par_ssh_ssh	### bug #61894: Pack ssh code in eval protection
+par_ssh_ssh	Unquoted ssh should work
+par_ssh_ssh	aspire
+par_ssh_ssh	OK
+par_ssh_ssh	aspire
+par_ssh_ssh	OK
+par_ssh_ssh	aspire
+par_ssh_ssh	OK
+par_ssh_ssh	aspire
+par_ssh_ssh	OK
 par_stop_if_no_hosts_left	### Stop if all hosts are filtered and there are no hosts left to run on
 par_stop_if_no_hosts_left	parallel: Warning: Removed no-such.host.
 par_stop_if_no_hosts_left	parallel: Error: Cannot run any jobs.

@@ -254,37 +254,25 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220222 ('Donetsk Luhansk') released
+Subject: GNU Parallel 20220322 ('<<>>') released [stable]
 
-GNU Parallel 20220222 ('Donetsk Luhansk') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20220322 ('<<>>') has been released. It is available for download at: lbry://@GnuParallel:4
 
-This release has a major change in the remote code. This makes this release beta quality.
+No new functionality was introduced so this is a good candidate for a stable release.
 
 Quote of the month:
 
-  I also prefer gnu parallel. Mainly because it makes embarrassingly
-  parallel tasks embarrassingly easy to run on the command line.
-    -- Vincent D. Warmerdam @fishnets88@twitter
+  <<>>
 
 New in this release:
 
-* Encoding of remote commands has changed. This limits the length of remote commands to less than half. It also requires $REMOTE_TMPDIR to be writable.
-
-* Time functions hh_mm_ss() hhmmss() hh_mm() hhmm() are now available for {= =}.
-
-* parallel_options_map.pdf is a map showing which options other options relate to.
-
-* {uniq} added to --plus to only run jobs with unique values.
+<<>>
 
 * Bug fixes and man page updates: Many options now have a 'See also' section.
 
 News about GNU Parallel:
 
-* HPC at Noon - GNU Parallel u SLURM srun , 22 February 2022 https://kim.uni-hohenheim.de/en/96097?tx_ttnews%5Btt_news%5D=53919&cHash=985f4f4ac1a166d180d81f6e9be832a3
-
-* linux 命令 -- parallel https://blog.csdn.net/qq_38197157/article/details/112596389
-
-* Iterating Over Each Line of ls -l Output https://www.baeldung.com/linux/iterating-ls-l-output
+<<>>
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

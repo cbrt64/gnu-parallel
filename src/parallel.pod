@@ -205,7 +205,7 @@ Sequence number of the job to run.
 This replacement string will be replaced by the sequence number of the
 job being run. It contains the same number as $PARALLEL_SEQ.
 
-See also: B<{#}> B<--seqreplace>
+See also: B<{}> B<--seqreplace>
 
 
 =item B<{%}>

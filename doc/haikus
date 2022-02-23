@@ -4,6 +4,8 @@
  
 Quote of the month:
 
+  It's amazing how fast you can get with bash pipelines and GNU Parallel.
+    -- Eric Pauley @EricPauley_
 
   GNU parallel すごいな、シェルスクリプトを make -jX みたいにして並列
   に走らせたいときに超便利
@@ -18,12 +20,9 @@ Quote of the month:
   haberlo conocido antes :)
     -- Juan Sierra Pons @juasiepo
 
-
-
   If I could only keep 5 GNU utils, parallel would make it to the list
   :)
     -- 5heikki@reddit
-
 
   Gnu Parallel: installed in every computer i have access to.
     -- raffaele messuti @atomotic@twitter
@@ -34,7 +33,7 @@ Quote of the month:
   Deus salve o gnu parallel
     -- marcos @guv_Tuv@twitter
 
-@a201
+@a
 4
   اليوم علمت بأداة تساعد على تشغيل أوامر الصدفة بشكل متوازي حسب عدد الأنوية الموجودة مما يجعلها أداة أساسية في عدة تنفيذ المهام.
   الأداة اسمها gnu parallel

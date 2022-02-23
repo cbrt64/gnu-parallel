@@ -18,6 +18,15 @@ echo TODO
 
 EOF
 
+par_ssh_ssh() {
+    echo '### bug #61894: Pack ssh code in eval protection'
+    echo Unquoted ssh should work
+    parallel --ssh 'ssh lo ssh' -S lo 'hostname;echo' ::: OK
+    parallel --ssh 'eval ssh lo ssh' -S lo 'hostname;echo' ::: OK
+    parallel --ssh 'eval ssh lo eval ssh' -S lo 'hostname;echo' ::: OK
+    parallel --ssh 'sshpass ssh bash@lo eval ssh' -S csh@lo 'hostname;echo' ::: OK
+}
+
 par_stop_if_no_hosts_left() {
     echo '### Stop if all hosts are filtered and there are no hosts left to run on'
     stdout parallel --filter-hosts -S no-such.host echo ::: 1
