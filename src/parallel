@@ -511,7 +511,7 @@ sub pipe_shard_setup() {
     my @shardfifos;
     my @parcatfifos;
     # TODO $opt::jobs should be evaluated (100%)
-    # TODO $opt::jobs should be number of total_jobs if there are argugemts
+    # TODO $opt::jobs should be number of total_jobs if there are arguments
     max_jobs_running();
     my $njobs = $Global::max_jobs_running;
     for my $m (0..$njobs-1) {
@@ -3397,7 +3397,7 @@ sub __RUNNING_THE_JOBS_AND_PRINTING_PROGRESS__() {}
 #    $Global::newest_job = Job object of the most recent job started
 #    $Global::newest_starttime = timestamp of $Global::newest_job
 #    @Global::sshlogin
-#    $Global::minimal_command_line_length = minimum length supported by all sshlogins
+#    $Global::minimal_command_line_length = min len supported by all sshlogins
 #    $Global::start_no_new_jobs = should more jobs be started?
 #    $Global::original_stderr = file handle for STDERR when the program started
 #    $Global::total_started = total number of jobs started
@@ -3757,7 +3757,8 @@ sub drain_job_queue(@) {
 		    $Global::unkilled_sqlworker = $pid;
 		} else {
 		    # Replace --sql/--sqlandworker with --sqlworker
-		    my @ARGV = map { s/^--sql(andworker)?$/--sqlworker/; $_ } @Global::options_in_argv;
+		    my @ARGV = (map { s/^--sql(andworker)?$/--sqlworker/; $_ }
+				@Global::options_in_argv);
 		    # exec the --sqlworker
 		    exec($0,@ARGV,@command);
 		}
@@ -3821,13 +3822,15 @@ sub progress() {
     $status = "x"x($termcols+1);
     # Select an output format that will fit on a single line
     if(length $status > $termcols) {
-        # sshlogin1:XX/XX/XX%/XX.Xs sshlogin2:XX/XX/XX%/XX.Xs sshlogin3:XX/XX/XX%/XX.Xs
-        $header = "Computer:jobs running/jobs completed/%of started jobs/Average seconds to complete";
+        # sshlogin1:XX/XX/XX%/XX.Xs s2:XX/XX/XX%/XX.Xs s3:XX/XX/XX%/XX.Xs
+        $header = "Computer:jobs running/jobs completed/".
+	    "%of started jobs/Average seconds to complete";
         $status = $eta .
             join(" ",map
                  {
                      if($Global::total_started) {
-                         my $completed = ($Global::host{$_}->jobs_completed()||0);
+                         my $completed =
+			     ($Global::host{$_}->jobs_completed()||0);
                          my $running = $Global::host{$_}->jobs_running();
                          my $time = $completed ? (time-$^T)/($completed) : "0";
                          sprintf("%s:%d/%d/%d%%/%.1fs ",
@@ -3838,13 +3841,14 @@ sub progress() {
                  } @workers);
     }
     if(length $status > $termcols) {
-        # 1:XX/XX/XX%/XX.Xs 2:XX/XX/XX%/XX.Xs 3:XX/XX/XX%/XX.Xs 4:XX/XX/XX%/XX.Xs
+        # 1:XX/XX/XX%/X.Xs 2:XX/XX/XX%/X.Xs 3:XX/XX/XX%/X.Xs 4:XX/XX/XX%/X.Xs
         $header = "Computer:jobs running/jobs completed/%of started jobs";
         $status = $eta .
             join(" ",map
                  {
                      if($Global::total_started) {
-			 my $completed = ($Global::host{$_}->jobs_completed()||0);
+			 my $completed =
+			     ($Global::host{$_}->jobs_completed()||0);
 			 my $running = $Global::host{$_}->jobs_running();
 			 my $time = $completed ? (time-$^T)/($completed) : "0";
 			 sprintf("%s:%d/%d/%d%%/%.1fs ",
@@ -4311,7 +4315,7 @@ sub setup_basefile() {
     my $rsync_destdir;
     my $workdir;
     for my $sshlogin (values %Global::host) {
-      if($sshlogin->string() eq ":") { next }
+      if($sshlogin->local()) { next }
       for my $file (@opt::basefile) {
 	if($file !~ m:^/: and $opt::workdir eq "...") {
 	  ::error("Work dir '...' will not work with relative basefiles.");
@@ -4350,7 +4354,7 @@ sub cleanup_basefile() {
 	$workdir = $dummyjob->workdir();
     }
     for my $sshlogin (values %Global::host) {
-        if($sshlogin->string() eq ":") { next }
+        if($sshlogin->local()) { next }
         for my $file (@opt::basefile) {
 	    push @cmd, $sshlogin->cleanup_cmd($file,$workdir);
         }
@@ -4436,34 +4440,34 @@ sub filter_hosts() {
     @$down_hosts_ref and ::warning("Removed @$down_hosts_ref.");
 
     $Global::minimal_command_line_length = 100_000_000;
-    while (my ($sshlogin, $obj) = each %Global::host) {
-	if($sshlogin eq ":") { next }
-	$nsockets_ref->{$sshlogin} or
-	    ::die_bug("nsockets missing: ".$obj->serverlogin());
-	$ncores_ref->{$sshlogin} or
-	    ::die_bug("ncores missing: ".$obj->serverlogin());
-	$nthreads_ref->{$sshlogin} or
-	    ::die_bug("nthreads missing: ".$obj->serverlogin());
-	$time_to_login_ref->{$sshlogin} or
-	    ::die_bug("time_to_login missing: ".$obj->serverlogin());
-	$maxlen_ref->{$sshlogin} or
-	    ::die_bug("maxlen missing: ".$obj->serverlogin());
-	$obj->set_ncpus($nthreads_ref->{$sshlogin});
+    while (my ($string, $sshlogin) = each %Global::host) {
+	if($sshlogin->local()) { next }
+	$nsockets_ref->{$string} or
+	    ::die_bug("nsockets missing: $string");
+	$ncores_ref->{$string} or
+	    ::die_bug("ncores missing: $string");
+	$nthreads_ref->{$string} or
+	    ::die_bug("nthreads missing: $string");
+	$time_to_login_ref->{$string} or
+	    ::die_bug("time_to_login missing: $string");
+	$maxlen_ref->{$string} or
+	    ::die_bug("maxlen missing: ".$sshlogin->string());
+	$sshlogin->set_ncpus($nthreads_ref->{$string});
 	if($opt::use_cpus_instead_of_cores) {
-	    $obj->set_ncpus($ncores_ref->{$sshlogin});
+	    $sshlogin->set_ncpus($ncores_ref->{$string});
 	} elsif($opt::use_sockets_instead_of_threads) {
-	    $obj->set_ncpus($nsockets_ref->{$sshlogin});
+	    $sshlogin->set_ncpus($nsockets_ref->{$string});
 	} elsif($opt::use_cores_instead_of_threads) {
-	    $obj->set_ncpus($ncores_ref->{$sshlogin});
+	    $sshlogin->set_ncpus($ncores_ref->{$string});
 	}
-	$obj->set_time_to_login($time_to_login_ref->{$sshlogin});
-        $obj->set_maxlength($maxlen_ref->{$sshlogin});
-	::debug("init", "Timing from -S:$sshlogin ",
-		" nsockets:",$nsockets_ref->{$sshlogin},
-		" ncores:", $ncores_ref->{$sshlogin},
-		" nthreads:",$nthreads_ref->{$sshlogin},
-		" time_to_login:", $time_to_login_ref->{$sshlogin},
-		" maxlen:", $maxlen_ref->{$sshlogin},
+	$sshlogin->set_time_to_login($time_to_login_ref->{$string});
+        $sshlogin->set_maxlength($maxlen_ref->{$string});
+	::debug("init", "Timing from -S:$string ",
+		" nsockets:",$nsockets_ref->{$string},
+		" ncores:", $ncores_ref->{$string},
+		" nthreads:",$nthreads_ref->{$string},
+		" time_to_login:", $time_to_login_ref->{$string},
+		" maxlen:", $maxlen_ref->{$string},
 		" min_max_len:", $Global::minimal_command_line_length,"\n");
     }
 }
@@ -4609,9 +4613,8 @@ sub parallelized_host_filtering() {
 	push(@maxline, $host."\t"."true $host; ".
 	     sshwrapped($sshlogin,"parallel --max-line-length-allowed",0)."\n\0");
 	# 'echo' is used to get the fastest possible ssh login time
-	my $sshcmd = "true $host; exec " .$sshlogin->sshcommand()." ".
-	    $sshlogin->serverlogin();
-	push(@echo, $host."\t".$sshcmd." -- echo\n\0");
+	push(@echo, $host."\t"."true $host; ".
+	     $sshlogin->wrap("echo $host")."\n\0");
     }
     # --timeout 10: Setting up an SSH connection and running a simple
     #               command should never take > 10 sec.
@@ -5375,10 +5378,13 @@ sub citation() {
 sub show_limits() {
     # Returns: N/A
     print("Maximal size of command: ",Limits::Command::real_max_length(),"\n",
-          "Maximal usable size of command: ",$Global::usable_command_line_length,"\n",
+          "Maximal usable size of command: ",
+	  $Global::usable_command_line_length,"\n",
           "\n",
-          "Execution of  will continue now, and it will try to read its input\n",
-          "and run commands; if this is not what you wanted to happen, please\n",
+          "Execution of  will continue now, ",
+	  "and it will try to read its input\n",
+          "and run commands; if this is not ",
+	  "what you wanted to happen, please\n",
           "press CTRL-D or CTRL-C\n");
 }
 
@@ -5579,9 +5585,11 @@ sub qqx(@) {
     my %env;
     # ssh with ssh-agent needs PATH SSH_AUTH_SOCK SSH_AGENT_PID
     # ssh with Kerberos needs KRB5CCNAME
+    # sshpass needs SSHPASS
     # tmux needs LC_CTYPE
     # lsh needs HOME LOGNAME
-    my @keep = qw(PATH SSH_AUTH_SOCK SSH_AGENT_PID KRB5CCNAME LC_CTYPE HOME LOGNAME);
+    my @keep = qw(PATH SSH_AUTH_SOCK SSH_AGENT_PID KRB5CCNAME LC_CTYPE
+		  HOME LOGNAME SSHPASS);
     @env{@keep} = @ENV{@keep};
     local %ENV;
     %ENV = %env;
@@ -6424,9 +6432,17 @@ package SSHLogin;
 
 sub new($$) {
     my $class = shift;
-    my $sshlogin_string = shift;
-    my $ncpus;
+    my $s = shift;
+    my $origs = $s;
     my %hostgroups;
+    my $ncpus;
+    my $sshcommand;
+    my $user;
+    my $password;
+    my $host;
+    my $port;
+    my $local;
+    my $string;
     # SSHLogins can have these formats:
     #   @grp+grp/ncpu//usr/bin/ssh user@server
     #   ncpu//usr/bin/ssh user@server
@@ -6434,45 +6450,88 @@ sub new($$) {
     #   user@server
     #   ncpu/user@server
     #   @grp+grp/user@server
-    if($sshlogin_string =~ s:^\@([^/]+)/?::) {
+    #   above with: user:password@server
+    #   above with: user@server:port
+    # So:
+    #   [@grp+grp][ncpu/][ssh command ][[user][:password]@][server[:port]]
+    
+    #   [@grp+grp]/ncpu//usr/bin/ssh user:pass@server:port
+    if($s =~ s:^\@([^/]+)/?::) {
         # Look for SSHLogin hostgroups
         %hostgroups = map { $_ => 1 } split(/\+/, $1);
     }
     # An SSHLogin is always in the hostgroup of its "numcpu/host"
-    $hostgroups{$sshlogin_string} = 1;
-    if ($sshlogin_string =~ s:^(\d+)/::) {
-        # Override default autodetected ncpus unless missing
-        $ncpus = $1;
+    $hostgroups{$s} = 1;
+    
+    #   [ncpu/]/usr/bin/ssh user:pass@server:port
+    if ($s =~ s:^(\d+)/::) { $ncpus = $1; }
+
+    #   [/usr/bin/ssh ]user:pass@server:port
+    if($s =~ s/^(.*) //) { $sshcommand = $1; }
+
+    #   [user:pass@]server:port
+    if($s =~ s/([^@]+)@//) {
+	my $userpw = $1;
+	# user[:pass]
+	if($userpw =~ s/:(.*)//) { $password = $1; }
+	$user = $userpw;
     }
-    my $string = $sshlogin_string;
+
+    #   [server]:port
+    if($s =~ s/([-a-z0-9.]+)//) { $host = $1; }
+
+    #   [:port]
+    if($s =~ s/:(\w+)//) { $port = $1; }
+
+    if($s and $s ne ':') {
+	::die_bug("SSHLogin parser failed on '$origs' => '$s'");
+    }
+    
+    $string =
+	# Only include the sshcommand in $string if it is set by user
+	($sshcommand && $sshcommand." ").
+	($user && $user."@").
+	($host && $host).
+	($port && ":$port");
+    if($s eq ':') {
+	$local = 1;
+	$string = ":";
+    } else {
+	$sshcommand ||= $opt::ssh || $ENV{'PARALLEL_SSH'} || "ssh";
+    }
+
     # An SSHLogin is always in the hostgroup of its $string-name
     $hostgroups{$string} = 1;
     @Global::hostgroups{keys %hostgroups} = values %hostgroups;
-    my @unget = ();
+    # Used for file names for loadavg
     my $no_slash_string = $string;
     $no_slash_string =~ s/[^-a-z0-9:]/_/gi;
     return bless {
         'string' => $string,
-        'jobs_running' => 0,
-        'jobs_completed' => 0,
-        'maxlength' => undef,
-        'max_jobs_running' => undef,
-        'orig_max_jobs_running' => undef,
-        'ncpus' => $ncpus,
-        'hostgroups' => \%hostgroups,
-        'sshcommand' => undef,
-        'serverlogin' => undef,
-        'control_path_dir' => undef,
-        'control_path' => undef,
-	'time_to_login' => undef,
-	'last_login_at' => undef,
-        'loadavg_file' => $Global::cache_dir . "/tmp/sshlogin/" .
+	    'jobs_running' => 0,
+	    'jobs_completed' => 0,
+	    'maxlength' => undef,
+	    'max_jobs_running' => undef,
+	    'orig_max_jobs_running' => undef,
+	    'ncpus' => $ncpus,
+	    'sshcommand' => $sshcommand,
+	    'user' => $user,
+	    'password' => $password,
+	    'host' => $host,
+	    'port' => $port,
+	    'hostgroups' => \%hostgroups,
+	    'local' => $local,
+	    'control_path_dir' => undef,
+	    'control_path' => undef,
+	    'time_to_login' => undef,
+	    'last_login_at' => undef,
+	    'loadavg_file' => $Global::cache_dir . "/tmp/sshlogin/" .
 	    $no_slash_string . "/loadavg",
-        'loadavg' => undef,
-	'last_loadavg_update' => 0,
-        'swap_activity_file' => $Global::cache_dir . "/tmp/sshlogin/" .
+	    'loadavg' => undef,
+	    'last_loadavg_update' => 0,
+	    'swap_activity_file' => $Global::cache_dir . "/tmp/sshlogin/" .
             $no_slash_string . "/swap_activity",
-        'swap_activity' => undef,
+	    'swap_activity' => undef,
     }, ref($class) || $class;
 }
 
@@ -6486,6 +6545,65 @@ sub DESTROY($) {
 sub string($) {
     my $self = shift;
     return $self->{'string'};
+}
+
+sub host($) {
+    my $self = shift;
+    return $self->{'host'};
+}
+
+sub sshcmd($) {
+    # Give the ssh command without hostname
+    # Returns:
+    #   "sshpass -e ssh -p port -l user"
+    my $self = shift;
+    my @local;
+    # [sshpass -e] ssh -p port -l user
+    if($self->{'password'}) { push @local, "sshpass -e"; }
+    # [ssh] -p port -l user
+    push @local, $self->{'sshcommand'};
+    # [-p port] -l user
+    if($self->{'port'}) { push @local, '-p',$self->{'port'}; }
+    # [-l user]
+    if($self->{'user'}) { push @local, '-l',$self->{'user'}; }
+    return "@local";
+}
+
+sub wrap($@) {
+    # Input:
+    #   @cmd = shell command to run on remote
+    # Returns:
+    #   $sshwrapped = ssh remote @cmd
+    my $self = shift;
+    my @remote = @_;
+    return(join " ",
+	   $self->sshcmd(), $self->{'host'}, "--", "exec", @remote);
+}
+
+sub hexwrap($@) {
+    # Input:
+    #   @cmd = perl expresion to eval
+    # Returns:
+    #   $hexencoded = perl command that decodes hex and evals @cmd
+    my $self = shift;
+    my $cmd = join("",@_);
+    
+    # "#" is needed because Perl on MacOS X adds NULs
+    # when running pack q/H10000000/
+    my $hex = unpack "H*", $cmd."#";
+    # csh does not deal well with > 1000 chars in one word
+    # Insert space every 1000 char
+    $hex =~ s/\G.{1000}\K/ /sg;
+    # Explanation:
+    # Write this without special chars: eval pack 'H*', join '',@ARGV
+    # GNU_Parallel_worker = String so people can see this is from GNU Parallel
+    # eval+          = way to write 'eval ' without space (gives warning)
+    # pack+          = way to write 'pack ' without space
+    # q/H10000000/,  = almost the same as "H*" but does not use *
+    # join+q//,      = join '',
+    return('perl -X -e '.
+	   'GNU_Parallel_worker,eval+pack+q/H10000000/,join+q//,@ARGV '.
+	   $hex);
 }
 
 sub jobs_running($) {
@@ -6786,9 +6904,8 @@ sub swap_activity($) {
 	-d $dir or eval { File::Path::mkpath($dir); };
         my $swap_activity;
 	$swap_activity = swapactivityscript();
-        if($self->{'string'} ne ":") {
-            $swap_activity = $self->sshcommand() . " " . $self->serverlogin() . " " .
-		::Q($swap_activity);
+        if(not $self->local()) {
+            $swap_activity = $self->wrap($swap_activity);
         }
         # Run swap_activity measuring.
         # As the command can take long to run if run remote
@@ -6970,10 +7087,23 @@ sub loadavg_too_high($) {
     }
 }
 
-{
-    my $cmd;
+
+
+sub loadavg($) {
+    # If the currently know loadavg is too old:
+    #   Recompute a new one in the background
+    # The load average is computed as the number of processes waiting
+    # for disk or CPU right now. So it is the server load this instant
+    # and not averaged over several minutes. This is needed so GNU
+    # Parallel will at most start one job that will push the load over
+    # the limit.
+    #
+    # Returns:
+    #   $last_loadavg = last load average computed (undef if none)
+
+    my $self = shift;
     sub loadavg_cmd() {
-	if(not $cmd) {
+	if(not $Global::loadavg_cmd) {
 	    # aix => "ps -ae -o state,command" # state wrong
 	    # bsd => "ps ax -o state,command"
 	    # sysv => "ps -ef -o s -o comm"
@@ -7033,24 +7163,10 @@ sub loadavg_too_high($) {
 		print `$ps{$^O}`;
 	    });
 	    # The command is too long for csh, so base64_wrap the command
-	    $cmd = Job::base64_wrap($ps);
+	    $Global::loadavg_cmd = $self->hexwrap($ps);
 	}
-	return $cmd;
+	return $Global::loadavg_cmd;
     }
-}
-
-
-sub loadavg($) {
-    # If the currently know loadavg is too old:
-    #   Recompute a new one in the background
-    # The load average is computed as the number of processes waiting for disk
-    # or CPU right now. So it is the server load this instant and not averaged over
-    # several minutes. This is needed so GNU  Parallel will at most start one job
-    # that will push the load over the limit.
-    #
-    # Returns:
-    #   $last_loadavg = last load average computed (undef if none)
-    my $self = shift;
     # Should we update the loadavg file?
     my $update_loadavg_file = 0;
     if(open(my $load_fh, "<", $self->{'loadavg_file'})) {
@@ -7090,8 +7206,7 @@ sub loadavg($) {
         -w $dir or ::die_bug("Cannot write to $dir");
         my $cmd = "";
         if($self->{'string'} ne ":") {
-	    $cmd = $self->sshcommand() . " " . $self->serverlogin() . " " .
-		::Q(loadavg_cmd());
+	    $cmd = $self->wrap(loadavg_cmd());
 	} else {
 	    $cmd .= loadavg_cmd();
 	}
@@ -7101,6 +7216,7 @@ sub loadavg($) {
         my $file = $self->{'loadavg_file'};
 	# tmpfile on same filesystem as $file
         my $tmpfile = $file.$$;
+	$ENV{'SSHPASS'} = $self->{'password'};
         ::qqx("($cmd > $tmpfile && mv $tmpfile $file || rm $tmpfile & )");
     }
     return $self->{'loadavg'};
@@ -7373,8 +7489,8 @@ sub compute_number_of_processes($) {
 	    reserve_process();
 
 	    my $forktime = time - $time - $wait_time_for_getting_args;
-	    ::debug("run", "Time to fork $system_limit procs: $wait_time_for_getting_args ",
-		    $forktime,
+	    ::debug("run", "Time to fork $system_limit procs: ".
+		    $wait_time_for_getting_args, " ", $forktime,
 		    " (processes so far: ", $system_limit,")\n");
 	    if($system_limit > 10 and
 	       $forktime > 1 and
@@ -7446,7 +7562,7 @@ sub simultaneous_sshlogin_limit($) {
         ::min($self->simultaneous_sshlogin($wanted_processes),
 	      $self->simultaneous_sshlogin($wanted_processes));
     if($ssh_limit < $wanted_processes) {
-        my $serverlogin = $self->serverlogin();
+        my $serverlogin = $self->string();
         ::warning("ssh to $serverlogin only allows ".
 		  "for $ssh_limit simultaneous logins.",
 		  "You may raise this by changing",
@@ -7472,13 +7588,11 @@ sub simultaneous_sshlogin($) {
     local $/ = "\n";
     my $self = shift;
     my $wanted_processes = shift;
-    my $sshcmd = $self->sshcommand();
-    my $serverlogin = $self->serverlogin();
     my $sshdelay = $opt::sshdelay ? "sleep $opt::sshdelay;" : "";
     # TODO sh -c wrapper to work for csh
-    my $cmd = ("$sshdelay$sshcmd $serverlogin -- ".
-	       "echo simultaneouslogin </dev/null 2>&1 &")x$wanted_processes;
-    ::debug("init", "Trying $wanted_processes logins at $serverlogin\n");
+    my $cmd = ($sshdelay.$self->wrap("echo simultaneouslogin").
+	       "</dev/null 2>&1 &")x$wanted_processes;
+    ::debug("init","Trying $wanted_processes logins at ".$self->string()."\n");
     open (my $simul_fh, "-|", "($cmd)|grep simultaneouslogin | wc -l") or
 	::die_bug("simultaneouslogin");
     my $ssh_limit = <$simul_fh>;
@@ -7551,9 +7665,7 @@ sub ncpus($) {
     local $/ = "\n";
     my $self = shift;
     if(not defined $self->{'ncpus'}) {
-        my $sshcmd = $self->sshcommand();
-        my $serverlogin = $self->serverlogin();
-        if($serverlogin eq ":") {
+        if($self->local()) {
             if($opt::use_sockets_instead_of_threads) {
                 $self->{'ncpus'} = socket_core_thread()->{'sockets'};
 	    } elsif($opt::use_cores_instead_of_threads) {
@@ -7563,25 +7675,23 @@ sub ncpus($) {
             }
         } else {
             my $ncpu;
-	    ::debug("init","echo|$sshcmd $serverlogin -- parallel --number-of-sockets");
+	    $ENV{'SSHPASS'} = $self->{'password'};
+	    ::debug("init",("echo | ".$self->wrap("parallel --number-of-sockets")));
             if($opt::use_sockets_instead_of_threads
 	       or
 		$opt::use_cpus_instead_of_cores) {
-                $ncpu =
-		    ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-sockets");
+                $ncpu = ::qqx("echo | ".$self->wrap("parallel --number-of-sockets"));
 	    } elsif($opt::use_cores_instead_of_threads) {
-                $ncpu =
-		    ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-cores");
+                $ncpu = ::qqx("echo | ".$self->wrap("parallel --number-of-cores"));
             } else {
-                $ncpu =
-		    ::qqx("echo|$sshcmd $serverlogin -- parallel --number-of-threads");
+                $ncpu = ::qqx("echo | ".$self->wrap("parallel --number-of-threads"));
             }
 	    chomp $ncpu;
             if($ncpu =~ /^\s*[0-9]+\s*$/s) {
                 $self->{'ncpus'} = $ncpu;
             } else {
                 ::warning("Could not figure out ".
-			  "number of cpus on $serverlogin ($ncpu). Using 1.");
+			  "number of cpus on ".$self->string." ($ncpu). Using 1.");
                 $self->{'ncpus'} = 1;
             }
         }
@@ -7983,7 +8093,8 @@ sub sct_aix($) {
     my $cpu = shift;
     if(not $cpu->{'cores'}) {
 	if(-x "/usr/sbin/lscfg") {
-	    if(open(my $in_fh, "-|", "/usr/sbin/lscfg -vs |grep proc | wc -l|tr -d ' '")) {
+	    if(open(my $in_fh, "-|",
+		    "/usr/sbin/lscfg -vs |grep proc | wc -l|tr -d ' '")) {
 		$cpu->{'cores'} = <$in_fh>;
 		close $in_fh;
 	    }
@@ -8083,80 +8194,14 @@ sub sshcommand($) {
     #   $sshcommand = the command (incl options) to run when using ssh
     my $self = shift;
     if (not defined $self->{'sshcommand'}) {
-        $self->sshcommand_of_sshlogin();
+	::die_bug("sshcommand not set");
     }
     return $self->{'sshcommand'};
 }
 
-sub serverlogin($) {
-    # Returns:
-    #   $sshcommand = the command (incl options) to run when using ssh
+sub local($) {
     my $self = shift;
-    if (not defined $self->{'serverlogin'}) {
-        $self->sshcommand_of_sshlogin();
-    }
-    return $self->{'serverlogin'};
-}
-
-sub sshcommand_of_sshlogin($) {
-    # Compute ssh command and serverlogin from sshlogin
-    # 'server' -> ('ssh -S /tmp/parallel-ssh-RANDOM/host-','server')
-    # 'user@server' -> ('ssh','user@server')
-    # 'myssh user@server' -> ('myssh','user@server')
-    # 'myssh -l user server' -> ('myssh -l user','server')
-    # '/usr/bin/myssh -l user server' -> ('/usr/bin/myssh -l user','server')
-    # Sets:
-    #   $self->{'sshcommand'}
-    #   $self->{'serverlogin'}
-    my $self = shift;
-    my ($sshcmd, $serverlogin);
-    # If $opt::ssh is unset, use $PARALLEL_SSH or 'ssh'
-    $opt::ssh ||= $ENV{'PARALLEL_SSH'} || "ssh";
-    if($self->{'string'} =~ /(.+) (\S+)$/) {
-        # Own ssh command
-        $sshcmd = $1; $serverlogin = $2;
-    } else {
-        # Normal ssh
-        if($opt::controlmaster) {
-            # Use control_path to make ssh faster
-            my $control_path = $self->control_path_dir()."/ssh-%r@%h:%p";
-            $sshcmd = $opt::ssh." -S ".$control_path;
-            $serverlogin = $self->{'string'};
-            if(not $self->{'control_path'}{$control_path}++) {
-                # Master is not running for this control_path
-                # Start it
-                my $pid = fork();
-                if($pid) {
-                    $Global::sshmaster{$pid} ||= 1;
-                } else {
-		    $SIG{'TERM'} = undef;
-                    # Ignore the 'foo' being printed
-                    open(STDOUT,">","/dev/null");
-                    # STDERR >/dev/null to ignore
-                    open(STDERR,">","/dev/null");
-                    open(STDIN,"<","/dev/null");
-                    # Run a sleep that outputs data, so it will discover
-		    # if the ssh connection closes.
-                    my $sleep = ::Q('$|=1;while(1){sleep 1;print "foo\n"}');
-                    my @master = ($opt::ssh, "-MTS",
-				  $control_path, $serverlogin, "--", "perl", "-e",
-				  $sleep);
-                    exec(@master);
-                }
-            }
-        } else {
-            $sshcmd = $opt::ssh; $serverlogin = $self->{'string'};
-        }
-    }
-
-    if($serverlogin =~ s/(\S+)\@(\S+)/$2/) {
-	# convert user@server to '-l user server'
-	# because lsh does not support user@server
-	$sshcmd = $sshcmd." -l ".$1;
-    }
-
-    $self->{'sshcommand'} = $sshcmd;
-    $self->{'serverlogin'} = $serverlogin;
+    return $self->{'local'};
 }
 
 sub control_path_dir($) {
@@ -8197,13 +8242,40 @@ sub rsync_transfer_cmd($) {
 	$rsync_destdir = "/";
     }
     $file = ::shell_quote_file($file);
-    my $sshcmd = $self->sshcommand();
-    my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}.
-	" -e".::Q($sshcmd);
-    my $serverlogin = $self->serverlogin();
     # Make dir if it does not exist
-    return "$sshcmd $serverlogin -- mkdir -p $rsync_destdir && " .
-	rsync()." $rsync_opts $file $serverlogin:$rsync_destdir";
+    return($self->wrap("mkdir -p $rsync_destdir") . " && " .
+	   $self->rsync()." $file ".$self->{'host'}.":$rsync_destdir");
+}
+
+sub rsync($) {
+    sub rsync_protocol {
+	# rsync 3.1.x uses protocol 31 which is unsupported by 2.5.7.
+	# If the version >= 3.1.0: downgrade to protocol 30
+	# Returns:
+	#   $rsync = "rsync" or "rsync --protocol 30"
+	if(not $Global::rsync_protocol) {
+	    my @out = `rsync --version`;
+	    for (@out) {
+		# rsync  version 3.1.3  protocol version 31
+		# rsync  version v3.2.3  protocol version 31
+		if(/version v?(\d+.\d+)(.\d+)?/) {
+		    if($1 >= 3.1) {
+			# Version 3.1.0 or later: Downgrade to protocol 30
+			$Global::rsync_protocol = "rsync --protocol 30";
+		    } else {
+			$Global::rsync_protocol = "rsync";
+		    }
+		}
+	    }
+	    $Global::rsync_protocol or
+		::die_bug("Cannot figure out version of rsync: @out");
+	}
+	return $Global::rsync_protocol;
+    }
+    my $self = shift;
+
+    return rsync_protocol()." ".$ENV{'PARALLEL_RSYNC_OPTS'}.
+	" -e".::Q($self->sshcmd());
 }
 
 sub cleanup_cmd($$$) {
@@ -8238,39 +8310,8 @@ sub cleanup_cmd($$$) {
     }
     my $rmf = "sh -c ".
 	::Q("rm -f ".::shell_quote_file($f)." 2>/dev/null;".$rmdir);
-    my $sshcmd = $self->sshcommand();
-    my $serverlogin = $self->serverlogin();
-    return "$sshcmd $serverlogin -- ".::Q("$rmf");
+    return $self->wrap(::Q($rmf));
 }
-
-{
-    my $rsync;
-
-    sub rsync {
-	# rsync 3.1.x uses protocol 31 which is unsupported by 2.5.7.
-	# If the version >= 3.1.0: downgrade to protocol 30
-	# Returns:
-	#   $rsync = "rsync" or "rsync --protocol 30"
-	if(not $rsync) {
-	    my @out = `rsync --version`;
-	    for (@out) {
-		# rsync  version 3.1.3  protocol version 31
-		# rsync  version v3.2.3  protocol version 31
-		if(/version v?(\d+.\d+)(.\d+)?/) {
-		    if($1 >= 3.1) {
-			# Version 3.1.0 or later: Downgrade to protocol 30
-			$rsync = "rsync --protocol 30";
-		    } else {
-			$rsync = "rsync";
-		    }
-		}
-	    }
-	    $rsync or ::die_bug("Cannot figure out version of rsync: @out");
-	}
-	return $rsync;
-    }
-}
-
 
 package JobQueue;
 
@@ -8470,7 +8511,11 @@ sub free_slot($) {
     sub cattail() {
 	# Returns:
 	#   $cattail = perl program for:
-	#     cattail "decompress program" writerpid [file_to_decompress or stdin] [file_to_unlink]
+	#     cattail "decomp-prg" wpid [file_stdin] [file_to_unlink]
+	#     decomp-prg     = decompress program
+	#     wpid           = pid of writer program
+	#     file_stdin     = file_to_decompress
+	#     file_to_unlink = unlink this file
 	if(not $cattail) {
 	    $cattail = q{
 		# cat followed by tail (possibly with rm as soon at the file is opened)
@@ -9314,10 +9359,8 @@ sub set_sshlogin($$) {
 
     if($opt::sqlworker) {
 	# Identify worker as --sqlworker often runs on different machines
-	my $host = $sshlogin->string();
-	if($host eq ":") {
-	    $host = ::hostname();
-	}
+	# If local: Use hostname
+	my $host = $sshlogin->local() ? ::hostname() : $sshlogin->host();
 	$Global::sql->update("SET Host = ? WHERE Seq = ".$self->seq(), $host);
     }
 }
@@ -9494,7 +9537,7 @@ sub sshlogin_wrap($) {
 		    eval { setpgrp };
 		    eval { setpriority(0,0,$nice) };
                     exec($shell,$script);
-		    die("exec failed: $!");
+		    die("exec\040failed: $!");
 		}
 		my $parent = getppid;
 		do {
@@ -9618,18 +9661,16 @@ sub sshlogin_wrap($) {
     # TODO test that *sh -c 'parallel --env' use *sh
     if(not defined $self->{'sshlogin_wrap'}{$command}) {
 	my $sshlogin = $self->sshlogin();
-	my $serverlogin = $sshlogin->serverlogin();
-	my $quoted_remote_command;
 	$ENV{'PARALLEL_SEQ'} = $self->seq();
 	$ENV{'PARALLEL_JOBSLOT'} = $self->slot();
 	$ENV{'PARALLEL_SSHLOGIN'} = $sshlogin->string();
-	$ENV{'PARALLEL_SSHHOST'} = $sshlogin->serverlogin();
+	$ENV{'PARALLEL_SSHHOST'} = $sshlogin->host();
 	if ($opt::hostgroups) {
 	    $ENV{'PARALLEL_HOSTGROUPS'} = join '+', $sshlogin->hostgroups();
 	    $ENV{'PARALLEL_ARGHOSTGROUPS'} = join '+', $self->hostgroups();
 	}
 	$ENV{'PARALLEL_PID'} = $$;
-	if($serverlogin eq ":") {
+	if($sshlogin->local()) {
 	    if($opt::workdir) {
 		# Create workdir if needed. Then cd to it.
 		my $wd = $self->workdir();
@@ -9672,37 +9713,17 @@ sub sshlogin_wrap($) {
 		# Create remote workdir if needed. Then cd to it.
 	        my $wd = ::pQ($self->workdir());
 		$pwd = qq{system("mkdir","-p","--","$wd"); chdir "$wd" ||}.
-		    qq{print(STDERR "parallel: Cannot chdir to $wd\\n") && exit 255;};
+		    qq{print(STDERR "parallel: Cannot chdir to $wd\\n") &&}.
+		    qq{exit 255;};
 	    }
 	    my ($csh_friendly,$envset,$bashfuncset) = env_as_eval();
 	    my $cmd = $command;
 	    # q// does not quote \, so we must do that
 	    $cmd =~ s/\\/\\\\/g;
 
-	    my $remote_command =
-		($pwd.$envset.$bashfuncset.
-		 '$cmd='."q\0".$cmd."\0;".
+	    my $remote_command = $sshlogin->hexwrap
+		($pwd.$envset.$bashfuncset.'$cmd='."q\0".$cmd."\0;".
 		 monitor_parent_sshd_script());
-	   
-	    # "#" is needed because Perl on MacOS X adds NULs
-	    # when running pack q/H10000000/
-	    my $hex = unpack "H*", $remote_command."#";
-	    # csh does not deal well with > 1000 chars in one word
-	    # Insert space every 1000 char
-	    $hex =~ s/\G.{1000}\K/ /sg;
-	    # Explanation:
-	    # Write this without special chars: eval pack 'H*', join '',@ARGV
-	    # GNU_Parallel = String so people can see this is from GNU Parallel
-	    # eval+        = way to write 'eval ' without space (gives warning)
-	    # pack+        = way to write 'pack ' without space
-	    # q/H10000000/,= almost the same as "H*" but does not use *
-	    # join+q//,    = join '',
-	    $remote_command = 'GNU_Parallel,eval+pack+q/H10000000/,join+q//,@ARGV '
-		. $hex;
-
-	    $quoted_remote_command = "perl -X -e ". $remote_command;
-
-	    my $sshcmd = $sshlogin->sshcommand();
 	    my ($pre,$post,$cleanup)=("","","");
 	    # --transfer
 	    $pre .= $self->sshtransfer();
@@ -9716,8 +9737,7 @@ sub sshlogin_wrap($) {
 	    }
 	    $self->{'sshlogin_wrap'}{$command} =
 		($pre
-		 . "$sshcmd $serverlogin -- exec "
-		 . $quoted_remote_command
+		 . $sshlogin->wrap($remote_command)
 		 . ";"
 		 . $post);
 	}
@@ -9739,7 +9759,8 @@ sub fill_templates($) {
 	for(my $i = 0; $i <= $#template_name; $i++) {
 	    open(my $fh, ">", $template_name[$i]) || die;
 	    print $fh $self->{'commandline'}->
-		replace_placeholders([$self->{'commandline'}{'template_contents'}[$i]],0,0);
+		replace_placeholders([$self->{'commandline'}
+				      {'template_contents'}[$i]],0,0);
 	    close $fh;
 	}
 	if($opt::cleanup) {
@@ -9848,13 +9869,11 @@ sub sshreturn($) {
     #   rsync remote:$workdir/$file .
     my $self = shift;
     my $sshlogin = $self->sshlogin();
-    my $sshcmd = $sshlogin->sshcommand();
-    my $serverlogin = $sshlogin->serverlogin();
-    my $rsync_opts = $ENV{'PARALLEL_RSYNC_OPTS'}. " -e". ::Q($sshcmd);
     my $pre = "";
     for my $file ($self->return()) {
 	$file =~ s:^\./::g; # Remove ./ if any
-	my $relpath = ($file !~ m:^/:) || ($file =~ m:/\./:); # Is the path relative or /./?
+	my $relpath = ($file !~ m:^/:) ||
+	    ($file =~ m:/\./:); # Is the path relative or /./?
 	my $cd = "";
 	my $wd = "";
 	if($relpath) {
@@ -9878,9 +9897,9 @@ sub sshreturn($) {
         #   rsync (--protocol 30) -rlDzR
 	#     --rsync-path="cd /home/tange/dir/subdir/; rsync"
         #     server:file.gz /home/tange/dir/subdir/
-	$pre .= "mkdir -p $basedir$cd && ". $sshlogin->rsync().
-	    " $rsync_cd $rsync_opts $serverlogin:".
-	     $basename . " ".$basedir.$cd.";";
+	$pre .= "mkdir -p $basedir$cd" . " && " .
+	    $sshlogin->rsync(). " $rsync_cd -- ".$sshlogin->host().':'.
+	    $basename . " ".$basedir.$cd.";";
     }
     return $pre;
 }
@@ -9891,8 +9910,6 @@ sub sshcleanup($) {
     #   ssh command needed to remove files from sshlogin
     my $self = shift;
     my $sshlogin = $self->sshlogin();
-    my $sshcmd = $sshlogin->sshcommand();
-    my $serverlogin = $sshlogin->serverlogin();
     my $workdir = $self->workdir();
     my $cleancmd = "";
 
@@ -9901,7 +9918,7 @@ sub sshcleanup($) {
 	$cleancmd .= $sshlogin->cleanup_cmd($file,$workdir).";";
     }
     if(defined $opt::workdir and $opt::workdir eq "...") {
-       $cleancmd .= "$sshcmd $serverlogin -- rm -rf " . ::Q($workdir).';';
+       $cleancmd .= $sshlogin->wrap("rm -rf " . ::Q($workdir).';');
     }
     return $cleancmd;
 }
@@ -10158,6 +10175,7 @@ sub start($) {
     $job->fill_templates();
     ::debug("run", $Global::total_running, " processes . Starting (",
 	    $job->seq(), "): $command\n");
+    $ENV{'SSHPASS'} = $job->{'sshlogin'}->{'password'};
     if($opt::pipe) {
 	my ($stdin_fh) = ::gensym();
 	$pid = open3_setpgrp($stdin_fh,$stdout_fh,$stderr_fh,$command);
@@ -10333,7 +10351,8 @@ sub interactive_start($) {
 	    # Read a / separated line: 0h/2 for csh, 2/0 for bash.
 	    # If csh the first will be 0h, so use the second as exit value.
 	    # Otherwise just use the first value as exit value.
-	    q{; exec perl -e '$/="/";$_=<>;$c=<>;unlink $ARGV; /(\d+)h/ and exit($1);exit$c' }.$tmpfifo;
+	    q{; exec perl -e '$/="/";$_=<>;$c=<>;unlink $ARGV; }.
+	    q{/(\d+)h/ and exit($1);exit$c' }.$tmpfifo;
     }
 }
 
@@ -12378,7 +12397,8 @@ sub find_max($) {
 	::warning("Finding the maximal command line length. ".
 		  "This may take up to 30 seconds.")
     }
-    # Use an upper bound of 100 MB if the shell allows for infinite long lengths
+    # Use an upper bound of 100 MB if the shell allows for infinite
+    # long lengths
     my $upper = 100_000_000;
     # 1000 is supported everywhere, so the search can start anywhere 1..999
     # 324 makes the search much faster on Cygwin, so let us use that
@@ -12395,7 +12415,8 @@ sub find_max($) {
 # Prototype forwarding
 sub binary_find_max($$$);
 sub binary_find_max($$$) {
-    # Given a lower and upper bound find the max (length or args) of a command line
+    # Given a lower and upper bound find the max (length or args) of a
+    # command line
     # Returns:
     #   number of chars on the longest command line allowed
     my ($lower, $upper, $string) = (@_);
@@ -13096,11 +13117,11 @@ sub total_jobs() {
 	::strftime("%H:%M", localtime(time()));
     }
     sub yyyymmddhhmmss() {
-	# ISO8601 20380119031408
+	# ISO8601 20380119 + ISO8601 031408
 	::strftime("%Y%m%d%H%M%S", localtime(time()));
     }
     sub yyyymmddhhmm() {
-	# ISO8601 203801190314
+	# ISO8601 20380119 + ISO8601 0314
 	::strftime("%Y%m%d%H%M", localtime(time()));
     }
     sub yyyymmdd() {

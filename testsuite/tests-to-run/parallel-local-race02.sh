@@ -85,11 +85,12 @@ par_hostgroup() {
 par_PARALLEL_RSYNC_OPTS() {
     echo '### test rsync opts'
     touch parallel_rsync_opts.test
+    
     parallel --rsync-opts -rlDzRRRR -vv -S parallel@lo --trc {}.out touch {}.out ::: parallel_rsync_opts.test |
-	perl -nE 's/(rsync .*?RRRR)/say $1/ge'
-    export PARALLEL_RSYNC_OPTS=-zzrrllddRRRR
+	perl -nE 's/(\S+RRRR)/say $1/ge'
+    export PARALLEL_RSYNC_OPTS=-zzzzrldRRRR
     parallel -vv -S parallel@lo --trc {}.out touch {}.out ::: parallel_rsync_opts.test |
-	perl -nE 's/(rsync .*?RRRR)/say $1/ge'
+	perl -nE 's/(\S+RRRR)/say $1/ge'
     rm parallel_rsync_opts.test parallel_rsync_opts.test.out
     echo
 }

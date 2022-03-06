@@ -18,6 +18,12 @@ echo TODO
 
 EOF
 
+par_sshpass_with_password() {
+    echo '### sshpass'
+    echo OK | parallel -S "sshpass -p $withpassword ssh withpassword@lo:22" echo
+    echo OK | parallel -S withpassword:"$withpassword"@lo:22 echo
+}
+
 par_ssh_ssh() {
     echo '### bug #61894: Pack ssh code in eval protection'
     echo Unquoted ssh should work

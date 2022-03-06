@@ -12,10 +12,10 @@ Control case: Burn for 2.9 seconds
 stdout /usr/bin/time -f CPUTIME=%U parallel --timeout 5 -q perl -e "while(1){ }" ::: 1 | \grep -q CPUTIME=1
 1=OK 1
 par_PARALLEL_RSYNC_OPTS	### test rsync opts
-par_PARALLEL_RSYNC_OPTS	rsync --protocol 30 -rlDzRRRR
-par_PARALLEL_RSYNC_OPTS	rsync --protocol 30 --rsync-path='cd ././.; rsync' -rlDzRRRR
-par_PARALLEL_RSYNC_OPTS	rsync --protocol 30 -zzrrllddRRRR
-par_PARALLEL_RSYNC_OPTS	rsync --protocol 30 --rsync-path='cd ././.; rsync' -zzrrllddRRRR
+par_PARALLEL_RSYNC_OPTS	-rlDzRRRR
+par_PARALLEL_RSYNC_OPTS	-rlDzRRRR
+par_PARALLEL_RSYNC_OPTS	-zzzzrldRRRR
+par_PARALLEL_RSYNC_OPTS	-zzzzrldRRRR
 par_PARALLEL_RSYNC_OPTS	
 par_continuous_output	Test delayed output with ''
 par_continuous_output	-u is optimal but hard to reach, due to non-mixing

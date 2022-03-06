@@ -45,6 +45,8 @@ doit() {
     export MAXPROC
     export RET_TIME_K="--memfree 100m -k --retries $RETRIES --timeout $MAXTIME"
     LC_ALL=C
+    . `which env_parallel.bash`
+    env_parallel --session
     
     MAXPROC=$(echo $(seq 300 | parallel -j0 echo {%} | sort -n | tail -n1) /$MAXINNERPROC | bc)
     echo MAXTIME=$MAXTIME RETRIES=$RETRIES MAXPROC=$MAXPROC MAXINNERPROC=$MAXINNERPROC
@@ -207,7 +209,8 @@ EOF
 }
 
 env_parallel -u -S$MASTER doit ::: 1 |
-    perl -pe 's:/home/(t/)?tange:~:g'
+    perl -pe 's:/home/(t/)?tange:~:g' |
+    perl -pe 's:/tmp/par\w+:/tmp/parScript'
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

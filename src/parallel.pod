@@ -2798,7 +2798,7 @@ before running the full batch.
 Combined with B<--halt soon,done=1%> you can run a random 1% sample of
 all jobs:
 
-  seq 1000 | parallel --shuf --halt soon,done=1% echo
+  parallel --shuf --halt soon,done=1% echo ::: {1..100} ::: {1..100}
 
 See also: B<--halt>
 
@@ -2927,10 +2927,11 @@ needed.
 
 An I<sshlogin> is of the form:
 
-  [sshcommand [options]] [username@]hostname
+  [sshcommand [options]] [username[:password]@]hostname
 
-The sshlogin must not require a password (B<ssh-agent>,
-B<ssh-copy-id>, and B<sshpass> may help with that).
+If I<password> is given, B<sshpass> will be used. Otherwise the
+sshlogin must not require a password (B<ssh-agent> and B<ssh-copy-id>
+may help with that).
 
 The sshlogin ':' is special, it means 'no ssh' and will therefore run
 on the local computer.
