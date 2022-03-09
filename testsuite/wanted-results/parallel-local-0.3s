@@ -902,6 +902,15 @@ par_results	c
 par_results_arg_256	### bug #42089: --results with arg > 256 chars (should be 1 char shorter)
 par_results_arg_256	1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456
 par_results_arg_256	123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345
+par_results_json	### --results test.json
+par_results_json	{ "Seq": 1, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 6, "Exitval": 0, "Signal": 0, "Command": "seq 2 4", "V": [ "2","4" ], "Stdout": "2\u000a3\u000a4\u000a", "Stderr": "" }
+par_results_json	{ "Seq": 2, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 8, "Exitval": 0, "Signal": 0, "Command": "seq 2 5", "V": [ "2","5" ], "Stdout": "2\u000a3\u000a4\u000a5\u000a", "Stderr": "" }
+par_results_json	{ "Seq": 3, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 4, "Exitval": 0, "Signal": 0, "Command": "seq 3 4", "V": [ "3","4" ], "Stdout": "3\u000a4\u000a", "Stderr": "" }
+par_results_json	{ "Seq": 4, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 6, "Exitval": 0, "Signal": 0, "Command": "seq 3 5", "V": [ "3","5" ], "Stdout": "3\u000a4\u000a5\u000a", "Stderr": "" }
+par_results_json	{ "Seq": 1, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 6, "Exitval": 0, "Signal": 0, "Command": "seq 2 4", "V": [ "2","4" ], "Stdout": "2\u000a3\u000a4\u000a", "Stderr": "" }
+par_results_json	{ "Seq": 2, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 8, "Exitval": 0, "Signal": 0, "Command": "seq 2 5", "V": [ "2","5" ], "Stdout": "2\u000a3\u000a4\u000a5\u000a", "Stderr": "" }
+par_results_json	{ "Seq": 3, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 4, "Exitval": 0, "Signal": 0, "Command": "seq 3 4", "V": [ "3","4" ], "Stdout": "3\u000a4\u000a", "Stderr": "" }
+par_results_json	{ "Seq": 4, "Host": ":", "Starttime": 9.999, "JobRuntime": 9.999, "Send": 0, "Receive": 6, "Exitval": 0, "Signal": 0, "Command": "seq 3 5", "V": [ "3","5" ], "Stdout": "3\u000a4\u000a5\u000a", "Stderr": "" }
 par_resume_k	### --resume -k
 par_resume_k	job0id
 par_resume_k	job1id

@@ -86,6 +86,37 @@ par_bug37042	### Bug introduce by fixing bug #37042
 par_bug37042	abc
 par_bug43654	bug #43654: --bar with command not using {} - only last output line 
 par_bug43654	par_bug43654	[7m100% 1:0=0s 1                                                                   [0m[0m
+par_commandline_with_newline	bug #51299: --retry-failed with command with newline
+par_commandline_with_newline	The format must remain the same
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" a
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" b
+par_commandline_with_newline	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+par_commandline_with_newline	resume
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" a
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" b
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" c
+par_commandline_with_newline	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+par_commandline_with_newline	resume-failed
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" a
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" b
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" c
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" d
+par_commandline_with_newline	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+par_commandline_with_newline	retry-failed
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" a
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" b
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" c
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" d
+par_commandline_with_newline	.	:	...	     ...	.	.	.	.	false "command<null>with<null>newlines" e
+par_commandline_with_newline	Seq	Host	Starttime	JobRuntime	Send	Receive	Exitval	Signal	Command
+par_compute_command_len	### Computing length of command line
+par_compute_command_len	1 2
+par_compute_command_len	11 1
+par_compute_command_len	12 2
+par_compute_command_len	11 3
+par_compute_command_len	a_b_c_
+par_compute_command_len	a_b_c_d
+par_compute_command_len	
 par_empty_string_command_line	### Test of ignore-empty string on :::
 par_empty_string_command_line	foo
 par_empty_string_command_line	ole
@@ -377,125 +408,6 @@ par_pipepart_block	17-20
 par_pipepart_block	18-20
 par_pipepart_block	19-20
 par_pipepart_block	20-20
-par_plus_slot_replacement	### show {slot} {0%} {0#}
-par_plus_slot_replacement	1=1=1
-par_plus_slot_replacement	2=2=2
-par_plus_slot_replacement	3=3=3
-par_plus_slot_replacement	Seq: 001 1
-par_plus_slot_replacement	Seq: 002 2
-par_plus_slot_replacement	Seq: 003 3
-par_plus_slot_replacement	Seq: 004 4
-par_plus_slot_replacement	Seq: 005 5
-par_plus_slot_replacement	Seq: 006 6
-par_plus_slot_replacement	Seq: 007 7
-par_plus_slot_replacement	Seq: 008 8
-par_plus_slot_replacement	Seq: 009 9
-par_plus_slot_replacement	Seq: 010 10
-par_plus_slot_replacement	Seq: 011 11
-par_plus_slot_replacement	Seq: 012 12
-par_plus_slot_replacement	Seq: 013 13
-par_plus_slot_replacement	Seq: 014 14
-par_plus_slot_replacement	Seq: 015 15
-par_plus_slot_replacement	Seq: 016 16
-par_plus_slot_replacement	Seq: 017 17
-par_plus_slot_replacement	Seq: 018 18
-par_plus_slot_replacement	Seq: 019 19
-par_plus_slot_replacement	Seq: 020 20
-par_plus_slot_replacement	Seq: 021 21
-par_plus_slot_replacement	Seq: 022 22
-par_plus_slot_replacement	Seq: 023 23
-par_plus_slot_replacement	Seq: 024 24
-par_plus_slot_replacement	Seq: 025 25
-par_plus_slot_replacement	Seq: 026 26
-par_plus_slot_replacement	Seq: 027 27
-par_plus_slot_replacement	Seq: 028 28
-par_plus_slot_replacement	Seq: 029 29
-par_plus_slot_replacement	Seq: 030 30
-par_plus_slot_replacement	Seq: 031 31
-par_plus_slot_replacement	Seq: 032 32
-par_plus_slot_replacement	Seq: 033 33
-par_plus_slot_replacement	Seq: 034 34
-par_plus_slot_replacement	Seq: 035 35
-par_plus_slot_replacement	Seq: 036 36
-par_plus_slot_replacement	Seq: 037 37
-par_plus_slot_replacement	Seq: 038 38
-par_plus_slot_replacement	Seq: 039 39
-par_plus_slot_replacement	Seq: 040 40
-par_plus_slot_replacement	Seq: 041 41
-par_plus_slot_replacement	Seq: 042 42
-par_plus_slot_replacement	Seq: 043 43
-par_plus_slot_replacement	Seq: 044 44
-par_plus_slot_replacement	Seq: 045 45
-par_plus_slot_replacement	Seq: 046 46
-par_plus_slot_replacement	Seq: 047 47
-par_plus_slot_replacement	Seq: 048 48
-par_plus_slot_replacement	Seq: 049 49
-par_plus_slot_replacement	Seq: 050 50
-par_plus_slot_replacement	Seq: 051 51
-par_plus_slot_replacement	Seq: 052 52
-par_plus_slot_replacement	Seq: 053 53
-par_plus_slot_replacement	Seq: 054 54
-par_plus_slot_replacement	Seq: 055 55
-par_plus_slot_replacement	Seq: 056 56
-par_plus_slot_replacement	Seq: 057 57
-par_plus_slot_replacement	Seq: 058 58
-par_plus_slot_replacement	Seq: 059 59
-par_plus_slot_replacement	Seq: 060 60
-par_plus_slot_replacement	Seq: 061 61
-par_plus_slot_replacement	Seq: 062 62
-par_plus_slot_replacement	Seq: 063 63
-par_plus_slot_replacement	Seq: 064 64
-par_plus_slot_replacement	Seq: 065 65
-par_plus_slot_replacement	Seq: 066 66
-par_plus_slot_replacement	Seq: 067 67
-par_plus_slot_replacement	Seq: 068 68
-par_plus_slot_replacement	Seq: 069 69
-par_plus_slot_replacement	Seq: 070 70
-par_plus_slot_replacement	Seq: 071 71
-par_plus_slot_replacement	Seq: 072 72
-par_plus_slot_replacement	Seq: 073 73
-par_plus_slot_replacement	Seq: 074 74
-par_plus_slot_replacement	Seq: 075 75
-par_plus_slot_replacement	Seq: 076 76
-par_plus_slot_replacement	Seq: 077 77
-par_plus_slot_replacement	Seq: 078 78
-par_plus_slot_replacement	Seq: 079 79
-par_plus_slot_replacement	Seq: 080 80
-par_plus_slot_replacement	Seq: 081 81
-par_plus_slot_replacement	Seq: 082 82
-par_plus_slot_replacement	Seq: 083 83
-par_plus_slot_replacement	Seq: 084 84
-par_plus_slot_replacement	Seq: 085 85
-par_plus_slot_replacement	Seq: 086 86
-par_plus_slot_replacement	Seq: 087 87
-par_plus_slot_replacement	Seq: 088 88
-par_plus_slot_replacement	Seq: 089 89
-par_plus_slot_replacement	Seq: 090 90
-par_plus_slot_replacement	Seq: 091 91
-par_plus_slot_replacement	Seq: 092 92
-par_plus_slot_replacement	Seq: 093 93
-par_plus_slot_replacement	Seq: 094 94
-par_plus_slot_replacement	Seq: 095 95
-par_plus_slot_replacement	Seq: 096 96
-par_plus_slot_replacement	Seq: 097 97
-par_plus_slot_replacement	Seq: 098 98
-par_plus_slot_replacement	Seq: 099 99
-par_plus_slot_replacement	Seq: 100 100
-par_plus_slot_replacement	Slot: 01 1
-par_plus_slot_replacement	Slot: 02 2
-par_plus_slot_replacement	Slot: 03 3
-par_plus_slot_replacement	Slot: 04 4
-par_plus_slot_replacement	Slot: 05 5
-par_plus_slot_replacement	Slot: 06 6
-par_plus_slot_replacement	Slot: 07 7
-par_plus_slot_replacement	Slot: 08 8
-par_plus_slot_replacement	Slot: 09 9
-par_plus_slot_replacement	Slot: 10 10
-par_plus_slot_replacement	Slot: 11 11
-par_plus_slot_replacement	Slot: 12 12
-par_plus_slot_replacement	Slot: 13 13
-par_plus_slot_replacement	Slot: 14 14
-par_plus_slot_replacement	Slot: 15 15
 par_profiles_with_space	### bug #42902: profiles containing arguments with space
 par_profiles_with_space	/bin/bash=/bin/bash
 par_profiles_with_space	echo '/bin/bash=/bin/bash'
@@ -894,7 +806,7 @@ par_sql_colsep	b B 1 11 b B 2 22 b B 3 33
 par_sql_colsep	b B 4 44 b B 5 55 b B 6 66
 par_sql_colsep	c C 1 11 c C 2 22 c C 3 33
 par_sql_colsep	c C 4 44 c C 5 55 c C 6 66
-par_sqlandworker_uninstalled_dbd	bug #56096: dbi-csv no such column
+par_sqlandworker_uninstalled_dbd	### bug #56096: dbi-csv no such column
 par_sqlandworker_uninstalled_dbd	parallel: Error: CSV not supported. Are you missing a perl DBD::CSV module?
 par_sqlandworker_uninstalled_dbd	works
 par_test_E	### Test -E
@@ -1086,3 +998,5 @@ par_trailing_space_line_continuation	### Test of trailing space continuation wit
 par_trailing_space_line_continuation	foo ole
 par_trailing_space_line_continuation	foo ole 
 par_trailing_space_line_continuation	foo ole 
+par_uninstalled_sshpass	### sshpass must be installed for --sshlogin user:pass@host
+par_uninstalled_sshpass	parallel: Error: --sshlogin with password requires sshpass installed

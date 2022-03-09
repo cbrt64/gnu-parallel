@@ -25,7 +25,7 @@ par_bin() {
 	parallel --pipe --colsep '\t' --bin 2 wc | sort
 }
 
-par_shard_a() {
+par_shard() {
     echo '### --shard'
     # Each of the 5 lines should match:
     #   ##### ##### ######
@@ -40,9 +40,7 @@ par_shard_a() {
     }
     shard_on_col 1
     shard_on_col 2
-}
 
-par_shard_b() {
     echo '### --shard'
     shard_on_col_name() {
 	colname=$1
@@ -53,9 +51,7 @@ par_shard_b() {
     }
     shard_on_col_name A 1
     shard_on_col_name B 2
-}
 
-par_shard_c() {
     echo '### --shard'
     shard_on_col_expr() {
 	colexpr="$1"
@@ -66,9 +62,7 @@ par_shard_c() {
     }
     shard_on_col_expr '1 $_%=3' 1
     shard_on_col_expr '2 $_%=3' 2
-}
 
-par_shard_d() {
     shard_on_col_name_expr() {
 	colexpr="$1"
 	col=$2
@@ -86,36 +80,6 @@ par_shard_d() {
     # Combine with arguments (should compute -j10 given args)
     seq 200000 | parallel --pipe --shard 1 echo {}\;wc ::: {1..5} ::: a b |
 	perl -pe 's/(.*\d{5,}){3}/OK/'
-}
-
-par_test_diff_roundrobin_k() {
-    echo '### test there is difference on -k'
-    . $(which env_parallel.bash)
-    mytest() {
-	K=$1
-	doit() {
-	    # Sleep random time ever 1k line
-	    # to mix up which process gets the next block
-	    perl -ne '$t++ % 1000 or select(undef, undef, undef, rand()/10);print' |
-		md5sum
-	}
-	export -f doit
-	seq 1000000 |
-	    parallel --block 65K --pipe $K --roundrobin doit |
-	    sort
-    }
-    export -f mytest
-    parset a,b,c mytest ::: -k -k ''
-    # a == b and a != c or error
-    if [ "$a" == "$b" ]; then
-	if [ "$a" != "$c" ]; then
-	    echo OK
-	else
-	    echo error a c
-	fi
-    else
-	echo error a b
-    fi
 }
 
 par_load_from_PARALLEL() {
@@ -466,11 +430,6 @@ par_max_length_len_128k() {
 	seq 1 60000 | perl -pe 's/$/.gif/' |
 	    parallel -X echo {} aa {} | head -n 1 | wc -c
     ) |	perl -pe 's/(\d\d+)\d\d\d/${1}xxx/g'
-}
-
-par_round_robin_blocks() {
-    echo "bug #49664: --round-robin does not complete"
-    seq 20000000 | parallel -j8 --block 10M --round-robin --pipe wc -c | wc -l
 }
 
 par_plus_dyn_repl() {

@@ -232,12 +232,12 @@ par_sshdelay() {
 	perl -ne 'print($_ > 1.30 ? "OK\n" : "Not OK\n")'
 }
 
-par_compute_command_len() {
-    echo "### Computing length of command line"
-    seq 1 2 | parallel -k -N2 echo {1} {2}
-    parallel --xapply -k -a <(seq 11 12) -a <(seq 1 3) echo
-    parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"' ::: 'a% c %%b' 'a%c% b %d'
-    parallel -k -C %+ echo {4} ::: 'a% c %%b'
+par_plus_slot_replacement() {
+    echo '### show {slot} {0%} {0#}'
+    parallel -k --plus 'sleep 0.{%};echo {slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
+    parallel -j15 -k --plus 'echo Seq: {0#} {#}' ::: {1..100} | sort
+    parallel -j15 -k --plus 'sleep 0.{}; echo Slot: {0%} {%}' ::: {1..100} |
+	sort -u
 }
 
 par_replacement_slashslash() {
@@ -466,31 +466,6 @@ par_sqlworker_hostname() {
     hostname=`hostname`
     sql $MY 'select host from hostname;' |
 	perl -pe "s/$hostname/<hostname>/g"
-}
-
-par_commandline_with_newline() {
-    echo 'bug #51299: --retry-failed with command with newline'
-    echo 'The format must remain the same'
-    (
-	parallel --jl - 'false "command
-with
-newlines"' ::: a b | sort
-
-	echo resume
-	parallel --resume --jl - 'false "command
-with
-newlines"' ::: a b c | sort
-
-	echo resume-failed
-	parallel --resume-failed --jl - 'false "command
-with
-newlines"' ::: a b c d | sort
-
-	echo retry-failed
-	parallel --retry-failed --jl - 'false "command
-with
-newlines"' ::: a b c d e | sort
-    ) | perl -pe 's/\0/<null>/g;s/\d+/./g'
 }
 
 par_delay_human_readable() {

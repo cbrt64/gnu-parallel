@@ -1674,99 +1674,97 @@ par_race_condition1	7
 par_race_condition1	8
 par_race_condition1	9
 par_race_condition1	10
-par_round_robin_blocks	bug #49664: --round-robin does not complete
-par_round_robin_blocks	8
-par_shard_a	### --shard
-par_shard_a	OK
-par_shard_a	OK
-par_shard_a	OK
-par_shard_a	OK
-par_shard_a	OK
-par_shard_a	     10 1
-par_shard_a	     10 2
-par_shard_a	     10 3
-par_shard_a	     10 4
-par_shard_a	     10 5
-par_shard_a	     10 6
-par_shard_a	     10 7
-par_shard_a	     10 8
-par_shard_a	     10 9
-par_shard_a	      9 0
-par_shard_a	      9 1
-par_shard_a	      9 2
-par_shard_a	      9 3
-par_shard_a	      9 4
-par_shard_a	      9 5
-par_shard_a	      9 6
-par_shard_a	      9 7
-par_shard_a	      9 8
-par_shard_a	      9 9
-par_shard_b	### --shard
-par_shard_b	     10 1
-par_shard_b	     10 2
-par_shard_b	     10 3
-par_shard_b	     10 4
-par_shard_b	     10 5
-par_shard_b	     10 6
-par_shard_b	     10 7
-par_shard_b	     10 8
-par_shard_b	     10 9
-par_shard_b	      9 0
-par_shard_b	      9 1
-par_shard_b	      9 2
-par_shard_b	      9 3
-par_shard_b	      9 4
-par_shard_b	      9 5
-par_shard_b	      9 6
-par_shard_b	      9 7
-par_shard_b	      9 8
-par_shard_b	      9 9
-par_shard_c	### --shard
-par_shard_c	     10 1
-par_shard_c	     10 2
-par_shard_c	     10 3
-par_shard_c	     10 4
-par_shard_c	     10 5
-par_shard_c	     10 6
-par_shard_c	     10 7
-par_shard_c	     10 8
-par_shard_c	     10 9
-par_shard_c	      2 c1
-par_shard_c	      9 0
-par_shard_c	      9 1
-par_shard_c	      9 2
-par_shard_c	      9 3
-par_shard_c	      9 4
-par_shard_c	      9 5
-par_shard_c	      9 6
-par_shard_c	      9 7
-par_shard_c	      9 8
-par_shard_c	      9 9
-par_shard_c	      2 c2
-par_shard_d	     10 1
-par_shard_d	     10 2
-par_shard_d	     10 3
-par_shard_d	     10 4
-par_shard_d	     10 5
-par_shard_d	     10 6
-par_shard_d	     10 7
-par_shard_d	     10 8
-par_shard_d	     10 9
-par_shard_d	      2 c1
-par_shard_d	      9 0
-par_shard_d	      9 1
-par_shard_d	      9 2
-par_shard_d	      9 3
-par_shard_d	      9 4
-par_shard_d	      9 5
-par_shard_d	      9 6
-par_shard_d	      9 7
-par_shard_d	      9 8
-par_shard_d	      9 9
-par_shard_d	      2 c2
-par_shard_d	*** broken
-par_shard_d	parallel: Error: --shard requires --jobs to be higher than the number of
-par_shard_d	parallel: Error: arguments. Increase --jobs.
+par_shard	### --shard
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	OK
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	### --shard
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	### --shard
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      2 c1
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	      2 c2
+par_shard	     10 1
+par_shard	     10 2
+par_shard	     10 3
+par_shard	     10 4
+par_shard	     10 5
+par_shard	     10 6
+par_shard	     10 7
+par_shard	     10 8
+par_shard	     10 9
+par_shard	      2 c1
+par_shard	      9 0
+par_shard	      9 1
+par_shard	      9 2
+par_shard	      9 3
+par_shard	      9 4
+par_shard	      9 5
+par_shard	      9 6
+par_shard	      9 7
+par_shard	      9 8
+par_shard	      9 9
+par_shard	      2 c2
+par_shard	*** broken
+par_shard	parallel: Error: --shard requires --jobs to be higher than the number of
+par_shard	parallel: Error: arguments. Increase --jobs.
 par_sighup	### Test SIGHUP
 par_sighup	1
 par_sighup	10
@@ -1845,5 +1843,3 @@ par_test_detected_shell	test_known_shell_pipe static-sh	Global::shell /usr/bin/s
 par_test_detected_shell	test_known_shell_pipe tcsh	Global::shell /usr/bin/tcsh
 par_test_detected_shell	test_known_shell_pipe yash	Global::shell /usr/bin/yash
 par_test_detected_shell	test_known_shell_pipe zsh	Global::shell /usr/bin/zsh
-par_test_diff_roundrobin_k	### test there is difference on -k
-par_test_diff_roundrobin_k	OK

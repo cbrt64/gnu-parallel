@@ -160,8 +160,6 @@ par_big_var_func_name() {
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
-#macsshlogin=ota@mac
-#macsshlogin=macosx.p
 macsshlogin=$(parallel --halt now,success=1 ssh {} echo {} ::: ota@mac macosx.p)
 
 scp /usr/local/bin/parallel $macsshlogin:bin/
@@ -171,4 +169,5 @@ export -f $(compgen -A function | grep par_)
 compgen -A function |
     grep par_ |
     LC_ALL=C sort |
-    env_parallel --timeout 3000% --tag -k -S 6/$macsshlogin 'PATH=$HOME/bin:$PATH; {}'
+    env_parallel --timeout 3000% --tag -k -S 6/$macsshlogin 'PATH=$HOME/bin:$PATH; {}' |
+    perl -pe 's/(\d+)\d\d\d/${1}XXX/g'

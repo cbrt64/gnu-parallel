@@ -8,6 +8,40 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+
+par_commandline_with_newline() {
+    echo 'bug #51299: --retry-failed with command with newline'
+    echo 'The format must remain the same'
+    (
+	parallel --jl - 'false "command
+with
+newlines"' ::: a b | sort
+
+	echo resume
+	parallel --resume --jl - 'false "command
+with
+newlines"' ::: a b c | sort
+
+	echo resume-failed
+	parallel --resume-failed --jl - 'false "command
+with
+newlines"' ::: a b c d | sort
+
+	echo retry-failed
+	parallel --retry-failed --jl - 'false "command
+with
+newlines"' ::: a b c d e | sort
+    ) | perl -pe 's/\0/<null>/g;s/\d+/./g'
+}
+
+par_compute_command_len() {
+    echo "### Computing length of command line"
+    seq 1 2 | parallel -k -N2 echo {1} {2}
+    parallel --xapply -k -a <(seq 11 12) -a <(seq 1 3) echo
+    parallel -k -C %+ echo '"{1}_{3}_{2}_{4}"' ::: 'a% c %%b' 'a%c% b %d'
+    parallel -k -C %+ echo {4} ::: 'a% c %%b'
+}
+
 par_skip_first_line() {
     tmpdir=$(mktemp)
     (echo `seq 10000`;echo MyHeader; seq 10) |
@@ -29,14 +63,6 @@ par_long_input() {
 	parallel --colsep '\t' echo {-5} {-3//} {-2/.} '{=-1 s/.*\.// =}'
 }
 
-par_plus_slot_replacement() {
-    echo '### show {slot} {0%} {0#}'
-    parallel -k --plus 'sleep 0.{%};echo {slot}=$PARALLEL_JOBSLOT={%}' ::: A B C
-    parallel -j15 -k --plus 'echo Seq: {0#} {#}' ::: {1..100} | sort
-    parallel -j15 -k --plus 'sleep 0.{}; echo Slot: {0%} {%}' ::: {1..100} |
-	sort -u
-}
-
 par_recend_recstart_hash() {
     echo "### bug #59843: --regexp --recstart '#' fails"
     (echo '#rec1'; echo 'bar'; echo '#rec2') |
@@ -50,12 +76,20 @@ par_recend_recstart_hash() {
 }
 
 par_sqlandworker_uninstalled_dbd() {
-    echo 'bug #56096: dbi-csv no such column'
+    echo '### bug #56096: dbi-csv no such column'
     mkdir -p /tmp/parallel-bug-56096
     sudo mv /usr/share/perl5/DBD/CSV.pm /usr/share/perl5/DBD/CSV.pm.gone
     parallel --sqlandworker csv:///%2Ftmp%2Fparallel-bug-56096/mytable echo ::: must_fail
     sudo cp /usr/share/perl5/DBD/CSV.pm.gone /usr/share/perl5/DBD/CSV.pm
     parallel --sqlandworker csv:///%2Ftmp%2Fparallel-bug-56096/mytable echo ::: works
+}
+
+par_uninstalled_sshpass() {
+    echo '### sshpass must be installed for --sshlogin user:pass@host'
+    sshpass=$(command -v sshpass)
+    sudo mv "$sshpass" "$sshpass".hidden
+    parallel -S user:pass@host echo ::: must fail
+    sudo mv "$sshpass".hidden "$sshpass"
 }
 
 par_results_compress() {

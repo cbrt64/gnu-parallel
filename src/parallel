@@ -2790,7 +2790,7 @@ sub open_json_csv() {
 		::die_bug("Can't >/dev/null in csv: $!");
 	    $Global::fh{1} = $fd;
 	    $Global::fh{2} = $fd;
-	} elsif($Global::csvsep) {
+	} elsif($Global::csvsep or $Global::jsonout) {
 	    if(not open($Global::csv_fh,">",$opt::results)) {
 		::error("Cannot open results file `$opt::results': ".
 			"$!.");
@@ -3545,7 +3545,7 @@ sub init_run_jobs() {
 		    next;
 		}
 		if($sshlogin->too_fast_remote_login()) {
-		    # It has been too short since
+		    # It has been too short since last login
 		    next;
 		}
 		debug("run", $sshlogin->string(),
@@ -6473,7 +6473,13 @@ sub new($$) {
     if($s =~ s/([^@]+)@//) {
 	my $userpw = $1;
 	# user[:pass]
-	if($userpw =~ s/:(.*)//) { $password = $1; }
+	if($userpw =~ s/:(.*)//) {
+	    $password = $1;
+	    if(not ::which("sshpass")) {
+		::error("--sshlogin with password requires sshpass installed");
+                ::wait_and_exit(255);
+	    }
+	}
 	$user = $userpw;
     }
 
@@ -6499,7 +6505,6 @@ sub new($$) {
     } else {
 	$sshcommand ||= $opt::ssh || $ENV{'PARALLEL_SSH'} || "ssh";
     }
-
     # An SSHLogin is always in the hostgroup of its $string-name
     $hostgroups{$string} = 1;
     @Global::hostgroups{keys %hostgroups} = values %hostgroups;
@@ -6566,6 +6571,32 @@ sub sshcmd($) {
     if($self->{'port'}) { push @local, '-p',$self->{'port'}; }
     # [-l user]
     if($self->{'user'}) { push @local, '-l',$self->{'user'}; }
+    if($opt::controlmaster) {
+	# Use control_path to make ssh faster
+	my $control_path = $self->control_path_dir()."/ssh-%r@%h:%p";
+	push @local, "-S", $control_path;
+	if(not $self->{'control_path'}{$control_path}++) {
+	    # Master is not running for this control_path
+	    # Start it
+	    my $pid = fork();
+	    if($pid) {
+		$Global::sshmaster{$pid} ||= 1;
+	    } else {
+		$SIG{'TERM'} = undef;
+		# Run a sleep that outputs data, so it will discover
+		# if the ssh connection closes.
+		my $sleep = ::Q('$|=1;while(1){sleep 1;print "foo\n"}');
+		# Ignore the 'foo' being printed
+		open(STDOUT,">","/dev/null");
+		# STDERR >/dev/null to ignore
+		open(STDERR,">","/dev/null");
+		open(STDIN,"<","/dev/null");
+		exec(@local, "-MT", $self->{'host'}, "--",
+		     "perl", "-e", $sleep);
+	    }
+	}
+    }
+    
     return "@local";
 }
 
@@ -8615,7 +8646,7 @@ sub openoutputfiles($) {
 	}
 	# Return immediately because we do not need setting filenames
 	return;
-    } elsif($opt::results and not $Global::csvsep) {
+    } elsif($opt::results and not $Global::csvsep and not $Global::jsonout) {
 	# If --results, but not --results *.csv/*.tsv
 	my $out = $self->{'commandline'}->results_out();
 	my $seqname;
@@ -10579,10 +10610,9 @@ sub print($) {
 	       $self->starttime(), sprintf("%0.3f",$self->runtime()),
 	       $self->transfersize(), $self->returnsize(),
 	       $self->exitstatus(), $self->exitsignal(), $cmd,
-	       #	  \@$record_ref[1..$#$record_ref],
 	       (join ",",
 		map { '"'.jsonquote($_).'"' } @$record_ref[1..$#$record_ref],
-		),
+	       ),
 	       jsonquote($self->{'output'}{1}),
 	       jsonquote($self->{'output'}{2})
 	    );

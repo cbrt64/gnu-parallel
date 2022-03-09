@@ -1,4 +1,5 @@
 par_controlmaster_is_faster	### bug #41964: --controlmaster not seems to reuse OpenSSH connections to the same host
+par_controlmaster_is_faster	-M should finish first - eventhough there are 2x jobs
 par_controlmaster_is_faster	With --controlmaster - finish first
 par_controlmaster_is_faster	No --controlmaster - finish last
 par_filter_hosts_different_errors	### --filter-hosts - OK, non-such-user, connection refused, wrong host

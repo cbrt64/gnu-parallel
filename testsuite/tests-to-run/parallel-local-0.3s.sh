@@ -855,6 +855,17 @@ par_results() {
     rm -r $tmp "$tmp"-dir
 }
 
+par_results_json() {
+    echo "### --results test.json"
+    tmp=$(mktemp -d)
+    parallel -k --results "$tmp"/foo.json seq ::: 2 3 ::: 4 5
+    cat "$tmp"/foo.json | perl -pe 's/\d+\.\d{3}/9.999/g'
+    rm -r $tmp
+    parallel -k --results -.json seq ::: 2 3 ::: 4 5 |
+	perl -pe 's/\d+\.\d{3}/9.999/g'
+}
+
+
 par_testquote() {
     testquote() {
 	printf '"#&/\n()*=?'"'" |
