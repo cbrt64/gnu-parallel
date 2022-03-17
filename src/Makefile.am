@@ -246,51 +246,51 @@ parsort.texi: parsort
 	|| echo "Warning: pod2texi not found. Using old parsort.texi"
 
 parallel.rst: parallel.pod
-	pod2rst --outfile "$(srcdir)"/parallel.rst --infile="$(srcdir)"/parallel.pod \
+	./pod2rst-fix < "$(srcdir)"/parallel.pod > "$(srcdir)"/parallel.rst \
 	|| echo "Warning: pod2rst not found. Using old parallel.rst"
 
 env_parallel.rst: env_parallel.pod
-	pod2rst --outfile "$(srcdir)"/env_parallel.rst --infile="$(srcdir)"/env_parallel.pod \
+	./pod2rst-fix < "$(srcdir)"/env_parallel.pod > "$(srcdir)"/env_parallel.rst \
 	|| echo "Warning: pod2rst not found. Using old env_parallel.rst"
 
 parallel_tutorial.rst: parallel_tutorial.pod
-	pod2rst --outfile "$(srcdir)"/parallel_tutorial.rst --infile="$(srcdir)"/parallel_tutorial.pod \
+	./pod2rst-fix < "$(srcdir)"/parallel_tutorial.pod > "$(srcdir)"/parallel_tutorial.rst \
 	|| echo "Warning: pod2rst not found. Using old parallel_tutorial.rst"
 
 parallel_book.rst: parallel_book.pod
-	pod2rst --outfile "$(srcdir)"/parallel_book.rst --infile="$(srcdir)"/parallel_book.pod \
+	./pod2rst-fix "$(srcdir)"/parallel_book.pod > "$(srcdir)"/parallel_book.rst \
 	|| echo "Warning: pod2rst not found. Using old parallel_book.rst"
 
 parallel_design.rst: parallel_design.pod
-	pod2rst --outfile "$(srcdir)"/parallel_design.rst --infile="$(srcdir)"/parallel_design.pod \
+	./pod2rst-fix "$(srcdir)"/parallel_design.pod > "$(srcdir)"/parallel_design.rst \
 	|| echo "Warning: pod2rst not found. Using old parallel_design.rst"
 
 parallel_alternatives.rst: parallel_alternatives.pod
-	pod2rst --outfile "$(srcdir)"/parallel_alternatives.rst --infile="$(srcdir)"/parallel_alternatives.pod \
+	./pod2rst-fix "$(srcdir)"/parallel_alternatives.pod > "$(srcdir)"/parallel_alternatives.rst \
 	|| echo "Warning: pod2rst not found. Using old parallel_alternatives.rst"
 
 sem.rst: sem.pod
-	pod2rst --outfile "$(srcdir)"/sem.rst --infile="$(srcdir)"/sem.pod \
+	./pod2rst-fix "$(srcdir)"/sem.pod > "$(srcdir)"/sem.rst \
 	|| echo "Warning: pod2rst not found. Using old sem.rst"
 
 sql.rst: sql
-	pod2rst --outfile "$(srcdir)"/sql.rst --infile="$(srcdir)"/sql \
+	./pod2rst-fix "$(srcdir)"/sql > "$(srcdir)"/sql.rst \
 	|| echo "Warning: pod2rst not found. Using old sql.rst"
 
 niceload.rst: niceload.pod
-	pod2rst --outfile "$(srcdir)"/niceload.rst --infile="$(srcdir)"/niceload.pod \
+	./pod2rst-fix "$(srcdir)"/niceload.pod > "$(srcdir)"/niceload.rst \
 	|| echo "Warning: pod2rst not found. Using old niceload.rst"
 
 parcat.rst: parcat.pod
-	pod2rst --outfile "$(srcdir)"/parcat.rst --infile="$(srcdir)"/parcat.pod \
+	./pod2rst-fix "$(srcdir)"/parcat.pod > "$(srcdir)"/parcat.rst \
 	|| echo "Warning: pod2rst not found. Using old parcat.rst"
 
 parset.rst: parset.pod
-	pod2rst --outfile "$(srcdir)"/parset.rst --infile="$(srcdir)"/parset.pod \
+	./pod2rst-fix "$(srcdir)"/parset.pod > "$(srcdir)"/parset.rst \
 	|| echo "Warning: pod2rst not found. Using old parset.rst"
 
 parsort.rst: parsort
-	pod2rst --outfile "$(srcdir)"/parsort.rst --infile="$(srcdir)"/parsort \
+	./pod2rst-fix "$(srcdir)"/parsort > "$(srcdir)"/parsort.rst \
 	|| echo "Warning: pod2rst not found. Using old parsort.rst"
 
 parallel.pdf: parallel.pod

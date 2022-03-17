@@ -3819,7 +3819,7 @@ sub progress() {
             ($Global::host{$w}->ncpus() || "-")." / ".
             $Global::host{$w}->max_jobs_running()."\n";
     }
-    $status = "x"x($termcols+1);
+    $status = "c"x($termcols+1);
     # Select an output format that will fit on a single line
     if(length $status > $termcols) {
         # sshlogin1:XX/XX/XX%/XX.Xs s2:XX/XX/XX%/XX.Xs s3:XX/XX/XX%/XX.Xs
@@ -6868,8 +6868,7 @@ sub limit($) {
 	     	     wc -l |
 	     	 perl -ne 'exit ('$limit' < $_)';
 	     };
-	     export -f load;
-	     load %s;
+	     load %s
 	     !,
 	    );
 	my ($cmd,@args) = split /\s+/,$opt::limit;
@@ -6908,9 +6907,9 @@ sub swap_activity($) {
     my $self = shift;
     # Should we update the swap_activity file?
     my $update_swap_activity_file = 0;
-    if(-r $self->{'swap_activity_file'}) {
-        open(my $swap_fh, "<", $self->{'swap_activity_file'}) ||
-	    ::die_bug("swap_activity_file-r");
+    # Test with (on 64 core machine):
+    # seq 100 | parallel --lb -j100 'seq 1000 | parallel  --noswap -j 1 true'
+    if(open(my $swap_fh, "<", $self->{'swap_activity_file'})) {
         my $swap_out = <$swap_fh>;
         close $swap_fh;
         if($swap_out =~ /^(\d+)$/) {
@@ -9556,28 +9555,34 @@ sub sshlogin_wrap($) {
 		    $script = $tmpdir."/par".
 			join"", map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
 		} while(-e $script);
+		# Create a script from the hex code
+		# that removes itself and runs the commands
 		open($fh,">",$script) || die;
 		# \040 = space - but we remove spaces in the script
 		# ' needed due to rc-shell
                 print($fh("rm\040\'$script\'\n",$bashfunc.$cmd));
                 close $fh;
+		my $parent = getppid;
+		my $done = 0;
                 $SIG{CHLD} = sub { $done = 1; };
 		$pid = fork;
                 unless($pid) {
 		    # Make own process group to be able to kill HUP it later
 		    eval { setpgrp };
+		    # Set nice value
 		    eval { setpriority(0,0,$nice) };
+		    # Run the script
                     exec($shell,$script);
 		    die("exec\040failed: $!");
 		}
-		my $parent = getppid;
-		do {
+		while((not $done) and (getppid == $parent)) {
 		    # Parent pid is not changed, so sshd is alive
 		    # Exponential sleep up to 1 sec
                     $s = $s < 1 ? 0.001 + $s * 1.03 : $s;
                     select(undef, undef, undef, $s);
-                } until ($done || getppid != $parent);
+                }
 		if(not $done) {
+		    # sshd is dead: User pressed Ctrl-C
 		    # Kill as per --termseq
 		    my @term_seq = split/,/,$termseq;
 		    if(not @term_seq) {
@@ -11580,11 +11585,11 @@ sub results_out($) {
 	my $upper = 100_000_000;
 	# Dir length of 8 chars is supported everywhere
 	my $len = 8;
-	my $dir = "x"x$len;
+	my $dir = "d"x$len;
 	do {
 	    rmdir($testdir."/".$dir);
 	    $len *= 16;
-	    $dir = "x"x$len;
+	    $dir = "d"x$len;
 	} while ($len < $upper and mkdir $testdir."/".$dir);
 	# Then search for the actual max length between $len/16 and $len
 	my $min = $len/16;
@@ -11593,7 +11598,7 @@ sub results_out($) {
 	    # If we are within 5 chars of the exact value:
 	    # it is not worth the extra time to find the exact value
 	    my $test = int(($min+$max)/2);
-	    $dir = "x"x$test;
+	    $dir = "d"x$test;
 	    if(mkdir $testdir."/".$dir) {
 		rmdir($testdir."/".$dir);
 		$min = $test;
@@ -12416,8 +12421,8 @@ sub real_max_length() {
     # Find the max_length of a command line
     # Returns:
     #   The maximal command line length with 1 byte arguments
-    # return find_max(" x");
-    return find_max("x");
+    # return find_max(" c");
+    return find_max("c");
 }
 
 sub find_max($) {
@@ -12507,7 +12512,7 @@ sub tmux_length($) {
 	    my $tmpfile = ::tmpname("tms");
 	    my $tmuxcmd = $ENV{'PARALLEL_TMUX'}.
 		" -S $tmpfile new-session -d -n echo $l".
-		("x"x$l). " && echo $l; rm -f $tmpfile";
+		("t"x$l). " && echo $l; rm -f $tmpfile";
 	    push @out, ::qqx($tmuxcmd);
 	    ::rm($tmpfile);
 	}

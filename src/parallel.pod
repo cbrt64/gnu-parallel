@@ -1854,7 +1854,7 @@ where records end.
 
 =back
 
-See also: <--pipe> B<--recstart> B<--recend> B<--arg-file> B<::::>
+See also: B<--pipe> B<--recstart> B<--recend> B<--arg-file> B<::::>
 
 
 =item B<--plain>
@@ -4763,7 +4763,11 @@ transfers files. B<outrun> must be installed on the remote system.
 
 You can use B<outrun> in an sshlogin this way:
 
-  parallel -S 'outrun user@server eval' command
+  parallel -S 'outrun user@server' command
+
+or:
+
+  parallel --ssh outrun -S server command
 
 
 =head2 EXAMPLE: Slurm cluster
@@ -5981,10 +5985,11 @@ installed software that is not in the VirtualBox images.
 If you cannot reproduce the error on any of the VirtualBox images
 above, see if you can build a VirtualBox image on which you can
 reproduce the error. If not you should assume the debugging will be
-done through you. That will put more burden on you and it is extra
-important you give any information that help. In general the problem
-will be fixed faster and with less work for you if you can reproduce
-the error on a VirtualBox.
+done through you. That will put a lot more burden on you and it is
+extra important you give any information that help. In general the
+problem will be fixed faster and with much less work for you if you
+can reproduce the error on a VirtualBox - even if you have to build a
+VirtualBox image.
 
 =head2 In summary
 

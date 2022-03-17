@@ -865,7 +865,6 @@ par_results_json() {
 	perl -pe 's/\d+\.\d{3}/9.999/g'
 }
 
-
 par_testquote() {
     testquote() {
 	printf '"#&/\n()*=?'"'" |

@@ -274,7 +274,9 @@ New in this release:
 
 News about GNU Parallel:
 
- Bash: GNU Parallel with Curl https://gist.github.com/CMCDragonkai/5914e02df62137e47f32?permalink_comment_id=2617456
+* Bash: GNU Parallel with Curl https://gist.github.com/CMCDragonkai/5914e02df62137e47f32?permalink_comment_id=2617456
+
+* The Pipe Operator Explained https://medium.com/geekculture/the-pipe-operator-explained-cbd41e23775a
 
 <<>>
 

@@ -8,6 +8,21 @@
 seq 12 |
     stdout parallel --nice 11 --timeout 10 -j0 -N0 "bzip2 < /dev/zero" > /dev/null &
 
+par_limit_load() {
+    force_load_to_6() {
+	burn() { bzip2 -9 </dev/zero >/dev/null; }
+	export -f burn
+	parallel --timeout 5 -j0 --nice 19 burn ::: 1 2 3 4 5 6 2>/dev/null
+    }
+    force_load_to_6 &
+    # Give load time to start
+    sleep 1
+    # This should only start after the load stops
+    # and thus take > 4 sec
+    stdout /usr/bin/time -f %e parallel --limit "load 4" sleep ::: 0.8 |
+	perl -ne 'print $_ > 5 ? "OK\n" : "Broken: $_\n"'
+}
+
 par_load_more_10s() {
     echo '### Test --load locally - should take >10s'
     stdout /usr/bin/time -f %e parallel --load 10 sleep ::: 1 |
