@@ -395,7 +395,7 @@ freebsd	Works on freebsd.polarhome.com
 hpux	Works on hpux64
 hpux-ia64	Works on hpux-ia64
 hurd	Works on hurd
-macosx	Works on macosx
+macosx	Works on macosx.polarhome.com
 mandriva	Works on mandriva.polarhome.com
 miros	Works on miros.polarhome.com
 netbsd	Works on netbsd.polarhome.com
@@ -413,6 +413,7 @@ suse	Works on suse
 tru64	Works on tru64.polarhome.com
 ubuntu	Works on ubuntu
 unixware	Works on unixware.polarhome.com
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
     echo
     echo '### --number-of-cores/--number-of-cpus should work with no error'
     echo
@@ -473,10 +474,7 @@ ubuntu	1
 ubuntu	2
 unixware	1
 unixware	1
-aix	1
-aix	1
-centos	1
-centos	1
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
 debian	2
 debian	2
 debian-ppc	1
@@ -527,6 +525,7 @@ ubuntu	2
 ubuntu	2
 unixware	1
 unixware	1
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
     echo
     echo '### Fails if tmpdir is R/O'
     echo
@@ -594,6 +593,7 @@ ubuntu	Error in tempfile() using template /XXXXXXXX.arg: Could not create temp f
 ubuntu	OK readonly tmp
 unixware	Error in tempfile() using /XXXXXXXX.arg: Could not create temp file /XXXXXXXX.arg: Permission denied at ~/bin/parallel line 0000
 unixware	OK readonly tmp
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
     echo
     echo '### Does exporting a bash function make parallel fail?'
     echo 'If login shell is not bash compatible it fails'
@@ -617,7 +617,7 @@ debian	bash only A
 debian	test funcA
 debian-ppc	bash only A
 debian-ppc	test funcA
-freebsd	Syntax error: "(" unexpected (expecting word)
+freebsd	/tmp/parScript: 4: Syntax error: "(" unexpected (expecting word)
 freebsd	test funcA
 hurd	bash only A
 hurd	test funcA
@@ -645,7 +645,8 @@ openindiana	bash only A
 openindiana	test funcA
 pidora	bash only A
 pidora	test funcA
-qnx	/bin/sh: syntax error: `(' unexpected
+qnx	/tmp/parScript[4]: syntax error: `(' unexpected
+qnx	test funcA
 raspbian	bash only A
 raspbian	test funcA
 redhat	bash only A
@@ -662,7 +663,8 @@ tru64	bash only A
 tru64	test funcA
 ubuntu	bash only A
 ubuntu	test funcA
-unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 3: `(' unexpected
+unixware	UX:sh (/tmp/parScript): ERROR: /tmp/parScript: Syntax error at line 4: `(' unexpected
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
 unixware	test funcA
     echo
     echo '### Does PARALLEL_SHELL help exporting a bash function'
@@ -1034,6 +1036,7 @@ unixware	     ~/.profile
 unixware	     ~/.cshrc
 unixware	     ~/.tcshrc
 unixware	install-OK
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
     echo
     echo '### env_parallel echo env_parallel ::: run-OK'
     echo '(bash ksh mksh zsh only)'
@@ -1060,9 +1063,9 @@ openbsd	env_parallel run-OK
 openindiana	env_parallel run-OK
 pidora	env_parallel run-OK
 qnx	env_parallel run-OK
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
 qnx	parallel: Warning: Cannot figure out number of cpus. Using 1.
 qnx	/bin/sh: shopt: cannot execute - No such file or directory
 raspbian	env_parallel run-OK
@@ -1073,6 +1076,7 @@ solaris-x86	env_parallel run-OK
 suse	env_parallel run-OK
 tru64	env_parallel run-OK
 ubuntu	env_parallel run-OK
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
 unixware	env_parallel run-OK
     echo
     echo '### env_parallel echo reading from process substitution :::: <(echo OK)'
@@ -1089,7 +1093,7 @@ aix	reading from process substitution OK
 centos	reading from process substitution OK
 debian	reading from process substitution OK
 debian-ppc	reading from process substitution OK
-freebsd	Syntax error: "(" unexpected (expecting word)
+freebsd	/tmp/parScript: 2: Syntax error: "(" unexpected (expecting word)
 hurd	reading from process substitution OK
 hpux	reading from process substitution OK
 hpux-ia64	reading from process substitution OK
@@ -1103,7 +1107,7 @@ netbsd	parallel: Error: Cannot open input file `<': No such file or directory.
 openbsd	reading from process substitution OK
 openindiana	reading from process substitution OK
 pidora	reading from process substitution OK
-qnx	/bin/sh: syntax error: `(' unexpected
+qnx	/tmp/parScript[2]: syntax error: `(' unexpected
 raspbian	reading from process substitution OK
 redhat	reading from process substitution OK
 scosysv	reading from process substitution OK
@@ -1112,7 +1116,7 @@ solaris-x86	reading from process substitution OK
 suse	reading from process substitution OK
 tru64	reading from process substitution OK
 ubuntu	reading from process substitution OK
-unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `(' unexpected
+unixware	UX:sh (/tmp/parScript): ERROR: /tmp/parScript: Syntax error at line 2: `(' unexpected
     echo
     echo '### Test empty command name in process list'
     echo '(bash ksh mksh zsh only)'
@@ -1200,7 +1204,7 @@ aix	1 2 1 2 3 1 2 3 4
 centos	1 2 1 2 3 1 2 3 4
 debian	1 2 1 2 3 1 2 3 4
 debian-ppc	1 2 1 2 3 1 2 3 4
-freebsd	eval: 1: Syntax error: word unexpected (expecting ")")
+freebsd	eval: 1: Syntax error: Bad function name
 hurd	1 2 1 2 3 1 2 3 4
 hpux	
 hpux-ia64	1 2 1 2 3 1 2 3 4
@@ -1215,7 +1219,7 @@ openindiana	1 2 1 2 3 1 2 3 4
 pidora	1 2 1 2 3 1 2 3 4
 qnx	
 qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
-qnx	/bin/sh: syntax error: `(' unexpected
+qnx	/tmp/parScript: syntax error: `(' unexpected
 raspbian	1 2 1 2 3 1 2 3 4
 redhat	1 2 1 2 3 1 2 3 4
 scosysv	1 2 1 2 3 1 2 3 4
@@ -1224,7 +1228,8 @@ solaris-x86	1 2 1 2 3 1 2 3 4
 suse	1 2 1 2 3 1 2 3 4
 tru64	1 2 1 2 3 1 2 3 4
 ubuntu	1 2 1 2 3 1 2 3 4
-unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
+unixware	UX:sh (/tmp/parScript): ERROR: /tmp/parScript: Syntax error at line 1: `arr=' unexpected
 ### env_parset arr seq ::: 2 3 4
 aix	2 2 3 2 3 4
 centos	2 2 3 2 3 4
@@ -1245,14 +1250,14 @@ openbsd	2 3 3 4 4 5
 openindiana	2 2 3 2 3 4
 pidora	2 2 3 2 3 4
 qnx	
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
 qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
 qnx	/bin/sh: shopt: cannot execute - No such file or directory
 qnx	/bin/sh: shopt: cannot execute - No such file or directory
 qnx	/bin/sh: shopt: cannot execute - No such file or directory
-qnx	/bin/sh: syntax error: `(' unexpected
+qnx	/tmp/parScript: syntax error: `(' unexpected
 raspbian	2 2 3 2 3 4
 redhat	2 2 3 2 3 4
 scosysv	2 2 3 2 3 4
@@ -1261,7 +1266,8 @@ solaris-x86	2 2 3 2 3 4
 suse	2 2 3 2 3 4
 tru64	2 2 3 2 3 4
 ubuntu	2 2 3 2 3 4
-unixware	UX:sh (/bin/sh): ERROR: /bin/sh: Syntax error at line 1: `arr=' unexpected
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
+unixware	UX:sh (/tmp/parScript): ERROR: /tmp/parScript: Syntax error at line 1: `arr=' unexpected
     echo
     echo '### parset var1,var2,var3 seq ::: 2 3 4'
     echo '(bash ksh mksh zsh ash dash only)'
@@ -1302,6 +1308,7 @@ suse	1 2,1 2 3,1 2 3 4
 tru64	1 2,1 2 3,1 2 3 4
 ubuntu	1 2,1 2 3,1 2 3 4
 unixware	1 2,1 2 3,1 2 3 4
+unixware	UX:sh (/tmp/parScript): ERROR: source: Not found
 ### env_parset var1,var2,var3 seq ::: 2 3 4
 aix	2,2 3,2 3 4
 centos	2,2 3,2 3 4
@@ -1320,10 +1327,10 @@ netbsd	var1: Undefined variable.
 openbsd	2 3,3 4,4 5
 openindiana	2,2 3,2 3 4
 pidora	2,2 3,2 3 4
-qnx	,,
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
-qnx	/bin/sh: compgen: cannot execute - No such file or directory
+qnx	1 2,1 2 3,1 2 3 4
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
+qnx	/tmp/parScript[3]: compgen: cannot execute - No such file or directory
 qnx	parset: Warning: Cannot figure out number of cpus. Using 1.
 qnx	/bin/sh: shopt: cannot execute - No such file or directory
 qnx	/bin/sh: shopt: cannot execute - No such file or directory

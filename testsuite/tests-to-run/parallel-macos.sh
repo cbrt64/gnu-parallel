@@ -130,7 +130,7 @@ par_many_var_big_func() {
     for a in `seq 5000`; do eval "export a$a=1" ; done
     for a in `seq 10`; do eval "a$a() { '$big'; }" ; done
     for a in `seq 10`; do eval export -f a$a ; done
-    gen 40000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 40000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc -c' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 
@@ -142,7 +142,7 @@ par_big_func_name() {
     export -f pecho
     big=`perl -e print\"x\"x10000`
     for a in `seq 10`; do eval "export a$big$a=1" ; done
-    gen 30000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 30000 | stdout parallel -Xkj1  'pecho {} {} {} {} | wc -c' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 

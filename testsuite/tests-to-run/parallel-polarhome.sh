@@ -208,9 +208,9 @@ EOF
     print'
 }
 
-env_parallel -u -S$MASTER doit ::: 1 |
+env_parallel -u -S$MASTER doit ::: 1|
     perl -pe 's:/home/(t/)?tange:~:g' |
-    perl -pe 's:/tmp/par\w+:/tmp/parScript'
+    perl -pe 's:/tmp/par\w+:/tmp/parScript:g'
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

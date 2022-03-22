@@ -640,7 +640,7 @@ par_show_limits	### Test --show-limits
 par_show_limits	Maximal size of command: 131xxx
 par_show_limits	Maximal usable size of command: 64xxx
 par_show_limits	
-par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	Execution will continue now, and it will try to read its input
 par_show_limits	and run commands; if this is not what you wanted to happen, please
 par_show_limits	press CTRL-D or CTRL-C
 par_show_limits	bar
@@ -649,7 +649,7 @@ par_show_limits	far
 par_show_limits	Maximal size of command: 131xxx
 par_show_limits	Maximal usable size of command: 100
 par_show_limits	
-par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	Execution will continue now, and it will try to read its input
 par_show_limits	and run commands; if this is not what you wanted to happen, please
 par_show_limits	press CTRL-D or CTRL-C
 par_show_limits	bar car far
@@ -657,7 +657,7 @@ par_show_limits	### BUG: empty lines with --show-limit
 par_show_limits	Maximal size of command: 131xxx
 par_show_limits	Maximal usable size of command: 64xxx
 par_show_limits	
-par_show_limits	Execution of  will continue now, and it will try to read its input
+par_show_limits	Execution will continue now, and it will try to read its input
 par_show_limits	and run commands; if this is not what you wanted to happen, please
 par_show_limits	press CTRL-D or CTRL-C
 par_slow_args_generation	### Test slow arguments generation - https://savannah.gnu.org/bugs/?32834
