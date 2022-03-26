@@ -719,6 +719,8 @@ par_pipe_line_buffer	    200     400    1202
 par_pipe_line_buffer	These must diff: 1
 par_pipe_line_buffer_compress	### --pipe --line-buffer --compress
 par_pipe_line_buffer_compress	    200     400    1202
+par_reload_slf_every_second	### --slf should reload every second
+par_reload_slf_every_second	OK
 par_results_csv	bug #: --results csv
 par_results_csv	--header : --tag --files --compress	Seq,Host,Starttime,JobRuntime,Send,Receive,Exitval,Signal,Command,H2,H1,Stdout,Stderr
 par_results_csv	--header : --tag --files --compress	1,:,999.999,999.999,0,15,0,0,"echo 22 11",22,11,"22 11	/tmp/parallel-local-10s-tmpdir/tmpfile",

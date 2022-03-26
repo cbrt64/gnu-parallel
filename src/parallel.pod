@@ -2287,7 +2287,7 @@ will generate the files:
   my_foo/stderr
   my_foo/stdout
 
-See also: B<--files> B<--tag> B<--header> B<--joblog>
+See also: B<--output-as-files> B<--tag> B<--header> B<--joblog>
 
 
 =item B<--resume>

@@ -2313,7 +2313,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220322;
+    $Global::version = 20220323;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -3700,6 +3700,7 @@ sub drain_job_queue(@) {
     }
     my $last_header = "";
     my $sleep = 0.2;
+    my $sleepsum = 0;
     do {
 	while($Global::total_running > 0) {
 	    debug("init",$Global::total_running, "==", scalar
@@ -3730,6 +3731,14 @@ sub drain_job_queue(@) {
 	    }
 	    # Exponential back-off sleeping
 	    $sleep = ::reap_usleep($sleep);
+	    $sleepsum += $sleep;
+	    if($sleepsum >= 1000) {
+		# At most do this every second
+		$sleepsum = 0;
+		changed_procs_file();
+		changed_sshloginfile();
+		start_more_jobs();
+	    }
 	}
 	if(not $Global::JobQueue->empty()) {
 	    # These jobs may not be started:

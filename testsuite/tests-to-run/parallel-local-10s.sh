@@ -8,6 +8,23 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_reload_slf_every_second() {
+    echo "### --slf should reload every second"
+    tmp=$(mktemp)
+    echo 5/lo >"$tmp"
+    (
+	sleep 3
+	(echo 5/nlv.pi.dk
+	 echo 5/localhost
+	 echo 5/127.0.0.1) >>"$tmp"
+    ) &
+    # This used to take 20 seconds
+    seq 20 |
+	stdout /usr/bin/time -f %e parallel --slf "$tmp" 'true {};sleep 10' |
+        perl -ne '$_ < 20 and print "OK\n"'
+    rm "$tmp"
+}
+
 par_load_blocks() {
     echo "### Test if --load blocks. Bug.";
     export PARALLEL="--load 300%"

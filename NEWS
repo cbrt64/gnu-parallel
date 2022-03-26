@@ -4,7 +4,7 @@ New in this release:
 
 * --sshlogin user:password@host is now supported by using sshpass.
 
-* Bug fixes and man page updates: Many options now have a 'See also' section.
+* Bug fixes and man page updates.
 
 News about GNU Parallel:
 
