@@ -1669,7 +1669,7 @@ sub options_hash() {
 	 "link|xapply" => \$opt::link,
 	 "linkinputsource|xapplyinputsource=i" => \@opt::linkinputsource,
 	 # Before changing these lines, please read
-	 # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
 	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	 # You accept to be put in a public hall of shame by removing
 	 # these lines.
@@ -1833,7 +1833,7 @@ sub parse_options(@) {
     @ARGV = read_options();
 
     # Before changing these line, please read
-    # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+    # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
     # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
     # You accept to be added to a public hall of shame by
     # removing the lines.
@@ -4022,7 +4022,7 @@ sub progress() {
 	my $width = int($terminal_width * $pctcomplete);
 	substr($s,$width,0) = $reset;
 	my $zenity = sprintf("%-${terminal_width}s",
-			     substr("#	 $eta sec $arg",
+			     substr("#   $eta sec $arg",
 				    0,$terminal_width));
 	$s = "\r" . $zenity . "\r" . $pctcomplete*100 . # Prefix with zenity header
 	    "\r" . $rev . $s . $reset;
@@ -5158,7 +5158,7 @@ sub usage() {
 	 "  Zenodo. https://doi.org/10.5281/zenodo.6377950",
 	 "",
 	 # Before changing these lines,	 please read
-	 # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice
+	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
 	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt	 
 	 # You accept to be put in a public hall of shame by removing
 	 # these lines.
@@ -5191,7 +5191,7 @@ sub citation_notice() {
 	     "  Zenodo. https://doi.org/10.5281/zenodo.6377950",
 	     "",
 	     # Before changing these line,  please read
-	     # https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
+	     # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
 	     # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	     # You accept to be put in a public hall of shame by
 	     # removing these lines.
@@ -5199,7 +5199,7 @@ sub citation_notice() {
 	     "If you pay 10000 EUR you should feel free to use GNU Parallel without citing.",
 	     "",
 	     "More about funding GNU Parallel and the citation notice:",
-	     "https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice",
+	     "https://www.gnu.org/software/parallel/parallel_design.html#citation-notice",
 	     "",
 	     "To silence this citation notice: run 'parallel --citation' once.",
 	     ""
@@ -5329,7 +5329,7 @@ sub citation() {
 	"(Feel free to use \\nocite{tange_2022_6377950})",
 	"",
 	# Before changing these lines, please read
-	# https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice and
+	# https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
 	# https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	# You accept to be put in a public hall of shame by removing
 	# these lines.
@@ -5338,7 +5338,7 @@ sub citation() {
 	"",
 	"More about funding GNU Parallel and the citation notice:",
 	"https://lists.gnu.org/archive/html/parallel/2013-11/msg00006.html",
-	"https://www.gnu.org/software/parallel/parallel_design.html#Citation-notice",
+	"https://www.gnu.org/software/parallel/parallel_design.html#citation-notice",
 	"https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt",
 	"",
 	"If you send a copy of your published article to tange\@gnu.org, it will be",
@@ -9542,7 +9542,8 @@ sub sshlogin_wrap($) {
 	if(not $monitor_parent_sshd_script) {
 	    $monitor_parent_sshd_script =
 		# This will be packed in ', so only use "
-		::spacefree(0,'$shell = "'.($ENV{'PARALLEL_SHELL'} || '$ENV{SHELL}').'";'.
+		::spacefree
+		(0,'$shell = "'.($ENV{'PARALLEL_SHELL'} || '$ENV{SHELL}').'";'.
 			    '$tmpdir = $ENV{"TMPDIR"} || "'.
 			    ::perl_quote_scalar($ENV{'PARALLEL_REMOTE_TMPDIR'}).'";'.
 			    '$nice = '.$opt::nice.';'.
@@ -9560,7 +9561,7 @@ sub sshlogin_wrap($) {
 		} while(-e $ENV{PARALLEL_TMP});
 		# Set $script to a non-existent file name in $TMPDIR
 		do {
-		    $script = $tmpdir."/par".
+		    $script = $tmpdir."/par-job-$ENV{PARALLEL_SEQ}_".
 			join"", map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
 		} while(-e $script);
 		# Create a script from the hex code

@@ -11,16 +11,16 @@
 par_reload_slf_every_second() {
     echo "### --slf should reload every second"
     tmp=$(mktemp)
-    echo 5/lo >"$tmp"
+    echo 1/lo >"$tmp"
     (
 	sleep 3
-	(echo 5/nlv.pi.dk
-	 echo 5/localhost
-	 echo 5/127.0.0.1) >>"$tmp"
+	(echo 1/localhost
+	 echo 1/127.0.0.1) >>"$tmp"
     ) &
-    # This used to take 20 seconds
-    seq 20 |
-	stdout /usr/bin/time -f %e parallel --slf "$tmp" 'true {};sleep 10' |
+    # This used to take 20 seconds (version 20220322) because the
+    # updated --slf would only read after first job finished
+    seq 3 |
+	stdout /usr/bin/time -f %e parallel-20220322 --slf "$tmp" 'true {};sleep 10' |
         perl -ne '$_ < 20 and print "OK\n"'
     rm "$tmp"
 }
