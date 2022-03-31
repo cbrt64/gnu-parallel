@@ -857,7 +857,7 @@ sub cat_partial($@) {
     #	    for($i=$first; $i<=$last;$i*=$inc) { say int $i }
     #	    ' "$@"
     #	}
-    # 
+    #
     #	seq 111111111 > big;
     #	f() { ppar --test $1 -a big --pipepart --block -1 'md5sum > /dev/null'; }
     #	export -f f;
@@ -1554,197 +1554,425 @@ sub acquire_semaphore() {
 
 sub __PARSE_OPTIONS__() {}
 
+sub shell_completion() {
+    if($opt::completion eq "zsh") {
+	# if(shell == zsh);
+	zsh_competion();
+    } elsif($opt::completion eq "auto") {
+	if($Global::shell =~ m:/zsh$|^zsh$:) {
+	    # if(shell == zsh);
+	    zsh_competion();
+	} else {
+	    ::error("--completion is not implemented for '$Global::shell'.");
+	    wait_and_exit(255);
+	}
+    } else {
+	::error("--completion is not implemented for '$opt::completion'.");
+	wait_and_exit(255);
+    }
+}
+
+sub zsh_competion() {
+    my @zsh_completion =
+	("compdef _comp_parallel parallel; ",
+	 "setopt localoptions extended_glob; ",
+	 "local -a _comp_priv_prefix; ",
+	 "_comp_parallel() { ",
+	 "_arguments ");
+    my @och = options_completion_hash();
+    while(@och) {
+	$_ = shift @och;
+	# Split input like:
+	# "joblog|jl=s[Logfile for executed jobs]:logfile:_files"
+	if(/^(.*?)(\[.*?])(:[^:]*)?(:.*)?$/) {
+	    my $opt = $1;
+	    my $desc = $2;
+	    my $argdesc = $3;
+	    my $func = $4;
+	    # opt=s => opt
+	    $opt =~ s/[:=].$//;
+	    # {-o,--option}
+	    my $zsh_opt = join(",",
+			       (map { (length $_ == 1) ? "-$_" : "--$_" }
+				split /\|/, $opt));
+	    if($zsh_opt =~ /,/) { $zsh_opt = "{$zsh_opt}"; }
+	    $desc =~ s/'/'"'"'/g;
+	    $argdesc =~ s/'/'"'"'/g;
+	    $func =~ s/'/'"'"'/g;
+	    push @zsh_completion, $zsh_opt."'".$desc.$argdesc.$func."' ";
+	}
+	shift @och;
+    }
+    push @zsh_completion,
+	q{'(-)1:command: _command_names -e' },
+	q{'*::arguments:{ _comp_priv_prefix=( '$words[1]' -n ${(kv)opt_args[(I)(-[ugHEP]|--(user|group|set-home|preserve-env|preserve-groups))]} ) ; _normal }'},
+	"};\n";
+    print @zsh_completion;
+}
 
 sub options_hash() {
     # Returns:
-    #	%hash = the GetOptions config
+    #	%hash = for GetOptions
+    my %och = options_completion_hash();
+    my %oh;
+    my ($k,$v);
+    while(($k,$v) = each %och) {
+	$k =~ s/\[.*//;
+	$oh{$k} = $v;
+    }
+    return %oh;
+}
+
+sub options_completion_hash() {
+    # Returns:
+    #	%hash = for GetOptions and shell completion
     return
 	("debug|D=s" => \$opt::D,
-	 "xargs" => \$opt::xargs,
-	 "m" => \$opt::m,
-	 "X" => \$opt::X,
-	 "v" => \@opt::v,
-	 "sql=s" => \$opt::retired,
-	 "sql-master|sqlmaster=s" => \$opt::sqlmaster,
-	 "sql-worker|sqlworker=s" => \$opt::sqlworker,
-	 "sql-and-worker|sqlandworker=s" => \$opt::sqlandworker,
-	 "joblog|jl=s" => \$opt::joblog,
-	 "results|result|res=s" => \$opt::results,
-	 "resume" => \$opt::resume,
-	 "resume-failed|resumefailed" => \$opt::resume_failed,
-	 "retry-failed|retryfailed" => \$opt::retry_failed,
-	 "silent" => \$opt::silent,
-	 "keep-order|keeporder|k" => \$opt::keeporder,
-	 "no-keep-order|nokeeporder|nok|no-k" => \$opt::nokeeporder,
-	 "group" => \$opt::group,
+	 "xargs[Insert as many arguments as the command line length permits]"
+	 => \$opt::xargs,
+	 "m[Multiple arguments]" => \$opt::m,
+	 ("X[Insert as many arguments with context as the command line length permits]"
+	 => \$opt::X),
+	 "v[Verbose]" => \@opt::v,
+	 "sql=s[Use --sql-master instead (obsolete)]:DBURL" => \$opt::retired,
+	 ("sql-master|sqlmaster=s".
+	  "[Submit jobs via SQL server. DBURL must point to a table, which will contain --joblog, the values, and output]:DBURL"
+	  => \$opt::sqlmaster),
+	 ("sql-worker|sqlworker=s".
+	  "[Execute jobs via SQL server. Read the input sources variables from the table pointed to by DBURL.]:DBURL"
+	  => \$opt::sqlworker),
+	 ("sql-and-worker|sqlandworker=s".
+	  "[--sql-master DBURL --sql-worker DBURL]:DBURL"
+	  => \$opt::sqlandworker),
+	 ("joblog|jl=s[Logfile for executed jobs]:logfile:_files"
+	  => \$opt::joblog),
+	 ("results|result|res=s[Save the output into files]:name:_files"
+	  => \$opt::results),
+	 "resume[Resumes from the last unfinished job]" => \$opt::resume,
+	 ("resume-failed|resumefailed".
+	  "[Retry all failed and resume from the last unfinished job]"
+	  => \$opt::resume_failed),
+	 ("retry-failed|retryfailed[Retry all failed jobs in joblog]"
+	  => \$opt::retry_failed),
+	 "silent[Silent]" => \$opt::silent,
+	 ("keep-order|keeporder|k".
+	  "[Keep sequence of output same as the order of input]"
+	  => \$opt::keeporder),
+	 ("no-keep-order|nokeeporder|nok|no-k".
+	  "[Overrides an earlier --keep-order (e.g. if set in ~/.parallel/config)]"
+	  => \$opt::nokeeporder),
+	 "group[Group output]" => \$opt::group,
 	 "g" => \$opt::retired,
-	 "ungroup|u" => \$opt::ungroup,
-	 "line-buffer|line-buffered|linebuffer|linebuffered|lb"
-	 => \$opt::linebuffer,
-	 "tmux" => \$opt::tmux,
-	 "tmux-pane|tmuxpane" => \$opt::tmuxpane,
-	 "null|0" => \$opt::null,
-	 "quote|q" => \$opt::quote,
+	 ("ungroup|u".
+	  "[Output is printed as soon as possible and bypasses GNU parallel internal processing]"
+	  => \$opt::ungroup),
+	 ("line-buffer|line-buffered|linebuffer|linebuffered|lb".
+	  "[Buffer output on line basis]"
+	  => \$opt::linebuffer),
+	 ("tmux".
+	  "[Use tmux for output. Start a tmux session and run each job in a window in that session. No other output will be produced]"
+	  => \$opt::tmux),
+	 ("tmux-pane|tmuxpane".
+	  "[Use tmux for output but put output into panes in the first window.  Useful if you want to monitor the progress of less than 100 concurrent jobs]"
+	  => \$opt::tmuxpane),
+	 "null|0[Use NUL as delimiter]" => \$opt::null,
+	 "quote|q[Quote command]" => \$opt::quote,
 	 # Replacement strings
-	 "parens=s" => \$opt::parens,
-	 "rpl=s" => \@opt::rpl,
-	 "plus" => \$opt::plus,
-	 "I=s" => \$opt::I,
-	 "extensionreplace|er=s" => \$opt::U,
+	 ("parens=s[Use parensstring instead of {==}]:parensstring"
+	  => \$opt::parens),
+	 ('rpl=s[Define replacement string]:"tag perl expression"'
+	  => \@opt::rpl),
+	 "plus[Add more replacement strings]" => \$opt::plus,
+	 ("I=s".
+	  "[Use the replacement string replace-str instead of {}]:replace-str"
+	  => \$opt::I),
+	 ("extensionreplace|er=s".
+	  "[Use the replacement string replace-str instead of {.} for input line without extension]:replace-str"
+	  => \$opt::U),
 	 "U=s" => \$opt::retired,
-	 "basenamereplace|bnr=s" => \$opt::basenamereplace,
-	 "dirnamereplace|dnr=s" => \$opt::dirnamereplace,
-	 "basenameextensionreplace|bner=s" => \$opt::basenameextensionreplace,
-	 "seqreplace=s" => \$opt::seqreplace,
-	 "slotreplace=s" => \$opt::slotreplace,
-	 "jobs|j=s" => \$opt::jobs,
-	 "delay=s" => \$opt::delay,
-	 "sshdelay=f" => \$opt::sshdelay,
-	 "load=s" => \$opt::load,
-	 "noswap" => \$opt::noswap,
-	 "max-line-length-allowed|maxlinelengthallowed"
-	 => \$opt::max_line_length_allowed,
-	 "number-of-cpus|numberofcpus" => \$opt::number_of_cpus,
-	 "number-of-sockets|numberofsockets" => \$opt::number_of_sockets,
-	 "number-of-cores|numberofcores" => \$opt::number_of_cores,
-	 "number-of-threads|numberofthreads" => \$opt::number_of_threads,
-	 "use-sockets-instead-of-threads|usesocketsinsteadofthreads"
-	 => \$opt::use_sockets_instead_of_threads,
-	 "use-cores-instead-of-threads|usecoresinsteadofthreads"
-	 => \$opt::use_cores_instead_of_threads,
-	 "use-cpus-instead-of-cores|usecpusinsteadofcores"
-	 => \$opt::use_cpus_instead_of_cores,
-	 "shell-quote|shellquote|shell_quote" => \@opt::shellquote,
-	 "nice=i" => \$opt::nice,
-	 "tag" => \$opt::tag,
-	 "tag-string|tagstring=s" => \$opt::tagstring,
-	 "ctag" => \$opt::ctag,
-	 "ctag-string|ctagstring=s" => \$opt::ctagstring,
-	 "onall" => \$opt::onall,
-	 "nonall" => \$opt::nonall,
-	 "filter-hosts|filterhosts|filter-host" => \$opt::filter_hosts,
-	 "sshlogin|S=s" => \@opt::sshlogin,
-	 "sshloginfile|slf=s" => \@opt::sshloginfile,
-	 "controlmaster|M" => \$opt::controlmaster,
-	 "ssh=s" => \$opt::ssh,
-	 "transfer-file|transferfile|transfer-files|transferfiles|tf=s"
-	 => \@opt::transfer_files,
-	 "return=s" => \@opt::return,
-	 "trc=s" => \@opt::trc,
-	 "transfer" => \$opt::transfer,
-	 "cleanup" => \$opt::cleanup,
-	 "basefile|bf=s" => \@opt::basefile,
-	 "template|tmpl=s" => \%opt::template,
+	 ("basenamereplace|bnr=s".
+	  "[Use the replacement string replace-str instead of {/} for basename of input line]:replace-str"
+	  => \$opt::basenamereplace),
+	 ("dirnamereplace|dnr=s".
+	  "[Use the replacement string replace-str instead of {//} for dirname of input line]:replace-str"
+	  => \$opt::dirnamereplace),
+	 ("basenameextensionreplace|bner=s".
+	  "[Use the replacement string replace-str instead of {/.} for basename of input line without extension]:replace-str"
+	  => \$opt::basenameextensionreplace),
+	 ("seqreplace=s".
+	  "[Use the replacement string replace-str instead of {#} for job sequence number]:replace-str"
+	  => \$opt::seqreplace),
+	 ("slotreplace=s".
+	  "[Use the replacement string replace-str instead of {%} for job slot number]:replace-str"
+	  => \$opt::slotreplace),
+	 ("jobs|j=s".
+	  "[(Add +N to/Subtract -N from/Multiply N%) the number of CPU threads or read parameter from file]:_files"
+	  => \$opt::jobs),
+	 ("delay=s".
+	  "[Delay starting next job by duration]:duration" => \$opt::delay),
+	 ("ssh-delay|sshdelay=f".
+	  "[Delay starting next ssh by duration]:duration"
+	  => \$opt::sshdelay),
+	 ("load=s".
+	  "[Only start jobs if load is less than max-load]:max-load"
+	  => \$opt::load),
+	 "noswap[Do not start job is computer is swapping]" => \$opt::noswap,
+	 ("max-line-length-allowed|maxlinelengthallowed".
+	  "[Print maximal command line length]"
+	  => \$opt::max_line_length_allowed),
+	 ("number-of-cpus|numberofcpus".
+	  "[Print the number of physical CPU cores and exit (obsolete)]"
+	  => \$opt::number_of_cpus),
+	 ("number-of-sockets|numberofsockets".
+	  "[Print the number of CPU sockets and exit]"
+	  => \$opt::number_of_sockets),
+	 ("number-of-cores|numberofcores".
+	  "[Print the number of physical CPU cores and exit]"
+	  => \$opt::number_of_cores),
+	 ("number-of-threads|numberofthreads".
+	  "[Print the number of hyperthreaded CPU cores and exit]"
+	  => \$opt::number_of_threads),
+	 ("use-sockets-instead-of-threads|usesocketsinsteadofthreads".
+	  "[Determine how GNU Parallel counts the number of CPUs]"
+	  => \$opt::use_sockets_instead_of_threads),
+	 ("use-cores-instead-of-threads|usecoresinsteadofthreads".
+	  "[Determine how GNU Parallel counts the number of CPUs]"
+	  => \$opt::use_cores_instead_of_threads),
+	 ("use-cpus-instead-of-cores|usecpusinsteadofcores".
+	  "[Determine how GNU Parallel counts the number of CPUs]"
+	  => \$opt::use_cpus_instead_of_cores),
+	 ("shell-quote|shellquote|shell_quote".
+	  "[Does not run the command but quotes it. Useful for making quoted composed commands for GNU parallel]"
+	  => \@opt::shellquote),
+	 ('nice=i[Run the command at this niceness]:niceness:($(seq -20 19))'
+	  => \$opt::nice),
+	 "tag[Tag lines with arguments]" => \$opt::tag,
+	 ("tag-string|tagstring=s".
+	  "[Tag lines with a string]:str" => \$opt::tagstring),
+	 "ctag[Color tag]:str" => \$opt::ctag,
+	 "ctag-string|ctagstring=s[Color tagstring]:str" => \$opt::ctagstring,
+	 ("onall[Run all the jobs on all computers given with --sshlogin]"
+	  => \$opt::onall),
+	 "nonall[--onall with no arguments]" => \$opt::nonall,
+	 ("filter-hosts|filterhosts|filter-host[Remove down hosts]"
+	  => \$opt::filter_hosts),
+	 ('sshlogin|S=s'.
+	  '[Distribute jobs to remote computers]'.
+	  ':[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]] or @hostgroup'.
+	  ':_users') => \@opt::sshlogin,
+	 ("sshloginfile|slf=s".
+	  "[File with sshlogins on separate lines. Lines starting with '#' are ignored.]:filename:_files"
+	  => \@opt::sshloginfile),
+	 ("controlmaster|M".
+	  "[Use ssh's ControlMaster to make ssh connections faster]"
+	  => \$opt::controlmaster),
+	 ("ssh=s".
+	  "[Use this command instead of ssh for remote access]:sshcommand"
+	  => \$opt::ssh),
+	 ("transfer-file|transferfile|transfer-files|transferfiles|tf=s".
+	  "[Transfer filename to remote computers]:filename:_files"
+	  => \@opt::transfer_files),
+	 ("return=s[Transfer files from remote computers]:filename:_files"
+	  => \@opt::return),
+	 ("trc=s[--transfer --return filename --cleanup]:filename:_files"
+	  => \@opt::trc),
+	 "transfer[Transfer files to remote computers]" => \$opt::transfer,
+	 "cleanup[Remove transferred files]" => \$opt::cleanup,
+	 ("basefile|bf=s".
+	  "[Transfer file to each sshlogin before first job is started]:file:_files"
+	  => \@opt::basefile),
+	 ("template|tmpl=s[Replace replacement strings in file and save it in repl]:file=repl:_files"
+	  => \%opt::template),
 	 "B=s" => \$opt::retired,
 	 "ctrl-c|ctrlc" => \$opt::retired,
 	 "no-ctrl-c|no-ctrlc|noctrlc" => \$opt::retired,
-	 "work-dir|workdir|wd=s" => \$opt::workdir,
+	 ("work-dir|workdir|wd=s".
+	  "[Jobs will be run in the dir mydir. (default: the current dir for the local machine, the login dir for remote computers)]:mydir:_cd"
+	  => \$opt::workdir),
 	 "W=s" => \$opt::retired,
-	 "rsync-opts|rsyncopts=s" => \$opt::rsync_opts,
-	 "tmpdir|tempdir=s" => \$opt::tmpdir,
-	 "use-compress-program|compress-program|".
-	 "usecompressprogram|compressprogram=s" => \$opt::compress_program,
-	 "use-decompress-program|decompress-program|".
-	 "usedecompressprogram|decompressprogram=s"
-	 => \$opt::decompress_program,
-	 "compress" => \$opt::compress,
-	 "tty" => \$opt::tty,
+	 ("rsync-opts|rsyncopts=s[Options to pass on to rsync]:options"
+	  => \$opt::rsync_opts),
+	 ("tmpdir|tempdir=s[Directory for temporary files]:dirname:_cd"
+	  => \$opt::tmpdir),
+	 ("use-compress-program|compress-program|".
+	  "usecompressprogram|compressprogram=s".
+	  "[Use prg for compressing temporary files]:prg:_commands"
+	  => \$opt::compress_program),
+	 ("use-decompress-program|decompress-program|".
+	  "usedecompressprogram|decompressprogram=s".
+	  "[Use prg for decompressing temporary files]:prg:_commands"
+	  => \$opt::decompress_program),
+	 "compress[Compress temporary files]" => \$opt::compress,
+	 "tty[Open terminal tty]" => \$opt::tty,
 	 "T" => \$opt::retired,
 	 "H=i" => \$opt::retired,
-	 "dry-run|dryrun|dr" => \$opt::dryrun,
-	 "progress" => \$opt::progress,
-	 "eta" => \$opt::eta,
-	 "bar" => \$opt::bar,
-	 "shuf" => \$opt::shuf,
-	 "arg-sep|argsep=s" => \$opt::arg_sep,
-	 "arg-file-sep|argfilesep=s" => \$opt::arg_file_sep,
-	 "trim=s" => \$opt::trim,
-	 "env=s" => \@opt::env,
-	 "recordenv|record-env" => \$opt::record_env,
-	 "session" => \$opt::session,
-	 "plain" => \$opt::plain,
-	 "profile|J=s" => \@opt::profile,
+	 ("dry-run|dryrun|dr".
+	  "[Print the job to run on stdout (standard output), but do not run the job]"
+	  => \$opt::dryrun),
+	 "progress[Show progress of computations]" => \$opt::progress,
+	 ("eta[Show the estimated number of seconds before finishing]"
+	  => \$opt::eta),
+	 "bar[Show progress as a progress bar]" => \$opt::bar,
+	 "shuf[Shuffle jobs]" => \$opt::shuf,
+	 ("arg-sep|argsep=s".
+	  "[Use sep-str instead of ::: as separator string]:sep-str"
+	  => \$opt::arg_sep),
+	 ("arg-file-sep|argfilesep=s".
+	  "[Use sep-str instead of :::: as separator string between command and argument files]:sep-str"
+	  => \$opt::arg_file_sep),
+	 ("trim=s[Trim white space in input]:trim_method:(n l r lr rl)"
+	  => \$opt::trim),
+	 "env=s[Copy environment variable var]:var:_vars" => \@opt::env,
+	 "recordenv|record-env[Record environment]" => \$opt::record_env,
+	 ('session'.
+	  '[Record names in current environment in $PARALLEL_IGNORED_NAMES and exit. Only used with env_parallel. Aliases, functions, and variables with names i]'
+	  => \$opt::session),
+	 ('plain[Ignore --profile, $PARALLEL, and ~/.parallel/config]'
+	  => \$opt::plain),
+	 ("profile|J=s".
+	  "[Use profile profilename for options]:profilename:_files"
+	  => \@opt::profile),
 	 "tollef" => \$opt::tollef,
-	 "gnu" => \$opt::gnu,
-	 "link|xapply" => \$opt::link,
+	 "gnu[Behave like GNU parallel]" => \$opt::gnu,
+	 "link|xapply[Link input sources]" => \$opt::link,
 	 "linkinputsource|xapplyinputsource=i" => \@opt::linkinputsource,
 	 # Before changing these lines, please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
 	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	 # You accept to be put in a public hall of shame by removing
 	 # these lines.
-	 "bibtex|citation" => \$opt::citation,
+	 ("bibtex|citation".
+	  "[Print the citation notice and BibTeX entry for GNU parallel, silence citation notice for all future runs, and exit. It will not run any commands]"
+	  => \$opt::citation),
 	 "will-cite|willcite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
-	 "halt-on-error|haltonerror|halt=s" => \$opt::halt,
-	 "limit=s" => \$opt::limit,
-	 "memfree=s" => \$opt::memfree,
-	 "memsuspend=s" => \$opt::memsuspend,
-	 "retries=s" => \$opt::retries,
-	 "timeout=s" => \$opt::timeout,
-	 "term-seq|termseq=s" => \$opt::termseq,
+	 ('halt-on-error|haltonerror|halt=s'.
+	  '[When should GNU parallel terminate]:when:((now\:"kill all running jobs and halt immediately" soon\:"wait for all running jobs to complete, start no new jobs"))'
+	  => \$opt::halt),
+	 'limit=s[Dynamic job limit]:"command args"' => \$opt::limit,
+	 ("memfree=s".
+	  "[Minimum memory free when starting another job]:size"
+	  => \$opt::memfree),
+	 ("memsuspend=s".
+	  "[Suspend jobs when there is less memory available]:size"
+	  => \$opt::memsuspend),
+	 "retries=s[Try failing jobs n times]:n" => \$opt::retries,
+	 ("timeout=s".
+	  "[Time out for command. If the command runs for longer than duration seconds it will get killed as per --term-seq]:duration"
+	  => \$opt::timeout),
+	 ("term-seq|termseq=s".
+	  "[Termination sequence]:sequence" => \$opt::termseq),
 	 # xargs-compatibility - implemented, man, testsuite
-	 "max-procs|maxprocs|P=s" => \$opt::jobs,
-	 "delimiter|d=s" => \$opt::d,
-	 "max-chars|maxchars|s=s" => \$opt::max_chars,
-	 "arg-file|arg-file|a=s" => \@opt::a,
-	 "no-run-if-empty|norunifempty|r" => \$opt::r,
-	 "replace|i:s" => \$opt::i,
+	 ("max-procs|maxprocs|P=s".
+	  "[Add N to/Subtract N from/Multiply N% with/ the number of CPU threads or read parameter from file]:+N/-N/N%/N/procfile:_files"
+	  => \$opt::jobs),
+	 ("delimiter|d=s[Input items are terminated by delim]:delim"
+	  => \$opt::d),
+	 ("max-chars|maxchars|s=s[Limit length of command]:max-chars"
+	  => \$opt::max_chars),
+	 ("arg-file|argfile|a=s".
+	  "[Use input-file as input source]:input-file:_files" => \@opt::a),
+	 "no-run-if-empty|norunifempty|r[Do not run empty input]" => \$opt::r,
+	 ("replace|i:s".
+	  "[This option is deprecated; use -I instead]:replace-str"
+	  => \$opt::i),
 	 "E=s" => \$opt::eof,
-	 "eof|e:s" => \$opt::eof,
-	 "max-args|maxargs|n=s" => \$opt::max_args,
-	 "max-replace-args|maxreplaceargs|N=s"
-	 => \$opt::max_replace_args,
-	 "col-sep|colsep|C=s" => \$opt::colsep,
-	 "csv"=> \$opt::csv,
-	 "help|h" => \$opt::help,
-	 "L=s" => \$opt::L,
-	 "max-lines|maxlines|l:f" => \$opt::max_lines,
-	 "interactive|p" => \$opt::interactive,
-	 "verbose|t" => \$opt::verbose,
-	 "version|V" => \$opt::version,
-	 "min-version|minversion=i" => \$opt::minversion,
-	 "show-limits|showlimits" => \$opt::show_limits,
-	 "exit|x" => \$opt::x,
+	 ("eof|e:s[Set the end of file string to eof-str]:eof-str"
+	  => \$opt::eof),
+	 ("max-args|maxargs|n=s".
+	  "[Use at most max-args arguments per command line]:max-args"
+	  => \$opt::max_args),
+	 ("max-replace-args|maxreplaceargs|N=s".
+	  "[Use at most max-args arguments per command line]:max-args"
+	  => \$opt::max_replace_args),
+	 "col-sep|colsep|C=s[Column separator]:regexp" => \$opt::colsep,
+	 "csv[Treat input as CSV-format]"=> \$opt::csv,
+	 ("help|h[Print a summary of the options to GNU parallel and exit]"
+	  => \$opt::help),
+	 ("L=s[When used with --pipe: Read records of recsize]:recsize"
+	  => \$opt::L),
+	 ("max-lines|maxlines|l:f".
+	  "[When used with --pipe: Read records of recsize lines]:recsize"
+	  => \$opt::max_lines),
+	 "interactive|p[Ask user before running a job]" => \$opt::interactive,
+	 ("verbose|t[Print the job to be run on stderr (standard error)]"
+	  => \$opt::verbose),
+	 ("version|V[Print the version GNU parallel and exit]"
+	  => \$opt::version),
+	 ('min-version|minversion=i'.
+	  '[Print the version GNU parallel and exit]:version:($(parallel --minversion 0))'
+	  => \$opt::minversion),
+	 ("show-limits|showlimits".
+	  "[Display limits given by the operating system]"
+	  => \$opt::show_limits),
+	 ("exit|x[Exit if the size (see the -s option) is exceeded]"
+	  => \$opt::x),
 	 # Semaphore
-	 "semaphore" => \$opt::semaphore,
-	 "semaphore-timeout|semaphoretimeout|st=s"
-	 => \$opt::semaphoretimeout,
-	 "semaphore-name|semaphorename|id=s" => \$opt::semaphorename,
-	 "fg" => \$opt::fg,
-	 "bg" => \$opt::bg,
-	 "wait" => \$opt::wait,
+	 "semaphore[Work as a counting semaphore]" => \$opt::semaphore,
+	 ("semaphore-timeout|semaphoretimeout|st=s".
+	  "[If secs > 0: If the semaphore is not released within secs seconds, take it anyway]:secs"
+	  => \$opt::semaphoretimeout),
+	 ("semaphore-name|semaphorename|id=s".
+	  "[Use name as the name of the semaphore]:name"
+	  => \$opt::semaphorename),
+	 "fg[Run command in foreground]" => \$opt::fg,
+	 "bg[Run command in background]" => \$opt::bg,
+	 "wait[Wait for all commands to complete]" => \$opt::wait,
 	 # Shebang #!/usr/bin/parallel --shebang
-	 "shebang|hashbang" => \$opt::shebang,
-	 "internal-pipe-means-argfiles|internalpipemeansargfiles"
-	 => \$opt::internal_pipe_means_argfiles,
+	 ("shebang|hashbang".
+	  "[GNU parallel can be called as a shebang (#!) command as the first line of a script. The content of the file will be treated as inputsource]"
+	  => \$opt::shebang),
+	 ("internal-pipe-means-argfiles|internalpipemeansargfiles"
+	  => \$opt::internal_pipe_means_argfiles),
 	 "Y" => \$opt::retired,
-	 "skip-first-line|skipfirstline"
-	 => \$opt::skip_first_line,
+	 ("skip-first-line|skipfirstline".
+	  "[Do not use the first line of input (used by GNU parallel itself when called with --shebang)]"
+	  => \$opt::skip_first_line),
 	 "bug" => \$opt::bug,
 	 # --pipe
-	 "pipe|spreadstdin" => \$opt::pipe,
-	 "round-robin|roundrobin|round" => \$opt::roundrobin,
+	 ("pipe|spreadstdin".
+	  "[Spread input to jobs on stdin (standard input)]" => \$opt::pipe),
+	 ("round-robin|roundrobin|round".
+	  "[Distribute chunks of standard input in a round robin fashion]"
+	  => \$opt::roundrobin),
 	 "recstart=s" => \$opt::recstart,
-	 "recend=s" => \$opt::recend,
-	 "regexp|regex" => \$opt::regexp,
-	 "remove-rec-sep|removerecsep|rrs" => \$opt::remove_rec_sep,
-	 "output-as-files|outputasfiles|files" => \$opt::files,
-	 "block-size|blocksize|block=s" => \$opt::blocksize,
-	 "block-timeout|blocktimeout|bt=s" => \$opt::blocktimeout,
-	 "header=s" => \$opt::header,
-	 "cat" => \$opt::cat,
-	 "fifo" => \$opt::fifo,
-	 "pipe-part|pipepart" => \$opt::pipepart,
-	 "tee" => \$opt::tee,
-	 "shard=s" => \$opt::shard,
-	 "bin=s" => \$opt::bin,
-	 "group-by|groupby=s" => \$opt::groupby,
+	 ("recend=s".
+	  "[Split record between endstring and startstring]:endstring"
+	  => \$opt::recend),
+	 ("regexp|regex".
+	  "[Use --regexp to interpret --recstart and --recend as regular expressions]"
+	  => \$opt::regexp),
+	 ("remove-rec-sep|removerecsep|rrs".
+	  "[Remove record separator]" => \$opt::remove_rec_sep),
+	 ("output-as-files|outputasfiles|files[Save output to files]"
+	  => \$opt::files),
+	 ("block-size|blocksize|block=s".
+	  "[Size of block in bytes to read at a time]:size"
+	  => \$opt::blocksize),
+	 ("block-timeout|blocktimeout|bt=s".
+	  "[Timeout for reading block when using --pipe]:duration"
+	  => \$opt::blocktimeout),
+	 "header=s[Use regexp as header]:regexp" => \$opt::header,
+	 "cat[Create a temporary file with content]" => \$opt::cat,
+	 "fifo[Create a temporary fifo with content]" => \$opt::fifo,
+	 ("pipe-part|pipepart[Pipe parts of a physical file]"
+	  => \$opt::pipepart),
+	 "tee[Pipe all data to all jobs]" => \$opt::tee,
+	 ("shard=s".
+	  "[Use shardexpr as shard key and shard input to the jobs]:shardexpr"
+	  => \$opt::shard),
+	 ("bin=s".
+	  "[Use binexpr as binning key and bin input to the jobs]:binexpr"
+	  => \$opt::bin),
+	 "group-by|groupby=s[Group input by value]:val" => \$opt::groupby,
 	 #
-	 "hgrp|hostgrp|hostgroup|hostgroups" => \$opt::hostgroups,
-	 "embed" => \$opt::embed,
-	 "filter=s" => \@opt::filter,
+	 ("hgrp|hostgrp|hostgroup|hostgroups[Enable hostgroups on arguments]"
+	  => \$opt::hostgroups),
+	 "embed[Embed GNU parallel in a shell script]" => \$opt::embed,
+	 ("filter=s[Only run jobs where filter is true]:filter"
+	  => \@opt::filter),
 	 "parset=s" => \$opt::parset,
+	 "completion=s" => \$opt::completion,
 	 # Parameter for testing optimal values
 	 "test=s" => \$opt::test,
 	);
@@ -1905,6 +2133,7 @@ sub parse_options(@) {
     # Default: Same nice level as GNU  Parallel is started at
     $opt::nice ||= eval { getpriority(0,0) } || 0;
     if(defined $opt::help) { usage(); exit(0); }
+    if(defined $opt::completion) { shell_completion(); exit(0); }
     if(defined $opt::embed) { embed(); exit(0); }
     if(defined $opt::sqlandworker) {
 	$opt::sqlmaster = $opt::sqlworker = $opt::sqlandworker;
@@ -2313,7 +2542,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220323;
+    $Global::version = 20220331;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2364,7 +2593,7 @@ sub init_globals() {
 	 '{0%}' => '1 $f=1+int((log($Global::max_jobs_running||1)/log(10))); $_=sprintf("%0${f}d",slot())',
 	 # {0%} = 0-padded seq
 	 '{0#}' => '1 $f=1+int((log(total_jobs())/log(10))); $_=sprintf("%0${f}d",seq())',
-	 
+
 	 ## Bash inspired replacement strings
 	 # Bash ${a:-myval}
 	 '{:-([^}]+?)}' => '$_ ||= $$1',
@@ -5159,7 +5388,7 @@ sub usage() {
 	 "",
 	 # Before changing these lines,	 please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
-	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt	 
+	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
 	 # You accept to be put in a public hall of shame by removing
 	 # these lines.
 	 "This helps funding further development; AND IT WON'T COST YOU A CENT.",
@@ -6119,7 +6348,6 @@ sub usleep($) {
 
 sub make_regexp_ungreedy {
     my $regexp = shift;
-    
     my $class_state = 0;
     my $escape_state = 0;
     my $found = 0;
@@ -6463,7 +6691,7 @@ sub new($$) {
     #	above with: user@server:port
     # So:
     #	[@grp+grp][ncpu/][ssh command ][[user][:password]@][server[:port]]
-    
+
     #	[@grp+grp]/ncpu//usr/bin/ssh user:pass@server:port
     if($s =~ s:^\@([^/]+)/?::) {
 	# Look for SSHLogin hostgroups
@@ -6471,7 +6699,7 @@ sub new($$) {
     }
     # An SSHLogin is always in the hostgroup of its "numcpu/host"
     $hostgroups{$s} = 1;
-    
+
     #	[ncpu/]/usr/bin/ssh user:pass@server:port
     if ($s =~ s:^(\d+)/::) { $ncpus = $1; }
 
@@ -6501,7 +6729,7 @@ sub new($$) {
     if($s and $s ne ':') {
 	::die_bug("SSHLogin parser failed on '$origs' => '$s'");
     }
-    
+
     $string =
 	# Only include the sshcommand in $string if it is set by user
 	($sshcommand && $sshcommand." ").
@@ -6605,7 +6833,7 @@ sub sshcmd($) {
 	    }
 	}
     }
-    
+
     return "@local";
 }
 
@@ -6627,7 +6855,7 @@ sub hexwrap($@) {
     #	$hexencoded = perl command that decodes hex and evals @cmd
     my $self = shift;
     my $cmd = join("",@_);
-    
+
     # "#" is needed because Perl on MacOS X adds NULs
     # when running pack q/H10000000/
     my $hex = unpack "H*", $cmd."#";

@@ -774,6 +774,19 @@ https://perldoc.perl.org/perlre.html
 See also: B<--csv> B<{>I<n>B<}> B<--trim> B<--link>
 
 
+=item B<--completion> I<shell> (alpha testing)
+
+Generate shell completion code for interactive shells.
+
+Supported shells: zsh.
+
+Use I<auto> as I<shell> to automatically detect running shell.
+
+Activate the completion code with:
+
+  zsh% eval "`parallel --completion auto`"
+
+
 =item B<--compress>
 
 Compress temporary files.
