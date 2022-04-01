@@ -778,13 +778,14 @@ See also: B<--csv> B<{>I<n>B<}> B<--trim> B<--link>
 
 Generate shell completion code for interactive shells.
 
-Supported shells: zsh.
+Supported shells: bash zsh.
 
 Use I<auto> as I<shell> to automatically detect running shell.
 
 Activate the completion code with:
 
   zsh% eval "`parallel --completion auto`"
+  bash$ eval "`parallel --completion auto`"
 
 
 =item B<--compress>

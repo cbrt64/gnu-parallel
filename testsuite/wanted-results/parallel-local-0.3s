@@ -62,6 +62,11 @@ par_colsep_0	OK
 par_colsep_0	OK
 par_colsep_default	bug #37956: --colsep does not default to '\t' as specified in the man page.
 par_colsep_default	one 1
+par_completion	### --completion
+par_completion	857e87c031164f28c4ec91e610c8cff7  -
+par_completion	857e87c031164f28c4ec91e610c8cff7  -
+par_completion	09b6d6d121bc9542589aca39741e5390  -
+par_completion	09b6d6d121bc9542589aca39741e5390  -
 par_compress_stdout_stderr	### Test compress - stdout
 par_compress_stdout_stderr	OK
 par_compress_stdout_stderr	### Test compress - stderr

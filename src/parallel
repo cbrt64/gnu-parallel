@@ -1558,10 +1558,16 @@ sub shell_completion() {
     if($opt::completion eq "zsh") {
 	# if(shell == zsh);
 	zsh_competion();
+    } elsif($opt::completion eq "bash") {
+	# if(shell == bash);
+	bash_competion();
     } elsif($opt::completion eq "auto") {
 	if($Global::shell =~ m:/zsh$|^zsh$:) {
 	    # if(shell == zsh);
 	    zsh_competion();
+	} elsif($Global::shell =~ m:/bash$|^bash$:) {
+	    # if(shell == bash);
+	    bash_competion();
 	} else {
 	    ::error("--completion is not implemented for '$Global::shell'.");
 	    wait_and_exit(255);
@@ -1570,6 +1576,39 @@ sub shell_completion() {
 	::error("--completion is not implemented for '$opt::completion'.");
 	wait_and_exit(255);
     }
+}
+
+sub bash_competion() {
+    # Print:
+    #   complete -F _comp_parallel parallel;
+    #   _comp_parallel() {
+    #     COMPREPLY=($(compgen -W "--options" --
+    #                    "${COMP_WORDS[$COMP_CWORD]}"));
+    #   };
+    my @bash_completion =
+	("complete -F _comp_parallel parallel;",
+	 '_comp_parallel() { COMPREPLY=($(compgen -W "');
+    my @och = options_completion_hash();
+    while(@och) {
+	$_ = shift @och;
+	# Split input like:
+	# "joblog|jl=s[Logfile for executed jobs]:logfile:_files"
+	if(/^(.*?)(\[.*?])?(:[^:]*)?(:.*)?$/) {
+	    my $opt = $1;
+	    my $desc = $2;
+	    my $argdesc = $3;
+	    my $func = $4;
+	    # opt=s => opt
+	    $opt =~ s/[:=].$//;
+	    push @bash_completion,
+		(map { (length $_ == 1) ? "-$_ " : "--$_ " }
+				split /\|/, $opt);
+
+	}
+	shift @och;
+    }
+    push @bash_completion,'" -- "${COMP_WORDS[$COMP_CWORD]}")); };'."\n";
+    print @bash_completion;
 }
 
 sub zsh_competion() {
@@ -1584,7 +1623,7 @@ sub zsh_competion() {
 	$_ = shift @och;
 	# Split input like:
 	# "joblog|jl=s[Logfile for executed jobs]:logfile:_files"
-	if(/^(.*?)(\[.*?])(:[^:]*)?(:.*)?$/) {
+	if(/^(.*?)(\[.*?])?(:[^:]*)?(:.*)?$/) {
 	    my $opt = $1;
 	    my $desc = $2;
 	    my $argdesc = $3;
@@ -2542,7 +2581,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220331;
+    $Global::version = 20220401;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
