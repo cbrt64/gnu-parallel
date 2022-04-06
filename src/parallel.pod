@@ -774,20 +774,6 @@ https://perldoc.perl.org/perlre.html
 See also: B<--csv> B<{>I<n>B<}> B<--trim> B<--link>
 
 
-=item B<--completion> I<shell> (alpha testing)
-
-Generate shell completion code for interactive shells.
-
-Supported shells: bash zsh.
-
-Use I<auto> as I<shell> to automatically detect running shell.
-
-Activate the completion code with:
-
-  zsh% eval "`parallel --completion auto`"
-  bash$ eval "`parallel --completion auto`"
-
-
 =item B<--compress>
 
 Compress temporary files.
@@ -2025,6 +2011,17 @@ from the terminal.  Only run the command line if the response starts
 with 'y' or 'Y'.  Implies B<-t>.
 
 
+=item B<--_parset> I<type>,I<varname>
+
+Used internally by B<parset>.
+
+Generate shell code to be eval'ed which will set the variable(s)
+I<varname>. I<type> can be 'assoc' for associative array or 'var' for
+normal variables.
+
+The only supported use is as part of B<parset>.
+
+
 =item B<--parens> I<parensstring>
 
 Use I<parensstring> instead of B<{==}>.
@@ -2786,6 +2783,29 @@ E.g.
 B<--shebang-wrap> must be set as the first option.
 
 See also: B<--shebang>
+
+
+=item B<--shell-completion> I<shell> (alpha testing)
+
+Generate shell completion code for interactive shells.
+
+Supported shells: bash zsh.
+
+Use I<auto> as I<shell> to automatically detect running shell.
+
+Activate the completion code with:
+
+  zsh% eval "$(parallel --shell-completion auto)"
+  bash$ eval "$(parallel --shell-completion auto)"
+
+Or put this `/usr/share/zsh/site-functions/_parallel`, then `compinit`
+to generate `~/.zcompdump`:
+
+  #compdef parallel
+  
+  (( $+functions[_comp_parallel] )) ||
+    eval "$(parallel --shell-completion auto)" &&
+    _comp_parallel
 
 
 =item B<--shell-quote>

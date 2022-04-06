@@ -16,13 +16,13 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
-par_completion() {
-    echo '### --completion'
+par_shellcompletion() {
+    echo '### --shellcompletion'
     # This will change, if you change options
-    parallel --completion bash | md5sum
-    bash -c 'parallel --completion auto;true' | md5sum
-    parallel --completion zsh | md5sum
-    zsh -c 'parallel --completion auto;true' | md5sum
+    parallel --shellcompletion bash | md5sum
+    bash -c 'parallel --shellcompletion auto;true' | md5sum
+    parallel --shellcompletion zsh | md5sum
+    zsh -c 'parallel --shellcompletion auto;true' | md5sum
 }    
 
 par_ctagstring() {

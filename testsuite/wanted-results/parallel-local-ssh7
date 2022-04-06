@@ -659,25 +659,25 @@ par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	### level0+1+2 should be transferred
 par_sh_env_parallel_session	l0var
-par_sh_env_parallel_session	script: 29: level0func: not found
-par_sh_env_parallel_session	script: 29: level0alias: not found
-par_sh_env_parallel_session	script: 29: Bad substitution
+par_sh_env_parallel_session	script: 27: level0func: not found
+par_sh_env_parallel_session	script: 27: level0alias: not found
+par_sh_env_parallel_session	script: 27: Bad substitution
 par_sh_env_parallel_session	l0var
 par_sh_env_parallel_session	/bin/sh: XXX: level0func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level0alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	l1var
-par_sh_env_parallel_session	script: 29: level1func: not found
-par_sh_env_parallel_session	script: 29: level1alias: not found
-par_sh_env_parallel_session	script: 29: Bad substitution
+par_sh_env_parallel_session	script: 27: level1func: not found
+par_sh_env_parallel_session	script: 27: level1alias: not found
+par_sh_env_parallel_session	script: 27: Bad substitution
 par_sh_env_parallel_session	l1var
 par_sh_env_parallel_session	/bin/sh: XXX: level1func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level1alias: not found
 par_sh_env_parallel_session	/bin/sh: XXX: Bad substitution
 par_sh_env_parallel_session	l2var
-par_sh_env_parallel_session	script: 29: level2func: not found
-par_sh_env_parallel_session	script: 29: level2alias: not found
-par_sh_env_parallel_session	script: 29: Bad substitution
+par_sh_env_parallel_session	script: 27: level2func: not found
+par_sh_env_parallel_session	script: 27: level2alias: not found
+par_sh_env_parallel_session	script: 27: Bad substitution
 par_sh_env_parallel_session	l2var
 par_sh_env_parallel_session	/bin/sh: XXX: level2func: not found
 par_sh_env_parallel_session	/bin/sh: XXX: level2alias: not found
@@ -1652,24 +1652,24 @@ par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	### level0+1+2 should be transferred
 par_dash_env_parallel_session	l0var
 par_dash_env_parallel_session	l0alias
-par_dash_env_parallel_session	script: 32: level0func: not found
-par_dash_env_parallel_session	script: 32: Bad substitution
+par_dash_env_parallel_session	script: 30: level0func: not found
+par_dash_env_parallel_session	script: 30: Bad substitution
 par_dash_env_parallel_session	l0var
 par_dash_env_parallel_session	l0alias
 par_dash_env_parallel_session	/bin/dash: XXX: level0func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
-par_dash_env_parallel_session	script: 32: level1func: not found
-par_dash_env_parallel_session	script: 32: Bad substitution
+par_dash_env_parallel_session	script: 30: level1func: not found
+par_dash_env_parallel_session	script: 30: Bad substitution
 par_dash_env_parallel_session	l1var
 par_dash_env_parallel_session	l1alias
 par_dash_env_parallel_session	/bin/dash: XXX: level1func: not found
 par_dash_env_parallel_session	/bin/dash: XXX: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
-par_dash_env_parallel_session	script: 32: level2func: not found
-par_dash_env_parallel_session	script: 32: Bad substitution
+par_dash_env_parallel_session	script: 30: level2func: not found
+par_dash_env_parallel_session	script: 30: Bad substitution
 par_dash_env_parallel_session	l2var
 par_dash_env_parallel_session	l2alias
 par_dash_env_parallel_session	/bin/dash: XXX: level2func: not found
@@ -1815,21 +1815,21 @@ par_bash_underscore	variables in aliases in and arrays in functions work
 par_bash_underscore	variables in aliases in and arrays in functions work
 par_bash_underscore	variables in aliases in and arrays in functions work
 par_bash_underscore	variables in aliases in and arrays in functions work
-par_bash_underscore	script: line XX: not_copied_alias: command not found
-par_bash_underscore	script: line XX: not_copied_func: command not found
+par_bash_underscore	script: line XXX: not_copied_alias: command not found
+par_bash_underscore	script: line XXX: not_copied_func: command not found
 par_bash_underscore	error=OK
 par_bash_underscore	error=OK
 par_bash_underscore	aliases in and arrays in functions work
 par_bash_underscore	aliases in and arrays in functions work
 par_bash_underscore	aliases in functions work
 par_bash_underscore	aliases in functions work
-par_bash_underscore	/bin/bash: line XX: myecho: command not found
+par_bash_underscore	environment: line XXX: myecho: command not found
 par_bash_underscore	OK if no myecho      ^^^^^^^^^^^^^^^^^^^^^^^^^
-par_bash_underscore	script: line XX: myecho: command not found
+par_bash_underscore	script: line XXX: myecho: command not found
 par_bash_underscore	OK if no myecho      ^^^^^^^^^^^^^^^^^^^^^^^^^
-par_bash_underscore	/bin/bash: line XX: myfunc: command not found
+par_bash_underscore	/bin/bash: line XXX: myfunc: command not found
 par_bash_underscore	OK if no myfunc      ^^^^^^^^^^^^^^^^^^^^^^^^^
-par_bash_underscore	script: line XX: myfunc: command not found
+par_bash_underscore	script: line XXX: myfunc: command not found
 par_bash_underscore	OK if no myfunc      ^^^^^^^^^^^^^^^^^^^^^^^^^
 par_bash_parset	parset
 par_bash_parset	### parset into array
@@ -2293,24 +2293,24 @@ par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	### level0+1+2 should be transferred
 par_ash_env_parallel_session	l0var
 par_ash_env_parallel_session	l0alias
-par_ash_env_parallel_session	script: 32: level0func: not found
-par_ash_env_parallel_session	script: 32: Bad substitution
+par_ash_env_parallel_session	script: 30: level0func: not found
+par_ash_env_parallel_session	script: 30: Bad substitution
 par_ash_env_parallel_session	l0var
 par_ash_env_parallel_session	l0alias
 par_ash_env_parallel_session	/bin/ash: XXX: level0func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
-par_ash_env_parallel_session	script: 32: level1func: not found
-par_ash_env_parallel_session	script: 32: Bad substitution
+par_ash_env_parallel_session	script: 30: level1func: not found
+par_ash_env_parallel_session	script: 30: Bad substitution
 par_ash_env_parallel_session	l1var
 par_ash_env_parallel_session	l1alias
 par_ash_env_parallel_session	/bin/ash: XXX: level1func: not found
 par_ash_env_parallel_session	/bin/ash: XXX: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
-par_ash_env_parallel_session	script: 32: level2func: not found
-par_ash_env_parallel_session	script: 32: Bad substitution
+par_ash_env_parallel_session	script: 30: level2func: not found
+par_ash_env_parallel_session	script: 30: Bad substitution
 par_ash_env_parallel_session	l2var
 par_ash_env_parallel_session	l2alias
 par_ash_env_parallel_session	/bin/ash: XXX: level2func: not found

@@ -62,11 +62,6 @@ par_colsep_0	OK
 par_colsep_0	OK
 par_colsep_default	bug #37956: --colsep does not default to '\t' as specified in the man page.
 par_colsep_default	one 1
-par_completion	### --completion
-par_completion	857e87c031164f28c4ec91e610c8cff7  -
-par_completion	857e87c031164f28c4ec91e610c8cff7  -
-par_completion	09b6d6d121bc9542589aca39741e5390  -
-par_completion	09b6d6d121bc9542589aca39741e5390  -
 par_compress_stdout_stderr	### Test compress - stdout
 par_compress_stdout_stderr	OK
 par_compress_stdout_stderr	### Test compress - stderr
@@ -954,6 +949,11 @@ par_rpl_that_is_substring_of_longer_rpl	a.b/c.d/e.f=a.b/c.d/e.f
 par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
+par_shellcompletion	### --shellcompletion
+par_shellcompletion	b0347a540d9fd8a81339b79577be4567  -
+par_shellcompletion	b0347a540d9fd8a81339b79577be4567  -
+par_shellcompletion	5b279fc707895c822a66e84b32b47195  -
+par_shellcompletion	5b279fc707895c822a66e84b32b47195  -
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	      0       1       1

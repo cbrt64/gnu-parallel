@@ -1555,25 +1555,27 @@ sub acquire_semaphore() {
 sub __PARSE_OPTIONS__() {}
 
 sub shell_completion() {
-    if($opt::completion eq "zsh") {
-	# if(shell == zsh);
+    if($opt::shellcompletion eq "zsh") {
+	# if shell == zsh
 	zsh_competion();
-    } elsif($opt::completion eq "bash") {
-	# if(shell == bash);
+    } elsif($opt::shellcompletion eq "bash") {
+	# if shell == bash
 	bash_competion();
-    } elsif($opt::completion eq "auto") {
+    } elsif($opt::shellcompletion eq "auto") {
 	if($Global::shell =~ m:/zsh$|^zsh$:) {
-	    # if(shell == zsh);
+	    # if shell == zsh
 	    zsh_competion();
 	} elsif($Global::shell =~ m:/bash$|^bash$:) {
-	    # if(shell == bash);
+	    # if shell == bash
 	    bash_competion();
 	} else {
-	    ::error("--completion is not implemented for '$Global::shell'.");
+	    ::error("--shellcompletion is not implemented for ".
+		    "'$Global::shell'.");
 	    wait_and_exit(255);
 	}
     } else {
-	::error("--completion is not implemented for '$opt::completion'.");
+	::error("--shellcompletion is not implemented for ".
+		"'$opt::shellcompletion'.");
 	wait_and_exit(255);
     }
 }
@@ -1600,10 +1602,14 @@ sub bash_competion() {
 	    my $func = $4;
 	    # opt=s => opt
 	    $opt =~ s/[:=].$//;
-	    push @bash_completion,
-		(map { (length $_ == 1) ? "-$_ " : "--$_ " }
-				split /\|/, $opt);
-
+	    if($opt =~ /^_/) {
+		# internal options start with --_
+		# skip
+	    } else {
+		push @bash_completion,
+		    (map { (length $_ == 1) ? "-$_ " : "--$_ " }
+		     split /\|/, $opt);
+	    }
 	}
 	shift @och;
     }
@@ -1630,15 +1636,20 @@ sub zsh_competion() {
 	    my $func = $4;
 	    # opt=s => opt
 	    $opt =~ s/[:=].$//;
-	    # {-o,--option}
-	    my $zsh_opt = join(",",
-			       (map { (length $_ == 1) ? "-$_" : "--$_" }
-				split /\|/, $opt));
-	    if($zsh_opt =~ /,/) { $zsh_opt = "{$zsh_opt}"; }
-	    $desc =~ s/'/'"'"'/g;
-	    $argdesc =~ s/'/'"'"'/g;
-	    $func =~ s/'/'"'"'/g;
-	    push @zsh_completion, $zsh_opt."'".$desc.$argdesc.$func."' ";
+	    if($opt =~ /^_/) {
+		# internal options start with --_
+		# skip
+	    } else {
+		# {-o,--option}
+		my $zsh_opt = join(",",
+				   (map { (length $_ == 1) ? "-$_" : "--$_" }
+				    split /\|/, $opt));
+		if($zsh_opt =~ /,/) { $zsh_opt = "{$zsh_opt}"; }
+		$desc =~ s/'/'"'"'/g;
+		$argdesc =~ s/'/'"'"'/g;
+		$func =~ s/'/'"'"'/g;
+		push @zsh_completion, $zsh_opt."'".$desc.$argdesc.$func."' ";
+	    }
 	}
 	shift @och;
     }
@@ -1857,9 +1868,12 @@ sub options_completion_hash() {
 	  "[Use sep-str instead of ::: as separator string]:sep-str"
 	  => \$opt::arg_sep),
 	 ("arg-file-sep|argfilesep=s".
-	  "[Use sep-str instead of :::: as separator string between command and argument files]:sep-str"
+	  "[Use sep-str instead of :::: as separator string ".
+	  "between command and argument files]:sep-str"
 	  => \$opt::arg_file_sep),
-	 ("trim=s[Trim white space in input]:trim_method:(n l r lr rl)"
+	 ('trim=s[Trim white space in input]:trim_method:'.
+	  '((n\:"No trim" l\:"Left\ trim" r\:"Right trim" '.
+	  'lr\:"Both trim" rl\:"Both trim"))'
 	  => \$opt::trim),
 	 "env=s[Copy environment variable var]:var:_vars" => \@opt::env,
 	 "recordenv|record-env[Record environment]" => \$opt::record_env,
@@ -1961,11 +1975,11 @@ sub options_completion_hash() {
 	 ("shebang|hashbang".
 	  "[GNU parallel can be called as a shebang (#!) command as the first line of a script. The content of the file will be treated as inputsource]"
 	  => \$opt::shebang),
-	 ("internal-pipe-means-argfiles|internalpipemeansargfiles"
-	  => \$opt::internal_pipe_means_argfiles),
+	 ("_pipe-means-argfiles[internal]"
+	  => \$opt::_pipe_means_argfiles),
 	 "Y" => \$opt::retired,
 	 ("skip-first-line|skipfirstline".
-	  "[Do not use the first line of input (used by GNU parallel itself when called with --shebang)]"
+	  "[Do not use the first line of input]"
 	  => \$opt::skip_first_line),
 	 "bug" => \$opt::bug,
 	 # --pipe
@@ -1979,7 +1993,7 @@ sub options_completion_hash() {
 	  "[Split record between endstring and startstring]:endstring"
 	  => \$opt::recend),
 	 ("regexp|regex".
-	  "[Use --regexp to interpret --recstart and --recend as regular expressions]"
+	  "[Interpret --recstart and --recend as regular expressions]"
 	  => \$opt::regexp),
 	 ("remove-rec-sep|removerecsep|rrs".
 	  "[Remove record separator]" => \$opt::remove_rec_sep),
@@ -2010,10 +2024,12 @@ sub options_completion_hash() {
 	 "embed[Embed GNU parallel in a shell script]" => \$opt::embed,
 	 ("filter=s[Only run jobs where filter is true]:filter"
 	  => \@opt::filter),
-	 "parset=s" => \$opt::parset,
-	 "completion=s" => \$opt::completion,
+	 "_parset=s[Generate shell code for parset]" => \$opt::_parset,
+	 ("shell-completion|shellcompletion=s".
+	  "[Generate shell code for shell completion]"
+	  => \$opt::shellcompletion),
 	 # Parameter for testing optimal values
-	 "test=s" => \$opt::test,
+	 "_test=s" => \$opt::_test,
 	);
 }
 
@@ -2061,7 +2077,7 @@ sub get_options_from_array($@) {
 
 sub parse_parset() {
     $Global::progname = "parset";
-    @Global::parset_vars = split /[ ,]/, $opt::parset;
+    @Global::parset_vars = split /[ ,]/, $opt::_parset;
     my $var_or_assoc = shift @Global::parset_vars;
     # Legal names: var _v2ar arrayentry[2]
     my @illegal = (grep { not /^[a-zA-Z_][a-zA-Z_0-9]*(\[\d+\])?$/ }
@@ -2089,7 +2105,7 @@ sub parse_parset() {
 	    $Global::parset_endstring=")\n";
 	}
     } else {
-	::die_bug("parset: unknown '$opt::parset'");
+	::die_bug("parset: unknown '$opt::_parset'");
     }
 }
 
@@ -2122,7 +2138,7 @@ sub parse_options(@) {
     }
     ::debug("init","Global::shell $Global::shell\n");
     $Global::cshell = $Global::shell =~ m:(/[-a-z]*)?csh:;
-    if(defined $opt::parset) { parse_parset(); }
+    if(defined $opt::_parset) { parse_parset(); }
     if(defined $opt::X) { $Global::ContextReplace = 1; }
     if(defined $opt::silent) { $Global::verbose = 0; }
     if(defined $opt::null) { $/ = "\0"; }
@@ -2172,7 +2188,7 @@ sub parse_options(@) {
     # Default: Same nice level as GNU  Parallel is started at
     $opt::nice ||= eval { getpriority(0,0) } || 0;
     if(defined $opt::help) { usage(); exit(0); }
-    if(defined $opt::completion) { shell_completion(); exit(0); }
+    if(defined $opt::shellcompletion) { shell_completion(); exit(0); }
     if(defined $opt::embed) { embed(); exit(0); }
     if(defined $opt::sqlandworker) {
 	$opt::sqlmaster = $opt::sqlworker = $opt::sqlandworker;
@@ -3162,7 +3178,7 @@ sub read_options() {
 	    }
 	    my $script = Q(shift @ARGV);
 	    # exec myself to split $ARGV[0] into separate fields
-	    exec "$0 --internal-pipe-means-argfiles @options @parser $script ".
+	    exec "$0 --_pipe-means-argfiles @options @parser $script ".
 		"::: @ARGV";
 	}
     }
@@ -3273,7 +3289,7 @@ sub read_args_from_command_line() {
     # Uses:
     #	$Global::arg_sep
     #	$Global::arg_file_sep
-    #	$opt::internal_pipe_means_argfiles
+    #	$opt::_pipe_means_argfiles
     #	$opt::pipe
     #	@opt::a
     # Returns:
@@ -3317,7 +3333,7 @@ sub read_args_from_command_line() {
 		push @opt::linkinputsource, $is_linked;
 	    }
 	    if($is_file
-	       or ($opt::internal_pipe_means_argfiles and $opt::pipe)
+	       or ($opt::_pipe_means_argfiles and $opt::pipe)
 		) {
 		# Group of file names on the command line.
 		# Append args into -a
@@ -5374,7 +5390,7 @@ sub wait_and_exit($) {
     # Avoid: Warning: unable to close filehandle properly: No space
     #	     left on device during global destruction.
     $SIG{__WARN__} = sub {};
-    if($opt::parset) {
+    if($opt::_parset) {
 	# Make the shell script return $error
 	print "$Global::parset_endstring\nreturn $error";
     }
@@ -10485,9 +10501,9 @@ sub start($) {
     $ENV{'PARALLEL_TMP'} = ::tmpname("par");
     $job->add_rm($ENV{'PARALLEL_TMP'});
     $job->fill_templates();
+    $ENV{'SSHPASS'} = $job->{'sshlogin'}->{'password'};
     ::debug("run", $Global::total_running, " processes . Starting (",
 	    $job->seq(), "): $command\n");
-    $ENV{'SSHPASS'} = $job->{'sshlogin'}->{'password'};
     if($opt::pipe) {
 	my ($stdin_fh) = ::gensym();
 	$pid = open3_setpgrp($stdin_fh,$stdout_fh,$stderr_fh,$command);

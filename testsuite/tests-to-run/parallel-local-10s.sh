@@ -20,7 +20,7 @@ par_reload_slf_every_second() {
     # This used to take 20 seconds (version 20220322) because the
     # updated --slf would only read after first job finished
     seq 3 |
-	stdout /usr/bin/time -f %e parallel-20220322 --slf "$tmp" 'true {};sleep 10' |
+	stdout /usr/bin/time -f %e parallel --slf "$tmp" 'true {};sleep 10' |
         perl -ne '$_ < 20 and print "OK\n"'
     rm "$tmp"
 }

@@ -27,7 +27,6 @@
 #
 # SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 # shellcheck disable=SC2006
 
 env_parallel() {
@@ -75,7 +74,8 @@ env_parallel() {
                 # sh on UnixWare: readonly TIMEOUT
 	        # ash: readonly var='val'
 	        # ksh: var='val'
-                s/^(readonly )?([^= ]*)(=.*|)$/$2/ or
+		# mksh: PIPESTATUS[0]
+                s/^(readonly )?([^=\[ ]*?)(\[\d+\])?(=.*|)$/$2/ or
 	        # bash: declare -ar BASH_VERSINFO=([0]="4" [1]="4")
 	        # zsh: typeset -r var='val'
                   s/^\S+\s+\S+\s+(\S[^=]*)(=.*|$)/$1/;
@@ -86,7 +86,9 @@ env_parallel() {
     }
     _remove_bad_NAMES() {
 	# Do not transfer vars and funcs from env_parallel
+	# shellcheck disable=SC2006
 	_ignore_RO="`_ignore_READONLY`"
+	# shellcheck disable=SC2006
 	_ignore_HARD="`_ignore_HARDCODED`"
 	# Macos-grep does not like long patterns
 	# Old Solaris grep does not support -E
@@ -216,10 +218,12 @@ env_parallel() {
     fi
 
     # Grep regexp for vars given by --env
+    # shellcheck disable=SC2006
     _grep_REGEXP="`_make_grep_REGEXP \"$@\"`"
     unset _make_grep_REGEXP
 
     # Deal with --env _
+    # shellcheck disable=SC2006
     _ignore_UNDERSCORE="`_get_ignored_VARS \"$@\"`"
     unset _get_ignored_VARS
 
@@ -244,6 +248,7 @@ env_parallel() {
     else
 	# Insert ::: between each level of session
 	# so you can pop off the last ::: at --end-session
+	# shellcheck disable=SC2006
 	PARALLEL_IGNORED_NAMES="`echo \"$PARALLEL_IGNORED_NAMES\";
           echo :::;
           (_names_of_ALIASES;
@@ -269,6 +274,7 @@ env_parallel() {
 	true skip
     else
 	# Pop off last ::: from PARALLEL_IGNORED_NAMES
+	# shellcheck disable=SC2006
 	PARALLEL_IGNORED_NAMES="`perl -e '
           $ENV{PARALLEL_IGNORED_NAMES} =~ s/(.*):::.*?$/$1/s;
 	  print $ENV{PARALLEL_IGNORED_NAMES}
@@ -276,6 +282,7 @@ env_parallel() {
 	return 0
     fi
     # Grep alias names
+    # shellcheck disable=SC2006
     _alias_NAMES="`_names_of_ALIASES | _remove_bad_NAMES | xargs echo`"
     _list_alias_BODIES="_bodies_of_ALIASES $_alias_NAMES"
     if [ "$_alias_NAMES" = "" ] ; then
@@ -285,6 +292,7 @@ env_parallel() {
     unset _alias_NAMES
 
     # Grep function names
+    # shellcheck disable=SC2006
     _function_NAMES="`_names_of_FUNCTIONS | _remove_bad_NAMES | xargs echo`"
     _list_function_BODIES="_bodies_of_FUNCTIONS $_function_NAMES"
     if [ "$_function_NAMES" = "" ] ; then
@@ -294,6 +302,7 @@ env_parallel() {
     unset _function_NAMES
 
     # Grep variable names
+    # shellcheck disable=SC2006
     _variable_NAMES="`_names_of_VARIABLES | _remove_bad_NAMES | xargs echo`"
     _list_variable_VALUES="_bodies_of_VARIABLES $_variable_NAMES"
     if [ "$_variable_NAMES" = "" ] ; then
@@ -387,6 +396,7 @@ _parset_main() {
 	return 255
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
+	# shellcheck disable=SC2006
 	echo "parset 20220323 (GNU parallel `parallel --minversion 1`)"
 	echo "Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
@@ -406,14 +416,17 @@ _parset_main() {
     # Bash: declare -A myassoc=( )
     # Zsh: typeset -A myassoc=( )
     # Ksh: typeset -A myassoc=( )
+    # shellcheck disable=SC2039,SC2169
     if (typeset -p "$_parset_NAME" 2>/dev/null; echo) |
 	    perl -ne 'exit not (/^declare[^=]+-A|^typeset[^=]+-A/)' ; then
 	# This is an associative array
-	eval "`$_parset_PARALLEL_PRG -k --parset assoc,"$_parset_NAME" "$@"`"
+	# shellcheck disable=SC2006
+	eval "`$_parset_PARALLEL_PRG -k --_parset assoc,"$_parset_NAME" "$@"`"
 	# The eval returns the function!
     else
 	# This is a normal array or a list of variable names
-	eval "`$_parset_PARALLEL_PRG -k --parset var,"$_parset_NAME" "$@"`"
+	# shellcheck disable=SC2006
+	eval "`$_parset_PARALLEL_PRG -k --_parset var,"$_parset_NAME" "$@"`"
 	# The eval returns the function!
     fi
 }

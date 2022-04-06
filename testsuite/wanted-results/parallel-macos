@@ -2,13 +2,13 @@ par_big_func	       1    3XXX   91XXX
 par_big_func	       1    3XXX   91XXX
 par_big_func	       1    3XXX   91XXX
 par_big_func	       1    1XXX   44XXX
-par_big_func_name	       1     820   19XXX
-par_big_func_name	       1     820   19XXX
-par_big_func_name	       1     820   19XXX
-par_big_func_name	       1     820   19XXX
-par_big_func_name	       1     820   19XXX
-par_big_func_name	       1     820   19XXX
-par_big_func_name	       1      80    1XXX
+par_big_func_name	   19XXX
+par_big_func_name	   19XXX
+par_big_func_name	   19XXX
+par_big_func_name	   19XXX
+par_big_func_name	   19XXX
+par_big_func_name	   19XXX
+par_big_func_name	    2XXX
 par_big_var_func_name	       1     816   19XXX
 par_big_var_func_name	       1     816   19XXX
 par_big_var_func_name	       1     816   19XXX
@@ -69,32 +69,32 @@ par_many_var	       1     980   23XXX
 par_many_var	       1     980   23XXX
 par_many_var	       1     980   23XXX
 par_many_var	       1     788   18XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1     264    6XXX
-par_many_var_big_func	       1      68    1XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    6XXX
+par_many_var_big_func	    4XXX
 par_many_var_func	       1    2XXX   59XXX
 par_many_var_func	       1    2XXX   59XXX
 par_many_var_func	       1    1XXX   40XXX

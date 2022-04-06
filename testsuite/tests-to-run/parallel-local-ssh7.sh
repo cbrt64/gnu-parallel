@@ -699,9 +699,7 @@ par_bash_underscore() {
     echo "OK if no myfunc      ^^^^^^^^^^^^^^^^^^^^^^^^^" >&2;
 _EOF
   )
-  stdout ssh bash@lo "$myscript" |
-      perl -pe 's/line ..:/line XX:/;
-                s@environment:@/bin/bash:@;'
+  stdout ssh bash@lo "$myscript"
 }
 
 par_csh_underscore() {
@@ -844,8 +842,7 @@ _EOF
   # Old versions of fish sometimes throw up bugs all over,
   # but seem to work OK otherwise. So ignore these errors.
   ssh fish@lo "$myscript" 2>&1 |
-      perl -ne '/fish:|fish\(/ and next; print' |
-      perl -pe 's:/tmp/par.....:script:'
+      perl -ne '/fish:|fish\(/ and next; print'
 }
 
 par_ksh_underscore() {
@@ -1871,7 +1868,7 @@ par_ksh_environment_too_big() {
     echo 'bug #50815: env_parallel should warn if the environment is too big'
     len_functions=-$(functions|wc -c)/1000
     len_variables=-$(typeset -p | wc -c)/1000
-    len_var=$len_variables+45
+    len_var=$len_variables+40
     len_var_remote=$len_variables+30
     len_var_quote=$len_variables+43
     len_var_quote_remote=$len_variables+30
@@ -2941,8 +2938,7 @@ par_fish_env_parallel_session() {
     set -e PARALLEL_IGNORED_NAMES
 _EOF
   )
-  ssh fish@lo "$myscript" 2>&1 |
-      perl -pe 's:/tmp/par.....:script:g'
+  ssh fish@lo "$myscript" 2>&1
 }
 
 par_ksh_env_parallel_session() {
@@ -3332,6 +3328,6 @@ compgen -A function | grep par_ | LC_ALL=C sort -r |
               s/sh\[\d+\]/sh[XXX]/;
 	      s/.*(tange|zenodo).*//i;
 	      s:/usr/bin:/bin:g;
-	      s:/tmp/par.....\[\d+\]:script[9]:g;
-	      s!/tmp/par.....:!script:!g;
+	      s:/tmp/par-job-\d+_.....\[\d+\]:script[9]:g;
+	      s!/tmp/par-job-\d+_.....!script!g;
 	      '
