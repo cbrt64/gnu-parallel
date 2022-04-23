@@ -36,6 +36,9 @@
 # B<cat | xargs -d "\n" -n1 I<command>>
 
 sub pipefunc {
+    # Emulate a shell pipe but between Perl functions
+    # stdin | func1 | func2 | ... | funcN
+    # pipefunc(*func1, *func2, ..., *funcN);
     my $func = pop;
 
     my $pid = open(my $kid_to_read, "-|");
@@ -57,14 +60,23 @@ sub pipefunc {
     }
 }
 
-sub pre {
-    # Remove comments
-    $_=join("", grep { ! /^#/ } <>);
-    # join lines in each paragraph
-    s/(\S)\n(\S)/$1 $2/g;
-    # quote -
-    s/^=item -/=item \001/gm;
-    print $_;
+sub pre1 {
+    while(<STDIN>) {
+	# Remove comments
+	/^\#/ and next;
+	# quote -
+	s/^=item -/=item \001/;
+	print;
+    }
+}
+
+sub pre2 {
+    $/="\n\n";
+    while(<STDIN>) {
+	# join lines in each paragraph
+	s/(\S)\n(\S)/$1 $2/g;
+	print;
+    }
 }
 
 sub pod2rst {
@@ -83,6 +95,5 @@ sub post {
     }
 }
 
-# stdin | pre() | pod2rst() | post()
-pipefunc(*pre,*pod2rst,*post);
-
+# stdin | pre1() | pre2() | pod2rst() | post()
+pipefunc(*pre1,*pre2,*pod2rst,*post);

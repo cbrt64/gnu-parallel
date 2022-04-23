@@ -877,10 +877,14 @@ par_results_json() {
 par_testquote() {
     testquote() {
 	printf '"#&/\n()*=?'"'" |
-	    PARALLEL_SHELL=$1 parallel -0 echo
+	    PARALLEL_SHELL="$1" parallel -0 echo
     }
     export -f testquote
-    parallel --tag -k testquote ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rc rzsh sash sh static-sh tcsh yash zsh
+    # "sash script" does not work
+    # "sash -f script" does, but is currently not supported by GNU Parallel
+    # "fdsh" is currently not supported by GNU Parallel:
+    #        It gives ioctl(): Interrupted system call
+    parallel --tag -k testquote ::: ash bash csh dash fdsh fish fizsh ksh ksh93 mksh posh rbash rc rzsh "sash -f" sh static-sh tcsh yash zsh
 }
 
 par_locale_quoting() {

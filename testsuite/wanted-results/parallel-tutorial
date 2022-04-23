@@ -788,7 +788,7 @@ withpassword
   VAR=foo
   export VAR
   parallel --env _ -S $SERVER1 'echo $VAR; my_func2' ::: bar
-script: my_func2: command not found
+script line 2: my_func2: command not found
   NOT='not exported var'
   alias myecho=echo
   not_ex() {

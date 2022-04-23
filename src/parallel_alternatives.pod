@@ -91,7 +91,7 @@ The following features are in some of the comparable tools:
 
 =item O7. Buffering on disk
 
-=item O8. Cleanup of temporary files if killed
+=item O8. No temporary files left if killed
 
 =item O9. Test if disk runs full during run
 
@@ -235,7 +235,7 @@ using B<-z> or B<-Z>), B<sort> (requires using B<-z>).
 
 GNU B<parallel>'s newline separation can be emulated with:
 
-B<cat | xargs -d "\n" -n1 I<command>>
+  cat | xargs -d "\n" -n1 command
 
 B<xargs> can run a given number of jobs in parallel, but has no
 support for running number-of-cpu-cores jobs in parallel.
@@ -3162,7 +3162,7 @@ Summary (see legend above):
 =back
 
 B<parallel-bash> is written in pure bash. It is really fast (overhead
-of ~0.05 ms/job compared to GNU B<parallel>'s ~3 ms/job). So if your
+of ~0.05 ms/job compared to GNU B<parallel>'s 3-10 ms/job). So if your
 jobs are extremely short lived, and you can live with the quite
 limited command, this may be useful.
 

@@ -116,6 +116,13 @@ for I<-j>. E.g. I<procfile> could contain the string 100% or +2 or
 10.
 
 
+=item B<--pipe> (alpha testing)
+
+Pass stdin (standard input) to I<command>.
+
+If I<command> read from stdin (standard input), use B<--pipe>.
+
+
 =item B<--semaphorename> I<name>
 
 =item B<--id> I<name>

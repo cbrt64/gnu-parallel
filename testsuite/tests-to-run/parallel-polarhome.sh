@@ -99,7 +99,7 @@ doit() {
 
     echo '### Copy commands to servers'
     # Dont copy stdout - it depends on /bin/bash
-    env_parallel -vj$MAXPROC $RET_TIME_K --delay 0.03 --tag copy {2} {1} {1/} \
+    env_parallel -j$MAXPROC $RET_TIME_K --delay 0.03 --tag copy {2} {1} {1/} \
 	     ::: bin/{parallel,env_parallel,env_parallel.*[^~],parcat} \
 	     ::: $POLAR minix
     echo Done copying
@@ -210,7 +210,7 @@ EOF
 
 env_parallel -u -S$MASTER doit ::: 1|
     perl -pe 's:/home/(t/)?tange:~:g' |
-    perl -pe 's:/tmp/par\w+:/tmp/parScript:g'
+    perl -pe 's:par-job-\d+_\w+:parScript:g'
 
 # eval 'myfunc() { echo '$(perl -e 'print "x"x20000')'; }'
 # env_parallel myfunc ::: a | wc # OK

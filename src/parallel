@@ -2597,7 +2597,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220401;
+    $Global::version = 20220422;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4391,7 +4391,7 @@ sub get_job_with_sshlogin($) {
     if(not $job->suspended()) {
 	$job->set_sshlogin($sshlogin);
     }
-    if($opt::retries and $job->failed_here()) {
+    if(defined $opt::retries and $job->failed_here()) {
 	# This command with these args failed for this sshlogin
 	my ($no_of_failed_sshlogins,$min_failures) = $job->min_failed();
 	# Only look at the Global::host that have > 0 jobslots
@@ -5025,13 +5025,13 @@ sub onall($@) {
 	     ((defined $opt::memfree) ? "--memfree ".$opt::memfree : ""),
 	     ((defined $opt::memsuspend) ? "--memfree ".$opt::memsuspend : ""),
 	     ((defined $opt::D) ? "-D $opt::D" : ""),
-	     ((defined $opt::group) ? "-g" : ""),
+	     ((defined $opt::group) ? "--group" : ""),
 	     ((defined $opt::jobs) ? "-P $opt::jobs" : ""),
 	     ((defined $opt::keeporder) ? "--keeporder" : ""),
 	     ((defined $opt::linebuffer) ? "--linebuffer" : ""),
 	     ((defined $opt::max_chars) ? "--max-chars ".$opt::max_chars : ""),
 	     ((defined $opt::plain) ? "--plain" : ""),
-	     ((defined $opt::ungroup) ? "-u" : ""),
+	     (($opt::ungroup == 1) ? "-u" : ""),
 	     ((defined $opt::tee) ? "--tee" : ""),
 	);
     my $suboptions =
@@ -5042,7 +5042,7 @@ sub onall($@) {
 	     ((defined $opt::arg_sep) ? "--arg-sep ".$opt::arg_sep : ""),
 	     ((defined $opt::colsep) ? "--colsep ".shell_quote($opt::colsep) : ""),
 	     ((defined $opt::files) ? "--files" : ""),
-	     ((defined $opt::group) ? "-g" : ""),
+	     ((defined $opt::group) ? "--group" : ""),
 	     ((defined $opt::cleanup) ? "--cleanup" : ""),
 	     ((defined $opt::keeporder) ? "--keeporder" : ""),
 	     ((defined $opt::linebuffer) ? "--linebuffer" : ""),
@@ -5051,7 +5051,7 @@ sub onall($@) {
 	     ((defined $opt::plus) ? "--plus" : ""),
 	     ((defined $opt::retries) ? "--retries ".$opt::retries : ""),
 	     ((defined $opt::timeout) ? "--timeout ".$opt::timeout : ""),
-	     ((defined $opt::ungroup) ? "-u" : ""),
+	     (($opt::ungroup == 1) ? "-u" : ""),
 	     ((defined $opt::ssh) ? "--ssh '".$opt::ssh."'" : ""),
 	     ((defined $opt::tee) ? "--tee" : ""),
 	     ((defined $opt::workdir) ? "--wd ".Q($opt::workdir) : ""),
@@ -5438,8 +5438,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-	 "  Tange, O. (2022, March 22). GNU Parallel 20220322 ('Маріу́поль').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.6377950",
+	 "  Tange, O. (2022, April 22). GNU Parallel 20220422 ('Буча').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.6479152",
 	 "",
 	 # Before changing these lines,	 please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
@@ -5471,8 +5471,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2022, March 22). GNU Parallel 20220322 ('Маріу́поль').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.6377950",
+	     "  Tange, O. (2022, April 22). GNU Parallel 20220422 ('Буча').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.6479152",
 	     "",
 	     # Before changing these line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
@@ -5597,20 +5597,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2022_6377950,",
+	"\@software{tange_2022_6479152,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20220322 ('Маріу́поль')},",
-	"      month        = Mar,",
+	"      title        = {GNU Parallel 20220422 ('Буча')},",
+	"      month        = Apr,",
 	"      year         = 2021,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
 	"                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.6377950},",
-	"      url          = {https://doi.org/10.5281/zenodo.6377950}",
+	"      doi          = {10.5281/zenodo.6479152},",
+	"      url          = {https://doi.org/10.5281/zenodo.6479152}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2022_6377950})",
+	"(Feel free to use \\nocite{tange_2022_6479152})",
 	"",
 	# Before changing these lines, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
@@ -8050,19 +8050,6 @@ sub socket_core_thread() {
     #	  'active' => #taskset_threads = number of taskset limited cores
     #	}
     my $cpu;
-    my $cached_cpuspec = $Global::cache_dir . "/tmp/sshlogin/" .
-	::hostname() . "/cpuspec";
-    if(-e $cached_cpuspec and -M $cached_cpuspec < 1) {
-	# Reading cached copy instead of /proc/cpuinfo is 17 ms faster
-	local $/ = "\n";
-	if(open(my $in_fh, "<", $cached_cpuspec)) {
-	    ::debug("init","Read $cached_cpuspec\n");
-	    $cpu->{'sockets'} = int(<$in_fh>);
-	    $cpu->{'cores'} = int(<$in_fh>);
-	    $cpu->{'threads'} = int(<$in_fh>);
-	    close $in_fh;
-	}
-    }
     if ($^O eq 'linux') {
 	$cpu = sct_gnu_linux($cpu);
     } elsif ($^O eq 'android') {
@@ -8109,18 +8096,8 @@ sub socket_core_thread() {
 		|| sct_tru64($cpu)
 	    );
     }
-    if(not grep { $_ > 0 } values %$cpu) {
-	$cpu = undef;
-    }
-    # Write cached copy instead of /proc/cpuinfo is 17 ms faster
-    if($cpu and open(my $out_fh, ">", $cached_cpuspec)) {
-	print $out_fh (map { chomp; "$_\n" }
-		       $cpu->{'sockets'},
-		       $cpu->{'cores'},
-		       $cpu->{'threads'});
-	close $out_fh;
-    }
     if(not $cpu) {
+	# Fall back: Set all to nproc
 	my $nproc = nproc();
 	if($nproc) {
 	    $cpu->{'sockets'} =
@@ -9221,9 +9198,9 @@ sub set_block($$$$$$) {
     my $self = shift;
     my ($header_ref,$buffer_ref,$endpos,$recstart,$recend) = @_;
     $self->{'header'} = $header_ref;
-    if($opt::roundrobin or $opt::remove_rec_sep or $opt::retries) {
+    if($opt::roundrobin or $opt::remove_rec_sep or defined $opt::retries) {
 	my $a = "";
-	if(($opt::roundrobin or $opt::retries) and $self->virgin()) {
+	if(($opt::roundrobin or defined $opt::retries) and $self->virgin()) {
 	    $a .= $$header_ref;
 	}
 	# Job is no longer virgin
@@ -10721,9 +10698,7 @@ sub should_be_retried($) {
     #	0 - do not retry
     #	1 - job queued for retry
     my $self = shift;
-    if (not $opt::retries) {
-	return 0;
-    }
+    if (not defined $opt::retries) { return 0; }
     if(not $self->exitstatus() and not $self->exitsignal()) {
 	# Completed with success. If there is a recorded failure: forget it
 	$self->reset_failed_here();
@@ -10733,6 +10708,11 @@ sub should_be_retried($) {
 	$self->add_failed_here();
 	my $retries = $self->{'commandline'}->
 	    replace_placeholders([$opt::retries],0,0);
+	# 0 = Inf
+	if($retries == 0) { $retries = 2**31; }
+	# Ignore files already unlinked to avoid memory leak
+	$self->{'unlink'} = [ grep { -e $_ } @{$self->{'unlink'}} ];
+	map { -e $_ or delete $Global::unlink{$_} } keys %Global::unlink;
 	if($self->total_failed() == $retries) {
 	    # This has been retried enough
 	    return 0;
@@ -11264,7 +11244,7 @@ sub print_normal($) {
 
 	if($Global::parset and $fdno == 1) {
 	    $outputlength += $self->print_parset($fdno,$in_fh,$out_fh);
-	} elsif($opt::tag or $opt::tagstring) {
+	} elsif(defined $opt::tag or defined $opt::tagstring) {
 	    # Read line by line
 	    local $/ = "\n";
 	    my $tag = $self->tag();
@@ -11400,7 +11380,7 @@ sub print_joblog($) {
 	}
 	my $self = shift;
 	if(not defined $self->{'tag'} or not $Global::cache_replacement_eval) {
-	    if($opt::tag or defined $opt::tagstring) {
+	    if(defined $opt::tag or defined $opt::tagstring) {
 		if($Global::color) {
 		    if(not @color) { init_color() }
 		    # Choose a value based on the seq
@@ -12327,7 +12307,7 @@ sub new($) {
 	$opt::tagstring, $opt::workdir, $opt::results, $opt::retries,
 	@opt::filter) {
 	# Skip if undefined
-	$_ or next;
+	defined($_) or next;
 	# Escape \257 => \257\256
 	$Global::escape_string_present += s/\257/\257\256/g;
 	# Needs to match rightmost left parens (Perl defaults to leftmost)
@@ -12548,7 +12528,7 @@ sub replacement_counts_and_lengths($$@) {
 	    @opt::filter,
 	    $opt::tagstring, $opt::workdir, $opt::results, $opt::retries) {
 	    # Options that can contain replacement strings
-	    $_ or next;
+	    defined($_) or next;
 	    my $t = $_;
 	    while($t =~ s/ \257<( (?: [^\257]*|[\257][^<>] )* )\257> //xs) {
 		# %replacecount = { "perlexpr" => number of times seen }
@@ -14509,7 +14489,7 @@ sub main() {
 	    }
 	    ::wait_and_exit(255);
 	}
-    } elsif($opt::pipe and not $opt::pipepart) {
+    } elsif($opt::pipe and not $opt::pipepart and not $opt::semaphore) {
 	# Fill all jobslots
 	while(start_more_jobs()) {}
 	spreadstdin();

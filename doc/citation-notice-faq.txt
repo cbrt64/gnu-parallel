@@ -227,10 +227,10 @@ You can even get GNU Parallel in a version with the citation notice
 silenced and which you do not have to cite: You just have to pay for
 it and help finance the development that way.
 
-A lot of tools requires configuration before use, or give you 'OK. Do
-not show this again'-dialog boxes until you silence those, so it is
-not uncommon, that you have to do a little extra work, when running
-the software for the first time.
+Many tools require configuration before use, or give you 'OK. Do not
+show this again'-dialog boxes until you silence those, so it is not
+uncommon, that you have to do a little extra work, when running the
+software for the first time.
 
 Running 'parallel --citation' takes less than 10 seconds to run, and
 if GNU Parallel does not save you 10 seconds, then you should probably

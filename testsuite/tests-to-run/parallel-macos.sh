@@ -156,7 +156,7 @@ par_big_var_func_name() {
     for a in `seq 10`; do eval "export a$big$a=1" ; done
     for a in `seq 10`; do eval "a$big$a() { 1; }" ; done
     for a in `seq 10`; do eval export -f a$big$a ; done
-    gen 80000 | stdout parallel --load 4 -Xkj1  'pecho {} {} {} {} | wc' |
+    gen 80000 | stdout parallel --load 4 -Xkj1  'pecho {} {} {} {} | wc -c' |
 	perl -pe 's/\d{10,}.\d+ //g'
 }
 

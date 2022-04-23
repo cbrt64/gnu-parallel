@@ -90,9 +90,10 @@ EOF
 
 par_header_in_return() {
     echo '### bug #45907: --header : + --return {header}'
-    rm returnfile45907
+    rm -f returnfile45907
     parallel --header : -S parallel@lo --return {G} --cleanup echo {G} '>' {G} ::: G returnfile45907
     ls returnfile45907
+    rm -f returnfile45907
 }
 
 par_trc_with_space() {

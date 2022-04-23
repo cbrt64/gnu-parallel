@@ -47,6 +47,9 @@ run under Python3, Python is not an option.
 Perl has the added benefit that implementing the {= perlexpr =}
 replacement string was fairly easy.
 
+The primary drawback is that Perl is slow. So there is an overhead of
+3-10 ms/job and 1 ms/MB output (and even more if you use B<--tag>).
+
 
 =head2 Old Perl style 
 

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
@@ -102,7 +101,8 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
 	    s/doi.*=.*//;
 	    s/url.*= .*doi.org.*//;
 	    s/.Feel free to use .nocite.*//;
-	    s:^/tmp/par.*(.) my_func2:script$1 my_func2:;
+	    s:/tmp/parallel-tutorial-tmpdir/par-job-\S+:script:g;
+	    s:/tmp/par-job-\S+:script:g;
 	    ' | uniq
 # 3+3 .par files (from --files), 1 .tms-file from tmux attach
 find {$TMPDIR,/var/tmp,/tmp}/{fif,tms,par[^a]}* -mmin -10 2>/dev/null | wc -l

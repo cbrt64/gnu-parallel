@@ -933,7 +933,7 @@ on B<ash>, B<bash>, B<dash>, B<ksh>, B<sh>, and B<zsh>.
 
 =item B<--env> I<var>
 
-Copy environment variable I<var>.
+Copy exported environment variable I<var>.
 
 This will copy I<var> to the environment that the command is run
 in. This is especially useful for remote execution.
@@ -2111,10 +2111,12 @@ See also: B<--memfree> B<--memsuspend>
 
 =item B<--record-env>
 
-Record environment.
+Record exported environment.
 
-Record current environment variables in ~/.parallel/ignored_vars. This
-is useful before using B<--env _>.
+Record current exported environment variables in
+B<~/.parallel/ignored_vars>.  This will ignore variables currently set
+when using B<--env _>. So you should set the variables/fuctions, you
+want to use I<after> running B<--record-env>.
 
 See also: B<--env> B<--session> B<env_parallel>
 
@@ -2412,6 +2414,8 @@ B<--sshlogin> GNU B<parallel> will re-use all the computers. This is
 useful if some jobs fail for no apparent reason (such as network
 failure).
 
+I<n>=0 means infinite.
+
 See also: B<--term-seq> B<--sshlogin>
 
 
@@ -2685,8 +2689,13 @@ See also: B<{#}>
 =item B<--session>
 
 Record names in current environment in B<$PARALLEL_IGNORED_NAMES> and
-exit. Only used with B<env_parallel>. Aliases, functions, and
-variables with names in B<$PARALLEL_IGNORED_NAMES> will not be copied.
+exit.
+
+Only used with B<env_parallel>. Aliases, functions, and variables with
+names in B<$PARALLEL_IGNORED_NAMES> will not be copied.  So you should
+set variables/function you want to use I<after> running B<--session>.
+
+It is similar to B<--record-env>, but only for this session.
 
 Only supported in B<Ash, Bash, Dash, Ksh, Sh, and Zsh>.
 
@@ -4205,10 +4214,10 @@ To see the difference between file A and file B look at the file
 
 =head2 EXAMPLE: Speeding up fast jobs
 
-Starting a job on the local machine takes around 10 ms. This can be a
-big overhead if the job takes very few ms to run. Often you can group
-small jobs together using B<-X> which will make the overhead less
-significant. Compare the speed of these:
+Starting a job on the local machine takes around 3-10 ms. This can be
+a big overhead if the job takes very few ms to run. Often you can
+group small jobs together using B<-X> which will make the overhead
+less significant. Compare the speed of these:
 
   seq -w 0 9999 | parallel touch pict{}.jpg
   seq -w 0 9999 | parallel -X touch pict{}.jpg
@@ -4392,12 +4401,45 @@ combined in the correct order.
 
 =head2 EXAMPLE: Parallel grep
 
-B<grep -r> greps recursively through directories. On multicore CPUs
-GNU B<parallel> can often speed this up.
+B<grep -r> greps recursively through directories. GNU B<parallel> can
+often speed this up.
 
   find . -type f | parallel -k -j150% -n 1000 -m grep -H -n STRING {}
 
 This will run 1.5 job per CPU, and give 1000 arguments to B<grep>.
+
+There are situations where the above will be slower than B<grep -r>:
+
+=over 2
+
+=item *
+
+If data is already in RAM. The overhead of starting jobs and buffering
+output may outweigh the benefit of running in parallel.
+
+=item *
+
+If the files are big. If a file cannot be read in a single seek, the
+disk may start thrashing.
+
+=back
+
+The speedup is caused by two factors:
+
+=over 2
+
+=item *
+
+On rotating harddisks small files often require a seek for each
+file. By searching for more files in parallel, the arm may pass
+another wanted file on its way.
+
+=item *
+
+NVMe drives often perform better by having multiple command running in
+parallel.
+
+=back
 
 
 =head2 EXAMPLE: Grepping n lines for m regular expressions.
@@ -5863,11 +5905,11 @@ and 150 ms after that.
 
 =head3 Job startup
 
-Starting a job on the local machine takes around 10 ms. This can be a
-big overhead if the job takes very few ms to run. Often you can group
-small jobs together using B<-X> which will make the overhead less
-significant. Or you can run multiple GNU B<parallel>s as described in
-B<EXAMPLE: Speeding up fast jobs>.
+Starting a job on the local machine takes around 3-10 ms. This can be
+a big overhead if the job takes very few ms to run. Often you can
+group small jobs together using B<-X> which will make the overhead
+less significant. Or you can run multiple GNU B<parallel>s as
+described in B<EXAMPLE: Speeding up fast jobs>.
 
 =head3 SSH
 

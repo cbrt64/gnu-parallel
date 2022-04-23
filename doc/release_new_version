@@ -254,25 +254,30 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220422 ('Буча #SlavaUkrayini #SlavaUkrayini🌻 albright<<>>') released [stable]
+Subject: GNU Parallel 20220422 ('Буча') released
 
-GNU Parallel 20220422 ('<<>>') has been released. It is available for download at: lbry://@GnuParallel:4
-
-<<No new functionality was introduced so this is a good candidate for a stable release.>>
+GNU Parallel 20220422 ('Буча') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-  <<>>
-
+  Immensely useful which I am forever grateful that it exists.
+    -- AlexDragusin@ycombinator
+  
 New in this release:
 
-<<>>
+* sash is no longer supported as shell.
 
-* Bug fixes and man page updates: Many options now have a 'See also' section.
+* --retries 0 is an alias for --retries 2147483647.
 
-News about GNU Parallel:
+* --shell-completion returns shell completion code.
 
-<<>>
+* --ssh-login-file reloads every second.
+
+* --parset is replaced with --_parset because it is only used internally.
+
+* sem --pipe passes STDIN (standard input) to the command.
+
+* Bug fixes and man page updates.
 
 Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 

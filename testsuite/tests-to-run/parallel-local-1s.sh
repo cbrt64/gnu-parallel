@@ -43,11 +43,11 @@ par_compute_command_len() {
 }
 
 par_skip_first_line() {
-    tmpdir=$(mktemp)
+    tmp=$(mktemp)
     (echo `seq 10000`;echo MyHeader; seq 10) |
 	parallel -k --skip-first-line --pipe --block 10 --header '1' cat
-    (echo `seq 10000`;echo MyHeader; seq 10) > "$tmpdir"
-    parallel -k --skip-first-line --pipepart -a "$tmpdir" --block 10 --header '1' cat
+    (echo `seq 10000`;echo MyHeader; seq 10) > "$tmp"
+    parallel -k --skip-first-line --pipepart -a "$tmp" --block 10 --header '1' cat
 }
 
 par_long_input() {

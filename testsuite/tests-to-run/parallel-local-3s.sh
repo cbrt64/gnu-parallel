@@ -8,6 +8,15 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_retries_0() {
+    echo '--retries 0 = inf'
+    echo this wraps at 256 and should retry until it wraps
+    tmp=$(mktemp)
+    parallel --retries 0 -u 'printf {} >> '$tmp';a=`stat -c %s '$tmp'`; echo -n " $a";  exit $a' ::: a
+    echo
+    rm -f $tmp
+}
+
 par_prefix_for_L_n_N_s() {
     echo Must give xxx000 args
     seq 10000 | parallel -N 1k 'echo {} | wc -w' | sort
@@ -281,7 +290,7 @@ par_tee_with_premature_close() {
     correct="$(seq 1000000 | parallel -k --tee --pipe ::: wc head tail 'sleep 1')"
     echo "$correct"
     echo 'tee without --output-error=warn-nopipe support'
-    mkdir -p tmp
+    tmpdir=$(mktemp)
     cat > tmp/tee <<-EOF
 	#!/usr/bin/perl
 
