@@ -1853,6 +1853,7 @@ sub options_completion_hash() {
 	  "[Use prg for decompressing temporary files]:prg:_commands"
 	  => \$opt::decompress_program),
 	 "compress[Compress temporary files]" => \$opt::compress,
+	 "open-tty|o[Open terminal tty]" => \$opt::open_tty,
 	 "tty[Open terminal tty]" => \$opt::tty,
 	 "T" => \$opt::retired,
 	 "H=i" => \$opt::retired,
@@ -2597,7 +2598,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220422;
+    $Global::version = 20220424;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5552,7 +5553,7 @@ sub die_bug($) {
     print STDERR
 	("$Global::progname: This should not happen. You have found a bug. ",
 	 "Please follow\n",
-	 "https://www.gnu.org/software/parallel/man.html#REPORTING-BUGS\n",
+	 "https://www.gnu.org/software/parallel/man.html#reporting-bugs\n",
 	 "\n",
 	 "Include this in the report:\n",
 	 "* The version number: $Global::version\n",
@@ -10490,7 +10491,7 @@ sub start($) {
 	}
 	$job->set_fh(0,"w",$stdin_fh);
 	if($opt::tee or $opt::shard or $opt::bin) { $job->set_virgin(0); }
-    } elsif($opt::tty and -c "/dev/tty" and
+    } elsif(($opt::tty or $opt::open_tty) and -c "/dev/tty" and
 	    open(my $devtty_fh, "<", "/dev/tty")) {
 	# Give /dev/tty to the command if no one else is using it
 	# The eval is needed to catch exception from open3

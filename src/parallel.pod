@@ -1778,6 +1778,17 @@ there will be several job sequence 1.
 See also: B<--nonall> B<--sshlogin>
 
 
+=item B<--open-tty> (alpha testing)
+
+=item B<-o> (alpha testing)
+
+Open terminal tty.
+
+Similar to B<--tty> but does not set B<--jobs> or B<--ungroup>.
+
+See also: B<--tty>
+
+
 =item B<--output-as-files>
 
 =item B<--outputasfiles>
@@ -3132,7 +3143,7 @@ the jobs (with B<--timeout>, B<--memfree>, or B<--halt>). This is due
 to GNU B<parallel> giving each child its own process group, which is
 then killed. Process groups are dependant on the tty.
 
-See also: B<--ungroup>
+See also: B<--ungroup> B<--open-tty>
 
 
 =item B<--tag>

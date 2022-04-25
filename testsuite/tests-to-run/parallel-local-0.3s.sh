@@ -16,6 +16,12 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_open-tty() {
+    echo '### bug #62310: xargs compatibility: --open-tty'
+    parallel --open-tty ::: tty
+    parallel -o ::: tty
+}
+    
 par_shellcompletion() {
     echo '### --shellcompletion'
     # This will change, if you change options
