@@ -1933,6 +1933,9 @@ sub options_completion_hash() {
 	 "E=s" => \$opt::eof,
 	 ("eof|e:s[Set the end of file string to eof-str]:eof-str"
 	  => \$opt::eof),
+	 ("process-slot-var|processslotvar=s".
+	  "[Set this variable to job slot number]:varname"
+	  => \$opt::process_slot_var),
 	 ("max-args|maxargs|n=s".
 	  "[Use at most max-args arguments per command line]:max-args"
 	  => \$opt::max_args),
@@ -2211,6 +2214,9 @@ sub parse_options(@) {
     if(defined $opt::arg_sep) { $Global::arg_sep = $opt::arg_sep; }
     if(defined $opt::arg_file_sep) {
 	$Global::arg_file_sep = $opt::arg_file_sep;
+    }
+    if(not defined $opt::process_slot_var) {
+	$opt::process_slot_var = 'PARALLEL_JOBSLOT0';
     }
     if(defined $opt::number_of_sockets) {
 	print SSHLogin::no_of_sockets(),"\n"; wait_and_exit(0);
@@ -9910,8 +9916,8 @@ sub sshlogin_wrap($) {
 	push(@vars, "PARALLEL_PID", "PARALLEL_SEQ",
 	     "PARALLEL_SSHLOGIN", "PARALLEL_SSHHOST",
 	     "PARALLEL_HOSTGROUPS", "PARALLEL_ARGHOSTGROUPS",
-	     "PARALLEL_JOBSLOT", map { ("BASH_FUNC_$_()",
-	     "BASH_FUNC_$_%%") } @vars);
+	     "PARALLEL_JOBSLOT", $opt::process_slot_var,
+	     map { ("BASH_FUNC_$_()", "BASH_FUNC_$_%%") } @vars);
 	# Keep only defined variables
 	return grep { defined($ENV{$_}) } @vars;
     }
@@ -9967,7 +9973,8 @@ sub sshlogin_wrap($) {
     if(not defined $self->{'sshlogin_wrap'}{$command}) {
 	my $sshlogin = $self->sshlogin();
 	$ENV{'PARALLEL_SEQ'} = $self->seq();
-	$ENV{'PARALLEL_JOBSLOT'} = $self->slot();
+	$ENV{$opt::process_slot_var} = -1 +
+	    ($ENV{'PARALLEL_JOBSLOT'} = $self->slot());
 	$ENV{'PARALLEL_SSHLOGIN'} = $sshlogin->string();
 	$ENV{'PARALLEL_SSHHOST'} = $sshlogin->host();
 	if ($opt::hostgroups) {
@@ -10474,7 +10481,8 @@ sub start($) {
     if($opt::dryrun or $opt::sqlmaster) { $command = "true"; }
     $ENV{'PARALLEL_SEQ'} = $job->seq();
     $ENV{'PARALLEL_PID'} = $$;
-    $ENV{'PARALLEL_JOBSLOT'} = $job->slot();
+    $ENV{$opt::process_slot_var} = -1 +
+	($ENV{'PARALLEL_JOBSLOT'} = $job->slot());
     $ENV{'PARALLEL_TMP'} = ::tmpname("par");
     $job->add_rm($ENV{'PARALLEL_TMP'});
     $job->fill_templates();

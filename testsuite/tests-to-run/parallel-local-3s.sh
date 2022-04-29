@@ -8,6 +8,16 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_process_slot_var() {
+    echo '### bug #62310: xargs compatibility: --process-slot-var=name'
+    seq 0.1 0.1 0.5 |
+	parallel -n1 -P4 --process-slot-var=name -q bash -c 'sleep $1; echo "$name"' _
+    seq 0.1 0.1 0.5 |
+	xargs -n1 -P4 --process-slot-var=name bash -c 'sleep $1; echo "$name"' _
+    seq 0.1 0.1 0.5 |
+	parallel -P4 --process-slot-var=name sleep {}\; echo '$name'
+}
+
 par_retries_0() {
     echo '--retries 0 = inf'
     echo this wraps at 256 and should retry until it wraps

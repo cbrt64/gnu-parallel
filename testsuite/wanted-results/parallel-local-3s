@@ -569,6 +569,22 @@ par_prefix_for_L_n_N_s	244
 par_prefix_for_L_n_N_s	246
 par_prefix_for_L_n_N_s	246
 par_prefix_for_L_n_N_s	273
+par_process_slot_var	### bug #62310: xargs compatibility: --process-slot-var=name
+par_process_slot_var	0
+par_process_slot_var	1
+par_process_slot_var	2
+par_process_slot_var	3
+par_process_slot_var	0
+par_process_slot_var	0
+par_process_slot_var	1
+par_process_slot_var	2
+par_process_slot_var	3
+par_process_slot_var	0
+par_process_slot_var	0
+par_process_slot_var	1
+par_process_slot_var	2
+par_process_slot_var	3
+par_process_slot_var	0
 par_progress	### Test of --progress
 par_progress	16
 par_progress	### Test of --progress with no jobs

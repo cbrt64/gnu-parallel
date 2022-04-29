@@ -8,7 +8,6 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
-
 par_commandline_with_newline() {
     echo 'bug #51299: --retry-failed with command with newline'
     echo 'The format must remain the same'

@@ -1929,6 +1929,13 @@ inspired by bash's parameter expansion:
 See also: B<--rpl> B<{}>
 
 
+=item B<--process-slot-var> I<varname> (alpha testing)
+
+Set the environment variable I<varname> to the jobslot number-1.
+
+  seq 10 | parallel --process-slot-var=name echo '$name' {}
+
+
 =item B<--progress>
 
 Show progress of computations.
