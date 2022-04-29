@@ -3352,6 +3352,60 @@ https://github.com/mylanconnolly/parallel
 (Last checked: 2021-07)
 
 
+=head2 DIFFERENCES BETWEEN p AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item - - - I4 - - N/A
+
+=item - - - - - M6
+
+=item - O2 O3 - O5 O6 - x x - O10
+
+=item E1 - - - - - -
+
+=item - - - - - - - - -
+
+=item - -
+
+=back
+
+B<p> is a tiny shell script. It can color output with some predefined
+colors, but is otherwise quite limited.
+
+It maxes out at 116000 jobs (probably due to limitations in Bash).
+
+=head3 EXAMPLES FROM p
+
+The coloring done by GNU B<parallel> is not exactly the same as B<p>.
+
+  1$ p -bc blue "ping 127.0.0.1" -uc red "ping 192.168.0.1" \
+     -rc yellow "ping 192.168.1.1" -t example "ping example.com"
+
+  1$ parallel --lb -j0 --ctag ping \
+     ::: 127.0.0.1 192.168.0.1 192.168.1.1 example.com
+
+  2$ p "tail -f /var/log/httpd/access_log" \
+     -bc red "tail -f /var/log/httpd/error_log"
+
+  2$ cd /var/log/httpd;
+     parallel --lb --ctag tail -f ::: access_log error_log
+
+  3$ p tail -f "some file" \& p tail -f "other file with space.txt"
+
+  3$ parallel --lb tail -f ::: 'some file' "other file with space.txt"
+
+  4$ p -t project1 "hg pull project1" -t project2 \
+     "hg pull project2" -t project3 "hg pull project3"
+
+  4$ parallel --lb hg pull ::: project{1..3}
+
+https://github.com/rudymatela/evenmoreutils/blob/master/man/p.1.adoc
+(Last checked: 2022-04)
+
+
 =head2 Todo
 
 http://code.google.com/p/push/ (cannot compile)
