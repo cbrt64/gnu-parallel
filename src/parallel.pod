@@ -748,6 +748,15 @@ B<--transfer>, B<--transferfile> or B<--return>.
 See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
+=item B<--color>
+
+Colour output.
+
+Colour the output. Each job gets its own color combination
+(background+foreground).
+
+See also: B<--ctag> B<--ctagstring>
+
 
 =item B<--colsep> I<regexp>
 
@@ -825,7 +834,7 @@ When used with B<--pipe> only pass full CSV-records.
 See also: B<--pipe> B<--link> B<{>I<n>B<}> B<--colsep> B<--header>
 
 
-=item B<--ctag> I<str>
+=item B<--ctag> (obsolete: use B<--color> B<--tag>)
 
 Color tag.
 
@@ -833,14 +842,14 @@ If the values look very similar looking at the output it can be hard
 to tell when a new value is used. B<--ctag> gives each value a random
 color.
 
-See also: B<--tag>
+See also: B<--color> B<--tag>
 
 
-=item B<--ctagstring> I<str>
+=item B<--ctagstring> I<str> (obsolete: use B<--color> B<--tagstring>)
 
 Color tagstring.
 
-See also: B<--ctag> B<--tagstring>
+See also: B<--color> B<--ctag> B<--tagstring>
 
 
 =item B<--delay> I<duration>

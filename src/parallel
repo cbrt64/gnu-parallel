@@ -1801,6 +1801,7 @@ sub options_completion_hash() {
 	  "[Tag lines with a string]:str" => \$opt::tagstring),
 	 "ctag[Color tag]:str" => \$opt::ctag,
 	 "ctag-string|ctagstring=s[Color tagstring]:str" => \$opt::ctagstring,
+	 "color|colour[Colorize output]" => \$opt::color,
 	 ("onall[Run all the jobs on all computers given with --sshlogin]"
 	  => \$opt::onall),
 	 "nonall[--onall with no arguments]" => \$opt::nonall,
@@ -2150,7 +2151,8 @@ sub parse_options(@) {
     parse_replacement_string_options();
     $opt::tag ||= $opt::ctag;
     $opt::tagstring ||= $opt::ctagstring;
-    if(defined $opt::ctag or defined $opt::ctagstring) {
+    if(defined $opt::ctag or defined $opt::ctagstring
+	or defined $opt::color) {
 	$Global::color = 1;
     }
     if(defined $opt::tag and not defined $opt::tagstring) {
@@ -11098,7 +11100,18 @@ sub print_linebuffer($) {
 		$i = ((rindex($buf,"\n")+1) || (rindex($buf,"\r")+1));
 		if($i) {
 		    # One or more complete lines were found
-		    if($opt::tag or defined $opt::tagstring) {
+		    if($Global::color) {
+			# To paint a full line, we need to turn on paint
+			# BEFORE printing \n
+			# print @$halfline_ref, substr($buf,0,$i);
+			my $print = join("",@$halfline_ref, substr($buf,0,$i));
+			chomp($print);
+			# print color-on \n tag
+			my $tag = $self->tag();
+			# TODO fix \r
+			$print =~ s/([\n\r])(?=.|$)/$tag/gs;
+			print $out_fh $tag,$print;
+		    } elsif($opt::tag or defined $opt::tagstring) {
 			# Replace ^ with $tag within the full line
 			if($Global::cache_replacement_eval) {
 			    # Replace with the same value for tag
@@ -11119,9 +11132,12 @@ sub print_linebuffer($) {
 			    $i = ::max((rindex($buf,"\n")+1),
 				       (rindex($buf,"\r")+1));
 			}
+			# Print the partial line (halfline) and the last half
+			print $out_fh @$halfline_ref, substr($buf,0,$i);
+		    } else {
+			# Print the partial line (halfline) and the last half
+			print $out_fh @$halfline_ref, substr($buf,0,$i);
 		    }
-		    # Print the partial line (halfline) and the last half
-		    print $out_fh @$halfline_ref, substr($buf,0,$i);
 		    # Buffer in memory for SQL and CSV-output
 		    if($Global::membuffer) {
 			push(@{$self->{'output'}{$fdno}},
@@ -11252,7 +11268,8 @@ sub print_normal($) {
 
 	if($Global::parset and $fdno == 1) {
 	    $outputlength += $self->print_parset($fdno,$in_fh,$out_fh);
-	} elsif(defined $opt::tag or defined $opt::tagstring) {
+	} elsif(defined $opt::tag or defined $opt::tagstring
+		or $Global::color) {
 	    # Read line by line
 	    local $/ = "\n";
 	    my $tag = $self->tag();
@@ -11260,6 +11277,7 @@ sub print_normal($) {
 		$outputlength += length $_;
 		# Tag lines with \r, too
 		$_ =~ s/(?<=[\r])(?=.|$)/$tag/gs;
+		$Global::color and chomp();
 		print $out_fh $tag,$_;
 		if($Global::membuffer) {
 		    push @{$self->{'output'}{$fdno}}, $tag, $_;
@@ -11365,6 +11383,7 @@ sub print_joblog($) {
 
 {
     my @color;
+    my $color_on = "";
 
     sub tag($) {
 	sub init_color() {
@@ -11388,22 +11407,20 @@ sub print_joblog($) {
 	}
 	my $self = shift;
 	if(not defined $self->{'tag'} or not $Global::cache_replacement_eval) {
+	    if($Global::color) {
+		if(not @color) { init_color() }
+		# Choose a value based on the seq
+		my $col = @color[$self->seq() % ($#color+1)];
+		$color_on = "\033[48;5;".$col->[0].";38;5;".$col->[1]."m\n";
+	    }
 	    if(defined $opt::tag or defined $opt::tagstring) {
-		if($Global::color) {
-		    if(not @color) { init_color() }
-		    # Choose a value based on the seq
-		    my $col = @color[$self->seq() % ($#color+1)];
-		    $self->{'tag'} = "\033[48;5;".$col->[0].
-			";38;5;".$col->[1]."m".
-			($self->{'commandline'}->
-			 replace_placeholders([$opt::tagstring],0,0)).
-			"\033[00m\t";
-		} else {
-		    $self->{'tag'} = $self->{'commandline'}->
-			replace_placeholders([$opt::tagstring],0,0)."\t";
-		}
+		$self->{'tag'} =
+		    $color_on .
+		    ($self->{'commandline'}->
+		     replace_placeholders([$opt::tagstring],0,0)).
+		    "\t";
 	    } else {
-		$self->{'tag'} = "";
+		$self->{'tag'} = $color_on;
 	    }
 	}
 	return $self->{'tag'};
@@ -14509,6 +14526,10 @@ sub main() {
     drain_job_queue(@command);
     ::debug("init", "Done draining\n");
     reapers();
+    if($Global::color) {
+	print $Global::original_stderr "\033[00m\n";
+	print "\033[00m\n";
+    }
     ::debug("init", "Done reaping\n");
     if($Global::semaphore) {
 	$sem->release();

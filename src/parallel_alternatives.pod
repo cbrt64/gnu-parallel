@@ -3375,9 +3375,13 @@ Summary (see legend above):
 B<p> is a tiny shell script. It can color output with some predefined
 colors, but is otherwise quite limited.
 
-It maxes out at 116000 jobs (probably due to limitations in Bash).
+It maxes out at 116260 jobs (probably due to limitations in Bash).
 
 =head3 EXAMPLES FROM p
+
+Some of the examples from B<p> cannot be implemented 100% by GNU
+B<parallel>: The coloring is a bit different, and GNU B<parallel>
+cannot have B<--tag> for some inputs and not for others.
 
 The coloring done by GNU B<parallel> is not exactly the same as B<p>.
 
