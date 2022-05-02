@@ -42,6 +42,25 @@ par_multiple_hosts_repeat_arg	parallel: Warning: Using -X or -m with --sshlogin 
 par_multiple_hosts_repeat_arg	1
 par_multiple_hosts_repeat_arg	2
 par_multiple_hosts_repeat_arg	3
+par_sshloginfile	### --slf with mIxEd cAsE
+par_sshloginfile	1
+par_sshloginfile	2
+par_sshloginfile	3
+par_sshloginfile	4
+par_sshloginfile	5
+par_sshloginfile	6
+par_sshloginfile	7
+par_sshloginfile	8
+par_sshloginfile	9
+par_sshloginfile	bash
+par_sshloginfile	bash
+par_sshloginfile	ksh
+par_sshloginfile	ksh
+par_sshloginfile	ksh
+par_sshloginfile	ksh
+par_sshloginfile	parallel
+par_sshloginfile	parallel
+par_sshloginfile	parallel
 par_tmux_different_shells	### Test tmux works on different shells
 par_tmux_different_shells	0
 par_tmux_different_shells	4

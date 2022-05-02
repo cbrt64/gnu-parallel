@@ -78,7 +78,7 @@ perl -ne '$/="\n\n"; /^Output/../^[^O]\S/ and next; /^  / and print;' ../../src/
             # Race condition
             s/^4-(middle|end)\n//;
             # Base 64 string with quotes
-            s:['"'"'"\\+/a-z0-9=]{50,}(\s['"'"'"\\+/a-z0-9=]*)*:BASE64:ig;
+            s:['"'"'"\\+/a-z.0-9=]{50,}(\s['"'"'"\\+/a-z.0-9=]*)*:BASE64:ig;
             # Timings are often off
             s/^(\d)$/9/;
             s/^(\d\d)$/99/;

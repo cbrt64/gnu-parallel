@@ -6784,10 +6784,10 @@ sub new($$) {
     }
 
     #	[server]:port
-    if($s =~ s/([-a-z0-9.]+)//) { $host = $1; }
+    if($s =~ s/([-a-z0-9.]+)//i) { $host = $1; }
 
     #	[:port]
-    if($s =~ s/:(\w+)//) { $port = $1; }
+    if($s =~ s/:(\w+)//i) { $port = $1; }
 
     if($s and $s ne ':') {
 	::die_bug("SSHLogin parser failed on '$origs' => '$s'");
@@ -11400,9 +11400,9 @@ sub print_joblog($) {
 		  160..178,180,182..185,187..186,189,196..214,232..250,
 		  253..254));
 	    # reorder list so adjacent colors are dissimilar
-	    # %7 and %17 were found experimentally
+	    # %23 and %7 were found experimentally
 	    @color = @color[
-		sort { ($b%7 <=> $a%7) or ($a%17 <=> $b%17) } 0..$#color
+		sort { ($a%23 <=> $b%23) or ($b%7 <=> $a%7) } 0..$#color
 		];
 	}
 	my $self = shift;

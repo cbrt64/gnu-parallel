@@ -9,6 +9,18 @@ unset run_once
 
 # SSH only allowed to localhost/lo
 
+par_sshloginfile() {
+    echo '### --slf with mIxEd cAsE'
+    tmp=$(mktemp)
+    (
+	echo 2/bash@LO
+	echo 3/parallel@Lo:22
+	echo 4/ksh@lO:ssh
+    ) > "$tmp"
+    seq 9 | parallel --slf "$tmp" 'whoami;sleep 1;echo' | sort
+    rm -f "$tmp"
+}
+
 par_env_underscore() {
     echo '### --env _'
     echo ignored_var >> ~/.parallel/ignored_vars
