@@ -1209,7 +1209,6 @@ B<-->. I have seen B<::> used in programming languanges to separate
 classes, and I did not want the user to be confused that the separator
 had anything to do with classes.
 
-
 B<:::> also makes a visual separation, which is good if there are
 multiple B<:::>.
 
@@ -1218,6 +1217,10 @@ When B<:::> was chosen, B<::::> came as a fairly natural extension.
 Linking input sources meant having to decide for some way to indicate
 linking of B<:::> and B<::::>. B<:::+> and B<::::+> were chosen, so
 that they were similar to B<:::> and B<::::>.
+
+In 2022 I realized that B<///> would have been an even better choice,
+because you cannot have an file named B<///> whereas you I<can> have a
+file named B<:::>.
 
 
 =head2 Perl replacement strings, {= =}, and --rpl

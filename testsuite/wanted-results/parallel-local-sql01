@@ -270,120 +270,24 @@ par_append $CSV	csv:///%2Frun%2Fshm is not a valid DBURL
 par_append $CSV	
 par_append $CSV	sql [-hnr] [--table-size] [--db-size] [-p pass-through] [-s string] dburl [command]
 par_empty $MYSQL	p_wrapper par_empty '$MYSQL'
+par_empty $MYSQL	Do nothing: TBL99999 does not exist because it is not created
 par_empty $MYSQL	Exit=0
 par_empty $MYSQL	Exit=0
 par_empty $MYSQL	ERROR 1146 (42S02) at line 1: Table 'tange.TBL99999' doesn't exist
 par_empty $PG	p_wrapper par_empty '$PG'
+par_empty $PG	Do nothing: TBL99999 does not exist because it is not created
 par_empty $PG	Exit=0
 par_empty $PG	Exit=0
-par_empty $PG	host| command | v1 | v2 | stdout | stderr 
-par_empty $PG	hostname| sleep .3;echo 1 a | 1 | a | 1 a +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 1 b | 1 | b | 1 b +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 1 c | 1 | c | 1 c +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 1 d | 1 | d | 1 d +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 1 e | 1 | e | 1 e +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 2 a | 2 | a | 2 a +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 2 b | 2 | b | 2 b +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 2 c | 2 | c | 2 c +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 2 d | 2 | d | 2 d +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 2 e | 2 | e | 2 e +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 3 a | 3 | a | 3 a +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 3 b | 3 | b | 3 b +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 3 c | 3 | c | 3 c +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 3 d | 3 | d | 3 d +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 3 e | 3 | e | 3 e +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 4 a | 4 | a | 4 a +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 4 b | 4 | b | 4 b +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 4 c | 4 | c | 4 c +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 4 d | 4 | d | 4 d +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 4 e | 4 | e | 4 e +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 5 a | 5 | a | 5 a +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 5 b | 5 | b | 5 b +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 5 c | 5 | c | 5 c +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 5 d | 5 | d | 5 d +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 5 e | 5 | e | 5 e +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 11 A | 11 | A | 11 A +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 11 B | 11 | B | 11 B +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 11 C | 11 | C | 11 C +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 11 D | 11 | D | 11 D +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 11 E | 11 | E | 11 E +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 12 A | 12 | A | 12 A +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 12 B | 12 | B | 12 B +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 12 C | 12 | C | 12 C +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 12 D | 12 | D | 12 D +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 12 E | 12 | E | 12 E +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 13 A | 13 | A | 13 A +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 13 B | 13 | B | 13 B +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 13 C | 13 | C | 13 C +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 13 D | 13 | D | 13 D +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 13 E | 13 | E | 13 E +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 14 A | 14 | A | 14 A +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 14 B | 14 | B | 14 B +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 14 C | 14 | C | 14 C +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 14 D | 14 | D | 14 D +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 14 E | 14 | E | 14 E +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 15 A | 15 | A | 15 A +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 15 B | 15 | B | 15 B +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 15 C | 15 | C | 15 C +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 15 D | 15 | D | 15 D +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	hostname| sleep .3;echo 15 E | 15 | E | 15 E +| 
-par_empty $PG	 | | | | | 
-par_empty $PG	(50 rows)
-par_empty $PG	
+par_empty $PG	ERROR: relation "TBL99999" does not exist
+par_empty $PG	LINE 1: select Host,Command,V1,V2,Stdout,Stderr from TBL99999 order
+par_empty $PG	 ^
 par_empty $SQLITE	p_wrapper par_empty '$SQLITE'
+par_empty $SQLITE	Do nothing: TBL99999 does not exist because it is not created
 par_empty $SQLITE	Exit=0
 par_empty $SQLITE	Exit=0
 par_empty $SQLITE	Error: near line 1: no such table: TBL99999
 par_empty $CSV	p_wrapper par_empty '$CSV'
+par_empty $CSV	Do nothing: TBL99999 does not exist because it is not created
 par_empty $CSV	Exit=0
 par_empty $CSV	Exit=0
 par_empty $CSV	Error:

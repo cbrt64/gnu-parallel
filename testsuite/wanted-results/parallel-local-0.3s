@@ -110,11 +110,9 @@ par_csv_pipe	9000"
 par_csv_pipe	11000"
 par_ctagstring	### --ctag --ctagstring should be different from --tag --tagstring
 par_ctagstring	8
-par_ctagstring	[00m
-par_ctagstring	34
+par_ctagstring	37
 par_ctagstring	10
-par_ctagstring	[00m
-par_ctagstring	36
+par_ctagstring	39
 par_delimiter	### Test --delimiter and -d: Delimiter instead of newline
 par_delimiter	# Yes there is supposed to be an extra newline for -d N
 par_delimiter	This is line 1
@@ -955,10 +953,10 @@ par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
 par_shellcompletion	### --shellcompletion
-par_shellcompletion	9c26e11f6435802cd18a8fd78f65f71d  -
-par_shellcompletion	9c26e11f6435802cd18a8fd78f65f71d  -
-par_shellcompletion	2b8f8856cd7b632edec5526f8d3637c9  -
-par_shellcompletion	2b8f8856cd7b632edec5526f8d3637c9  -
+par_shellcompletion	a040c070a388e8799d899dce6e4d478b  -
+par_shellcompletion	a040c070a388e8799d899dce6e4d478b  -
+par_shellcompletion	7bd30aa4542083e298ef0d1a60dc1322  -
+par_shellcompletion	7bd30aa4542083e298ef0d1a60dc1322  -
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	      0       1       1

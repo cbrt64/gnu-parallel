@@ -748,14 +748,12 @@ B<--transfer>, B<--transferfile> or B<--return>.
 See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
-=item B<--color>
+=item B<--color> (alpha testing)
 
 Colour output.
 
 Colour the output. Each job gets its own color combination
 (background+foreground).
-
-See also: B<--ctag> B<--ctagstring>
 
 
 =item B<--colsep> I<regexp>
@@ -1543,6 +1541,26 @@ Similar to B<--memfree>.
 =back
 
 See also: B<--memfree> B<--load>
+
+
+=item B<--last-line-buffer> (alpha testing)
+
+=item B<--llb> (alpha testing)
+
+Print the lastest line of each running job.
+
+This only works if the currently running jobs fit on the screen.
+
+Example:
+
+  slow_seq() {
+    seq "$@" |
+      perl -ne '$|=1; for(split//){ print; select($a,$a,$a,0.03);}'
+  }
+  export -f slow_seq
+  parallel --shuf -j10 --llb --color slow_seq {} ::: {1..100}
+
+See also: B<--line-buffer>
 
 
 =item B<--line-buffer>
@@ -2720,7 +2738,7 @@ exit.
 
 Only used with B<env_parallel>. Aliases, functions, and variables with
 names in B<$PARALLEL_IGNORED_NAMES> will not be copied.  So you should
-set variables/function you want to use I<after> running B<--session>.
+set variables/function you want copied I<after> running B<--session>.
 
 It is similar to B<--record-env>, but only for this session.
 

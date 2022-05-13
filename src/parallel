@@ -1716,6 +1716,9 @@ sub options_completion_hash() {
 	 ("ungroup|u".
 	  "[Output is printed as soon as possible and bypasses GNU parallel internal processing]"
 	  => \$opt::ungroup),
+	 ("last-line-buffer|last-line-buffered|lastlinebuffer|lastlinebuffered|llb".
+	  "[Print latest line of each job]"
+	  => \$opt::lastlinebuffer),
 	 ("line-buffer|line-buffered|linebuffer|linebuffered|lb".
 	  "[Buffer output on line basis]"
 	  => \$opt::linebuffer),
@@ -2155,6 +2158,9 @@ sub parse_options(@) {
 	or defined $opt::color) {
 	$Global::color = 1;
     }
+    if($opt::linebuffer or $opt::lastlinebuffer) {
+	$Global::linebuffer = 1;
+    }
     if(defined $opt::tag and not defined $opt::tagstring) {
 	# Default = {}
 	$opt::tagstring = $Global::parensleft.$Global::parensright;
@@ -2163,7 +2169,7 @@ sub parse_options(@) {
 	$opt::tagstring = unquote_printf($opt::tagstring);
 	if($opt::tagstring =~ /\Q$Global::parensleft\E.*\Q$Global::parensright\E/
 	   and
-	   $opt::linebuffer) {
+	   $Global::linebuffer) {
 	    # --tagstring contains {= =} and --linebuffer =>
 	    #	recompute replacement string for each use (do not cache)
 	    $Global::cache_replacement_eval = 0;
@@ -2606,7 +2612,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220429;
+    $Global::version = 20220501;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4965,33 +4971,31 @@ sub onall($@) {
     # --jobs = number of hosts to run on simultaneously.
     # For each host a parallel command with the args will be running.
     # Uses:
+    #	$Global::debug
+    #	$Global::exitstatus
+    #	$Global::joblog
     #	$Global::quoting
-    #	@opt::basefile
-    #	$opt::jobs
-    #	$opt::linebuffer
-    #	$opt::ungroup
-    #	$opt::group
-    #	$opt::keeporder
     #	$opt::D
-    #	$opt::plain
-    #	$opt::max_chars
-    #	$opt::files
+    #	$opt::arg_file_sep
+    #	$opt::arg_sep
     #	$opt::colsep
-    #	$opt::timeout
+    #	$opt::files
+    #	$opt::group
+    #	$opt::joblog
+    #	$opt::jobs
+    #	$opt::keeporder
+    #	$opt::linebuffer
+    #	$opt::max_chars
     #	$opt::plain
     #	$opt::retries
-    #	$opt::max_chars
-    #	$opt::arg_sep
-    #	$opt::arg_file_sep
-    #	@opt::v
-    #	@opt::env
-    #	%Global::host
-    #	$Global::exitstatus
-    #	$Global::debug
-    #	$Global::joblog
-    #	$opt::joblog
     #	$opt::tag
     #	$opt::tee
+    #	$opt::timeout
+    #	$opt::ungroup
+    #	%Global::host
+    #	@opt::basefile
+    #	@opt::env
+    #	@opt::v
     # Input:
     #	@command = command to run on all hosts
     # Returns: N/A
@@ -6474,7 +6478,7 @@ sub reap_usleep() {
 	    kill_youngest_if_over_limit();
 	}
 	exit_if_disk_full();
-	if($opt::linebuffer) {
+	if($Global::linebuffer) {
 	    my $something_printed = 0;
 	    if($opt::keeporder) {
 		for my $job (values %Global::running) {
@@ -8903,7 +8907,7 @@ sub openoutputfiles($) {
     my $self = shift;
     my ($outfhw, $errfhw, $outname, $errname);
 
-    if($opt::linebuffer and not
+    if($Global::linebuffer and not
        ($opt::keeporder or $opt::files or $opt::results or
 	$opt::compress or $opt::compress_program or
 	$opt::decompress_program)) {
@@ -8999,7 +9003,7 @@ sub openoutputfiles($) {
     } elsif(not $opt::ungroup) {
 	$self->grouped();
     }
-    if($opt::linebuffer) {
+    if($Global::linebuffer) {
 	# Make it possible to read non-blocking from
 	# the buffer files
 	# Used for --linebuffer with -k, --files, --res, --compress*
@@ -10808,7 +10812,7 @@ sub print($) {
 	    next;
 	}
 	::debug("print", "File descriptor $fdno (", $self->fh($fdno,"name"), "):\n");
-	if($opt::linebuffer) {
+	if($Global::linebuffer) {
 	    # Line buffered print out
 	    $self->print_linebuffer($fdno,$in_fh,$out_fh);
 	} elsif($opt::files) {
@@ -11001,7 +11005,7 @@ sub combine_ref($) {
 	    push @out, \$sep, $column;
 	}
     }
-    # Pop off a $sep
+    # Remove the first $sep: ,val,"val" => val,"val"
     shift @out;
     return @out;
 }
@@ -11047,146 +11051,194 @@ sub print_files($) {
     }
 }
 
-sub print_linebuffer($) {
-    my $self = shift;
-    my ($fdno,$in_fh,$out_fh) = @_;
-    if(defined $self->{'exitstatus'}) {
-	# If the job is dead: close printing fh. Needed for --compress
-	close $self->fh($fdno,"w");
-	if($? and $opt::compress) {
-	    ::error($opt::compress_program." failed.");
-	    $self->set_exitstatus(255);
+{
+    my ($up,$eol,$reset_color,$init,$curseq,$maxseq);
+
+    sub print_linebuffer($) {
+	sub print_llb($) {
+	    my $self = shift;
+	    my $out_fh = shift;
+	    my $str = shift;
+	    my $seq = $self->seq();
+	    $maxseq = $seq > $maxseq ? $seq : $maxseq;
+	    print($out_fh
+		  "$up"x($curseq - $seq),
+		  "\n"x($seq - $curseq),
+		  "\r", $self->tag(),
+		  $str, $eol, $reset_color,
+		  "\n"x($maxseq-$seq+1));
+	    $curseq = $maxseq + 1;
 	}
-	if($opt::compress) {
-	    # Blocked reading in final round
-	    for my $fdno (1,2) {
-		::set_fh_blocking($self->fh($fdno,'r'));
-	    }
-	}
-    }
-    if(not $self->virgin()) {
-	if($opt::files or ($opt::results and not $Global::csvsep)) {
-	    # Print filename
-	    if($fdno == 1 and not $self->fh($fdno,"printed")) {
-		print $out_fh $self->tag(),$self->fh($fdno,"name"),"\n";
-		if($Global::membuffer) {
-		    push(@{$self->{'output'}{$fdno}}, $self->tag(),
-			 $self->fh($fdno,"name"));
-		}
-		$self->set_fh($fdno,"printed",1);
-	    }
-	    # No need for reading $in_fh, as it is from "cat >/dev/null"
-	} else {
-	    # Read halflines and print full lines
-	    my $outputlength = 0;
-	    my $halfline_ref = $self->{'halfline'}{$fdno};
-	    my ($buf,$i,$rv);
-	    # 1310720 gives 1.2 GB/s
-	    # 131072  gives 0.9 GB/s
-	    # The optimal block size differs
-	    # It has been measured on:
-	    # AMD 6376: 60800 (>70k is also reasonable)
-	    # Intel i7-3632QM: 52-59k, 170-175k
-	    # seq 64 | ppar --test $1 --lb 'yes {} `seq 1000`|head -c 10000000' >/dev/null
-	    while($rv = sysread($in_fh, $buf, 60800)) {
-		$outputlength += $rv;
-		# TODO --recend
-		# Treat both \n and \r as line end
-		# Only test for \r if there is no \n
-		# Test:
-		#   perl -e '$a="x"x1000000;
-		#	     $b="$a\r$a\n$a\r$a\n";
-		#	     map { print $b,$_ } 1..10'
-		$i = ((rindex($buf,"\n")+1) || (rindex($buf,"\r")+1));
-		if($i) {
-		    # One or more complete lines were found
-		    if($Global::color) {
-			# To paint a full line, we need to turn on paint
-			# BEFORE printing \n
-			# print @$halfline_ref, substr($buf,0,$i);
-			my $print = join("",@$halfline_ref, substr($buf,0,$i));
-			chomp($print);
-			# print color-on \n tag
-			my $tag = $self->tag();
-			# TODO fix \r
-			$print =~ s/([\n\r])(?=.|$)/$tag/gs;
-			print $out_fh $tag,$print;
-		    } elsif($opt::tag or defined $opt::tagstring) {
-			# Replace ^ with $tag within the full line
-			if($Global::cache_replacement_eval) {
-			    # Replace with the same value for tag
-			    my $tag = $self->tag();
-			    unshift @$halfline_ref, $tag;
-			    # TODO --recend that can be partially in @$halfline_ref
-			    substr($buf,0,$i-1) =~
-				s/(?<=[\n\r])(?=.|$)/$tag/gs;
-			    # The length changed, so find the new ending pos
-			    $i = ::max((rindex($buf,"\n")+1),
-				       (rindex($buf,"\r")+1));
-			} else {
-			    # Replace with freshly computed value of tag
-			    unshift @$halfline_ref, $self->tag();
-			    substr($buf,0,$i-1) =~
-				s/(?<=[\n\r])(?=.|$)/$self->tag()/gse;
-			    # The length changed, so find the new ending pos
-			    $i = ::max((rindex($buf,"\n")+1),
-				       (rindex($buf,"\r")+1));
-			}
-			# Print the partial line (halfline) and the last half
-			print $out_fh @$halfline_ref, substr($buf,0,$i);
-		    } else {
-			# Print the partial line (halfline) and the last half
-			print $out_fh @$halfline_ref, substr($buf,0,$i);
-		    }
-		    # Buffer in memory for SQL and CSV-output
-		    if($Global::membuffer) {
-			push(@{$self->{'output'}{$fdno}},
-			     @$halfline_ref, substr($buf,0,$i));
-		    }
-		    # Remove the printed part by keeping the unprinted part
-		    @$halfline_ref = (substr($buf,$i));
-		} else {
-		    # No newline, so append to the halfline
-		    push @$halfline_ref, $buf;
-		}
-	    }
-	    $self->add_returnsize($outputlength);
-	}
+	my $self = shift;
+	my ($fdno,$in_fh,$out_fh) = @_;
 	if(defined $self->{'exitstatus'}) {
-	    if($opt::files or ($opt::results and not $Global::csvsep)) {
-		$self->add_returnsize(-s $self->fh($fdno,"name"));
-	    } else {
-		# If the job is dead: print the remaining partial line
-		# read remaining
-		my $halfline_ref = $self->{'halfline'}{$fdno};
-		if(grep /./, @$halfline_ref) {
-		    my $returnsize = 0;
-		    for(@{$self->{'halfline'}{$fdno}}) {
-			$returnsize += length $_;
-		    }
-		    $self->add_returnsize($returnsize);
-		    if($opt::tag or defined $opt::tagstring) {
-			# Prepend $tag the the remaining half line
-			unshift @$halfline_ref, $self->tag();
-		    }
-		    # Print the partial line (halfline)
-		    print $out_fh @{$self->{'halfline'}{$fdno}};
-		    # Buffer in memory for SQL and CSV-output
-		    if($Global::membuffer) {
-			push(@{$self->{'output'}{$fdno}}, @$halfline_ref);
-		    }
-		    @$halfline_ref = ();
+	    # If the job is dead: close printing fh. Needed for --compress
+	    close $self->fh($fdno,"w");
+	    if($? and $opt::compress) {
+		::error($opt::compress_program." failed.");
+		$self->set_exitstatus(255);
+	    }
+	    if($opt::compress) {
+		# Blocked reading in final round
+		for my $fdno (1,2) {
+		    ::set_fh_blocking($self->fh($fdno,'r'));
 		}
 	    }
-	    if($self->fh($fdno,"rpid") and
-	       CORE::kill 0, $self->fh($fdno,"rpid")) {
-		# decompress still running
+	}
+	if(not $init) {
+	    $init = 1;
+	    if($Global::color or $opt::lastlinebuffer) {
+		# cursor_up cuu1 = up one line
+		$up = `tput cuu1 </dev/tty`;
+		chomp($up);
+		# clr_eol el = clear to end of line
+		$eol = `tput el </dev/tty`;
+		chomp($eol);
+		# exit_attribute_mode sgr0 = turn off all attributes
+		$reset_color = `tput sgr0 </dev/tty`;
+		chomp($reset_color);
+		$curseq = 1;
+		$maxseq = 1;
+	    }
+	}
+	if(not $self->virgin()) {
+	    if($opt::files or ($opt::results and not $Global::csvsep)) {
+		# Print filename
+		if($fdno == 1 and not $self->fh($fdno,"printed")) {
+		    print $out_fh $self->tag(),$self->fh($fdno,"name"),"\n";
+		    if($Global::membuffer) {
+			push(@{$self->{'output'}{$fdno}}, $self->tag(),
+			     $self->fh($fdno,"name"));
+		    }
+		    $self->set_fh($fdno,"printed",1);
+		}
+		# No need for reading $in_fh, as it is from "cat >/dev/null"
 	    } else {
-		# decompress done: close fh
-		close $in_fh;
-		if($? and $opt::compress) {
-		    ::error($opt::decompress_program." failed.");
-		    $self->set_exitstatus(255);
+		# Read halflines and print full lines
+		my $outputlength = 0;
+		my $halfline_ref = $self->{'halfline'}{$fdno};
+		my ($buf,$i,$rv);
+		# 1310720 gives 1.2 GB/s
+		# 131072  gives 0.9 GB/s
+		# The optimal block size differs
+		# It has been measured on:
+		# AMD 6376: 60800 (>70k is also reasonable)
+		# Intel i7-3632QM: 52-59k, 170-175k
+		# seq 64 | ppar --_test $1 --lb \
+		#   'yes {} `seq 1000`|head -c 10000000' >/dev/null
+		while($rv = sysread($in_fh, $buf, 60800)) {
+		    $outputlength += $rv;
+		    # TODO --recend
+		    # Treat both \n and \r as line end
+		    # Only test for \r if there is no \n
+		    # Test:
+		    #   perl -e '$a="x"x1000000;
+		    #	     $b="$a\r$a\n$a\r$a\n";
+		    #	     map { print $b,$_ } 1..10'
+		    $i = ((rindex($buf,"\n")+1) || (rindex($buf,"\r")+1));
+		    if($i) {
+			if($opt::lastlinebuffer) {
+			    # Remove the final \n/\r
+			    my $l = join('', @$halfline_ref,
+					 substr($buf,0,$i-1));
+			    my $j = ((rindex($l,"\n")+1) ||
+				     (rindex($l,"\r")+1));
+			    $self->print_llb($out_fh,substr($l,$j));
+			    # Remove the printed part by keeping the unprinted
+			    @$halfline_ref = (substr($buf,$i));
+			} else {
+			    # One or more complete lines were found
+			    if($Global::color) {
+				my $print = join("",@$halfline_ref,
+						 substr($buf,0,$i));
+				chomp($print);
+				my $tag = $self->tag();
+				$print =~ s/([\n\r])(?=.|$)/$eol$reset_color$1$tag/gs;
+				print $out_fh $tag, $print, $eol,
+				    $reset_color, "\n";
+			    } elsif($opt::tag or defined $opt::tagstring) {
+				# Replace ^ with $tag within the full line
+				if($Global::cache_replacement_eval) {
+				    # Replace with the same value for tag
+				    my $tag = $self->tag();
+				    unshift @$halfline_ref, $tag;
+				    # TODO --recend that can be partially in
+				    # @$halfline_ref
+				    substr($buf,0,$i-1) =~
+					s/(?<=[\n\r])(?=.|$)/$tag/gs;
+				    # The length changed,
+				    # so find the new ending pos
+				    $i = ::max((rindex($buf,"\n")+1),
+					       (rindex($buf,"\r")+1));
+				} else {
+				    # Replace with freshly computed tag-value
+				    unshift @$halfline_ref, $self->tag();
+				    substr($buf,0,$i-1) =~
+					s/(?<=[\n\r])(?=.|$)/$self->tag()/gse;
+				    # The length changed,
+				    # so find the new ending pos
+				    $i = ::max((rindex($buf,"\n")+1),
+					       (rindex($buf,"\r")+1));
+				}
+				# Print the partial line (halfline)
+				# and the last half
+				print $out_fh @$halfline_ref, substr($buf,0,$i);
+			    } else {
+				# Print the partial line (halfline)
+				# and the last half
+				print $out_fh @$halfline_ref, substr($buf,0,$i);
+			    }
+			    # Buffer in memory for SQL and CSV-output
+			    if($Global::membuffer) {
+				push(@{$self->{'output'}{$fdno}},
+				     @$halfline_ref, substr($buf,0,$i));
+			    }
+			    # Remove the printed part by keeping the unprinted
+			    @$halfline_ref = (substr($buf,$i));
+			}
+		    } else {
+			# No newline, so append to the halfline
+			push @$halfline_ref, $buf;
+		    }
+		}
+		$self->add_returnsize($outputlength);
+	    }
+	    if(defined $self->{'exitstatus'}) {
+		if($opt::files or ($opt::results and not $Global::csvsep)) {
+		    $self->add_returnsize(-s $self->fh($fdno,"name"));
+		} else {
+		    # If the job is dead: print the remaining partial line
+		    # read remaining
+		    my $halfline_ref = $self->{'halfline'}{$fdno};
+		    if(grep /./, @$halfline_ref) {
+			my $returnsize = 0;
+			for(@{$self->{'halfline'}{$fdno}}) {
+			    $returnsize += length $_;
+			}
+			$self->add_returnsize($returnsize);
+			if($opt::tag or defined $opt::tagstring) {
+			    # Prepend $tag the the remaining half line
+			    unshift @$halfline_ref, $self->tag();
+			}
+			# Print the partial line (halfline)
+			print $out_fh @{$self->{'halfline'}{$fdno}};
+			# Buffer in memory for SQL and CSV-output
+			if($Global::membuffer) {
+			    push(@{$self->{'output'}{$fdno}}, @$halfline_ref);
+			}
+			@$halfline_ref = ();
+		    }
+		}
+		if($self->fh($fdno,"rpid") and
+		   CORE::kill 0, $self->fh($fdno,"rpid")) {
+		    # decompress still running
+		} else {
+		    # decompress done: close fh
+		    close $in_fh;
+		    if($? and $opt::compress) {
+			::error($opt::decompress_program." failed.");
+			$self->set_exitstatus(255);
+		    }
 		}
 	    }
 	}
@@ -11277,8 +11329,11 @@ sub print_normal($) {
 		$outputlength += length $_;
 		# Tag lines with \r, too
 		$_ =~ s/(?<=[\r])(?=.|$)/$tag/gs;
-		$Global::color and chomp();
-		print $out_fh $tag,$_;
+		if($Global::color) {
+		    print_color($out_fh,$tag,$_);
+		} else {
+		    print $out_fh $tag,$_;
+		}
 		if($Global::membuffer) {
 		    push @{$self->{'output'}{$fdno}}, $tag, $_;
 		}
@@ -11384,34 +11439,60 @@ sub print_joblog($) {
 {
     my @color;
     my $color_on = "";
+    my ($up,$eol,$reset_color,$init,$curseq,$maxseq);
+
+    sub init_color() {
+	$init = 1;
+	# color combinations that are readable: black/white text
+	# on colored background, but not white on yellow
+	my @color_combinations =
+	    # Force each color code to have the same length in chars
+	    # This will make \t work as expected
+	    ((map { [sprintf("%03d",$_),"000"] }
+	      6..7,9..11,13..15,40..51,75..87,113..123,147..159,
+	      171..182,185..231,249..254),
+	     (map { [sprintf("%03d",$_),231] }
+	      1..9,12..13,16..45,52..81,88..114,124..149,
+	      160..178,180,182..184,196..214,232..250));
+	# reorder list so adjacent colors are dissimilar
+	# %23 and %7 were found experimentally
+	@color_combinations = @color_combinations[
+	    sort { ($a%23 <=> $b%23) or ($b%7 <=> $a%7) }
+	    0..$#color_combinations
+	    ];
+	@color = map {
+	    # TODO Can this be done with `tput` codes?
+	    "\033[48;5;".$_->[0].";38;5;".$_->[1]."m"
+	} @color_combinations;
+
+	# cursor_up cuu1 = up one line
+	$up = `tput cuu1 </dev/tty`;
+	chomp($up);
+	# clr_eol el = clear to end of line
+	$eol = `tput el </dev/tty`;
+	chomp($eol);
+	# exit_attribute_mode sgr0 = turn off all attributes
+	$reset_color = `tput sgr0 </dev/tty`;
+	chomp($reset_color);
+	$curseq = 1;
+	$maxseq = 1;
+    }
+	
+    sub print_color() {
+	# @text is a single line
+	my ($out_fh,@text) = @_;
+	chomp(@text);
+	print $out_fh @text,$reset_color,"\n";
+
+    }
 
     sub tag($) {
-	sub init_color() {
-	    # color combinations that are readable: black/white text
-	    # on colored background, but not white on yellow
-	    @color =
-		# Force each color code to have the same length in chars
-		# This will make \t work as expected
-		((map { [sprintf("%03d",$_),"000"] }
-		  6..7,9..11,13..15,40..51,75..87,113..123,147..159,
-		  171..231,249..254),
-		 (map { [sprintf("%03d",$_),231] }
-		  1..9,12..13,16..45,52..81,88..114,124..149,153,
-		  160..178,180,182..185,187..186,189,196..214,232..250,
-		  253..254));
-	    # reorder list so adjacent colors are dissimilar
-	    # %23 and %7 were found experimentally
-	    @color = @color[
-		sort { ($a%23 <=> $b%23) or ($b%7 <=> $a%7) } 0..$#color
-		];
-	}
 	my $self = shift;
 	if(not defined $self->{'tag'} or not $Global::cache_replacement_eval) {
 	    if($Global::color) {
-		if(not @color) { init_color() }
+		if(not $init) { init_color() }
 		# Choose a value based on the seq
-		my $col = @color[$self->seq() % ($#color+1)];
-		$color_on = "\033[48;5;".$col->[0].";38;5;".$col->[1]."m\n";
+		$color_on = $color[$self->seq() % ($#color+1)].$eol;
 	    }
 	    if(defined $opt::tag or defined $opt::tagstring) {
 		$self->{'tag'} =
@@ -14526,14 +14607,8 @@ sub main() {
     drain_job_queue(@command);
     ::debug("init", "Done draining\n");
     reapers();
-    if($Global::color) {
-	print $Global::original_stderr "\033[00m\n";
-	print "\033[00m\n";
-    }
     ::debug("init", "Done reaping\n");
-    if($Global::semaphore) {
-	$sem->release();
-    }
+    if($Global::semaphore) { $sem->release(); }
     cleanup();
     ::debug("init", "Halt\n");
     halt();

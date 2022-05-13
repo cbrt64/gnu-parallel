@@ -79,6 +79,7 @@ done
 
 
 cat <<'_EOS'
+
 parset only works if it is a function. The function is defined as part
 of env_parallel.
 
@@ -121,6 +122,16 @@ tcsh:  Unsupported
 To install in all shells run:
 
   parset --install
+
+In a script you need to run this before using parset:
+
+bash:  . `which env_parallel.bash`
+ksh:   source `which env_parallel.ksh`
+mksh:  source `which env_parallel.mksh`
+pdksh: source `which env_parallel.pdksh`
+zsh:   . `which env_parallel.zsh`
+ash:   . `which env_parallel.ash`
+dash:  . `which env_parallel.dash`
 
 For details: see  man parset
 

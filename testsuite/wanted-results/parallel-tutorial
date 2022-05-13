@@ -761,6 +761,14 @@ tcsh:  Put this in $HOME/.tcshrc:  source `which env_parallel.tcsh`
        Supports: variables, aliases, arrays with no special chars
 To install in all shells run:
   env_parallel --install
+In a script you need to run this before using env_parallel:
+bash:  . `which env_parallel.bash`
+ksh:   source `which env_parallel.ksh`
+mksh:  source `which env_parallel.mksh`
+pdksh: source `which env_parallel.pdksh`
+zsh:   . `which env_parallel.zsh`
+ash:   . `which env_parallel.ash`
+dash:  . `which env_parallel.dash`
 For details: see  man env_parallel
   MYVAR='foo bar'
   export MYVAR
@@ -837,6 +845,14 @@ tcsh:  Put this in $HOME/.tcshrc:  source `which env_parallel.tcsh`
        Supports: variables, aliases, arrays with no special chars
 To install in all shells run:
   env_parallel --install
+In a script you need to run this before using env_parallel:
+bash:  . `which env_parallel.bash`
+ksh:   source `which env_parallel.ksh`
+mksh:  source `which env_parallel.mksh`
+pdksh: source `which env_parallel.pdksh`
+zsh:   . `which env_parallel.zsh`
+ash:   . `which env_parallel.ash`
+dash:  . `which env_parallel.dash`
 For details: see  man env_parallel
   parallel -vv --pipepart --block 1M wc :::: num30000
 <num30000 perl -e 'while(@ARGV){sysseek(STDIN,shift,0)||die;$left=shift;while($read=sysread(STDIN,$buf,$left>32767?32767:$left)){$left-=$read;syswrite(STDOUT,$buf);}}' 0 0 0 168894 |(wc)
@@ -885,6 +901,14 @@ csh:   Unsupported
 tcsh:  Unsupported
 To install in all shells run:
   parset --install
+In a script you need to run this before using parset:
+bash:  . `which env_parallel.bash`
+ksh:   source `which env_parallel.ksh`
+mksh:  source `which env_parallel.mksh`
+pdksh: source `which env_parallel.pdksh`
+zsh:   . `which env_parallel.zsh`
+ash:   . `which env_parallel.ash`
+dash:  . `which env_parallel.dash`
 For details: see  man parset
   parset myarray seq {} 5 ::: 1 2 3
   echo "${myarray[1]}"
@@ -925,6 +949,14 @@ csh:   Unsupported
 tcsh:  Unsupported
 To install in all shells run:
   parset --install
+In a script you need to run this before using parset:
+bash:  . `which env_parallel.bash`
+ksh:   source `which env_parallel.ksh`
+mksh:  source `which env_parallel.mksh`
+pdksh: source `which env_parallel.pdksh`
+zsh:   . `which env_parallel.zsh`
+ash:   . `which env_parallel.ash`
+dash:  . `which env_parallel.dash`
 For details: see  man parset
   cmd=("echo '<<joe  \"double  space\"  cartoon>>'" "pwd")
   parset data ::: "${cmd[@]}"
@@ -963,6 +995,14 @@ csh:   Unsupported
 tcsh:  Unsupported
 To install in all shells run:
   parset --install
+In a script you need to run this before using parset:
+bash:  . `which env_parallel.bash`
+ksh:   source `which env_parallel.ksh`
+mksh:  source `which env_parallel.mksh`
+pdksh: source `which env_parallel.pdksh`
+zsh:   . `which env_parallel.zsh`
+ash:   . `which env_parallel.ash`
+dash:  . `which env_parallel.dash`
 For details: see  man parset
   parallel --sqlandworker csv:///%2Ftmp/log.csv \
     seq ::: 10 ::: 12 13 14
@@ -1286,4 +1326,4 @@ mentioned in the release notes of next version of GNU Parallel.
 echo A
 echo B
 echo C
-6
+8

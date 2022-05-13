@@ -135,6 +135,9 @@ par_kill_term	bash---pstree
 par_lb_mem_usage	1
 par_lb_mem_usage	1
 par_lb_mem_usage	2
+par_llb_color	bug #62386: --color (--ctag but without --tag)
+par_llb_color	bug #62438: See last line from multiple jobslots
+par_llb_color	74c668db859b3c8acbecbddf5880fd20  -
 par_maxargs	### Test -n and --max-args: Max number of args per line (only with -X and -m)
 par_maxargs	line 1
 par_maxargs	line 2

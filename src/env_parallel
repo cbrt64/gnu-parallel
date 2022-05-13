@@ -128,6 +128,16 @@ To install in all shells run:
 
   env_parallel --install
 
+In a script you need to run this before using env_parallel:
+
+bash:  . `which env_parallel.bash`
+ksh:   source `which env_parallel.ksh`
+mksh:  source `which env_parallel.mksh`
+pdksh: source `which env_parallel.pdksh`
+zsh:   . `which env_parallel.zsh`
+ash:   . `which env_parallel.ash`
+dash:  . `which env_parallel.dash`
+
 For details: see  man env_parallel
 
 _EOS

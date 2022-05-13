@@ -3375,7 +3375,7 @@ Summary (see legend above):
 B<p> is a tiny shell script. It can color output with some predefined
 colors, but is otherwise quite limited.
 
-It maxes out at 116260 jobs (probably due to limitations in Bash).
+It maxes out at around 116000 jobs (probably due to limitations in Bash).
 
 =head3 EXAMPLES FROM p
 
