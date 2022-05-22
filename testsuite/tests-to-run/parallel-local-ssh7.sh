@@ -3321,7 +3321,7 @@ compgen -A function | grep par_ | LC_ALL=C sort -r |
 #    parallel --joblog /tmp/jl-`basename $0` --delay $D -j$P --tag -k '{} 2>&1'
     # 2019-07-14 200% too high for 16 GB/4 thread
     parallel --joblog /tmp/jl-`basename $0` -j75% --retries 2 --tag -k '{} 2>&1' |
-    perl -pe 's/line \d?\d\d:/line XXX:/g;
+    perl -pe 's/line \d\d+/line XXX/g;
               s/\d+ >= \d+/XXX >= XXX/;
               s/sh:? \d?\d\d:/sh: XXX:/;
               s/:\d?\d\d:/:XXX:/;

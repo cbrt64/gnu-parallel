@@ -29,8 +29,8 @@ p_wrapper() {
     # Use a random table for each test
     TABLE=TBL$RANDOM
     DBURL=$SERVERURL/$TABLE
-    T1=$(tempfile)
-    T2=$(tempfile)
+    T1=$(mktemp)
+    T2=$(mktemp)
     # Run $INNER (all the par_* functions)
     eval "$INNER"
     echo Exit=$?

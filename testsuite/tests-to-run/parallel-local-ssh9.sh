@@ -174,7 +174,7 @@ par_no_route_to_host() {
     # Random hosts
     findhosts() {
 	ip='$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256)).$(($RANDOM%256))'
-	seq 10000 | parallel -N0 echo $ip 
+	seq 10000 | parallel -N0 echo $ip | grep -v ^127
     }
 
     # See if the hosts fail fast

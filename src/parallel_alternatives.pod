@@ -978,21 +978,41 @@ https://github.com/danielgtaylor/ladon (Last checked: 2019-01)
 
 =head2 DIFFERENCES BETWEEN jobflow AND GNU Parallel
 
+Summary (see legend above):
+
+=over
+
+=item I1 - - - - - I7
+
+=item - - M3 - - (M6)
+
+=item O1 O2 O3 - O5 O6 (O7) - - O10
+
+=item E1 - - - - E6 -
+
+=item - - - - - - - - -
+
+=item - -
+
+=back
+
+
 B<jobflow> can run multiple jobs in parallel.
 
 Just like B<xargs> output from B<jobflow> jobs running in parallel mix
-together by default. B<jobflow> can buffer into files (placed in
-/run/shm), but these are not cleaned up if B<jobflow> dies
-unexpectedly (e.g. by Ctrl-C). If the total output is big (in the
-order of RAM+swap) it can cause the system to slow to a crawl and
-eventually run out of memory.
+together by default. B<jobflow> can buffer into files with
+B<-buffered> (placed in /run/shm), but these are not cleaned up if
+B<jobflow> dies unexpectedly (e.g. by Ctrl-C). If the total output is
+big (in the order of RAM+swap) it can cause the system to slow to a
+crawl and eventually run out of memory.
 
-B<jobflow> gives no error if the command is unknown, and like B<xargs>
-redirection and composed commands require wrapping with B<bash -c>.
+Just like B<xargs> redirection and composed commands require wrapping
+with B<bash -c>.
 
-Input lines can at most be 4096 bytes. You can at most have 16 {}'s in
-the command template. More than that either crashes the program or
-simple does not execute the command.
+Input lines can at most be 4096 bytes.
+
+B<jobflow> is faster than GNU B<parallel> but around 6 times slower
+than B<parallel-bash>.
 
 B<jobflow> has no equivalent for B<--pipe>, or B<--sshlogin>.
 
@@ -1024,7 +1044,13 @@ jobs. This can be emulated by GNU B<parallel> using B<bash>'s B<ulimit>:
   4$ find . -name '*.bmp' | \
        parallel -j8 bmp2jpeg {.}.bmp {.}.jpg
 
-https://github.com/rofl0r/jobflow
+  5$ seq 100 | jobflow -skip 10 -count 10
+
+  5$ seq 100 | parallel --filter '{1} > 10 and {1} <= 20' echo
+
+  5$ seq 100 | parallel echo '{= $_>10 and $_<=20 or skip() =}'
+
+https://github.com/rofl0r/jobflow (Last checked: 2022-05)
 
 
 =head2 DIFFERENCES BETWEEN gargs AND GNU Parallel

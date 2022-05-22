@@ -289,7 +289,7 @@ par_groupby_pipepart() {
 	generator="$1"
 	colsep="$2"
 	groupby="$3"
-	tmp=`tempfile`
+	tmp=`mktemp`
 	
 	echo "### test $generator | --colsep $colsep --groupby $groupby"
 	$generator > $tmp

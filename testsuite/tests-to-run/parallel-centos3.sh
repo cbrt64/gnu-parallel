@@ -7,6 +7,17 @@
 echo "### These tests requires VirtualBox running with the following images"
 echo 'vagrant@centos3'
 
+# add this to .ssh/config
+#   Host centos3
+#     HostKeyAlgorithms +ssh-rsa,ssh-dss
+#     PubkeyAcceptedAlgorithms +ssh-dss
+#     user vagrant
+
+# add this to: /etc/ssh/sshd_config on 172.27.27.1
+#   HostKeyAlgorithms +ssh-rsa
+# and:
+#   systemctl restart sshd
+
 SERVER1=centos3
 SSHUSER1=vagrant
 SSHLOGIN1=$SSHUSER1@$SERVER1
@@ -15,18 +26,29 @@ SERVER2=172.27.27.1
 SSHUSER2=parallel
 export SSHLOGIN2=$SSHUSER2@$SERVER2
 
-stdout ping -w 1 -c 1 centos3 >/dev/null || (
-    # Vagrant does not set the IP addr
-    cd testsuite/vagrant/tange/centos3/ 2>/dev/null
-    cd vagrant/tange/centos3/ 2>/dev/null
-    cd ../vagrant/tange/centos3/ 2>/dev/null
-    (
-	stdout vagrant up >/dev/null
-	vagrant ssh -c 'sudo ifconfig eth1 172.27.27.3' |
-	    # Ignore empty ^M line
-	    grep ..
-    ) &
-)
+start_centos3() {
+    stdout ping -w 1 -c 1 centos3 >/dev/null || (
+	# Vagrant does not set the IP addr
+	cd testsuite/vagrant/tange/centos3/ 2>/dev/null
+	cd vagrant/tange/centos3/ 2>/dev/null
+	cd ../vagrant/tange/centos3/ 2>/dev/null
+	vagrantssh() {
+	    port=$(perl -ne '/#/ and next; /config.vm.network.*host:\s*(\d+)/ and print $1' Vagrantfile)
+	    w4it-for-port-open localhost $port
+	    ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 \
+		-oHostKeyAlgorithms=+ssh-rsa,ssh-dss \
+		-oPubkeyAcceptedAlgorithms=+ssh-dss -p$port vagrant@localhost "$@" |
+		# Ignore empty ^M line
+		grep ..
+	}
+	(
+	    stdout vagrant up >/dev/null
+	    vagrantssh 'sudo /sbin/ifconfig eth1 172.27.27.3'
+	) &
+    )
+}
+start_centos3
+
 (
     # Copy binaries to server
     cd testsuite/vagrant/tange/centos3/ 2>/dev/null

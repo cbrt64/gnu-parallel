@@ -1348,7 +1348,7 @@ Number of jobslots on each machine.
 
 Run up to N jobs in parallel.  0 means as many as possible (this can
 take a while to determine). Default is 100% which will run one job per
-CPU on each machine.
+CPU thread on each machine.
 
 Due to a bug B<-j 0> will also evaluate replacement strings twice up
 to the number of joblots:
@@ -1359,6 +1359,10 @@ to the number of joblots:
   seq 10000 | parallel -j100 echo '{= $_ = $foo++; =}' | head
 
 If B<--semaphore> is set, the default is 1 thus making a mutex.
+
+See also: B<--use-cores-instead-of-threads>
+B<--use-sockets-instead-of-threads>
+
 
 
 =item B<--jobs> I<+N>
@@ -1543,9 +1547,9 @@ Similar to B<--memfree>.
 See also: B<--memfree> B<--load>
 
 
-=item B<--last-line-buffer> (alpha testing)
+=item B<--latest-line> (alpha testing)
 
-=item B<--llb> (alpha testing)
+=item B<--ll> (alpha testing)
 
 Print the lastest line of each running job.
 
@@ -3446,8 +3450,9 @@ See also: B<--use-cores-instead-of-threads>
 
 Determine how GNU B<parallel> counts the number of CPUs.
 
-GNU B<parallel> uses this number when the number of jobslots is
-computed relative to the number of CPUs (e.g. 100% or +1).
+GNU B<parallel> uses this number when the number of jobslots
+(B<--jobs>) is computed relative to the number of CPUs (e.g. 100% or
++1).
 
 CPUs can be counted in three different ways:
 
@@ -4872,9 +4877,6 @@ If you cannot use passwordless login, you may be able to use B<sshpass>:
   seq 10 |
     parallel --ssh 'sshpass -e ssh' -S 4/user-with-password@server' echo
 
-Currently the remote detection of CPU cores is incompatible with
-B<sshpass> so use the '4/' syntax to tell the server has 4 cores.
-
 
 =head2 EXAMPLE: Use outrun instead of ssh
 
@@ -5124,7 +5126,7 @@ Interleaved FASTQ starts with a line like these:
 
 where '/1' and ' 1:' determines this is read 1.
 
-This will cut big.fq into one chunk per CPU core and pass it on
+This will cut big.fq into one chunk per CPU thread and pass it on
 stdin (standard input) to the program fastq-reader:
 
   parallel --pipe-part -a big.fq --block -1 --regexp \
@@ -5752,7 +5754,7 @@ Remember to quote the $, so it gets evaluated by the correct shell. Or
 use B<--plus> and {sshlogin}.
 
 
-The value is the sshlogin line with number of cores removed. E.g.
+The value is the sshlogin line with number of threads removed. E.g.
 
   4//usr/bin/specialssh user@host
 

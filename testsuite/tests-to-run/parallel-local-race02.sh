@@ -6,6 +6,41 @@
 
 # These fail regularly
 
+par_ll_lb_color() {
+    echo 'bug #62386: --color (--ctag but without --tag)'
+    echo 'bug #62438: See last line from multiple jobslots'
+    # This is really a race condition - might have to be moved
+    #  # delay modulo 4 seconds
+    #  perl -MTime::HiRes -E 'Time::HiRes::usleep(1000000*(((time|3)+1)-Time::HiRes::time()));'
+    #  # delay modulo 2 seconds
+    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(1-time+(time|1)));say time;'
+    #  # delay modulo 1 second
+    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(1-time+(time|0)));say time;'
+    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(1-time+(time*4|0)/4));say time;'
+    #  # delay modulo 1/4 second
+    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(-time+(1+time*3|0)/3));say time;';
+    #  # delay modulo 1/4 second + 100 ms
+    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(0.1-time+(1+time*3|0)/3));say time;';
+    #  # delay modulo 1 second + 200 ms
+    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(0.2-time+(1+time*1|0)/1));say time;';
+    #  # delay modulo 1 second + delta ms
+    #  perl -E 'use Time::HiRes qw(usleep time); $d=shift; for(1..shift){
+    #           usleep(1000000*($d-time+(1+time*1|0)/1));say;}' 0.2 6;
+    offset_seq() { 
+	perl -E 'use Time::HiRes qw(usleep time); $|=1;$d=shift; for(1..shift){
+             usleep(1000000*($d-time+(1+time*1|0)/1));say;}' $@;
+    }
+    export -f offset_seq
+    run() {
+	seq 4 -1 1 | parallel -j0 $@ offset_seq 0.{#} {}
+    }
+    export -f run
+    
+    parallel --delay 0.17 -vkj0 run \
+	     ::: --lb --ll '' ::: --color '' ::: '--tagstring {}{}' --tag '' ::: -k '' |
+	md5sum
+}
+
 ctrlz_should_suspend_children() {
     echo 'bug #46120: Suspend should suspend (at least local) children'
     echo 'it should burn 1.9 CPU seconds, but no more than that'
@@ -154,7 +189,7 @@ par_kill_hup() {
 
 par_resume_failed_k() {
     echo '### bug #38299: --resume-failed -k'
-    tmp=$(tempfile)
+    tmp=$(mktemp)
     parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1
     echo try 2. Gives failing - not 0
     parallel -k --resume-failed --joblog $tmp echo job{#} val {}\;exit {} ::: 0 1 2 3 0 1

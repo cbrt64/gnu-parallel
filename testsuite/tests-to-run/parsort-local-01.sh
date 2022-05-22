@@ -8,7 +8,7 @@ par_whitespace_delimiter() {
     echo 'bug #59779: parsort does not work with white characters as delimiters'
     doit() {
 	del="$1"
-	tmp=$(tempfile)
+	tmp=$(mktemp)
 	(
 	    printf "a%s8%se\n" "$del" "$del"
 	    printf "b%s7%sf\n" "$del" "$del"

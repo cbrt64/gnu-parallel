@@ -4,16 +4,28 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-stdout ping -w 1 -c 1 centos3 >/dev/null || (
-    # Vagrant does not set the IP addr
-    cd testsuite/vagrant/tange/centos3/ 2>/dev/null
-    cd vagrant/tange/centos3/ 2>/dev/null
-    cd ../vagrant/tange/centos3/ 2>/dev/null
-    stdout vagrant up >/dev/null
-    vagrant ssh -c 'sudo ifconfig eth1 172.27.27.3' |
-	# Ignore empty ^M line
-	grep ..
-)
+start_centos3() {
+    stdout ping -w 1 -c 1 centos3 >/dev/null || (
+	# Vagrant does not set the IP addr
+	cd testsuite/vagrant/tange/centos3/ 2>/dev/null
+	cd vagrant/tange/centos3/ 2>/dev/null
+	cd ../vagrant/tange/centos3/ 2>/dev/null
+	vagrantssh() {
+	    port=$(perl -ne '/#/ and next; /config.vm.network.*host:\s*(\d+)/ and print $1' Vagrantfile)
+	    w4it-for-port-open localhost $port
+	    ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 \
+		-oHostKeyAlgorithms=+ssh-rsa,ssh-dss \
+		-oPubkeyAcceptedAlgorithms=+ssh-dss -p$port vagrant@localhost "$@" |
+		# Ignore empty ^M line
+		grep ..
+	}	    
+	(
+	    stdout vagrant up >/dev/null
+	    vagrantssh 'sudo /sbin/ifconfig eth1 172.27.27.3'
+	) &
+    )
+}
+start_centos3
 
 stdout parallel --tag -k 'ping -w 1 -c 1 {} || (cd vagrant/*/{} && vagrant up)' ::: rhel8 centos3 |
 	grep -v 'default' | grep -v '==>' | grep -E '^$' &

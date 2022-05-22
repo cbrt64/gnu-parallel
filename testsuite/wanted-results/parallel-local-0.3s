@@ -530,7 +530,7 @@ par_nice_locally	PAR=a bash -c "echo  \$PAR b"
 par_nice_locally	a b
 par_no_command_given	### Test bugfix if no command given
 par_no_command_given	1 2
-par_no_command_given	/bin/bash: 3: command not found
+par_no_command_given	/bin/bash: line 1: 3: command not found
 par_no_command_given	parallel: Error: Command line too long (1000002 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
 par_no_joblog_with_dryrun	bug #46016: --joblog should not log when --dryrun
 par_no_joblog_with_dryrun	echo Only_this
@@ -953,10 +953,10 @@ par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
 par_shellcompletion	### --shellcompletion
-par_shellcompletion	a040c070a388e8799d899dce6e4d478b  -
-par_shellcompletion	a040c070a388e8799d899dce6e4d478b  -
-par_shellcompletion	7bd30aa4542083e298ef0d1a60dc1322  -
-par_shellcompletion	7bd30aa4542083e298ef0d1a60dc1322  -
+par_shellcompletion	329fc284cae55cbfed49ed5546eb2b29  -
+par_shellcompletion	329fc284cae55cbfed49ed5546eb2b29  -
+par_shellcompletion	4869360b2bf2f084c17bdc60413faace  -
+par_shellcompletion	4869360b2bf2f084c17bdc60413faace  -
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	      0       1       1

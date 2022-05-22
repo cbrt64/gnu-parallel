@@ -147,7 +147,7 @@ EOF
 
 par_resume_k() {
     echo '### --resume -k'
-    tmp=$(tempfile)
+    tmp=$(mktemp)
     parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
     echo try 2 = nothing
     parallel -k --resume --joblog $tmp echo job{}id\;exit {} ::: 0 1 2 3 0 5
@@ -688,8 +688,8 @@ par_link_files_as_only_arg() {
 }
 
 par_basic_halt() {
-    cpuburn=$(tempfile)
-    cpuburn2=$(tempfile)
+    cpuburn=$(mktemp)
+    cpuburn2=$(mktemp)
     (echo '#!/usr/bin/perl'
      echo "eval{setpriority(0,0,9)}; while(1){}") > $cpuburn
     chmod 700 $cpuburn
@@ -745,8 +745,8 @@ par_X_eta_div_zero() {
 
 par_parcat_args_stdin() {
     echo 'bug #51690: parcat: read args from stdin'
-    tmp1=$(tempfile)
-    tmp2=$(tempfile)
+    tmp1=$(mktemp)
+    tmp2=$(mktemp)
     echo OK1 > $tmp1
     echo OK2 > $tmp2
     (echo $tmp1
@@ -756,7 +756,7 @@ par_parcat_args_stdin() {
 
 par_parcat_rm() {
     echo 'bug #51691: parcat --rm remove fifo when opened'
-    tmp1=$(tempfile)
+    tmp1=$(mktemp)
     echo OK1 > $tmp1
     parcat --rm $tmp1
     rm $tmp1 2>/dev/null || echo OK file removed
@@ -792,7 +792,7 @@ par_blocking_redir() {
 
 par_pipepart_recend_recstart() {
     echo 'bug #52343: --recend/--recstart does wrong thing with --pipepart'
-    tmp1=$(tempfile)
+    tmp1=$(mktemp)
     seq 10 > $tmp1
     parallel -k --pipepart -a $tmp1 --recend '\n' --recstart '6' --block 1 'echo a; cat'
     parallel -k --pipe < $tmp1 --recend '\n' --recstart '6' --block 1 'echo a; cat'

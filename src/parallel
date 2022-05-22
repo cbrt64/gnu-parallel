@@ -1681,15 +1681,18 @@ sub options_completion_hash() {
 	 "xargs[Insert as many arguments as the command line length permits]"
 	 => \$opt::xargs,
 	 "m[Multiple arguments]" => \$opt::m,
-	 ("X[Insert as many arguments with context as the command line length permits]"
+	 ("X[Insert as many arguments with context as the command line ".
+	 "length permits]"
 	 => \$opt::X),
 	 "v[Verbose]" => \@opt::v,
 	 "sql=s[Use --sql-master instead (obsolete)]:DBURL" => \$opt::retired,
 	 ("sql-master|sqlmaster=s".
-	  "[Submit jobs via SQL server. DBURL must point to a table, which will contain --joblog, the values, and output]:DBURL"
+	  "[Submit jobs via SQL server. DBURL must point to a table, which ".
+	  "will contain --joblog, the values, and output]:DBURL"
 	  => \$opt::sqlmaster),
 	 ("sql-worker|sqlworker=s".
-	  "[Execute jobs via SQL server. Read the input sources variables from the table pointed to by DBURL.]:DBURL"
+	  "[Execute jobs via SQL server. Read the input sources variables ".
+	  "from the table pointed to by DBURL.]:DBURL"
 	  => \$opt::sqlworker),
 	 ("sql-and-worker|sqlandworker=s".
 	  "[--sql-master DBURL --sql-worker DBURL]:DBURL"
@@ -1709,24 +1712,29 @@ sub options_completion_hash() {
 	  "[Keep sequence of output same as the order of input]"
 	  => \$opt::keeporder),
 	 ("no-keep-order|nokeeporder|nok|no-k".
-	  "[Overrides an earlier --keep-order (e.g. if set in ~/.parallel/config)]"
+	  "[Overrides an earlier --keep-order (e.g. if set in ".
+	  "~/.parallel/config)]"
 	  => \$opt::nokeeporder),
 	 "group[Group output]" => \$opt::group,
 	 "g" => \$opt::retired,
 	 ("ungroup|u".
-	  "[Output is printed as soon as possible and bypasses GNU parallel internal processing]"
+	  "[Output is printed as soon as possible and bypasses GNU parallel ".
+	  "internal processing]"
 	  => \$opt::ungroup),
-	 ("last-line-buffer|last-line-buffered|lastlinebuffer|lastlinebuffered|llb".
+	 ("latest-line|latestline|ll".
 	  "[Print latest line of each job]"
-	  => \$opt::lastlinebuffer),
+	  => \$opt::latestline),
 	 ("line-buffer|line-buffered|linebuffer|linebuffered|lb".
 	  "[Buffer output on line basis]"
 	  => \$opt::linebuffer),
 	 ("tmux".
-	  "[Use tmux for output. Start a tmux session and run each job in a window in that session. No other output will be produced]"
+	  "[Use tmux for output. Start a tmux session and run each job in a ".
+	  "window in that session. No other output will be produced]"
 	  => \$opt::tmux),
 	 ("tmux-pane|tmuxpane".
-	  "[Use tmux for output but put output into panes in the first window.  Useful if you want to monitor the progress of less than 100 concurrent jobs]"
+	  "[Use tmux for output but put output into panes in the first ".
+	  "window.  Useful if you want to monitor the progress of less than ".
+	  "100 concurrent jobs]"
 	  => \$opt::tmuxpane),
 	 "null|0[Use NUL as delimiter]" => \$opt::null,
 	 "quote|q[Quote command]" => \$opt::quote,
@@ -1740,26 +1748,33 @@ sub options_completion_hash() {
 	  "[Use the replacement string replace-str instead of {}]:replace-str"
 	  => \$opt::I),
 	 ("extensionreplace|er=s".
-	  "[Use the replacement string replace-str instead of {.} for input line without extension]:replace-str"
+	  "[Use the replacement string replace-str instead of {.} for input ".
+	  "line without extension]:replace-str"
 	  => \$opt::U),
 	 "U=s" => \$opt::retired,
 	 ("basenamereplace|bnr=s".
-	  "[Use the replacement string replace-str instead of {/} for basename of input line]:replace-str"
+	  "[Use the replacement string replace-str instead of {/} for ".
+	  "basename of input line]:replace-str"
 	  => \$opt::basenamereplace),
 	 ("dirnamereplace|dnr=s".
-	  "[Use the replacement string replace-str instead of {//} for dirname of input line]:replace-str"
+	  "[Use the replacement string replace-str instead of {//} for ".
+	  "dirname of input line]:replace-str"
 	  => \$opt::dirnamereplace),
 	 ("basenameextensionreplace|bner=s".
-	  "[Use the replacement string replace-str instead of {/.} for basename of input line without extension]:replace-str"
+	  "[Use the replacement string replace-str instead of {/.} for ".
+	  "basename of input line without extension]:replace-str"
 	  => \$opt::basenameextensionreplace),
 	 ("seqreplace=s".
-	  "[Use the replacement string replace-str instead of {#} for job sequence number]:replace-str"
+	  "[Use the replacement string replace-str instead of {#} for job ".
+	  "sequence number]:replace-str"
 	  => \$opt::seqreplace),
 	 ("slotreplace=s".
-	  "[Use the replacement string replace-str instead of {%} for job slot number]:replace-str"
+	  "[Use the replacement string replace-str instead of {%} for job ".
+	  "slot number]:replace-str"
 	  => \$opt::slotreplace),
 	 ("jobs|j=s".
-	  "[(Add +N to/Subtract -N from/Multiply N%) the number of CPU threads or read parameter from file]:_files"
+	  "[(Add +N to/Subtract -N from/Multiply N%) the number of CPU ".
+	  "threads or read parameter from file]:_files"
 	  => \$opt::jobs),
 	 ("delay=s".
 	  "[Delay starting next job by duration]:duration" => \$opt::delay),
@@ -1795,7 +1810,8 @@ sub options_completion_hash() {
 	  "[Determine how GNU Parallel counts the number of CPUs]"
 	  => \$opt::use_cpus_instead_of_cores),
 	 ("shell-quote|shellquote|shell_quote".
-	  "[Does not run the command but quotes it. Useful for making quoted composed commands for GNU parallel]"
+	  "[Does not run the command but quotes it. Useful for making ".
+	  "quoted composed commands for GNU parallel]"
 	  => \@opt::shellquote),
 	 ('nice=i[Run the command at this niceness]:niceness:($(seq -20 19))'
 	  => \$opt::nice),
@@ -1812,10 +1828,12 @@ sub options_completion_hash() {
 	  => \$opt::filter_hosts),
 	 ('sshlogin|S=s'.
 	  '[Distribute jobs to remote computers]'.
-	  ':[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]] or @hostgroup'.
+	  ':[@hostgroups/][ncpus/]sshlogin'.
+	  '[,[@hostgroups/][ncpus/]sshlogin[,...]] or @hostgroup'.
 	  ':_users') => \@opt::sshlogin,
 	 ("sshloginfile|slf=s".
-	  "[File with sshlogins on separate lines. Lines starting with '#' are ignored.]:filename:_files"
+	  "[File with sshlogins on separate lines. Lines starting with '#' ".
+	  "are ignored.]:filename:_files"
 	  => \@opt::sshloginfile),
 	 ("controlmaster|M".
 	  "[Use ssh's ControlMaster to make ssh connections faster]"
@@ -1833,15 +1851,20 @@ sub options_completion_hash() {
 	 "transfer[Transfer files to remote computers]" => \$opt::transfer,
 	 "cleanup[Remove transferred files]" => \$opt::cleanup,
 	 ("basefile|bf=s".
-	  "[Transfer file to each sshlogin before first job is started]:file:_files"
+	  "[Transfer file to each sshlogin before first job is started]".
+	  ":file:_files"
 	  => \@opt::basefile),
-	 ("template|tmpl=s[Replace replacement strings in file and save it in repl]:file=repl:_files"
+	 ("template|tmpl=s".
+	  "[Replace replacement strings in file and save it in repl]".
+	  ":file=repl:_files"
 	  => \%opt::template),
 	 "B=s" => \$opt::retired,
 	 "ctrl-c|ctrlc" => \$opt::retired,
 	 "no-ctrl-c|no-ctrlc|noctrlc" => \$opt::retired,
 	 ("work-dir|workdir|wd=s".
-	  "[Jobs will be run in the dir mydir. (default: the current dir for the local machine, the login dir for remote computers)]:mydir:_cd"
+	  "[Jobs will be run in the dir mydir. (default: the current dir ".
+	  "for the local machine, the login dir for remote computers)]".
+	  ":mydir:_cd"
 	  => \$opt::workdir),
 	 "W=s" => \$opt::retired,
 	 ("rsync-opts|rsyncopts=s[Options to pass on to rsync]:options"
@@ -1862,7 +1885,8 @@ sub options_completion_hash() {
 	 "T" => \$opt::retired,
 	 "H=i" => \$opt::retired,
 	 ("dry-run|dryrun|dr".
-	  "[Print the job to run on stdout (standard output), but do not run the job]"
+	  "[Print the job to run on stdout (standard output), but do not ".
+	  "run the job]"
 	  => \$opt::dryrun),
 	 "progress[Show progress of computations]" => \$opt::progress,
 	 ("eta[Show the estimated number of seconds before finishing]"
@@ -1883,7 +1907,9 @@ sub options_completion_hash() {
 	 "env=s[Copy environment variable var]:var:_vars" => \@opt::env,
 	 "recordenv|record-env[Record environment]" => \$opt::record_env,
 	 ('session'.
-	  '[Record names in current environment in $PARALLEL_IGNORED_NAMES and exit. Only used with env_parallel. Aliases, functions, and variables with names i]'
+	  '[Record names in current environment in $PARALLEL_IGNORED_NAMES '.
+	  'and exit. Only used with env_parallel. '.
+	  'Aliases, functions, and variables with names i]'
 	  => \$opt::session),
 	 ('plain[Ignore --profile, $PARALLEL, and ~/.parallel/config]'
 	  => \$opt::plain),
@@ -1900,12 +1926,16 @@ sub options_completion_hash() {
 	 # You accept to be put in a public hall of shame by removing
 	 # these lines.
 	 ("bibtex|citation".
-	  "[Print the citation notice and BibTeX entry for GNU parallel, silence citation notice for all future runs, and exit. It will not run any commands]"
+	  "[Print the citation notice and BibTeX entry for GNU parallel, ".
+	  "silence citation notice for all future runs, and exit. ".
+	  "It will not run any commands]"
 	  => \$opt::citation),
 	 "will-cite|willcite|nn|nonotice|no-notice" => \$opt::willcite,
 	 # Termination and retries
 	 ('halt-on-error|haltonerror|halt=s'.
-	  '[When should GNU parallel terminate]:when:((now\:"kill all running jobs and halt immediately" soon\:"wait for all running jobs to complete, start no new jobs"))'
+	  '[When should GNU parallel terminate]'.
+	  ':when:((now\:"kill all running jobs and halt immediately" '.
+	  'soon\:"wait for all running jobs to complete, start no new jobs"))'
 	  => \$opt::halt),
 	 'limit=s[Dynamic job limit]:"command args"' => \$opt::limit,
 	 ("memfree=s".
@@ -1916,13 +1946,15 @@ sub options_completion_hash() {
 	  => \$opt::memsuspend),
 	 "retries=s[Try failing jobs n times]:n" => \$opt::retries,
 	 ("timeout=s".
-	  "[Time out for command. If the command runs for longer than duration seconds it will get killed as per --term-seq]:duration"
+	  "[Time out for command. If the command runs for longer than ".
+	  "duration seconds it will get killed as per --term-seq]:duration"
 	  => \$opt::timeout),
 	 ("term-seq|termseq=s".
 	  "[Termination sequence]:sequence" => \$opt::termseq),
 	 # xargs-compatibility - implemented, man, testsuite
 	 ("max-procs|maxprocs|P=s".
-	  "[Add N to/Subtract N from/Multiply N% with/ the number of CPU threads or read parameter from file]:+N/-N/N%/N/procfile:_files"
+	  "[Add N to/Subtract N from/Multiply N% with/ the number of CPU ".
+	  "threads or read parameter from file]:+N/-N/N%/N/procfile:_files"
 	  => \$opt::jobs),
 	 ("delimiter|d=s[Input items are terminated by delim]:delim"
 	  => \$opt::d),
@@ -1961,7 +1993,8 @@ sub options_completion_hash() {
 	 ("version|V[Print the version GNU parallel and exit]"
 	  => \$opt::version),
 	 ('min-version|minversion=i'.
-	  '[Print the version GNU parallel and exit]:version:($(parallel --minversion 0))'
+	  '[Print the version GNU parallel and exit]'.
+	  ':version:($(parallel --minversion 0))'
 	  => \$opt::minversion),
 	 ("show-limits|showlimits".
 	  "[Display limits given by the operating system]"
@@ -1971,7 +2004,8 @@ sub options_completion_hash() {
 	 # Semaphore
 	 "semaphore[Work as a counting semaphore]" => \$opt::semaphore,
 	 ("semaphore-timeout|semaphoretimeout|st=s".
-	  "[If secs > 0: If the semaphore is not released within secs seconds, take it anyway]:secs"
+	  "[If secs > 0: If the semaphore is not released within secs ".
+	  "seconds, take it anyway]:secs"
 	  => \$opt::semaphoretimeout),
 	 ("semaphore-name|semaphorename|id=s".
 	  "[Use name as the name of the semaphore]:name"
@@ -1981,7 +2015,9 @@ sub options_completion_hash() {
 	 "wait[Wait for all commands to complete]" => \$opt::wait,
 	 # Shebang #!/usr/bin/parallel --shebang
 	 ("shebang|hashbang".
-	  "[GNU parallel can be called as a shebang (#!) command as the first line of a script. The content of the file will be treated as inputsource]"
+	  "[GNU parallel can be called as a shebang (#!) command as the ".
+	  "first line of a script. The content of the file will be treated ".
+	  "as inputsource]"
 	  => \$opt::shebang),
 	 ("_pipe-means-argfiles[internal]"
 	  => \$opt::_pipe_means_argfiles),
@@ -2158,7 +2194,7 @@ sub parse_options(@) {
 	or defined $opt::color) {
 	$Global::color = 1;
     }
-    if($opt::linebuffer or $opt::lastlinebuffer) {
+    if($opt::linebuffer or $opt::latestline) {
 	$Global::linebuffer = 1;
     }
     if(defined $opt::tag and not defined $opt::tagstring) {
@@ -2167,7 +2203,8 @@ sub parse_options(@) {
     }
     if(defined $opt::tagstring) {
 	$opt::tagstring = unquote_printf($opt::tagstring);
-	if($opt::tagstring =~ /\Q$Global::parensleft\E.*\Q$Global::parensright\E/
+	if($opt::tagstring =~
+	   /\Q$Global::parensleft\E.*\Q$Global::parensright\E/
 	   and
 	   $Global::linebuffer) {
 	    # --tagstring contains {= =} and --linebuffer =>
@@ -2175,7 +2212,9 @@ sub parse_options(@) {
 	    $Global::cache_replacement_eval = 0;
 	}
     }
-    if(defined $opt::interactive) { $Global::interactive = $opt::interactive; }
+    if(defined $opt::interactive) {
+	$Global::interactive = $opt::interactive;
+    }
     if(defined $opt::quote) { $Global::quoting = 1; }
     if(defined $opt::r) { $Global::ignore_empty = 1; }
     if(defined $opt::verbose) { $Global::stderr_verbose = 1; }
@@ -2401,7 +2440,8 @@ sub parse_options(@) {
 	}
     }
     if(defined $opt::max_replace_args) {
-	$opt::max_replace_args = multiply_binary_prefix($opt::max_replace_args);
+	$opt::max_replace_args =
+	    multiply_binary_prefix($opt::max_replace_args);
 	$Global::max_number_of_args = $opt::max_replace_args;
 	$Global::ContextReplace = 1;
     }
@@ -2537,7 +2577,9 @@ sub parse_options(@) {
     }
     if($opt::sqlworker) { $Global::membuffer ||= 1; }
     # The sqlmaster groups the arguments, so the should just read one
-    if($opt::sqlworker and not $opt::sqlmaster) { $Global::max_number_of_args = 1; }
+    if($opt::sqlworker and not $opt::sqlmaster) {
+	$Global::max_number_of_args = 1;
+    }
 }
 
 sub check_invalid_option_combinations() {
@@ -2654,15 +2696,18 @@ sub init_globals() {
 	 '{/..}' => 's:.*/::; s:\.[^/.]+\.[^/.]+$::',
 	 '{/...}' => 's:.*/::; s:\.[^/.]+\.[^/.]+\.[^/.]+$::',
 	 # n choose k = Binomial coefficient
-	 '{choose_k}' => 'for $t (2..$#arg){ if($arg[$t-1] ge $arg[$t]) { skip() } }',
+	 '{choose_k}' => ('for $t (2..$#arg)'.
+			  '{ if($arg[$t-1] ge $arg[$t]) { skip() } }'),
 	 # unique values: Skip job if any args are the same
 	 '{uniq}' => 'if(::uniq(@arg) != @arg) { skip(); }',
 	 # {##} = number of jobs
 	 '{##}' => '1 $_=total_jobs()',
 	 # {0%} = 0-padded jobslot
-	 '{0%}' => '1 $f=1+int((log($Global::max_jobs_running||1)/log(10))); $_=sprintf("%0${f}d",slot())',
+	 '{0%}' => ('1 $f=1+int((log($Global::max_jobs_running||1)/log(10)));'.
+		    '$_=sprintf("%0${f}d",slot())'),
 	 # {0%} = 0-padded seq
-	 '{0#}' => '1 $f=1+int((log(total_jobs())/log(10))); $_=sprintf("%0${f}d",seq())',
+	 '{0#}' => ('1 $f=1+int((log(total_jobs())/log(10)));'.
+		    '$_=sprintf("%0${f}d",seq())'),
 
 	 ## Bash inspired replacement strings
 	 # Bash ${a:-myval}
@@ -2979,7 +3024,7 @@ sub open_joblog() {
 		$append = <$joblog_fh>;
 		my $joblog_regexp;
 		if($opt::retry_failed) {
-		    # Make a regexp that only matches commands with exit+signal=0
+		    # Make a regexp that matches commands with exit+signal=0
 		    # 4 host 1360490623.067 3.445 1023 1222 0 0 command
 		    $joblog_regexp='^(\d+)(?:\t[^\t]+){5}\t0\t0\t';
 		    my @group;
@@ -3004,12 +3049,14 @@ sub open_joblog() {
 			# Put args into argfile
 			if(grep /\0/, @group) {
 			    # force --null to deal with \n in commandlines
-			    ::warning("Command lines contain newline. Forcing --null.");
+			    ::warning("Command lines contain newline. ".
+				      "Forcing --null.");
 			    $opt::null = 1;
 			    $/ = "\0";
 			}
 			# Replace \0 with '\n' as used in print_joblog()
-			print $outfh map { s/\0/\n/g; $_,$/ } map { $_ } @group;
+			print $outfh (map { s/\0/\n/g; $_,$/ }
+				      map { $_ } @group);
 			seek $outfh, 0, 0;
 			exit_if_disk_full();
 			# Set filehandle to -a
@@ -3020,7 +3067,7 @@ sub open_joblog() {
 		}
 		if($opt::resume || $opt::resume_failed) {
 		    if($opt::resume_failed) {
-			# Make a regexp that only matches commands with exit+signal=0
+			# Make a regexp that matches commands with exit+signal=0
 			# 4 host 1360490623.067 3.445 1023 1222 0 0 command
 			$joblog_regexp='^(\d+)(?:\t[^\t]+){5}\t0\t0\t';
 		    } else {
@@ -3176,7 +3223,7 @@ sub read_options() {
 	    my @options;
 	    my @parser;
 	    if ($^O eq 'freebsd') {
-		# FreeBSD's #! puts different values in @ARGV than Linux' does.
+		# FreeBSD's #! puts different values in @ARGV than Linux' does
 		my @nooptions = @ARGV;
 		get_options_from_array(\@nooptions);
 		while($#ARGV > $#nooptions) {
@@ -3198,7 +3245,8 @@ sub read_options() {
 	}
     }
     if($ARGV[0] =~ / --shebang(-?wrap)? /) {
-	::warning("--shebang and --shebang-wrap must be the first argument.\n");
+	::warning("--shebang and --shebang-wrap must be the first ".
+		  "argument.\n");
     }
 
     Getopt::Long::Configure("bundling","require_order");
@@ -3318,7 +3366,7 @@ sub read_args_from_command_line() {
 	   $arg eq $Global::arg_file_sep
 	   or
 	   $arg eq $Global::arg_file_sep."+") {
-	    my $group_sep = $arg; # This group of arguments is args or argfiles
+	    my $group_sep = $arg; # This group of args is args or argfiles
 	    my @group;
 	    while(defined ($arg = shift @ARGV)) {
 		if($arg eq $Global::arg_sep
@@ -3760,7 +3808,8 @@ sub init_run_jobs() {
 		my $mtime = (stat($actual_file))[9];
 		$last_mtime{$actual_file} ||= $mtime;
 		if($mtime - $last_mtime{$actual_file} > 1) {
-		    ::debug("run","--sshloginfile $actual_file changed. reload\n");
+		    ::debug("run",
+			    "--sshloginfile $actual_file changed. reload\n");
 		    $last_mtime{$actual_file} = $mtime;
 		    # Reload $slf
 		    # Empty sshlogins
@@ -3820,7 +3869,7 @@ sub init_run_jobs() {
 	    if ($sshlogin->jobs_running() < $sshlogin->max_jobs_running()) {
 		if($opt::delay
 		   and
-		   $opt::delay - 0.008 > ::now() - $Global::newest_starttime) {
+		   $opt::delay-0.008 > ::now()-$Global::newest_starttime) {
 		    # It has been too short since last start
 		    next;
 		}
@@ -3915,8 +3964,10 @@ sub init_run_jobs() {
 		    }
 		} while ($job->is_already_in_joblog()
 			 or
-			 ($opt::results and $opt::resume and $job->is_already_in_results()));
-		debug("start", "Command to run on '", $job->sshlogin()->string(), "': '",
+			 ($opt::results and $opt::resume
+			  and $job->is_already_in_results()));
+		debug("start", "Command to run on '",
+		      $job->sshlogin()->string(), "': '",
 		      $job->replaced(),"'\n");
 		if($job->start()) {
 		    if($opt::pipe) {
@@ -3938,10 +3989,11 @@ sub init_run_jobs() {
 		    my $max = $sshlogin->max_jobs_running();
 		    if($max > 1) { $max--; } else {
 			my @arg;
-			for my $record (@{$job->{'commandline'}->{'arg_list'}}) {
+			for my $record (@{$job->{'commandline'}{'arg_list'}}) {
 			    push @arg, map { $_->orig() } @$record;
 			}
-			::error("No more processes: cannot run a single job. Something is wrong at @arg.");
+			::error("No more processes: cannot run a single job. ".
+				"Something is wrong at @arg.");
 			::wait_and_exit(255);
 		    }
 		    $sshlogin->set_max_jobs_running($max);
@@ -4185,7 +4237,7 @@ sub progress() {
 		 @workers);
     }
     if(length $status > $termcols) {
-	# 1:XX/XX/XX% 2:XX/XX/XX% 3:XX/XX/XX% 4:XX/XX/XX% 5:XX/XX/XX% 6:XX/XX/XX%
+	# 1:XX/XX/XX% 2:XX/XX/XX% 3:XX/XX/XX% 4:XX/XX/XX% 5:XX/XX/XX%
 	$header = "Computer:jobs running/jobs completed/%of started jobs";
 	$status = $eta .
 	    join(" ",map
@@ -4203,56 +4255,56 @@ sub progress() {
 		 @workers);
     }
     if(length $status > $termcols) {
-	# sshlogin1:XX/XX/XX% sshlogin2:XX/XX/XX% sshlogin3:XX/XX sshlogin4:XX/XX
+	# sshlogin1:XX/XX/XX% sshlogin2:XX/XX/XX% sshlogin3:XX/XX
 	$header = "Computer:jobs running/jobs completed";
 	$status = $eta .
-	    join(" ",map
-		       { sprintf("%s:%d/%d",
-				 $sshlogin{$_}, $Global::host{$_}->jobs_running(),
-				 ($Global::host{$_}->jobs_completed()||0)) }
-		       @workers);
+	    join(" ",
+		 map { sprintf("%s:%d/%d",
+			       $sshlogin{$_}, $Global::host{$_}->jobs_running(),
+			       ($Global::host{$_}->jobs_completed()||0)) }
+		 @workers);
     }
     if(length $status > $termcols) {
 	# sshlogin1:XX/XX sshlogin2:XX/XX sshlogin3:XX/XX sshlogin4:XX/XX
 	$header = "Computer:jobs running/jobs completed";
 	$status = $eta .
-	    join(" ",map
-		       { sprintf("%s:%d/%d",
-				 $sshlogin{$_}, $Global::host{$_}->jobs_running(),
-				 ($Global::host{$_}->jobs_completed()||0)) }
-		       @workers);
+	    join(" ",
+		 map { sprintf("%s:%d/%d",
+			       $sshlogin{$_}, $Global::host{$_}->jobs_running(),
+			       ($Global::host{$_}->jobs_completed()||0)) }
+		 @workers);
     }
     if(length $status > $termcols) {
 	# 1:XX/XX 2:XX/XX 3:XX/XX 4:XX/XX 5:XX/XX 6:XX/XX
 	$header = "Computer:jobs running/jobs completed";
 	$status = $eta .
-	    join(" ",map
-		       { sprintf("%s:%d/%d",
-				 $workerno{$_}, $Global::host{$_}->jobs_running(),
-				 ($Global::host{$_}->jobs_completed()||0)) }
-		       @workers);
+	    join(" ",
+		 map { sprintf("%s:%d/%d", $workerno{$_},
+			       $Global::host{$_}->jobs_running(),
+			       ($Global::host{$_}->jobs_completed()||0)) }
+		 @workers);
     }
     if(length $status > $termcols) {
 	# sshlogin1:XX sshlogin2:XX sshlogin3:XX sshlogin4:XX sshlogin5:XX
 	$header = "Computer:jobs completed";
 	$status = $eta .
-	    join(" ",map
-		       { sprintf("%s:%d",
-				 $sshlogin{$_},
-				 ($Global::host{$_}->jobs_completed()||0)) }
-		       @workers);
+	    join(" ",
+		 map { sprintf("%s:%d", $sshlogin{$_},
+			       ($Global::host{$_}->jobs_completed()||0)) }
+		 @workers);
     }
     if(length $status > $termcols) {
 	# 1:XX 2:XX 3:XX 4:XX 5:XX 6:XX
 	$header = "Computer:jobs completed";
 	$status = $eta .
-	    join(" ",map
-		       { sprintf("%s:%d",
-				 $workerno{$_},
-				 ($Global::host{$_}->jobs_completed()||0)) }
-		       @workers);
+	    join(" ",
+		 map { sprintf("%s:%d",
+			       $workerno{$_},
+			       ($Global::host{$_}->jobs_completed()||0)) }
+		 @workers);
     }
-    return ("workerlist" => $workerlist, "header" => $header, "status" => $status);
+    return ("workerlist" => $workerlist, "header" => $header,
+	    "status" => $status);
 }
 
 {
@@ -4323,7 +4375,8 @@ sub progress() {
 	my $zenity = sprintf("%-${terminal_width}s",
 			     substr("#   $eta sec $arg",
 				    0,$terminal_width));
-	$s = "\r" . $zenity . "\r" . $pctcomplete*100 . # Prefix with zenity header
+	# Prefix with zenity header
+	$s = "\r" . $zenity . "\r" . $pctcomplete*100 .
 	    "\r" . $rev . $s . $reset;
 	return $s;
     }
@@ -4583,21 +4636,26 @@ sub parse_sshlogin() {
     }
 
     # debug("start", "sshlogin: ", my_dump(%Global::host),"\n");
-    if(@Global::transfer_files or @opt::return or $opt::cleanup or @opt::basefile) {
+    if(@Global::transfer_files or @opt::return
+       or $opt::cleanup or @opt::basefile) {
 	if(not remote_hosts()) {
 	    # There are no remote hosts
 	    if(@opt::trc) {
 		::warning("--trc ignored as there are no remote --sshlogin.");
 	    } elsif (defined $opt::transfer) {
-		::warning("--transfer ignored as there are no remote --sshlogin.");
+		::warning("--transfer ignored as there are ".
+			  "no remote --sshlogin.");
 	    } elsif (@opt::transfer_files) {
-		::warning("--transferfile ignored as there are no remote --sshlogin.");
+		::warning("--transferfile ignored as there ".
+			  "are no remote --sshlogin.");
 	    } elsif (@opt::return) {
 		::warning("--return ignored as there are no remote --sshlogin.");
 	    } elsif (defined $opt::cleanup and not %opt::template) {
-		::warning("--cleanup ignored as there are no remote --sshlogin.");
+		::warning("--cleanup ignored as there ".
+			  "are no remote --sshlogin.");
 	    } elsif (@opt::basefile) {
-		::warning("--basefile ignored as there are no remote --sshlogin.");
+		::warning("--basefile ignored as there ".
+			  "are no remote --sshlogin.");
 	    }
 	}
     }
@@ -4630,7 +4688,8 @@ sub setup_basefile() {
 	  ::wait_and_exit(255);
 	}
 	if(not $workdir) {
-	    my $dummycmdline = CommandLine->new(1,["true"],{},0,0,[],[],[],[],{},{});
+	    my $dummycmdline =
+		CommandLine->new(1,["true"],{},0,0,[],[],[],[],{},{});
 	    my $dummyjob = Job->new($dummycmdline);
 	    $workdir = $dummyjob->workdir();
 	}
@@ -4919,7 +4978,8 @@ sub parallelized_host_filtering() {
 	push(@threads, $host."\t"."true $host; ".
 	     sshwrapped($sshlogin,"parallel --number-of-threads",0)."\n\0");
 	push(@maxline, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --max-line-length-allowed",0)."\n\0");
+	     sshwrapped($sshlogin,
+			"parallel --max-line-length-allowed",0)."\n\0");
 	# 'echo' is used to get the fastest possible ssh login time
 	push(@echo, $host."\t"."true $host; ".
 	     $sshlogin->wrap("echo $host")."\n\0");
@@ -5109,7 +5169,8 @@ sub onall($@) {
     my %seen;
     for my $joblog (@joblogs) {
 	# Append to $joblog
-	open(my $fh, "<", $joblog) || ::die_bug("Cannot open tmp joblog $joblog");
+	open(my $fh, "<", $joblog) ||
+	    ::die_bug("Cannot open tmp joblog $joblog");
 	# Skip first line (header);
 	<$fh>;
 	print $Global::joblog (<$fh>);
@@ -5515,8 +5576,10 @@ sub citation_notice() {
 	    print $fh $runs;
 	    close $fh;
 	    if($runs >= 10) {
-		::status("Come on: You have run parallel $runs times. Isn't it about time ",
-			 "you run 'parallel --citation' once to silence the citation notice?",
+		::status("Come on: You have run parallel $runs times. ".
+			 "Isn't it about time ",
+			 "you run 'parallel --citation' once to silence ".
+			 "the citation notice?",
 			 "");
 	    }
 	}
@@ -6055,8 +6118,10 @@ sub multiply_time_units($) {
 	    s/m/*60+/gi;
 	    s/h/*3600+/gi;
 	    s/d/*86400+/gi;
-	    $_ = eval $_."0";
+	    # 1m/3 => 1*60+/3 => 1*60/3
+	    s/\+(\D)/$1/gi;
 	}
+	$_ = eval $_."-0";
     }
     return wantarray ? @v : $v[0];
 }
@@ -6489,14 +6554,12 @@ sub reap_usleep() {
 		    $something_printed += $job->print();
 		}
 	    }
-	    if($something_printed) {
-		$ms = $ms/2+0.001;
-	    }
+	    if($something_printed) { $ms = $ms/2+0.001; }
 	}
 	if($ms > 0.002) {
 	    # When a child dies, wake up from sleep (or select(,,,))
 	    $SIG{CHLD} = sub { kill "ALRM", $$ };
-	    if($opt::delay) {
+	    if($opt::delay and not $Global::linebuffer) {
 		# The 0.004s is approximately the time it takes for one round
 		my $next_earliest_start =
 		    $Global::newest_starttime + $opt::delay - 0.004;
@@ -11087,7 +11150,7 @@ sub print_files($) {
 	}
 	if(not $init) {
 	    $init = 1;
-	    if($Global::color or $opt::lastlinebuffer) {
+	    if($Global::color or $opt::latestline) {
 		# cursor_up cuu1 = up one line
 		$up = `tput cuu1 </dev/tty`;
 		chomp($up);
@@ -11137,7 +11200,7 @@ sub print_files($) {
 		    #	     map { print $b,$_ } 1..10'
 		    $i = ((rindex($buf,"\n")+1) || (rindex($buf,"\r")+1));
 		    if($i) {
-			if($opt::lastlinebuffer) {
+			if($opt::latestline) {
 			    # Remove the final \n/\r
 			    my $l = join('', @$halfline_ref,
 					 substr($buf,0,$i-1));
@@ -11404,9 +11467,7 @@ sub print_results($) {
 		$outputlength = tell($in_fh);
 	    }
 	}
-	if($fdno == 1) {
-	    $self->add_returnsize($outputlength);
-	}
+	if($fdno == 1) { $self->add_returnsize($outputlength); }
 	close $in_fh;
 	if($? and $opt::compress) {
 	    ::error($opt::decompress_program." failed.");
@@ -11477,7 +11538,7 @@ sub print_joblog($) {
 	$curseq = 1;
 	$maxseq = 1;
     }
-	
+
     sub print_color() {
 	# @text is a single line
 	my ($out_fh,@text) = @_;

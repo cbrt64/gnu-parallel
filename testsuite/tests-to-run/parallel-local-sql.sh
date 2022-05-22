@@ -22,8 +22,8 @@ p_wrapper() {
     SERVERURL=$(eval echo $2)
     TABLE=TBL$RANDOM
     DBURL=$SERVERURL/$TABLE
-    T1=$(tempfile)
-    T2=$(tempfile)
+    T1=$(mktemp)
+    T2=$(mktemp)
     eval "$INNER"
     echo Exit=$?
     wait
@@ -114,7 +114,7 @@ par_sql_joblog() {
     parallel -k --joblog - --sqlmaster $DBURL --wait sleep .3\;echo ::: {1..5} ::: {a..e} |
 	perl -pe 's/\d+\.\d+/999.999/g' | sort -n &
     sleep 0.5
-    T=$(tempfile)
+    T=$(mktemp)
     parallel -k --joblog - --sqlworker $DBURL > $T
     wait
     # Needed because of race condition

@@ -55,30 +55,23 @@ Yes it does
 ### Test -r
 dburl pg://nongood@127.0.0.3:2227/
 databasedriver pg user nongood password  host 127.0.0.3 port 2227 database nongood query 
-psql: error: could not connect to server: Connection refused
-	Is the server running on host "127.0.0.3" and accepting
-	TCP/IP connections on port 2227?
-psql: error: could not connect to server: Connection refused
-	Is the server running on host "127.0.0.3" and accepting
-	TCP/IP connections on port 2227?
-psql: error: could not connect to server: Connection refused
-	Is the server running on host "127.0.0.3" and accepting
-	TCP/IP connections on port 2227?
+psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
 ### Test --retries=s
 dburl pg://nongood@127.0.0.3:2227/
 databasedriver pg user nongood password  host 127.0.0.3 port 2227 database nongood query 
-psql: error: could not connect to server: Connection refused
-	Is the server running on host "127.0.0.3" and accepting
-	TCP/IP connections on port 2227?
-psql: error: could not connect to server: Connection refused
-	Is the server running on host "127.0.0.3" and accepting
-	TCP/IP connections on port 2227?
-psql: error: could not connect to server: Connection refused
-	Is the server running on host "127.0.0.3" and accepting
-	TCP/IP connections on port 2227?
-psql: error: could not connect to server: Connection refused
-	Is the server running on host "127.0.0.3" and accepting
-	TCP/IP connections on port 2227?
+psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
+psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
+	Is the server running on that host and accepting TCP/IP connections?
 ### Test --help -h
 Usage:
 sql [options] dburl [sqlcommand]

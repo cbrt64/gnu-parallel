@@ -13,8 +13,8 @@ par_sem_dir() {
 
 par_parcat_mixing() {
     echo 'parcat output should mix: a b a b'
-    mktmpfifo() {
-	tmp=$(tempfile)
+    mktempfifo() {
+	tmp=$(mktemp)
 	rm $tmp
 	mkfifo $tmp
 	echo $tmp
@@ -25,8 +25,8 @@ par_parcat_mixing() {
 	sleep 2
 	perl -e 'print "'$string'"x9000,"end\n"'
     }
-    tmp1=$(mktmpfifo)
-    tmp2=$(mktmpfifo)
+    tmp1=$(mktempfifo)
+    tmp2=$(mktempfifo)
     slow_output a > $tmp1 &
     sleep 1
     slow_output b > $tmp2 &
@@ -106,7 +106,7 @@ par_bug56403() {
 par_delay_Xauto() {
     echo 'TODO: --retries for those that fail and --sshdelay'
     echo '### bug #58911: --delay Xauto'
-    tmp=$(tempfile)
+    tmp=$(mktemp)
     doit() {
 	perl -e '$a=shift;
 	     $m = -M $a < 0.0000001;

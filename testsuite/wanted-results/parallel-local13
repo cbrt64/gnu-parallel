@@ -89,6 +89,7 @@ from one to xoney
 xargs: argument list too long
 stdsort parallel -k -i -s26 -0 echo from \{\} to x{}y < items-0.xi
 
+from one to xoney
 parallel: Error: Command line too long (32 >= 26) at input 0:  	
 echo '###  -l -0 echo < ldata-0.xi'
 ###  -l -0 echo < ldata-0.xi
@@ -314,6 +315,7 @@ second
 echo '###  -P3 -n1 -IARG sh -c ARG < Pdata.xi'
 ###  -P3 -n1 -IARG sh -c ARG < Pdata.xi
 stdout xargs -P3 -n1 -IARG sh -c ARG < Pdata.xi
+xargs: warning: options --max-args and --replace/-I/-i are mutually exclusive, ignoring previous --max-args value
 three
 two
 one
@@ -441,7 +443,7 @@ stdout parallel -k -r echo this plus that < space.xi
 echo '###  -t -0 echo this plus that < space.xi'
 ###  -t -0 echo this plus that < space.xi
 stdout xargs -t -0 echo this plus that < space.xi
-echo this plus that ''$'\n'' '$'\f\r\t\v\n' 
+echo this plus that ''$'\n'' '$'\f\r\t\v\n'
 this plus that 
  	
 
@@ -599,6 +601,7 @@ stdout parallel -k -L2 echo < ldatab.xi
 echo '###  -L2 -n2 echo < ldata.xi'
 ###  -L2 -n2 echo < ldata.xi
 stdout xargs -L2 -n2 echo < ldata.xi
+xargs: warning: options --max-lines and --max-args/-n are mutually exclusive, ignoring previous --max-lines value
 1 22
 333 4444
 55555 666666
@@ -1267,6 +1270,7 @@ stdout parallel -l -k echo < ldata.xi
 echo '###  -l1 -n4 echo < files.xi'
 ###  -l1 -n4 echo < files.xi
 stdout xargs -l1 -n4 echo < files.xi
+xargs: warning: options --max-lines and --max-args/-n are mutually exclusive, ignoring previous --max-lines value
 /src/gnu/autoconf-1.11 /src/gnu/autoconf-1.11/README /src/gnu/autoconf-1.11/Makefile.in /src/gnu/autoconf-1.11/INSTALL
 /src/gnu/autoconf-1.11/NEWS /src/gnu/autoconf-1.11/COPYING /src/gnu/autoconf-1.11/ChangeLog /src/gnu/autoconf-1.11/autoconf.texi
 /src/gnu/autoconf-1.11/acconfig.h /src/gnu/autoconf-1.11/autoconf.sh /src/gnu/autoconf-1.11/acgeneral.m4 /src/gnu/autoconf-1.11/acspecific.m4
@@ -1309,15 +1313,15 @@ stdout parallel -k -l2 echo < files.xi
 echo '###  -s30 -t echo < stairs.xi - xargs'
 ###  -s30 -t echo < stairs.xi - xargs
 stdout xargs -s30 -t echo < stairs.xi
-echo 1 22 333 4444 55555 
+echo 1 22 333 4444 55555
 1 22 333 4444 55555
-echo 666666 7777777 88888888 
+echo 666666 7777777 88888888
 666666 7777777 88888888
-echo 999999999 1 22 333 4444 
+echo 999999999 1 22 333 4444
 999999999 1 22 333 4444
-echo 55555 666666 7777777 
+echo 55555 666666 7777777
 55555 666666 7777777
-echo 88888888 999999999 
+echo 88888888 999999999
 88888888 999999999
 echo '###  -s30 -t echo < stairs.xi - parallel'
 ###  -s30 -t echo < stairs.xi - parallel
@@ -1339,7 +1343,7 @@ echo 999999999 1 22 333 4444
 echo '###  -t echo this plus that < space.xi'
 ###  -t echo this plus that < space.xi
 stdout xargs -t echo this plus that < space.xi
-echo this plus that 
+echo this plus that
 this plus that
 stdout parallel -k -t echo this plus that < space.xi | sort
 echo this plus that ' 	'
@@ -1360,9 +1364,9 @@ stdout parallel -k -n1 printf "@%s@\n" < empty.xi
 @foo '' bar@n@baz ''@n@'' fnord@necho '###  -n2 -t echo < foobar.xi'
 ###  -n2 -t echo < foobar.xi
 stdout xargs -n2 -t echo < foobar.xi
-echo foo bar 
+echo foo bar
 foo bar
-echo baz ugh 
+echo baz ugh
 baz ugh
 stdout parallel -k -n2 -t echo < foobar.xi | sort
 echo 'foo bar' 'baz '

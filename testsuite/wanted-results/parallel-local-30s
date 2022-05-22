@@ -88,16 +88,16 @@ par_exit_code	fizsh parallel --halt-on-error now,fail=1 'true;/tmp/mysleep' ::: 
 par_exit_code	fizsh parallel --halt-on-error now,done=1 'true;/tmp/mysleep' ::: 100	137
 par_exit_code	fizsh parallel --halt-on-error now,done=1 'true;/bin/true' ::: 100	0
 par_exit_code	fizsh parallel --halt-on-error now,done=1 'true;exit' ::: 100	100
-par_exit_code	ksh2020 /tmp/mysleep 100	137
-par_exit_code	ksh2020 parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
-par_exit_code	ksh2020 parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
-par_exit_code	ksh2020 parallel --halt-on-error now,done=1 /bin/true ::: 100	0
-par_exit_code	ksh2020 parallel --halt-on-error now,done=1 exit ::: 100	100
-par_exit_code	ksh2020 true;/tmp/mysleep 100	137
-par_exit_code	ksh2020 parallel --halt-on-error now,fail=1 'true;/tmp/mysleep' ::: 100	137
-par_exit_code	ksh2020 parallel --halt-on-error now,done=1 'true;/tmp/mysleep' ::: 100	137
-par_exit_code	ksh2020 parallel --halt-on-error now,done=1 'true;/bin/true' ::: 100	0
-par_exit_code	ksh2020 parallel --halt-on-error now,done=1 'true;exit' ::: 100	100
+par_exit_code	ksh2020 /tmp/mysleep 100	open3: exec of ksh2020 -c /tmp/mysleep 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,done=1 /bin/true ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,done=1 /bin/true ::: 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,done=1 exit ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,done=1 exit ::: 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 true;/tmp/mysleep 100	open3: exec of ksh2020 -c true;/tmp/mysleep 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,fail=1 'true;/tmp/mysleep' ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,fail=1 'true;/tmp/mysleep' ::: 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,done=1 'true;/tmp/mysleep' ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,done=1 'true;/tmp/mysleep' ::: 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,done=1 'true;/bin/true' ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,done=1 'true;/bin/true' ::: 100 failed: No such file or directory at -e line 1.
+par_exit_code	ksh2020 parallel --halt-on-error now,done=1 'true;exit' ::: 100	open3: exec of ksh2020 -c parallel --halt-on-error now,done=1 'true;exit' ::: 100 failed: No such file or directory at -e line 1.
 par_exit_code	posh /tmp/mysleep 100	137
 par_exit_code	posh parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	posh parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
@@ -153,7 +153,7 @@ par_exit_code	bash parallel --halt-on-error now,fail=1 /tmp/mysleep ::: 100	137
 par_exit_code	bash parallel --halt-on-error now,done=1 /tmp/mysleep ::: 100	137
 par_exit_code	bash parallel --halt-on-error now,done=1 /bin/true ::: 100	0
 par_exit_code	bash parallel --halt-on-error now,done=1 exit ::: 100	100
-par_exit_code	bash true;/tmp/mysleep 100	137
+par_exit_code	bash true;/tmp/mysleep 100	0
 par_exit_code	bash parallel --halt-on-error now,fail=1 'true;/tmp/mysleep' ::: 100	137
 par_exit_code	bash parallel --halt-on-error now,done=1 'true;/tmp/mysleep' ::: 100	137
 par_exit_code	bash parallel --halt-on-error now,done=1 'true;/bin/true' ::: 100	0
@@ -1481,13 +1481,13 @@ par_macron	п -q	п п
 par_macron	п -q	"п" п
 par_macron	п -q	пп
 par_macron	п -q	"п"п
-par_macron	п -q	/usr/bin/bash: $'echo \257': command not found
+par_macron	п -q	/usr/bin/bash: line 1: $'echo \257': command not found
 par_macron	п -Xq	п
 par_macron	п -Xq	п п
 par_macron	п -Xq	"п" п
 par_macron	п -Xq	пп
 par_macron	п -Xq	"п"п
-par_macron	п -Xq	/usr/bin/bash: $'echo \257': command not found
+par_macron	п -Xq	/usr/bin/bash: line 1: $'echo \257': command not found
 par_macron	п -k	п
 par_macron	п -k	п
 par_macron	п -k	п п
@@ -1505,13 +1505,13 @@ par_macron	по -q	по по
 par_macron	по -q	"по" по
 par_macron	по -q	попо
 par_macron	по -q	"по"по
-par_macron	по -q	/usr/bin/bash: $'echo \257\256': command not found
+par_macron	по -q	/usr/bin/bash: line 1: $'echo \257\256': command not found
 par_macron	по -Xq	по
 par_macron	по -Xq	по по
 par_macron	по -Xq	"по" по
 par_macron	по -Xq	попо
 par_macron	по -Xq	"по"по
-par_macron	по -Xq	/usr/bin/bash: $'echo \257\256': command not found
+par_macron	по -Xq	/usr/bin/bash: line 1: $'echo \257\256': command not found
 par_macron	по -k	по
 par_macron	по -k	по
 par_macron	по -k	по по
@@ -1529,13 +1529,13 @@ par_macron	ппо -q	ппо ппо
 par_macron	ппо -q	"ппо" ппо
 par_macron	ппо -q	ппоппо
 par_macron	ппо -q	"ппо"ппо
-par_macron	ппо -q	/usr/bin/bash: $'echo \257\257\256': command not found
+par_macron	ппо -q	/usr/bin/bash: line 1: $'echo \257\257\256': command not found
 par_macron	ппо -Xq	ппо
 par_macron	ппо -Xq	ппо ппо
 par_macron	ппо -Xq	"ппо" ппо
 par_macron	ппо -Xq	ппоппо
 par_macron	ппо -Xq	"ппо"ппо
-par_macron	ппо -Xq	/usr/bin/bash: $'echo \257\257\256': command not found
+par_macron	ппо -Xq	/usr/bin/bash: line 1: $'echo \257\257\256': command not found
 par_macron	ппо -k	ппо
 par_macron	ппо -k	ппо
 par_macron	ппо -k	ппо ппо
@@ -1545,29 +1545,29 @@ par_macron	ппо -k	ппоппо
 par_macron	п<п<п>п> -X	п<п<п>п>
 par_macron	п<п<п>п> -X	п<п<п>п> п<п<п>п>
 par_macron	п<п<п>п> -X	п<п<п>п>п<п<п>п>
-par_macron	п<п<п>п> -X	/usr/bin/bash: -c: line 0: syntax error near unexpected token `newline'
-par_macron	п<п<п>п> -X	/usr/bin/bash: -c: line 0: `echo п<п<п>п>'
-par_macron	п<п<п>п> -X	/usr/bin/bash: п: No such file or directory
-par_macron	п<п<п>п> -X	/usr/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -X	/usr/bin/bash: -c: line 1: syntax error near unexpected token `newline'
+par_macron	п<п<п>п> -X	/usr/bin/bash: -c: line 1: `echo п<п<п>п>'
+par_macron	п<п<п>п> -X	/usr/bin/bash: line 1: п: No such file or directory
+par_macron	п<п<п>п> -X	/usr/bin/bash: line 1: п: No such file or directory
 par_macron	п<п<п>п> -q	п<п<п>п>
 par_macron	п<п<п>п> -q	п<п<п>п> п<п<п>п>
 par_macron	п<п<п>п> -q	"п<п<п>п>" п<п<п>п>
 par_macron	п<п<п>п> -q	п<п<п>п>п<п<п>п>
 par_macron	п<п<п>п> -q	"п<п<п>п>"п<п<п>п>
-par_macron	п<п<п>п> -q	/usr/bin/bash: $'echo \257<\257<\257>\257>': command not found
+par_macron	п<п<п>п> -q	/usr/bin/bash: line 1: $'echo \257<\257<\257>\257>': command not found
 par_macron	п<п<п>п> -Xq	п<п<п>п>
 par_macron	п<п<п>п> -Xq	п<п<п>п> п<п<п>п>
 par_macron	п<п<п>п> -Xq	"п<п<п>п>" п<п<п>п>
 par_macron	п<п<п>п> -Xq	п<п<п>п>п<п<п>п>
 par_macron	п<п<п>п> -Xq	"п<п<п>п>"п<п<п>п>
-par_macron	п<п<п>п> -Xq	/usr/bin/bash: $'echo \257<\257<\257>\257>': command not found
+par_macron	п<п<п>п> -Xq	/usr/bin/bash: line 1: $'echo \257<\257<\257>\257>': command not found
 par_macron	п<п<п>п> -k	п<п<п>п>
 par_macron	п<п<п>п> -k	п<п<п>п> п<п<п>п>
 par_macron	п<п<п>п> -k	п<п<п>п>п<п<п>п>
-par_macron	п<п<п>п> -k	/usr/bin/bash: -c: line 0: syntax error near unexpected token `newline'
-par_macron	п<п<п>п> -k	/usr/bin/bash: -c: line 0: `echo п<п<п>п>'
-par_macron	п<п<п>п> -k	/usr/bin/bash: п: No such file or directory
-par_macron	п<п<п>п> -k	/usr/bin/bash: п: No such file or directory
+par_macron	п<п<п>п> -k	/usr/bin/bash: -c: line 1: syntax error near unexpected token `newline'
+par_macron	п<п<п>п> -k	/usr/bin/bash: -c: line 1: `echo п<п<п>п>'
+par_macron	п<п<п>п> -k	/usr/bin/bash: line 1: п: No such file or directory
+par_macron	п<п<п>п> -k	/usr/bin/bash: line 1: п: No such file or directory
 par_max_length_len_128k	### BUG: The length for -X is not close to max (131072)
 par_max_length_len_128k	64xxx
 par_max_length_len_128k	64xxx

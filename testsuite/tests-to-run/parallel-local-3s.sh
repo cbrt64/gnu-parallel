@@ -8,23 +8,6 @@
 # Each should be taking 3-10s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
-par_llb_color() {
-    echo 'bug #62386: --color (--ctag but without --tag)'
-    echo 'bug #62438: See last line from multiple jobslots'
-    slow_seq() {
-	sleep 0.$1
-	seq $1 | pv -qL $1
-    }
-    export -f slow_seq
-    run() {
-	seq 4 | parallel --color $@ slow_seq
-    }
-    export -f run
-    parallel --delay 0.1 -vkj0 run \
-	     ::: --lb --llb '' ::: --color '' ::: '--tagstring {}{}' --tag '' ::: -k '' |
-	md5sum
-}
-
 par_process_slot_var() {
     echo '### bug #62310: xargs compatibility: --process-slot-var=name'
     seq 0.1 0.1 0.5 |
@@ -144,7 +127,7 @@ EOF
 	true
     }
     run() {
-	tmp=`tempfile`
+	tmp=`mktemp`
 	"$@" > "$tmp"
 	chmod +x "$tmp"
 	"$tmp" A B C
@@ -343,7 +326,7 @@ par_tee_with_premature_close() {
 par_tee_too_many_args() {
     echo '### Fail if there are more arguments than --jobs'
     seq 11 | stdout parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
-    tmp=`tempfile`
+    tmp=`mktemp`
     seq 11 | parallel -k --tag --pipe -j0 --tee grep {} ::: {1..10000} 2> "$tmp"
     cat "$tmp" | perl -pe 's/\d+/999/g'
     rm "$tmp"

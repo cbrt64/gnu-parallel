@@ -718,8 +718,8 @@ par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
 par_mksh_underscore	variables in aliases in and arrays in functions work
-par_mksh_underscore	script[9]: not_copied_alias: inaccessible or not found
-par_mksh_underscore	script[9]: not_copied_func: inaccessible or not found
+par_mksh_underscore	W: script[9]: not_copied_alias: inaccessible or not found
+par_mksh_underscore	W: script[9]: not_copied_func: inaccessible or not found
 par_mksh_underscore	error=OK
 par_mksh_underscore	error=OK
 par_mksh_underscore	aliases in and arrays in functions work
@@ -730,9 +730,9 @@ par_mksh_underscore	aliases in functions work
 par_mksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_mksh_underscore	aliases in functions work
 par_mksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_mksh_underscore	/bin/mksh: myfunc: inaccessible or not found
+par_mksh_underscore	W: /bin/mksh: myfunc: inaccessible or not found
 par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
-par_mksh_underscore	script[9]: myfunc: inaccessible or not found
+par_mksh_underscore	W: script[9]: myfunc: inaccessible or not found
 par_mksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
 par_mksh_parset	parset
 par_mksh_parset	### parset into array
@@ -880,12 +880,12 @@ par_mksh_env_parallel_session	### Test env_parallel --session
 par_mksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	script[9]: level0func: inaccessible or not found
-par_mksh_env_parallel_session	script[9]: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level0func: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	l1var
 par_mksh_env_parallel_session	l1func
 par_mksh_env_parallel_session	l1alias
@@ -897,20 +897,20 @@ par_mksh_env_parallel_session	level1 array OK
 par_mksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	script[9]: level0func: inaccessible or not found
-par_mksh_env_parallel_session	script[9]: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level0func: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	script[9]: level1func: inaccessible or not found
-par_mksh_env_parallel_session	script[9]: level1alias: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level1func: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level1alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level1func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level1alias: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level1func: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level1alias: inaccessible or not found
 par_mksh_env_parallel_session	l2var
 par_mksh_env_parallel_session	l2func
 par_mksh_env_parallel_session	l2alias
@@ -922,12 +922,12 @@ par_mksh_env_parallel_session	level2 array OK
 par_mksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	script[9]: level0func: inaccessible or not found
-par_mksh_env_parallel_session	script[9]: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level0func: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	
 par_mksh_env_parallel_session	fail
-par_mksh_env_parallel_session	/bin/mksh: level0func: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: level0alias: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level0func: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: level0alias: inaccessible or not found
 par_mksh_env_parallel_session	l1var
 par_mksh_env_parallel_session	l1func
 par_mksh_env_parallel_session	l1alias
@@ -969,10 +969,10 @@ par_mksh_env_parallel_session	l2var
 par_mksh_env_parallel_session	l2func
 par_mksh_env_parallel_session	l2alias
 par_mksh_env_parallel_session	level2 array OK
-par_mksh_env_parallel_session	/bin/mksh: aliasbefore: inaccessible or not found
-par_mksh_env_parallel_session	script[9]: aliasbefore: inaccessible or not found
-par_mksh_env_parallel_session	/bin/mksh: funcbefore: inaccessible or not found
-par_mksh_env_parallel_session	script[9]: funcbefore: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: aliasbefore: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: aliasbefore: inaccessible or not found
+par_mksh_env_parallel_session	W: /bin/mksh: funcbefore: inaccessible or not found
+par_mksh_env_parallel_session	W: script[9]: funcbefore: inaccessible or not found
 par_mksh_env_parallel_session	no_before
 par_mksh_env_parallel_session	no_before
 par_mksh_env_parallel_session	no_before
@@ -1021,21 +1021,21 @@ par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
 par_ksh_underscore	variables in aliases in and arrays in functions work
-par_ksh_underscore	script[9]: not_copied_alias: not found [No such file or directory]
-par_ksh_underscore	script[9]: not_copied_func: not found [No such file or directory]
+par_ksh_underscore	script: line 5: not_copied_alias: not found
+par_ksh_underscore	script: line 5: not_copied_func: not found
 par_ksh_underscore	error=OK
 par_ksh_underscore	error=OK
 par_ksh_underscore	aliases in and arrays in functions work
 par_ksh_underscore	aliases in and arrays in functions work
 par_ksh_underscore	aliases in functions work
 par_ksh_underscore	aliases in functions work
-par_ksh_underscore	/bin/ksh: myecho: not found [No such file or directory]
+par_ksh_underscore	/bin/ksh: myecho: not found
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	script[9]: myecho: not found [No such file or directory]
+par_ksh_underscore	script[9]: myecho: not found
 par_ksh_underscore	OK if no myecho    ^^^^^^^^^^^^^^^^^
 par_ksh_underscore	/bin/ksh: myfunc: not found
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
-par_ksh_underscore	script[9]: myfunc: not found [No such file or directory]
+par_ksh_underscore	script: line 2: myfunc: not found
 par_ksh_underscore	OK if no myfunc         ^^^^^^^^^^^^^^^^^
 par_ksh_parset	parset
 par_ksh_parset	### parset into array
@@ -1142,9 +1142,9 @@ par_ksh_man	work,
 par_ksh_man	too
 par_ksh_man	This may never work
 par_ksh_man	https://unix.stackexchange.com/questions/457031/extract-full-function-definitions
-par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
-par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
-par_ksh_man	/bin/ksh: line XXX: syntax error at line XXX: `{' unmatched
+par_ksh_man	/bin/ksh: line 3: syntax error at line XXX: `{' unmatched
+par_ksh_man	/bin/ksh: line 3: syntax error at line XXX: `{' unmatched
+par_ksh_man	/bin/ksh: line 3: syntax error at line XXX: `{' unmatched
 par_ksh_man	exit value 2 should be 2
 par_ksh_man	Unknown option: no-such-option
 par_ksh_man	exit value 255 should be 255
@@ -1187,12 +1187,12 @@ par_ksh_env_parallel_session	### Test env_parallel --session
 par_ksh_env_parallel_session	### level0 should be hidden, level1 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	script[9]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	script[9]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0func: not found
+par_ksh_env_parallel_session	script[9]: level0alias: not found
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found
 par_ksh_env_parallel_session	l1var
 par_ksh_env_parallel_session	l1func
 par_ksh_env_parallel_session	l1alias
@@ -1204,20 +1204,20 @@ par_ksh_env_parallel_session	level1 array OK
 par_ksh_env_parallel_session	### level0+1 should be hidden, level2 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	script[9]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	script[9]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0func: not found
+par_ksh_env_parallel_session	script[9]: level0alias: not found
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	script[9]: level1func: not found [No such file or directory]
-par_ksh_env_parallel_session	script[9]: level1alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level1func: not found
+par_ksh_env_parallel_session	script[9]: level1alias: not found
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level1func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level1alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level1func: not found
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level1alias: not found
 par_ksh_env_parallel_session	l2var
 par_ksh_env_parallel_session	l2func
 par_ksh_env_parallel_session	l2alias
@@ -1229,12 +1229,12 @@ par_ksh_env_parallel_session	level2 array OK
 par_ksh_env_parallel_session	### level0 should be hidden, level1+2 should be transferred
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	script[9]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	script[9]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	script[9]: level0func: not found
+par_ksh_env_parallel_session	script[9]: level0alias: not found
 par_ksh_env_parallel_session	
 par_ksh_env_parallel_session	fail
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found [No such file or directory]
-par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found [No such file or directory]
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0func: not found
+par_ksh_env_parallel_session	/bin/ksh[XXX]: level0alias: not found
 par_ksh_env_parallel_session	l1var
 par_ksh_env_parallel_session	l1func
 par_ksh_env_parallel_session	l1alias
@@ -1277,9 +1277,9 @@ par_ksh_env_parallel_session	l2func
 par_ksh_env_parallel_session	l2alias
 par_ksh_env_parallel_session	level2 array OK
 par_ksh_env_parallel_session	/bin/ksh: line 3: aliasbefore: not found
-par_ksh_env_parallel_session	script[9]: aliasbefore: not found [No such file or directory]
+par_ksh_env_parallel_session	script: line 4: aliasbefore: not found
 par_ksh_env_parallel_session	/bin/ksh: line 3: funcbefore: not found
-par_ksh_env_parallel_session	script[9]: funcbefore: not found [No such file or directory]
+par_ksh_env_parallel_session	script: line 4: funcbefore: not found
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
 par_ksh_env_parallel_session	no_before
@@ -1327,10 +1327,10 @@ par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
-par_fish_underscore	script (line 15): 
+par_fish_underscore	script (line XXX): 
 par_fish_underscore	not_copied_alias 'error=OK'
 par_fish_underscore	^
-par_fish_underscore	script (line 15): 
+par_fish_underscore	script (line XXX): 
 par_fish_underscore	not_copied_func 'error=OK'
 par_fish_underscore	^
 par_fish_underscore	error=OK
@@ -1343,11 +1343,11 @@ par_fish_underscore	      myecho $myarray functions $argv
 par_fish_underscore	      ^
 par_fish_underscore	in function 'myfunc' with arguments 'work'
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
-par_fish_underscore	script (line 3): 
+par_fish_underscore	script (line 4): 
 par_fish_underscore	      myecho $myarray functions $argv
 par_fish_underscore	      ^
 par_fish_underscore	in function 'myfunc' with arguments 'work'
-par_fish_underscore		called on line 9 of file script
+par_fish_underscore		called on line XXX of file script
 par_fish_underscore	OK if   ^^^^^^^^^^^^^^^^^ no myecho
 par_fish_underscore	myfunc work
 par_fish_underscore	^

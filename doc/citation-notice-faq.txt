@@ -51,8 +51,15 @@ to accept that the software is already compliant with GPLv3, because
 nothing else gives you the right to change it. And if you accept this,
 you do not need to change it to make it compliant.
 
+What you can not do is to simultaneously claim that the software both
+is and is not available under GPLv3. You need to pick one.
+
+This is also covered in section 9 of GPLv3: "However, nothing other
+than this License grants you permission to propagate or modify any
+covered work."  https://www.gnu.org/licenses/gpl-3.0.en.html
+
 So: If you do not feel the citation notice adheres to GPLv3, you need
-to treat it as software that you have no license to use.
+to treat it as software that you have no license to modify.
 
 
 == Do automated scripts break if the notice is not silenced? ==

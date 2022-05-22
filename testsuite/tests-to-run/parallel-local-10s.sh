@@ -454,8 +454,8 @@ par_semaphore() {
 
 par_line_buffer() {
     echo "### --line-buffer"
-    tmp1=$(tempfile)
-    tmp2=$(tempfile)
+    tmp1=$(mktemp)
+    tmp2=$(mktemp)
 
     seq 10 | parallel -j20 --line-buffer  'seq {} 10 | pv -qL 10' > $tmp1
     seq 10 | parallel -j20                'seq {} 10 | pv -qL 10' > $tmp2
@@ -467,8 +467,8 @@ par_line_buffer() {
 
 par_pipe_line_buffer() {
     echo "### --pipe --line-buffer"
-    tmp1=$(tempfile)
-    tmp2=$(tempfile)
+    tmp1=$(mktemp)
+    tmp2=$(mktemp)
 
     nowarn() {
 	# Ignore certain warnings

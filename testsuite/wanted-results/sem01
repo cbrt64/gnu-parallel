@@ -110,12 +110,10 @@ par_exit	30	environment: line 1: PID Power failure           bash -c 'kill -'$1'
 par_exit	31	Bash exit value 159
 par_exit	31	Sem exit value 159
 par_exit	31	environment: line 1: PID Bad system call         (core dumped) bash -c 'kill -'$1' $$'
-par_exit	32	Bash exit value 160
-par_exit	32	Sem exit value 160
-par_exit	32	environment: line 1: PID Unknown signal 32       bash -c 'kill -'$1' $$'
-par_exit	33	Bash exit value 161
-par_exit	33	Sem exit value 161
-par_exit	33	environment: line 1: PID Unknown signal 33       bash -c 'kill -'$1' $$'
+par_exit	32	Bash exit value 0
+par_exit	32	Sem exit value 0
+par_exit	33	Bash exit value 0
+par_exit	33	Sem exit value 0
 par_exit	34	Bash exit value 162
 par_exit	34	Sem exit value 162
 par_exit	34	environment: line 1: PID Real-time signal 0      bash -c 'kill -'$1' $$'

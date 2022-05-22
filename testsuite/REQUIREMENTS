@@ -34,7 +34,7 @@ install_packages() {
 
     # Shells
     # (csh = bsd-csh that is broken)
-    shell_pkgs="ash dash fdclone fish fizsh ksh ksh93 mksh posh rc rush sash"
+    shell_pkgs="ash dash fdclone fish fizsh ksh ksh93u+m ksh93 mksh posh rc rush sash"
     shell_pkgs="$shell_pkgs tcsh yash zsh"
 
     # Databases
