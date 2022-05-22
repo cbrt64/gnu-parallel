@@ -752,8 +752,10 @@ B<--return>
 
 Colour output.
 
-Colour the output. Each job gets its own color combination
+Colour the output. Each job gets its own colour combination
 (background+foreground).
+
+B<--color> is ignored when using B<-u>.
 
 
 =item B<--colsep> I<regexp>
@@ -1562,14 +1564,14 @@ Example:
       perl -ne '$|=1; for(split//){ print; select($a,$a,$a,0.03);}'
   }
   export -f slow_seq
-  parallel --shuf -j10 --llb --color slow_seq {} ::: {1..100}
+  parallel --shuf -j10 --ll --tag --bar --color slow_seq {} ::: {1..100}
 
 See also: B<--line-buffer>
 
 
-=item B<--line-buffer>
+=item B<--line-buffer> (alpha testing)
 
-=item B<--lb>
+=item B<--lb> (alpha testing)
 
 Buffer output on line basis.
 

@@ -31,9 +31,6 @@ Quote of the month:
   아 parallel 너무 좋지요.
     -- 어엉부엉@d_ijk_stra
 
-  It's amazing how fast you can get with bash pipelines and GNU Parallel.
-    -- Eric Pauley @EricPauley_
-
   GNU parallel すごいな、シェルスクリプトを make -jX みたいにして並列
   に走らせたいときに超便利
     -- びーる @debugordie@twitter
@@ -191,6 +188,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  It's amazing how fast you can get with bash pipelines and GNU Parallel.
+    -- Eric Pauley @EricPauley_
 
   Immensely useful which I am forever grateful that it exists.
     -- AlexDragusin@ycombinator

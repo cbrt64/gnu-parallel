@@ -116,7 +116,7 @@ for I<-j>. E.g. I<procfile> could contain the string 100% or +2 or
 10.
 
 
-=item B<--pipe> (alpha testing)
+=item B<--pipe> (beta testing)
 
 Pass stdin (standard input) to I<command>.
 

@@ -201,7 +201,7 @@ par_test_build_and_install	make[0]: Leaving directory '~/privat/parallel'
 par_test_build_and_install	### Test normal build and install
 par_test_build_and_install	checking for a BSD-compatible install... /bin/install -c
 par_test_build_and_install	checking whether build environment is sane... yes
-par_test_build_and_install	checking for a thread-safe mkdir -p... /bin/mkdir -p
+par_test_build_and_install	checking for a race-free mkdir -p... /bin/mkdir -p
 par_test_build_and_install	checking for gawk... gawk
 par_test_build_and_install	checking whether make sets $(MAKE)... yes
 par_test_build_and_install	checking whether make supports nested variables... yes
@@ -241,7 +241,7 @@ par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
 par_test_build_and_install	### Test installation missing pod2*
 par_test_build_and_install	checking for a BSD-compatible install... /bin/install -c
 par_test_build_and_install	checking whether build environment is sane... yes
-par_test_build_and_install	checking for a thread-safe mkdir -p... /bin/mkdir -p
+par_test_build_and_install	checking for a race-free mkdir -p... /bin/mkdir -p
 par_test_build_and_install	checking for gawk... gawk
 par_test_build_and_install	checking whether make sets $(MAKE)... yes
 par_test_build_and_install	checking whether make supports nested variables... yes

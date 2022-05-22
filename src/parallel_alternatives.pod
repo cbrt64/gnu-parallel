@@ -3414,14 +3414,14 @@ The coloring done by GNU B<parallel> is not exactly the same as B<p>.
   1$ p -bc blue "ping 127.0.0.1" -uc red "ping 192.168.0.1" \
      -rc yellow "ping 192.168.1.1" -t example "ping example.com"
 
-  1$ parallel --lb -j0 --ctag ping \
+  1$ parallel --lb -j0 --color --tag ping \
      ::: 127.0.0.1 192.168.0.1 192.168.1.1 example.com
 
   2$ p "tail -f /var/log/httpd/access_log" \
      -bc red "tail -f /var/log/httpd/error_log"
 
   2$ cd /var/log/httpd;
-     parallel --lb --ctag tail -f ::: access_log error_log
+     parallel --lb --color --tag tail -f ::: access_log error_log
 
   3$ p tail -f "some file" \& p tail -f "other file with space.txt"
 

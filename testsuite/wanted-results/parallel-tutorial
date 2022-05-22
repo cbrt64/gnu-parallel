@@ -1303,7 +1303,7 @@ scientific publication, please cite:
 
       author       = {Tange, Ole},
       
-      year         = 2021,
+      year         = 2022,
       note         = {{GNU Parallel is a general parallelizer to run
                        multiple serial command line programs in parallel
                        without changing them.}},
@@ -1331,4 +1331,4 @@ mentioned in the release notes of next version of GNU Parallel.
 echo A
 echo B
 echo C
-8
+7

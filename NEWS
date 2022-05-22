@@ -1,3 +1,29 @@
+20220522
+
+New in this release:
+
+* --latest-line shows only the latest line of running jobs.
+
+* --color colors output in different colors per job (this obsoletes --ctag).
+
+* xargs compatibility: --process-slot-var foo sets $foo to jobslot-1.
+
+* xargs compatibility: --open-tty opens the terminal on stdin (standard input).
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* Building a fault-tolerant work queue for command-line executions
+  with GNU Parallel https://www.jvt.me/posts/2022/04/28/shell-queue/
+
+* Make your code do more, with less
+  https://www.blopig.com/blog/2022/05/make-your-code-do-more-with-less/
+
+* W09 B IntroHPC II 20220513 gnu parallel
+  https://www.youtube.com/watch?v=2udvC90rIa4
+
+
 20220422
 
 New in this release:

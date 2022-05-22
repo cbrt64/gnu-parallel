@@ -45,6 +45,7 @@ install_packages() {
     build_pkgs="$build_pkgs python3-cmarkgfm graphviz"
 
     sudo dpkg --add-architecture i386; sudo apt update
+    pip install sphinx-rtd-theme
     if $INSTALL $test_pkgs $packaging_pkgs $shebang_pkgs $sql_pkgs \
 		$compression_pkgs $shell_pkgs $database_pkgs $build_pkgs ; then
 	# OK
