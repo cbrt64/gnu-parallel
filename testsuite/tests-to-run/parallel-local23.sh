@@ -4,9 +4,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-rm -rf tmp 2>/dev/null
-cp -a input-files/testdir2 tmp
-
 NICEPAR="nice nice parallel"
 export NICEPAR
 
@@ -66,5 +63,3 @@ echo 'bug #43967: Error if there exists a bin/zsh or bin/bash dir (with zsh or b
 
 
 EOF
-
-rm -rf tmp

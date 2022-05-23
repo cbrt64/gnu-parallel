@@ -6,9 +6,10 @@
 
 TMP=/run/shm/parallel_$$
 
-rsync -Ha --delete input-files/testdir/ $TMP/
+pwd=`pwd`
 mkdir -p $TMP
 cd $TMP/
+tar xjf "$pwd"/input-files/testdir.tar.bz2
 
 echo echo test of cat pipe sh | parallel -j 50 2>&1
 find . -name '*.jpg' | parallel -j +0 convert -geometry 120 {} {//}/thumb_{/}

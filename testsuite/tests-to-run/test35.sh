@@ -7,9 +7,12 @@
 SERVER1=parallel-server1
 SSHUSER1=vagrant
 SSHLOGIN1=$SSHUSER1@$SERVER1
- 
-rsync -Ha --delete input-files/testdir/ tmp/
+
+mkdir -p tmp
 cd tmp
+tar xjf ../input-files/testdir.tar.bz2
+#rsync -Ha --delete input-files/testdir/ tmp/
+#cd tmp
 
 SERVER2=parallel@parallel-server2
 
