@@ -1937,27 +1937,28 @@ B<{uniq}> skips jobs where values from two input sources are the same.
 
 Shorthands for variables:
 
-  {slot}        $PARALLEL_JOBSLOT (see {%})
-  {sshlogin}    $PARALLEL_SSHLOGIN
-  {host}        $PARALLEL_SSHHOST
-  {agrp}        $PARALLEL_ARGHOSTGROUPS
-  {hgrp}        $PARALLEL_HOSTGROUPS
+  {slot}         $PARALLEL_JOBSLOT (see {%})
+  {sshlogin}     $PARALLEL_SSHLOGIN
+  {host}         $PARALLEL_SSHHOST
+  {agrp}         $PARALLEL_ARGHOSTGROUPS
+  {hgrp}         $PARALLEL_HOSTGROUPS
 
 The following dynamic replacement strings are also activated. They are
 inspired by bash's parameter expansion:
 
-  {:-str}       str if the value is empty
-  {:num}        remove the first num characters
-  {:pos:len}    substring from position pos length len
-  {#regexp}     remove prefix regexp (non-greedy)
-  {##regexp}    remove prefix regexp (greedy)
-  {%regexp}     remove postfix regexp (non-greedy)
-  {%%regexp}    remove postfix regexp (greedy)
-  {/regexp/str} replace regexp with str
-  {^str}        uppercase str if found at the start
-  {^^str}       uppercase str
-  {,str}        lowercase str if found at the start
-  {,,str}       lowercase str
+  {:-str}        str if the value is empty
+  {:num}         remove the first num characters
+  {:pos:len}     substring from position pos length len
+  {#regexp}      remove prefix regexp (non-greedy)
+  {##regexp}     remove prefix regexp (greedy)
+  {%regexp}      remove postfix regexp (non-greedy)
+  {%%regexp}     remove postfix regexp (greedy)
+  {/regexp/str}  replace one regexp with str
+  {//regexp/str} replace every regexp with str
+  {^str}         uppercase str if found at the start
+  {^^str}        uppercase str
+  {,str}         lowercase str if found at the start
+  {,,str}        lowercase str
 
 See also: B<--rpl> B<{}>
 

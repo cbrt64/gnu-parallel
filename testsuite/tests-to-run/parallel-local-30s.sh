@@ -442,7 +442,7 @@ par_plus_dyn_repl() {
     parallel --plus echo {2:-myval} ::: "wrong" ::: "$myvar" ::: "wrong"
     parallel --plus echo {-2:-myval} ::: "wrong" ::: "$myvar" ::: "wrong"
 
-    myvar=abcAaAdef
+    myvar=abcAaBdefCdefDdef
     echo ${myvar:2}
     parallel --rpl '{:(\d+)} substr($_,0,$$1) = ""' echo {:2} ::: "$myvar"
     parallel --plus echo {:2} ::: "$myvar"
@@ -487,6 +487,12 @@ par_plus_dyn_repl() {
     parallel --plus echo {/def/ghi} ::: "$myvar"
     parallel --plus echo {2/def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
     parallel --plus echo {-2/def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    echo ${myvar//def/ghi}
+    parallel --rpl '{//(.+?)/(.+?)} s/$$1/$$2/g;' echo {//def/ghi} ::: "$myvar"
+    parallel --plus echo {//def/ghi} ::: "$myvar"
+    parallel --plus echo {2//def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
+    parallel --plus echo {-2//def/ghi} ::: "wrong" ::: "$myvar" ::: "wrong"
 
     echo ${myvar^a}
     parallel --rpl '{^(.+?)} s/^($$1)/uc($1)/e;' echo {^a} ::: "$myvar"
