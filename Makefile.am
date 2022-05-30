@@ -167,5 +167,12 @@ pack_unpack_and_test_build:
 	cd parallel-$(YYYYMMDD) && \
 	./configure && make -j && sudo make -j install
 
+zshcompletion=${datarootdir}/zsh/site-functions/_parallel
+install-data-hook:
+	parallel --shell-completion bash > ${datarootdir}/bash-completion/completions/parallel
+	echo '#compdef parallel' > ${zshcompletion}
+	echo '(( $$+functions[_comp_parallel] )) ||' >> ${zshcompletion}
+	echo '  eval "$$(parallel --shell-completion auto)" &&' >> ${zshcompletion}
+	echo '  _comp_parallel' >> ${zshcompletion}
 
 EXTRA_DIST = CITATION CITATION.cff CREDITS LICENSES/CC-BY-SA-4.0.txt LICENSES/GFDL-1.3-or-later.txt LICENSES/GPL-3.0-or-later.txt
