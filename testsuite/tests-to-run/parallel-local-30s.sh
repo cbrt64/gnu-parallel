@@ -516,6 +516,16 @@ par_plus_dyn_repl() {
     parallel --plus echo '{,,A}' ::: "$myvar"
     parallel --plus echo '{2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
     parallel --plus echo '{-2,,A}' ::: "wrong" ::: "$myvar" ::: "wrong"
+
+    myvar=abcabcdefdef
+    echo $myvar ${myvar/#abc/ABC}
+    echo $myvar | parallel --plus echo {} {/#abc/ABC}
+    echo $myvar ${myvar/%def/DEF}
+    echo $myvar | parallel --plus echo {} {/%def/DEF}
+    echo $myvar ${myvar/#abc/}
+    echo $myvar | parallel --plus echo {} {/#abc/}
+    echo $myvar ${myvar/%def/}
+    echo $myvar | parallel --plus echo {} {/%def/}
 }
 
 par_keeporder_roundrobin() {
