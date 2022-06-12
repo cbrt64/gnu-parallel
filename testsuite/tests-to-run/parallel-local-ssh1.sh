@@ -18,6 +18,14 @@ echo TODO
 
 EOF
 
+par_sshlogin_with_comma() {
+    echo "### --sshlogin with \,"
+    parallel -S 'ssh -J lo\,localhost 127.0.0.1' echo ::: OK
+    echo "### --sshlogin with ,,"
+    parallel -S 'ssh -J lo,,localhost 127.0.0.1' echo ::: OK
+}
+
+
 par_sshpass_with_password() {
     echo '### sshpass'
     echo OK | parallel -S "sshpass -p $withpassword ssh withpassword@lo:22" echo

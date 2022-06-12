@@ -2654,7 +2654,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220605;
+    $Global::version = 20220607;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -4583,7 +4583,15 @@ sub parse_sshlogin() {
     if(not @Global::sshlogin) { @Global::sshlogin = (":"); }
     for my $sshlogin (@Global::sshlogin) {
 	# Split up -S sshlogin,sshlogin
+	# Parse ,, and \, as , but do not split on that
+	#   -S "ssh -J jump1,,jump2 host1,host2" =>
+	#     ssh -J jump1,jump2 host1
+	#     host2
+	# Protect \, and ,, as \0
+	$sshlogin =~ s/\\,|,,/\0/g;
 	for my $s (split /,|\n/, $sshlogin) {
+	    # Replace \0 => ,
+	    $s =~ s/\0/,/g;
 	    if ($s eq ".." or $s eq "-") {
 		# This may add to @Global::sshlogin - possibly bug
 		read_sshloginfile(expand_slf_shorthand($s));

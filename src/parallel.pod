@@ -3040,6 +3040,9 @@ The sshlogin '-' is special, too, it read sshlogins from stdin
 To specify more sshlogins separate the sshlogins by comma, newline (in
 the same string), or repeat the options multiple times.
 
+GNU B<parallel> splits on , (comma) so if your sshlogin contains ,
+(comma) you need to replace it with \, or ,,
+
 For examples: see B<--sshloginfile>.
 
 The remote host must have GNU B<parallel> installed.

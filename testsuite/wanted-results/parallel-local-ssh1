@@ -93,6 +93,10 @@ par_ssh_ssh	aspire
 par_ssh_ssh	OK
 par_ssh_ssh	aspire
 par_ssh_ssh	OK
+par_sshlogin_with_comma	### --sshlogin with \,
+par_sshlogin_with_comma	OK
+par_sshlogin_with_comma	### --sshlogin with ,,
+par_sshlogin_with_comma	OK
 par_sshpass_with_password	### sshpass
 par_sshpass_with_password	OK
 par_sshpass_with_password	OK
