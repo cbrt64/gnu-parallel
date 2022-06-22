@@ -15,7 +15,7 @@ updater() {
   export MON=`date +%b`
   export MONTH=`date +%B`
   TAG=$(echo $SPCTAG | perl -pe 's/ //g')
-  echo Tag=$TAG = "$SPCTAG" Date:$YYYYMMDD Year:$YYYY Mon:$MON Month:$MONTH DOI:$DOI
+  echo Tag=$TAG=\"$SPCTAG\" Date:$YYYYMMDD Year:$YYYY Mon:$MON Month:$MONTH DOI:$DOI
   export TITLE="GNU Parallel $YYYYMMDD ('$SPCTAG')"
 
   if [ -z "$DOINO" ] ; then

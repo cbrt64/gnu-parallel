@@ -1,3 +1,20 @@
+20220622
+
+New in this release:
+
+* , can be used in --sshlogin if quoted as \, or ,,
+
+* --plus {/#regexp/str} replace ^regexp with str.
+
+* --plus {/%regexp/str} replace regexp$ with str.
+
+* --plus {//regexp/str} replace every regexp with str.
+
+* 'make install' installs bash+zsh completion files.
+
+* Bug fixes and man page updates.
+
+
 20220522
 
 New in this release:

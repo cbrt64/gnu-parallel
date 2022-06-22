@@ -3436,6 +3436,81 @@ https://github.com/rudymatela/evenmoreutils/blob/master/man/p.1.adoc
 (Last checked: 2022-04)
 
 
+=head2 DIFFERENCES BETWEEN senechal AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item I1 - - - - - -
+
+=item M1 - M3 - - M6
+
+=item O1 - O3 O4 - - - x x -
+
+=item E1 - - - - - -
+
+=item - - - - - - - - -
+
+=item - -
+
+=back
+
+B<seneschal> only starts the first job after reading the last job, and
+output from the first job is only printed after the last job finishes.
+
+1 byte of output requites 3.5 bytes of RAM.
+
+This makes it impossible to have a total output bigger than the
+virtual memory.
+
+Even though output is kept in RAM outputing is quite slow: 30 MB/s.
+
+Output larger than 4 GB causes random problems - it looks like a race
+condition.
+
+This:
+
+  echo 1 | seneschal  --prefix='yes `seq 1000`|head -c 1G' >/dev/null
+
+takes 4100(!) CPU seconds to run on a 64C64T server, but only 140 CPU
+seconds on a 4C8T laptop. So it looks like B<seneschal> wastes a lot
+of CPU time coordinating the CPUs.
+
+Compare this to:
+
+  echo 1 | time -v parallel -N0 'yes `seq 1000`|head -c 1G' >/dev/null
+
+which takes 3-8 CPU seconds.
+
+=head3 EXAMPLES FROM seneschal README.md
+
+  1$ echo $REPOS | seneschal --prefix="cd {} && git pull"
+
+  # If $REPOS is newline separated
+  1$ echo "$REPOS" | parallel -k "cd {} && git pull"
+  # If $REPOS is space separated
+  1$ echo -n "$REPOS" | parallel -d' ' -k "cd {} && git pull"
+
+  COMMANDS="pwd
+  sleep 5 && echo boom
+  echo Howdy
+  whoami"
+  
+  2$ echo "$COMMANDS" | seneschal --debug
+  
+  2$ echo "$COMMANDS" | parallel -k -v
+  
+  3$ ls -1 | seneschal --prefix="pushd {}; git pull; popd;"
+  
+  3$ ls -1 | parallel -k "pushd {}; git pull; popd;"
+  # Or if current dir also contains files:
+  3$ parallel -k "pushd {}; git pull; popd;" ::: */
+
+https://github.com/TheWizardTower/seneschal
+(Last checked: 2022-06)
+
+
 =head2 Todo
 
 http://code.google.com/p/push/ (cannot compile)
@@ -3465,6 +3540,7 @@ https://manpages.ubuntu.com/manpages/xenial/man1/tsp.1.html
 https://vicerveza.homeunix.net/~viric/soft/ts/
 
 https://github.com/chapmanjacobd/que
+
 
 
 =head1 TESTING OTHER TOOLS

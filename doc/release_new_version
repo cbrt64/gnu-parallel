@@ -260,30 +260,23 @@ GNU Parallel 20220522 ('NATO') has been released. It is available for download a
 
 Quote of the month:
 
-  It's amazing how fast you can get with bash pipelines and GNU Parallel.
-    -- Eric Pauley @EricPauley_
-
+  Parallel has been (and still is) super useful and simple tool for speeding up all kinds of shell tasks during my career.
+    -- ValtteriL@ycombinator
+  
 New in this release:
 
-* --latest-line shows only the latest line of running jobs.
+* , can be used in --sshlogin if quoted as \, or ,,
 
-* --color colors output in different colors per job (this obsoletes --ctag).
+* --plus {/#regexp/str} replace ^regexp with str.
 
-* xargs compatibility: --process-slot-var foo sets $foo to jobslot-1.
+* --plus {/%regexp/str} replace regexp$ with str.
 
-* xargs compatibility: --open-tty opens the terminal on stdin (standard input).
+* --plus {//regexp/str} replace every regexp with str.
+
+* 'make install' installs bash+zsh completion files.
 
 * Bug fixes and man page updates.
 
-News about GNU Parallel:
-
-* Building a fault-tolerant work queue for command-line executions with GNU Parallel https://www.jvt.me/posts/2022/04/28/shell-queue/
-
-* Make your code do more, with less https://www.blopig.com/blog/2022/05/make-your-code-do-more-with-less/
-
-* W09 B IntroHPC II 20220513 gnu parallel https://www.youtube.com/watch?v=2udvC90rIa4
-
-Get the book: GNU Parallel 2018 http://www.lulu.com/shop/ole-tange/gnu-parallel-2018/paperback/product-23558902.html
 
 GNU Parallel - For people who live life in the parallel lane.
 

@@ -2654,7 +2654,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220607;
+    $Global::version = 20220622;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5525,8 +5525,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-	 "  Tange, O. (2022, May 22). GNU Parallel 20220522 ('NATO').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.6570228",
+	 "  Tange, O. (2022, June 22). GNU Parallel 20220622 ('Bongbong').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.6682930",
 	 "",
 	 # Before changing these lines,	 please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
@@ -5558,8 +5558,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2022, May 22). GNU Parallel 20220522 ('NATO').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.6570228",
+	     "  Tange, O. (2022, June 22). GNU Parallel 20220622 ('Bongbong').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.6682930",
 	     "",
 	     # Before changing these line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
@@ -5686,20 +5686,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2022_6570228,",
+	"\@software{tange_2022_6682930,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20220522 ('NATO')},",
-	"      month        = May,",
+	"      title        = {GNU Parallel 20220622 ('Bongbong')},",
+	"      month        = Jun,",
 	"      year         = 2022,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
 	"                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.6570228},",
-	"      url          = {https://doi.org/10.5281/zenodo.6570228}",
+	"      doi          = {10.5281/zenodo.6682930},",
+	"      url          = {https://doi.org/10.5281/zenodo.6682930}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2022_6570228})",
+	"(Feel free to use \\nocite{tange_2022_6682930})",
 	"",
 	# Before changing these lines, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and

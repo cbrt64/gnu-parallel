@@ -167,8 +167,11 @@ pack_unpack_and_test_build:
 	cd parallel-$(YYYYMMDD) && \
 	./configure && make -j && sudo make -j install
 
-zshcompletion=${datarootdir}/zsh/site-functions/_parallel
+zshcompletiondir=${datarootdir}/zsh/site-functions
+zshcompletion=${zshcompletiondir}/_parallel
 install-data-hook:
+	mkdir -p ${datarootdir}/bash-completion/completions
+	mkdir -p ${zshcompletiondir}
 	parallel --shell-completion bash > ${datarootdir}/bash-completion/completions/parallel
 	echo '#compdef parallel' > ${zshcompletion}
 	echo '(( $$+functions[_comp_parallel] )) ||' >> ${zshcompletion}

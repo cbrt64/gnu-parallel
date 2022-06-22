@@ -748,7 +748,7 @@ B<--transfer>, B<--transferfile> or B<--return>.
 See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
-=item B<--color> (alpha testing)
+=item B<--color> (beta testing)
 
 Colour output.
 
@@ -1569,9 +1569,9 @@ Example:
 See also: B<--line-buffer>
 
 
-=item B<--line-buffer> (alpha testing)
+=item B<--line-buffer> (beta testing)
 
-=item B<--lb> (alpha testing)
+=item B<--lb> (beta testing)
 
 Buffer output on line basis.
 
@@ -1811,9 +1811,9 @@ there will be several job sequence 1.
 See also: B<--nonall> B<--sshlogin>
 
 
-=item B<--open-tty> (alpha testing)
+=item B<--open-tty> (beta testing)
 
-=item B<-o> (alpha testing)
+=item B<-o> (beta testing)
 
 Open terminal tty.
 
@@ -1912,7 +1912,7 @@ called with B<--sshlogin>).
 See also: B<--profile>
 
 
-=item B<--plus>
+=item B<--plus> (alpha testing)
 
 Add more replacement strings.
 
@@ -1963,7 +1963,7 @@ inspired by bash's parameter expansion:
 See also: B<--rpl> B<{}>
 
 
-=item B<--process-slot-var> I<varname> (alpha testing)
+=item B<--process-slot-var> I<varname> (beta testing)
 
 Set the environment variable I<varname> to the jobslot number-1.
 
@@ -2846,7 +2846,7 @@ B<--shebang-wrap> must be set as the first option.
 See also: B<--shebang>
 
 
-=item B<--shell-completion> I<shell> (alpha testing)
+=item B<--shell-completion> I<shell> (beta testing)
 
 Generate shell completion code for interactive shells.
 
@@ -2995,13 +2995,13 @@ I<duration> is in seconds, but can be postfixed with s, m, h, or d.
 See also: TIME POSTFIXES B<--sshlogin> B<--delay>
 
 
-=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]>
+=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
 
-=item B<--sshlogin> I<@hostgroup>
+=item B<--sshlogin> I<@hostgroup> (alpha testing)
 
-=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]>
+=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
 
-=item B<-S> I<@hostgroup>
+=item B<-S> I<@hostgroup> (alpha testing)
 
 Distribute jobs to remote computers.
 

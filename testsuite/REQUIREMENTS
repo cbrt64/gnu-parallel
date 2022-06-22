@@ -35,7 +35,7 @@ install_packages() {
     # Shells
     # (csh = bsd-csh that is broken)
     shell_pkgs="ash dash fdclone fish fizsh ksh ksh93u+m ksh93 mksh posh rc rush sash"
-    shell_pkgs="$shell_pkgs tcsh yash zsh"
+    shell_pkgs="$shell_pkgs tcsh yash zsh busybox-static"
 
     # Databases
     database_pkgs="postgresql mysql-server sqlite"
@@ -187,7 +187,7 @@ create_shell_logins() {
 
     echo '# (Re-)create user'
     # Racecondition: if multiple adds a group it will the same group ID
-    shellsplus |
+    (shellsplus; echo withpassword) |
 	parallel --lb --halt soon,fail=1 --timeout 1000% --retries 5 --tag -j1 del_add_user ||
 	(echo Creation failed: $?; false)
 }

@@ -234,7 +234,16 @@ par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000/sr
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Nothing to be done for 'install-exec-am'.
-par_test_build_and_install	make[0]: Nothing to be done for 'install-data-am'.
+par_test_build_and_install	make  install-data-hook
+par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
+par_test_build_and_install	mkdir -p /tmp/parallel-install/share/bash-completion/completions
+par_test_build_and_install	mkdir -p /tmp/parallel-install/share/zsh/site-functions
+par_test_build_and_install	parallel --shell-completion bash > /tmp/parallel-install/share/bash-completion/completions/parallel
+par_test_build_and_install	echo '#compdef parallel' > /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	echo '(( $+functions[_comp_parallel] )) ||' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	echo '  eval "$(parallel --shell-completion auto)" &&' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	echo '  _comp_parallel' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
@@ -715,7 +724,16 @@ par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000/sr
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Nothing to be done for 'install-exec-am'.
-par_test_build_and_install	make[0]: Nothing to be done for 'install-data-am'.
+par_test_build_and_install	make  install-data-hook
+par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
+par_test_build_and_install	mkdir -p /tmp/parallel-install/share/bash-completion/completions
+par_test_build_and_install	mkdir -p /tmp/parallel-install/share/zsh/site-functions
+par_test_build_and_install	parallel --shell-completion bash > /tmp/parallel-install/share/bash-completion/completions/parallel
+par_test_build_and_install	echo '#compdef parallel' > /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	echo '(( $+functions[_comp_parallel] )) ||' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	echo '  eval "$(parallel --shell-completion auto)" &&' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	echo '  _comp_parallel' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
+par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'
 par_test_build_and_install	make[0]: Leaving directory '/tmp/parallel-00000000'

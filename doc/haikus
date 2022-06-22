@@ -13,9 +13,6 @@ Quote of the month:
   I used GNU Parallel to run a script locally that did what a big distributed system did, quicker and more reliably. It got to the point where people would just ask me to "run the thing" on my laptop instead of waiting for the cron.
     -- winrid@ycombinator
   
-  Parallel has been (and still is) super useful and simple tool for speeding up all kinds of shell tasks during my career.
-    -- ValtteriL@ycombinator
-  
   parallel is so useful and i use it multiple times daily.
     -- arrakeen@ycombinator
   
@@ -189,6 +186,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
 
 === Used ===
 
+  Parallel has been (and still is) super useful and simple tool for speeding up all kinds of shell tasks during my career.
+    -- ValtteriL@ycombinator
+  
   It's amazing how fast you can get with bash pipelines and GNU Parallel.
     -- Eric Pauley @EricPauley_
 
