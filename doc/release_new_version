@@ -76,7 +76,7 @@ make alphaupload
 . .last-doitag.txt
 cd ~/privat/parallel/packager/obs
 
-find home:tange/parallel/* -type f |
+find home-tange/parallel/* -type f |
   grep -Ev '(PKGBUILD|parallel.spec)' |
   parallel -j1 'osc rm {} || rm {}'
 # This should not create new files
@@ -254,28 +254,25 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220522 ('NATO') released
+Subject: GNU Parallel 20220722 ('Roe vs Wade/EU candidate/Oslo/Matapour/Kremenchuk') released
 
-GNU Parallel 20220522 ('NATO') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20220722 ('Roe vs Wade') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-  Parallel has been (and still is) super useful and simple tool for speeding up all kinds of shell tasks during my career.
-    -- ValtteriL@ycombinator
+<<>>
   
 New in this release:
 
-* , can be used in --sshlogin if quoted as \, or ,,
-
-* --plus {/#regexp/str} replace ^regexp with str.
-
-* --plus {/%regexp/str} replace regexp$ with str.
-
-* --plus {//regexp/str} replace every regexp with str.
-
-* 'make install' installs bash+zsh completion files.
+<<>>
 
 * Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+<<>>
+https://www.centrefornetzero.org/wp-content/uploads/2022/05/ABM-Report-Final.pdf
+
 
 
 GNU Parallel - For people who live life in the parallel lane.

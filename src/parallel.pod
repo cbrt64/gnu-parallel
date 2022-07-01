@@ -5654,7 +5654,10 @@ the currently running jobs are finished before exiting.
 =item $PARALLEL_HOME
 
 Dir where GNU B<parallel> stores config files, semaphores, and caches
-information between invocations. Default: $HOME/.parallel.
+information between invocations. If set to a non-existent dir, the dir
+will be created.
+
+Default: $HOME/.parallel.
 
 
 =item $PARALLEL_ARGHOSTGROUPS

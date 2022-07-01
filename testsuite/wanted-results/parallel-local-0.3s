@@ -723,6 +723,10 @@ par_pipepart_recend_recstart	9
 par_pipepart_recend_recstart	10
 par_pipepart_roundrobin	### bug #45769: --round-robin --pipepart gives wrong results
 par_pipepart_roundrobin	2
+par_pipepart_triple_colon	### bug #62311: --pipepart + ::: fail
+par_pipepart_triple_colon	      1       1       2
+par_pipepart_triple_colon	      1       1       2
+par_pipepart_triple_colon	      1       1       2
 par_plus	### --plus
 par_plus	(It is OK to start with extra / or end with extra .)
 par_plus	a = /a = a. = /a. = a. = /a. = a. = /a.

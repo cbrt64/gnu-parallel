@@ -4,6 +4,12 @@
  
 Quote of the month:
 
+  Gnu parallel is indeed slick. I always try to align my data to make it possible to loop over it with a nice for loop added in a call to run the jobs in parallel then becomes super easy. I love the {1..99} syntax in bash.
+    -- ragsofx
+
+  The syntax for GNU Parallel is so slick that I often use it just to make my script read nicer, and the parallelism is a cherry on top.
+    -- Epistaxis@reddit
+
   xargs諦めてGNU Parallel使ったら一瞬で問題が解決したので終わり
     -- aria_moto @moto_aria@twitter
 

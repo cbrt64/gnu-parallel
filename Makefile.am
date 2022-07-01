@@ -167,12 +167,20 @@ pack_unpack_and_test_build:
 	cd parallel-$(YYYYMMDD) && \
 	./configure && make -j && sudo make -j install
 
-zshcompletiondir=${datarootdir}/zsh/site-functions
+# This ought to be correct, but fails on Centos
+# bashcompletiondir=$(DESTDIR)${datarootdir}/bash-completion/completions
+# zshcompletiondir=$(DESTDIR)${datarootdir}/zsh/site-functions
+bashcompletiondir=$(DESTDIR)${prefix}/share/bash-completion/completions
+zshcompletiondir=$(DESTDIR)${prefix}/share/zsh/site-functions
+bashcompletion=${bashcompletiondir}/parallel
 zshcompletion=${zshcompletiondir}/_parallel
 install-data-hook:
-	mkdir -p ${datarootdir}/bash-completion/completions
-	mkdir -p ${zshcompletiondir}
-	parallel --shell-completion bash > ${datarootdir}/bash-completion/completions/parallel
+	mkdir -p ${zshcompletiondir} ${bashcompletiondir}
+	src/parallel --shell-completion bash > ${bashcompletion}
+# Make zsh eval the --shell-completion code dynamically so if
+# a newer version of GNU Parallel is installed by a normal
+# user, this newer version will generate the
+# --shell-completion code.
 	echo '#compdef parallel' > ${zshcompletion}
 	echo '(( $$+functions[_comp_parallel] )) ||' >> ${zshcompletion}
 	echo '  eval "$$(parallel --shell-completion auto)" &&' >> ${zshcompletion}

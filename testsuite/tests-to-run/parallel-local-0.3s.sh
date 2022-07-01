@@ -16,6 +16,14 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_pipepart_triple_colon() {
+    echo '### bug #62311: --pipepart + ::: fail'
+    tmp1=$(mktemp)
+    seq 3 >$tmp1
+    parallel --pipepart -a $tmp1 wc ::: a
+    rm $tmp1
+}
+
 par_open-tty() {
     echo '### bug #62310: xargs compatibility: --open-tty'
     parallel --open-tty ::: tty
