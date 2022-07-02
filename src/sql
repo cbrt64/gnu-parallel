@@ -76,6 +76,11 @@ If no commands are given SQL is read from the keyboard or STDIN.
 Example: echo 'SELECT * FROM foo;' | sql mysql:///
 
 
+=item B<--csv> (alpha testing)
+
+CSV output.
+
+
 =item B<--db-size>
 
 =item B<--dbsize>
@@ -97,29 +102,36 @@ Print a summary of the options to GNU B<sql> and exit.
 HTML output. Turn on HTML tabular output.
 
 
-=item B<--show-processlist>
+=item B<--json> (alpha testing)
 
-=item B<--proclist>
+=item B<--pretty> (alpha testing)
 
-=item B<--listproc>
+Pretty JSON output.
 
-Show the list of running queries.
-
-
-=item B<--show-databases>
-
-=item B<--showdbs>
 
 =item B<--list-databases>
 
 =item B<--listdbs>
 
+=item B<--show-databases>
+
+=item B<--showdbs>
+
 List the databases (table spaces) in the database.
 
 
-=item B<--show-tables>
+=item B<--listproc>
+
+=item B<--proclist>
+
+=item B<--show-processlist>
+
+Show the list of running queries.
+
 
 =item B<--list-tables>
+
+=item B<--show-tables>
 
 =item B<--table-list>
 
@@ -143,6 +155,14 @@ program as arguments. Multiple -p's will be joined with
 space. Example: pass '-U' and the user name to the program:
 
 I<-p "-U scott"> can also be written I<-p -U -p scott>.
+
+
+=item B<--precision> <I<rfc3339|h|m|s|ms|u|ns>>
+
+Precision of timestamps.
+
+Specifiy the format of the output timestamps: rfc3339, h, m, s, ms, u
+or ns.
 
 
 =item B<-r>
@@ -215,7 +235,9 @@ http://tools.ietf.org/html/rfc3986#section-2.1 (E.g. a password
 containing '/' would contain '%2F').
 
 Examples:
+
  mysql://scott:tiger@my.example.com/mydb
+ influxdb://scott:tiger@influxdb.example.com/foo
  sql:oracle://scott:tiger@ora.example.com/xe
  postgresql://scott:tiger@pg.example.com/pgdb
  pg:///
@@ -227,7 +249,8 @@ Currently supported vendors: MySQL (mysql), MySQL with SSL (mysqls,
 mysqlssl), Oracle (oracle, ora), PostgreSQL (postgresql, pg, pgsql,
 postgres), PostgreSQL with SSL (postgresqlssl, pgs, pgsqlssl,
 postgresssl, pgssl, postgresqls, pgsqls, postgress), SQLite2 (sqlite,
-sqlite2), SQLite3 (sqlite3).
+sqlite2), SQLite3 (sqlite3), InfluxDB 1.x (influx, influxdb), InfluxDB
+with SSL (influxdbssl, influxdbs, influxs, influxssl)
 
 Aliases must start with ':' and are read from
 /etc/sql/aliases and ~/.sql/aliases. The user's own
@@ -491,7 +514,8 @@ have a command history for Oracle.
 
 =head1 SEE ALSO
 
-B<mysql>(1), B<psql>(1), B<rlwrap>(1), B<sqlite>(1), B<sqlite3>(1), B<sqlplus>(1)
+B<mysql>(1), B<psql>(1), B<rlwrap>(1), B<sqlite>(1), B<sqlite3>(1),
+B<sqlplus>(1), B<influx>(1)
 
 =cut
 
@@ -503,10 +527,7 @@ parse_options();
 
 my $pass_through_options = (defined $::opt_p) ? join(" ",@{$::opt_p}) : "";
 my $dburl_or_alias = shift;
-if (not defined $dburl_or_alias) {
-    Usage("No DBURL given");
-    exit -1;
-}
+if (not defined $dburl_or_alias) { Usage("No DBURL given"); exit -1; }
 my %dburl = parse_dburl(get_alias($dburl_or_alias));
 
 my $interactive_command;
@@ -515,15 +536,23 @@ my $batch_command;
 my $database_driver = database_driver_alias($dburl{'databasedriver'});
 if($database_driver eq "mysql" or
    $database_driver eq "mysqlssl") {
-    ($batch_command,$interactive_command) = mysql_commands($database_driver,%dburl);
+    ($batch_command,$interactive_command) =
+	mysql_commands($database_driver,%dburl);
 } elsif($database_driver eq "postgresql" or
 	$database_driver eq "postgresqlssl") {
-    ($batch_command,$interactive_command) = postgresql_commands($database_driver,%dburl);
+    ($batch_command,$interactive_command) =
+	postgresql_commands($database_driver,%dburl);
 } elsif($database_driver eq "oracle") {
-    ($batch_command,$interactive_command) = oracle_commands($database_driver,%dburl);
+    ($batch_command,$interactive_command) =
+	oracle_commands($database_driver,%dburl);
 } elsif($database_driver eq "sqlite" or
 	$database_driver eq "sqlite3") {
-    ($batch_command,$interactive_command) = sqlite_commands($database_driver,%dburl);
+    ($batch_command,$interactive_command) =
+	sqlite_commands($database_driver,%dburl);
+} elsif($database_driver eq "influx" or
+	$database_driver eq "influxssl") {
+    ($batch_command,$interactive_command) =
+	influx_commands($database_driver,%dburl);
 }
 
 my $err;
@@ -561,34 +590,72 @@ if($dburl{'query'}) {
     $batch_command = "(cat $queryfile;rm $queryfile; cat) | $batch_command";
 }
 
+sub shell_quote($) {
+    # Quote for other shells (Bourne compatibles)
+    # Inputs:
+    #	$string = string to be quoted
+    # Returns:
+    #	$shell_quoted = string quoted as needed by the shell
+    my $s = $_[0];
+    if($s =~ /[^-_.+a-z0-9\/]/i) {
+	$s =~ s/'/'"'"'/g; # "-quote single quotes
+	$s = "'$s'";	   # '-quote entire string
+	$s =~ s/^''//;	   # Remove unneeded '' at ends
+	$s =~ s/''$//;	   # (faster than s/^''|''$//g)
+	return $s;
+    } elsif ($s eq "") {
+	return "''";
+    } else {
+	# No quoting needed
+	return $s;
+    }
+}
+
 do {
-    if (is_stdin_terminal()) {
-	if(@ARGV) {
-	    open(M,"| $batch_command") || die("mysql/psql/sqlplus not in path");
+    if(@ARGV) {
+	# SQL Commands given as arguments:
+	# Run those commands
+	$::opt_debug and print "[ | $batch_command]\n";
+	$::opt_verbose and print "[ | $batch_command]\n";
+	if($database_driver eq "influx" or $database_driver eq "influxssl") {
+	    # Influx currently cannot read commands from stdin
+	    for(@ARGV) {
+		s/\\n/\n/g;
+		s/\\x0a/\n/gi;
+		$::opt_debug and print "[$batch_command -execute $_]\n";
+		system("$batch_command -execute ".shell_quote($_));
+	    }
+	} else {
+	    open(M,"| $batch_command") ||
+		die("mysql/psql/sqlplus/influx not in path");
 	    for(@ARGV) {
 		s/\\n/\n/g;
 		s/\\x0a/\n/gi;
 		print M "$_\n";
 	    }
 	    close M;
-	} else {
-	    $::opt_debug and print "$interactive_command\n";
-	    $::opt_verbose and print "$interactive_command\n";
-	    system("$interactive_command");
 	}
     } else {
-	if(@ARGV) {
-	    open(M,"| $batch_command") || die("mysql/psql/sqlplus not in path");
-	    for(@ARGV) {
-		s/\\n/\n/g;
-		s/\\x0a/\n/gi;
-		print M "$_\n";
-	    }
-	    close M;
+	if (is_stdin_terminal()) {
+	    # Run interactively
+	    $::opt_debug and print "[$interactive_command]\n";
+	    $::opt_verbose and print "[$interactive_command]\n";
+	    system("$interactive_command");
 	} else {
-	    $::opt_debug and print "$batch_command\n";
-	    $::opt_verbose and print "$batch_command\n";
-	    system("$batch_command");
+	    # Let the command read from stdin
+	    $::opt_debug and print "[$batch_command]\n";
+	    $::opt_verbose and print "[$batch_command]\n";
+	    if($database_driver eq "influx" or $database_driver eq "influxssl") {
+		# Influx currently cannot read commands from stdin
+		while(<STDIN>) {
+		    s/\\n/\n/g;
+		    s/\\x0a/\n/gi;
+		    $::opt_debug and print "[$batch_command -execute $_]\n";
+		    system("$batch_command -execute ".shell_quote($_));
+		}
+	    } else{
+		system("$batch_command");
+	    }
 	}
     }
     $err = $?>>8;
@@ -600,7 +667,7 @@ $Global::Initfile && unlink $Global::Initfile;
 exit ($err);
 
 sub parse_options {
-    $Global::version = 20220622;
+    $Global::version = 20220703;
     $Global::progname = 'sql';
 
     # This must be done first as this may exec myself
@@ -617,9 +684,11 @@ sub parse_options {
     GetOptions("passthrough|p=s@" => \$::opt_p,
 	       "sep|s=s" => \$::opt_s,
 	       "html" => \$::opt_html,
-	       "show-processlist|proclist|listproc" => \$::opt_processlist,
-	       "show-tables|showtables|listtables|list-tables|tablelist|table-list"
-	       => \$::opt_tablelist,
+	       "show-processlist|proclist|listproc|showqueries|show-queries"
+	       => \$::opt_processlist,
+	       "show-tables|showtables|listtables|list-tables|".
+	       "tablelist|table-list|show-measurements|showmeasurements|".
+	       "list-measurements|listmeasurements" => \$::opt_tablelist,
 	       "dblist|".
 	       "listdb|listdbs|list-db|list-dbs|list-database|".
 	       "list-databases|listdatabases|listdatabase|showdb|".
@@ -627,6 +696,10 @@ sub parse_options {
 	       "showdatabases|showdatabase" => \$::opt_dblist,
 	       "db-size|dbsize" => \$::opt_dbsize,
 	       "table-size|tablesize" => \$::opt_tablesize,
+	       "json|j" => \$::opt_json,
+	       "pretty" => \$::opt_pretty,
+	       "csv" => \$::opt_csv,
+	       "precision=s" => \$::opt_precision,
 	       "noheaders|no-headers|n" => \$::opt_n,
 	       "r" => \$::opt_retry,
 	       "retries=s" => \$::opt_retries,
@@ -671,6 +744,12 @@ sub database_driver_alias {
 				 "sqlite" => "sqlite",
 				 "sqlite2" => "sqlite",
 				 "sqlite3" => "sqlite3",
+                                 "influx" => "influx",
+                                 "influxdb" => "influx",
+                                 "influxssl" => "influxssl",
+                                 "influxdbssl" => "influxssl",
+                                 "influxs" => "influxssl",
+                                 "influxdbs" => "influxssl",
 	);
     return $database_driver_alias{$driver};
 }
@@ -687,9 +766,7 @@ sub mysql_commands {
     my $html = defined($::opt_html) ? "--html" : "";
     my $no_headers = defined($::opt_n) ? "--skip-column-names" : "";
     my $ssl = "";
-    if ($database_driver eq "mysqlssl") {
-	$ssl="--ssl";
-    }
+    if ($database_driver eq "mysqlssl") { $ssl="--ssl"; }
     my($credential_fh,$tmp) = tempfile(SUFFIX => ".sql");
     chmod (0600,$tmp);
     print $credential_fh ("[client]\n",
@@ -702,7 +779,8 @@ sub mysql_commands {
     # -C: Compression if both ends support it
     $batch_command =
 	"((sleep 1; rm $tmp) & ".
-	"mysql --defaults-extra-file=$tmp -C $pass_through_options $no_headers $html $ssl $host $user $port  $database)";
+	"mysql --defaults-extra-file=$tmp -C $pass_through_options ".
+	"$no_headers $html $ssl $host $user $port  $database)";
     $interactive_command = $batch_command;
     return($batch_command,$interactive_command);
 }
@@ -711,7 +789,8 @@ sub postgresql_commands {
     my ($database_driver,%opt) = (@_);
     find_command_in_path("psql") || die ("psql not in path");
     my $sep = ($::opt_s) ? "-A --field-separator '$::opt_s'" : "";
-    my $password = defined($opt{'password'}) ? "PGPASSWORD=".$opt{'password'} : "";
+    my $password = defined($opt{'password'}) ?
+	"PGPASSWORD=".$opt{'password'} : "";
     my $host = defined($opt{'host'}) ? "-h ".$opt{'host'} : "";
     my $port = defined($opt{'port'}) ? "-p ".$opt{'port'} : "";
     my $user = defined($opt{'user'}) ? "-U ".$opt{'user'} : "";
@@ -719,11 +798,10 @@ sub postgresql_commands {
     my $html = defined($::opt_html) ? "--html" : "";
     my $no_headers = defined($::opt_n) ? "--tuples-only" : "";
     my $ssl = "";
-    if ($database_driver eq "postgresqlssl") {
-	$ssl="PGSSLMODE=require";
-    }
+    if ($database_driver eq "postgresqlssl") { $ssl="PGSSLMODE=require"; }
     $batch_command =
-	"$ssl $password psql $pass_through_options $sep $no_headers $html $host $user $port $database";
+	"$ssl $password psql $pass_through_options $sep $no_headers ".
+	"$html $host $user $port $database";
     $interactive_command = $batch_command;
 
     return($batch_command,$interactive_command);
@@ -735,7 +813,7 @@ sub oracle_commands {
     # sqlplus 'user/pass@(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = grum)(PORT = 1521)) (CONNECT_DATA =(SERVER = DEDICATED)(SERVICE_NAME = XE) ))'
     my $sqlplus = find_command_in_path("sqlplus") ||
 	find_command_in_path("sqlplus64") or
-	die ("sqlplus/sqlplus64 not in path");
+	die("sqlplus/sqlplus64 not in path");
 
     # Readline support: if rlwrap installed run rlwrap sqlplus
     my $rlwrap = find_command_in_path("rlwrap");
@@ -774,7 +852,8 @@ sub oracle_commands {
 	"(CONNECT_DATA =(SERVER = DEDICATED)$service ))";
     my $ssl = "";
     # -L: Do not re-ask for password if it is wrong
-    my $common_options = "-L $pass_through_options '$user$password\@$tns' \@$Global::Initfile";
+    my $common_options = "-L $pass_through_options ".
+	"'$user$password\@$tns' \@$Global::Initfile";
     my $batch_command =	"$sqlplus -S ".$common_options;
     my $interactive_command = "$rlwrap $sqlplus ".$common_options;
     return($batch_command,$interactive_command);
@@ -796,11 +875,43 @@ sub sqlite_commands {
     my $no_headers = defined($::opt_n) ? "-noheader" : "-header";
     my $ssl = "";
     $batch_command =
-	"$database_driver $pass_through_options $sep $no_headers $html $database";
+	"$database_driver $pass_through_options $sep ".
+	"$no_headers $html $database";
     $interactive_command = $batch_command;
     return($batch_command,$interactive_command);
 }
 
+sub influx_commands {
+    my ($database_driver,%opt) = (@_);
+    my $influx = find_command_in_path("influx") ||
+	die ("influx not in path");
+    if(defined($::opt_s)) {
+	die "Field separator not implemented for influx";
+    }
+    my $password =
+	defined($opt{'password'}) ? "-password=".$opt{'password'} : "";
+    my $host = defined($opt{'host'}) ? "-host=".$opt{'host'} : "";
+    my $port = defined($opt{'port'}) ? "-port=".$opt{'port'} : "";
+    my $user = defined($opt{'user'}) ? "-username=".$opt{'user'} : "";
+    my $database = defined($opt{'database'}) ?
+	"-database $opt{'database'}" : "-database $ENV{'USER'}";
+
+    my $format = defined($::opt_json) ? "-format json" :
+                 defined($::opt_pretty) ? "-format json -pretty" :
+                 defined($::opt_csv) ? "-format csv" : "";
+    my $precision = defined($::opt_precision) ?
+	"-precision $::opt_precision" : "";
+
+    my $no_headers = defined($::opt_n) ? "--skip-column-names" : "";
+    my $ssl = "";
+    if($database_driver eq "influxssl") { $ssl="--ssl"; }
+
+    $batch_command =
+        "$influx $pass_through_options $no_headers $format ".
+	"$precision $ssl $host $user $password $port  $database";
+    $interactive_command = $batch_command;
+    return($batch_command,$interactive_command);
+}
 
 # Return the code for 'show processlist' in the chosen database dialect
 sub processlist {
@@ -823,6 +934,7 @@ sub processlist {
 		      '    SYS.V_$SQL.SQL_ID = SYS.V_$SESSION.SQL_ID(+) '.
 		      "AND username IS NOT NULL ".
 		      "ORDER BY CPU_TIME DESC;"),
+	 "influx" => "show queries;",
 	);
     if($statement{$dbdriver}) {
 	return $statement{$dbdriver};
@@ -839,9 +951,12 @@ sub tablelist {
     my %statement =
 	("mysql" => "show tables;",
 	 "postgresql" => '\dt',
-	 "oracle" => ("SELECT object_name FROM user_objects WHERE object_type = 'TABLE';"),
+	 "oracle" => ("SELECT object_name ".
+		      "FROM user_objects ".
+		      "WHERE object_type = 'TABLE';"),
 	 "sqlite" => ".tables",
 	 "sqlite3" => ".tables",
+	 "influx" => "show measurements;",
 	);
     if($statement{$dbdriver}) {
 	return $statement{$dbdriver};
@@ -861,6 +976,7 @@ sub dblist {
 			  "WHERE datname NOT IN ('template0','template1','postgres') ".
 			  "ORDER BY datname ASC;"),
 	 "oracle" => ("select * from user_tablespaces;"),
+	 "influx" => "show databases;",
 	);
     if($statement{$dbdriver}) {
 	return $statement{$dbdriver};
@@ -1041,7 +1157,7 @@ sub parse_dburl {
     # sql:mysql://[[user][:password]@][host][:port]/[database[?sql query]]
 
     if($url=~m!(?:sql:)? # You can prefix with 'sql:'
-               ((?:oracle|ora|mysql|pg|postgres|postgresql)(?:s|ssl|)|
+               ((?:oracle|ora|mysql|pg|postgres|postgresql|influx|influxdb)(?:s|ssl|)|
                  (?:sqlite|sqlite2|sqlite3)):// # Databasedriver ($1)
                (?:
                 ([^:@/][^:@]*|) # Username ($2)
