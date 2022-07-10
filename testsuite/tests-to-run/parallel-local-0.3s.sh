@@ -16,6 +16,22 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_PARALLEL_HOME_not_exist() {
+    echo '### bug #62311: --pipepart + ::: fail'
+    tmp1=$(mktemp)
+    rm $tmp1
+    PARALLEL_HOME=$tmp1 parallel echo ::: OK
+    rm -r $tmp1
+    echo Should warn:
+    PARALLEL_HOME=/does-not-exist parallel -k echo ::: should warn
+}
+
+par_colour_failed() {
+    echo '--colour-failed --colour'
+    parallel --colour-failed -kv 'seq {1};exit {2}' ::: 1 2 ::: 0 1 2
+    parallel --colour --colour-failed -kv 'seq {1};exit {2}' ::: 1 2 ::: 0 1 2
+}
+
 par_pipepart_triple_colon() {
     echo '### bug #62311: --pipepart + ::: fail'
     tmp1=$(mktemp)

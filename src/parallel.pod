@@ -748,7 +748,8 @@ B<--transfer>, B<--transferfile> or B<--return>.
 See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
-=item B<--color> (beta testing)
+
+=item B<--color> (alpha testing)
 
 Colour output.
 
@@ -756,6 +757,23 @@ Colour the output. Each job gets its own colour combination
 (background+foreground).
 
 B<--color> is ignored when using B<-u>.
+
+See also: B<--color-failed>
+
+
+=item B<--color-failed> (alpha testing)
+
+=item B<--cf> (alpha testing)
+
+Colour the output from failing jobs white on red.
+
+Useful if you have a lot of jobs and want to focus on the failing
+jobs.
+
+B<--color-failed> is ignored when using B<-u>, B<--line-buffer> and
+unreliable when using B<--latest-line>.
+
+See also: B<--color>
 
 
 =item B<--colsep> I<regexp>

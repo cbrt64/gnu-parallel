@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 setup() {
-    tmp=$(tempfile)
+    tmp=$(mktemp)
     perl -pe 's/\n/\n\0/' >$tmp <<EOF
 chr1	1	Sample 1
 chr1	11	Sample 1

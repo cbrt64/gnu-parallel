@@ -38,7 +38,7 @@ install_packages() {
     shell_pkgs="$shell_pkgs tcsh yash zsh busybox-static"
 
     # Databases
-    database_pkgs="postgresql mysql-server sqlite"
+    database_pkgs="postgresql mysql-server sqlite influxdb influxdb-client"
 
     # Build Tools
     build_pkgs="bison libxxhash-dev libzstd-dev liblz4-dev libssl-dev"

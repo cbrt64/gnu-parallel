@@ -6,6 +6,13 @@ par_PARALLEL_ENV	### PARALLEL_ENV as file
 par_PARALLEL_ENV	OK as file
 par_PARALLEL_ENV	### PARALLEL_ENV as fifo
 par_PARALLEL_ENV	OK as fifo
+par_PARALLEL_HOME_not_exist	### bug #62311: --pipepart + ::: fail
+par_PARALLEL_HOME_not_exist	OK
+par_PARALLEL_HOME_not_exist	Should warn:
+par_PARALLEL_HOME_not_exist	parallel: Warning: $PARALLEL_HOME (/does-not-exist) does not exist.
+par_PARALLEL_HOME_not_exist	parallel: Warning: Using ~/.parallel
+par_PARALLEL_HOME_not_exist	should
+par_PARALLEL_HOME_not_exist	warn
 par_PARALLEL_HOME_with_+	bug #59453: PARALLEL_HOME with plus sign causes error: config not readable
 par_PARALLEL_HOME_with_+	Parallel_home_with+
 par_X_eta_div_zero	### bug #34422: parallel -X --eta crashes with div by zero
@@ -57,6 +64,37 @@ par_blocking_redir	stderr
 par_blocking_redir	stderr
 par_blocking_redir	stdout
 par_blocking_redir	stdout
+par_colour_failed	--colour-failed --colour
+par_colour_failed	seq 1;exit 0(B[m
+par_colour_failed	1(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 2(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	seq 2;exit 0(B[m
+par_colour_failed	1(B[m
+par_colour_failed	2(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 2;exit 1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K2(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 2;exit 2(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K2(B[m
+par_colour_failed	[48;5;134;38;5;231m[Kseq 1;exit 0(B[m
+par_colour_failed	[48;5;134;38;5;231m[K1(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 2(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	[48;5;149;38;5;000m[Kseq 2;exit 0(B[m
+par_colour_failed	[48;5;149;38;5;000m[K1(B[m
+par_colour_failed	[48;5;149;38;5;000m[K2(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 2;exit 1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K2(B[m
+par_colour_failed	[48;5;196;38;5;231m[Kseq 2;exit 2(B[m
+par_colour_failed	[48;5;196;38;5;231m[K1(B[m
+par_colour_failed	[48;5;196;38;5;231m[K2(B[m
 par_colsep_0	bug --colsep 0
 par_colsep_0	OK
 par_colsep_0	OK
@@ -957,10 +995,10 @@ par_sem_quote	### sem --quote should not add empty argument
 par_sem_quote	echo
 par_sem_quote	
 par_shellcompletion	### --shellcompletion
-par_shellcompletion	329fc284cae55cbfed49ed5546eb2b29  -
-par_shellcompletion	329fc284cae55cbfed49ed5546eb2b29  -
-par_shellcompletion	4869360b2bf2f084c17bdc60413faace  -
-par_shellcompletion	4869360b2bf2f084c17bdc60413faace  -
+par_shellcompletion	863f31c091219fc53dc89fd707f5995b  -
+par_shellcompletion	863f31c091219fc53dc89fd707f5995b  -
+par_shellcompletion	88a69a99c93b79b5ed6491c80e9762b0  -
+par_shellcompletion	88a69a99c93b79b5ed6491c80e9762b0  -
 par_slow_pipe_regexp	### bug #53718: --pipe --regexp -N blocks
 par_slow_pipe_regexp	This should take a few ms, but took more than 2 hours
 par_slow_pipe_regexp	      0       1       1
