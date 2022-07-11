@@ -51,7 +51,7 @@ par_tmpdir	Should fail
 par_tmpdir	parsort: Error: Tmpdir '/tmp/parsort  dir' is not writable.
 par_tmpdir	parsort: Error: Try 'chmod +w '/tmp/parsort  dir''
 par_z	### parsort -z
-par_z	583c59e3574e550f6810d0ad20e7ab88  -
+par_z	507d17cd3d746cdeeccdb8ad11860181  -
 par_z	507d17cd3d746cdeeccdb8ad11860181  -
 par_z	507d17cd3d746cdeeccdb8ad11860181  -
 par_z	507d17cd3d746cdeeccdb8ad11860181  -
