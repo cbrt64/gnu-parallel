@@ -395,7 +395,7 @@ _parset_main() {
     fi
     if [ "$_parset_NAME" = "--version" ] ; then
 	# shellcheck disable=SC2006
-	echo "parset 20220722 (GNU parallel `parallel --minversion 1`)"
+	echo "parset 20220723 (GNU parallel `parallel --minversion 1`)"
 	echo "Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free Software"
 	echo "Foundation, Inc."
 	echo "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>"

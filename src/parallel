@@ -2658,7 +2658,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220722;
+    $Global::version = 20220723;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -8644,35 +8644,47 @@ sub rsync_transfer_cmd($) {
 	   $self->rsync()." $file ".$self->{'host'}.":$rsync_destdir");
 }
 
-sub rsync($) {
-    sub rsync_protocol {
-	# rsync 3.1.x uses protocol 31 which is unsupported by 2.5.7.
-	# If the version >= 3.1.0: downgrade to protocol 30
-	# Returns:
-	#   $rsync = "rsync" or "rsync --protocol 30"
-	if(not $Global::rsync_protocol) {
-	    my @out = `rsync --version`;
-	    for (@out) {
-		# rsync	 version 3.1.3	protocol version 31
-		# rsync	 version v3.2.3	 protocol version 31
-		if(/version v?(\d+.\d+)(.\d+)?/) {
-		    if($1 >= 3.1) {
-			# Version 3.1.0 or later: Downgrade to protocol 30
-			$Global::rsync_protocol = "rsync --protocol 30";
+{
+    my $rsync_protocol;
+
+    sub rsync($) {
+	sub rsync_protocol {
+	    # rsync 3.1.x uses protocol 31 which is unsupported by 2.5.7.
+	    # If the version >= 3.1.0: downgrade to protocol 30
+	    # Returns:
+	    #   $rsync = "rsync" or "rsync --protocol 30"
+	    if(not $rsync_protocol) {
+		my @out = `rsync --version`;
+		if(not @out) {
+		    if(::which("rsync")) {
+			::die_bug("'rsync --version' gave no output.");
 		    } else {
-			$Global::rsync_protocol = "rsync";
+			::error("'rsync' is not in \$PATH.");
+			::wait_and_exit(255);
 		    }
 		}
+		for (@out) {
+		    # rsync	 version 3.1.3	protocol version 31
+		    # rsync	 version v3.2.3	 protocol version 31
+		    if(/version v?(\d+.\d+)(.\d+)?/) {
+			if($1 >= 3.1) {
+			    # Version 3.1.0 or later: Downgrade to protocol 30
+			    $rsync_protocol = "rsync --protocol 30";
+			} else {
+			    $rsync_protocol = "rsync";
+			}
+		    }
+		}
+		$rsync_protocol or
+		    ::die_bug("Cannot figure out version of rsync: @out");
 	    }
-	    $Global::rsync_protocol or
-		::die_bug("Cannot figure out version of rsync: @out");
+	    return $rsync_protocol;
 	}
-	return $Global::rsync_protocol;
-    }
-    my $self = shift;
+	my $self = shift;
 
-    return rsync_protocol()." ".$ENV{'PARALLEL_RSYNC_OPTS'}.
-	" -e".::Q($self->sshcmd());
+	return rsync_protocol()." ".$ENV{'PARALLEL_RSYNC_OPTS'}.
+	    " -e".::Q($self->sshcmd());
+    }
 }
 
 sub cleanup_cmd($$$) {
