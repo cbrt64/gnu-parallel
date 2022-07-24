@@ -1321,12 +1321,14 @@ par_ksh_env_parallel	env_parallel: Warning: See BUGS in "man env_parallel".
 par_fish_underscore	### fish
 par_fish_underscore	Fish is broken
 par_fish_underscore	### Testing of --env _
+par_fish_underscore	Test copying
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
 par_fish_underscore	variables in aliases and arrays in functions work
+par_fish_underscore	Test ignoring
 par_fish_underscore	script (line XXX): 
 par_fish_underscore	not_copied_alias 'error=OK'
 par_fish_underscore	^
@@ -1335,6 +1337,7 @@ par_fish_underscore	not_copied_func 'error=OK'
 par_fish_underscore	^
 par_fish_underscore	error=OK
 par_fish_underscore	error=OK
+par_fish_underscore	Test single ignoring
 par_fish_underscore	aliases and arrays in functions work
 par_fish_underscore	aliases and arrays in functions work
 par_fish_underscore	aliases functions work

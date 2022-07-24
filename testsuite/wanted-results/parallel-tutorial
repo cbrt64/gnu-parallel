@@ -692,7 +692,6 @@ This is input_file
   parallel -S $SERVER1 --trc {}.out cat {} ">"{}.out ::: input_file
   cat input_file.out
 This is input_file
-rsync: [sender] link_stat "/home/parallel/input_file.out" failed: No such file or directory (2)
   echo common data > common_file
   parallel --basefile common_file -S $SERVER1 \
     cat common_file\; echo {} ::: foo

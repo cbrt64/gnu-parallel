@@ -1,3 +1,18 @@
+20220722
+
+New in this release:
+
+* --colour-failed will color output red if the job fails.
+
+* sql: support for InfluxDB.
+
+* Polarhome.com is dead, so these OSs are no longer supported: AIX
+  HPUX IRIX Minix OPENSTEP OpenIndiana OpenServer QNX Solaris Syllable
+  Tru64 Ultrix UnixWare.
+
+* Bug fixes and man page updates.
+
+
 20220622
 
 New in this release:

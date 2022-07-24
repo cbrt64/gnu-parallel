@@ -970,8 +970,6 @@ par_sockets_cores_threads	### Test --use-sockets-instead-of-threads
 par_sockets_cores_threads	threads done
 par_sockets_cores_threads	sockets done
 par_sockets_cores_threads	Threads should complete first on machines with less than 8 sockets
-par_test_diff_roundrobin_k	### test there is difference on -k
-par_test_diff_roundrobin_k	OK
 par_tmp_full	### Test --tmpdir running full. bug #40733 was caused by this
 par_tmp_full	parallel: Error: Output is incomplete.
 par_tmp_full	parallel: Error: Cannot append to buffer file in /tmp/shm/parallel.

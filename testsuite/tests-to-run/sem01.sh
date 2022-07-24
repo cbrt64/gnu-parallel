@@ -80,12 +80,13 @@ par_exit() {
 	echo Sem exit value $?
     }
     export -f test_signal
-    stdout parallel -k --timeout 3 --tag test_signal ::: {0..64} |
+    ulimit -c 0
+    stdout parallel -j15 -k --timeout 20 --tag test_signal ::: {0..64} |
 	perl -pe 's/line 1: (\d+)/line 1: PID/'
 }
 
 
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | LC_ALL=C sort |
-    parallel --timeout 3000% -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
+    parallel --timeout 30 -j6 --tag -k --joblog /tmp/jl-`basename $0` '{} 2>&1' |
     perl -pe 's:/usr/bin:/bin:g'

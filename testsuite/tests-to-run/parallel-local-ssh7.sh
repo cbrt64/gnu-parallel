@@ -791,7 +791,7 @@ par_fish_underscore() {
     echo "Fish is broken"
     echo "### Testing of --env _"
 
-#    . `which env_parallel.fish`;
+    source (which env_parallel.fish)
     true > ~/.parallel/ignored_vars;
 
     alias not_copied_alias="echo BAD"
@@ -808,6 +808,8 @@ par_fish_underscore() {
     end
     set myvar "variables in";
     set myarray and arrays in;
+
+    echo Test copying;
     env_parallel myfunc ::: work;
     env_parallel -S server myfunc ::: work;
     env_parallel --env myfunc,myvar,myarray,myecho myfunc ::: work;
@@ -815,11 +817,13 @@ par_fish_underscore() {
     env_parallel --env _ myfunc ::: work;
     env_parallel --env _ -S server myfunc ::: work;
 
+    echo Test ignoring;
     env_parallel --env _ -S server not_copied_alias ::: error=OK;
     env_parallel --env _ -S server not_copied_func ::: error=OK;
     env_parallel --env _ -S server echo \$not_copied_var ::: error=OK;
     env_parallel --env _ -S server echo \$not_copied_array ::: error=OK;
 
+    echo Test single ignoring;
     echo myvar > ~/.parallel/ignored_vars;
     env_parallel --env _ myfunc ::: work;
     env_parallel --env _ -S server myfunc ::: work;

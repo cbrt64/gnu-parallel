@@ -1587,9 +1587,9 @@ Example:
 See also: B<--line-buffer>
 
 
-=item B<--line-buffer> (beta testing)
+=item B<--line-buffer> (alpha testing)
 
-=item B<--lb> (beta testing)
+=item B<--lb> (alpha testing)
 
 Buffer output on line basis.
 
@@ -2864,7 +2864,7 @@ B<--shebang-wrap> must be set as the first option.
 See also: B<--shebang>
 
 
-=item B<--shell-completion> I<shell> (beta testing)
+=item B<--shell-completion> I<shell> (alpha testing)
 
 Generate shell completion code for interactive shells.
 

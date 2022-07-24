@@ -9,7 +9,7 @@
 par_ll_lb_color() {
     echo 'bug #62386: --color (--ctag but without --tag)'
     echo 'bug #62438: See last line from multiple jobslots'
-    # This is really a race condition - might have to be moved
+    # This is a race condition
     #  # delay modulo 4 seconds
     #  perl -MTime::HiRes -E 'Time::HiRes::usleep(1000000*(((time|3)+1)-Time::HiRes::time()));'
     #  # delay modulo 2 seconds
@@ -26,17 +26,21 @@ par_ll_lb_color() {
     #  # delay modulo 1 second + delta ms
     #  perl -E 'use Time::HiRes qw(usleep time); $d=shift; for(1..shift){
     #           usleep(1000000*($d-time+(1+time*1|0)/1));say;}' 0.2 6;
-    offset_seq() { 
+    _offset_seq() { 
 	perl -E 'use Time::HiRes qw(usleep time); $|=1;$d=shift; for(1..shift){
              usleep(1000000*($d-time+(1+time*1|0)/1));say;}' $@;
     }
+    offset_seq() { 
+	perl -E 'use Time::HiRes qw(usleep time); $|=1;usleep(shift); for(1..shift){
+             usleep(1000000);say;}' $@;
+    }
     export -f offset_seq
     run() {
-	seq 4 -1 1 | parallel -j0 $@ offset_seq 0.{#} {}
+	seq 4 -1 1 | parallel -j0 $@ offset_seq '{= $_=seq()*170000 =}' {}
     }
     export -f run
     
-    parallel --delay 0.17 -vkj0 run \
+    parallel --delay 0.07 -vkj0 run \
 	     ::: --lb --ll '' ::: --color '' ::: '--tagstring {}{}' --tag '' ::: -k '' |
 	md5sum
 }

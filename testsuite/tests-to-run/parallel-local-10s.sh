@@ -42,36 +42,6 @@ par_round_robin_blocks() {
     seq 20000000 | parallel -j8 --block 10M --round-robin --pipe wc -c | wc -l
 }
 
-par_test_diff_roundrobin_k() {
-    echo '### test there is difference on -k'
-    . $(which env_parallel.bash)
-    mytest() {
-	K=$1
-	doit() {
-	    # Sleep random time ever 1k line
-	    # to mix up which process gets the next block
-	    perl -ne '$t++ % 1000 or select(undef, undef, undef, rand()/10);print' |
-		md5sum
-	}
-	export -f doit
-	seq 1000000 |
-	    parallel --block 65K --pipe $K --roundrobin doit |
-	    sort
-    }
-    export -f mytest
-    parset a,b,c mytest ::: -k -k ''
-    # a == b and a != c or error
-    if [ "$a" == "$b" ]; then
-	if [ "$a" != "$c" ]; then
-	    echo OK
-	else
-	    echo error a c
-	fi
-    else
-	echo error a b
-    fi
-}
-
 par_compress_prg_fails() {
     echo '### bug #44546: If --compress-program fails: fail'
     doit() {

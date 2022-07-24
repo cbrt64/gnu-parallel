@@ -80,7 +80,7 @@ find home-tange/parallel/* -type f |
   grep -Ev '(PKGBUILD|parallel.spec)' |
   parallel -j1 'osc rm {} || rm {}'
 # This should not create new files
-osc up home:tange/parallel/
+osc up home-tange/parallel/
 make
 # Reload build-status:
 https://build.opensuse.org/package/show/home:tange/parallel
@@ -254,25 +254,29 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220722 ('Roe vs Wade/EU candidate/Oslo/Matapour/Kremenchuk') released
+Subject: GNU Parallel 20220722 ('Roe vs Wade') released
 
 GNU Parallel 20220722 ('Roe vs Wade') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-<<>>
+  The syntax for GNU Parallel is so slick that I often use it just to make my script read nicer, and the parallelism is a cherry on top.
+    -- Epistaxis@reddit
+
   
 New in this release:
 
-<<>>
+* --colour-failed will color output red if the job fails.
+
+* sql: support for InfluxDB.
+
+* Polarhome.com is dead, so these OSs are no longer supported: AIX HPUX IRIX Minix OPENSTEP OpenIndiana OpenServer QNX Solaris Syllable Tru64 Ultrix UnixWare.
 
 * Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-<<>>
-https://www.centrefornetzero.org/wp-content/uploads/2022/05/ABM-Report-Final.pdf
-
+* GNU Parallel used in "Hitting the Target" https://www.centrefornetzero.org/wp-content/uploads/2022/05/ABM-Report-Final.pdf
 
 
 GNU Parallel - For people who live life in the parallel lane.

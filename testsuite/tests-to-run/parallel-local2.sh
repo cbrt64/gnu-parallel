@@ -4,7 +4,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-cpuburn=$(tempfile)
+cpuburn=$(mktemp)
 (echo '#!/usr/bin/perl'
  echo "eval{setpriority(0,0,9)}; while(1){}") > $cpuburn
 chmod 700 $cpuburn

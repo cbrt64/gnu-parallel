@@ -47,6 +47,7 @@ def 3
 ### Test --debug
 dburl mysql://tange:tange@localhost:3306/tange
 databasedriver mysql user tange password tange host localhost port 3306 database tange query 
+[ | ((sleep 1; rm tmpfile) & mysql --defaults-extra-file=tmpfile -C     --host=localhost --user=tange --port=3306  tange)]
 Test if --debug works
 Yes it does
 ### Test --version -V
@@ -55,21 +56,28 @@ Yes it does
 ### Test -r
 dburl pg://nongood@127.0.0.3:2227/
 databasedriver pg user nongood password  host 127.0.0.3 port 2227 database nongood query 
+[ |   psql     -h 127.0.0.3 -U nongood -p 2227 -d nongood]
 psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
+[ |   psql     -h 127.0.0.3 -U nongood -p 2227 -d nongood]
 psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
+[ |   psql     -h 127.0.0.3 -U nongood -p 2227 -d nongood]
 psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
 ### Test --retries=s
 dburl pg://nongood@127.0.0.3:2227/
 databasedriver pg user nongood password  host 127.0.0.3 port 2227 database nongood query 
+[ |   psql     -h 127.0.0.3 -U nongood -p 2227 -d nongood]
 psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
+[ |   psql     -h 127.0.0.3 -U nongood -p 2227 -d nongood]
 psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
+[ |   psql     -h 127.0.0.3 -U nongood -p 2227 -d nongood]
 psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
+[ |   psql     -h 127.0.0.3 -U nongood -p 2227 -d nongood]
 psql: error: connection to server at "127.0.0.3", port 2227 failed: Connection refused
 	Is the server running on that host and accepting TCP/IP connections?
 ### Test --help -h

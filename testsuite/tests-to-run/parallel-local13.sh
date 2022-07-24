@@ -32,7 +32,8 @@ stdout xargs -i -0 echo from \{\} to x{}y < items-0.xi
 stdout parallel -k -i -0 echo from \{\} to x{}y < items-0.xi
 echo '###  -i -s26 -0 echo from \{\} to x{}y < items-0.xi'
 stdsort xargs -i -s26 -0 echo from \{\} to x{}y < items-0.xi
-stdsort parallel -k -i -s26 -0 echo from \{\} to x{}y < items-0.xi
+# -j1 is needed to avoid race condition
+stdsort parallel -kj1 -i -s26 -0 echo from \{\} to x{}y < items-0.xi
 echo '###  -l -0 echo < ldata-0.xi'
 stdout xargs -l -0 echo < ldata-0.xi
 stdout parallel -l -k -0 echo < ldata-0.xi

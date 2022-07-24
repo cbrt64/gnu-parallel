@@ -8,7 +8,7 @@ par_influx	name: databases
 par_influx	name
 par_influx	----
 par_influx	_internal
-par_influx	tange
+par_influx	mydb
 par_influx	parallel
 par_influx	name: cpu
 par_influx	time                host    region  value

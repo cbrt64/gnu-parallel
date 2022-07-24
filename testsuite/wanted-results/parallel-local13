@@ -87,7 +87,8 @@ echo '###  -i -s26 -0 echo from \{\} to x{}y < items-0.xi'
 stdsort xargs -i -s26 -0 echo from \{\} to x{}y < items-0.xi
 from one to xoney
 xargs: argument list too long
-stdsort parallel -k -i -s26 -0 echo from \{\} to x{}y < items-0.xi
+# -j1 is needed to avoid race condition
+stdsort parallel -kj1 -i -s26 -0 echo from \{\} to x{}y < items-0.xi
 
 from one to xoney
 parallel: Error: Command line too long (32 >= 26) at input 0:  	
