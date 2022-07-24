@@ -2219,9 +2219,7 @@ sub parse_options(@) {
 	    $Global::cache_replacement_eval = 0;
 	}
     }
-    if(defined $opt::interactive) {
-	$Global::interactive = $opt::interactive;
-    }
+    if(defined $opt::interactive) { $Global::interactive = $opt::interactive; }
     if(defined $opt::quote) { $Global::quoting = 1; }
     if(defined $opt::r) { $Global::ignore_empty = 1; }
     if(defined $opt::verbose) { $Global::stderr_verbose = 1; }
@@ -2329,8 +2327,7 @@ sub parse_options(@) {
     $opt::memsuspend = multiply_binary_prefix($opt::memsuspend);
     $Global::memlimit = $opt::memsuspend + $opt::memfree;
     check_invalid_option_combinations();
-    if((defined $opt::fifo or defined $opt::cat)
-       and not $opt::pipepart) {
+    if((defined $opt::fifo or defined $opt::cat) and not $opt::pipepart) {
 	$opt::pipe = 1;
     }
     if(defined $opt::minversion) {
@@ -2661,7 +2658,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220622;
+    $Global::version = 20220722;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -2789,7 +2786,9 @@ sub init_globals() {
     # no warnings to allow for undefined $XDG_*
     no warnings 'uninitialized';
     # If $PARALLEL_HOME is set, but does not exist, try making it.
-    eval { File::Path::mkpath($ENV{'PARALLEL_HOME'}); };
+    if(defined $ENV{'PARALLEL_HOME'}) {
+	eval { File::Path::mkpath($ENV{'PARALLEL_HOME'}); };
+    }
     # $xdg_config_home is needed to make env_parallel.fish stop complaining
     my $xdg_config_home = $ENV{'XDG_CONFIG_HOME'};
     # config_dirs = $PARALLEL_HOME, $XDG_CONFIG_HOME/parallel,
@@ -5032,6 +5031,8 @@ sub parallelized_host_filtering() {
 	exit();
     }
     close $in;
+    # If -0: $/ must be \n
+    local $/ = "\n";
     for(<$host_fh>) {
 	# TODO incompatible with '-quoting. Needs to be fixed differently
 	#if(/\'$/) {
@@ -5534,8 +5535,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-	 "  Tange, O. (2022, June 22). GNU Parallel 20220622 ('Bongbong').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.6682930",
+	 "  Tange, O. (2022, July 22). GNU Parallel 20220722 ('Roe vs Wade').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.6891516",
 	 "",
 	 # Before changing these lines,	 please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
@@ -5567,8 +5568,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2022, June 22). GNU Parallel 20220622 ('Bongbong').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.6682930",
+	     "  Tange, O. (2022, July 22). GNU Parallel 20220722 ('Roe vs Wade').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.6891516",
 	     "",
 	     # Before changing these line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
@@ -5695,20 +5696,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2022_6682930,",
+	"\@software{tange_2022_6891516,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20220622 ('Bongbong')},",
-	"      month        = Jun,",
+	"      title        = {GNU Parallel 20220722 ('Roe vs Wade')},",
+	"      month        = Jul,",
 	"      year         = 2022,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
 	"                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.6682930},",
-	"      url          = {https://doi.org/10.5281/zenodo.6682930}",
+	"      doi          = {10.5281/zenodo.6891516},",
+	"      url          = {https://doi.org/10.5281/zenodo.6891516}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2022_6682930})",
+	"(Feel free to use \\nocite{tange_2022_6891516})",
 	"",
 	# Before changing these lines, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
@@ -12887,6 +12888,7 @@ sub max_length($) {
 	my $len_cache = $Global::cache_dir . "/tmp/sshlogin/" . ::hostname() .
 	    "/linelen";
 	my $cached_limit;
+	local $/ = undef;
 	if(open(my $fh, "<", $len_cache)) {
 	    $cached_limit = <$fh>;
 	    $cached_limit || ::die_bug("Cannot read $len_cache");
@@ -13438,7 +13440,7 @@ sub nest_get($) {
 		    return undef;
 		}
 	    }
-	    if(not $dos_crnl_determined and not $opt::d) {
+	    if(not $dos_crnl_determined and not defined $opt::d) {
 		# Warn if input has CR-NL and -d is not set
 		if($arg =~ /\r$/) {
 		    $cr_count++;

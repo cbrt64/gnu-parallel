@@ -100,6 +100,18 @@ par_fish_embed	Not implemented
 par_env_parallel_big_env	### bug #54128: command too long when exporting big env
 par_env_parallel_big_env	should not fail
 par_env_parallel_big_env	OK
+par_d_filter_hosts	### --filter-hosts and -0
+par_d_filter_hosts	### https://lists.gnu.org/archive/html/parallel/2022-07/msg00002.html
+par_d_filter_hosts	OKa
+par_d_filter_hosts	OKb
+par_d_filter_hosts	OKa
+par_d_filter_hosts	OKb
+par_d_filter_hosts	OKa
+par_d_filter_hosts	OKb
+par_d_filter_hosts	OKa
+par_d_filter_hosts	OKb
+par_d_filter_hosts	OKa
+par_d_filter_hosts	OKb
 par_csh_embed	Not implemented
 par_bash_embed	--embed
 par_bash_embed	Redirect the output to a file and add your changes at the end:

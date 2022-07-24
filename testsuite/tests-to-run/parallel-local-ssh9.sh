@@ -209,6 +209,16 @@ par_PARALLEL_SSHLOGIN_SSHHOST() {
 	LANG=C sort
 }
 
+par_d_filter_hosts() {
+    echo '### --filter-hosts and -0'
+    echo '### https://lists.gnu.org/archive/html/parallel/2022-07/msg00002.html'
+    printf 'OKa OKb ' | parallel -k -d ' ' --filter-hosts -S lo echo
+    printf 'OKa1OKb1' | parallel -k -d 1 --filter-hosts -S lo echo
+    printf 'OKa0OKb0' | parallel -k -d 0 --filter-hosts -S lo echo
+    printf 'OKa\0OKb\0' | parallel -k -d '\0' --filter-hosts -S lo echo
+    printf 'OKa\0OKb\0' | parallel -k -0 --filter-hosts -S lo echo
+}
+
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
 #compgen -A function | grep par_ | sort |
