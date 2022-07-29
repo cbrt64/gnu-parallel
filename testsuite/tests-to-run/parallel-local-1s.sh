@@ -8,6 +8,63 @@
 # Each should be taking 1-3s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_plus() {
+    echo '### --plus'
+    echo '(It is OK to start with extra / or end with extra .)'
+    parallel -k --plus echo {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = \
+             {..}.{+..} = {+/}/{/..}.{+..} = {...}.{+...} = \
+             {+/}/{/...}.{+...} \
+	     ::: a a.b a.b.c a.b.c.d a/1 a.b/1.2 a.b.c/1.2.3 a.b.c.d/1.2.3.4
+    
+    echo '### Test {%...} {%%...} {#...} {##...}'
+    a=z.z.z.foo
+    echo ${a#z*z.}
+    parallel --plus echo {#z.*z.} ::: z.z.z.foo
+    echo ${a##z*z.}
+    parallel --plus echo {##z.*z.} ::: z.z.z.foo
+
+    a=foo.z.z.z
+    echo ${a%.z.z}
+    parallel --plus echo {%.z.z} ::: foo.z.z.z
+    echo ${a%%.z*z}
+    parallel --plus echo {%%.z.*z} ::: foo.z.z.z
+
+    parallel -k --plus echo {uniq} ::: A B C  ::: A B C  ::: A B C
+    parallel -k --plus echo {1uniq}+{2uniq}+{3uniq} ::: A B C  ::: A B C  ::: A B C
+    parallel -k --plus echo {choose_k} ::: A B C D ::: A B C D ::: A B C D
+}
+
+par_file_rpl() {
+    echo '### file as replacement string'
+    tmp="$(mktemp)"
+    (
+	echo contest1
+	echo contest2
+	echo File name "$tmp"
+    ) > "$tmp"
+    (
+	# {filename}
+	parallel -k --header 0 echo {"$tmp"} :::: "$tmp"
+	# Conflict: both {filename} and {/regexp/rpl}
+	parallel -k --plus echo {"$tmp"} :::: "$tmp"
+	parallel -k --header 0 --plus echo {"$tmp"} :::: "$tmp"
+	tmpd="$(mktemp -d)"
+	cd "$tmpd"
+	# Conflict: both {filename} and {n}
+	seq 1 > 1
+	seq 2 > 2
+	seq 3 > 3
+	parallel -k echo {1} :::: 3 2 1
+	parallel -k --header 0 echo {1} :::: 3 2 1
+	# Conflict: both {filename} and {=expr=}
+	seq 3 > =chop=
+	parallel -k echo  {=chop=} ::: =chop=
+	parallel -k --header 0 echo  {=chop=} ::: =chop=
+	rm -rf "$tmpd"
+    ) | perl -pe 's/tmp\.\w+/tmp.XXXXXX/g'
+    rm "$tmp"
+}
+
 par_commandline_with_newline() {
     echo 'bug #51299: --retry-failed with command with newline'
     echo 'The format must remain the same'

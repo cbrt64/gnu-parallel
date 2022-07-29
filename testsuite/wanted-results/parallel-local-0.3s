@@ -765,41 +765,6 @@ par_pipepart_triple_colon	### bug #62311: --pipepart + ::: fail
 par_pipepart_triple_colon	      1       1       2
 par_pipepart_triple_colon	      1       1       2
 par_pipepart_triple_colon	      1       1       2
-par_plus	### --plus
-par_plus	(It is OK to start with extra / or end with extra .)
-par_plus	a = /a = a. = /a. = a. = /a. = a. = /a.
-par_plus	a.b = /a.b = a.b = /a.b = a.b. = /a.b. = a.b. = /a.b.
-par_plus	a.b.c = /a.b.c = a.b.c = /a.b.c = a.b.c = /a.b.c = a.b.c. = /a.b.c.
-par_plus	a.b.c.d = /a.b.c.d = a.b.c.d = /a.b.c.d = a.b.c.d = /a.b.c.d = a.b.c.d = /a.b.c.d
-par_plus	a/1 = a/1 = a/1. = a/1. = a/1. = a/1. = a/1. = a/1.
-par_plus	a.b/1.2 = a.b/1.2 = a.b/1.2 = a.b/1.2 = a.b/1.2. = a.b/1.2. = a.b/1.2. = a.b/1.2.
-par_plus	a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3. = a.b.c/1.2.3.
-par_plus	a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4
-par_plus	### Test {%...} {%%...} {#...} {##...}
-par_plus	z.foo
-par_plus	z.foo
-par_plus	foo
-par_plus	foo
-par_plus	foo.z
-par_plus	foo.z
-par_plus	foo
-par_plus	foo
-par_plus	A B C
-par_plus	A C B
-par_plus	B A C
-par_plus	B C A
-par_plus	C A B
-par_plus	C B A
-par_plus	A+B+C
-par_plus	A+C+B
-par_plus	B+A+C
-par_plus	B+C+A
-par_plus	C+A+B
-par_plus	C+B+A
-par_plus	A B C
-par_plus	A B D
-par_plus	A C D
-par_plus	B C D
 par_profile	### Test -J profile, -J /dir/profile, -J ./profile
 par_profile	local	local
 par_profile	abs	abs

@@ -63,32 +63,6 @@ par_ctagstring() {
     parallel --ctagstring 'I{1}\tB{2}' echo ::: 1 ::: a | wc -c
 }
 
-par_plus() {
-    echo '### --plus'
-    echo '(It is OK to start with extra / or end with extra .)'
-    parallel -k --plus echo {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = \
-             {..}.{+..} = {+/}/{/..}.{+..} = {...}.{+...} = \
-             {+/}/{/...}.{+...} \
-	     ::: a a.b a.b.c a.b.c.d a/1 a.b/1.2 a.b.c/1.2.3 a.b.c.d/1.2.3.4
-    
-    echo '### Test {%...} {%%...} {#...} {##...}'
-    a=z.z.z.foo
-    echo ${a#z*z.}
-    parallel --plus echo {#z.*z.} ::: z.z.z.foo
-    echo ${a##z*z.}
-    parallel --plus echo {##z.*z.} ::: z.z.z.foo
-
-    a=foo.z.z.z
-    echo ${a%.z.z}
-    parallel --plus echo {%.z.z} ::: foo.z.z.z
-    echo ${a%%.z*z}
-    parallel --plus echo {%%.z.*z} ::: foo.z.z.z
-
-    parallel -k --plus echo {uniq} ::: A B C  ::: A B C  ::: A B C
-    parallel -k --plus echo {1uniq}+{2uniq}+{3uniq} ::: A B C  ::: A B C  ::: A B C
-    parallel -k --plus echo {choose_k} ::: A B C D ::: A B C D ::: A B C D
-}
-
 par_env_parallel_pipefail() {
     cat <<'EOF' | bash
     echo "### test env_parallel with pipefail + inherit_errexit"

@@ -38,7 +38,7 @@ use File::Basename;
 
 sub set_input_source_header($$) {
     my ($command_ref,$input_source_fh_ref) = @_;
-    if($opt::header and not $opt::pipe) {
+    if(defined $opt::header and not $opt::pipe) {
 	# split with colsep or \t
 	# $header force $colsep = \t if undef?
 	my $delimiter = defined $opt::colsep ? $opt::colsep : "\t";
@@ -48,29 +48,52 @@ sub set_input_source_header($$) {
 	# regexp for =}
 	my $right = "\Q$Global::parensright\E";
 	my $r = $Global::parensright;
-	my $id = 1;
-	for my $fh (@$input_source_fh_ref) {
-	    my $line = <$fh>;
-	    chomp($line);
-	    $line =~ s/\r$//;
-	    ::debug("init", "Delimiter: '$delimiter'");
-	    for my $s (split /$delimiter/o, $line) {
-		::debug("init", "Colname: '$s'");
-		# Replace {colname} with {2}
-		for(@$command_ref, @Global::ret_files,
-		    @Global::transfer_files, $opt::tagstring,
-		    $opt::workdir, $opt::results, $opt::retries,
-		    @Global::template_contents, @Global::template_names,
-		    @opt::filter) {
-		    # Skip if undefined
-		    $_ or next;
-		  s:\{$s(|/|//|\.|/\.)\}:\{$id$1\}:g;
-		    # {=header1 ... =}  =>  {=1 ... =}
-		  s:$left $s (.*?) $right:$l$id$1$r:gx;
+	if($opt::header ne "0") {
+	    my $id = 1;
+	    for my $fh (@$input_source_fh_ref) {
+		my $line = <$fh>;
+		chomp($line);
+		$line =~ s/\r$//;
+		::debug("init", "Delimiter: '$delimiter'");
+		for my $s (split /$delimiter/o, $line) {
+		    ::debug("init", "Colname: '$s'");
+		    # Replace {colname} with {2}
+		    for(@$command_ref, @Global::ret_files,
+			@Global::transfer_files, $opt::tagstring,
+			$opt::workdir, $opt::results, $opt::retries,
+			@Global::template_contents, @Global::template_names,
+			@opt::filter) {
+			# Skip if undefined
+			$_ or next;
+		      s:\{$s(|/|//|\.|/\.)\}:\{$id$1\}:g;
+			# {=header1 ... =}  =>  {=1 ... =}
+		      s:$left $s (.*?) $right:$l$id$1$r:gx;
+		    }
+		    $Global::input_source_header{$id} = $s;
+		    $id++;
 		}
-		$Global::input_source_header{$id} = $s;
-		$id++;
 	    }
+	}
+	# Make it possible to do:
+	# parallel --header 0 echo {file2} {file1} :::: file1 file2
+	my $id = 1;
+	for my $s (@opt::a) {
+	    # ::: are put into files and given a filehandle
+	    # ignore these and only keep the filenames.
+	    fileno $s and next;	    
+	    for(@$command_ref, @Global::ret_files,
+		@Global::transfer_files, $opt::tagstring,
+		$opt::workdir, $opt::results, $opt::retries,
+		@Global::template_contents, @Global::template_names,
+		@opt::filter) {
+		# Skip if undefined
+		$_ or next;
+	      s:\{$s(|/|//|\.|/\.)\}:\{$id$1\}:g;
+		# {=header1 ... =}  =>  {=1 ... =}
+	      s:$left $s (.*?) $right:$l$id$1$r:gx;
+	    }
+	    $Global::input_source_header{$id} = $s;
+	    $id++;
 	}
     } else {
 	my $id = 1;
