@@ -66,6 +66,13 @@ sub pre1 {
 	/^\#/ and next;
 	# quote -
 	s/^=item -/=item \001/;
+
+	if(/^ /) {
+	    # ignore source blocks
+	} else {
+	    # \\ => \
+	    s/\\/\\\\/g;
+	}
 	print;
     }
 }
