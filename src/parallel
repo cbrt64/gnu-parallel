@@ -4854,32 +4854,37 @@ sub filter_hosts() {
     $Global::minimal_command_line_length = 100_000_000;
     while (my ($string, $sshlogin) = each %Global::host) {
 	if($sshlogin->local()) { next }
-	$nsockets_ref->{$string} or
-	    ::die_bug("nsockets missing: $string");
-	$ncores_ref->{$string} or
-	    ::die_bug("ncores missing: $string");
-	$nthreads_ref->{$string} or
-	    ::die_bug("nthreads missing: $string");
-	$time_to_login_ref->{$string} or
-	    ::die_bug("time_to_login missing: $string");
-	$maxlen_ref->{$string} or
-	    ::die_bug("maxlen missing: ".$sshlogin->string());
-	$sshlogin->set_ncpus($nthreads_ref->{$string});
+	my ($nsockets,$ncores,$nthreads,$time_to_login,$maxlen) =
+	    ($nsockets_ref->{$string},$ncores_ref->{$string},
+	     $nthreads_ref->{$string},$time_to_login_ref->{$string},
+	     $maxlen_ref->{$string});
+	defined $nsockets or ::die_bug("nsockets missing: $string");
+	defined $ncores or ::die_bug("ncores missing: $string");
+	defined $nthreads or ::die_bug("nthreads missing: $string");
+	defined $time_to_login or ::die_bug("time_to_login missing: $string");
+	defined $maxlen or ::die_bug("maxlen missing: $string");
+	# ncpus may be set by 4/hostname
+	my $ncpus = $sshlogin->ncpus();
+	# $nthreads may be 0 if GNU Parallel is not installed remotely
+	$ncpus = $nthreads || $ncpus;
 	if($opt::use_cpus_instead_of_cores) {
-	    $sshlogin->set_ncpus($ncores_ref->{$string});
+	    $ncpus = $ncores || $ncpus;
 	} elsif($opt::use_sockets_instead_of_threads) {
-	    $sshlogin->set_ncpus($nsockets_ref->{$string});
+	    $ncpus = $nsockets || $ncpus;
 	} elsif($opt::use_cores_instead_of_threads) {
-	    $sshlogin->set_ncpus($ncores_ref->{$string});
+	    $ncpus = $ncores || $ncpus;
 	}
-	$sshlogin->set_time_to_login($time_to_login_ref->{$string});
-	$sshlogin->set_maxlength($maxlen_ref->{$string});
+	$sshlogin->set_ncpus($ncpus);
+	$sshlogin->set_time_to_login($time_to_login);
+	$maxlen = $maxlen || Limits::Command::max_length();
+	$sshlogin->set_maxlength($maxlen);
 	::debug("init", "Timing from -S:$string ",
-		" nsockets:",$nsockets_ref->{$string},
-		" ncores:", $ncores_ref->{$string},
-		" nthreads:",$nthreads_ref->{$string},
-		" time_to_login:", $time_to_login_ref->{$string},
-		" maxlen:", $maxlen_ref->{$string},
+		" ncpus:", $ncpus,
+		" nsockets:",$nsockets,
+		" ncores:", $ncores,
+		" nthreads:",$nthreads,
+		" time_to_login:", $time_to_login,
+		" maxlen:", $maxlen,
 		" min_max_len:", $Global::minimal_command_line_length,"\n");
     }
 }
@@ -4951,15 +4956,15 @@ sub parse_host_filtering() {
 	    if(/parallel: Warning: Cannot figure out number of/) {
 		next;
 	    }
-	    if(not $nsockets{$col[0]}) {
+	    if(not defined $nsockets{$col[0]}) {
 		$nsockets{$col[0]} = $col[1];
-	    } elsif(not $ncores{$col[0]}) {
+	    } elsif(not defined $ncores{$col[0]}) {
 		$ncores{$col[0]} = $col[1];
-	    } elsif(not $nthreads{$col[0]}) {
+	    } elsif(not defined $nthreads{$col[0]}) {
 		$nthreads{$col[0]} = $col[1];
-	    } elsif(not $maxlen{$col[0]}) {
+	    } elsif(not defined $maxlen{$col[0]}) {
 		$maxlen{$col[0]} = $col[1];
-	    } elsif(not $echo{$col[0]}) {
+	    } elsif(not defined $echo{$col[0]}) {
 		$echo{$col[0]} = $col[1];
 	    } elsif(m/perl: warning:|LANGUAGE =|LC_ALL =|LANG =|are supported and installed|Disconnected from|Received disconnect from/) {
 		# Skip these:
@@ -5004,7 +5009,7 @@ sub parallelized_host_filtering() {
 	# bug #57886: Errors when using different version on remote
 	#   perl -e '$a=`$command`; print $? ? "$default_value" : $a'
 	my $wcmd = q(perl -e '$a=`).$command.q(`;).
-	    q(print $? ? ").::pQ($default_value).q(" : $a');
+	    q(print $? ? ").::pQ($default_value."\n").q(" : $a');
 	my $commandline = CommandLine->new(1,[$wcmd],{},0,0,[],[],[],[],{},{});
 	my $job = Job->new($commandline);
 	$job->set_sshlogin($sshlogin);

@@ -209,6 +209,12 @@ par_PARALLEL_SSHLOGIN_SSHHOST() {
 	LANG=C sort
 }
 
+par_filter_hosts_parallel_not_installed() {
+    echo 'bug #62672: Triggered a bug with --filter-host'
+    parallel -S nopathbash@lo --filter-hosts echo ::: OK
+    parallel --nonall -S nopathbash@lo --filter-hosts echo OK
+}
+
 par_d_filter_hosts() {
     echo '### --filter-hosts and -0'
     echo '### https://lists.gnu.org/archive/html/parallel/2022-07/msg00002.html'

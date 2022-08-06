@@ -97,6 +97,11 @@ par_ksh_embed	Put your code here
 par_ksh_embed	You can also activate GNU Parallel for interactive use by:
 par_ksh_embed	. ./parallel-embed
 par_fish_embed	Not implemented
+par_filter_hosts_parallel_not_installed	bug #62672: Triggered a bug with --filter-host
+par_filter_hosts_parallel_not_installed	parallel: Warning: Could not figure out number of cpus on nopathbash@lo (). Using 1.
+par_filter_hosts_parallel_not_installed	OK
+par_filter_hosts_parallel_not_installed	parallel: Warning: Could not figure out number of cpus on nopathbash@lo (). Using 1.
+par_filter_hosts_parallel_not_installed	OK
 par_env_parallel_big_env	### bug #54128: command too long when exporting big env
 par_env_parallel_big_env	should not fail
 par_env_parallel_big_env	OK
