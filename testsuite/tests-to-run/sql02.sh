@@ -43,7 +43,7 @@ par_influx() {
 	 echo INSERT cpu,host=serverA,region=us_west value=0.65;
 	 echo 'select * from cpu' ) |
 	    sql influx:///parallel
-	sql --show-tables influx:///parallel
+	sql --show-tables influx:///parallel | grep parallel;
 	sql influx:///parallel 'SELECT * FROM cpu;'
 	sql influx:///parallel 'SELECT "host", "region", "value" FROM "cpu"'
 	sql --pretty influx:///parallel 'SELECT * FROM cpu;'

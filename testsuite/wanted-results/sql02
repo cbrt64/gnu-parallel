@@ -9,16 +9,13 @@ par_influx	name
 par_influx	----
 par_influx	_internal
 par_influx	mydb
+par_influx	myinflux
 par_influx	parallel
 par_influx	name: cpu
 par_influx	time                host    region  value
 par_influx	----                ----    ------  -----
 par_influx	0000000000000000000 serverA us_west 0.00
 par_influx	0000000000000000000 serverA us_west 0.00
-par_influx	name: measurements
-par_influx	name
-par_influx	----
-par_influx	cpu
 par_influx	name: cpu
 par_influx	time                host    region  value
 par_influx	----                ----    ------  -----

@@ -442,6 +442,22 @@ par_plus	a/1 = a/1 = a/1. = a/1. = a/1. = a/1. = a/1. = a/1.
 par_plus	a.b/1.2 = a.b/1.2 = a.b/1.2 = a.b/1.2 = a.b/1.2. = a.b/1.2. = a.b/1.2. = a.b/1.2.
 par_plus	a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3 = a.b.c/1.2.3. = a.b.c/1.2.3.
 par_plus	a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4 = a.b.c.d/1.2.3.4
+par_plus	a. = /a. = a. = /a. = a.. = /a.. = a.. = /a..
+par_plus	a.b. = /a.b. = a.b. = /a.b. = a.b. = /a.b. = a.b.. = /a.b..
+par_plus	a.b.c. = /a.b.c. = a.b.c. = /a.b.c. = a.b.c. = /a.b.c. = a.b.c. = /a.b.c.
+par_plus	a.b.c.d. = /a.b.c.d. = a.b.c.d. = /a.b.c.d. = a.b.c.d. = /a.b.c.d. = a.b.c.d. = /a.b.c.d.
+par_plus	a/1. = a/1. = a/1. = a/1. = a/1.. = a/1.. = a/1.. = a/1..
+par_plus	a.b/1.2. = a.b/1.2. = a.b/1.2. = a.b/1.2. = a.b/1.2. = a.b/1.2. = a.b/1.2.. = a.b/1.2..
+par_plus	a.b.c/1.2.3. = a.b.c/1.2.3. = a.b.c/1.2.3. = a.b.c/1.2.3. = a.b.c/1.2.3. = a.b.c/1.2.3. = a.b.c/1.2.3. = a.b.c/1.2.3.
+par_plus	a.b.c.d/1.2.3.4. = a.b.c.d/1.2.3.4. = a.b.c.d/1.2.3.4. = a.b.c.d/1.2.3.4. = a.b.c.d/1.2.3.4. = a.b.c.d/1.2.3.4. = a.b.c.d/1.2.3.4. = a.b.c.d/1.2.3.4.
+par_plus	a.. = /a.. = a.. = /a.. = a.. = /a.. = a... = /a...
+par_plus	a.b.. = /a.b.. = a.b.. = /a.b.. = a.b.. = /a.b.. = a.b.. = /a.b..
+par_plus	a.b.c.. = /a.b.c.. = a.b.c.. = /a.b.c.. = a.b.c.. = /a.b.c.. = a.b.c.. = /a.b.c..
+par_plus	a.b.c.d.. = /a.b.c.d.. = a.b.c.d.. = /a.b.c.d.. = a.b.c.d.. = /a.b.c.d.. = a.b.c.d.. = /a.b.c.d..
+par_plus	a./1. = a./1. = a./1. = a./1. = a./1.. = a./1.. = a./1.. = a./1..
+par_plus	a.b./1.2.. = a.b./1.2.. = a.b./1.2.. = a.b./1.2.. = a.b./1.2.. = a.b./1.2.. = a.b./1.2.. = a.b./1.2..
+par_plus	a.b.c./1.2.3.. = a.b.c./1.2.3.. = a.b.c./1.2.3.. = a.b.c./1.2.3.. = a.b.c./1.2.3.. = a.b.c./1.2.3.. = a.b.c./1.2.3.. = a.b.c./1.2.3..
+par_plus	a.b.c.d./1.2.3.4.. = a.b.c.d./1.2.3.4.. = a.b.c.d./1.2.3.4.. = a.b.c.d./1.2.3.4.. = a.b.c.d./1.2.3.4.. = a.b.c.d./1.2.3.4.. = a.b.c.d./1.2.3.4.. = a.b.c.d./1.2.3.4..
 par_plus	### Test {%...} {%%...} {#...} {##...}
 par_plus	z.foo
 par_plus	z.foo

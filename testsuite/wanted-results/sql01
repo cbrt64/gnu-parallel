@@ -42,8 +42,8 @@ def 3
 6
 6
 ### Test --table-size --tablesize
-82
-82
+90
+90
 ### Test --debug
 dburl mysql://tange:tange@localhost:3306/tange
 databasedriver mysql user tange password tange host localhost port 3306 database tange query 
