@@ -19,9 +19,6 @@ Quote of the month:
   parallel is so useful and i use it multiple times daily.
     -- arrakeen@ycombinator
   
-  Parallel is Good Stuff (tm)
-    -- bloopernova@ycombinator
-
   GNU Parallel is one of my favorite utilities of all time.
     -- paskozdilar@ycombinator
 
@@ -188,6 +185,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  Parallel is Good Stuff (tm)
+    -- bloopernova@ycombinator
 
   The syntax for GNU Parallel is so slick that I often use it just to make my script read nicer, and the parallelism is a cherry on top.
     -- Epistaxis@reddit

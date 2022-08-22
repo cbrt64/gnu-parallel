@@ -749,7 +749,7 @@ See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
 
-=item B<--color> (alpha testing)
+=item B<--color> (beta testing)
 
 Colour output.
 
@@ -761,9 +761,9 @@ B<--color> is ignored when using B<-u>.
 See also: B<--color-failed>
 
 
-=item B<--color-failed> (alpha testing)
+=item B<--color-failed> (beta testing)
 
-=item B<--cf> (alpha testing)
+=item B<--cf> (beta testing)
 
 Colour the output from failing jobs white on red.
 
@@ -1591,9 +1591,9 @@ Example:
 See also: B<--line-buffer>
 
 
-=item B<--line-buffer> (alpha testing)
+=item B<--line-buffer> (beta testing)
 
-=item B<--lb> (alpha testing)
+=item B<--lb> (beta testing)
 
 Buffer output on line basis.
 
@@ -1833,9 +1833,9 @@ there will be several job sequence 1.
 See also: B<--nonall> B<--sshlogin>
 
 
-=item B<--open-tty> (beta testing)
+=item B<--open-tty>
 
-=item B<-o> (beta testing)
+=item B<-o>
 
 Open terminal tty.
 
@@ -1985,7 +1985,7 @@ inspired by bash's parameter expansion:
 See also: B<--rpl> B<{}>
 
 
-=item B<--process-slot-var> I<varname> (beta testing)
+=item B<--process-slot-var> I<varname>
 
 Set the environment variable I<varname> to the jobslot number-1.
 
@@ -2493,7 +2493,7 @@ I<n>=0 means infinite.
 See also: B<--term-seq> B<--sshlogin>
 
 
-=item B<--return> I<filename>
+=item B<--return> I<filename> (alpha testing)
 
 Transfer files from remote computers.
 
@@ -2868,7 +2868,7 @@ B<--shebang-wrap> must be set as the first option.
 See also: B<--shebang>
 
 
-=item B<--shell-completion> I<shell> (alpha testing)
+=item B<--shell-completion> I<shell> (beta testing)
 
 Generate shell completion code for interactive shells.
 
@@ -3328,7 +3328,7 @@ Print the job to be run on stderr (standard error).
 See also: B<-v> B<--interactive>
 
 
-=item B<--transfer>
+=item B<--transfer> (alpha testing)
 
 Transfer files to remote computers.
 
@@ -3337,9 +3337,9 @@ Shorthand for: B<--transferfile {}>.
 See also: B<--transferfile>.
 
 
-=item B<--transferfile> I<filename>
+=item B<--transferfile> I<filename> (alpha testing)
 
-=item B<--tf> I<filename>
+=item B<--tf> I<filename> (alpha testing)
 
 Transfer I<filename> to remote computers.
 
@@ -3391,7 +3391,7 @@ See also: B<--workdir> B<--sshlogin> B<--basefile> B<--return>
 B<--cleanup>
 
 
-=item B<--trc> I<filename>
+=item B<--trc> I<filename> (alpha testing)
 
 Transfer, Return, Cleanup. Shorthand for: B<--transfer> B<--return>
 I<filename> B<--cleanup>

@@ -8,6 +8,7 @@
 
 Check that documentation is updated (compare to web):
 
+git checkout master
 git grep -E '(alpha|beta) testing' | cat
 git diff $(date --date="last month" +%Y%m22)
 Unmodified beta since last version => production
@@ -254,24 +255,20 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220822 ('<<>>') released
+Subject: GNU Parallel 20220822 ('Rushdie') released
 
-GNU Parallel 20220822 ('<<>>') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20220822 ('Rushdie') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-  <<>>
-
+  Parallel is Good Stuff (tm)
+    -- bloopernova@ycombinator
   
 New in this release:
 
-<<>>
+* --header 0 allows using {filename} as replacement string
 
 * Bug fixes and man page updates.
-
-News about GNU Parallel:
-
-<<>>
 
 
 GNU Parallel - For people who live life in the parallel lane.

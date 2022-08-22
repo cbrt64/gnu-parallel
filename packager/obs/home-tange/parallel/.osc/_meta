@@ -38,16 +38,15 @@ GNU niceload slows down a program when the computer load average (or other syste
     <enable repository="Debian_Etch"/>
     <enable repository="Fedora_12"/>
     <disable arch="ppc64"/>
-    <disable arch="ppc" repository="CentOS_CentOS-5"/>
     <disable arch="ppc64" repository="Debian_5.0"/>
-    <disable arch="ppc" repository="images"/>
     <disable arch="ppc64" repository="CentOS_CentOS-5"/>
-    <disable arch="ppc" repository="RedHat_RHEL-5"/>
-    <disable arch="ppc" repository="SLE_10_SDK"/>
-    <disable arch="ppc" repository="SLE_11"/>
-    <disable arch="ppc" repository="SLE_11_SP1"/>
-    <disable arch="ppc" repository="openSUSE_Factory"/>
     <disable repository="Arch_Core"/>
+    <disable arch="armv7l" repository="openSUSE_Leap_15.0_Ports"/>
+    <disable arch="ppc" repository="openSUSE_Factory"/>
+    <disable arch="ppc" repository="SLE_11_SP1"/>
+    <disable arch="ppc" repository="SLE_11"/>
+    <disable arch="ppc" repository="SLE_10_SDK"/>
+    <disable arch="ppc" repository="RedHat_RHEL-5"/>
   </build>
   <publish>
     <disable repository="Arch_Core"/>
