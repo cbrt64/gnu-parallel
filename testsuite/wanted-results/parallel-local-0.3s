@@ -65,15 +65,15 @@ par_blocking_redir	stderr
 par_blocking_redir	stdout
 par_blocking_redir	stdout
 par_colour_failed	--colour-failed --colour
-par_colour_failed	seq 1;exit 0(B[m
-par_colour_failed	1(B[m
+par_colour_failed	seq 1;exit 0
+par_colour_failed	1
 par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 1(B[m
 par_colour_failed	[48;5;196;38;5;231m[K1(B[m
 par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 2(B[m
 par_colour_failed	[48;5;196;38;5;231m[K1(B[m
-par_colour_failed	seq 2;exit 0(B[m
-par_colour_failed	1(B[m
-par_colour_failed	2(B[m
+par_colour_failed	seq 2;exit 0
+par_colour_failed	1
+par_colour_failed	2
 par_colour_failed	[48;5;196;38;5;231m[Kseq 2;exit 1(B[m
 par_colour_failed	[48;5;196;38;5;231m[K1(B[m
 par_colour_failed	[48;5;196;38;5;231m[K2(B[m

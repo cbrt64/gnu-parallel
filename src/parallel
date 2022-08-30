@@ -2838,6 +2838,7 @@ sub init_globals() {
 	 $ENV{'PARALLEL_HOME'}, $ENV{'XDG_CACHE_HOME'}."/parallel");
     $Global::cache_dir = $Global::cache_dirs[0] ||
 	$ENV{'HOME'} . "/.parallel";
+    Job::init_color();
 }
 
 sub parse_halt() {
@@ -11639,25 +11640,25 @@ sub tag($) {
     sub color($) {
 	my $self = shift;
 	if(not defined $self->{'color'}) {
-	    if($Global::color or $opt::colorfailed) {
-		init_color();
-		if($Global::color) {
-		    # Choose a value based on the seq
-		    $self->{'color'} = $color[$self->seq() % ($#color+1)].$eol;
-		}
-		if($opt::colorfailed) {
-		    if($self->exitstatus()) {
-			# White on Red
-			# Can this be done more generally?
-			$self->{'color'} = "\033[48;5;"."196".
-			    ";38;5;"."231"."m".$eol;
-		    }
-		}
+	    if($Global::color) {
+		# Choose a value based on the seq
+		$self->{'color'} = $color[$self->seq() % ($#color+1)].$eol;
+		$self->{'reset_color'} = $reset_color;
 	    } else {
 		$self->{'color'} = "";
+		$self->{'reset_color'} = "";
+	    }
+	    if($opt::colorfailed) {
+		if($self->exitstatus()) {
+		    # White on Red
+		    # Can this be done more generally?
+		    $self->{'color'} =
+			"\033[48;5;"."196".";38;5;"."231"."m".$eol;
+		    $self->{'reset_color'} = $reset_color;
+		}
 	    }
 	}
-	return ($self->{'color'},$reset_color);
+	return ($self->{'color'},$self->{'reset_color'});
     }
 }
 
