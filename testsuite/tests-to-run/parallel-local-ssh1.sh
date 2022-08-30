@@ -30,6 +30,8 @@ par_sshpass_with_password() {
     echo '### sshpass'
     echo OK | parallel -S "sshpass -p $withpassword ssh withpassword@lo:22" echo
     echo OK | parallel -S withpassword:"$withpassword"@lo:22 echo
+    export SSHPASS="$withpassword"
+    echo OK | parallel -S withpassword:@lo:22 echo
 }
 
 par_ssh_ssh() {

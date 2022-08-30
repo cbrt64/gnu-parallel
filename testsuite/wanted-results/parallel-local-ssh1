@@ -100,6 +100,7 @@ par_sshlogin_with_comma	OK
 par_sshpass_with_password	### sshpass
 par_sshpass_with_password	OK
 par_sshpass_with_password	OK
+par_sshpass_with_password	OK
 par_stop_if_no_hosts_left	### Stop if all hosts are filtered and there are no hosts left to run on
 par_stop_if_no_hosts_left	parallel: Warning: Removed no-such.host.
 par_stop_if_no_hosts_left	parallel: Error: Cannot run any jobs.

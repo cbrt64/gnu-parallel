@@ -6895,6 +6895,7 @@ sub new($$) {
 	# user[:pass]
 	if($userpw =~ s/:(.*)//) {
 	    $password = $1;
+	    if($password eq "") { $password = $ENV{'SSHPASS'} }
 	    if(not ::which("sshpass")) {
 		::error("--sshlogin with password requires sshpass installed");
 		::wait_and_exit(255);
