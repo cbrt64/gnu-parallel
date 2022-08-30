@@ -4,6 +4,15 @@
  
 Quote of the month:
 
+  I've learned a lot during my internship, but getting even slightly more proficient with GNU parallel is probably the most important thing I've learned...
+    -- Elijah Rippeth @terrible_coder@twitter
+
+  reduced our backend test pipelines from 4 to 1.30 hrs. gnu parallel for the win!!!
+     -- Swapnil Sahu @CaffeinatedWryy@twitter
+
+  I honestly don't know how I'd survive without @Docker and @GNU_Parallel
+    -- Eric Pauley @EricPauley_@twitter
+
   Gnu parallel is indeed slick. I always try to align my data to make it possible to loop over it with a nice for loop added in a call to run the jobs in parallel then becomes super easy. I love the {1..99} syntax in bash.
     -- ragsofx
 

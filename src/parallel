@@ -11402,21 +11402,28 @@ sub print_parset($) {
 
     ::debug("parset","print $Global::parset");
     if($Global::parset eq "assoc") {
+	# Start: (done in parse_parset())
 	#   eval "`echo 'declare -A myassoc; myassoc=(
-	# Each:
+	# Each: (done here)
 	#   [$'a\tb']=$'a\tb\tc	 ddd'
-	# End:
+	# End: (done in wait_and_exit())
 	#   )'`"
 	print '[',::Q($self->{'commandline'}->
 		      replace_placeholders(["\257<\257>"],0,0)),']=';
     } elsif($Global::parset eq "array") {
+	# Start: (done in parse_parset())
 	#   eval "`echo 'myassoc=(
-	# Each:
+	# Each: (done here)
 	#   $'a\tb\tc  ddd'
-	# End:
+	# End: (done in wait_and_exit())
 	#   )'`"
     } elsif($Global::parset eq "var") {
+	# Start: (done in parse_parset())
+	#   <empty>
+	# Each: (done here)
 	#   var=$'a\tb\tc  ddd'
+	# End: (done in wait_and_exit())
+	#   <empty>
 	if(not @Global::parset_vars) {
 	    ::error("Too few named destination variables");
 	    ::wait_and_exit(255);

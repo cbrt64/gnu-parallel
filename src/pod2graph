@@ -30,8 +30,11 @@
 # to a graph.pdf with link between --option and --other-option
 
 $pod=join("",<>);
+# Remove stuff before OPTIONS
 $pod=~s/^.*=head1 OPTIONS//s;
+# Remove from EXAMPLES (which is next section) and till end
 $pod=~s/=head1 EXAMPLES.*//s;
+# Remove =over / =back pairs
 $pod=~s/^.*?=over//s;
 $pod=~s/=back\s*$//s;
 $pod=~s/=over.*?=back//sg;
@@ -40,19 +43,21 @@ $in_text = 0;
 $in_item = 0;
 $in_see_also = 0;
 
-
 for(split(/\n\n+/,$pod)) {
     if(/^See also:\s+(\S.*)/s) {
+	# "See also" paragraph
 	$lex = "seealso";
 	$in_text = 0;
 	$in_item = 0;
 	$in_see_only = 1;
     } elsif(/^=item\s+(B<[{]=.*?perl expression.*?=[}]>|[IB]<.*?>)(\s|$)/s) {
+	# "=item" paragraph
 	$lex = "item";
 	$in_text = 0;
 	$in_item = 1;
 	$in_see_only = 0;
     } elsif(/\S/) {
+	# else it is just text
 	$lex = "text";
 	$in_text = 1;
 	$in_item = 0;
@@ -60,11 +65,13 @@ for(split(/\n\n+/,$pod)) {
     }
   
     if($lex eq "seealso") {
+	# We found "See also": output edge
 	if($lastlex eq "item") {
 	    @saveditems = @items;
 	    @items = ();
 	}
 	my $to = $1;
+	# Edge from = item/item/item
 	my $from = (join "/",
 		    map {
 			s/I<(.*?)>/$1/g;
