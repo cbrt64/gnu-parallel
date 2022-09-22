@@ -4,11 +4,11 @@
  
 Quote of the month:
 
+  Doing some absolutely bonkers "data science" on the command line. GNU parallel + JQ is very powerful, allowing me to parse and 10Gig-JSON-File in under a minute.
+    -- @jeeger@twitter Keter-class developer
+
   I've learned a lot during my internship, but getting even slightly more proficient with GNU parallel is probably the most important thing I've learned...
     -- Elijah Rippeth @terrible_coder@twitter
-
-  reduced our backend test pipelines from 4 to 1.30 hrs. gnu parallel for the win!!!
-     -- Swapnil Sahu @CaffeinatedWryy@twitter
 
   I honestly don't know how I'd survive without @Docker and @GNU_Parallel
     -- Eric Pauley @EricPauley_@twitter
@@ -194,6 +194,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  reduced our backend test pipelines from 4 to 1.30 hrs. gnu parallel for the win!!!
+     -- Swapnil Sahu @CaffeinatedWryy@twitter
 
   Parallel is Good Stuff (tm)
     -- bloopernova@ycombinator

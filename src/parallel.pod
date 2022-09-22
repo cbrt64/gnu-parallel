@@ -749,7 +749,7 @@ See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
 
-=item B<--color> (beta testing)
+=item B<--color> (alpha testing)
 
 Colour output.
 
@@ -761,9 +761,9 @@ B<--color> is ignored when using B<-u>.
 See also: B<--color-failed>
 
 
-=item B<--color-failed> (beta testing)
+=item B<--color-failed> (alpha testing)
 
-=item B<--cf> (beta testing)
+=item B<--cf> (alpha testing)
 
 Colour the output from failing jobs white on red.
 
@@ -1265,7 +1265,7 @@ soon,fail=1-99%
 =back
 
 
-=item B<--header> I<regexp> (alpha testing)
+=item B<--header> I<regexp> (beta testing)
 
 Use regexp as header.
 
@@ -1591,9 +1591,9 @@ Example:
 See also: B<--line-buffer>
 
 
-=item B<--line-buffer> (beta testing)
+=item B<--line-buffer> (alpha testing)
 
-=item B<--lb> (beta testing)
+=item B<--lb> (alpha testing)
 
 Buffer output on line basis.
 
@@ -1934,7 +1934,7 @@ called with B<--sshlogin>).
 See also: B<--profile>
 
 
-=item B<--plus> (alpha testing)
+=item B<--plus> (beta testing)
 
 Add more replacement strings.
 
@@ -2493,7 +2493,7 @@ I<n>=0 means infinite.
 See also: B<--term-seq> B<--sshlogin>
 
 
-=item B<--return> I<filename> (alpha testing)
+=item B<--return> I<filename> (beta testing)
 
 Transfer files from remote computers.
 
@@ -2868,7 +2868,7 @@ B<--shebang-wrap> must be set as the first option.
 See also: B<--shebang>
 
 
-=item B<--shell-completion> I<shell> (beta testing)
+=item B<--shell-completion> I<shell>
 
 Generate shell completion code for interactive shells.
 
@@ -3328,7 +3328,7 @@ Print the job to be run on stderr (standard error).
 See also: B<-v> B<--interactive>
 
 
-=item B<--transfer> (alpha testing)
+=item B<--transfer> (beta testing)
 
 Transfer files to remote computers.
 
@@ -3337,9 +3337,9 @@ Shorthand for: B<--transferfile {}>.
 See also: B<--transferfile>.
 
 
-=item B<--transferfile> I<filename> (alpha testing)
+=item B<--transferfile> I<filename> (beta testing)
 
-=item B<--tf> I<filename> (alpha testing)
+=item B<--tf> I<filename> (beta testing)
 
 Transfer I<filename> to remote computers.
 
@@ -3391,7 +3391,7 @@ See also: B<--workdir> B<--sshlogin> B<--basefile> B<--return>
 B<--cleanup>
 
 
-=item B<--trc> I<filename> (alpha testing)
+=item B<--trc> I<filename> (beta testing)
 
 Transfer, Return, Cleanup. Shorthand for: B<--transfer> B<--return>
 I<filename> B<--cleanup>

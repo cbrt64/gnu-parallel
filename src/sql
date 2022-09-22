@@ -76,7 +76,7 @@ If no commands are given SQL is read from the keyboard or STDIN.
 Example: echo 'SELECT * FROM foo;' | sql mysql:///
 
 
-=item B<--csv> (alpha testing)
+=item B<--csv> (beta testing)
 
 CSV output.
 
@@ -102,9 +102,9 @@ Print a summary of the options to GNU B<sql> and exit.
 HTML output. Turn on HTML tabular output.
 
 
-=item B<--json> (alpha testing)
+=item B<--json> (beta testing)
 
-=item B<--pretty> (alpha testing)
+=item B<--pretty> (beta testing)
 
 Pretty JSON output.
 

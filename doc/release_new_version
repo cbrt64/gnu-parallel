@@ -255,20 +255,28 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20220922 ('Sanna Marin') released
+Subject: GNU Parallel 20220922 ('Elizabeth') released
 
-GNU Parallel 20220922 ('') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20220922 ('Elizabeth') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-  <<>>
+  reduced our backend test pipelines from 4 to 1.30 hrs. gnu parallel for the win!!!
+     -- Swapnil Sahu @CaffeinatedWryy@twitter
   
 New in this release:
 
+* --colour-failed only changes output for failing jobs.
+
+* Password for --sshlogin can be put in $SSHPASS.
+
+* Examples are moved from `man parallel` to `man parallel_examples`.
+
 * Bug fixes and man page updates.
 
-https://github.com/bfidatadigipres/dpx_encoding
-https://pypi.org/project/womm/
+News about GNU Parallel:
+
+* WOMM - Works On My Machine uses GNU Parallel https://pypi.org/project/womm/
 
 
 GNU Parallel - For people who live life in the parallel lane.

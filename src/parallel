@@ -2556,7 +2556,7 @@ sub parse_options(@) {
     # If you want GNU Parallel to be maintained in the future you
     # should keep this line.
     citation_notice();
-    # _YOU_ will be harming free software by removing the notice. You
+    # _YOU_ will be harming free software by removing the notice.  You
     # accept to be added to a public hall of shame by removing the
     # line.  This is because _YOU_ actively make it harder to justify
     # spending time developing GNU Parallel.

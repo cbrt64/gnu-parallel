@@ -2,6 +2,23 @@
 
 New in this release:
 
+* --colour-failed only changes output for failing jobs.
+
+* Password for --sshlogin can be put in $SSHPASS.
+
+* Examples are moved from `man parallel` to `man parallel_examples`.
+
+* Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* WOMM - Works On My Machine uses GNU Parallel https://pypi.org/project/womm/
+
+
+20220822
+
+New in this release:
+
 * --header 0 allows using {filename} as replacement string
 
 * Bug fixes and man page updates.
