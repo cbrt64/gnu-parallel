@@ -1,0 +1,17 @@
+#!/bin/bash
+
+grep -hv '(dead)' ../src/* |
+    # Merge lines ending in .
+    perl -pe 's{(http\S+\.)\s}{$1}s' |
+    # Grep out URLs
+    grep -h -Po 'https?://[^ $$<>")}]+' |
+    # Remove anchor
+    perl -pe 's/#.*//' |
+    perl -pe 's/(&gt|\{).*//;s/\\-/-/g;s/\\n//g;s/&amp;/&/g;s/&#.*//;s/\s*//;'"s/'.*//;" |
+    # Remove spacing
+    perl -pe 's/\s*$/\n/' |
+    perl -pe 's/&quot;$//g; s/&$//g; s/\\//g;' |
+    grep -Ev 'parallel-(20)?$$|coolwebsite.biz' |
+    sort -u |
+    egrep -v 'example.com|##|\*\(' |
+    parallel -j0 --timeout 10 --bar --tag --joblog joblog --retries 3 neno wget -l1 -Q1 -U "'"'"'"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"'"'"'"  '{=$_=Q($_)=}'

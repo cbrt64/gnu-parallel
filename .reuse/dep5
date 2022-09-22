@@ -3,7 +3,7 @@ Upstream-Name: parallel
 Upstream-Contact: Ole Tange, http://ole.tange.dk
 Source: https://git.savannah.gnu.org/git/parallel.git
 
-Files: testsuite/input-files/testdir/* testsuite/input-files/testdir2/* testsuite/wanted-results/* testsuite/testdir/* packager/obs/* src/optional/* packager/debian/debian-template/* configure config.h.in aclocal.m4 install-sh missing testsuite/input-files/random_dirs_no_newline.tar.bz2 testsuite/input-files/random_dirs_with_newline.tar.bz2
+Files: testsuite/input-files/testdir.tar.bz2 testsuite/input-files/testdir/* testsuite/input-files/testdir2/* testsuite/wanted-results/* testsuite/testdir/* packager/obs/* src/optional/* packager/debian/debian-template/* configure config.h.in aclocal.m4 install-sh missing testsuite/input-files/random_dirs_no_newline.tar.bz2 testsuite/input-files/random_dirs_with_newline.tar.bz2
 Copyright: 2007-2022 Ole Tange, http://ole.tange.dk and Free Software Foundation, Inc.
 License: GPL-3.0-or-later
 

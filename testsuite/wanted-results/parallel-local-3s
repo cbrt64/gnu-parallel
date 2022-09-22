@@ -6,7 +6,7 @@ par_10000_5_rpl_X	3
 par_10000_5_rpl_X	2
 par_10000_m_X	### Test -m with 10000 args
 par_10000_m_X	      3   29994  186685
-par_10000_m_X	68c56110ece48d4cd34af322ea65ebaf  -
+par_10000_m_X	5642f8f374aa4881e96f4f49e932d109  -
 par_X_I_meta	### Test -X -I with shell meta chars
 par_X_I_meta	3
 par_X_I_meta	3
@@ -656,8 +656,8 @@ par_shebang	sh	A
 par_shebang	sh	B
 par_shebang	sh	C
 par_show_limits	### Test --show-limits
-par_show_limits	Maximal size of command: 131xxx
-par_show_limits	Maximal usable size of command: 64xxx
+par_show_limits	Maximal size of command: 130xxx
+par_show_limits	Maximal usable size of command: 63xxx
 par_show_limits	
 par_show_limits	Execution will continue now, and it will try to read its input
 par_show_limits	and run commands; if this is not what you wanted to happen, please
@@ -665,7 +665,7 @@ par_show_limits	press CTRL-D or CTRL-C
 par_show_limits	bar
 par_show_limits	car
 par_show_limits	far
-par_show_limits	Maximal size of command: 131xxx
+par_show_limits	Maximal size of command: 130xxx
 par_show_limits	Maximal usable size of command: 100
 par_show_limits	
 par_show_limits	Execution will continue now, and it will try to read its input
@@ -673,8 +673,8 @@ par_show_limits	and run commands; if this is not what you wanted to happen, plea
 par_show_limits	press CTRL-D or CTRL-C
 par_show_limits	bar car far
 par_show_limits	### BUG: empty lines with --show-limit
-par_show_limits	Maximal size of command: 131xxx
-par_show_limits	Maximal usable size of command: 64xxx
+par_show_limits	Maximal size of command: 130xxx
+par_show_limits	Maximal usable size of command: 63xxx
 par_show_limits	
 par_show_limits	Execution will continue now, and it will try to read its input
 par_show_limits	and run commands; if this is not what you wanted to happen, please

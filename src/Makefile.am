@@ -145,7 +145,7 @@ parallel_examples.html: parallel_examples.pod env_parallel.html
 	rm -f "$(srcdir)"/pod2htm*
 
 # Depending on parallel_examples.html to avoid stupid pod2html race condition
-parallel_tutorial.html: parallel_tutorial.pod env_parallel.html
+parallel_tutorial.html: parallel_tutorial.pod parallel_examples.html
 	pod2html --title "GNU Parallel tutorial" "$(srcdir)"/parallel_tutorial.pod > "$(srcdir)"/parallel_tutorial.htmln \
 	&& mv "$(srcdir)"/parallel_tutorial.htmln "$(srcdir)"/parallel_tutorial.html \
 	|| echo "Warning: pod2html not found. Using old parallel_tutorial.html"

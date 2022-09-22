@@ -51,7 +51,7 @@ The primary drawback is that Perl is slow. So there is an overhead of
 3-10 ms/job and 1 ms/MB output (and even more if you use B<--tag>).
 
 
-=head2 Old Perl style 
+=head2 Old Perl style
 
 GNU B<parallel> uses some old, deprecated constructs. This is due to a
 goal of being able to run on old installations. Currently the target
@@ -254,6 +254,15 @@ rest of tmpfile and exits.
 As most compression programs write out a header when they start, the
 tmpfile in practice is removed by B<cattail> after around 40 ms.
 
+More detailed it works like this:
+
+  bash ( command ) |
+    sh ( emptywrapper ( bash ( compound compress ) ) >tmpfile )
+  cattail ( rm tmpfile; compound decompress ) < tmpfile
+
+This complex setup is to make sure compress program is only started if
+there is input.
+
 
 =head2 Wrapping
 
@@ -411,7 +420,7 @@ wrapping 'sh -c' is enough?
 
 $RETURN is the wrapper from B<--return>
 
-  $COMMAND; _EXIT_status=$?; $RETURN; 
+  $COMMAND; _EXIT_status=$?; $RETURN;
   ssh $SSHLOGIN \(rm\ -f\ ./$WORKDIR/{}\;\
                   rmdir\ ./$WORKDIR\ \>\&/dev/null\;\);
   exit $_EXIT_status;
@@ -478,9 +487,9 @@ are added to the title to force it to be outside the limits.
 You can map the bad limits using:
 
   perl -e 'sub r { int(rand(shift)).($_[0] && "\t".r(@_)) } print map { r(@ARGV)."\n" } 1..10000' 1600 1500 90 |
-    perl -ane '$F[0]+$F[1]+$F[2] < 2037 and print ' | 
+    perl -ane '$F[0]+$F[1]+$F[2] < 2037 and print ' |
     parallel --colsep '\t' --tagstring '{1}\t{2}\t{3}' tmux -S /tmp/p{%}-'{=3 $_="O"x$_ =}' \
-      new-session -d -n '{=1 $_="O"x$_ =}' true'\ {=2 $_="O"x$_ =};echo $?;rm -f /tmp/p{%}-O*' 
+      new-session -d -n '{=1 $_="O"x$_ =}' true'\ {=2 $_="O"x$_ =};echo $?;rm -f /tmp/p{%}-O*'
 
   perl -e 'sub r { int(rand(shift)).($_[0] && "\t".r(@_)) } print map { r(@ARGV)."\n" } 1..10000' 17000 17000 90 |
     parallel --colsep '\t' --tagstring '{1}\t{2}\t{3}' \
@@ -975,7 +984,7 @@ output to standard output (stdout). This small script is prepended to
 the command and the full command is executed just as if GNU
 B<parallel> had been in its normal mode. The script looks like this:
 
-  < file perl -e 'while(@ARGV) { 
+  < file perl -e 'while(@ARGV) {
      sysseek(STDIN,shift,0) || die;
      $left = shift;
      while($read = sysread(STDIN,$buf,
@@ -1052,7 +1061,7 @@ records like:
   a,b,c
   a,b,c
   a,b,c
-  ",c 
+  ",c
   a,b,c
 
 Here the second record contains a multi-line field that looks like
@@ -1425,7 +1434,7 @@ up resources, but were run in separate threads.
 
 =head2 --rrs on remote using a perl wrapper
 
-... | perl -pe '$/=$recend$recstart;BEGIN{ if(substr($_) eq $recstart) substr($_)="" } eof and substr($_) eq $recend) substr($_)="" 
+... | perl -pe '$/=$recend$recstart;BEGIN{ if(substr($_) eq $recstart) substr($_)="" } eof and substr($_) eq $recend) substr($_)=""
 
 It ought to be possible to write a filter that removed rec sep on the
 fly instead of inside GNU B<parallel>. This could then use more cpus.

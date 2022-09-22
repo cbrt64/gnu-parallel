@@ -343,7 +343,7 @@ a1b1^c1[.}c
 echo "### BUG: The length for -X is not close to max (131072)"
 ### BUG: The length for -X is not close to max (131072)
 seq 1 4000 | nice parallel -k -X echo {.} aa {}{.} {}{}d{} {}dd{}d{.} |head -n 1 |wc
-      1    6725   64004
+      1    6693   63652
 echo '### Test -N'
 ### Test -N
 seq 1 5 | $NICEPAR -kN3 echo {1} {2} {3}

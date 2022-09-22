@@ -1747,12 +1747,13 @@ Unfortunately, CTRL-C will also normally kill GNU B<parallel>.
 
 But by using B<--open-tty> and ignoring SIGINT you can get the wanted effect:
 
-  parallel -j0 --open-tty --lb --tag ping {='$SIG{INT}=sub {}'=} \
+  parallel -j0 --open-tty --lb --tag ping '{= $SIG{INT}=sub {} =}' \
     ::: 1.1.1.1 8.8.8.8 9.9.9.9 21.21.21.21 80.80.80.80 88.88.88.88
 
 B<--open-tty> will make the B<ping>s receive SIGINT (from CTRL-C).
 CTRL-C will not kill GNU B<parallel>, so that will only exit after
 B<ping> is done.
+
 
 =head2 EXAMPLE: GNU Parallel as queue system/batch manager
 

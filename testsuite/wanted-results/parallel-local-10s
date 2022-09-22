@@ -504,10 +504,10 @@ par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      6       6   30006
 par_long_line_remote	      6      50  250050
 par_maxlinelen_X_I	### Test max line length -X -I
-par_maxlinelen_X_I	42d5c115907de0044ef988a0639204cd  -
+par_maxlinelen_X_I	a98747678a5d18c4470a073812437ab2  -
 par_maxlinelen_X_I	Chars per line (817788/13): 62906
 par_maxlinelen_m_I	### Test max line length -m -I
-par_maxlinelen_m_I	2f0d9d11a071f5dbe6bd876a19499ff5  -
+par_maxlinelen_m_I	a3c892de2524f32f78550b47336eadd0  -
 par_maxlinelen_m_I	Chars per line (697810/11): 63437
 par_nice	Check that --nice works
 par_nice	load_10
@@ -1051,7 +1051,7 @@ par_xargs_compat	a_b c
 par_xargs_compat	d
 par_xargs_compat	e
 par_xargs_compat	### test too long args
-par_xargs_compat	parallel: Error: Command line too long (1000005 >= 64031) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
+par_xargs_compat	parallel: Error: Command line too long (1000005 >= 63664) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
 par_xargs_compat	xargs: argument line too long
 par_xargs_compat	parallel: Error: Command line too long (1000007 >= 10) at input 0: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz...
 par_xargs_compat	1 2

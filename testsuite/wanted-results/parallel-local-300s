@@ -347,6 +347,12 @@ par_test_build_and_install	|| echo "Warning: pod2html not found. Using old env_p
 par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old env_parallel.html
 par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel examples" "."/parallel_examples.pod > "."/parallel_examples.htmln \
+par_test_build_and_install	&& mv "."/parallel_examples.htmln "."/parallel_examples.html \
+par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_examples.html"
+par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
+par_test_build_and_install	Warning: pod2html not found. Using old parallel_examples.html
+par_test_build_and_install	rm -f "."/pod2htm*
 par_test_build_and_install	pod2html --title "GNU Parallel tutorial" "."/parallel_tutorial.pod > "."/parallel_tutorial.htmln \
 par_test_build_and_install	&& mv "."/parallel_tutorial.htmln "."/parallel_tutorial.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_tutorial.html"
@@ -388,12 +394,6 @@ par_test_build_and_install	&& mv "."/niceload.htmln "."/niceload.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old niceload.html"
 par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old niceload.html
-par_test_build_and_install	rm -f "."/pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel examples" "."/parallel_examples.pod > "."/parallel_examples.htmln \
-par_test_build_and_install	&& mv "."/parallel_examples.htmln "."/parallel_examples.html \
-par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_examples.html"
-par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
-par_test_build_and_install	Warning: pod2html not found. Using old parallel_examples.html
 par_test_build_and_install	rm -f "."/pod2htm*
 par_test_build_and_install	pod2html --title "GNU parcat" "."/parcat.pod > "."/parcat.htmln \
 par_test_build_and_install	&& mv "."/parcat.htmln "."/parcat.html \
@@ -523,6 +523,12 @@ par_test_build_and_install	|| echo "Warning: pod2html not found. Using old env_p
 par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old env_parallel.html
 par_test_build_and_install	rm -f "."/pod2htm*
+par_test_build_and_install	pod2html --title "GNU Parallel examples" "."/parallel_examples.pod > "."/parallel_examples.htmln \
+par_test_build_and_install	&& mv "."/parallel_examples.htmln "."/parallel_examples.html \
+par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_examples.html"
+par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
+par_test_build_and_install	Warning: pod2html not found. Using old parallel_examples.html
+par_test_build_and_install	rm -f "."/pod2htm*
 par_test_build_and_install	pod2html --title "GNU Parallel tutorial" "."/parallel_tutorial.pod > "."/parallel_tutorial.htmln \
 par_test_build_and_install	&& mv "."/parallel_tutorial.htmln "."/parallel_tutorial.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_tutorial.html"
@@ -564,12 +570,6 @@ par_test_build_and_install	&& mv "."/niceload.htmln "."/niceload.html \
 par_test_build_and_install	|| echo "Warning: pod2html not found. Using old niceload.html"
 par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
 par_test_build_and_install	Warning: pod2html not found. Using old niceload.html
-par_test_build_and_install	rm -f "."/pod2htm*
-par_test_build_and_install	pod2html --title "GNU Parallel examples" "."/parallel_examples.pod > "."/parallel_examples.htmln \
-par_test_build_and_install	&& mv "."/parallel_examples.htmln "."/parallel_examples.html \
-par_test_build_and_install	|| echo "Warning: pod2html not found. Using old parallel_examples.html"
-par_test_build_and_install	/bin/bash: line 1: pod2html: command not found
-par_test_build_and_install	Warning: pod2html not found. Using old parallel_examples.html
 par_test_build_and_install	rm -f "."/pod2htm*
 par_test_build_and_install	pod2html --title "GNU parcat" "."/parcat.pod > "."/parcat.htmln \
 par_test_build_and_install	&& mv "."/parcat.htmln "."/parcat.html \

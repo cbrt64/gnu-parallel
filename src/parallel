@@ -2495,7 +2495,6 @@ sub parse_options(@) {
     # This problem has been covered by others - though no solution has
     # been found:
     # https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
-    # https://blog.licensezero.com/2019/08/24/process-of-elimination.html
     # https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
     #
     # The FAQ tells you why the citation notice exists:
@@ -2535,7 +2534,6 @@ sub parse_options(@) {
     # trademark. The xt:Commerce case shows this.
     #
     # Description of the xt:Commerce case in OLG Duesseldorf
-    # http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
     # https://web.archive.org/web/20180715073746/http://www.inta.org/INTABulletin/Pages/GERMANYGeneralPublicLicenseDoesNotPermitUseofThird-PartyTrademarksforAdvertisingModifiedVersionsofOpen-SourceSoftware.aspx
     #
     # The verdict in German
@@ -2556,7 +2554,7 @@ sub parse_options(@) {
     # If you want GNU Parallel to be maintained in the future you
     # should keep this line.
     citation_notice();
-    # _YOU_ will be harming free software by removing the notice.  You
+    # *YOU* will be harming free software by removing the notice.  You
     # accept to be added to a public hall of shame by removing the
     # line.  This is because _YOU_ actively make it harder to justify
     # spending time developing GNU Parallel.
@@ -2682,7 +2680,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220922;
+    $Global::version = 20220923;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -12971,7 +12969,7 @@ sub find_max($) {
     # This is slow on Cygwin, so give Cygwin users a warning
     if($^O eq "cygwin") {
 	::warning("Finding the maximal command line length. ".
-		  "This may take up to 30 seconds.")
+		  "This may take up to 1 minute.")
     }
     # Use an upper bound of 100 MB if the shell allows for infinite
     # long lengths
@@ -12988,9 +12986,34 @@ sub find_max($) {
     return binary_find_max(int($len/16),$len,$string);
 }
 
+
 # Prototype forwarding
 sub binary_find_max($$$);
 sub binary_find_max($$$) {
+    # Given a lower and upper bound find the max (length or args) of a
+    # command line
+    # Returns:
+    #   number of chars on the longest command line allowed
+    my ($lower, $upper, $string) = (@_);
+    if($lower == $upper
+       or $lower == $upper-1
+       or $lower/$upper > 0.99) {
+        # $lower is +- 1 or within 1%: Don't search more
+        return $lower;
+    }
+    # Unevenly split binary search which is faster for Microsoft Windows.
+    # Guessing too high is cheap. Guessing too low is expensive.
+    my $split = ($^O eq "cygwin" or $^O eq "msys") ? 0.93 : 0.5;
+    my $middle = int (($upper-$lower)*$split + $lower);
+    ::debug("init", "Maxlen: $lower<$middle<$upper: ");
+    if (is_acceptable_command_line_length($middle,$string)) {
+        return binary_find_max($middle,$upper,$string);
+    } else {
+        return binary_find_max($lower,$middle,$string);
+    }
+}
+
+sub _binary_find_max($$$) {
     # Given a lower and upper bound find the max (length or args) of a
     # command line
     # Returns:

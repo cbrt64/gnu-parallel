@@ -41,10 +41,9 @@ start_centos3() {
 		# Ignore empty ^M line
 		grep ..
 	}
-	(
-	    stdout vagrant up >/dev/null
-	    vagrantssh 'sudo /sbin/ifconfig eth1 172.27.27.3'
-	) &
+	stdout vagrant up >/dev/null &
+	(sleep 10; stdout vagrant up >/dev/null ) &
+	vagrantssh 'sudo /sbin/ifconfig eth1 172.27.27.3; echo centos3: added 172.27.27.3 >&2'
     )
 }
 start_centos3

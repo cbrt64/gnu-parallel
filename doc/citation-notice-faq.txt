@@ -22,7 +22,9 @@ single solution that just works:
 * https://www.slideshare.net/NadiaEghbal/consider-the-maintainer
 * https://www.youtube.com/watch?v=vTsc1m78BUk
 * https://web.archive.org/web/20210203105621/https://blog.licensezero.com/2019/08/24/process-of-elimination.html
+* https://web.archive.org/web/20210923091339/https://blog.licensezero.com/2019/08/26/but-you-said.html
 * https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
+* https://feross.org/funding-experiment-recap/
 
 
 == Is the citation notice compatible with GPLv3? ==

@@ -813,6 +813,9 @@ B<pigz>, B<lz4>, B<lzop>, B<plzip>, B<lzip>, B<lrz>, B<gzip>, B<pxz>,
 B<lzma>, B<bzip2>, B<xz>, B<clzip>, in that order, and use the first
 available.
 
+GNU B<parallel> will use up to 8 processes per job waiting to be
+printed. See B<man parallel_design> for details.
+
 See also: B<--compress-program>
 
 
