@@ -4865,10 +4865,10 @@ sub filter_hosts() {
 	defined $nthreads or ::die_bug("nthreads missing: $string");
 	defined $time_to_login or ::die_bug("time_to_login missing: $string");
 	defined $maxlen or ::die_bug("maxlen missing: $string");
-	# ncpus may be set by 4/hostname
-	my $ncpus = $sshlogin->ncpus();
+	# ncpus may be set by 4/hostname or may be undefined yet
+	my $ncpus = $sshlogin->{'ncpus'};
 	# $nthreads may be 0 if GNU Parallel is not installed remotely
-	$ncpus = $nthreads || $ncpus;
+	$ncpus = $nthreads || $ncpus || $sshlogin->ncpus();
 	if($opt::use_cpus_instead_of_cores) {
 	    $ncpus = $ncores || $ncpus;
 	} elsif($opt::use_sockets_instead_of_threads) {
@@ -4923,7 +4923,7 @@ sub parse_host_filtering() {
 	    }
 	    # Get server from: eval true server\;
 	    $col[8] =~ /eval .?true.?\s([^\;]+);/ or
-		::die_bug("col8 does not contain host: $col[8]");
+		::die_bug("col8 does not contain host: $col[8] in $_");
 	    my $host = $1;
 	    $host =~ tr/\\//d;
 	    $Global::host{$host} or next;
@@ -5006,12 +5006,9 @@ sub parallelized_host_filtering() {
 	# Return $default_value if command fails
 	my $sshlogin = shift;
 	my $command = shift;
-	my $default_value = shift;
-	# wrapper that returns $default_value if the command fails:
-	# bug #57886: Errors when using different version on remote
-	#   perl -e '$a=`$command`; print $? ? "$default_value" : $a'
-	my $wcmd = q(perl -e '$a=`).$command.q(`;).
-	    q(print $? ? ").::pQ($default_value."\n").q(" : $a');
+	# wrapper that returns output "0\n" if the command fails
+	# E.g. parallel not installed => "0\n"
+	my $wcmd = q(perl -e '$a=`).$command.q(`; print $? ? "0".v010 : $a');
 	my $commandline = CommandLine->new(1,[$wcmd],{},0,0,[],[],[],[],{},{});
 	my $job = Job->new($commandline);
 	$job->set_sshlogin($sshlogin);
@@ -5024,14 +5021,14 @@ sub parallelized_host_filtering() {
 	if($host eq ":") { next }
 	# The 'true' is used to get the $host out later
 	push(@sockets, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --number-of-sockets",0)."\n\0");
+	     sshwrapped($sshlogin,"parallel --number-of-sockets")."\n\0");
 	push(@cores, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --number-of-cores",0)."\n\0");
+	     sshwrapped($sshlogin,"parallel --number-of-cores")."\n\0");
 	push(@threads, $host."\t"."true $host; ".
-	     sshwrapped($sshlogin,"parallel --number-of-threads",0)."\n\0");
+	     sshwrapped($sshlogin,"parallel --number-of-threads")."\n\0");
 	push(@maxline, $host."\t"."true $host; ".
 	     sshwrapped($sshlogin,
-			"parallel --max-line-length-allowed",0)."\n\0");
+			"parallel --max-line-length-allowed")."\n\0");
 	# 'echo' is used to get the fastest possible ssh login time
 	push(@echo, $host."\t"."true $host; ".
 	     $sshlogin->wrap("echo $host")."\n\0");
