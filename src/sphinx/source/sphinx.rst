@@ -18,6 +18,12 @@ Welcome to GNU Parallel's documentation!
    
 .. toctree::
    :maxdepth: 3
+   :caption: parallel_examples
+
+   parallel_examples
+   
+.. toctree::
+   :maxdepth: 3
    :caption: sem
 
    sem
