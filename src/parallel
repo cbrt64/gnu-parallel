@@ -2607,6 +2607,7 @@ sub parse_options(@) {
     if($opt::sqlworker and not $opt::sqlmaster) {
 	$Global::max_number_of_args = 1;
     }
+    if($Global::color or $opt::colorfailed) { Job::init_color(); }
 }
 
 sub check_invalid_option_combinations() {
@@ -11637,14 +11638,16 @@ sub tag($) {
 	    } @color_combinations;
 
 	    # clr_eol el = clear to end of line
-	    $eol = `tput el </dev/tty`;
+	    $eol = `sh -c "tput el </dev/tty" 2>/dev/null`;
 	    chomp($eol);
+	    if($eol eq "") { $eol = "\033[K"; }
 	    # exit_attribute_mode sgr0 = turn off all attributes
-	    $reset_color = `tput sgr0 </dev/tty`;
+	    $reset_color = `sh -c "tput sgr0 </dev/tty" 2>/dev/null`;
 	    chomp($reset_color);
+	    if($reset_color eq "") { $reset_color = "\033[m"; }
 	}
     }
-	
+
     sub color($) {
 	my $self = shift;
 	if(not defined $self->{'color'}) {
