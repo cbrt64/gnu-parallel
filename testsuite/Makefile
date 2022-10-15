@@ -79,20 +79,21 @@ REQUIRE=bash -c '\
   }; \
   export -f is_installed; \
   parallel -n2 --tag is_installed ::: \
-	script	"echo | script -c echo -q /dev/null"				\
+	script		"echo | script -c echo -q /dev/null"			\
 	"ssh sh@lo"	"timeout 20 ssh sh@lo true"				\
 	"ssh csh@lo"	"timeout 5 ssh csh@lo true"				\
 	niceload	"niceload echo niceload is installed"			\
 	expect	"expect -c \"spawn cat; puts \\\"expect is installed\\\"\"" 	\
-	autossh	"autossh -V"							\
-	tcsh	"tcsh -c echo tcsh installed"					\
-	seq	"seq 1 2"							\
-	stdout	"stdout echo stdout is installed"				\
-	convert	"convert -version"						\
-	bc	"echo 1+2 | bc"							\
-	gawk	"echo | gawk \"{print \\\"gawk is installed\\\"}\""		\
-	pv	"echo | pv -qL 10"						\
-	timeout	"timeout 1 echo timeout is installed"				\
+	autossh		"autossh -V"						\
+	tcsh		"tcsh -c echo tcsh installed"				\
+	seq		"seq 1 2"						\
+	stdout		"stdout echo stdout is installed"			\
+	convert		"convert -version"					\
+	bc		"echo 1+2 | bc"						\
+	gawk		"echo | gawk \"{print \\\"gawk is installed\\\"}\""	\
+	pv		"echo | pv -qL 10"					\
+	timeout		"timeout 1 echo timeout is installed"			\
+	sshpass		"sshpass echo sshpass is installed"			\
 '
 #	lsh	"lsh lo echo lsh is installed"					\
 

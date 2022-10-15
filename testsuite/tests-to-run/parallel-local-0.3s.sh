@@ -98,7 +98,7 @@ par_tmpl1() {
     # x with 2 decimals
     DecimalX: {=x $_=sprintf("%.2f",$_) =}
     TenX: {=x $_=$_*10 =}
-    RandomVal: {=1 $_=rand() =}
+    RandomVal: {=1 $_=0.1+0.9*rand() =}
 
 EOF
 
@@ -291,7 +291,7 @@ par_tagstring_with_d() {
     echo 'bug #47002: --tagstring with -d \n\n'
 
     (seq 3; echo; seq 4) |
-	parallel -k -d '\n\n' --tagstring {%} echo ABC';'echo
+	parallel -k -d '\n\n' --tagstring {#} echo ABC';'echo
 }
 
 par_xargs_nul_char_in_input() {

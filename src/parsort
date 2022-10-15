@@ -402,23 +402,6 @@ sub die_bug($) {
     exit(255);
 }
 
-sub version() {
-    # Returns: N/A
-    print join
-	("\n",
-	 "GNU $Global::progname $Global::version",
-	 "Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free Software",
-	 "Foundation, Inc.",
-	 "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>",
-	 "This is free software: you are free to change and redistribute it.",
-	 "GNU $Global::progname comes with no warranty.",
-	 "",
-	 "Web site: https://www.gnu.org/software/${Global::progname}\n",
-	 "When using programs that use GNU Parallel to process data for publication",
-	 "please cite as described in 'parallel --citation'.\n",
-        );
-}
-
 if(@ARGV) {
     sort_files(@ARGV);
 } elsif(length $opt::files0_from) {

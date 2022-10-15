@@ -328,7 +328,9 @@ par_tee_too_many_args() {
     seq 11 | stdout parallel -k --tag --pipe -j4 --tee grep {} ::: {1..4}
     tmp=`mktemp`
     seq 11 | parallel -k --tag --pipe -j0 --tee grep {} ::: {1..10000} 2> "$tmp"
-    cat "$tmp" | perl -pe 's/\d+/999/g'
+    cat "$tmp" | perl -pe 's/\d+/999/g' |
+	grep -v 'Warning: Starting' |
+	grep -v 'Warning: Consider'
     rm "$tmp"
 }
 

@@ -1,82 +1,72 @@
-echo '### Test --onall';   parallel --onall -S vagrant@parallel-server1,vagrant@parallel-server2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2
-### Test --onall
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-1
-2
-echo '### Test | --onall';   seq 3 | parallel --onall -S vagrant@parallel-server1,vagrant@parallel-server2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c :::: -
-### Test | --onall
-1
-2
-3
-1
-2
-3
-1
-2
-3
-1
-2
-3
-1
-2
-3
-1
-2
-3
-echo '### Test --onall -u';   parallel --onall -S vagrant@parallel-server1,vagrant@parallel-server2 -u '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2 3 | sort
-### Test --onall -u
-1
-1
-1
-1
-1
-1
-2
-2
-2
-2
-2
-2
-3
-3
-3
-3
-3
-3
-echo '### Test --nonall';   parallel --nonall -k -S vagrant@parallel-server1,vagrant@parallel-server2 'hostname' | sort
-### Test --nonall
-centos8.localdomain
-freebsd11.localdomain
-echo '### Test --nonall -u - should be interleaved x y x y';   parallel --nonall --sshdelay 2 -S vagrant@parallel-server1,vagrant@parallel-server2 -u 'hostname|grep -q centos && sleep 2; hostname;sleep 4;hostname;'
-### Test --nonall -u - should be interleaved x y x y
-freebsd11.localdomain
-centos8.localdomain
-freebsd11.localdomain
-centos8.localdomain
-echo '### Test read sshloginfile from STDIN';   echo vagrant@parallel-server1 | parallel -S - --nonall hostname;   echo vagrant@parallel-server1 | parallel --sshloginfile - --nonall hostname
-### Test read sshloginfile from STDIN
-centos8.localdomain
-centos8.localdomain
-echo '### Test --nonall --basefile';   touch /tmp/nonall--basefile;   parallel --nonall --basefile /tmp/nonall--basefile -S vagrant@parallel-server1,vagrant@parallel-server2 ls /tmp/nonall--basefile\; rm  /tmp/nonall--basefile;   rm /tmp/nonall--basefile
-### Test --nonall --basefile
-/tmp/nonall--basefile
-/tmp/nonall--basefile
-echo '### Test --onall --basefile';   touch /tmp/onall--basefile;   parallel --onall --basefile /tmp/onall--basefile -S vagrant@parallel-server1,vagrant@parallel-server2 ls {}\; rm {} ::: /tmp/onall--basefile;   rm /tmp/onall--basefile
-### Test --onall --basefile
-/tmp/onall--basefile
-/tmp/onall--basefile
-echo '### Test --workdir .';   ssh vagrant@parallel-server1 mkdir -p mydir;   mkdir -p $HOME/mydir; cd $HOME/mydir;   parallel --workdir . -S vagrant@parallel-server1 ::: pwd
-### Test --workdir .
-/home/vagrant/mydir
-echo '### Test --wd .';   ssh vagrant@parallel-server2 mkdir -p mydir;   mkdir -p $HOME/mydir; cd $HOME/mydir;   parallel --workdir . -S vagrant@parallel-server2 ::: pwd
-### Test --wd .
-/usr/home/vagrant/mydir
+par_nonall	### Test --nonall
+par_nonall	centos8.localdomain
+par_nonall	freebsd11.localdomain
+par_nonall_basefile	### Test --nonall --basefile
+par_nonall_basefile	/tmp/nonall--basefile
+par_nonall_basefile	/tmp/nonall--basefile
+par_nonall_sshloginfile_stdin	### Test read sshloginfile from STDIN
+par_nonall_sshloginfile_stdin	centos8.localdomain
+par_nonall_sshloginfile_stdin	centos8.localdomain
+par_nonall_u	### Test --nonall -u - should be interleaved x y x y
+par_nonall_u	      1 centos8.localdomain
+par_nonall_u	      1 centos8.localdomain
+par_nonall_u	      1 freebsd11.localdomain
+par_nonall_u	      1 freebsd11.localdomain
+par_onall	### Test --onall
+par_onall	1
+par_onall	2
+par_onall	1
+par_onall	2
+par_onall	1
+par_onall	2
+par_onall	1
+par_onall	2
+par_onall	1
+par_onall	2
+par_onall	1
+par_onall	2
+par_onall_basefile	### Test --onall --basefile
+par_onall_basefile	/tmp/onall--basefile
+par_onall_basefile	/tmp/onall--basefile
+par_onall_u	### Test --onall -u
+par_onall_u	1
+par_onall_u	1
+par_onall_u	1
+par_onall_u	1
+par_onall_u	1
+par_onall_u	1
+par_onall_u	2
+par_onall_u	2
+par_onall_u	2
+par_onall_u	2
+par_onall_u	2
+par_onall_u	2
+par_onall_u	3
+par_onall_u	3
+par_onall_u	3
+par_onall_u	3
+par_onall_u	3
+par_onall_u	3
+par_pipe_onall	### Test | --onall
+par_pipe_onall	1
+par_pipe_onall	2
+par_pipe_onall	3
+par_pipe_onall	1
+par_pipe_onall	2
+par_pipe_onall	3
+par_pipe_onall	1
+par_pipe_onall	2
+par_pipe_onall	3
+par_pipe_onall	1
+par_pipe_onall	2
+par_pipe_onall	3
+par_pipe_onall	1
+par_pipe_onall	2
+par_pipe_onall	3
+par_pipe_onall	1
+par_pipe_onall	2
+par_pipe_onall	3
+par_wd	### Test --wd .
+par_wd	/usr/home/vagrant/mydir
+par_workdir	### Test --workdir .
+par_workdir	/home/vagrant/mydir

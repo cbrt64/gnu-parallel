@@ -11196,12 +11196,22 @@ sub print_files($) {
 	    my $str = shift;
 	    my $seq = $self->seq();
 	    my ($color,$reset_color) = $self->color();
+	    my $tag = $self->tag();
+	    my $untabify_tag = $self->untabtag();
+	    my $untabify_str = $str;
+	    $untabify_str =~ s/\t/" "x(8-($-[0]%8))/eg;
+	    my $termcol = ::terminal_columns();
+	    my $taglen = $termcol;
+	    my $strlen = $termcol-(length $untabify_tag)-(length $untabify_str);
+	    $untabify_str = substr($untabify_str,0,$strlen);
+	    $untabify_tag = substr($untabify_tag,0,$taglen);
+	    
 	    $maxseq = $seq > $maxseq ? $seq : $maxseq;
 	    print($out_fh
 		  "$up"x($curseq - $seq),
 		  "\n"x($seq - $curseq),
-		  "\r", $self->tag(),
-		  $color,$str,$reset_color,
+		  "\r", $untabify_tag,
+		  $color, $untabify_str, $reset_color,
 		  "\n"x($maxseq-$seq+1));
 	    $curseq = $maxseq + 1;
 	}
@@ -11602,6 +11612,16 @@ sub tag($) {
 	}
     }
     return $self->{'tag'};
+}
+
+sub untabtag($) {
+    # tag with \t replaced with spaces
+    my $self = shift;
+    if(not defined $self->{'untab'}{$self->{'tag'}}) {
+	$self->{'untab'}{$self->{'tag'}} = $self->{'tag'};
+	$self->{'untab'}{$self->{'tag'}} =~ s/\t/" "x(8-($-[0]%8))/eg;
+    }
+    return $self->{'untab'}{$self->{'tag'}};
 }
 
 {

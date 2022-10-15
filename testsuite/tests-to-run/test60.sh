@@ -8,52 +8,72 @@ SERVER1=parallel-server1
 SERVER2=parallel-server2
 SSHUSER1=vagrant
 SSHUSER2=vagrant
-SSHLOGIN1=$SSHUSER1@$SERVER1
-SSHLOGIN2=$SSHUSER2@$SERVER2
+export SSHLOGIN1=$SSHUSER1@$SERVER1
+export SSHLOGIN2=$SSHUSER2@$SERVER2
 
-#SERVER1=parallel-server1
-#SERVER2=parallel-server2
-#SSHLOGIN1=parallel@$SERVER1
-#SSHLOGIN2=parallel@$SERVER2
+par_onall() {
+    echo '### Test --onall'
+    parallel --onall -S $SSHLOGIN1,$SSHLOGIN2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2
+}
 
-# -L1 will join lines ending in ' '
-cat <<'EOF' | sed -e s/\$SERVER1/$SERVER1/\;s/\$SERVER2/$SERVER2/\;s/\$SSHLOGIN1/$SSHLOGIN1/\;s/\$SSHLOGIN2/$SSHLOGIN2/ | parallel -vj10 -k --joblog /tmp/jl-`basename $0` -L1 -r
-echo '### Test --onall'; 
-  parallel --onall -S $SSHLOGIN1,$SSHLOGIN2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2
+par_pipe_onall() {
+    echo '### Test | --onall'
+    seq 3 | parallel --onall -S $SSHLOGIN1,$SSHLOGIN2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c :::: -
+}
 
-echo '### Test | --onall'; 
-  seq 3 | parallel --onall -S $SSHLOGIN1,$SSHLOGIN2 '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c :::: -
+par_onall_u() {
+    echo '### Test --onall -u'
+    parallel --onall -S $SSHLOGIN1,$SSHLOGIN2 -u '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2 3 | sort
+}
 
-echo '### Test --onall -u'; 
-  parallel --onall -S $SSHLOGIN1,$SSHLOGIN2 -u '(echo {1} {2}) | awk \{print\ \$2}' ::: a b c ::: 1 2 3 | sort
+par_nonall() {
+    echo '### Test --nonall'
+    parallel --nonall -k -S $SSHLOGIN1,$SSHLOGIN2 'hostname' | sort
+}
 
-echo '### Test --nonall'; 
-  parallel --nonall -k -S $SSHLOGIN1,$SSHLOGIN2 'hostname' | sort
+par_nonall_u() {
+    echo '### Test --nonall -u - should be interleaved x y x y'
+    parallel --nonall --sshdelay 2 -S $SSHLOGIN1,$SSHLOGIN2 -u \
+	     'hostname|grep -q centos && sleep 2; hostname;sleep 4;hostname;' |
+	uniq -c | sort
+}
 
-echo '### Test --nonall -u - should be interleaved x y x y'; 
-  parallel --nonall --sshdelay 2 -S $SSHLOGIN1,$SSHLOGIN2 -u 'hostname|grep -q centos && sleep 2; hostname;sleep 4;hostname;'
+par_nonall_sshloginfile_stdin() {
+    echo '### Test read sshloginfile from STDIN'
+    echo $SSHLOGIN1 | parallel -S - --nonall hostname; 
+    echo $SSHLOGIN1 | parallel --sshloginfile - --nonall hostname
+}
 
-echo '### Test read sshloginfile from STDIN'; 
-  echo $SSHLOGIN1 | parallel -S - --nonall hostname; 
-  echo $SSHLOGIN1 | parallel --sshloginfile - --nonall hostname
+par_nonall_basefile() {
+    echo '### Test --nonall --basefile'
+    touch /tmp/nonall--basefile
+    parallel --nonall --basefile /tmp/nonall--basefile -S $SSHLOGIN1,$SSHLOGIN2 ls /tmp/nonall--basefile\; rm  /tmp/nonall--basefile
+    rm /tmp/nonall--basefile
+}
 
-echo '### Test --nonall --basefile'; 
-  touch /tmp/nonall--basefile; 
-  parallel --nonall --basefile /tmp/nonall--basefile -S $SSHLOGIN1,$SSHLOGIN2 ls /tmp/nonall--basefile\; rm  /tmp/nonall--basefile; 
-  rm /tmp/nonall--basefile
+par_onall_basefile() {
+    echo '### Test --onall --basefile'
+    touch /tmp/onall--basefile
+    parallel --onall --basefile /tmp/onall--basefile -S $SSHLOGIN1,$SSHLOGIN2 ls {}\; rm {} ::: /tmp/onall--basefile
+    rm /tmp/onall--basefile
+}
 
-echo '### Test --onall --basefile'; 
-  touch /tmp/onall--basefile; 
-  parallel --onall --basefile /tmp/onall--basefile -S $SSHLOGIN1,$SSHLOGIN2 ls {}\; rm {} ::: /tmp/onall--basefile; 
-  rm /tmp/onall--basefile
+par_workdir() {
+    echo '### Test --workdir .'
+    ssh $SSHLOGIN1 mkdir -p mydir
+    mkdir -p $HOME/mydir; cd $HOME/mydir
+    parallel --workdir . -S $SSHLOGIN1 ::: pwd
+}
 
-echo '### Test --workdir .'; 
-  ssh $SSHLOGIN1 mkdir -p mydir; 
-  mkdir -p $HOME/mydir; cd $HOME/mydir; 
-  parallel --workdir . -S $SSHLOGIN1 ::: pwd
+par_wd() {
+    echo '### Test --wd .'
+    ssh $SSHLOGIN2 mkdir -p mydir
+    mkdir -p $HOME/mydir; cd $HOME/mydir
+    parallel --workdir . -S $SSHLOGIN2 ::: pwd
+}
 
-echo '### Test --wd .'; 
-  ssh $SSHLOGIN2 mkdir -p mydir; 
-  mkdir -p $HOME/mydir; cd $HOME/mydir; 
-  parallel --workdir . -S $SSHLOGIN2 ::: pwd
-EOF
+export -f $(compgen -A function | grep par_)
+#compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'
+compgen -A function | grep par_ | sort |
+    parallel --joblog /tmp/jl-`basename $0` --retries 3 -j300% --tag -k '{} 2>&1' |
+    perl -pe "s/‘/'/g;s/’/'/g"
