@@ -749,7 +749,7 @@ See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
 
-=item B<--color> (alpha testing)
+=item B<--color> (beta testing)
 
 Colour output.
 
@@ -761,9 +761,9 @@ B<--color> is ignored when using B<-u>.
 See also: B<--color-failed>
 
 
-=item B<--color-failed> (alpha testing)
+=item B<--color-failed> (beta testing)
 
-=item B<--cf> (alpha testing)
+=item B<--cf> (beta testing)
 
 Colour the output from failing jobs white on red.
 
@@ -1268,7 +1268,7 @@ soon,fail=1-99%
 =back
 
 
-=item B<--header> I<regexp> (beta testing)
+=item B<--header> I<regexp>
 
 Use regexp as header.
 
@@ -1594,9 +1594,9 @@ Example:
 See also: B<--line-buffer>
 
 
-=item B<--line-buffer> (alpha testing)
+=item B<--line-buffer> (beta testing)
 
-=item B<--lb> (alpha testing)
+=item B<--lb> (beta testing)
 
 Buffer output on line basis.
 
@@ -1937,7 +1937,7 @@ called with B<--sshlogin>).
 See also: B<--profile>
 
 
-=item B<--plus> (beta testing)
+=item B<--plus>
 
 Add more replacement strings.
 
@@ -2013,7 +2013,7 @@ B<--progress> on a running GNU B<parallel> process.
 See also: B<--eta> B<--bar>
 
 
-=item B<--max-line-length-allowed>
+=item B<--max-line-length-allowed> (alpha testing)
 
 Print maximal command line length.
 
@@ -2496,7 +2496,7 @@ I<n>=0 means infinite.
 See also: B<--term-seq> B<--sshlogin>
 
 
-=item B<--return> I<filename> (beta testing)
+=item B<--return> I<filename>
 
 Transfer files from remote computers.
 
@@ -3020,13 +3020,13 @@ I<duration> is in seconds, but can be postfixed with s, m, h, or d.
 See also: TIME POSTFIXES B<--sshlogin> B<--delay>
 
 
-=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
+=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
 
-=item B<--sshlogin> I<@hostgroup> (alpha testing)
+=item B<--sshlogin> I<@hostgroup> (beta testing)
 
-=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
+=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
 
-=item B<-S> I<@hostgroup> (alpha testing)
+=item B<-S> I<@hostgroup> (beta testing)
 
 Distribute jobs to remote computers.
 
@@ -3331,7 +3331,7 @@ Print the job to be run on stderr (standard error).
 See also: B<-v> B<--interactive>
 
 
-=item B<--transfer> (beta testing)
+=item B<--transfer>
 
 Transfer files to remote computers.
 
@@ -3340,9 +3340,9 @@ Shorthand for: B<--transferfile {}>.
 See also: B<--transferfile>.
 
 
-=item B<--transferfile> I<filename> (beta testing)
+=item B<--transferfile> I<filename>
 
-=item B<--tf> I<filename> (beta testing)
+=item B<--tf> I<filename>
 
 Transfer I<filename> to remote computers.
 
@@ -3394,7 +3394,7 @@ See also: B<--workdir> B<--sshlogin> B<--basefile> B<--return>
 B<--cleanup>
 
 
-=item B<--trc> I<filename> (beta testing)
+=item B<--trc> I<filename>
 
 Transfer, Return, Cleanup. Shorthand for: B<--transfer> B<--return>
 I<filename> B<--cleanup>

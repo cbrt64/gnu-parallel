@@ -106,86 +106,118 @@ par_failing_compressor	Compress with failing (de)compressor
 par_failing_compressor	Test --tag/--line-buffer/--files in all combinations
 par_failing_compressor	Test working/failing compressor/decompressor in all combinations
 par_failing_compressor	(-k is used as a dummy argument)
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	C=cat;true,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	C=cat;true,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	C=cat;false,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	C=cat;false,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
+par_failing_compressor	parallel -k --tag --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	C=cat;true,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	C=cat;true,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	C=cat;false,D=cat;true	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	C=cat;false,D=cat;false	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;true	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;false	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;true	C=cat;false,D=cat;true
+par_failing_compressor	parallel -k --tag -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;false	C=cat;false,D=cat;false
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k --line-buffer --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	C=cat;false,D=cat;true
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;true
+par_failing_compressor	parallel -k -k --line-buffer -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	C=cat;false,D=cat;false
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;false
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k -k --files --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	/tmp/parallel-local-10s-tmpdir/tmpfile
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' echo ::: C='cat;true',D='cat;true'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;true' doit ::: C='cat;true',D='cat;true'
 par_failing_compressor	C=cat;true,D=cat;true
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' echo ::: C='cat;true',D='cat;false'
+par_failing_compressor	C=cat;true,D=cat;true
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;true' --decompress-program 'cat;false' doit ::: C='cat;true',D='cat;false'
 par_failing_compressor	C=cat;true,D=cat;false
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' echo ::: C='cat;false',D='cat;true'
+par_failing_compressor	C=cat;true,D=cat;false
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;true' doit ::: C='cat;false',D='cat;true'
 par_failing_compressor	C=cat;false,D=cat;true
 par_failing_compressor	parallel: Error: cat;false failed.
-par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' echo ::: C='cat;false',D='cat;false'
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;true
+par_failing_compressor	parallel -k -k -k -k --compress --compress-program 'cat;false' --decompress-program 'cat;false' doit ::: C='cat;false',D='cat;false'
 par_failing_compressor	C=cat;false,D=cat;false
 par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	parallel: Error: cat;false failed.
+par_failing_compressor	C=cat;false,D=cat;false
 par_fifo_under_csh	### Test --fifo under csh
 par_fifo_under_csh	1048571
 par_fifo_under_csh	1

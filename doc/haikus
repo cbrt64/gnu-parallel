@@ -7,9 +7,6 @@ Quote of the month:
   Got around to using GNU parallel for the first time from a suggestion by @jdwasmuth ... now I'm wishing I started using this years ago
     -- Stefan Gavriliuc @GavriliucStefan@twitter
 
-  If used properly, #gnuparallel actually enables time travel.
-    -- Dr. James Wasmuth @jdwasmuth@twitter
-
   I’m a big fan of GNU parallel!
     -- Scott Cain @scottjcain@twitter
 
@@ -206,6 +203,9 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  If used properly, #gnuparallel actually enables time travel.
+    -- Dr. James Wasmuth @jdwasmuth@twitter
 
   reduced our backend test pipelines from 4 to 1.30 hrs. gnu parallel for the win!!!
      -- Swapnil Sahu @CaffeinatedWryy@twitter

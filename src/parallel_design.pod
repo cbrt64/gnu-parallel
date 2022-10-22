@@ -261,7 +261,9 @@ More detailed it works like this:
   cattail ( rm tmpfile; compound decompress ) < tmpfile
 
 This complex setup is to make sure compress program is only started if
-there is input.
+there is input. This means each job will cause 8 processes to run. If
+combined with B<--keep-order> these processes will run until the job
+has been printed.
 
 
 =head2 Wrapping

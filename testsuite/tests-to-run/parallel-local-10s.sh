@@ -182,8 +182,14 @@ par_failing_compressor() {
     echo 'Test --tag/--line-buffer/--files in all combinations'
     echo 'Test working/failing compressor/decompressor in all combinations'
     echo '(-k is used as a dummy argument)'
+    doit() {
+	# Print something to stdout/stderr
+	echo "$@"
+	echo "$@" >&2
+    }
+    export -f doit
     stdout parallel -vk --header : --argsep ,,, \
-	     parallel -k {tag} {lb} {files} --compress --compress-program {comp} --decompress-program {decomp} echo ::: C={comp},D={decomp} \
+	     parallel -k {tag} {lb} {files} --compress --compress-program {comp} --decompress-program {decomp} doit ::: C={comp},D={decomp} \
 	     ,,, tag --tag -k \
 	     ,,, lb --line-buffer -k \
 	     ,,, files --files -k \

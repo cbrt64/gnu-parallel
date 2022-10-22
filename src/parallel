@@ -2680,7 +2680,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20220923;
+    $Global::version = 20221022;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5560,8 +5560,8 @@ sub usage() {
 	 "If you use programs that use GNU Parallel to process data for an article in a",
 	 "scientific publication, please cite:",
 	 "",
-	 "  Tange, O. (2022, September 22). GNU Parallel 20220922 ('Elizabeth').",
-	 "  Zenodo. https://doi.org/10.5281/zenodo.7105792",
+	 "  Tange, O. (2022, October 22). GNU Parallel 20221022 ('Nord Stream').",
+	 "  Zenodo. https://doi.org/10.5281/zenodo.7239559",
 	 "",
 	 # Before changing these lines,	 please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
@@ -5593,8 +5593,8 @@ sub citation_notice() {
 	     "If you use programs that use GNU Parallel to process data for an article in a",
 	     "scientific publication, please cite:",
 	     "",
-	     "  Tange, O. (2022, September 22). GNU Parallel 20220922 ('Elizabeth').",
-	     "  Zenodo. https://doi.org/10.5281/zenodo.7105792",
+	     "  Tange, O. (2022, October 22). GNU Parallel 20221022 ('Nord Stream').",
+	     "  Zenodo. https://doi.org/10.5281/zenodo.7239559",
 	     "",
 	     # Before changing these line,  please read
 	     # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
@@ -5721,20 +5721,20 @@ sub citation() {
 	"If you use programs that use GNU Parallel to process data for an article in a",
 	"scientific publication, please cite:",
 	"",
-	"\@software{tange_2022_7105792,",
+	"\@software{tange_2022_7239559,",
 	"      author       = {Tange, Ole},",
-	"      title        = {GNU Parallel 20220922 ('Elizabeth')},",
-	"      month        = Sep,",
+	"      title        = {GNU Parallel 20221022 ('Nord Stream')},",
+	"      month        = Oct,",
 	"      year         = 2022,",
 	"      note         = {{GNU Parallel is a general parallelizer to run",
 	"                       multiple serial command line programs in parallel",
 	"                       without changing them.}},",
 	"      publisher    = {Zenodo},",
-	"      doi          = {10.5281/zenodo.7105792},",
-	"      url          = {https://doi.org/10.5281/zenodo.7105792}",
+	"      doi          = {10.5281/zenodo.7239559},",
+	"      url          = {https://doi.org/10.5281/zenodo.7239559}",
 	"}",
 	"",
-	"(Feel free to use \\nocite{tange_2022_7105792})",
+	"(Feel free to use \\nocite{tange_2022_7239559})",
 	"",
 	# Before changing these lines, please read
 	# https://www.gnu.org/software/parallel/parallel_design.html#citation-notice and
@@ -9248,6 +9248,7 @@ sub filter_through_compress($) {
 	# When the echo is written to $comfile,
 	# it is known that output file is opened,
 	# thus output file can then be removed by the decompressor.
+	# empty_input_wrapper is needed for plzip
 	my $wpid = open(my $fdw,"|-", "(echo > $comfile; ".
 			empty_input_wrapper($opt::compress_program).") >".
 			::Q($self->fh($fdno,'name'))) || die $?;
@@ -10760,6 +10761,7 @@ sub interactive_start($) {
 	$ENV{'PARALLEL_TMUX'} ||= "tmux";
 	if(not $tmuxsocket) {
 	    $tmuxsocket = ::tmpname("tms");
+	    ::debug("tmux", "Start: $ENV{'PARALLEL_TMUX'} -S $tmuxsocket attach");
 	    if($opt::fg) {
 		if(not fork) {
 		    # Run tmux in the foreground

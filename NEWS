@@ -1,4 +1,31 @@
-20220822
+20221022
+
+New in this release:
+
+* --latest-line chops line length at terminal width.
+
+* Determine max command length faster on Microsoft Windows.
+
+News about GNU Parallel:
+
+* Distributed Task Processing with GNU Parallel https://www.youtube.com/watch?v=usbMLggdMgc
+
+* GNU Parallel workflow for many small, independent runs https://docs.csc.fi/support/tutorials/many/
+
+* Copy a File To Multiple Directories With A Single Command on Linux https://www.linuxfordevices.com/tutorials/linux/copy-file-to-multiple-directories-with-one-command
+
+* Behind The Scenes: The Power Of Simple Command Line Tools At Cloud Scale https://blog.gdeltproject.org/behind-the-scenes-the-power-of-simple-command-line-tools-at-cloud-scale/
+
+*  Run lz4 compression in parallel using GNU parallel https://www.openguru.com/2022/09/
+
+* Xargs / Parallel With Code Examples https://www.folkstalk.com/2022/09/xargs-parallel-with-code-examples.html
+
+* Parallel processing on a single node with GNU Parallel https://www3.cs.stonybrook.edu/~cse416/Section01/Slides/SeaWulfIntro_CSE416_09222022.pdf
+
+* Using GNU parallel painlessly -- from basics to bioinformatics job orchestration https://www.youtube.com/watch?v=qypUdm-IE9c
+
+
+20220922
 
 New in this release:
 
