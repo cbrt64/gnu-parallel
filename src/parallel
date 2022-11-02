@@ -1922,6 +1922,8 @@ sub options_completion_hash() {
 	 ("eta[Show the estimated number of seconds before finishing]"
 	  => \$opt::eta),
 	 "bar[Show progress as a progress bar]" => \$opt::bar,
+	 ("total-jobs|totaljobs|total=s".
+	  "[Set total number of jobs]" => \$opt::totaljobs),
 	 "shuf[Shuffle jobs]" => \$opt::shuf,
 	 ("arg-sep|argsep=s".
 	  "[Use sep-str instead of ::: as separator string]:sep-str"
@@ -8873,7 +8875,9 @@ sub total_jobs($) {
 	    ::error("--pipe is incompatible with --eta/--bar/--shuf");
 	    ::wait_and_exit(255);
 	}
-	if($opt::sqlworker) {
+	if($opt::totaljobs) {
+	    $self->{'total_jobs'} = $opt::totaljobs;
+	} elsif($opt::sqlworker) {
 	    $self->{'total_jobs'} = $Global::sql->total_jobs();
 	} else {
 	    my $record;

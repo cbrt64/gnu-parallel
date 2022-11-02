@@ -1074,6 +1074,7 @@ par_tmp_full	parallel: Error: Change $TMPDIR with --tmpdir or use --compress.
 par_tmux_fg	bug #50107: --tmux --fg should also write how to access it
 par_tmux_fg	See output with: tmux -S tmp attach
 par_tmux_fg	open terminal failed: not a terminal
+par_totaljobs	OK
 par_xargs_compat	xargs compatibility
 par_xargs_compat	### Test -L -l and --max-lines
 par_xargs_compat	a_b

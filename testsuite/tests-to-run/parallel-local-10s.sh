@@ -8,6 +8,20 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_totaljobs() {
+    . `which env_parallel.bash`
+    myrun() {
+	total="$@"
+	slowseq() { seq "$@" | pv -qL 3; }
+	elapsed() { /usr/bin/time -f %e stdout "$@" 2>&1 >/dev/null; }
+	slowseq 5 | elapsed parallel -j 1 $total --bar 'sleep 1; true'
+    }
+    export -f myrun
+    parset mytime myrun ::: '' '--total 5'
+    # --total should run > 2 sec faster
+    perl -E 'say ((2+shift) < (shift) ? "Error: --total should be faster" : "OK")' ${mytime[0]} ${mytime[1]}
+}
+
 par_ll_long_line() {
     echo '### --latest-line with lines longer than terminal width'
     COLUMNS=30 parallel --delay 0.3 --tagstring '{=$_.="x"x$_=}' \

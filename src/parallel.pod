@@ -556,6 +556,8 @@ It is compatible with B<zenity>:
     2> >(perl -pe 'BEGIN{$/="\r";$|=1};s/\r/\n/g' |
          zenity --progress --auto-kill) | wc
 
+See also: B<--eta> B<--progress> B<--total-jobs>
+
 
 =item B<--basefile> I<file>
 
@@ -3053,6 +3055,10 @@ If I<password> is given, B<sshpass> will be used. Otherwise the
 sshlogin must not require a password (B<ssh-agent> and B<ssh-copy-id>
 may help with that).
 
+If the hostname is an IPv6 address, the port can be given separated
+with p or #. If the address is enclosed in [] you can also use :.
+E.g. ::1p2222 ::1#2222 [::1]:2222
+
 The sshlogin ':' is special, it means 'no ssh' and will therefore run
 on the local computer.
 
@@ -3278,6 +3284,20 @@ signal, waits 25 ms, and exits. GNU B<parallel> detects if a process
 dies before the waiting time is up.
 
 See also: B<--halt> B<--timeout> B<--memfree>
+
+
+=item B<--total-jobs> I<jobs> (alpha testing)
+
+=item B<--total> I<jobs> (alpha testing)
+
+Provide the total number of jobs for computing ETA which is also used
+for B<--bar>.
+
+Without B<--total-jobs> GNU Parallel will read all jobs before
+starting a job. B<--total-jobs> is useful if the input is generated
+slowly.
+
+See also: B<--bar> B<--eta>
 
 
 =item B<--tmpdir> I<dirname>
@@ -4295,8 +4315,8 @@ by others, the output might help them figure out the problem.
 
 Whether you have watched the intro videos
 (https://www.youtube.com/playlist?list=PL284C9FF2488BC6D1), walked
-through the tutorial (man parallel_tutorial), and read the EXAMPLE
-section in the man page (man parallel - search for EXAMPLE:).
+through the tutorial (man parallel_tutorial), and read the examples
+(man parallel_examples).
 
 =back
 

@@ -772,13 +772,16 @@ printed as soon as possible you can use B<-u>.
 
 Compare the output of:
 
-  parallel wget --limit-rate=100k \
+  parallel wget --progress=dot --limit-rate=100k \
     https://ftpmirror.gnu.org/parallel/parallel-20{}0822.tar.bz2 \
     ::: {12..16}
-  parallel --line-buffer wget --limit-rate=100k \
+  parallel --line-buffer wget --progress=dot --limit-rate=100k \
     https://ftpmirror.gnu.org/parallel/parallel-20{}0822.tar.bz2 \
     ::: {12..16}
-  parallel -u wget --limit-rate=100k \
+  parallel --latest-line wget --progress=dot --limit-rate=100k \
+    https://ftpmirror.gnu.org/parallel/parallel-20{}0822.tar.bz2 \
+    ::: {12..16}
+  parallel -u wget --progress=dot --limit-rate=100k \
     https://ftpmirror.gnu.org/parallel/parallel-20{}0822.tar.bz2 \
     ::: {12..16}
 
