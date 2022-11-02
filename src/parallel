@@ -4420,36 +4420,62 @@ sub progress() {
 }
 
 {
-    my ($columns,$last_column_time);
+    my ($rows,$columns,$last_update_time);
+
+    sub compute_terminal_size() {
+	# && true is to force spawning a shell and not just exec'ing
+	my @tput = qx{ tput lines cols </dev/tty 2>/dev/null && true };
+	$rows = 0+$tput[0];
+	$columns = 0+$tput[1];
+	if(not ($rows && $columns)) {
+	    # && true is to force spawning a shell and not just exec'ing
+	    my $stty = qx{ stty -a </dev/tty 2>/dev/null && true };
+	    # FreeBSD/OpenBSD/NetBSD/Dragonfly/MirOS
+	    # MacOSX/IRIX/AIX/Tru64
+	    $stty =~ /(\d+) columns/ and do { $columns = $1; };
+	    $stty =~ /(\d+) rows/ and do { $rows = $1; };
+	    # GNU/Linux/Solaris
+	    $stty =~ /columns (\d+)/ and do { $columns = $1; };
+	    $stty =~ /rows (\d+)/ and do { $rows = $1; };
+	    # Solaris-x86/HPUX/SCOsysV/UnixWare/OpenIndiana
+	    $stty =~ /columns = (\d+)/ and do { $columns = $1; };
+	    $stty =~ /rows = (\d+)/ and do { $rows = $1; };
+	    # QNX
+	    $stty =~ /rows=(\d+),(\d+)/ and do { ($rows,$columns) = ($1,$2); };
+	}
+	if(not ($rows && $columns)) {
+	    # && true is to force spawning a shell and not just exec'ing
+	    my $resize = qx{ resize 2>/dev/null && true };
+	    $resize =~ /COLUMNS=(\d+);/ and do { $columns ||= $1; };
+	    $resize =~ /LINES=(\d+);/ and do { $rows ||= $1; };
+	}
+	$rows ||= 24;
+	$columns ||= 80;
+    }
+
+    sub update_terminal_size() {
+	# Only update once per second.
+	if($last_update_time < time) {
+	    $last_update_time = time;
+	    compute_terminal_size();
+	    # Set signal WINdow CHange to force recompute
+	    $SIG{WINCH} = \&compute_terminal_size;
+	}
+    }
+
+    sub terminal_rows() {
+	# Get the number of rows of the terminal.
+	# Returns:
+	#   number of rows of the screen
+	update_terminal_size();
+	return $rows;
+    }
 
     sub terminal_columns() {
 	# Get the number of columns of the terminal.
-	# Only update once per second.
 	# Returns:
 	#   number of columns of the screen
-	if(not $columns or $last_column_time < time) {
-	    $last_column_time = time;
-	    $columns = $ENV{'COLUMNS'};
-	    if(not $columns) {
-		# && true is to force spawning a shell and not just exec'ing
-		my $stty = qx{stty -a </dev/tty 2>/dev/null && true};
-		# FreeBSD/OpenBSD/NetBSD/Dragonfly/MirOS
-		# MacOSX/IRIX/AIX/Tru64
-		$stty =~ /(\d+) columns/ and do { $columns = $1; };
-		# GNU/Linux/Solaris
-		$stty =~ /columns (\d+)/ and do { $columns = $1; };
-		# Solaris-x86/HPUX/SCOsysV/UnixWare/OpenIndiana
-		$stty =~ /columns = (\d+)/ and do { $columns = $1; };
-		# QNX
-		$stty =~ /rows=\d+,(\d+)/ and do { $columns = $1; };
-	    }
-	    if(not $columns) {
-		# && true is to force spawning a shell and not just exec'ing
-		my $resize = qx{resize 2>/dev/null && true};
-		$resize =~ /COLUMNS=(\d+);/ and do { $columns = $1; };
-	    }
-	    $columns ||= 80;
-	}
+	update_terminal_size();
 	return $columns;
     }
 }
@@ -8927,6 +8953,22 @@ sub replaced($) {
     return $self->{'commandline'}->replaced();
 }
 
+{
+    my $next_available_row;
+    
+    sub row($) {
+	my $self = shift;
+	if(not defined $self->{'row'}) {
+	    if($opt::keeporder) {
+		$self->{'row'} = $self->seq();
+	    } else {
+		$self->{'row'} = $next_available_row++;
+	    }
+	}
+	return $self->{'row'};
+    }
+}
+
 sub seq($) {
     my $self = shift;
     return $self->{'commandline'}->seq();
@@ -11194,16 +11236,15 @@ sub print_files($) {
 # --keep-order
 # --tag
 # --bar
-
 {
-    my ($up,$init,$curseq,$maxseq);
+    my ($up,$init,$currow,$maxrow);
 
     sub print_linebuffer($) {
-	sub print_llb($) {
+	sub print_latest_line($) {
 	    my $self = shift;
 	    my $out_fh = shift;
 	    my $str = shift;
-	    my $seq = $self->seq();
+	    my $row = $self->row();
 	    my ($color,$reset_color) = $self->color();
 	    my $tag = $self->tag();
 	    my $untabify_tag = $self->untabtag();
@@ -11215,14 +11256,14 @@ sub print_files($) {
 	    $untabify_str = substr($untabify_str,0,$strlen);
 	    $untabify_tag = substr($untabify_tag,0,$taglen);
 	    
-	    $maxseq = $seq > $maxseq ? $seq : $maxseq;
+	    $maxrow = $row > $maxrow ? $row : $maxrow;
 	    print($out_fh
-		  "$up"x($curseq - $seq),
-		  "\n"x($seq - $curseq),
+		  "$up"x($currow - $row),
+		  "\n"x($row - $currow),
 		  "\r", $untabify_tag,
 		  $color, $untabify_str, $reset_color,
-		  "\n"x($maxseq-$seq+1));
-	    $curseq = $maxseq + 1;
+		  "\n"x($maxrow-$row+1));
+	    $currow = $maxrow + 1;
 	}
 	my $self = shift;
 	my ($fdno,$in_fh,$out_fh) = @_;
@@ -11246,8 +11287,8 @@ sub print_files($) {
 		# cursor_up cuu1 = up one line
 		$up = `tput cuu1 </dev/tty`;
 		chomp($up);
-		$curseq = 1;
-		$maxseq = 1;
+		$currow = 1;
+		$maxrow = 1;
 	    }
 	}
 	if(not $self->virgin()) {
@@ -11292,7 +11333,7 @@ sub print_files($) {
 					 substr($buf,0,$i-1));
 			    my $j = ((rindex($l,"\n")+1) ||
 				     (rindex($l,"\r")+1));
-			    $self->print_llb($out_fh,substr($l,$j));
+			    $self->print_latest_line($out_fh,substr($l,$j));
 			    # Remove the printed part by keeping the unprinted
 			    @$halfline_ref = (substr($buf,$i));
 			} else {
