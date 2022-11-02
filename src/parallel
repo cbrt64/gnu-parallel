@@ -6919,7 +6919,7 @@ sub new($$) {
     if($s =~ s/^(.*) //) { $sshcommand = $1; }
 
     #	[user:pass@]server:port
-    if($s =~ s/([^@]+)@//) {
+    if($s =~ s/^([^@]+)@//) {
 	my $userpw = $1;
 	# user[:pass]
 	if($userpw =~ s/:(.*)//) {
@@ -6932,13 +6932,40 @@ sub new($$) {
 	}
 	$user = $userpw;
     }
-
     #	[server]:port
-    if($s =~ s/([-a-z0-9.]+)//i) { $host = $1; }
+    if(not $s =~ /:.*:/
+       and
+       $s =~ s/^([-a-z0-9._]+)//i) {
+	# Not IPv6 (IPv6 has 2 or more ':')
+	$host = $1;
+    } elsif($s =~ s/^(\\[\[\]box0-9a-f.]+)//i) {
+	# RFC2673 allows for:
+	#   \[b11010000011101] \[o64072/14] \[xd074/14] \[208.116.0.0/14]
+	$host = $1;	
+    } elsif($s =~ s/^\[([0-9a-f:]+)\]//i
+	    or
+	    $s =~ s/^([0-9a-f:]+)//i) {
+	# RFC5952
+	#   [2001:db8::1]:80
+	#   2001:db8::1.80
+	#   2001:db8::1p80
+	#   2001:db8::1#80
+	#   2001:db8::1:80 - not supported
+	#   2001:db8::1 port 80 - not supported
+	$host = $1;
+    }
 
     #	[:port]
-    if($s =~ s/:(\w+)//i) { $port = $1; }
-
+    if($s =~ s/^:(\w+)//i) {
+	$port = $1;
+    } elsif($s =~ s/^[p\.\#](\w+)//i) {
+	# RFC5952
+	#   2001:db8::1.80
+	#   2001:db8::1p80
+	#   2001:db8::1#80
+	$port = $1;
+    }
+	
     if($s and $s ne ':') {
 	::die_bug("SSHLogin parser failed on '$origs' => '$s'");
     }
@@ -6949,7 +6976,7 @@ sub new($$) {
 	($user && $user."@").
 	($host && $host).
 	($port && ":$port");
-    if($s eq ':') {
+    if($host eq ':') {
 	$local = 1;
 	$string = ":";
     } else {

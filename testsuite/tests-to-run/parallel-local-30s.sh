@@ -588,6 +588,27 @@ par_keeporder_roundrobin() {
     fi
 }
 
+par_test_ipv6_format() {
+    echo '### Host as IPv6 address'
+    (
+	ifconfig |
+            # Get IPv6 addresses of local server
+            perl -nE '/inet6 ([0-9a-f:]+) .*(host|global)/ and
+              map {say $1,$_,22; say $1,$_,"ssh"} qw(: . #  p q)' |
+            # 9999::9999:9999:22 => [9999::9999:9999]:22
+	    # 9999::9999:9999q22 => 9999::9999:9999
+            perl -pe 's/(.*):(22|ssh)$/[$1]:$2/;s/q.*//;'
+	ifconfig |
+            # Get IPv4 addresses
+            perl -nE '/inet (\S+) / and
+              map {say $1,$_,22; say $1,$_,"ssh"} qw(:  q)' |
+            # 9.9.9.9q22 => 9.9.9.9
+            perl -pe 's/q.*//;'
+    ) |
+	parallel -j30 --delay 0.1 --argsep , parallel -S {} true ::: 1 ||
+	echo Failed
+}
+
 # was -j6 before segfault circus
 export -f $(compgen -A function | grep par_)
 compgen -A function | grep par_ | sort |

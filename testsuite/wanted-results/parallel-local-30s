@@ -1858,3 +1858,4 @@ par_test_detected_shell	test_known_shell_pipe yash	Global::shell /usr/bin/yash
 par_test_detected_shell	test_known_shell_pipe zsh	Global::shell /usr/bin/zsh
 par_test_diff_roundrobin_k	### test there is difference on -k
 par_test_diff_roundrobin_k	OK
+par_test_ipv6_format	### Host as IPv6 address
