@@ -4,6 +4,12 @@ par_bar_m	50
 par_bar_m	100
 par_csh_environment_variables_set	### Check $PARALLEL_PID $PARALLEL_SEQ are set in csh
 par_csh_environment_variables_set	3
+par_filter_host_noise	### bug #63296: --filter-hosts option gets confused by output from SSH command
+par_filter_host_noise	localhost	OK
+par_filter_host_noise	localhost	Warning: Identity file id_rsa not accessible: No such file or directory.
+par_filter_host_noise	localhost	Warning: Permanently added 'localhost' (ED25519) to the list of known hosts.par_filter_host_noise	localhost	
+par_filter_host_noise	localhost	OK
+par_filter_host_noise	localhost	Warning: Permanently added 'localhost' (ED25519) to the list of known hosts.par_filter_host_noise	localhost	
 par_keep_order	### Test --keep-order
 par_keep_order	job0
 par_keep_order	job1

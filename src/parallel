@@ -4956,7 +4956,24 @@ sub parse_host_filtering() {
 	    if(/parallel: Warning: Cannot figure out number of/) {
 		next;
 	    }
-	    if(not defined $nsockets{$col[0]}) {
+	    if(/\t(perl: warning:|LANGUAGE =|LC_ALL =|LANG =|are supported and installed|Disconnected from|Received disconnect from)/
+		    or
+		    /\tWarning: /
+		) {
+		# Skip these (from perl):
+		#   perl: warning: Setting locale failed.
+		#   perl: warning: Please check that your locale settings:
+		#   	  LANGUAGE = (unset),
+		#   	  LC_ALL = (unset),
+		#   	  LANG = "en_US.UTF-8"
+		#       are supported and installed on your system.
+		#   perl: warning: Falling back to the standard locale ("C").
+		#   Disconnected from 127.0.0.1 port 22
+		#
+		# Skip these (from ssh):
+		#   Warning: Permanently added * to the list of known hosts.
+		#   Warning: Identity file * not accessible: *
+	    } elsif(not defined $nsockets{$col[0]}) {
 		$nsockets{$col[0]} = $col[1];
 	    } elsif(not defined $ncores{$col[0]}) {
 		$ncores{$col[0]} = $col[1];
@@ -4966,16 +4983,6 @@ sub parse_host_filtering() {
 		$maxlen{$col[0]} = $col[1];
 	    } elsif(not defined $echo{$col[0]}) {
 		$echo{$col[0]} = $col[1];
-	    } elsif(m/perl: warning:|LANGUAGE =|LC_ALL =|LANG =|are supported and installed|Disconnected from|Received disconnect from/) {
-		# Skip these:
-		# perl: warning: Setting locale failed.
-		# perl: warning: Please check that your locale settings:
-		#	  LANGUAGE = (unset),
-		#	  LC_ALL = (unset),
-		#	  LANG = "en_US.UTF-8"
-		#     are supported and installed on your system.
-		# perl: warning: Falling back to the standard locale ("C").
-		# Disconnected from 127.0.0.1 port 22
 	    } else {
 		::die_bug("host check too many col0: $_");
 	    }

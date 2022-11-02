@@ -531,6 +531,7 @@ par_line_buffer	     55      55     120
 par_line_buffer	These must diff: 1
 par_ll_color_long_line	### --latest-line --color with lines longer than terminal width
 par_ll_color_long_line	par_ll_color_long_line	1x      [48;5;134;38;5;231m[K100000 1 2 3 4 5 6 7 8(B[m
+par_ll_color_long_line	
 par_ll_color_long_line	par_ll_color_long_line	2xx     [48;5;021;38;5;231m[K200000 1 2 3 4 5 6 7 8(B[m
 par_ll_color_long_line	par_ll_color_long_line	3xxx    [48;5;243;38;5;231m[K300000 1 2 3 4 5 6 7 8(B[m
 par_ll_color_long_line	par_ll_color_long_line	4xxxx   [48;5;149;38;5;000m[K400000 1 2 3 4 5 6 7 8(B[m
@@ -562,6 +563,7 @@ par_ll_color_long_line	par_ll_color_long_line	29xxxxxxxxxxxxxxxxxxxxxxxxxxxx[4
 par_ll_color_long_line	par_ll_color_long_line	30xxxxxxxxxxxxxxxxxxxxxxxxxxxx[48;5;250;38;5;000m[K(B[m
 par_ll_long_line	### --latest-line with lines longer than terminal width
 par_ll_long_line	par_ll_long_line	1x      100000 1 2 3 4 5 6 7 8
+par_ll_long_line	
 par_ll_long_line	par_ll_long_line	2xx     200000 1 2 3 4 5 6 7 8
 par_ll_long_line	par_ll_long_line	3xxx    300000 1 2 3 4 5 6 7 8
 par_ll_long_line	par_ll_long_line	4xxxx   400000 1 2 3 4 5 6 7 8

@@ -130,6 +130,11 @@ par_csh_environment_variables_set() {
     parallel -S csh@localhost 'echo $PARALLEL_PID $PARALLEL_SEQ {}| wc -w' ::: a
 }
 
+par_filter_host_noise() {
+    echo '### bug #63296: --filter-hosts option gets confused by output from SSH command'
+    parallel --ssh "ssh -i id_rsa -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null " -S localhost --nonall --tag --filter-hosts echo OK
+    parallel --ssh "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null " -S localhost --nonall --tag --filter-hosts echo OK  
+}
 
 export -f $(compgen -A function | grep par_)
 #compgen -A function | grep par_ | sort | parallel --delay $D -j$P --tag -k '{} 2>&1'

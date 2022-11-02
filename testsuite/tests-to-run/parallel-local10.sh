@@ -16,5 +16,6 @@ echo perl |
     stdout strace -ff perl32 `which parallel` echo |
     grep open |
     grep perl |
+    grep -v '\$' |
     grep -v '] read(6' |
     grep -v input-files/perllib
