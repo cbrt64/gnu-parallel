@@ -1580,9 +1580,8 @@ See also: B<--memfree> B<--load>
 
 =item B<--ll> (alpha testing)
 
-Print the lastest line of each running job.
-
-This only works if the currently running jobs fit on the screen.
+Print the lastest line. Each job gets a single line that is updated
+with the lastest output from the job.
 
 Example:
 
@@ -1591,7 +1590,7 @@ Example:
       perl -ne '$|=1; for(split//){ print; select($a,$a,$a,0.03);}'
   }
   export -f slow_seq
-  parallel --shuf -j10 --ll --tag --bar --color slow_seq {} ::: {1..100}
+  parallel --shuf -j99 --ll --tag --bar --color slow_seq {} ::: {1..300}
 
 See also: B<--line-buffer>
 
