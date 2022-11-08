@@ -230,7 +230,9 @@ https://savannah.gnu.org/news/approve.php?group=parallel
 // FreeCode is dying
 http://freshmeat.net/projects/parallel/releases/new
 
-== Update Diaspora Twitter ==
+== Update Mastodon Twitter ==
+
+https://hostux.social/web/@GNU_Parallel
 
 https://joindiaspora.com/stream
 
@@ -259,7 +261,7 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20221122 ('Lula/#MashaAmina') released
+Subject: GNU Parallel 20221122 ('Херсо́н/Lula/#MashaAmina') released
 
 GNU Parallel 20221122 ('<<>>') has been released. It is available for download at: lbry://@GnuParallel:4
 
@@ -268,6 +270,16 @@ Quote of the month:
   <<>>
 
 New in this release:
+
+* JoinDiaspora is closing. New Mastodon account: @GNU_Parallel@hostux.social
+
+* Allow IPv6 and _ in hostname.
+
+* Use --total-jobs if you use --bar and input is generated slowly.
+
+* --latest-line deals correcly with jobs not visible yet.
+
+* --bar supports utf8
 
 * <<>>
 

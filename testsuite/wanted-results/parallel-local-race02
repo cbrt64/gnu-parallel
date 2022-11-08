@@ -120,7 +120,7 @@ par_kill_hup	parallel: bash -c 'sleep 3 & pid=$!; wait $pid'
 par_kill_hup	bash---pstree
 par_ll_lb_color	bug #62386: --color (--ctag but without --tag)
 par_ll_lb_color	bug #62438: See last line from multiple jobslots
-par_ll_lb_color	c13699ada05324a5bab5aee05d97aa55  -
+par_ll_lb_color	c9a124d7cbd2d04b1201b297ef7cefa1  -
 par_more_than_9_relative_sshlogin	### Check more than 9(relative) simultaneous sshlogins
 par_more_than_9_relative_sshlogin	1
 par_more_than_9_relative_sshlogin	2

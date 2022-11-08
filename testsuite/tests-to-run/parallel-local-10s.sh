@@ -25,15 +25,20 @@ par_totaljobs() {
 par_ll_long_line() {
     echo '### --latest-line with lines longer than terminal width'
     COLUMNS=30 parallel --delay 0.3 --tagstring '{=$_.="x"x$_=}' \
-	   --ll 'echo {}00000 | sed -e "s/$/' {1..100} /'"' ::: {1..30} |
-	perl -pe 's/.\[A//'
+	   --ll 'echo {}00000 | sed -e "s/$/' {1..100} /'"' ::: {01..30} |
+	perl -ne 's/.\[A//g;
+		  /.\[K .{4}\[m/ and next;
+		  /x\s*$/ and next;
+                  /\S/ && print'| sort -u
 }
 
 par_ll_color_long_line() {
     echo '### --latest-line --color with lines longer than terminal width'
     COLUMNS=30 parallel --delay 0.3 --color --tagstring '{=$_.="x"x$_=}' \
-	   --ll 'echo {}00000 | sed -e "s/$/' {1..100} /'"' ::: {1..30} |
-	perl -pe 's/.\[A//'
+	   --ll 'echo {}00000 | sed -e "s/$/' {1..100} /'"' ::: {01..30} |
+	perl -ne 's/.\[A//g;
+		  /.\[K .{4}\[m/ and next;
+                  /\S/ && print'| sort -u
 }
 
 par_reload_slf_every_second() {

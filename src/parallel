@@ -2228,6 +2228,7 @@ sub parse_options(@) {
     }
     if($opt::linebuffer or $opt::latestline) {
 	$Global::linebuffer = 1;
+	Job::latestline_init();
     }
     if(defined $opt::tag and not defined $opt::tagstring) {
 	# Default = {}
@@ -2486,21 +2487,21 @@ sub parse_options(@) {
     parse_semaphore();
 
     if(defined $opt::eta) { $opt::progress = $opt::eta; }
-    if(defined $opt::bar) {
+    if(defined $opt::bar) { $opt::progress = $opt::bar; }
+    if(defined $opt::bar or defined $opt::latestline) {
 	my $fh = $Global::status_fd || *STDERR;
 	eval q{
 	    # Enable utf8 if possible
 	    use utf8;
 	    binmode $fh, "encoding(utf8)";
-	    *decode = \&Encode::decode_utf8;
+	    *decode_utf8 = \&Encode::decode_utf8;
 	};
-	if(eval { decode("x") }) {
+	if(eval { decode_utf8("x") }) {
 	    # Great: decode works
 	} else {
 	    # UTF8-decode not supported: Dummy decode
-	    eval q{sub decode { $_[0]; }};
+	    eval q{sub decode_utf8($;$) { $_[0]; }};
 	}
-	$opt::progress = $opt::bar;
     }
 
     # Funding a free software project is hard. GNU Parallel is no
@@ -4413,7 +4414,7 @@ sub progress() {
 	my $arg = $Global::newest_job ?
 	    $Global::newest_job->{'commandline'}->
 	    replace_placeholders(["\257<\257>"],0,0) : "";
-	$arg = decode($arg);
+	$arg = decode_utf8($arg);
 	my $eta_dhms = ::seconds_to_time_units($eta);
 	my $bar_text =
 	    sprintf("%d%% %d:%d=%s %s",
@@ -4440,8 +4441,8 @@ sub progress() {
     sub compute_terminal_size() {
 	# && true is to force spawning a shell and not just exec'ing
 	my @tput = qx{ tput lines cols </dev/tty 2>/dev/null && true };
-	$rows = 0+$tput[0];
-	$columns = 0+$tput[1];
+	$rows = 0 + $tput[0];
+	$columns = 0 + $tput[1];
 	if(not ($rows && $columns)) {
 	    # && true is to force spawning a shell and not just exec'ing
 	    my $stty = qx{ stty -a </dev/tty 2>/dev/null && true };
@@ -5453,6 +5454,7 @@ sub reaper() {
 	    $Global::timeoutq->update_median_runtime($job->runtime());
 	}
 	if($opt::keeporder and not $opt::latestline) {
+	    # --latestline fixes --keeporder in Job::row()
 	    $job->print_earlier_jobs();
 	} else {
 	    $job->print();
@@ -9005,9 +9007,9 @@ sub replaced($) {
 	my $self = shift;
 	if(not defined $self->{'row'}) {
 	    if($opt::keeporder) {
-		$self->{'row'} = $self->seq()-1;
+		$self->{'row'} = $self->seq();
 	    } else {
-		$self->{'row'} = $next_available_row++;
+		$self->{'row'} = ++$next_available_row;
 	    }
 	}
 	return $self->{'row'};
@@ -11302,77 +11304,89 @@ sub print_files($) {
 # --tag
 # --bar
 {
-    my ($up,$init,$currow,$maxrow);
+    my ($up,$currow,$maxrow);
     my ($minvisible,%print_later,%notvisible);
+    my (%binmodeset,%tab);
+
+    sub latestline_init() {
+	# cursor_up cuu1 = up one line
+	$up = `sh -c "tput cuu1 </dev/tty" 2>/dev/null`;
+	chomp($up);
+	$currow = 1;
+	$maxrow = 1;
+	$minvisible = 1;
+	for(0..8) {
+	    $tab{$_} = " "x(8-($_%8));
+	}
+    }
+
+    sub print_latest_line($) {
+	my $self = shift;
+	my $out_fh = shift;
+	my $row = $self->row();
+	# Is row visible?
+	if(not ($minvisible <= $row
+		and
+		$row < $minvisible + ::terminal_rows() - 1)) {
+	    return;
+	}
+	if(not $binmodeset{$out_fh}++) {
+	    # Enable utf8 if possible
+	    eval q{ binmode $out_fh, "encoding(utf8)"; };
+	}
+	my ($color,$reset_color) = $self->color();
+	# Strings with TABs give the wrong length. Untabify strings
+	my $termcol = ::terminal_columns();
+	my $untabify_tag = ::decode_utf8($self->untabtag());
+	my $taglen = length $untabify_tag;
+	my $truncated_tag = "";
+	my $strlen = $termcol - $taglen;
+	my $untabify_str = ::decode_utf8($self->{$out_fh,'latestline'});
+	$untabify_str =~ s/\t/$tab{$-[0]%8}/g;
+	my $strspc = $strlen - length $untabify_str;
+	$strlen--;
+	if($strlen < 0) { $strlen = 0;}
+	# Line is shorter than terminal width: add " "
+	# Line is longer than terminal width: add ">"
+	my $truncated = ($strspc > 0) ? " " : ">";
+	if($taglen > $termcol) {
+	    # Tag is longer than terminal width: add ">" to tag
+	    # Remove $truncated (it will not be shown at all)
+	    $taglen = $termcol - 1;
+	    $truncated_tag = ">";
+	    $truncated = "";
+	}
+
+	$maxrow = $row > $maxrow ? $row : $maxrow;
+	printf($out_fh
+	       ("%s%s%s". # up down \r
+		"%.${taglen}s%s". # tag
+		"%s%.${strlen}s%s%s". # color + line
+		"%s" # down
+	       ),
+	       "$up"x($currow - $row),
+	       "\n"x($row - $currow),
+	       "\r", $untabify_tag,$truncated_tag,
+	       $color, $untabify_str, $truncated, $reset_color,
+	       "\n"x($maxrow - $row + 1));
+	$currow = $maxrow + 1;
+    }
 
     sub print_linebuffer($) {
-	sub print_latest_line($) {
-	    my $self = shift;
-	    my $out_fh = shift;
-	    my $row = $self->row();
-	    # Is row visible?
-	    if(not ($minvisible <= $row
-		    and
-		    $row < $minvisible -1 + ::terminal_rows())) {
-		return;
-	    }
-	    my ($color,$reset_color) = $self->color();
-	    # Strings with TABs give the wrong length.
-	    # Untabify strings, add " " till full terminal width to overwrite
-	    # earlier longer line.
-	    my $termcol = ::terminal_columns();
-	    my $untabify_tag = $self->untabtag();
-	    my $taglen = ::min(length $untabify_tag,$termcol);
-	    my $strlen = $termcol - $taglen;
-	    my $untabify_str = $self->{$out_fh,'latestline'};
-	    $untabify_str =~ s/\t/" "x(8-($-[0]%8))/eg;
-	    my $strspc = $strlen - length $untabify_str;
-	    if($strspc > 0) {
-		# Line is shorter than terminal width: fill with spc
-		$untabify_str = $untabify_str." "x$strspc;
-	    } else {
-		# Line is longer than terminal width: chop + add ">"
-		$untabify_str = substr($untabify_str,0,$strlen-1).">";
-	    }
-	    $untabify_tag = substr($untabify_tag,0,$taglen);
-
-	    $maxrow = $row > $maxrow ? $row : $maxrow;
-	    printf($out_fh
-		   "%s%s%s%.${taglen}s%s%.${strlen}s%s%s",
-		  "$up"x($currow - $row),
-		  "\n"x($row - $currow),
-		  "\r", $untabify_tag,
-		  $color, $untabify_str, $reset_color,
-		  "\n"x($maxrow-$row+1));
-	    $currow = $maxrow + 1;
-	}
 	my $self = shift;
 	my ($fdno,$in_fh,$out_fh) = @_;
 	if(defined $self->{'exitstatus'}) {
 	    # If the job is dead: close printing fh. Needed for --compress
 	    close $self->fh($fdno,"w");
-	    if($? and $opt::compress) {
-		::error($opt::compress_program." failed.");
-		$self->set_exitstatus(255);
-	    }
 	    if($opt::compress) {
-		# Blocked reading in final round
-		for my $fdno (1,2) {
-		    ::set_fh_blocking($self->fh($fdno,'r'));
+		if($?) {
+		    ::error($opt::compress_program." failed.");
+		    $self->set_exitstatus(255);
 		}
+		# Blocked reading in final round
+		for my $fdno (1,2) { ::set_fh_blocking($self->fh($fdno,'r')); }
 	    }
 	    if($opt::latestline) { $print_later{$self->row()} = $self; }
-	}
-	if(not $init) {
-	    $init = 1;
-	    if($opt::latestline) {
-		# cursor_up cuu1 = up one line
-		$up = `tput cuu1 </dev/tty`;
-		chomp($up);
-		$currow = 0;
-		$maxrow = 0;
-		$minvisible = 0;
-	    }
 	}
 	if(not $self->virgin()) {
 	    if($opt::files or ($opt::results and not $Global::csvsep)) {
@@ -11475,13 +11489,14 @@ sub print_files($) {
 		    }
 		}
 		$self->add_returnsize($outputlength);
-		if($opt::latestline) {
-		    $self->print_latest_line($out_fh);
-		}
+		if($opt::latestline) { $self->print_latest_line($out_fh); }
 	    }
 	    if(defined $self->{'exitstatus'}) {
 		if($opt::latestline) {
-		    # Print latest line from jobs that are already scrolled by
+		    # Force re-computing color if --colorfailed
+		    if($opt::colorfailed) { delete $self->{'color'}; }
+		    $self->print_latest_line($out_fh);
+		    # Print latest line from jobs that are already done
 		    while($print_later{$minvisible}) {
 			$print_later{$minvisible}->print_latest_line($out_fh);
 			delete $print_later{$minvisible};
