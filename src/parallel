@@ -579,7 +579,7 @@ sub pipe_shard_setup() {
 	# so B::hash will return the same value for any given input
 	$ENV{'PERL_HASH_SEED'} = $$;
 	exec qw(parallel --block 100k -q --pipe -j), $njobs,
-	    qw(--roundrobin -u perl -e), $script, ($opt::colsep || ","),
+	    qw(--roundrobin -u), "$^X", qw(-e), $script, ($opt::colsep || ","),
 	    $col, $perlexpr, '{}', (map { (':::+', @{$_}) } @parcatfifos);
     }
     # For each fifo
@@ -591,7 +591,7 @@ sub pipe_shard_setup() {
 	::error("'parcat' must be in path.");
 	::wait_and_exit(255);
     }
-    @Global::cat_prepends = map { "perl -e $parcat @$_ | " } @parcatfifos;
+    @Global::cat_prepends = map { "$^X -e $parcat @$_ | " } @parcatfifos;
 }
 
 sub pipe_part_files(@) {
@@ -903,7 +903,7 @@ sub cat_partial($@) {
 	     }
 	 });
     return "<". Q($file) .
-	" perl -e '$script' @start_len |";
+	" $^X -e '$script' @start_len |";
 }
 
 sub column_perlexpr($$$) {
@@ -997,7 +997,7 @@ sub pipe_group_by_setup() {
 	join "", map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..20);
     $opt::remove_rec_sep = 1;
     my @filter;
-    push @filter, "perl";
+    push @filter, "$^X";
     if($opt::groupby =~ /^[a-z0-9_]+(\s|$)/i) {
 	# This is column number/name
 	# Use -a (auto-split)
@@ -5063,7 +5063,7 @@ sub parallelized_host_filtering() {
 	my $command = shift;
 	# wrapper that returns output "0\n" if the command fails
 	# E.g. parallel not installed => "0\n"
-	my $wcmd = q(perl -e '$a=`).$command.q(`; print $? ? "0".v010 : $a');
+	my $wcmd = $^X.q( -e '$a=`).$command.q(`; print $? ? "0".v010 : $a');
 	my $commandline = CommandLine->new(1,[$wcmd],{},0,0,[],[],[],[],{},{});
 	my $job = Job->new($commandline);
 	$job->set_sshlogin($sshlogin);
@@ -5931,7 +5931,7 @@ parallel() {
     #	[1]+  Done   cat
 
     # Make a temporary fifo that perl can read from
-    _fifo_with_GNU_Parallel_source=`perl -e 'use POSIX qw(mkfifo);
+    _fifo_with_GNU_Parallel_source=`$^X -e 'use POSIX qw(mkfifo);
       do {
 	$f = "/tmp/parallel-".join"",
 	  map { (0..9,"a".."z","A".."Z")[rand(62)] } (1..5);
@@ -5953,7 +5953,7 @@ parallel() {
     sh -c "(rm $_file_with_GNU_Parallel_source; cat >$_fifo_with_GNU_Parallel_source; rm $_fifo_with_GNU_Parallel_source) < $_file_with_GNU_Parallel_source &"
 
     # Read the source from the fifo
-    perl $_fifo_with_GNU_Parallel_source "$@"
+    !.$^X.q! $_fifo_with_GNU_Parallel_source "$@"
 }
 !,
 	@env_parallel_source,
@@ -6508,12 +6508,12 @@ sub which(@) {
 	if(not %pid_parentpid_cmd) {
 	    # Filter for SysV-style `ps`
 	    my $sysv = q( ps -ef |).
-		q(perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
+		$^X.q( -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}//; print "@F[1,2] $_"' );
 	    # Minix uses cols 2,3 and can have newlines in the command
 	    # so lines not having numbers in cols 2,3 must be ignored
 	    my $minix = q( ps -ef |).
-		q(perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
+		$^X.q( -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}// and $F[2]>0 and $F[3]>0 and print "@F[2,3] $_"' );
 	    # BSD-style `ps`
 	    my $bsd = q(ps -o pid,ppid,command -ax);
@@ -7103,7 +7103,7 @@ sub sshcmd($) {
 		open(STDERR,">","/dev/null");
 		open(STDIN,"<","/dev/null");
 		exec(@local, "-MT", $self->{'host'}, "--",
-		     "perl", "-e", $sleep);
+		     "$^X", "-e", $sleep);
 	    }
 	}
     }
@@ -7143,7 +7143,7 @@ sub hexwrap($@) {
     # pack+	     = way to write 'pack ' without space
     # q/H10000000/,  = almost the same as "H*" but does not use *
     # join+q//,	     = join '',
-    return('perl -X -e '.
+    return("$^X".' -X -e '.
 	   'GNU_Parallel_worker,eval+pack+q/H10000000/,join+q//,@ARGV '.
 	   $hex);
 }
@@ -7328,7 +7328,7 @@ sub memfree_recompute() {
 	    for my $os (keys %script_of) {
 		$perlscript .= 'if($^O eq "'.$os.'") { '.$script_of{$os}.'}';
 	    }
-	    $script = "perl -e " . ::Q(::spacefree(1,$perlscript));
+	    $script = "$^X -e " . ::Q(::spacefree(1,$perlscript));
 	}
 	return $script;
     }
@@ -7351,7 +7351,7 @@ sub limit($) {
 		 ((tmp=$(tempfile);
 		 LANG=C iostat -x 1 2 > $tmp;
 		 mv $tmp $io_file) </dev/null >/dev/null & );
-		 perl -e '-e $ARGV[0] or exit(1);
+		 !.$^X.q! -e '-e $ARGV[0] or exit(1);
 		   for(reverse <>) {
 		     /Device/ and last;
 		     /(\S+)$/ and $max = $max > $1 ? $max : $1; }
@@ -7376,7 +7376,7 @@ sub limit($) {
 		 ps ax -o state,command |
 		     grep -E '^[DOR].[^[]' |
 		     wc -l |
-		 perl -ne 'exit ('$limit' < $_)';
+		 !.$^X.q! -ne 'exit ('$limit' < $_)';
 	     };
 	     load %s
 	     !,
@@ -7582,7 +7582,7 @@ sub swap_activity($) {
 		$perlscript .= 'if($^O eq "'.$os.'") { print `'.$vmstat{$os}[0].' | awk "{print ' .
 		    $vmstat{$os}[1] . '}"` }';
 	    }
-	    $script = "perl -e " . ::Q($perlscript);
+	    $script = "$^X -e " . ::Q($perlscript);
 	}
 	return $script;
     }
@@ -7665,14 +7665,14 @@ sub loadavg($) {
 	    # svr5 => sysv
 	    # ultrix => ps -ax | awk '{print $3,$5}'
 	    # unixware => ps -el|awk '{print $2,$14,$15}'
-	    my $ps = ::spacefree(1,q{
+	    my $ps = ::spacefree(1,q[
 		$sysv="ps -ef -o s -o comm";
 		$sysv2="ps -ef -o state -o comm";
 		$bsd="ps ax -o state,command";
 		# Treat threads as processes
 		$bsd2="ps axH -o state,command";
 		$psel="ps -el|awk '{ print \$2,\$14,\$15 }'";
-		$cygwin=q{ perl -ne 'close STDERR; /Name/ and print"\n";
+		$cygwin=q{ ].$^X.q[ -ne 'close STDERR; /Name/ and print"\n";
 		    /(Name|Pid|Ppid|State):\s+(\S+)/ and print "$2\t";' /proc/*/status |
 		    awk '{print $2,$1}' };
 		$dummy="echo S COMMAND;echo R dummy";
@@ -7701,7 +7701,7 @@ sub loadavg($) {
 		    'MSWin32' => $sysv,
 		    );
 		print `$ps{$^O}`;
-	    });
+	    ]);
 	    # The command is too long for csh, so base64_wrap the command
 	    $Global::loadavg_cmd = $self->hexwrap($ps);
 	}
@@ -8641,7 +8641,7 @@ sub sct_hpux($) {
     $cpu->{'cores'} ||=
 	::qqx(qq{ /usr/bin/mpsched -s 2>&1 | grep 'Locality Domain Count' | awk '{ print \$4 }'});
     $cpu->{'threads'} ||=
-	::qqx(qq{ /usr/bin/mpsched -s 2>&1 | perl -ne '/Processor Count\\D+(\\d+)/ and print "\$1"'});
+	::qqx(qq{ /usr/bin/mpsched -s 2>&1 | $^X -ne '/Processor Count\\D+(\\d+)/ and print "\$1"'});
     return $cpu;
 }
 
@@ -9342,7 +9342,7 @@ sub empty_input_wrapper($) {
 		exit ($?&127 ? 128+($?&127) : 1+$?>>8)
 	    }
 		  });
-    ::debug("run",'Empty wrap: perl -e '.::Q($script)."\n");
+    ::debug("run",'Empty wrap: '."$^X".' -e '.::Q($script)."\n");
     if($Global::cshell
        and
        length $command > 499) {
@@ -9350,11 +9350,11 @@ sub empty_input_wrapper($) {
 	# $command = "perl -e '".base64_zip_eval()."' ".
 	# join" ",string_zip_base64(
 	#	  'exec "'.::perl_quote_scalar($command).'"');
-	return 'perl -e '.::Q($script)." ".
+	return $^X.' -e '.::Q($script)." ".
 	    base64_wrap("exec \"$Global::shell\",'-c',\"".
 				   ::perl_quote_scalar($command).'"');
     } else {
-	return 'perl -e '.::Q($script)." ".
+	return $^X.' -e '.::Q($script)." ".
 	    $Global::shell." -c ".::Q($command);
     }
 }
@@ -9382,7 +9382,7 @@ sub filter_through_compress($) {
 	$self->set_fh($fdno,'wpid',$wpid);
 	# Decompressor: open output; -s $comfile > 0: rm $comfile output;
 	#		decompress output > stdout
-	my $rpid = open(my $fdr, "-|", "perl", "-e", $cattail, $comfile,
+	my $rpid = open(my $fdr, "-|", "$^X", "-e", $cattail, $comfile,
 			$opt::decompress_program, $wpid,
 			$self->fh($fdno,'name'),$self->fh($fdno,'unlink'))
 	    || die $?;
@@ -9725,7 +9725,7 @@ sub total_failed($) {
 	# Command to remove files and dirs (given as args) without
 	# affecting the exit value in $?/$status.
 	if(not $script) {
-	    $script = "perl -e '".
+	    $script = "$^X -e '".
 		::spacefree(0,q{
 		    $bash=shift;
 		    $csh=shift;
@@ -9765,7 +9765,7 @@ sub total_failed($) {
 	    # It has been measured on:
 	    # AMD 6376: 4095
 	    # ppar -a big --pipepart --block -1 --test $1 --fifo 'cat {} >/dev/null';
-	    $script = "perl -e '".
+	    $script = "$^X -e '".
 		(::spacefree
 		 (0, q{
 		     ($s,$c,$f) = @ARGV;
@@ -9831,7 +9831,7 @@ sub wrapped($) {
 	    # Prepend "echo" (it is written in perl because
 	    # quoting '-e' causes problem in some versions and
 	    # csh's version does something wrong)
-	    $command = q(perl -e '$,=" "; print "@ARGV\n";' -- ) . ::Q($c);
+	    $command = $^X.q( -e '$,=" "; print "@ARGV\n";' -- ) . ::Q($c);
 	}
 	if($Global::parallel_env) {
 	    # If $PARALLEL_ENV set, put that in front of the command
@@ -10021,7 +10021,7 @@ sub base64_wrap($) {
     #	$shell_command = shell command that runs $eval_string
     my $eval_string = shift;
     return
-	"perl -e ".
+	"$^X -e ".
 	::Q(base64_zip_eval())." ".
 	join" ",::shell_quote(string_zip_base64($eval_string));
 }
@@ -10272,7 +10272,7 @@ sub sshlogin_wrap($) {
 		    # csh does not deal well with $ENV with \n
 		    $self->{'sshlogin_wrap'}{$command} = base64_wrap($perl_code);
 		} else {
-		    $self->{'sshlogin_wrap'}{$command} = "perl -e ".::Q($perl_code);
+		    $self->{'sshlogin_wrap'}{$command} = "$^X -e ".::Q($perl_code);
 		}
 	    } else {
 		$self->{'sshlogin_wrap'}{$command} = $command;
@@ -10640,7 +10640,7 @@ sub start($) {
 
 	my $pid;
 	my @setpgrp_wrap =
-	    ('perl','-e',
+	    ("$^X",'-e',
 	     "eval\{setpgrp\}\;eval\{setpriority\(0,0,$opt::nice\)\}\;".
 	     "exec '$Global::shell', '-c', \@ARGV");
 	# The eval is needed to catch exception from open3
@@ -10664,7 +10664,7 @@ sub start($) {
 	my $bash =
 	    ::shell_quote_scalar_default(
 	    "testfun() { rm $name; }; export -f testfun; ".
-	    "perl -MIPC::Open3 -e ".
+	    "$^X -MIPC::Open3 -e ".
 	    ::shell_quote_scalar_default($script)
 	    );
 	my $redefine_eval;
@@ -10765,7 +10765,7 @@ sub start($) {
 	open ERR, '>&', $stderr_fh or ::die_bug("Can't dup STDERR: $!");
 	*IN = $devtty_fh;
 	# The eval is needed to catch exception from open3
-	my @wrap = ('perl','-e',
+	my @wrap = ("$^X",'-e',
 			    "eval\{setpriority\(0,0,$opt::nice\)\}\;".
 			    "exec '$Global::shell', '-c', \@ARGV");
 	eval {
@@ -10915,7 +10915,7 @@ sub interactive_start($) {
 	    (
 	     "(".$actual_command.');'.
 	     # The triple print is needed - otherwise the testsuite fails
-	     q[ perl -e 'while($t++<3){ print $ARGV[0],"\n" }' $?h/$status >> ].
+	     " $^X".q[ -e 'while($t++<3){ print $ARGV[0],"\n" }' $?h/$status >> ].
 	     $tmpfifo."&".
 	     "echo $title; echo \007Job finished at: `date`;sleep 10"
 	    ).
@@ -10923,7 +10923,7 @@ sub interactive_start($) {
 	    # Read a / separated line: 0h/2 for csh, 2/0 for bash.
 	    # If csh the first will be 0h, so use the second as exit value.
 	    # Otherwise just use the first value as exit value.
-	    q{; exec perl -e '$/="/";$_=<>;$c=<>;unlink $ARGV; }.
+	    q{; exec }.$^X.q{ -e '$/="/";$_=<>;$c=<>;unlink $ARGV; }.
 	    q{/(\d+)h/ and exit($1);exit$c' }.$tmpfifo;
     }
 }

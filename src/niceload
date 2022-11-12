@@ -150,7 +150,7 @@ exit($::exitstatus);
 
        	if(not %pid_parentpid_cmd) {
 	    # Filter for SysV-style `ps`
-	    my $sysv = q( ps -ef | perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
+	    my $sysv = q( ps -ef | ).$^X.q( -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}//; print "@F[1,2] $_"' );
 	    # BSD-style `ps`
 	    my $bsd = q(ps -o pid,ppid,command -ax);
@@ -590,7 +590,7 @@ sub netsensor_script {
 	    $self->{'remedian'} = (sort @{$rref->[2]})[$#{$rref->[2]}/2];
 	}
     };
-    return "perl -e ".shell_quote_scalar($perlscript)." $hops";
+    return "$^X -e ".shell_quote_scalar($perlscript)." $hops";
 }
 
 
