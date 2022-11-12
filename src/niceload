@@ -152,9 +152,6 @@ exit($::exitstatus);
 	    # Filter for SysV-style `ps`
 	    my $sysv = q( ps -ef | perl -ane '1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
 		q(s/^.{$s}//; print "@F[1,2] $_"' );
-	    # Crazy msys: ' is not accepted on the cmd line, but " are treated as '
-	    my $msys = q( ps -ef | perl -ane "1..1 and /^(.*)CO?MM?A?N?D/ and $s=length $1;).
-		q(s/^.{$s}//; print qq{@F[1,2] $_}" );
 	    # BSD-style `ps`
 	    my $bsd = q(ps -o pid,ppid,command -ax);
 	    %pid_parentpid_cmd =
@@ -169,7 +166,7 @@ exit($::exitstatus);
 	     'hpux' => $sysv,
 	     'linux' => $sysv,
 	     'mirbsd' => $bsd,
-	     'msys' => $msys,
+	     'msys' => $sysv,
 	     'MSWin32' => $sysv,
 	     'netbsd' => $bsd,
 	     'nto' => $sysv,

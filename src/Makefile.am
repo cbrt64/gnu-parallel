@@ -2,7 +2,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-bin_SCRIPTS = parallel sql niceload parcat parset parsort	\
+PERL_BINS = parallel sql niceload parcat parsort
+
+bin_SCRIPTS = $(PERL_BINS) parset	\
 	env_parallel env_parallel.ash env_parallel.bash		\
 	env_parallel.csh env_parallel.dash env_parallel.fish	\
 	env_parallel.ksh env_parallel.mksh env_parallel.pdksh	\
@@ -45,6 +47,12 @@ HTML_FILES = parallel.html env_parallel.html sem.html sql.html		\
 	parsort.html
 
 install-exec-hook:
+	@cd $(DESTDIR)$(bindir); \
+	for bin in $(PERL_BINS); do \
+	    mv $$bin "$$bin".tmp; \
+	    sed '1s|^#!.*perl|#!$(PERL_SHEBANG)|' "$$bin".tmp > $$bin; \
+	    rm -f "$$bin".tmp; \
+	done
 	rm "$(DESTDIR)$(bindir)"/sem || true
 	$(LN_S) parallel "$(DESTDIR)$(bindir)"/sem
 

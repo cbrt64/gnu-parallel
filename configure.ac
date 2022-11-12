@@ -1,4 +1,16 @@
 AC_INIT([parallel],[20230122],[bug-parallel@gnu.org])
+
+# on MSys2 prefer msys to native programs, especially perl
+# native windows perl does not work for the time being
+case "`uname -s`" in
+    MSYS*|MINGW*)
+	PATH="/usr/bin:$PATH"
+	export PATH
+	;;
+esac
+
+AX_SYS_PERLSHARPBANG
+
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_FILES([
