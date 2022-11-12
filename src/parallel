@@ -2486,7 +2486,22 @@ sub parse_options(@) {
     parse_semaphore();
 
     if(defined $opt::eta) { $opt::progress = $opt::eta; }
-    if(defined $opt::bar) { $opt::progress = $opt::bar; }
+    if(defined $opt::bar) {
+	my $fh = $Global::status_fd || *STDERR;
+	eval q{
+	    # Enable utf8 if possible
+	    use utf8;
+	    binmode $fh, "encoding(utf8)";
+	    *decode = \&Encode::decode_utf8;
+	};
+	if(eval { decode("x") }) {
+	    # Great: decode works
+	} else {
+	    # UTF8-decode not supported: Dummy decode
+	    eval q{sub decode { $_[0]; }};
+	}
+	$opt::progress = $opt::bar;
+    }
 
     # Funding a free software project is hard. GNU Parallel is no
     # exception. On top of that it seems the less visible a project
@@ -4398,9 +4413,7 @@ sub progress() {
 	my $arg = $Global::newest_job ?
 	    $Global::newest_job->{'commandline'}->
 	    replace_placeholders(["\257<\257>"],0,0) : "";
-	# These chars mess up display in the terminal in US-ASCII
-	# and in some combinations as UTF8 (e.g. ঐ ও ঔ ক 𐅪 𐅫 𐅬)
-	$arg =~ tr/[\011-\016\033\302-\365]//d;
+	$arg = decode($arg);
 	my $eta_dhms = ::seconds_to_time_units($eta);
 	my $bar_text =
 	    sprintf("%d%% %d:%d=%s %s",
