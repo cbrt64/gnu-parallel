@@ -5,6 +5,9 @@ par_bug56403	3	job3cjob3d
 par_bug56403	1	job1a
 par_bug56403	1	job1b
 par_bug56403	2	job2cjob2d
+par_csv_not_installed	### Give error if CSV.pm is not installed when using --csv
+par_csv_not_installed	parallel: Error: The perl module Text::CSV is not installed.
+par_csv_not_installed	parallel: Error: Try installing libtext-csv-perl or perl-Text-CSV.
 par_delay_Xauto	TODO: --retries for those that fail and --sshdelay
 par_delay_Xauto	### bug #58911: --delay Xauto
 par_delay_Xauto	0

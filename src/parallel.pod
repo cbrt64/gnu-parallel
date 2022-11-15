@@ -988,15 +988,15 @@ B<env_parallel>
 Show the estimated number of seconds before finishing.
 
 This forces GNU B<parallel> to read all jobs before starting to find
-the number of jobs. GNU B<parallel> normally only reads the next job
-to run.
+the number of jobs (unless you use B<--total-jobs>). GNU B<parallel>
+normally only reads the next job to run.
 
 The estimate is based on the runtime of finished jobs, so the first
 estimate will only be shown when the first job has finished.
 
 Implies B<--progress>.
 
-See also: B<--bar> B<--progress>
+See also: B<--bar> B<--progress> B<--total-jobs>
 
 
 =item B<--fg>
@@ -1027,6 +1027,9 @@ Beware: If the fifo is never opened for reading, the job will block forever:
 
   seq 1000000 | parallel --fifo echo This will block
   seq 1000000 | parallel --fifo 'echo This will not block < {}'
+
+By using B<--fifo> instead of B<--cat> you may save I/O as B<--cat>
+will write to a temporary file, whereas B<--fifo> will not.
 
 Implies B<--pipe> unless B<--pipe-part> is used.
 
@@ -1203,11 +1206,11 @@ Example:
 
 =item Z<> --halt now,fail=1
 
-exit when the first job fails. Kill running jobs.
+exit when a job has failed. Kill running jobs.
 
 =item Z<> --halt soon,fail=3
 
-exit when 3 jobs fail, but wait for running jobs to complete.
+exit when 3 jobs have failed, but wait for running jobs to complete.
 
 =item Z<> --halt soon,fail=3%
 
@@ -1215,11 +1218,11 @@ exit when 3% of the jobs have failed, but wait for running jobs to complete.
 
 =item Z<> --halt now,success=1
 
-exit when a job succeeds. Kill running jobs.
+exit when a job has succeeded. Kill running jobs.
 
 =item Z<> --halt soon,success=3
 
-exit when 3 jobs succeeds, but wait for running jobs to complete.
+exit when 3 jobs have succeeded, but wait for running jobs to complete.
 
 =item Z<> --halt now,success=3%
 
@@ -1227,11 +1230,11 @@ exit when 3% of the jobs have succeeded. Kill running jobs.
 
 =item Z<> --halt now,done=1
 
-exit when one of the jobs finishes. Kill running jobs.
+exit when a job has finished. Kill running jobs.
 
 =item Z<> --halt soon,done=3
 
-exit when 3 jobs finishes, but wait for running jobs to complete.
+exit when 3 jobs have finished, but wait for running jobs to complete.
 
 =item Z<> --halt now,done=3%
 
@@ -1339,6 +1342,8 @@ See also: B<{}>
 
 
 =item B<--joblog> I<logfile>
+
+=item B<--jl> I<logfile>
 
 Logfile for executed jobs.
 

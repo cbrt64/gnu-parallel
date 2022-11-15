@@ -4,6 +4,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+par_csv_not_installed() {
+    echo '### Give error if CSV.pm is not installed when using --csv'
+    sudo parallel mv {} {}.hidden ::: /usr/share/perl5/Text/CSV.pm
+    stdout parallel --csv echo ::: this should give an error
+    sudo parallel mv {}.hidden {} ::: /usr/share/perl5/Text/CSV.pm
+}
+
 par_sem_dir() {
     echo '### bug #58985: sem stall if .parallel/semaphores is chmod 0'
     chmod 0 ~/.parallel/semaphores

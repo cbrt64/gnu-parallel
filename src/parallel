@@ -2278,7 +2278,11 @@ sub parse_options(@) {
     if(defined $opt::tmuxpane) { $opt::tmux = $opt::tmuxpane; }
     if(defined $opt::colsep) { $Global::trim = 'lr'; }
     if(defined $opt::csv) {
-	$Global::use{"Text::CSV"} ||= eval "use Text::CSV; 1;";
+	if(not $Global::use{"Text::CSV"} ||= eval "use Text::CSV; 1;") {
+	    ::error("The perl module Text::CSV is not installed.");
+	    ::error("Try installing libtext-csv-perl or perl-Text-CSV.");
+	    wait_and_exit(255);
+	}
 	$opt::colsep = defined $opt::colsep ? $opt::colsep : ",";
 	my $csv_setting = { binary => 1, sep_char => $opt::colsep };
 	my $sep = $csv_setting->{sep_char};
@@ -2698,7 +2702,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20221022;
+    $Global::version = 20221115;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -3551,18 +3555,18 @@ sub shell_quote_scalar_default($) {
     #	$string = string to be quoted
     # Returns:
     #	$shell_quoted = string quoted as needed by the shell
-    my $s = $_[0];
-    if($s =~ /[^-_.+a-z0-9\/]/i) {
-	$s =~ s/'/'"'"'/g; # "-quote single quotes
-	$s = "'$s'";	   # '-quote entire string
-	$s =~ s/^''//;	   # Remove unneeded '' at ends
-	$s =~ s/''$//;	   # (faster than s/^''|''$//g)
-	return $s;
-    } elsif ($s eq "") {
+    local $_ = $_[0];
+    if(/[^-_.+a-z0-9\/]/i) {
+	s/'/'"'"'/g;	# "-quote '-quotes
+	$_ = "'$_'";	# '-quote entire string
+	s/^''//;	# Remove unneeded '' at ends
+	s/''$//;	# (faster than s/^''|''$//g)
+	return $_;
+    } elsif ($_ eq "") {
 	return "''";
     } else {
 	# No quoting needed
-	return $s;
+	return $_;
     }
 }
 
@@ -13152,19 +13156,22 @@ sub real_max_length() {
 sub find_max($) {
     my $string = shift;
     # This is slow on Cygwin, so give Cygwin users a warning
-    if($^O eq "cygwin") {
+    if($^O eq "cygwin" or $^O eq "msys") {
 	::warning("Finding the maximal command line length. ".
 		  "This may take up to 1 minute.")
     }
     # Use an upper bound of 100 MB if the shell allows for infinite
     # long lengths
     my $upper = 100_000_000;
+    my $lower;
     # 1000 is supported everywhere, so the search can start anywhere 1..999
     # 324 makes the search much faster on Cygwin, so let us use that
     my $len = 324;
     do {
 	if($len > $upper) { return $len };
+	$lower = $len;
 	$len *= 16;
+	::debug("init", "Maxlen: $lower<$len<$upper(".($upper-$lower)."): ");
     } while (is_acceptable_command_line_length($len,$string));
     # Then search for the actual max length between
     # last successful length ($len/16) and upper bound
@@ -13190,27 +13197,11 @@ sub binary_find_max($$$) {
     # Guessing too high is cheap. Guessing too low is expensive.
     my $split = ($^O eq "cygwin" or $^O eq "msys") ? 0.93 : 0.5;
     my $middle = int (($upper-$lower)*$split + $lower);
-    ::debug("init", "Maxlen: $lower<$middle<$upper: ");
+    ::debug("init", "Maxlen: $lower<$middle<$upper(".($upper-$lower)."): ");
     if (is_acceptable_command_line_length($middle,$string)) {
         return binary_find_max($middle,$upper,$string);
     } else {
         return binary_find_max($lower,$middle,$string);
-    }
-}
-
-sub _binary_find_max($$$) {
-    # Given a lower and upper bound find the max (length or args) of a
-    # command line
-    # Returns:
-    #	number of chars on the longest command line allowed
-    my ($lower, $upper, $string) = (@_);
-    if($lower == $upper or $lower == $upper-1) { return $lower; }
-    my $middle = int (($upper-$lower)/2 + $lower);
-    ::debug("init", "Maxlen: $lower<$middle<$upper: ");
-    if (is_acceptable_command_line_length($middle,$string)) {
-	return binary_find_max($middle,$upper,$string);
-    } else {
-	return binary_find_max($lower,$middle,$string);
     }
 }
 
@@ -13232,7 +13223,7 @@ sub _binary_find_max($$$) {
 	# Force using non-built-in command
 	$prg ||= ::which("echo");
 	::qqx("$prg ".${string}x(($len-1-length $prg)/length $string));
-	::debug("init", "$len=$? ");
+	::debug("init", "$len=$?\n");
 	return not $?;
     }
 }
