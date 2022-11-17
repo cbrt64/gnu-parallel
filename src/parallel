@@ -13292,8 +13292,17 @@ sub find_max($) {
     # This is slow on Cygwin, so give Cygwin users a warning
     if($^O eq "cygwin" or $^O eq "msys") {
 	::warning("Finding the maximal command line length. ".
-		  "This may take up to 1 minute.")
+		  "This may take up to 1 minute.");
+	# Cygwin uses 1MiB (formerly 12MiB) shared memory to pass args
+	# (Linux's default is 128kiB), so try this first to save time
+	for(12, 1) {
+	    my len = $_ * 1024*1024 - 4096;
+	    if (is_acceptable_command_line_length($len,$string)) {
+		return $len;
+	    }
+	}
     }
+
     # Use an upper bound of 100 MB if the shell allows for infinite
     # long lengths
     my $upper = 100_000_000;
