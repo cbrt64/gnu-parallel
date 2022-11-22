@@ -543,7 +543,7 @@ string that is not in the command line.
 See also: B<:::>
 
 
-=item B<--bar>
+=item B<--bar> (alpha testing)
 
 Show progress as a progress bar.
 
@@ -833,7 +833,7 @@ to stdout (standard output) unless B<--decompress-program> is given.
 See also: B<--compress>
 
 
-=item B<--csv>
+=item B<--csv> (alpha testing)
 
 Treat input as CSV-format.
 
@@ -1049,7 +1049,7 @@ Outputs: 1,1 1,2 1,3 2,2 2,3 3,3
 See also: B<skip()> B<--no-run-if-empty>
 
 
-=item B<--filter-hosts>
+=item B<--filter-hosts> (alpha testing)
 
 Remove down hosts.
 
@@ -3026,13 +3026,13 @@ I<duration> is in seconds, but can be postfixed with s, m, h, or d.
 See also: TIME POSTFIXES B<--sshlogin> B<--delay>
 
 
-=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
+=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
 
-=item B<--sshlogin> I<@hostgroup> (beta testing)
+=item B<--sshlogin> I<@hostgroup> (alpha testing)
 
-=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
+=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
 
-=item B<-S> I<@hostgroup> (beta testing)
+=item B<-S> I<@hostgroup> (alpha testing)
 
 Distribute jobs to remote computers.
 
@@ -3225,7 +3225,7 @@ then killed. Process groups are dependant on the tty.
 See also: B<--ungroup> B<--open-tty>
 
 
-=item B<--tag>
+=item B<--tag> (alpha testing)
 
 Tag lines with arguments.
 
@@ -3238,7 +3238,7 @@ B<--tag> is ignored when using B<-u>.
 See also: B<--tagstring> B<--ctag>
 
 
-=item B<--tagstring> I<str>
+=item B<--tagstring> I<str> (alpha testing)
 
 Tag lines with a string.
 

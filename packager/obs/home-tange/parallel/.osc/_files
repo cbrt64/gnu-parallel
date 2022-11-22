@@ -1,7 +1,9 @@
-<directory name="parallel" rev="350" vrev="2" srcmd5="57bc8fc37f93dc2913993feaf20d195c">
-  <entry name="PKGBUILD" md5="fb653a6d538ae7d2cc7302fd7e925d1c" size="1866" mtime="1663868896" />
-  <entry name="parallel-20220922.tar.bz2" md5="fdc53e9ec55ee9e05c9df85462845961" size="2407079" mtime="1663868897" />
-  <entry name="parallel.spec" md5="053f2744317b2365be9f67ea35c911ba" size="6224" mtime="1663868897" />
-  <entry name="parallel_20220922.dsc" md5="0d50ad24164359e1475509873bc53862" size="556" mtime="1663868897" />
-  <entry name="parallel_20220922.tar.gz" md5="493bd67d5ca1099fe7b0495c68ecb918" size="2667338" mtime="1663868897" />
+<directory name="parallel" rev="353" vrev="2" srcmd5="057a36e37939bfca0c9d9d5f74841ab9">
+  <entry name="PKGBUILD" md5="0dbd44569d0c8a8b6558b7820b843d01" size="1244" mtime="1669140752" />
+  <entry name="parallel-20221022.tar.bz2" md5="fa2081ee9e85fa3170081316a3b4ad48" size="2409471" mtime="1666458602" />
+  <entry name="parallel-20221122.tar.bz2" md5="f5e50aab8fd6407d3e7680e0af514c1a" size="2415504" mtime="1669140752" />
+  <entry name="parallel.spec" md5="7823cba794beabcac195db1195e23c22" size="6224" mtime="1669140753" />
+  <entry name="parallel_20221022.tar.gz" md5="e0c5ef89374787b30f23f601814973cb" size="2670976" mtime="1666457283" />
+  <entry name="parallel_20221122.dsc" md5="28d8f67882e59ae87b2139d2b7f8a958" size="556" mtime="1669140753" />
+  <entry name="parallel_20221122.tar.gz" md5="e06c172589a940b1a87f1299632a04c2" size="2678617" mtime="1669140753" />
 </directory>
