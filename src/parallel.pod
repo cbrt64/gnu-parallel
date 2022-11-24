@@ -543,7 +543,7 @@ string that is not in the command line.
 See also: B<:::>
 
 
-=item B<--bar> (alpha testing)
+=item B<--bar> (beta testing)
 
 Show progress as a progress bar.
 
@@ -751,7 +751,7 @@ See also: B<--basefile> B<--transfer> B<--transferfile> B<--sshlogin>
 B<--return>
 
 
-=item B<--color> (beta testing)
+=item B<--color>
 
 Colour output.
 
@@ -763,9 +763,9 @@ B<--color> is ignored when using B<-u>.
 See also: B<--color-failed>
 
 
-=item B<--color-failed> (beta testing)
+=item B<--color-failed>
 
-=item B<--cf> (beta testing)
+=item B<--cf>
 
 Colour the output from failing jobs white on red.
 
@@ -833,7 +833,7 @@ to stdout (standard output) unless B<--decompress-program> is given.
 See also: B<--compress>
 
 
-=item B<--csv> (alpha testing)
+=item B<--csv> (beta testing)
 
 Treat input as CSV-format.
 
@@ -1049,7 +1049,7 @@ Outputs: 1,1 1,2 1,3 2,2 2,3 3,3
 See also: B<skip()> B<--no-run-if-empty>
 
 
-=item B<--filter-hosts> (alpha testing)
+=item B<--filter-hosts> (beta testing)
 
 Remove down hosts.
 
@@ -1581,9 +1581,9 @@ Similar to B<--memfree>.
 See also: B<--memfree> B<--load>
 
 
-=item B<--latest-line> (alpha testing)
+=item B<--latest-line> (beta testing)
 
-=item B<--ll> (alpha testing)
+=item B<--ll> (beta testing)
 
 Print the lastest line. Each job gets a single line that is updated
 with the lastest output from the job.
@@ -1600,9 +1600,9 @@ Example:
 See also: B<--line-buffer>
 
 
-=item B<--line-buffer> (beta testing)
+=item B<--line-buffer>
 
-=item B<--lb> (beta testing)
+=item B<--lb>
 
 Buffer output on line basis.
 
@@ -2019,7 +2019,7 @@ B<--progress> on a running GNU B<parallel> process.
 See also: B<--eta> B<--bar>
 
 
-=item B<--max-line-length-allowed> (alpha testing)
+=item B<--max-line-length-allowed> (beta testing)
 
 Print maximal command line length.
 
@@ -3026,13 +3026,13 @@ I<duration> is in seconds, but can be postfixed with s, m, h, or d.
 See also: TIME POSTFIXES B<--sshlogin> B<--delay>
 
 
-=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
+=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
 
-=item B<--sshlogin> I<@hostgroup> (alpha testing)
+=item B<--sshlogin> I<@hostgroup> (beta testing)
 
-=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (alpha testing)
+=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
 
-=item B<-S> I<@hostgroup> (alpha testing)
+=item B<-S> I<@hostgroup> (beta testing)
 
 Distribute jobs to remote computers.
 
@@ -3225,7 +3225,7 @@ then killed. Process groups are dependant on the tty.
 See also: B<--ungroup> B<--open-tty>
 
 
-=item B<--tag> (alpha testing)
+=item B<--tag> (beta testing)
 
 Tag lines with arguments.
 
@@ -3238,7 +3238,7 @@ B<--tag> is ignored when using B<-u>.
 See also: B<--tagstring> B<--ctag>
 
 
-=item B<--tagstring> I<str> (alpha testing)
+=item B<--tagstring> I<str> (beta testing)
 
 Tag lines with a string.
 
@@ -3290,9 +3290,9 @@ dies before the waiting time is up.
 See also: B<--halt> B<--timeout> B<--memfree>
 
 
-=item B<--total-jobs> I<jobs> (alpha testing)
+=item B<--total-jobs> I<jobs> (beta testing)
 
-=item B<--total> I<jobs> (alpha testing)
+=item B<--total> I<jobs> (beta testing)
 
 Provide the total number of jobs for computing ETA which is also used
 for B<--bar>.

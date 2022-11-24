@@ -749,9 +749,10 @@ ps: ps-recursive
 ps-am:
 
 uninstall-am:
-
+	@$(NORMAL_INSTALL)
+	$(MAKE) $(AM_MAKEFLAGS) uninstall-hook
 .MAKE: $(am__recursive_targets) all install-am install-data-am \
-	install-strip
+	install-strip uninstall-am
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
 	am--refresh check check-am clean clean-cscope clean-generic \
@@ -767,7 +768,7 @@ uninstall-am:
 	install-strip installcheck installcheck-am installdirs \
 	installdirs-am maintainer-clean maintainer-clean-generic \
 	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am tags \
-	tags-am uninstall uninstall-am
+	tags-am uninstall uninstall-am uninstall-hook
 
 .PRECIOUS: Makefile
 
@@ -936,7 +937,7 @@ pack_unpack_and_test_build:
 	./configure && make -j && sudo make -j install
 install-data-hook:
 	mkdir -p ${zshcompletiondir} ${bashcompletiondir}
-	src/parallel --shell-completion bash > ${bashcompletion}
+	$(bindir)/parallel --shell-completion bash > ${bashcompletion}
 # Make zsh eval the --shell-completion code dynamically so if
 # a newer version of GNU Parallel is installed by a normal
 # user, this newer version will generate the
@@ -945,6 +946,9 @@ install-data-hook:
 	echo '(( $$+functions[_comp_parallel] )) ||' >> ${zshcompletion}
 	echo '  eval "$$(parallel --shell-completion auto)" &&' >> ${zshcompletion}
 	echo '  _comp_parallel' >> ${zshcompletion}
+
+uninstall-hook:
+	rm -rf ${zshcompletiondir} ${bashcompletiondir}
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

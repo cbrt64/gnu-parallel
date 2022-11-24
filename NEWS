@@ -1,12 +1,14 @@
 20221122
 
+New in this release:
+
 * Support for IPv6 adresses and _ in hostnames in --sshlogin.
 
 * Use --total-jobs for --eta/--bar if generating jobs is slow.
 
 * A lot of bug fixed in --latest-line.
 
-* Better support MSYS2.
+* Better support for MSYS2.
 
 * Better Text::CSV error messages.
 

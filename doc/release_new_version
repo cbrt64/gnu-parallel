@@ -152,9 +152,9 @@ cp ../parallel-web/parallel/parallel.html  ../parallel-web/parallel/man.html
 pushd ../parallel-web/parallel
 # Bug at Savannah makes this take 30 seconds
 (cd ..;
- torsocks cvs -z3 -d:ext:tange@cvs.savannah.gnu.org:/web/parallel co parallel)
-torsocks cvs up
-torsocks cvs ci -m "New release"
+ cvs -z3 -d:ext:tange@cvs.savannah.gnu.org:/web/parallel co parallel)
+cvs up
+cvs ci -m "New release"
 pushd
 
 == Commit released version ==
