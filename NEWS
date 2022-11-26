@@ -6,7 +6,7 @@ New in this release:
 
 * Use --total-jobs for --eta/--bar if generating jobs is slow.
 
-* A lot of bug fixed in --latest-line.
+* A lot of bugs fixed in --latest-line.
 
 * Better support for MSYS2.
 
@@ -14,9 +14,11 @@ New in this release:
 
 * --bar supports UTF8.
 
-* GNU Parallel is now on Mastodon: @GNU_Parallel@hostux.social
-
 * Bug fixes and man page updates.
+
+News about GNU Parallel:
+
+* GNU Parallel is now on Mastodon: @GNU_Parallel@hostux.social
 
 
 20221022

@@ -648,23 +648,23 @@ par_result	### Test --results --header : piped
 par_result	parallel: Warning: A NUL character in the input was replaced with \0.
 par_result	parallel: Warning: NUL cannot be passed through in the argument list.
 par_result	parallel: Warning: Did you mean to use the --null option?
-par_result	/tmp/parallel_results_test/testF/Col/backslash\\tab/2
-par_result	/tmp/parallel_results_test/testF/Col/backslash\\tab/2/slash\_null\\0eof
-par_result	/tmp/parallel_results_test/testF/Col/backslash\\tab/2/slash\_null\\0eof/seq
-par_result	/tmp/parallel_results_test/testF/Col/backslash\\tab/2/slash\_null\\0eof/stderr
-par_result	/tmp/parallel_results_test/testF/Col/backslash\\tab/2/slash\_null\\0eof/stdout
+par_result	/tmp/parallel_results_test/testF/Col/backslash\tab/2
+par_result	/tmp/parallel_results_test/testF/Col/backslash\tab/2/slash+znull\0eof
+par_result	/tmp/parallel_results_test/testF/Col/backslash\tab/2/slash+znull\0eof/seq
+par_result	/tmp/parallel_results_test/testF/Col/backslash\tab/2/slash+znull\0eof/stderr
+par_result	/tmp/parallel_results_test/testF/Col/backslash\tab/2/slash+znull\0eof/stdout
 par_result	### Test --results --header : piped - non-existing column header
 par_result	parallel: Warning: A NUL character in the input was replaced with \0.
 par_result	parallel: Warning: NUL cannot be passed through in the argument list.
 par_result	parallel: Warning: Did you mean to use the --null option?
 par_result	/tmp/parallel_results_test/testG/
 par_result	/tmp/parallel_results_test/testG/Col1
-par_result	/tmp/parallel_results_test/testG/Col1/backslash\\tab
-par_result	/tmp/parallel_results_test/testG/Col1/backslash\\tab/2
-par_result	/tmp/parallel_results_test/testG/Col1/backslash\\tab/2/slash\_null\\0eof
-par_result	/tmp/parallel_results_test/testG/Col1/backslash\\tab/2/slash\_null\\0eof/seq
-par_result	/tmp/parallel_results_test/testG/Col1/backslash\\tab/2/slash\_null\\0eof/stderr
-par_result	/tmp/parallel_results_test/testG/Col1/backslash\\tab/2/slash\_null\\0eof/stdout
+par_result	/tmp/parallel_results_test/testG/Col1/backslash\tab
+par_result	/tmp/parallel_results_test/testG/Col1/backslash\tab/2
+par_result	/tmp/parallel_results_test/testG/Col1/backslash\tab/2/slash+znull\0eof
+par_result	/tmp/parallel_results_test/testG/Col1/backslash\tab/2/slash+znull\0eof/seq
+par_result	/tmp/parallel_results_test/testG/Col1/backslash\tab/2/slash+znull\0eof/stderr
+par_result	/tmp/parallel_results_test/testG/Col1/backslash\tab/2/slash+znull\0eof/stdout
 par_result	/tmp/parallel_results_test/testG/Col1/v1
 par_result	/tmp/parallel_results_test/testG/Col1/v1/2
 par_result	/tmp/parallel_results_test/testG/Col1/v1/2/v2

@@ -6,6 +6,16 @@
 
 # These fail regularly
 
+par_ll_tag() {
+    (
+	parallel --tag --ll -q printf "a\n{}\n" ::: should-be-tagged
+	parallel --tag --ll -q printf "a\n\r{}\n" ::: should-be-tagged
+	parallel --color --tag --ll true ::: A
+	parallel --color --tag --ll 'echo;true {}' ::: B
+	parallel --color --tag --ll 'echo {};true {}' ::: C
+    ) | puniq
+}
+
 par_ll_lb_color() {
     echo 'bug #62386: --color (--ctag but without --tag)'
     echo 'bug #62438: See last line from multiple jobslots'

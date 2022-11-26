@@ -14,6 +14,65 @@ export TMP5G
 
 rm -f /tmp/*.{tmx,pac,arg,all,log,swp,loa,ssh,df,pip,tmb,chr,tms,par}
 
+par_compare_exit_codes() {
+    echo '### compare the exit codes'
+    echo 'directly from shells, shells called from parallel,'
+    echo 'killed with different signals'
+    echo
+    echo sig=joblog_sig shell=parallel=joblog
+    
+    selfkill=$(mktemp)
+    export selfkill
+    echo 'kill -$1 $$' >$selfkill
+    exit=$(mktemp)
+    export exit
+    echo 'exit $1' >$exit
+
+    doit() {
+	shell=$1
+	sig=$2
+	sig128=$(( sig + 128 ))
+	sh -c "$shell $selfkill $sig" 2>/dev/null
+	raw=$?
+	sh -c "$shell $exit $sig128" 2>/dev/null
+	raw128=$?
+	
+	log=$(mktemp)
+	$shell -c "parallel --halt now,done=1 --jl $log $shell $selfkill ::: $sig" 2>/dev/null
+	#echo parallel $shell $sig = $?
+	parallel=$?
+	joblog_exit=$(field 7 < $log | tail -n1)
+	joblog_signal=$(field 8 < $log | tail -n1)
+	$shell -c "parallel --halt now,done=1 --jl $log $shell $exit ::: $sig128" 2>/dev/null
+	parallel128=$?
+	joblog_exit128=$(field 7 < $log | tail -n1)
+	joblog_signal128=$(field 8 < $log | tail -n1)
+	
+	#echo joblog p $shell $sig $(field 8,7 < $log | tail -n1)
+	rm $log
+	
+	echo $shell sig' ' $sig=$joblog_signal $raw=$parallel=$joblog_exit
+	echo $shell exit $sig128=$joblog_signal128 $raw128=$parallel128=$joblog_exit128
+    }
+    export -f doit
+
+    # These give the same exit code prepended with 'true;' or not
+    OK="ash csh dash fish fizsh posh rc sash sh tcsh"
+    # These do not give the same exit code prepended with 'true;' or not
+    BAD="bash ksh93 mksh static-sh yash zsh"
+
+    (
+	# Most block on signals: 19+20+21+22
+	ulimit -n `ulimit -Hn`
+	parallel -j1000% -k doit ::: $OK $BAD ::: {1..18}  {23..64}
+	# fdsh blocks on a lot more signals
+	parallel -j1000% -k doit ::: fdsh ::: 2 {9..12} {14..18} {20..23} 26 27 29 30 {32..64}
+    ) |
+	# Ignore where the exit codes are the same
+	perl -ne '/(\d+)=\1=\1/ or print'
+    rm $selfkill
+}
+
 par_retries_unreachable() {
   echo '### Test of --retries on unreachable host'
   seq 2 | stdout parallel -k --retries 2 -v -S 4.3.2.1,: echo

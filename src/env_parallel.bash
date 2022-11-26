@@ -90,9 +90,7 @@ env_parallel() {
 	_ignore_RO="`_ignore_READONLY`"
 	# shellcheck disable=SC2006
 	_ignore_HARD="`_ignore_HARDCODED`"
-	# Macos-grep does not like long patterns
-	# Old Solaris grep does not support -E
-	# Perl Version of:
+	# To avoid depending on grep dialect, use Perl version of:
 	# grep -Ev '^(...)$' |
 	perl -ne '/^(
 		     PARALLEL_ENV|

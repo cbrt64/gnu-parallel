@@ -5425,8 +5425,16 @@ sub reaper() {
 	$job->set_exitstatus(-2);
 	$job->set_exitsignal(0);
     } else {
-	$job->set_exitstatus($? >> 8);
 	$job->set_exitsignal($? & 127);
+	if($job->exitstatus()) {
+	    # Exit status already set - probably by --timeout
+	} elsif($? & 127) {
+	    # Killed by signal. Many shells return: 128 | $signal
+	    $job->set_exitstatus(128 | $?);
+	} else {
+	    # Normal exit
+	    $job->set_exitstatus($? >> 8);
+	}
     }
 
     debug("run", "\nseq ",$job->seq()," died (", $job->exitstatus(), ")");

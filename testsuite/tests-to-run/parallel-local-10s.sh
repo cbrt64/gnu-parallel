@@ -8,6 +8,45 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_quote_special_results() {
+    doit() {
+	mkfs=$1
+	img=$(mktemp /dev/shm/par-test-loop-XXXX.img)
+	dir=$(mktemp -d /tmp/par-test-loop-XXXX)
+	dd if=/dev/zero bs=1000k count=150 > $img
+	# Use the mkfs.$filesystem
+	$mkfs $img
+	sudo mount $img $dir -oloop,uid=`id -u` 2>/dev/null ||
+	    sudo mount $img $dir -oloop
+	cd $dir
+	sudo chown `id -u` .
+	df $dir
+	printf "%s\0" '' +m . +_ .. +__ ,. ,.. + ++ / +z |
+	    parallel -0 --results a echo
+	find a | sort
+	seq 128 | perl -ne 'printf "%c\0",$_' |
+	    parallel -0 --results b128 echo
+	find b128 | sort
+	seq 128 255 | perl -ne 'printf "%c\0",$_' |
+	    parallel -0 --results b255 echo
+	find b255 | sort
+	cd
+	sudo umount $dir
+	rm -r $dir/
+	rm $img
+    }
+    export -f doit
+    stdout parallel -k --tag --plus doit ::: \
+	   mkfs.btrfs mkfs.exfat mkfs.ext2 mkfs.ext3 mkfs.ext4 \
+           "mkfs.reiserfs -fq" "mkfs.ntfs -F" "mkfs.xfs -f" mkfs.minix \
+	   mkfs.fat mkfs.vfat mkfs.msdos mkfs.f2fs |
+	perl -pe 's:(/dev/loop|par-test-loop)\S+:$1:g;s/ +/ /g' |
+	G -v MB/s -v UUID -v Binutils
+    # Skip:
+    #   mkfs.bfs - ro
+    #   mkfs.cramfs - ro
+}
+
 par_totaljobs() {
     . `which env_parallel.bash`
     myrun() {

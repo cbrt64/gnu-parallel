@@ -1,3 +1,135 @@
+par_compare_exit_codes	### compare the exit codes
+par_compare_exit_codes	directly from shells, shells called from parallel,
+par_compare_exit_codes	killed with different signals
+par_compare_exit_codes	
+par_compare_exit_codes	sig=joblog_sig shell=parallel=joblog
+par_compare_exit_codes	par_compare_exit_codes	
+par_compare_exit_codes	csh sig  2=0 130=1=1
+par_compare_exit_codes	posh sig  34=11 162=139=139
+par_compare_exit_codes	posh sig  35=11 163=139=139
+par_compare_exit_codes	posh sig  36=11 164=139=139
+par_compare_exit_codes	posh sig  37=11 165=139=139
+par_compare_exit_codes	posh sig  38=11 166=139=139
+par_compare_exit_codes	posh sig  39=11 167=139=139
+par_compare_exit_codes	posh sig  40=11 168=139=139
+par_compare_exit_codes	posh sig  41=11 169=139=139
+par_compare_exit_codes	posh sig  42=11 170=139=139
+par_compare_exit_codes	posh sig  43=11 171=139=139
+par_compare_exit_codes	posh sig  44=11 172=139=139
+par_compare_exit_codes	posh sig  45=11 173=139=139
+par_compare_exit_codes	posh sig  46=11 174=139=139
+par_compare_exit_codes	posh sig  47=11 175=139=139
+par_compare_exit_codes	posh sig  48=11 176=139=139
+par_compare_exit_codes	posh sig  49=11 177=139=139
+par_compare_exit_codes	posh sig  50=11 178=139=139
+par_compare_exit_codes	posh sig  51=11 179=139=139
+par_compare_exit_codes	posh sig  52=11 180=139=139
+par_compare_exit_codes	posh sig  53=11 181=139=139
+par_compare_exit_codes	posh sig  54=11 182=139=139
+par_compare_exit_codes	posh sig  55=11 183=139=139
+par_compare_exit_codes	posh sig  56=11 184=139=139
+par_compare_exit_codes	posh sig  57=11 185=139=139
+par_compare_exit_codes	posh sig  58=11 186=139=139
+par_compare_exit_codes	posh sig  59=11 187=139=139
+par_compare_exit_codes	posh sig  60=11 188=139=139
+par_compare_exit_codes	posh sig  61=11 189=139=139
+par_compare_exit_codes	posh sig  62=11 190=139=139
+par_compare_exit_codes	posh sig  63=11 191=139=139
+par_compare_exit_codes	posh sig  64=11 192=139=139
+par_compare_exit_codes	par_compare_exit_codes	
+par_compare_exit_codes	tcsh sig  2=0 130=1=1
+par_compare_exit_codes	fdsh sig  2=0 0=2=2
+par_compare_exit_codes	fdsh exit 130=0 130=2=2
+par_compare_exit_codes	fdsh sig  9=0 137=2=2
+par_compare_exit_codes	fdsh exit 137=0 137=2=2
+par_compare_exit_codes	fdsh sig  10=0 0=2=2
+par_compare_exit_codes	fdsh exit 138=0 138=2=2
+par_compare_exit_codes	fdsh sig  11=0 0=2=2
+par_compare_exit_codes	fdsh exit 139=0 139=2=2
+par_compare_exit_codes	fdsh sig  12=0 0=2=2
+par_compare_exit_codes	fdsh exit 140=0 140=2=2
+par_compare_exit_codes	fdsh sig  15=0 0=2=2
+par_compare_exit_codes	fdsh exit 143=0 143=2=2
+par_compare_exit_codes	fdsh sig  16=0 144=2=2
+par_compare_exit_codes	fdsh exit 144=0 144=2=2
+par_compare_exit_codes	fdsh sig  17=0 0=2=2
+par_compare_exit_codes	fdsh exit 145=0 145=2=2
+par_compare_exit_codes	fdsh sig  18=0 0=2=2
+par_compare_exit_codes	fdsh exit 146=0 146=2=2
+par_compare_exit_codes	fdsh sig  20=0 0=2=2
+par_compare_exit_codes	fdsh exit 148=0 148=2=2
+par_compare_exit_codes	fdsh sig  21=0 0=2=2
+par_compare_exit_codes	fdsh exit 149=0 149=2=2
+par_compare_exit_codes	fdsh sig  22=0 0=2=2
+par_compare_exit_codes	fdsh exit 150=0 150=2=2
+par_compare_exit_codes	fdsh sig  23=0 0=2=2
+par_compare_exit_codes	fdsh exit 151=0 151=2=2
+par_compare_exit_codes	fdsh sig  26=0 154=2=2
+par_compare_exit_codes	fdsh exit 154=0 154=2=2
+par_compare_exit_codes	fdsh sig  27=0 155=2=2
+par_compare_exit_codes	fdsh exit 155=0 155=2=2
+par_compare_exit_codes	fdsh sig  29=0 157=2=2
+par_compare_exit_codes	fdsh exit 157=0 157=2=2
+par_compare_exit_codes	fdsh sig  30=0 158=2=2
+par_compare_exit_codes	fdsh exit 158=0 158=2=2
+par_compare_exit_codes	fdsh sig  32=0 0=2=2
+par_compare_exit_codes	fdsh exit 160=0 160=2=2
+par_compare_exit_codes	fdsh sig  33=0 0=2=2
+par_compare_exit_codes	fdsh exit 161=0 161=2=2
+par_compare_exit_codes	fdsh sig  35=0 163=2=2
+par_compare_exit_codes	fdsh exit 163=0 163=2=2
+par_compare_exit_codes	fdsh sig  36=0 164=2=2
+par_compare_exit_codes	fdsh exit 164=0 164=2=2
+par_compare_exit_codes	fdsh sig  37=0 165=2=2
+par_compare_exit_codes	fdsh exit 165=0 165=2=2
+par_compare_exit_codes	fdsh sig  38=0 166=2=2
+par_compare_exit_codes	fdsh exit 166=0 166=2=2
+par_compare_exit_codes	fdsh sig  39=0 167=2=2
+par_compare_exit_codes	fdsh exit 167=0 167=2=2
+par_compare_exit_codes	fdsh sig  40=0 168=2=2
+par_compare_exit_codes	fdsh exit 168=0 168=2=2
+par_compare_exit_codes	fdsh sig  41=0 169=2=2
+par_compare_exit_codes	fdsh exit 169=0 169=2=2
+par_compare_exit_codes	fdsh sig  42=0 170=2=2
+par_compare_exit_codes	fdsh exit 170=0 170=2=2
+par_compare_exit_codes	fdsh sig  43=0 171=2=2
+par_compare_exit_codes	fdsh exit 171=0 171=2=2
+par_compare_exit_codes	fdsh sig  45=0 173=2=2
+par_compare_exit_codes	fdsh exit 173=0 173=2=2
+par_compare_exit_codes	fdsh sig  46=0 174=2=2
+par_compare_exit_codes	fdsh exit 174=0 174=2=2
+par_compare_exit_codes	fdsh sig  47=0 175=2=2
+par_compare_exit_codes	fdsh exit 175=0 175=2=2
+par_compare_exit_codes	fdsh sig  48=0 176=2=2
+par_compare_exit_codes	fdsh exit 176=0 176=2=2
+par_compare_exit_codes	fdsh sig  49=0 177=2=2
+par_compare_exit_codes	fdsh exit 177=0 177=2=2
+par_compare_exit_codes	fdsh sig  50=0 178=2=2
+par_compare_exit_codes	fdsh exit 178=0 178=2=2
+par_compare_exit_codes	fdsh sig  51=0 179=2=2
+par_compare_exit_codes	fdsh exit 179=0 179=2=2
+par_compare_exit_codes	fdsh sig  52=0 180=2=2
+par_compare_exit_codes	fdsh exit 180=0 180=2=2
+par_compare_exit_codes	fdsh sig  53=0 181=2=2
+par_compare_exit_codes	fdsh exit 181=0 181=2=2
+par_compare_exit_codes	fdsh sig  55=0 183=2=2
+par_compare_exit_codes	fdsh exit 183=0 183=2=2
+par_compare_exit_codes	fdsh sig  56=0 184=2=2
+par_compare_exit_codes	fdsh exit 184=0 184=2=2
+par_compare_exit_codes	fdsh sig  57=0 185=2=2
+par_compare_exit_codes	fdsh exit 185=0 185=2=2
+par_compare_exit_codes	fdsh sig  58=0 186=2=2
+par_compare_exit_codes	fdsh exit 186=0 186=2=2
+par_compare_exit_codes	fdsh sig  59=0 187=2=2
+par_compare_exit_codes	fdsh exit 187=0 187=2=2
+par_compare_exit_codes	fdsh sig  60=0 188=2=2
+par_compare_exit_codes	fdsh exit 188=0 188=2=2
+par_compare_exit_codes	fdsh sig  61=0 189=2=2
+par_compare_exit_codes	fdsh exit 189=0 189=2=2
+par_compare_exit_codes	fdsh sig  62=0 190=2=2
+par_compare_exit_codes	fdsh exit 190=0 190=2=2
+par_compare_exit_codes	fdsh sig  63=0 191=2=2
+par_compare_exit_codes	fdsh exit 191=0 191=2=2
 par_halt_on_error	-2 true true	0
 par_halt_on_error	-2 true true	0
 par_halt_on_error	-2 true true	parallel: This job succeeded:
@@ -237,7 +369,7 @@ par_test_build_and_install	make[0]: Nothing to be done for 'install-exec-am'.
 par_test_build_and_install	make  install-data-hook
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
 par_test_build_and_install	mkdir -p /tmp/parallel-install/share/zsh/site-functions /tmp/parallel-install/share/bash-completion/completions
-par_test_build_and_install	src/parallel --shell-completion bash > /tmp/parallel-install/share/bash-completion/completions/parallel
+par_test_build_and_install	/tmp/parallel-install/bin/parallel --shell-completion bash > /tmp/parallel-install/share/bash-completion/completions/parallel
 par_test_build_and_install	echo '#compdef parallel' > /tmp/parallel-install/share/zsh/site-functions/_parallel
 par_test_build_and_install	echo '(( $+functions[_comp_parallel] )) ||' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
 par_test_build_and_install	echo '  eval "$(parallel --shell-completion auto)" &&' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
@@ -766,7 +898,7 @@ par_test_build_and_install	make[0]: Nothing to be done for 'install-exec-am'.
 par_test_build_and_install	make  install-data-hook
 par_test_build_and_install	make[0]: Entering directory '/tmp/parallel-00000000'
 par_test_build_and_install	mkdir -p /tmp/parallel-install/share/zsh/site-functions /tmp/parallel-install/share/bash-completion/completions
-par_test_build_and_install	src/parallel --shell-completion bash > /tmp/parallel-install/share/bash-completion/completions/parallel
+par_test_build_and_install	/tmp/parallel-install/bin/parallel --shell-completion bash > /tmp/parallel-install/share/bash-completion/completions/parallel
 par_test_build_and_install	echo '#compdef parallel' > /tmp/parallel-install/share/zsh/site-functions/_parallel
 par_test_build_and_install	echo '(( $+functions[_comp_parallel] )) ||' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
 par_test_build_and_install	echo '  eval "$(parallel --shell-completion auto)" &&' >> /tmp/parallel-install/share/zsh/site-functions/_parallel
