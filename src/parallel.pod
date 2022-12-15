@@ -61,7 +61,7 @@ often be used as a substitute for B<xargs> or B<cat | bash>.
 =head2 Reader's guide
 
 GNU B<parallel> includes the 4 types of documentation: Tutorial,
-how-to, reference and explanation.
+how-to, reference and explanation/design.
 
 
 =head3 Tutorial
@@ -86,13 +86,19 @@ parallel_examples>. They will give you an idea of what GNU B<parallel>
 is capable of, and you may find a solution you can simply adapt to
 your situation.
 
+If the example do not cover your exact needs, the options map
+(https://www.gnu.org/software/parallel/parallel_options_map.pdf) can
+help you identify options that are related, so you can look these up
+in the man page.
+
 
 =head3 Reference
 
 If you need a one page printable cheat sheet you can find it on:
 https://www.gnu.org/software/parallel/parallel_cheat.pdf
 
-The man page is the reference for all options.
+The man page is the reference for all options, and reading the man
+page from cover to cover is probably not what you need.
 
 
 =head3 Design discussion
@@ -1025,7 +1031,7 @@ temporary fifo with the name in B<{}>, so you can do:
 
 Beware: If the fifo is never opened for reading, the job will block forever:
 
-  seq 1000000 | parallel --fifo echo This will block
+  seq 1000000 | parallel --fifo echo This will block forever
   seq 1000000 | parallel --fifo 'echo This will not block < {}'
 
 By using B<--fifo> instead of B<--cat> you may save I/O as B<--cat>
@@ -1075,7 +1081,7 @@ Behave like GNU B<parallel>.
 
 This option historically took precedence over B<--tollef>. The
 B<--tollef> option is now retired, and therefore may not be
-used. B<--gnu> is kept for compatibility.
+used. B<--gnu> is kept for compatibility, but does nothing.
 
 
 =item B<--group>
@@ -1087,10 +1093,9 @@ command is finished. Stdout (standard output) first followed by stderr
 (standard error).
 
 This takes in the order of 0.5ms CPU time per job and depends on the
-speed of your disk for larger output. It can be disabled with B<-u>,
-but this means output from different commands can get mixed.
+speed of your disk for larger output.
 
-B<--group> is the default. Can be reversed with B<-u>.
+B<--group> is the default.
 
 See also: B<--line-buffer> B<--ungroup> B<--tag>
 
@@ -1627,9 +1632,9 @@ job continuously while it is running, then lines from the second job
 while that is running. It will buffer full lines, but jobs will not
 mix. Compare:
 
-  parallel -j0 'echo {};sleep {};echo {}' ::: 1 3 2 4
-  parallel -j0 --lb 'echo {};sleep {};echo {}' ::: 1 3 2 4
-  parallel -j0 -k --lb 'echo {};sleep {};echo {}' ::: 1 3 2 4
+  parallel -j0 'echo [{};sleep {};echo {}]' ::: 1 3 2 4
+  parallel -j0 --lb 'echo [{};sleep {};echo {}]' ::: 1 3 2 4
+  parallel -j0 -k --lb 'echo [{};sleep {};echo {}]' ::: 1 3 2 4
 
 See also: B<--group> B<--ungroup> B<--keep-order> B<--tag>
 
@@ -1948,8 +1953,10 @@ See also: B<--profile>
 Add more replacement strings.
 
 Activate additional replacement strings: {+/} {+.} {+..} {+...} {..}
-{...} {/..} {/...} {##}. The idea being that '{+foo}' matches the opposite of
-'{foo}' and {} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.} = {..}.{+..} =
+{...} {/..} {/...} {##}. The idea being that '{+foo}' matches the
+opposite of '{foo}' so that:
+
+{} = {+/}/{/} = {.}.{+.} = {+/}/{/.}.{+.}  = {..}.{+..} =
 {+/}/{/..}.{+..} = {...}.{+...} = {+/}/{/...}.{+...}
 
 B<{##}> is the total number of jobs to be run. It is incompatible with

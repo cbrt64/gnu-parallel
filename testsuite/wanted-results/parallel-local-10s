@@ -518,6 +518,8 @@ par_k_linebuffer	20	20
 par_k_linebuffer	stdout top
 par_k_linebuffer	stderr in the middle
 par_k_linebuffer	stdout end
+par_keeporder_roundrobin	bug #50081: --keep-order --round-robin should give predictable results
+par_keeporder_roundrobin	OK
 par_kill_children_timeout	### Test killing children with --timeout and exit value (failed if timed out)
 par_kill_children_timeout	      0       0       0
 par_kill_children_timeout	parallel: Warning: This job was killed because it timed out:
@@ -594,6 +596,9 @@ par_ll_long_line	par_ll_long_line	30xxxxxxxxxxxxxxxxxxxxxxxxxxx>
 par_load_blocks	### Test if --load blocks. Bug.
 par_load_blocks	53d025127ae99ab79e8502aae2d9bea6  -
 par_load_blocks	53d025127ae99ab79e8502aae2d9bea6  -
+par_load_from_PARALLEL	### Test reading load from PARALLEL
+par_load_from_PARALLEL	8a7095c1c23bfadc311fe6b16d950582  -
+par_load_from_PARALLEL	8a7095c1c23bfadc311fe6b16d950582  -
 par_long_line_remote	### Deal with long command lines on remote servers
 par_long_line_remote	      6       6   30006
 par_long_line_remote	      6      50  250050

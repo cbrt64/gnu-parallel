@@ -1464,11 +1464,6 @@ par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
 par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90001   90001 1170031
 par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	NewRec
 par_groupby_pipepart	csv , s/^(\d+[\t ,]+){2}(\d+).*/$2/	  90001   90001 1170031
-par_keeporder_roundrobin	bug #50081: --keep-order --round-robin should give predictable results
-par_keeporder_roundrobin	OK
-par_load_from_PARALLEL	### Test reading load from PARALLEL
-par_load_from_PARALLEL	8a7095c1c23bfadc311fe6b16d950582  -
-par_load_from_PARALLEL	8a7095c1c23bfadc311fe6b16d950582  -
 par_macron	### See if \257\256 \257<\257> is replaced correctly
 par_macron	¯ -X	¯
 par_macron	¯ -X	¯

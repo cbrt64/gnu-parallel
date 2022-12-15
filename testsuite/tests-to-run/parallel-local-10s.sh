@@ -8,6 +8,48 @@
 # Each should be taking 10-30s and be possible to run in parallel
 # I.e.: No race conditions, no logins
 
+par_keeporder_roundrobin() {
+    echo 'bug #50081: --keep-order --round-robin should give predictable results'
+    . `which env_parallel.bash`
+
+    run_roundrobin() {
+	random1G() {
+	    < /dev/zero openssl enc -aes-128-ctr -K 1234 -iv 1234 2>/dev/null |
+		head -c 1G;
+	}
+        random1G |
+	    parallel $1 -j13 --block 1m --pipe --roundrobin 'echo {#} $(md5sum)' |
+	    sort
+    }
+    env_parset a,b,c run_roundrobin ::: -k -k ''
+
+    if [ "$a" == "$b" ] ; then
+	# Good: -k should be == -k
+	if [ "$a" == "$c" ] ; then
+	    # Bad: without -k the command should give different output
+	    echo 'Broken: a == c'
+	    printf "$a\n$b\n$c\n"
+	else
+	    echo OK
+	fi
+    else
+	echo 'Broken: a <> b'
+	printf "$a\n$b\n$c\n"
+    fi
+}
+
+par_load_from_PARALLEL() {
+    echo "### Test reading load from PARALLEL"
+    export PARALLEL="--load 300%"
+    # Ignore stderr due to 'Starting processes took > 2 sec'
+    seq 1 1000000 |
+	parallel -kj200 --recend "\n" --spreadstdin gzip -1 2>/dev/null |
+	zcat | sort -n | md5sum
+    seq 1 1000000 |
+	parallel -kj20 --recend "\n" --spreadstdin gzip -1 |
+	zcat | sort -n | md5sum
+}
+
 par_quote_special_results() {
     doit() {
 	mkfs=$1

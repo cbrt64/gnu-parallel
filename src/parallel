@@ -11335,6 +11335,7 @@ sub print_files($) {
     sub print_latest_line($) {
 	my $self = shift;
 	my $out_fh = shift;
+	if(not defined $self->{$out_fh,'latestline'}) { return; }
 	my $row = $self->row();
 	# Is row visible?
 	if(not ($minvisible <= $row
@@ -11440,6 +11441,12 @@ sub print_files($) {
 			    # Keep the latest full line
 			    my $l = join('', @$halfline_ref,
 					 substr($buf,0,$i-1));
+			    # "ab\rb\n" = "bb", but we cannot process that correctly.
+			    # Line may be:
+			    #    foo \r bar \n
+			    #    foo \r bar \r baz \r
+			    # If so: Remove 'foo \r'
+			    $l =~ s/.*\r//g;
 			    my $j = ((rindex($l,"\n")+1) ||
 				     (rindex($l,"\r")+1));
 			    $self->{$out_fh,'latestline'} = substr($l,$j);
@@ -11507,7 +11514,17 @@ sub print_files($) {
 		if($opt::latestline) {
 		    # Force re-computing color if --colorfailed
 		    if($opt::colorfailed) { delete $self->{'color'}; }
-		    $self->print_latest_line($out_fh);
+		    if($self->{$out_fh,'latestline'} ne "") {
+			$self->print_latest_line($out_fh);
+		    }
+		    if(@{$self->{'halfline'}{$fdno}}) {
+			my $l = join('', @{$self->{'halfline'}{$fdno}});
+			if($l ne "") {
+			    $self->{$out_fh,'latestline'} = $l;
+			}
+		    } else {
+			$self->{$out_fh,'latestline'} = undef;
+		    }
 		    # Print latest line from jobs that are already done
 		    while($print_later{$minvisible}) {
 			$print_later{$minvisible}->print_latest_line($out_fh);
