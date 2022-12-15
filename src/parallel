@@ -12349,17 +12349,18 @@ sub results_out($) {
     my $out = $self->replace_placeholders([$opt::results],0,0);
     if($out eq $opt::results) {
 	# $opt::results simple string: Append args_as_dirname
-	my $args_as_dirname = $self->args_as_dirname();
+	my $args_as_dirname = $self->args_as_dirname(0);
 	# Output in: prefix/name1/val1/name2/val2/stdout
 	$out = $opt::results."/".$args_as_dirname;
 	if(-d $out or eval{ File::Path::mkpath($out); }) {
 	    # OK
 	} else {
-	    # mkpath failed: Argument probably too long.
+	    # mkpath failed: Argument too long or not quoted
 	    # Set $Global::max_file_length, which will keep the individual
 	    # dir names shorter than the max length
 	    max_file_name_length($opt::results);
-	    $args_as_dirname = $self->args_as_dirname();
+	    # Quote dirnames with +
+	    $args_as_dirname = $self->args_as_dirname(1);
 	    # prefix/name1/val1/name2/val2/
 	    $out = $opt::results."/".$args_as_dirname;
 	    File::Path::mkpath($out);
@@ -12382,37 +12383,138 @@ sub results_out($) {
     return $out;
 }
 
-sub args_as_dirname($) {
-    # Returns:
-    #  all unmodified arguments joined with '/' (similar to {})
-    #  \t \0 \\ and / are quoted as: \t \0 \\ \_
-    # If $Global::max_file_length: Keep subdirs < $Global::max_file_length
-    my $self = shift;
-    my @res = ();
+{
+    my %map;
+    my %stringmap;
+    my $sep;
 
-    for my $rec_ref (@{$self->{'arg_list'}}) {
-	# If headers are used, sort by them.
-	# Otherwise keep the order from the command line.
-	my @header_indexes_sorted = header_indexes_sorted($#$rec_ref+1);
-	for my $n (@header_indexes_sorted) {
-	    CORE::push(@res,
-		 $Global::input_source_header{$n},
-		 map { my $s = $_;
-		       #  \t \0 \\ and / are quoted as: \t \0 \\ \_
-		       $s =~ s/\\/\\\\/g;
-		       $s =~ s/\t/\\t/g;
-		       $s =~ s/\0/\\0/g;
-		       $s =~ s:/:\\_:g;
-		       if($Global::max_file_length) {
-			   # Keep each subdir shorter than the longest
-			   # allowed file name
-			   $s = substr($s,0,$Global::max_file_length);
-		       }
-		       $s; }
-		 $rec_ref->[$n-1]->orig());
+    # test: '' . .. a. a.. + ++ 0..255 on fat12 ext4
+    sub args_as_dirname($) {
+	# Returns:
+	#  all arguments joined with '/' (similar to {})
+	#  Chars that are not safe on all file systems are quoted.
+	sub init() {
+	    # ext4: / \t \n \0 \\ \r
+	    # fat: 0..31 " * / : < > ? \ | Maybe also: # [ ] ; = ,
+	    # exfat: 128..255
+	    # Other FS: , [ ] { } ( ) ! ; " ' * ? < > |
+	    #
+	    # Quote these as:
+	    #   +  = ++
+	    #   \0 = +0
+	    #   \t = +t
+	    #   \\ = +b (backslash)
+	    #   \n = +n
+	    #   \r = +r
+	    #   / = +z (zlash)
+	    #   ? = +y (whY?)
+	    #   " = +d (double quote)
+	    #   ' = +q (quote)
+	    #   * = +a (asterisk)
+	    #   < = +l (less than)
+	    #   > = +g (greater than)
+	    #   : = +k (kolon)
+	    #   ! = +x (eXclamation)
+	    #   | = +p (pipe)
+	    #   # = +h (hash)
+	    #   ; = +s (semicolon)
+	    #   = = +e (equal)
+	    #   , = +c (comma)
+	    #   1..32 128..255 = +XX (hex value)
+	    #   [ ] = +e +f
+	    #   ( ) = +i +j
+	    #   { } = +v +w
+	    # Quote '' as +m (eMpty)
+	    # Quote .  as +_
+	    # Quote .. as +__
+	    #   (Unused: ou)
+	    %map = qw(
+		+   ++
+		\0  +0
+		\t  +t
+		\\  +b
+		\n  +n
+		\r  +r
+		/   +z
+		?   +y
+		"   +d
+		'   +q
+		*   +a
+		<   +l
+		>   +g
+		:   +k
+		!   +x
+		|   +p
+		#   +h
+		;   +s
+		=   +e
+		,   +c
+		[   +e
+		(   +i
+		{   +v
+		]   +f
+		)   +j
+		}   +w
+		);
+	    # 1..32 128..255 = +XX (hex value)
+	    map { $map{sprintf "%c",$_} = sprintf "+%02x",$_ } 1..32, 128..255;
+	    # Default value = itself
+	    map { $map{sprintf "%c",$_} ||= sprintf "%c",$_ } 0..255;
+	    # Quote '' as +m (eMpty)
+	    $stringmap{""} = "+m";
+	    # Quote .  as +_
+	    $stringmap{"."} = "+_";
+	    # Quote .. as +__
+	    $stringmap{".."} = "+__";
+	    # Set dir separator
+	    eval 'use File::Spec; $sep = File::Spec->catfile("", "");';
+	    $sep ||= '/';
 	}
+	# If $Global::max_file_length: Keep subdirs < $Global::max_file_length
+	my $self = shift;
+	my $quote = shift;
+	my @res = ();
+	if(not $sep) { init(); }
+
+	for my $rec_ref (@{$self->{'arg_list'}}) {
+	    # If headers are used, sort by them.
+	    # Otherwise keep the order from the command line.
+	    my @header_indexes_sorted = header_indexes_sorted($#$rec_ref+1);
+	    for my $n (@header_indexes_sorted) {
+		CORE::push(@res,
+			   $Global::input_source_header{$n},
+			   $quote ?
+			   (
+			    map {
+				my $s = $_;
+				# Quote + as ++
+				$s =~ s/(.)/$map{$1}/gs;
+				if($Global::max_file_length) {
+				    # Keep each subdir shorter than the longest
+				    # allowed file name
+				    $s = substr($s,0,$Global::max_file_length);
+				}
+				$s; }
+			    $rec_ref->[$n-1]->orig()
+			   ) :
+			   (
+			    map {
+				my $s = $_;
+				# Quote / as +z and + as ++
+				$s =~ s/($sep|\+)/$map{$1}/gos;
+				if($Global::max_file_length) {
+				    # Keep each subdir shorter than the longest
+				    # allowed file name
+				    $s = substr($s,0,$Global::max_file_length);
+				}
+				$s; }
+			    $rec_ref->[$n-1]->orig()
+			   )
+		    );
+	    }
+	}
+	return join $sep, map { $stringmap{$_} || $_ } @res;
     }
-    return join "/", @res;
 }
 
 sub header_indexes_sorted($) {
