@@ -176,7 +176,7 @@ bashcompletion=${bashcompletiondir}/parallel
 zshcompletion=${zshcompletiondir}/_parallel
 install-data-hook:
 	mkdir -p ${zshcompletiondir} ${bashcompletiondir}
-	$(bindir)/parallel --shell-completion bash > ${bashcompletion}
+	$(DESTDIR)$(bindir)/parallel --shell-completion bash > ${bashcompletion}
 # Make zsh eval the --shell-completion code dynamically so if
 # a newer version of GNU Parallel is installed by a normal
 # user, this newer version will generate the
