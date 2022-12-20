@@ -1,59 +1,10 @@
 #!/bin/bash
 
-# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2023 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # These fail regularly
-
-par_ll_tag() {
-    (
-	parallel --tag --ll -q printf "a\n{}\n" ::: should-be-tagged
-	parallel --tag --ll -q printf "a\n\r{}\n" ::: should-be-tagged
-	parallel --color --tag --ll true ::: A
-	parallel --color --tag --ll 'echo;true {}' ::: B
-	parallel --color --tag --ll 'echo {};true {}' ::: C
-    ) | puniq
-}
-
-par_ll_lb_color() {
-    echo 'bug #62386: --color (--ctag but without --tag)'
-    echo 'bug #62438: See last line from multiple jobslots'
-    # This is a race condition
-    #  # delay modulo 4 seconds
-    #  perl -MTime::HiRes -E 'Time::HiRes::usleep(1000000*(((time|3)+1)-Time::HiRes::time()));'
-    #  # delay modulo 2 seconds
-    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(1-time+(time|1)));say time;'
-    #  # delay modulo 1 second
-    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(1-time+(time|0)));say time;'
-    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(1-time+(time*4|0)/4));say time;'
-    #  # delay modulo 1/4 second
-    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(-time+(1+time*3|0)/3));say time;';
-    #  # delay modulo 1/4 second + 100 ms
-    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(0.1-time+(1+time*3|0)/3));say time;';
-    #  # delay modulo 1 second + 200 ms
-    #  perl -E 'use Time::HiRes qw(usleep time); usleep(1000000*(0.2-time+(1+time*1|0)/1));say time;';
-    #  # delay modulo 1 second + delta ms
-    #  perl -E 'use Time::HiRes qw(usleep time); $d=shift; for(1..shift){
-    #           usleep(1000000*($d-time+(1+time*1|0)/1));say;}' 0.2 6;
-    _offset_seq() { 
-	perl -E 'use Time::HiRes qw(usleep time); $|=1;$d=shift; for(1..shift){
-             usleep(1000000*($d-time+(1+time*1|0)/1));say;}' $@;
-    }
-    offset_seq() { 
-	perl -E 'use Time::HiRes qw(usleep time); $|=1;usleep(shift); for(1..shift){
-             usleep(1000000);say;}' $@;
-    }
-    export -f offset_seq
-    run() {
-	seq 4 -1 1 | parallel -j0 $@ offset_seq '{= $_=seq()*170000 =}' {}
-    }
-    export -f run
-    
-    parallel --delay 0.07 -vkj0 run \
-	     ::: --lb --ll '' ::: --color '' ::: '--tagstring {}{}' --tag '' ::: -k '' |
-	md5sum
-}
 
 ctrlz_should_suspend_children() {
     echo 'bug #46120: Suspend should suspend (at least local) children'

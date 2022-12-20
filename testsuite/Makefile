@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2023 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -26,6 +26,10 @@ mem: ../src/parallel tests-to-run/*mem* wanted-results/*mem*
 	touch ~/.parallel/will-cite
 	make stopvm
 
+# The output must be inspected visually
+manual: ../src/parallel tests-to-run/*manual* wanted-results/*manual*
+	bash tests-to-run/parallel-manual.sh
+
 # Tutorial
 tutorial: ../src/parallel tests-to-run/*tutorial* wanted-results/*tutorial* prereqlocal
 	TRIES=1 time bash Start.sh tutorial NONE || true
@@ -52,7 +56,7 @@ local:	../src/parallel tests-to-run/*local* wanted-results/*local* prereqlocal i
 
 # short
 short:	 ../src/parallel tests-to-run/* wanted-results/* prereqlocal installparallel
-	TRIES=1 time bash Start.sh '' 'polar|mem|100s|300s'
+	TRIES=1 time bash Start.sh '' 'polar|mem|100s|300s|manual'
 
 # long
 long:	 ../src/parallel tests-to-run/* wanted-results/* prereqlocal installparallel

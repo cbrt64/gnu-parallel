@@ -262,25 +262,25 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20221222 ('ChatGPT') released
+Subject: GNU Parallel 20230122 ('Pele/MashaAmina<<>>') released
 
-GNU Parallel 20221222 ('ChatGPT') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20230122 ('<<>>') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-  GNU Parallel absolutely rocks.
-    -- Austin Mordahl@Stackoverflow
+  <<>>
 
 New in this release:
 
-* --results works on more file systems (e.g. fat)
-
-* Joblog gives the same exit code as bash.
+<<>>
 
 News about GNU Parallel:
 
-* Programação Shell Linux: Paralelismo de processos com GNU parallel https://www.youtube.com/watch?v=duheTWLIrp8
-* Talk Python: Data Science from the Command Line https://talkpython.fm/episodes/show/392/data-science-from-the-command-line
+https://www.purevpn.com/blog/the-best-hacking-tools-of-2023/#11_GNU_Parallel
+
+this is wrong-https://climbtheladder.com/10-gnu-parallel-best-practices/
+
+<<>>
 
 
 GNU Parallel - For people who live life in the parallel lane.

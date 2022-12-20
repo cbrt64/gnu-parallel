@@ -692,7 +692,6 @@ This is input_file
   parallel -S $SERVER1 --trc {}.out cat {} ">"{}.out ::: input_file
   cat input_file.out
 This is input_file
-rsync: [sender] link_stat "/home/parallel/input_file.out" failed: No such file or directory (2)
   echo common data > common_file
   parallel --basefile common_file -S $SERVER1 \
     cat common_file\; echo {} ::: foo
@@ -1285,7 +1284,7 @@ This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
   parallel --version
 GNU parallel VERSION
-Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free Software
+Copyright (C) 2007-2023 Ole Tange, http://ole.tange.dk and Free Software
 Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
@@ -1331,4 +1330,4 @@ mentioned in the release notes of next version of GNU Parallel.
 echo A
 echo B
 echo C
-8
+9

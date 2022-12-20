@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2023 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GFDL-1.3-or-later
 # SPDX-License-Identifier: CC-BY-SA-4.0
 
@@ -549,7 +549,7 @@ string that is not in the command line.
 See also: B<:::>
 
 
-=item B<--bar> (beta testing)
+=item B<--bar>
 
 Show progress as a progress bar.
 
@@ -839,7 +839,7 @@ to stdout (standard output) unless B<--decompress-program> is given.
 See also: B<--compress>
 
 
-=item B<--csv> (beta testing)
+=item B<--csv>
 
 Treat input as CSV-format.
 
@@ -1055,7 +1055,7 @@ Outputs: 1,1 1,2 1,3 2,2 2,3 3,3
 See also: B<skip()> B<--no-run-if-empty>
 
 
-=item B<--filter-hosts> (beta testing)
+=item B<--filter-hosts>
 
 Remove down hosts.
 
@@ -1586,9 +1586,9 @@ Similar to B<--memfree>.
 See also: B<--memfree> B<--load>
 
 
-=item B<--latest-line> (beta testing)
+=item B<--latest-line> (alpha testing)
 
-=item B<--ll> (beta testing)
+=item B<--ll> (alpha testing)
 
 Print the lastest line. Each job gets a single line that is updated
 with the lastest output from the job.
@@ -2026,7 +2026,7 @@ B<--progress> on a running GNU B<parallel> process.
 See also: B<--eta> B<--bar>
 
 
-=item B<--max-line-length-allowed> (beta testing)
+=item B<--max-line-length-allowed>
 
 Print maximal command line length.
 
@@ -3033,13 +3033,13 @@ I<duration> is in seconds, but can be postfixed with s, m, h, or d.
 See also: TIME POSTFIXES B<--sshlogin> B<--delay>
 
 
-=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
+=item B<--sshlogin> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]>
 
-=item B<--sshlogin> I<@hostgroup> (beta testing)
+=item B<--sshlogin> I<@hostgroup>
 
-=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]> (beta testing)
+=item B<-S> I<[@hostgroups/][ncpus/]sshlogin[,[@hostgroups/][ncpus/]sshlogin[,...]]>
 
-=item B<-S> I<@hostgroup> (beta testing)
+=item B<-S> I<@hostgroup>
 
 Distribute jobs to remote computers.
 
@@ -3297,9 +3297,9 @@ dies before the waiting time is up.
 See also: B<--halt> B<--timeout> B<--memfree>
 
 
-=item B<--total-jobs> I<jobs> (beta testing)
+=item B<--total-jobs> I<jobs>
 
-=item B<--total> I<jobs> (beta testing)
+=item B<--total> I<jobs>
 
 Provide the total number of jobs for computing ETA which is also used
 for B<--bar>.
@@ -4391,7 +4391,7 @@ Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
 Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010-2022 Ole Tange, http://ole.tange.dk and Free
+Copyright (C) 2010-2023 Ole Tange, http://ole.tange.dk and Free
 Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by

@@ -118,15 +118,6 @@ par_kill_hup	parallel: Waiting for these 2 jobs to finish. Send SIGTERM to stop 
 par_kill_hup	parallel: bash -c 'sleep 3 & pid=$!; wait $pid'
 par_kill_hup	parallel: bash -c 'sleep 3 & pid=$!; wait $pid'
 par_kill_hup	bash---pstree
-par_ll_lb_color	bug #62386: --color (--ctag but without --tag)
-par_ll_lb_color	bug #62438: See last line from multiple jobslots
-par_ll_lb_color	35d02d4d868110dd4f0eaf1c2f26dc36  -
-par_ll_tag	par_ll_tag	should-be-tagged        should-be-tagged 
-par_ll_tag	[Apar_ll_tag	should-be-tagged        should-be-tagged 
-par_ll_tag	par_ll_tag	B       [48;5;134;38;5;231m[K [m
-par_ll_tag	[Apar_ll_tag	B       [48;5;134;38;5;231m[K [m
-par_ll_tag	par_ll_tag	C       [48;5;134;38;5;231m[KC [m
-par_ll_tag	[Apar_ll_tag	C       [48;5;134;38;5;231m[KC [m
 par_more_than_9_relative_sshlogin	### Check more than 9(relative) simultaneous sshlogins
 par_more_than_9_relative_sshlogin	1
 par_more_than_9_relative_sshlogin	2

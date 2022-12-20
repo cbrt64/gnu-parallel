@@ -16,6 +16,10 @@ export -f stdsort
 # Test amount of parallelization
 # parallel --shuf --jl /tmp/myjl -j1 'export JOBS={1};'bash tests-to-run/parallel-local-0.3s.sh ::: {1..16} ::: {1..5}
 
+par_ll_long_followed_by_short() {
+    parallel --ll 'echo A very long line;sleep 0.2;echo' ::: OK | puniq
+}
+
 par_PARALLEL_HOME_not_exist() {
     echo '### bug #62311: --pipepart + ::: fail'
     tmp1=$(mktemp)

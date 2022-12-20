@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 
-# Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free
+# Copyright (C) 2007-2023 Ole Tange, http://ole.tange.dk and Free
 # Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # or write to the Free Software Foundation, Inc., 51 Franklin St,
 # Fifth Floor, Boston, MA 02110-1301 USA
 #
-# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2023 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # open3 used in Job::start
@@ -2702,7 +2702,7 @@ sub check_invalid_option_combinations() {
 
 sub init_globals() {
     # Defaults:
-    $Global::version = 20221222;
+    $Global::version = 20221223;
     $Global::progname = 'parallel';
     $::name = "GNU Parallel";
     $Global::infinity = 2**31;
@@ -5756,7 +5756,7 @@ sub version() {
     print join
 	("\n",
 	 "GNU $Global::progname $Global::version",
-	 "Copyright (C) 2007-2022 Ole Tange, http://ole.tange.dk and Free Software",
+	 "Copyright (C) 2007-2023 Ole Tange, http://ole.tange.dk and Free Software",
 	 "Foundation, Inc.",
 	 "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>",
 	 "This is free software: you are free to change and redistribute it.",
@@ -5894,7 +5894,7 @@ sub embed() {
 	}
 	print "#!$Global::shell
 
-# Copyright (C) 2007-2022 $user, Ole Tange, http://ole.tange.dk
+# Copyright (C) 2007-2023 $user, Ole Tange, http://ole.tange.dk
 # and Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -11316,7 +11316,7 @@ sub print_files($) {
 # --tag
 # --bar
 {
-    my ($up,$currow,$maxrow);
+    my ($up,$eol,$currow,$maxrow);
     my ($minvisible,%print_later,%notvisible);
     my (%binmodeset,%tab);
 
@@ -11324,6 +11324,9 @@ sub print_files($) {
 	# cursor_up cuu1 = up one line
 	$up = `sh -c "tput cuu1 </dev/tty" 2>/dev/null`;
 	chomp($up);
+	$eol = `sh -c "tput el </dev/tty" 2>/dev/null`;
+	chomp($eol);
+	if($eol eq "") { $eol = "\033[K"; }
 	$currow = 1;
 	$maxrow = 1;
 	$minvisible = 1;
@@ -11353,15 +11356,15 @@ sub print_files($) {
 	my $untabify_tag = ::decode_utf8($self->untabtag());
 	my $taglen = length $untabify_tag;
 	my $truncated_tag = "";
-	my $strlen = $termcol - $taglen;
 	my $untabify_str = ::decode_utf8($self->{$out_fh,'latestline'});
 	$untabify_str =~ s/\t/$tab{$-[0]%8}/g;
+	# -1 to make space for $truncated
+	my $strlen = $termcol - $taglen - 1;
 	my $strspc = $strlen - length $untabify_str;
-	$strlen--;
 	if($strlen < 0) { $strlen = 0;}
 	# Line is shorter than terminal width: add " "
 	# Line is longer than terminal width: add ">"
-	my $truncated = ($strspc > 0) ? " " : ">";
+	my $truncated = ($strspc >= 0) ? " " : ">";
 	if($taglen > $termcol) {
 	    # Tag is longer than terminal width: add ">" to tag
 	    # Remove $truncated (it will not be shown at all)
@@ -11369,17 +11372,15 @@ sub print_files($) {
 	    $truncated_tag = ">";
 	    $truncated = "";
 	}
-
-	$maxrow = $row > $maxrow ? $row : $maxrow;
+	$maxrow = ($row > $maxrow) ? $row : $maxrow;
 	printf($out_fh
-	       ("%s%s%s". # up down \r
-		"%.${taglen}s%s". # tag
-		"%s%.${strlen}s%s%s". # color + line
+	       ("%s%s%s%s". # up down \r eol
+		"%.${taglen}s%s". # tag trunc_tag
+		"%s%.${strlen}s%s%s". # color line trunc reset_color
 		"%s" # down
 	       ),
-	       "$up"x($currow - $row),
-	       "\n"x($row - $currow),
-	       "\r", $untabify_tag,$truncated_tag,
+	       "$up"x($currow - $row), "\n"x($row - $currow), "\r", $eol,
+	       $untabify_tag,$truncated_tag,
 	       $color, $untabify_str, $truncated, $reset_color,
 	       "\n"x($maxrow - $row + 1));
 	$currow = $maxrow + 1;
@@ -11837,14 +11838,16 @@ sub untabtag($) {
 		  160..178,180,182..184,196..214,232..250));
 	    # reorder list so adjacent colors are dissimilar
 	    # %23 and %7 were found experimentally
-	    @color_combinations = @color_combinations[
-		sort { ($a%23 <=> $b%23) or ($b%7 <=> $a%7) }
-		0..$#color_combinations
-		];
+	    my @order =	reverse sort {
+		    (($a%23) <=> ($b%23))
+			or
+			(($b%7) <=> ($a%7));
+	    } 0..$#color_combinations;
+	    @order = @order[54 .. $#color_combinations, 0 .. 53];
 	    @color = map {
 		# TODO Can this be done with `tput` codes?
 		"\033[48;5;".$_->[0].";38;5;".$_->[1]."m"
-	    } @color_combinations;
+	    } @color_combinations[ @order ];
 
 	    # clr_eol el = clear to end of line
 	    $eol = `sh -c "tput el </dev/tty" 2>/dev/null`;

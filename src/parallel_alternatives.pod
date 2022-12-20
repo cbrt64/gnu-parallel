@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# SPDX-FileCopyrightText: 2021-2022 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
+# SPDX-FileCopyrightText: 2021-2023 Ole Tange, http://ole.tange.dk and Free Software and Foundation, Inc.
 # SPDX-License-Identifier: GFDL-1.3-or-later
 # SPDX-License-Identifier: CC-BY-SA-4.0
 
@@ -3511,6 +3511,87 @@ https://github.com/TheWizardTower/seneschal
 (Last checked: 2022-06)
 
 
+=head2 DIFFERENCES BETWEEN async AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item x x x x x x x
+
+=item - x x x x x
+
+=item x O2 O3 O4 O5 O6 - x x O10
+
+=item E1 - - E4 - - -
+
+=item - - - - - - - - -
+
+=item S1 S2
+
+=back
+
+B<async> works like B<sem>.
+
+
+=head3 EXAMPLES FROM async
+
+  1$ S="/tmp/example_socket"
+
+     async -s="$S" server --start
+
+     for i in {1..20}; do
+         # prints command output to stdout
+         async -s="$S" cmd -- bash -c "sleep 1 && echo test $i"
+     done
+     
+     # wait until all commands are finished
+     async -s="$S" wait
+     
+  1$ S="example_id"
+
+     # server not needed
+
+     for i in {1..20}; do
+         # prints command output to stdout
+         sem --bg --id "$S" -j100% "sleep 1 && echo test $i"
+     done
+     
+     # wait until all commands are finished
+     sem --fg --id "$S" --wait
+     
+  2$ # configure the server to run four commands in parallel
+     async -s="$S" server -j4
+     
+     mkdir "/tmp/ex_dir"
+     for i in {21..40}; do
+         # redirects command output to /tmp/ex_dir/file*
+         async -s="$S" cmd -o "/tmp/ex_dir/file$i" -- \
+           bash -c "sleep 1 && echo test $i"
+     done
+     
+     async -s="$S" wait
+     
+     # stops server
+     async -s="$S" server --stop
+
+  2$ # starting server not needed
+
+     mkdir "/tmp/ex_dir"
+     for i in {21..40}; do
+         # redirects command output to /tmp/ex_dir/file*
+         sem --bg --id "$S" --results "/tmp/ex_dir/file$i{}" \
+           "sleep 1 && echo test $i"
+     done
+
+     sem --fg --id "$S" --wait
+
+     # there is no server to stop
+
+https://github.com/ctbur/async
+(Last checked: 2023-01)
+
+
 =head2 Todo
 
 http://code.google.com/p/push/ (cannot compile)
@@ -3785,7 +3866,7 @@ Copyright (C) 2007-10-18 Ole Tange, http://ole.tange.dk
 
 Copyright (C) 2008-2010 Ole Tange, http://ole.tange.dk
 
-Copyright (C) 2010-2022 Ole Tange, http://ole.tange.dk and Free
+Copyright (C) 2010-2023 Ole Tange, http://ole.tange.dk and Free
 Software Foundation, Inc.
 
 Parts of the manual concerning B<xargs> compatibility is inspired by

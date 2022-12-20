@@ -281,7 +281,7 @@ par_groupby_pipepart() {
 	# Make 6 columns: 123456 => 1\t2\t3\t4\t5\t6
 	seq 100000 999999 | perl -pe '$_=join"\t",split//' |
 	    # Sort reverse on column 3 (This should group on col 3)
-	    sort --parallel=8 --buffer-size=50% -k3r
+	    sort --parallel=8 -k3r
     }
     export -f tsv
 

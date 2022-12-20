@@ -80,15 +80,15 @@ par_colour_failed	[48;5;196;38;5;231m[K2(B[m
 par_colour_failed	[48;5;196;38;5;231m[Kseq 2;exit 2(B[m
 par_colour_failed	[48;5;196;38;5;231m[K1(B[m
 par_colour_failed	[48;5;196;38;5;231m[K2(B[m
-par_colour_failed	[48;5;134;38;5;231m[Kseq 1;exit 0(B[m
-par_colour_failed	[48;5;134;38;5;231m[K1(B[m
+par_colour_failed	[48;5;178;38;5;000m[Kseq 1;exit 0(B[m
+par_colour_failed	[48;5;178;38;5;000m[K1(B[m
 par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 1(B[m
 par_colour_failed	[48;5;196;38;5;231m[K1(B[m
 par_colour_failed	[48;5;196;38;5;231m[Kseq 1;exit 2(B[m
 par_colour_failed	[48;5;196;38;5;231m[K1(B[m
-par_colour_failed	[48;5;149;38;5;000m[Kseq 2;exit 0(B[m
-par_colour_failed	[48;5;149;38;5;000m[K1(B[m
-par_colour_failed	[48;5;149;38;5;000m[K2(B[m
+par_colour_failed	[48;5;203;38;5;000m[Kseq 2;exit 0(B[m
+par_colour_failed	[48;5;203;38;5;000m[K1(B[m
+par_colour_failed	[48;5;203;38;5;000m[K2(B[m
 par_colour_failed	[48;5;196;38;5;231m[Kseq 2;exit 1(B[m
 par_colour_failed	[48;5;196;38;5;231m[K1(B[m
 par_colour_failed	[48;5;196;38;5;231m[K2(B[m
@@ -324,6 +324,9 @@ par_link_files_as_only_arg	bug #50685: single ::::+ does not work
 par_link_files_as_only_arg	1 1 1
 par_link_files_as_only_arg	2 2 2
 par_link_files_as_only_arg	3 3 3
+par_ll_long_followed_by_short	par_ll_long_followed_by_short	[KA very long line 
+par_ll_long_followed_by_short	[Apar_ll_long_followed_by_short	[KA very long line 
+par_ll_long_followed_by_short	[Apar_ll_long_followed_by_short	[KOK 
 par_locale_quoting	### quoting in different locales
 par_locale_quoting	£`/tmp/test£`
 par_locale_quoting	$LC_ALL £`/tmp/test£`
