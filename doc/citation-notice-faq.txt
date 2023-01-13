@@ -25,7 +25,7 @@ single solution that just works:
 * https://web.archive.org/web/20210923091339/https://blog.licensezero.com/2019/08/26/but-you-said.html
 * https://www.numfocus.org/blog/why-is-numpy-only-now-getting-funded/
 * https://feross.org/funding-experiment-recap/
-
+* https://www.fordfoundation.org/media/2976/roads-and-bridges-the-unseen-labor-behind-our-digital-infrastructure.pdf
 
 == Is the citation notice compatible with GPLv3? ==
 

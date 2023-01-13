@@ -8,35 +8,57 @@ bin_SCRIPTS = parallel sql niceload parcat parset parsort	\
 	env_parallel.ksh env_parallel.mksh env_parallel.pdksh	\
 	env_parallel.sh env_parallel.tcsh env_parallel.zsh
 
+POD_FILES = parcat.pod parset.pod sem.pod parallel.pod			\
+	env_parallel.pod niceload.pod parallel_examples.pod		\
+	parallel_tutorial.pod parallel_book.pod parallel_design.pod	\
+	parallel_alternatives.pod
+
+MAN_FILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1		\
+	parallel_examples.7 parallel_tutorial.7 parallel_book.7		\
+	parallel_design.7 parallel_alternatives.7 parcat.1 parset.1	\
+	parsort.1
+
+PDF_MAN = parallel.pdf env_parallel.pdf sem.pdf sql.pdf		\
+	niceload.pdf parallel_examples.pdf parallel_tutorial.pdf	\
+	parallel_book.pdf parallel_design.pdf				\
+	parallel_alternatives.pdf parcat.pdf parset.pdf parsort.pdf
+
+PDF_OTHER = parallel_cheat_bw.pdf parallel_options_map.pdf
+
+PDF_FILES = $(PDF_MAN) $(PDF_OTHER)
+
+RST_FILES = parallel.rst env_parallel.rst sem.rst sql.rst		\
+	niceload.rst parallel_examples.rst parallel_tutorial.rst	\
+	parallel_book.rst parallel_design.rst				\
+	parallel_alternatives.rst parcat.rst parset.rst parsort.rst
+
+TEXI_FILES = parallel.texi env_parallel.texi sem.texi sql.texi		\
+	niceload.texi parallel_examples.texi parallel_tutorial.texi	\
+	parallel_book.texi parallel_design.texi				\
+	parallel_alternatives.texi parcat.texi parset.texi		\
+	parsort.texi
+
+HTML_FILES = parallel.html env_parallel.html sem.html sql.html		\
+	niceload.html parallel_examples.html parallel_tutorial.html	\
+	parallel_book.html parallel_design.html				\
+	parallel_alternatives.html parcat.html parset.html		\
+	parsort.html
+
 install-exec-hook:
 	rm "$(DESTDIR)$(bindir)"/sem || true
 	$(LN_S) parallel "$(DESTDIR)$(bindir)"/sem
 
 if DOCUMENTATION
-man_MANS = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1		\
-	parallel_examples.7 parallel_tutorial.7 parallel_book.7		\
-	parallel_design.7 parallel_alternatives.7 parcat.1 parset.1	\
-	parsort.1
-doc_DATA = parallel.html env_parallel.html sem.html sql.html		\
-	niceload.html parallel_examples.html parallel_tutorial.html	\
-	parallel_book.html parallel_design.html				\
-	parallel_alternatives.html parcat.html parset.html		\
-	parsort.html \
-	parallel.texi env_parallel.texi sem.texi sql.texi		\
-	niceload.texi parallel_examples.texi parallel_tutorial.texi	\
-	parallel_book.texi parallel_design.texi				\
-	parallel_alternatives.texi parcat.texi parset.texi		\
-	parsort.texi \
-	parallel.rst env_parallel.rst sem.rst sql.rst niceload.rst	\
-	parallel_examples.rst parallel_tutorial.rst parallel_book.rst	\
-	parallel_design.rst parallel_alternatives.rst parcat.rst	\
-	parset.rst parsort.rst \
-	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
-	parallel_examples.pdf parallel_tutorial.pdf parallel_book.pdf	\
-	parallel_design.pdf parallel_alternatives.pdf parcat.pdf	\
-	parset.pdf parsort.pdf parallel_cheat_bw.pdf			\
-	parallel_options_map.pdf
+man_MANS = $(MAN_FILES)
+doc_DATA = $(HTML_FILES) $(TEXI_FILES) $(RST_FILES) $(PDF_FILES)
 endif
+
+DISTCLEANFILES = $(MAN_FILES) $(HTML_FILES) $(TEXI_FILES)	\
+	$(RST_FILES) $(PDF_FILES)
+
+
+EXTRA_DIST = $(bin_SCRIPTS) sem $(POD_FILES) \
+	parallel_cheat_bw.fodt pod2graph $(DISTCLEANFILES)
 
 web: sphinx
 	true
@@ -381,36 +403,3 @@ parallel_options_map.pdf: parallel.pod pod2graph
 sem: parallel
 	ln -fs parallel sem
 
-DISTCLEANFILES = parallel.1 env_parallel.1 sem.1 sql.1 niceload.1	\
-	parallel_examples.7 parallel_tutorial.7 parallel_book.7		\
-	parallel_design.7 parallel_alternatives.7 parcat.1 parset.1	\
-	parsort.1 \
-	parallel.html env_parallel.html sem.html sql.html		\
-	niceload.html parallel_examples.html parallel_tutorial.html	\
-	parallel_book.html parallel_design.html				\
-	parallel_alternatives.html parcat.html parset.html		\
-	parsort.html \
-	parallel.texi env_parallel.texi sem.texi sql.texi		\
-	niceload.texi parallel_examples.texi parallel_tutorial.texi	\
-	parallel_book.texi parallel_design.texi				\
-	parallel_alternatives.texi parcat.texi parset.texi		\
-	parsort.texi \
-	parallel.rst env_parallel.rst sem.rst sql.rst niceload.rst	\
-	parallel_examples.rst parallel_tutorial.rst parallel_book.rst	\
-	parallel_design.rst parallel_alternatives.rst parcat.rst	\
-	parset.rst parsort.rst \
-	parallel.pdf env_parallel.pdf sem.pdf sql.pdf niceload.pdf	\
-	parallel_examples.pdf parallel_tutorial.pdf parallel_book.pdf	\
-	parallel_design.pdf parallel_alternatives.pdf parcat.pdf	\
-	parset.pdf parsort.pdf parallel_cheat_bw.pdf			\
-	parallel_options_map.pdf
-
-EXTRA_DIST = parallel sem sql niceload parcat parset parsort		\
-	env_parallel env_parallel.ash env_parallel.bash			\
-	env_parallel.csh env_parallel.dash env_parallel.fish		\
-	env_parallel.ksh env_parallel.mksh env_parallel.pdksh		\
-	env_parallel.sh env_parallel.tcsh env_parallel.zsh parcat.pod	\
-	parset.pod sem.pod parallel.pod env_parallel.pod niceload.pod	\
-	parallel_examples.pod parallel_tutorial.pod parallel_book.pod	\
-	parallel_design.pod parallel_alternatives.pod			\
-	parallel_cheat_bw.fodt pod2graph $(DISTCLEANFILES)

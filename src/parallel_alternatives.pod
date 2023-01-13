@@ -104,7 +104,7 @@ The following features are in some of the comparable tools:
 
 =over
 
-=item E1. Running jobs in parallel
+=item E1. Run jobs in parallel
 
 =item E2. List running jobs
 
@@ -246,7 +246,7 @@ the last half of the line is from another process. The example
 B<Parallel grep> cannot be done reliably with B<xargs> because of
 this. To see this in action try:
 
-  parallel perl -e '\$a=\"1\".\"{}\"x10000000\;print\ \$a,\"\\n\"' \
+  parallel perl -e "'"'$a="1"."{}"x10000000;print $a,"\n"'"'" \
     '>' {} ::: a b c d e f g h
   # Serial = no mixing = the wanted result
   # 'tr -s a-z' squeezes repeating letters into a single letter
@@ -417,7 +417,8 @@ using GNU B<parallel>:
 
   1$ find /path/to/files -type f | parallel gzip
 
-  2$ ./ppss.sh standalone -d /path/to/files -c 'cp "$ITEM" /destination/dir '
+  2$ ./ppss.sh standalone -d /path/to/files \
+       -c 'cp "$ITEM" /destination/dir '
 
   2$ find /path/to/files -type f | parallel cp {} /destination/dir
 
@@ -435,9 +436,11 @@ using GNU B<parallel>:
      ./ppss deploy -C config.cfg
      ./ppss start -C config
 
-  5$ # parallel does not use configs. If you want a different username put it in nodes.txt: user@hostname
+  5$ # parallel does not use configs. If you want
+     # a different username put it in nodes.txt: user@hostname
      find source/dir -type f |
-       parallel --sshloginfile nodes.txt --trc {.}.mp3 lame -a {} -o {.}.mp3 --preset standard --quiet
+       parallel --sshloginfile nodes.txt --trc {.}.mp3 \
+         lame -a {} -o {.}.mp3 --preset standard --quiet
 
   6$ ./ppss stop -C config.cfg
 
@@ -1124,7 +1127,7 @@ file. GNU B<parallel> does not.
 https://github.com/reconquest/orgalorg
 
 
-=head2 DIFFERENCES BETWEEN Rust parallel AND GNU Parallel
+=head2 DIFFERENCES BETWEEN Rust parallel(mmstick) AND GNU Parallel
 
 Rust parallel focuses on speed. It is almost as fast as B<xargs>, but
 not as fast as B<parallel-bash>. It implements a few features from GNU
@@ -2618,18 +2621,26 @@ You can then do:
 
 =head3 EXAMPLES FROM rargs MANUAL
 
-  ls *.bak | rargs -p '(.*)\.bak' mv {0} {1}
-  ls *.bak | parallel mv {} {.}
+  1$ ls *.bak | rargs -p '(.*)\.bak' mv {0} {1}
 
-  cat download-list.csv | rargs -p '(?P<url>.*),(?P<filename>.*)' wget {url} -O {filename}
-  cat download-list.csv | parallel --csv wget {1} -O {2}
+  1$ ls *.bak | parallel mv {} {.}
+
+  2$ cat download-list.csv |
+       rargs -p '(?P<url>.*),(?P<filename>.*)' wget {url} -O {filename}
+
+  2$ cat download-list.csv |
+       parallel --csv wget {1} -O {2}
   # or use regexps:
-  cat download-list.csv |
-    parallel --rpl '{url} s/,.*//' --rpl '{filename} s/.*?,//' wget {url} -O {filename}
+  2$ cat download-list.csv |
+       parallel --rpl '{url} s/,.*//' --rpl '{filename} s/.*?,//' \
+         wget {url} -O {filename}
 
-  cat /etc/passwd | rargs -d: echo -e 'id: "{1}"\t name: "{5}"\t rest: "{6..::}"'
-  cat /etc/passwd |
-    parallel -q --colsep : echo -e 'id: "{1}"\t name: "{5}"\t rest: "{=6 $_=join":",@arg[6..$#arg]=}"'
+  3$ cat /etc/passwd |
+       rargs -d: echo -e 'id: "{1}"\t name: "{5}"\t rest: "{6..::}"'
+
+  3$ cat /etc/passwd |
+       parallel -q --colsep : \
+         echo -e 'id: "{1}"\t name: "{5}"\t rest: "{=6 $_=join":",@arg[6..$#arg]=}"'
 
 https://github.com/lotabout/rargs (Last checked: 2020-01)
 
@@ -2944,7 +2955,7 @@ composed commands.
   8$ # GNU Parallel does not need to stop a server
 
 
-https://github.com/ctbur/async/ (Last checked: 2020-11)
+https://github.com/ctbur/async/ (Last checked: 2023-01)
 
 
 =head2 DIFFERENCES BETWEEN pardi AND GNU Parallel
@@ -2989,14 +3000,16 @@ parallel>).
   2$ pardi -n 1 -i data/test_in.types -o data/test_out.types \
              -d 'r:^#atoms:' -w 'cat %IN > %OUT'
   
-  2$ cat data/test_in.types | parallel -n 1 -k --pipe --cat \
-             --regexp --recstart '^#atoms' 'cat {}' > data/test_out.types
+  2$ cat data/test_in.types |
+       parallel -n 1 -k --pipe --cat --regexp --recstart '^#atoms' \
+         'cat {}' > data/test_out.types
   
   3$ pardi -c 6 -i data/test_in.types -o data/test_out.types \
              -d 'r:^#atoms:' -w 'cat %IN > %OUT'
   
-  3$ cat data/test_in.types | parallel -n 6 -k --pipe --cat \
-             --regexp --recstart '^#atoms' 'cat {}' > data/test_out.types
+  3$ cat data/test_in.types |
+       parallel -n 6 -k --pipe --cat --regexp --recstart '^#atoms' \
+         'cat {}' > data/test_out.types
   
   4$ pardi -i data/decoys.mol2 -o data/still_decoys.mol2 \
              -d 's:@<TRIPOS>MOLECULE' -w 'cp %IN %OUT'
@@ -3069,9 +3082,11 @@ Summary (see legend above):
   1$ simple_gpu_scheduler --gpus 0 1 2 < gpu_commands.txt
 
   1$ parallel -j3 --shuf \
-     CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' < gpu_commands.txt
+     CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1 =} {=uq;=}' \
+       < gpu_commands.txt
 
-  2$ simple_hypersearch "python3 train_dnn.py --lr {lr} --batch_size {bs}" \
+  2$ simple_hypersearch \
+       "python3 train_dnn.py --lr {lr} --batch_size {bs}" \
        -p lr 0.001 0.0005 0.0001 -p bs 32 64 128 |
        simple_gpu_scheduler --gpus 0,1,2
 
@@ -3086,7 +3101,7 @@ Summary (see legend above):
        simple_gpu_scheduler --gpus 0,1,2
 
   3$ parallel --header : --shuf \
-       CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1; seq() > 5 and skip() =}' \
+       CUDA_VISIBLE_DEVICES='{=1 $_=slot()-1; seq()>5 and skip() =}' \
        python3 train_dnn.py --lr {lr} --batch_size {bs} \
        ::: lr 0.001 0.0005 0.0001 ::: bs 32 64 128
 
@@ -3592,6 +3607,188 @@ https://github.com/ctbur/async
 (Last checked: 2023-01)
 
 
+=head2 DIFFERENCES BETWEEN tandem AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item - - - I4 - - N/A
+
+=item M1 - - - - M6
+
+=item - - O3 - - - - N/A - -
+
+=item E1 - E3 - E5 - -
+
+=item - - - - - - - - -
+
+=item - -
+
+=back
+
+B<tandem> runs full commands in parallel. It is made for starting a
+"server", running a job against the server, and when the job is done,
+the server is killed.
+
+More generally: it kills all jobs when the first job completes -
+similar to '--halt now,done=1'.
+
+B<tandem> silently discards some output. It is unclear exactly when
+this happens. It looks like a race condition, because it varies for
+each run.
+
+  $ tandem "seq 10000" | wc -l
+  6731 <- This should always be 10002
+
+
+=head3 EXAMPLES FROM Demo
+
+  tandem \
+    'php -S localhost:8000' \
+    'esbuild src/*.ts --bundle --outdir=dist --watch' \
+    'tailwind -i src/index.css -o dist/index.css --watch'
+
+  # Emulate tandem's behaviour
+  PARALLEL='--color --lb  --halt now,done=1 --tagstring '
+  PARALLEL="$PARALLEL'"'{=s/ .*//; $_.=".".$app{$_}++;=}'"'"
+  export PARALLEL
+
+  parallel ::: \
+    'php -S localhost:8000' \
+    'esbuild src/*.ts --bundle --outdir=dist --watch' \
+    'tailwind -i src/index.css -o dist/index.css --watch'
+
+
+=head3 EXAMPLES FROM tandem -h
+
+  # Emulate tandem's behaviour
+  PARALLEL='--color --lb  --halt now,done=1 --tagstring '
+  PARALLEL="$PARALLEL'"'{=s/ .*//; $_.=".".$app{$_}++;=}'"'"
+  export PARALLEL
+
+  1$ tandem 'sleep 5 && echo "hello"' 'sleep 2 && echo "world"'
+
+  1$ parallel ::: 'sleep 5 && echo "hello"' 'sleep 2 && echo "world"'
+
+  # '-t 0' fails. But '--timeout 0 works'
+  2$ tandem --timeout 0 'sleep 5 && echo "hello"' \
+       'sleep 2 && echo "world"'
+
+  2$ parallel --timeout 0 ::: 'sleep 5 && echo "hello"' \
+       'sleep 2 && echo "world"'
+
+=head3 EXAMPLES FROM tandem's readme.md
+
+  # Emulate tandem's behaviour
+  PARALLEL='--color --lb  --halt now,done=1 --tagstring '
+  PARALLEL="$PARALLEL'"'{=s/ .*//; $_.=".".$app{$_}++;=}'"'"
+  export PARALLEL
+
+  1$ tandem 'next dev' 'nodemon --quiet ./server.js'
+
+  1$ parallel ::: 'next dev' 'nodemon --quiet ./server.js'
+
+  2$ cat package.json
+     {
+       "scripts": {
+         "dev:php": "...",
+         "dev:js": "...",
+         "dev:css": "..."
+       }
+     }
+
+     tandem 'npm:dev:php' 'npm:dev:js' 'npm:dev:css'
+
+  # GNU Parallel uses bash functions instead
+  2$ cat package.sh
+     dev:php() { ... ; }
+     dev:js() { ... ; }
+     dev:css() { ... ; }
+     export -f dev:php dev:js dev:css
+
+     . package.sh
+     parallel ::: dev:php dev:js dev:css
+
+  3$ tandem 'npm:dev:*'
+
+  3$ compgen -A function | grep ^dev: | parallel
+
+For usage in Makefiles, include a copy of GNU Parallel with your
+source using `parallel --embed`. This has the added benefit of also
+working if access to the internet is down or restricted.
+
+https://github.com/rosszurowski/tandem
+(Last checked: 2023-01)
+
+
+=head2 DIFFERENCES BETWEEN rust-parallel(aaronriekenberg) AND GNU Parallel
+
+Summary (see legend above):
+
+=over
+
+=item I1 I2 I3 - - - -
+
+=item - - - - - M6
+
+=item O1 O2 O3 - O5 O6 - N/A - O10
+
+=item E1 - - E4 - - -
+
+=item - - - - - - - - -
+
+=item - -
+
+=back
+
+B<rust-parallel> has a goal of only using Rust. It seems it is
+impossible to call bash functions from the command line. You would
+need to put these in a script.
+
+Calling script that miss the shebang line (#! as first line) fails.
+
+=head3 EXAMPLES FROM rust-parallel's README.md
+
+  $ cat >./test <<EOL
+  echo hi
+  echo there
+  echo how
+  echo are
+  echo you
+  EOL
+  
+  1$ cat test | rust-parallel -j5
+  
+  1$ cat test | parallel -j5
+  
+  2$ cat test | rust-parallel -j1
+  
+  2$ cat test | parallel -j1
+  
+  3$ head -100 /usr/share/dict/words | rust-parallel md5 -s
+  
+  3$ head -100 /usr/share/dict/words | parallel md5 -s
+  
+  4$ find . -type f -print0 | rust-parallel -0 gzip -f -k
+  
+  4$ find . -type f -print0 | parallel -0 gzip -f -k
+  
+  5$ head -100 /usr/share/dict/words |
+       awk '{printf "md5 -s %s\n", $1}' | rust-parallel
+  
+  5$ head -100 /usr/share/dict/words |
+       awk '{printf "md5 -s %s\n", $1}' | parallel
+  
+  6$ head -100 /usr/share/dict/words | rust-parallel md5 -s |
+       grep -i abba
+  
+  6$ head -100 /usr/share/dict/words | parallel md5 -s |
+       grep -i abba
+
+https://github.com/aaronriekenberg/rust-parallel
+(Last checked: 2023-01)
+
 =head2 Todo
 
 http://code.google.com/p/push/ (cannot compile)
@@ -3742,7 +3939,8 @@ full for at least 2 seconds.
       # Generate 100 GB to fill $TMPDIR
       # Adjust if /tmp is bigger than 100 GB
       yes | head -c 100G >$TMPDIR/$$
-      # Generate 10 MB output that will not be buffered due to full disk
+      # Generate 10 MB output that will not be buffered
+      # due to full disk
       perl -e 'print "X"x10_000_000' | head -c 10M
       echo This part is missing from incomplete output
       sleep 2

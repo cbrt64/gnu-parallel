@@ -4,6 +4,18 @@
  
 Quote of the month:
 
+Colorful output
+parallel, with --color flag
+tasks more vibrant now
+
+--line-buffer, a flag
+parallel, now more precise
+Output is in sync
+
+
+write a haiku about gnu parallel and the :::+  option
+
+
   Got around to using GNU parallel for the first time from a suggestion by @jdwasmuth ... now I'm wishing I started using this years ago
     -- Stefan Gavriliuc @GavriliucStefan@twitter
 

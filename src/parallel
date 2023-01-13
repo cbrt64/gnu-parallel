@@ -1955,7 +1955,7 @@ sub options_completion_hash() {
 	 # Before changing these lines, please read
 	 # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
 	 # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
-	 # You accept to be put in a public hall of shame by removing
+	 # You accept to be put in a public hall-of-shame by removing
 	 # these lines.
 	 ("bibtex|citation".
 	  "[Print the citation notice and BibTeX entry for GNU parallel, ".
@@ -2194,8 +2194,7 @@ sub parse_options(@) {
     # Before changing these line, please read
     # https://www.gnu.org/software/parallel/parallel_design.html#citation-notice
     # https://git.savannah.gnu.org/cgit/parallel.git/tree/doc/citation-notice-faq.txt
-    # You accept to be added to a public hall of shame by
-    # removing the lines.
+    # You accept to be added to a public hall-of-shame by removing the lines.
     if(defined $opt::citation) {
 	citation(\@argv_before,\@ARGV);
 	wait_and_exit(0);
@@ -3557,7 +3556,7 @@ sub shell_quote_scalar_default($) {
     #	$shell_quoted = string quoted as needed by the shell
     local $_ = $_[0];
     if(/[^-_.+a-z0-9\/]/i) {
-	s/'/'"'"'/g;	# "-quote '-quotes
+	s/'+/'"$&"'/g;	# "-quote '-quotes: ''' => "'''"
 	$_ = "'$_'";	# '-quote entire string
 	s/^''//;	# Remove unneeded '' at ends
 	s/''$//;	# (faster than s/^''|''$//g)
