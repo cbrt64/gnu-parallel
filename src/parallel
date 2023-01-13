@@ -1647,7 +1647,6 @@ sub zsh_competion() {
     my @zsh_completion =
 	("compdef _comp_parallel parallel; ",
 	 "setopt localoptions extended_glob; ",
-	 "local -a _comp_priv_prefix; ",
 	 "_comp_parallel() { ",
 	 "_arguments ");
     my @och = options_completion_hash();
@@ -1680,8 +1679,8 @@ sub zsh_competion() {
 	shift @och;
     }
     push @zsh_completion,
-	q{'(-)1:command: _command_names -e' },
-	q{'*::arguments:{ _comp_priv_prefix=( '$words[1]' -n ${(kv)opt_args[(I)(-[ugHEP]|--(user|group|set-home|preserve-env|preserve-groups))]} ) ; _normal }'},
+	q{'(-)1:command:{_command_names -e}' },
+	q{'*::arguments:_normal'},
 	"};\n";
     print @zsh_completion;
 }
@@ -2102,7 +2101,7 @@ sub options_completion_hash() {
 	  => \@opt::filter),
 	 "_parset=s[Generate shell code for parset]" => \$opt::_parset,
 	 ("shell-completion|shellcompletion=s".
-	  "[Generate shell code for shell completion]"
+	  "[Generate shell code for shell completion]:shell:(bash zsh)"
 	  => \$opt::shellcompletion),
 	 # Parameter for testing optimal values
 	 "_test=s" => \$opt::_test,
