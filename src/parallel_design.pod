@@ -1026,7 +1026,7 @@ N+1 records.
 With B<--pipepart> GNU B<parallel> can compute the B<--block-size>
 automatically. A B<--block-size> of B<-1> will use a block size so
 that each jobslot will receive approximately 1 block.  B<--block -2>
-will pass 2 blocks to each jobslot and B<-I<n>> will pass I<n> blocks
+will pass 2 blocks to each jobslot and B<->I<n> will pass I<n> blocks
 to each jobslot.
 
 This can be done because B<--pipepart> reads from files, and we can

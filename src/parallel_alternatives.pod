@@ -3746,7 +3746,8 @@ B<rust-parallel> has a goal of only using Rust. It seems it is
 impossible to call bash functions from the command line. You would
 need to put these in a script.
 
-Calling script that miss the shebang line (#! as first line) fails.
+Calling a script that misses the shebang line (#! as first line)
+fails.
 
 =head3 EXAMPLES FROM rust-parallel's README.md
 

@@ -3232,7 +3232,7 @@ then killed. Process groups are dependant on the tty.
 See also: B<--ungroup> B<--open-tty>
 
 
-=item B<--tag> (beta testing)
+=item B<--tag>
 
 Tag lines with arguments.
 
@@ -3245,7 +3245,7 @@ B<--tag> is ignored when using B<-u>.
 See also: B<--tagstring> B<--ctag>
 
 
-=item B<--tagstring> I<str> (beta testing)
+=item B<--tagstring> I<str>
 
 Tag lines with a string.
 

@@ -262,28 +262,26 @@ from:tange@gnu.org
 to:parallel@gnu.org, bug-parallel@gnu.org
 stable-bcc: Jesse Alama <jessealama@fastmail.fm>
 
-Subject: GNU Parallel 20230122 ('Bolsanaro+Brasilia/Pele/MashaAmina<<>>') released
+Subject: GNU Parallel 20230122 ('Bolsanaristas') released
 
-GNU Parallel 20230122 ('<<>>') has been released. It is available for download at: lbry://@GnuParallel:4
+GNU Parallel 20230122 ('Bolsanaristas') has been released. It is available for download at: lbry://@GnuParallel:4
 
 Quote of the month:
 
-  <<>>
+  Colorful output
+  parallel, with --color flag
+  tasks more vibrant now
+    -- ChatGPT
 
 New in this release:
 
-<<>>
+* Bug fixes and man page updates.
 
 News about GNU Parallel:
 
-https://www.purevpn.com/blog/the-best-hacking-tools-of-2023/#11_GNU_Parallel
+*  The Best Ethical Hacking Tools of 2023 (and their basic usage) https://www.purevpn.com/blog/the-best-hacking-tools-of-2023/#11_GNU_Parallel
 
-https://www.vivaolinux.com.br/artigo/GNU-Parallel-criando-atividades-em-paralelo-com-shell-script/
-
-this is wrong-https://climbtheladder.com/10-gnu-parallel-best-practices/
-
-<<>>
-
+* GNU Parallel: criando atividades em paralelo com shell script https://www.vivaolinux.com.br/artigo/GNU-Parallel-criando-atividades-em-paralelo-com-shell-script/
 
 GNU Parallel - For people who live life in the parallel lane.
 

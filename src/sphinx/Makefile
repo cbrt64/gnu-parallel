@@ -11,7 +11,10 @@ SOURCEDIR     = source
 BUILDDIR      = build
 
 all: copy
-	make html
+	make html 2>&1 | \
+	  grep -v 'WARNING: Could not lex literal_block as "perl". Highlighting skipped.'
+
+
 
 install:
 	true dummy

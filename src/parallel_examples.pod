@@ -637,7 +637,11 @@ order. It simply skips jobs where values from different input sources
 are the same:
 
   parallel --plus echo {uniq} ::: A B C  ::: A B C  ::: A B C
-  parallel --plus echo {1uniq}+{2uniq}+{3uniq} ::: A B C  ::: A B C  ::: A B C
+  parallel --plus echo {1uniq}+{2uniq}+{3uniq} \
+    ::: A B C  ::: A B C  ::: A B C
+
+The behaviour of B<{choose_k}> is undefined, if the input values of each
+source are different.
 
 
 =head2 EXAMPLE: From a to b and b to c
@@ -1331,7 +1335,8 @@ Here is a simple example of using GNU B<parallel> to call B<srun>:
   module load gnu_parallel
   
   my_parallel="parallel --delay .2 -j $SLURM_NTASKS"
-  my_srun="srun --export=all --exclusive -n1 --cpus-per-task=1 --cpu-bind=cores"
+  my_srun="srun --export=all --exclusive -n1"
+  my_srun="$my_srun --cpus-per-task=1 --cpu-bind=cores"
   $my_parallel "$my_srun" echo This is job {} ::: {1..20}
 
 

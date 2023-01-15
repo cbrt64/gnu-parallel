@@ -4,9 +4,6 @@
  
 Quote of the month:
 
-Colorful output
-parallel, with --color flag
-tasks more vibrant now
 
 --line-buffer, a flag
 parallel, now more precise
@@ -215,6 +212,11 @@ https://negfeedback.blogspot.com/2020/05/indispensable-command-line-tools.html
     -- @alinajaf@twitter
 
 === Used ===
+
+  Colorful output
+  parallel, with --color flag
+  tasks more vibrant now
+    -- ChatGPT
 
   GNU Parallel absolutely rocks.
     -- Austin Mordahl@Stackoverflow

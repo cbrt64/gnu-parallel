@@ -600,7 +600,7 @@ par_load_from_PARALLEL	### Test reading load from PARALLEL
 par_load_from_PARALLEL	8a7095c1c23bfadc311fe6b16d950582  -
 par_load_from_PARALLEL	8a7095c1c23bfadc311fe6b16d950582  -
 par_long_line_remote	### Deal with long command lines on remote servers
-par_long_line_remote	      6       6   30006
+par_long_line_remote	      1       6   30006
 par_long_line_remote	      6      50  250050
 par_maxlinelen_X_I	### Test max line length -X -I
 par_maxlinelen_X_I	a98747678a5d18c4470a073812437ab2  -
