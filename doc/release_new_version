@@ -104,7 +104,7 @@ lbry://@GnuParallel#4/parallel-20210322.tar.bz2
 
 . .last-doitag.txt
 file_path="`pwd`/parallel-$YYYYMMDD.tar.bz2"
-title="GNU Parallel $YYYYMMDD ('$SPCTAG')"
+title="GNU Parallel $YYYYMMDD ('$SPCTAG') [stable]"
 name="GNU-Parallel-$YYYYMMDD-$TAG"
 author="Ole Tange"
 license="GNU GPLv3 or later"
