@@ -13332,8 +13332,8 @@ sub binary_find_max($$$) {
     my ($lower, $upper, $string) = (@_);
     if($lower == $upper
        or $lower == $upper-1
-       or $lower/$upper > 0.99) {
-        # $lower is +- 1 or within 1%: Don't search more
+       or $lower/$upper > (($^O eq "cygwin" or $^O eq "msys") ? 0.90:0.99)) {
+        # $lower is +- 1 or within 1% (10% on Windows): Don't search more
         return $lower;
     }
     # Unevenly split binary search which is faster for Microsoft Windows.
